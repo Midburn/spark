@@ -1,0 +1,28 @@
+extends ../includes/layout
+block wrapper
+    div( class='col-sm-6 col-sm-offset-3' )
+        span( class="fa fa-sign-in" )
+
+            h1 Welcome to Spark!
+            h2 Login
+
+            if (errorMessage && errorMessage.length > 0)
+                div( class="alert alert-danger" )
+                    p=errorMessage
+
+            form( action="/login", method="post" )
+                div( class="form-group" )
+                label Email
+                input( type="text", class="form-control", name="email" )
+                label Password
+                input( type="password", class="form-control", name="password" )
+                input( type="hidden", name="r", value=r )
+                button( type="submit", class="btn btn-warning btn-lg" ) Login
+                a( href="/reset_password" )
+                    span( class="fa fa-user") Forgot you password?
+
+            p Need an account?
+                a( href="/signup", class="btn btn-default" )
+                    span( class="fa fa-user") Sign Up
+
+

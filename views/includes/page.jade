@@ -1,0 +1,21 @@
+extends layout
+block wrapper
+    nav( class="navbar navbar-default" )
+        div( class="container" )
+            div( class="navbar-header" )
+                a( class="navbar-brand", href="/home" ) Spark
+            div( id="navbar", class="navbar-collapse collapse" )
+                ul( class="nav navbar-nav" )
+                    li( class="active" )
+                        a( href="/home" ) Home
+                    li( class="" )
+                        //TODO Set active tab by code
+                        a( href="/npo" ) Midburn NPO
+                ul( class="nav navbar-nav navbar-right")
+                    li
+                        //TODO replace 'a' tag with something else
+                        a #{user.attributes.first_name} #{user.attributes.last_name}
+                    li
+                        a( href="/logout" ) Logout
+    div( class="container" )
+        block content

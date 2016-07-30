@@ -1,0 +1,7 @@
+extends ../includes/layout
+
+block wrapper
+    h1 MOOP!
+    h4=errorMessage
+    h4=error.status
+    pre #{error.stack}

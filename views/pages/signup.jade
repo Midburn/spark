@@ -1,0 +1,35 @@
+extends ../includes/layout
+block wrapper
+    h1=title
+    div( class='col-sm-6 col-sm-offset-3' )
+        span( class="fa fa-sign-up" )
+
+            h2 Sign Up
+
+            if (errorMessage && errorMessage.length > 0)
+                div( class="alert alert-danger")
+                    p=errorMessage
+
+            form( action="/signup", method="post" )
+                div( class="form-group" )
+                label Email
+                input( type="text", class="form-control", name="email" )
+                label Password
+                input( type="password", class="form-control", name="password" )
+                //TODO - Write a JS that will give feedback if password not match, or not qualify to the policy
+                label Confirm Password
+                input( type="password", class="form-control", name="confirm_password" )
+                label First Name
+                input( type="text", class="form-control", name="first_name" )
+                label Last Name
+                input( type="text", class="form-control", name="last_name" )
+                label Gender
+                br
+                input(type="radio", name="gender", value="male" )
+                | Male
+                input(type="radio", name="gender", value="female")
+                | Female
+                br
+                button( type="submit", class="btn btn-warning btn-lg" ) Sign Up
+
+
