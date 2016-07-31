@@ -8,11 +8,38 @@ module.exports = function (app) {
     });
 
     app.get('/npo_pay_fee', security.isLoggedIn, function (req, res, next) {
-        mail.send('roy.zahor@gmail.com', 'Approved', 'emails/ngo_membership_approved', null);
-
-        //TODO temp - just for testing
-        res.redirect('https://icredit.rivhit.co.il/payment/PaymentFullPage.aspx?GroupId=cf39475a-d625-4062-8ad2-d367142df157');
-        //res.render('pages/ngo_pay_fee', {user: req.user});
+        //TODO temp code & parameters - just for testing
+        var request = require('request');
+        request.post(
+            'https://testicredit.rivhit.co.il/API/PaymentPageRequest.svc/GetUrl',
+            {
+                json: {
+                    "GroupPrivateToken": "7ddd44b1-fcbf-4f95-baea-5169b6788681",
+                    "Items": [{
+                        "Id": 6969,
+                        "Quantity": 1,
+                        "UnitPrice": 60,
+                        "Description": "Membership Fee 2016"
+                    }],
+                    "RedirectURL": "http://localhost:3000/home",
+                    "ExemptVAT": true,
+                    "MaxPayments": 1,
+                    "CustomerFirstName": req.user.first_name,
+                    "CustomerLastName": req.user.last_name
+                }
+            },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log("iCredit result:\n", body);
+                    res.redirect(body.URL);
+                    //next();
+                }
+                else {
+                    //TODO handle error.
+                    console.log("iCredit ERROR!");
+                }
+            }
+        );
     });
 };
 
