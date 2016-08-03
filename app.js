@@ -104,6 +104,15 @@ app.use(function (req, res, next) {
 // Development error handler - will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
+        // Handle CSRF token errors
+        if (err.code == 'EBADCSRFTOKEN') {
+            res.status(403);
+            res.render('pages/error', {
+                errorMessage: 'Illegal action. Your connection details has been logged.',
+                error: {status: 'URL: ' + req.url}
+            });
+            return;
+        }
         res.status(err.status || 500);
         res.render('pages/error', {
             errorMessage: err.message,
@@ -114,6 +123,15 @@ if (app.get('env') === 'development') {
 // Production error handler - no stacktraces leaked to user
 else {
     app.use(function (err, req, res, next) {
+        // Handle CSRF token errors
+        if (err.code == 'EBADCSRFTOKEN') {
+            res.status(403);
+            res.render('pages/error', {
+                errorMessage: 'Illegal action. Your connection details has been logged.',
+                error: req.url
+            });
+            return;
+        }
         res.status(err.status || 500);
         res.render('pages/error', {
             errorMessage: err.message,

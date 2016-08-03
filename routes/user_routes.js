@@ -3,11 +3,11 @@ var mail = require('../config/mail');
 
 module.exports = function (app) {
 
-    app.get('/npo', security.isLoggedIn, function (req, res, next) {
+    app.get('/npo', security.protectGet, function (req, res, next) {
         res.render('pages/npo', {user: req.user});
     });
 
-    app.get('/npo_pay_fee', security.isLoggedIn, function (req, res, next) {
+    app.get('/npo_pay_fee', security.protectGet, function (req, res, next) {
         //TODO temp code & parameters - just for testing
         var request = require('request');
         request.post(
