@@ -1,6 +1,6 @@
 {
-  "hello": "ωμεν",
-  "welcome_home": "αψελιν δαΰεϊ δαιϊδ, {{user}}!",
-  "welcome_home_male": "αψεκ δαΰ δαιϊδ, {{user}}!",
-  "welcome_home_female": "αψελδ δαΰδ δαιϊδ, {{user}}!"
+  "hello": "Χ©ΧΧ•Χ",
+  "welcome_home": "Χ‘Χ¨Χ•Χ›Χ™Χ Χ”Χ‘ΧΧ•Χª Χ”Χ‘Χ™ΧªΧ”, {{user}}!",
+  "welcome_home_male": "Χ‘Χ¨Χ•Χ Χ”Χ‘Χ Χ”Χ‘Χ™ΧªΧ”, {{user}}!",
+  "welcome_home_female": "Χ‘Χ¨Χ•Χ›Χ” Χ”Χ‘ΧΧ” Χ”Χ‘Χ™ΧªΧ”, {{user}}!"
 }

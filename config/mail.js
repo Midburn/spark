@@ -19,11 +19,12 @@ module.exports = {
     },
 
     // Send mail.
-    // template - REQUIRED.
     // recipients - REQUIRED. This can be a comma delimited string.
+    // from - REQUIRED.
     // subject - REQUIRED.
+    // template - REQUIRED.
     // properties - All additional properties are also passed to the template as local variables.
-    send : function (recipients, subject, template, properties) {
+    send : function (recipients, from, subject, template, properties) {
         console.log('Sending email to ', recipients);
         ourApp.mailer.send(template, {
             to: recipients,
@@ -37,5 +38,7 @@ module.exports = {
             }
             return true;
         });
-    }
+    },
+
+    NPO_EMAIL : 'amuta@midburn.org'
 };

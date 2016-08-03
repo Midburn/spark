@@ -1,0 +1,16 @@
+extends ../includes/layout
+
+block wrapper
+    h1 Midburn NPO Admin
+
+    if (errorMessage && errorMessage.length > 0)
+        p=errorMessage
+
+    form( method='post', action='/admin/npo' )
+        h3 Bulk Actions
+        textarea( name='emails' )
+        br
+        select( name='action', required=true )
+            option( value='approve_membership' ) Approve Membership
+        br
+        input( type='submit' )

@@ -16,7 +16,7 @@
       <column name="first_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="last_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="gender" sqlType="ENUM" precision="6" scale="0" nullable="true" jdbcType="1"/>
-      <column name="npo_membership_status" sqlType="ENUM" precision="17" scale="0" nullable="true" jdbcType="1" def="J25vdF9tZW1iZXIn"/>
+      <column name="npo_membership_status" sqlType="CHAR" precision="32" scale="0" nullable="true" jdbcType="1"/>
       <column name="npo_membership_start_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="npo_membership_end_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <primary-key name="PRIMARY" columns="id"/>

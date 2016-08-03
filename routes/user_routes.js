@@ -31,6 +31,7 @@ module.exports = function (app) {
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     console.log("iCredit result:\n", body);
+                    //TODO store body.PrivateSaleToken
                     res.redirect(body.URL);
                     //next();
                 }

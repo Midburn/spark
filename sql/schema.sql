@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS users (
   gender                      ENUM('male', 'female'),
 
   # NPO fields
-  npo_membership_status       ENUM('not_member', 'request_approved', 'member_paid', 'member_should_pay', 'banned', 'request_rejected') DEFAULT 'not_member',
+  npo_membership_status       ENUM('not_member', 'request_approved', 'member_paid', 'member_should_pay', 'banned', 'request_rejected', 'npo_applied_for_membership') DEFAULT 'not_member',
   npo_membership_start_date   DATE,
   npo_membership_end_date     DATE
 ) ENGINE = innodb;
