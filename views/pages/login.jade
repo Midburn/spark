@@ -11,17 +11,18 @@ block wrapper
                     p=errorMessage
 
             form( action="/login", method="post" )
+                input( type="hidden", name="r", value=r )
                 div( class="form-group" )
                 label Email
                 input( type="text", class="form-control", name="email" )
                 label Password
                 input( type="password", class="form-control", name="password" )
-                input( type="hidden", name="r", value=r )
-                button( type="submit", class="btn btn-warning btn-lg" ) Login
+                br
+                button( type="submit", class="btn btn-info" ) Login
                 a( href="/reset_password" )
-                    span( class="fa fa-user") Forgot you password?
+                    span( class="fa fa-user") &nbsp;Forgot you password?
 
-            p Need an account?
+            p Need an account? &nbsp;
                 a( href="/signup", class="btn btn-default" )
                     span( class="fa fa-user") Sign Up
 

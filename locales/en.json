@@ -6,5 +6,8 @@
   "npo_member_paid": "NPO Member, Paid Membership Fee",
   "npo_member_should_pay": "NPO Member, Should Pay Membership Fee",
   "npo_banned": "Banned From The NPO",
-  "npo_request_rejected": "Membership Request Rejected"
+  "npo_request_rejected": "Membership Request Rejected",
+  "payment_received": "Payment received",
+  "membership_fee": "Membership fee for year {{year}}",
+  "back_home": "Back to homepage"
 }
