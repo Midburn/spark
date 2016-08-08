@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 var User = bookshelf.Model.extend({
     tableName: 'users',
-    idAttribute: 'id',
+    idAttribute: 'user_id',
 
     generateHash: function (password) {
         this.attributes.password = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
@@ -19,7 +19,7 @@ var User = bookshelf.Model.extend({
 
 });
 
-// create the model for users and expose it to our app
+// Create the model and expose it
 module.exports = {
     User: User,
     Status: {

@@ -1,6 +1,7 @@
 extends ../includes/layout
 block wrapper
-    div( class='col-sm-6 col-sm-offset-3' )
+    br
+    div( class='col-md-3 col-md-offset-4 well' )
         span( class="fa fa-sign-in" )
 
             h1 Welcome to Spark!
@@ -13,15 +14,18 @@ block wrapper
             form( action="/login", method="post" )
                 input( type="hidden", name="r", value=r )
                 div( class="form-group" )
-                label Email
-                input( type="text", class="form-control", name="email" )
-                label Password
-                input( type="password", class="form-control", name="password" )
-                br
+                    label Email
+                    input( type="text", class="form-control", name="email" )
+                div( class="form-group" )
+                    label Password
+                    input( type="password", class="form-control", name="password" )
+                div( class="form-group")
+                    input( type="checkbox", name="remember")
+                    label &nbsp;Remember Me
                 button( type="submit", class="btn btn-info" ) Login
                 a( href="/reset_password" )
                     span( class="fa fa-user") &nbsp;Forgot you password?
-
+            br
             p Need an account? &nbsp;
                 a( href="/signup", class="btn btn-default" )
                     span( class="fa fa-user") Sign Up

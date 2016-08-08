@@ -30,7 +30,7 @@ module.exports = function (app, passport) {
             }
             return req.logIn(user, function (err) {
                 if (err) {
-                    return res.render('pages/login', {errorMessage: req.flash('error')});
+                    return res.render('pages/login', {errorMessage: err.message});
                 } else {
                     var r = req.body['r'];
                     if (r) {
@@ -64,16 +64,16 @@ module.exports = function (app, passport) {
             failureFlash : true // allow flash messages
         }, function (err, user, info) {
             if (err) {
-                return res.render('pages/signup', {title: 'Sign Up err', errorMessage: err.message});
+                return res.render('pages/signup', {errorMessage: err.message});
             }
 
             if (!user) {
-                return res.render('pages/signup', {title: 'Sign Up user', errorMessage: req.flash('error')});
+                return res.render('pages/signup', {errorMessage: req.flash('error')});
             }
 
             return req.logIn(user, function (err) {
                 if (err) {
-                    return res.render('pages/signup', {title: 'Sign Up login err', errorMessage: req.flash('error')});
+                    return res.render('pages/signup', {errorMessage: req.flash('error')});
                 } else {
                     // sign in the newly registered user
                     return loginPost(req, res, next);

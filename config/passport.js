@@ -19,7 +19,7 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
-        new User({id: id}).fetch().then(function (user) {
+        new User({user_id: id}).fetch().then(function (user) {
             done(null, user);
         })
     });

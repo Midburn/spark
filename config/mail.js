@@ -33,7 +33,7 @@ module.exports = {
         }, function (err) {
             if (err) {
                 // handle error
-                console.log('Error sending email', err);
+                console.error('Error sending email', err);
                 return false;
             }
             return true;

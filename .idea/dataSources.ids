@@ -7,8 +7,22 @@
     </database-info>
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
     <schema name="" catalog="spark"/>
+    <table name="payments" schema="" catalog="spark" type="TABLE">
+      <column name="created" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="payment_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="private_sale_token" sqlType="VARCHAR" precision="40" scale="0" nullable="true" jdbcType="12"/>
+      <column name="public_sale_token" sqlType="VARCHAR" precision="40" scale="0" nullable="true" jdbcType="12"/>
+      <column name="url" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="payed" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <primary-key name="PRIMARY" columns="payment_id"/>
+      <foreign-key name="payments_ibfk_1" columns="user_id" ref-table="users" ref-schema="" ref-catalog="spark" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
     <table name="users" schema="" catalog="spark" type="TABLE">
-      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="created" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="updated" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="email" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="password" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="reset_password_token" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
@@ -16,10 +30,12 @@
       <column name="first_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="last_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="gender" sqlType="ENUM" precision="6" scale="0" nullable="true" jdbcType="1"/>
-      <column name="npo_membership_status" sqlType="CHAR" precision="32" scale="0" nullable="true" jdbcType="1"/>
+      <column name="npo_membership_status" sqlType="ENUM" precision="22" scale="0" nullable="true" jdbcType="1" def="J25vdF9tZW1iZXIn"/>
+      <column name="npo_application_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="npo_membership_start_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="npo_membership_end_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
-      <primary-key name="PRIMARY" columns="id"/>
+      <primary-key name="PRIMARY" columns="user_id"/>
+      <exported-key name="payments_ibfk_1" table="payments" schema="" catalog="spark" columns="user_id"/>
       <index name="email" unique="true" columns="email"/>
       <index name="reset_password_token" unique="true" columns="reset_password_token"/>
     </table>

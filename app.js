@@ -25,7 +25,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Passport setup
-app.use(session({secret: 'SparklePoniesAreFlyingOnEsplanade'})); // session secret
+app.use(session({
+    secret: 'SparklePoniesAreFlyingOnEsplanade',
+    resave: false,
+    saveUninitialized: false,
+    maxAge: 1000 * 60 * 30
+}));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
@@ -143,7 +148,7 @@ else {
 
 // Handler for unhandled rejections
 process.on('unhandledRejection', function (reason, p) {
-    console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+    console.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
 
