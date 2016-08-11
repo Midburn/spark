@@ -10,7 +10,7 @@ module.exports = function (passport) {
     // passport session setup ==================================================
     // =========================================================================
     // required for persistent login sessions
-    // passport needs ability to serialize and unserialize users out of session
+    // passport needs ability to serialize and deserialize users out of session
 
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
@@ -75,6 +75,9 @@ module.exports = function (passport) {
                         //return done(null, false, req.flash('errorMessage', 'Invalid username or password'));
                         return done(null, false, req.flash('error', 'Invalid username or password'));
                     } else {
+
+                        //TODO check here that the user is enabled and activated.
+
                         return done(null, user, null);
                     }
                 }

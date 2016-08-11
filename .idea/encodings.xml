@@ -2,6 +2,8 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/locales/he.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/routes/user_routes.js" charset="windows-1255" />
     <file url="file://$PROJECT_DIR$/views/emails/npo_membership_approved.jade" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/views/pages/npo_join.jade" charset="UTF-8" />
   </component>
 </project>

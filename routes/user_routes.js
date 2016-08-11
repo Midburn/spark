@@ -10,6 +10,24 @@ module.exports = function (app) {
         res.render('pages/npo', {user: req.user});
     });
 
+    app.get('/npo_join', security.protectGet, function (req, res, next) {
+        res.render('pages/npo_join', {user: req.user});
+    });
+
+    app.post('/npo_join', security.protectGet, function (req, res, next) {
+
+        //TODO implement npo join form submit here
+        //new User({user_id: req.user}).fetch().then(function (user) {
+            req.user.set('npo_membership_status', 'applied_for_membership');
+            req.user.save().then(function () {
+                res.redirect('pages/npo');
+            }).catch(User.NotFoundError, function () {
+                //TODO handle error
+                console.error("User", req.user.user_id, "not found in DB while joining npo");
+            });
+        //});
+    });
+
     app.get('/npo_pay_fee', security.protectGet, function (req, res, next) {
         var request = require('request');
         request.post(

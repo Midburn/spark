@@ -31,17 +31,28 @@ CREATE TABLE IF NOT EXISTS users (
   password                  VARCHAR(100),
   reset_password_token      VARCHAR(32) UNIQUE,
   reset_password_expires    DATETIME,
+  enabled                   BOOLEAN DEFAULT TRUE,
+  activated                 BOOLEAN DEFAULT FALSE,
 
   # Profile fields
   first_name                VARCHAR(64),
   last_name                 VARCHAR(64),
   gender                    ENUM('male', 'female'),
+  date_of_birth             DATE,
+  israeli_id                CHAR(9),
+  address                   VARCHAR(100),
+  cell_phone                CHAR(10),
+  extra_phone               CHAR(10),
+
 
   # NPO fields
   npo_membership_status     ENUM('not_member', 'request_approved', 'member_paid', 'member_should_pay', 'banned', 'request_rejected', 'applied_for_membership') DEFAULT 'not_member',
-  npo_application_date      DATE,
+  npo_application_date      TIMESTAMP,
   npo_membership_start_date DATE,
-  npo_membership_end_date   DATE
+  npo_membership_end_date   DATE,
+  npo_form_previous_p       LONGTEXT,
+  npo_form_future_p         LONGTEXT,
+  npo_form_why_join         LONGTEXT
 )
   ENGINE = innodb;
 

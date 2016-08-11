@@ -7,6 +7,7 @@
   "npo_member_should_pay": "NPO Member, Should Pay Membership Fee",
   "npo_banned": "Banned From The NPO",
   "npo_request_rejected": "Membership Request Rejected",
+  "npo_applied_for_membership": "Membership Application is Being Processed",
   "payment_received": "Payment received",
   "membership_fee": "Membership fee for year {{year}}",
   "back_home": "Back to homepage"
