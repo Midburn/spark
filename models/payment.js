@@ -1,4 +1,4 @@
-var bookshelf = require('../config/db').bookshelf;
+var bookshelf = require('../libs/db').bookshelf;
 
 var Payment = bookshelf.Model.extend({
     tableName: 'payments',

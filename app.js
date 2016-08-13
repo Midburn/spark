@@ -9,7 +9,7 @@ var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
 
-require('./config/passport')(passport);
+require('./libs/passport')(passport);
 
 var app = express();
 
@@ -91,11 +91,12 @@ app.use(middleware.handle(i18next, {
 
 // Routes
 require('./routes/main_routes.js')(app, passport);
-require('./routes/user_routes.js')(app, passport);
 require('./routes/admin_routes.js')(app, passport);
+require('./routes/user_routes.js')(app, passport);
+require('./routes/npo_routes.js')(app, passport);
 
 // Mail
-var mail = require('./config/mail');
+var mail = require('./libs/mail');
 mail.setup(app);
 
 // ==============

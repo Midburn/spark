@@ -1,4 +1,11 @@
 {
+  "server": {
+    "port": 3000,
+    "hostname": "royzahor.ddns.net",
+    "protocol": "http",                     // http or https
+    "url": "http://royzahor.ddns.net:3000"  // full URL including protocol and port. NO trailing slash
+  },
+
   "database": {
     "host": "localhost",
     "database": "spark",
@@ -19,6 +26,18 @@
       "pass": "userpass"
     }
   },
+
+  // ** PRODUCTION server **
+  "payment": {
+    "iCreditUrl": "https://icredit.rivhit.co.il/API/PaymentPageRequest.svc/GetUrl",
+    "iCreditGroupPrivateToken": "bf0c4ab6-183d-4a97-9ca0-54df2d933e1e"
+  },
+
+  // ** TEST server **
+//  "payment": {
+//    "iCreditUrl": "https://testicredit.rivhit.co.il/API/PaymentPageRequest.svc/GetUrl",
+//    "iCreditGroupPrivateToken": "7ddd44b1-fcbf-4f95-baea-5169b6788681", // TEST
+//  },
 
   "npo": {
     "email" : "amuta@midburn.org",

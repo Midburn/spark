@@ -1,4 +1,4 @@
-var bookshelf = require('../config/db').bookshelf;
+var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 
 var User = bookshelf.Model.extend({
@@ -22,7 +22,7 @@ var User = bookshelf.Model.extend({
 // Create the model and expose it
 module.exports = {
     User: User,
-    Status: {
+    NPO_STATUS: {
         npo_not_member:             'npo_not_member',
         npo_request_approved:       'npo_request_approved',
         npo_member_paid:            'npo_member_paid',

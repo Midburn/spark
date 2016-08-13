@@ -1,4 +1,4 @@
-var security = require('../config/security');
+var security = require('../libs/security');
 
 module.exports = function (app, passport) {
 
