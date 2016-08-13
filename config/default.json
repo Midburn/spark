@@ -1,0 +1,27 @@
+{
+  "database": {
+    "host": "localhost",
+    "database": "spark",
+    "user": "spark",
+    "password": "spark",
+    "charset": "UTF8_GENERAL_CI",
+    "debug": false
+  },
+
+  "mail": {
+    "from": "spark@midburn.org",
+    "host": "smtp.gmail.com",
+    "secureConnection": true,         // use SSL
+    "port": 465,                      // port for secure SMTP
+    "transportMethod": "SMTP",        // default is SMTP. Accepts anything that nodemailer accepts
+    "auth": {
+      "user": "gmail.user@gmail.com",
+      "pass": "userpass"
+    }
+  },
+
+  "npo": {
+    "email" : "amuta@midburn.org",
+    "idImagesFolder": "d:/temp/"
+  }
+}

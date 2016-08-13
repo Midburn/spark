@@ -1,21 +1,13 @@
 var mailer = require('express-mailer');
+var config = require('config');
 
+var mailConfig = config.get('mail');
 var ourApp;
 
 module.exports = {
     setup : function (app) {
         ourApp = app;
-        mailer.extend(ourApp, {
-            from: 'spark@midburn.org',
-            host: 'smtp.gmail.com', // hostname
-            secureConnection: true, // use SSL
-            port: 465, // port for secure SMTP
-            transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts
-            auth: {
-                user: 'gmail.user@gmail.com',
-                pass: 'userpass'
-            }
-        });
+        mailer.extend(ourApp, mailConfig);
     },
 
     // Send mail.
@@ -38,7 +30,5 @@ module.exports = {
             }
             return true;
         });
-    },
-
-    NPO_EMAIL : 'amuta@midburn.org'
+    }
 };

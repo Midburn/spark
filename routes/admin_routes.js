@@ -5,6 +5,8 @@ var mail = require('../config/mail');
 var User = require('../models/user').User;
 var UserStatus = require('../models/user').Status;
 
+var config = require('config');
+var npoConfig = config.get('npo');
 
 module.exports = function (app) {
 
@@ -36,7 +38,7 @@ module.exports = function (app) {
                                         var payLink = 'http://royzahor.ddns.net:3000/npo_pay_fee?user=' + email;
                                         mail.send(
                                             email,
-                                            mail.NPO_EMAIL,
+                                            npoConfig.email,
                                             'Your Midburn NPO Membership Approved!',
                                             'emails/npo_membership_approved',
                                             {name: theUser.fullName(), payLink: payLink});

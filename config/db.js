@@ -1,13 +1,17 @@
+var config = require('config');
+
+var dbConfig = config.get('database');
+
 var knex = require('knex')({
     client: 'mysql',
     connection: {
-        host     : 'localhost',
-        user     : 'spark',
-        password : 'spark',
-        database : 'spark',
-        charset  : 'UTF8_GENERAL_CI'
+        host     : dbConfig.host,
+        user     : dbConfig.user,
+        password : dbConfig.password,
+        database : dbConfig.database,
+        charset  : dbConfig.charset
     },
-    debug: true
+    debug: dbConfig.debug
 });
 
 var bookshelf = require('bookshelf')(knex);

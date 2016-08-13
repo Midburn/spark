@@ -4,6 +4,10 @@ var i18next = require('i18next');
 var Payment = require('../models/payment').Payment;
 var User = require('../models/user').User;
 
+var config = require('config');
+var npoConfig = config.get('npo');
+
+
 module.exports = function (app) {
 
     app.get('/npo', security.protectGet, function (req, res, next) {
@@ -22,7 +26,7 @@ module.exports = function (app) {
         }
 
         var idImage = req.files.id_image;
-        idImage.mv('d:/temp/' + idImage.name, function (err) {
+        idImage.mv(npoConfig.idImagesFolder + idImage.name, function (err) {
             if (err) {
                 res.status(500).send(err);
                 return;
