@@ -33,10 +33,17 @@
       <column name="last_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
       <column name="gender" sqlType="ENUM" precision="6" scale="0" nullable="true" jdbcType="1"/>
       <column name="date_of_birth" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="israeli_id" sqlType="CHAR" precision="9" scale="0" nullable="true" jdbcType="1"/>
+      <column name="address" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="cell_phone" sqlType="CHAR" precision="10" scale="0" nullable="true" jdbcType="1"/>
+      <column name="extra_phone" sqlType="CHAR" precision="10" scale="0" nullable="true" jdbcType="1"/>
       <column name="npo_membership_status" sqlType="ENUM" precision="22" scale="0" nullable="true" jdbcType="1" def="J25vdF9tZW1iZXIn"/>
-      <column name="npo_application_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="npo_application_date" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <column name="npo_membership_start_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="npo_membership_end_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="npo_form_previous_p" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="npo_form_future_p" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="npo_form_why_join" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="user_id"/>
       <exported-key name="payments_ibfk_1" table="payments" schema="" catalog="spark" columns="user_id"/>
       <index name="email" unique="true" columns="email"/>

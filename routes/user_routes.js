@@ -16,16 +16,39 @@ module.exports = function (app) {
 
     app.post('/npo_join', security.protectGet, function (req, res, next) {
 
-        //TODO implement npo join form submit here
-        //new User({user_id: req.user}).fetch().then(function (user) {
+        if (!req.files) {
+            res.send('No files were uploaded.');
+            return;
+        }
+
+        var idImage = req.files.id_image;
+        idImage.mv('d:/temp/' + idImage.name, function (err) {
+            if (err) {
+                res.status(500).send(err);
+                return;
+            }
+
+            //TODO maybe add more field to save
             req.user.set('npo_membership_status', 'applied_for_membership');
+            req.user.set('npo_application_date', new Date());
+            req.user.set('npo_form_previous_p', req.body.npo_form_previous_p);
+            req.user.set('npo_form_future_p', req.body.npo_form_future_p);
+            req.user.set('npo_form_why_join', req.body.npo_form_why_join);
+            req.user.set('israeli_id', req.body.israeli_id);
+            req.user.set('address', req.body.address);
+            req.user.set('cell_phone', req.body.cell_phone);
+            req.user.set('extra_phone', req.body.extra_phone);
+
             req.user.save().then(function () {
-                res.redirect('pages/npo');
+
+                //TODO send email: welcome... be patient... contact email...
+
+                res.redirect('npo');
             }).catch(User.NotFoundError, function () {
                 //TODO handle error
                 console.error("User", req.user.user_id, "not found in DB while joining npo");
             });
-        //});
+        })
     });
 
     app.get('/npo_pay_fee', security.protectGet, function (req, res, next) {

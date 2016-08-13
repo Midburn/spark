@@ -7,6 +7,7 @@ var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
+var fileUpload = require('express-fileupload');
 
 require('./config/passport')(passport);
 
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 
 // Passport setup
 app.use(session({
