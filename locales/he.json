@@ -5,5 +5,14 @@
   "welcome_home_female": "ברוכה הבאה הביתה, {{user}}!",
   "payment_received": "התשלום התקבל",
   "membership_fee": "דמי חבר לשנת {{year}}",
-  "back_home": "בחזרה לדף הבית"
+  "back_home": "בחזרה לדף הבית",
+  "email": "דואר אלקטרוני",
+  "password": "סיסמה",
+  "remember_me": "זכור אותי",
+  "forgot_password": "שכחת את הסיסמה?",
+  "login": "כניסה למערכת",
+  "need_account": "רוצה ליצור חשבון?",
+  "sign_up": "הרשמה",
+  "welcome_spark": "ברוכים הבאות ל- Spark!",
+  "npo": "עמותת מידברן"
 }

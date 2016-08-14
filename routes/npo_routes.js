@@ -11,15 +11,15 @@ var payment = require('../libs/payment');
 
 module.exports = function (app) {
 
-    app.get('/npo', security.protectGet, function (req, res, next) {
+    app.get('/:lng/npo', security.protectGet, function (req, res, next) {
         res.render('pages/npo', {user: req.user});
     });
 
-    app.get('/npo/join', security.protectGet, function (req, res, next) {
+    app.get('/:lng/npo/join', security.protectGet, function (req, res, next) {
         res.render('pages/npo/join', {user: req.user});
     });
 
-    app.post('/npo/join', security.protectGet, function (req, res, next) {
+    app.post('/:lng/npo/join', security.protectGet, function (req, res, next) {
 
         if (!req.files) {
             res.send('No files were uploaded.');
@@ -56,7 +56,7 @@ module.exports = function (app) {
         })
     });
 
-    app.get('/npo/pay_fee', security.protectGet, function (req, res, next) {
+    app.get('/:lng/npo/pay_fee', security.protectGet, function (req, res, next) {
         payment.doPay(
             [{
                 "Id": 0,

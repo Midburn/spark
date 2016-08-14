@@ -9,11 +9,11 @@ block wrapper
                 div( class="alert alert-danger")
                     p=errorMessage
 
-            form( action="/signup", method="post" )
+            form( action="signup", method="post" )
                 div( class="form-group" )
-                label Email
+                label=t('email')
                 input( type="text", class="form-control", name="email" )
-                label Password
+                label=t('password')
                 input( type="password", class="form-control", name="password" )
                 //TODO - Write a JS that will give feedback if password not match, or not qualify to the policy
                 label Confirm Password
@@ -29,6 +29,14 @@ block wrapper
                 input(type="radio", name="gender", value="female")
                 | Female
                 br
-                button( type="submit", class="btn btn-warning btn-lg" ) Sign Up
+                button( type="submit", class="btn btn-warning btn-lg" )=t('sign_up')
+                br
+                p Change Language / החלפת שפה:&nbsp;&nbsp;
+                    a( href="/he/login" )
+                        img( src="/images/flags/he.gif" )
+                    | &nbsp;
+                    a( href="/en/login" )
+                        img( src="/images/flags/en.gif" )
+
 
 

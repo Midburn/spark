@@ -10,5 +10,14 @@
   "npo_applied_for_membership": "Membership Application is Being Processed",
   "payment_received": "Payment received",
   "membership_fee": "Membership fee for year {{year}}",
-  "back_home": "Back to homepage"
+  "back_home": "Back to homepage",
+  "email": "Email",
+  "password": "Password",
+  "remember_me": "Remember Me",
+  "forgot_password": "Forgot your password?",
+  "login": "Login",
+  "need_account": "Need an account?",
+  "sign_up": "Sign Up",
+  "welcome_spark": "Welcome to Spark!",
+  "npo": "Midburn NPO"
 }

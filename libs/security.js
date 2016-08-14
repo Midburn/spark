@@ -14,7 +14,7 @@ var isLoggedIn = function (req, res, next) {
     }
 
     // If they aren't, redirect them to the login page. 'r' holds the return URL.
-    res.redirect('/login?r=' + req.url);
+    res.redirect('login?r=' + req.url);
 };
 
 var isAdmin = function isLoggedIn(req, res, next) {
@@ -29,7 +29,7 @@ var isAdmin = function isLoggedIn(req, res, next) {
     }
 
     // If they aren't, redirect them to the login page. 'r' holds the return URL.
-    res.redirect('/login?r=' + req.url);
+    res.redirect('login?r=' + req.url);
 };
 
 var connectMiddleware = function (list) {

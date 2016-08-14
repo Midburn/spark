@@ -1,26 +1,26 @@
 {
   "server": {
-    "port": 3000,
-    "hostname": "royzahor.ddns.net",
-    "protocol": "http",                     // http or https
-    "url": "http://royzahor.ddns.net:3000"  // full URL including protocol and port. NO trailing slash
+    "port"      : 3000,
+    "hostname"  : "royzahor.ddns.net",
+    "protocol"  : "http",                     // http or https
+    "url"       : "http://royzahor.ddns.net:3000"  // full URL including protocol and port. NO trailing slash
   },
 
   "database": {
-    "host": "localhost",
-    "database": "spark",
-    "user": "spark",
-    "password": "spark",
-    "charset": "UTF8_GENERAL_CI",
-    "debug": false
+    "host"      : "localhost",
+    "database"  : "spark",
+    "user"      : "spark",
+    "password"  : "spark",
+    "charset"   : "UTF8_GENERAL_CI",
+    "debug"     : false
   },
 
   "mail": {
-    "from": "spark@midburn.org",
-    "host": "smtp.gmail.com",
+    "from"            : "spark@midburn.org",
+    "host"            : "smtp.gmail.com",
     "secureConnection": true,         // use SSL
-    "port": 465,                      // port for secure SMTP
-    "transportMethod": "SMTP",        // default is SMTP. Accepts anything that nodemailer accepts
+    "port"            : 465,          // port for secure SMTP
+    "transportMethod" : "SMTP",       // default is SMTP. Accepts anything that nodemailer accepts
     "auth": {
       "user": "gmail.user@gmail.com",
       "pass": "userpass"
@@ -29,7 +29,7 @@
 
   // ** PRODUCTION server **
   "payment": {
-    "iCreditUrl": "https://icredit.rivhit.co.il/API/PaymentPageRequest.svc/GetUrl",
+    "iCreditUrl"              : "https://icredit.rivhit.co.il/API/PaymentPageRequest.svc/GetUrl",
     "iCreditGroupPrivateToken": "bf0c4ab6-183d-4a97-9ca0-54df2d933e1e"
   },
 
@@ -40,7 +40,7 @@
 //  },
 
   "npo": {
-    "email" : "amuta@midburn.org",
+    "email"         : "amuta@midburn.org",
     "idImagesFolder": "d:/temp/"
   }
 }

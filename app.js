@@ -13,10 +13,6 @@ require('./libs/passport')(passport);
 
 var app = express();
 
-// View engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 // TODO uncomment after placing favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -25,6 +21,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+
+app.use(function(req, res, next) {
+    res.locals.req = req;
+    next();
+});
 
 // Passport setup
 app.use(session({
@@ -44,12 +45,12 @@ var backend = require('i18next-node-fs-backend');
 i18next
     .use(middleware.LanguageDetector)
     .use(backend)
-    //.use(cache)
     .init({
         whitelist: ['en', 'he'],
         fallbackLng: 'en',
         load: 'languageOnly',
         debug: true,
+        ignoreRoutes: ['images/', 'images', 'images/', '/images/', 'css/', 'i18next/'],
         backend: {
             // path where resources get loaded from
             loadPath: 'locales/{{lng}}.json',
@@ -62,21 +63,21 @@ i18next
         },
         detection: {
             // order and from where user language should be detected
-            order: [/*'path', 'session', */ 'querystring', 'cookie', 'header'],
+            order: ['path', 'session', 'querystring', 'cookie', 'header'],
 
             // keys or params to lookup language from
             lookupQuerystring: 'lng',
             lookupCookie: 'i18next',
             lookupSession: 'lng',
             lookupPath: 'lng',
-            lookupFromPathIndex: 0,
+            lookupFromPathIndex: 0
 
             // cache user language
-            caches: false, // ['cookie']
+            //caches: true // ['cookie']
 
             // optional expire and domain for set cookie
-            cookieExpirationDate: new Date(),
-            cookieDomain: 'myDomain'
+            //cookieExpirationDate: new Date(),
+            //cookieDomain: 'SparkMidburn'
         }
     }, function () {
         middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function (req, res) {
@@ -88,6 +89,15 @@ app.use(middleware.handle(i18next, {
     //ignoreRoutes: ["/foo"],
     //removeLngFromUrl: false
 }));
+//i18next.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
+//    console.log('SEO friendly route ...');
+//    res.render('index');
+//});
+
+// View engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
 
 // Routes
 require('./routes/main_routes.js')(app, passport);

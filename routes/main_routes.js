@@ -6,10 +6,14 @@ module.exports = function (app, passport) {
     // INDEX PAGE (renders to login) =======
     // =====================================
     app.get('/', function (req, res) {
+        res.redirect('/he');
+    });
+
+    app.get('/:lng/', function (req, res) {
         res.render('pages/login');
     });
 
-    app.get('/home', security.protectGet, function (req, res) {
+    app.get('/:lng/home', security.protectGet, function (req, res) {
         res.render('pages/home', {user: req.user});
     });
 
@@ -18,8 +22,8 @@ module.exports = function (app, passport) {
     // =====================================
     var loginPost = function (req, res, next) {
         passport.authenticate('local-login', {
-            successRedirect: '/',
-            failureRedirect: '/login'
+            successRedirect: 'home',
+            failureRedirect: 'login'
         }, function (err, user, info) {
             if (err) {
                 return res.render('pages/login', {errorMessage: err.message});
@@ -37,7 +41,7 @@ module.exports = function (app, passport) {
                         return res.redirect(r);
                     }
                     else {
-                        return res.redirect('/home');
+                        return res.redirect('home');
                     }
                 }
             });
@@ -45,10 +49,10 @@ module.exports = function (app, passport) {
     };
 
     // process the login form
-    app.post('/login', loginPost);
+    app.post('/:lng/login', loginPost);
 
     // show the login form
-    app.get('/login', function (req, res) {
+    app.get('/:lng/login', function (req, res) {
         var r = req.query.r;
         console.log(r);
         res.render('pages/login', {errorMessage: req.flash('error'), r: r});
@@ -59,8 +63,8 @@ module.exports = function (app, passport) {
     // =====================================
     var signUpPost = function (req, res, next) {
         passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the signup page if there is an error
+            successRedirect : 'profile', // redirect to the secure profile section
+            failureRedirect : 'signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }, function (err, user, info) {
             if (err) {
@@ -83,18 +87,18 @@ module.exports = function (app, passport) {
     };
 
     // show the signup form
-    app.get('/signup', function (req, res) {
+    app.get('/:lng/signup', function (req, res) {
         // render the page and pass in any flash data if it exists
         res.render('pages/signup', {errorMessage: req.flash('error')});
     });
 
     // process the signup form
-    app.post('/signup', signUpPost);
+    app.post('/:lng/signup', signUpPost);
 
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.get('/logout', function (req, res) {
+    app.get('/:lng/logout', function (req, res) {
         req.logout();
         res.redirect('/');
     });
@@ -110,9 +114,9 @@ module.exports = function (app, passport) {
         res.render('pages/reset_password', {errorMessage: 'NOT IMPLEMENTED'});
     };
 
-    app.get('/reset_password', function (req, res) {
+    app.get('/:lng/reset_password', function (req, res) {
         res.render('pages/reset_password', {errorMessage: req.flash('error')});
     });
 
-    app.post('/reset_password', resetPasswordPost);
+    app.post('/:lng/reset_password', resetPasswordPost);
 };

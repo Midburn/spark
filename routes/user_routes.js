@@ -6,7 +6,7 @@ var User = require('../models/user').User;
 
 module.exports = function (app) {
 
-    app.get('/payment_received', security.protectGet, function (req, res, next) {
+    app.get('/:lng/payment_received', security.protectGet, function (req, res, next) {
         var token = req.query.Token;
         console.log('Received payment token: ' + token);
 
