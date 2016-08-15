@@ -7,10 +7,10 @@ block content
 
     if (user.attributes.npo_membership_status == 'request_approved' || user.attributes.npo_membership_status == 'member_should_pay')
         h2 Membership fee for 2016
-        a( href="/npo/pay_fee", class="btn btn-default" )
+        a( href="npo/pay_fee", class="btn btn-default" )
             span( class="fa fa-user") Pay
 
     if (user.attributes.npo_membership_status == 'not_member')
         h3 Want to become a member? Apply for membership!
-        a( href="/npo/join", class="btn btn-default" )
+        a( href="npo/join", class="btn btn-default" )
             span( class="fa fa-user") Apply Now

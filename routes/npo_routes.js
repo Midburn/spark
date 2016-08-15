@@ -1,7 +1,9 @@
 var security = require('../libs/security');
 var i18next = require('i18next');
+var mail = require('../libs/mail');
 
 var User = require('../models/user').User;
+var UserStatus = require('../models/user').NPO_STATUS;
 
 var config = require('config');
 var npoConfig = config.get('npo');
@@ -16,7 +18,7 @@ module.exports = function (app) {
     });
 
     app.get('/:lng/npo/join', security.protectGet, function (req, res, next) {
-        res.render('pages/npo/join', {user: req.user});
+        res.render('pages/npo_join', {user: req.user});
     });
 
     app.post('/:lng/npo/join', security.protectGet, function (req, res, next) {
@@ -34,7 +36,7 @@ module.exports = function (app) {
             }
 
             //TODO maybe add more field to save
-            req.user.set('npo_membership_status', 'applied_for_membership');
+            req.user.set('npo_membership_status', UserStatus.applied_for_membership);
             req.user.set('npo_application_date', new Date());
             req.user.set('npo_form_previous_p', req.body.npo_form_previous_p);
             req.user.set('npo_form_future_p', req.body.npo_form_future_p);
@@ -45,9 +47,12 @@ module.exports = function (app) {
             req.user.set('extra_phone', req.body.extra_phone);
 
             req.user.save().then(function () {
-
-                //TODO send email: welcome... be patient... contact email...
-
+                mail.send(
+                    req.user.attributes.email,
+                    npoConfig.email,
+                    'Your Midburn membership application is being processed',
+                    'emails/npo_membership_applied',
+                    {name: req.user.fullName});
                 res.redirect('npo');
             }).catch(User.NotFoundError, function () {
                 //TODO handle error

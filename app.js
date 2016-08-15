@@ -109,6 +109,8 @@ require('./routes/npo_routes.js')(app, passport);
 var mail = require('./libs/mail');
 mail.setup(app);
 
+console.log('NODE_ENV =', process.env.NODE_ENV, '| app.env =' , app.get('env'));
+
 // ==============
 // Error handlers
 // ==============

@@ -1,13 +1,15 @@
-doctype html(lang="en")
+doctype html(lang="he")
 head
     meta( http-equiv = 'Content-Type', content = 'text/html; charset=UTF-8' )
 body
-    h2 Welcome home, #{name}!
+    h2 Welcome home yo,
     div( dir='RTL' )
-        |
-        | בקשתך לקבלה לעמותת מידברן אושרה. על מנת לסיים את תהליך ההרשמה ולהיות חלק מהעמותה, עליך לשלם את דמי החברות השנתיים.
+        | #{name},
+        p
+        | בקשתך לחברות בעמותת מידברן אושרה. על מנת לסיים את תהליך ההרשמה ולהיות חלק מהעמותה, עליך לשלם את דמי החברות השנתיים.
         | לתשלום, יש ללחוץ
-            a( href='{{payLink}}' ) כאן
-        |
+        a( href='#{payLink}' ) כאן
+        p
         | בברכה,
-        | ועד עמותת מידברן
+        br
+        | ועד מידברן (ע"ר)

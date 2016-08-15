@@ -33,17 +33,17 @@ module.exports = function (app) {
                                     console.log("User not found!");
                                     return res.render('admin/admin_npo', {errorMessage: 'email ' + recipient + ' not found'});
                                 }
-                                if (theUser.attributes.npo_membership_status == UserStatus.npo_applied_for_membership) {
-                                    theUser.attributes.npo_membership_status = UserStatus.npo_request_approved;
+                                if (theUser.attributes.npo_membership_status == UserStatus.applied_for_membership) {
+                                    theUser.attributes.npo_membership_status = UserStatus.request_approved;
                                     theUser.save().then(function (model) {
-                                        var payLink = serverConfig.url + "/npo/pay_fee?user='" + recipient;
+                                        var payLink = serverConfig.url + "/he/npo/pay_fee?user='" + recipient;
                                         mail.send(
                                             recipient,
                                             npoConfig.email,
-                                            'Your Midburn NPO Membership Approved!',
+                                            'Your Midburn membership approved!',
                                             'emails/npo_membership_approved',
-                                            {name: theUser.fullName(), payLink: payLink});
-                                        res.redirect('admin/npo');
+                                            {name: theUser.fullName, payLink: payLink});
+                                        res.redirect('/admin/npo');
                                     });
                                 }
                                 else {
