@@ -19,5 +19,8 @@
   "need_account": "Need an account?",
   "sign_up": "Sign Up",
   "welcome_spark": "Welcome to Spark!",
-  "npo": "Midburn NPO"
+  "npo": "Midburn NPO",
+  "male": "Male",
+  "female": "Female",
+  "reset_password": "Reset Password"
 }

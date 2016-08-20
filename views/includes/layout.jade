@@ -11,8 +11,9 @@ head
     link( rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css",
     integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r",
     crossorigin="anonymous" )
+    link( rel="stylesheet", href="/stylesheets/style.css" )
 
-body( style='direction:#{languageDir}', lang=language )
+body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
     script( src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' )
     script( src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",

@@ -14,5 +14,8 @@
   "need_account": "רוצה ליצור חשבון?",
   "sign_up": "הרשמה",
   "welcome_spark": "ברוכים הבאות ל- Spark!",
-  "npo": "עמותת מידברן"
+  "npo": "עמותת מידברן",
+  "male": "זכר",
+  "female": "נקבה",
+  "reset_password": "איפוס סיסמה"
 }

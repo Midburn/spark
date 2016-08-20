@@ -50,7 +50,6 @@ i18next
         fallbackLng: 'en',
         load: 'languageOnly',
         debug: true,
-        ignoreRoutes: ['images/', 'images', 'images/', '/images/', 'css/', 'i18next/'],
         backend: {
             // path where resources get loaded from
             loadPath: 'locales/{{lng}}.json',
@@ -69,7 +68,7 @@ i18next
             lookupQuerystring: 'lng',
             lookupCookie: 'i18next',
             lookupSession: 'lng',
-            lookupPath: 'lng',
+            //lookupPath: 'lng',
             lookupFromPathIndex: 0
 
             // cache user language
@@ -86,8 +85,8 @@ i18next
         })
     });
 app.use(middleware.handle(i18next, {
-    //ignoreRoutes: ["/foo"],
-    //removeLngFromUrl: false
+    ignoreRoutes: ['images/', 'images', 'images/', '/images/', 'stylesheets', '/favicon.ico'],
+    removeLngFromUrl: false
 }));
 //i18next.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
 //    console.log('SEO friendly route ...');

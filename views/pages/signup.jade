@@ -1,7 +1,10 @@
 extends ../includes/layout
 block wrapper
-    div( class='col-sm-6 col-sm-offset-3' )
+    br
+    div( class='col-md-3 col-md-offset-4 well' )
         span( class="fa fa-sign-up" )
+
+            .midburn_logo
 
             h2 Sign Up
 
@@ -10,27 +13,32 @@ block wrapper
                     p=errorMessage
 
             form( action="signup", method="post" )
-                div( class="form-group" )
-                label=t('email')
-                input( type="text", class="form-control", name="email" )
-                label=t('password')
-                input( type="password", class="form-control", name="password" )
+                .form-group
+                    label=t('email')
+                    input( type="text", class="form-control", name="email" )
+                .form-group
+                    label=t('password')
+                    input( type="password", class="form-control", name="password" )
                 //TODO - Write a JS that will give feedback if password not match, or not qualify to the policy
-                label Confirm Password
-                input( type="password", class="form-control", name="confirm_password" )
-                label First Name
-                input( type="text", class="form-control", name="first_name" )
-                label Last Name
-                input( type="text", class="form-control", name="last_name" )
-                label Gender
-                br
-                input(type="radio", name="gender", value="male" )
-                | Male
-                input(type="radio", name="gender", value="female")
-                | Female
-                br
-                button( type="submit", class="btn btn-warning btn-lg" )=t('sign_up')
-                br
+                .form-group
+                    label Confirm Password
+                    input( type="password", class="form-control", name="confirm_password" )
+                .form-group
+                    label First Name
+                    input( type="text", class="form-control", name="first_name" )
+                .form-group
+                    label Last Name
+                    input( type="text", class="form-control", name="last_name" )
+                .form-group
+                    label Gender
+                    br
+                    input(type="radio", name="gender", value="male" )
+                    | &nbsp;#{t('male')}
+                    | &nbsp;&nbsp;
+                    input(type="radio", name="gender", value="female")
+                    | &nbsp;#{t('female')}
+                button( type="submit", class="btn btn-info" )=t('sign_up')
+                p
                 p Change Language / החלפת שפה:&nbsp;&nbsp;
                     a( href="/he/signup" )
                         img( src="/images/flags/he.gif" )

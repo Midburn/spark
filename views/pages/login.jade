@@ -4,6 +4,8 @@ block wrapper
     div( class='col-md-3 col-md-offset-4 well' )
         span( class="fa fa-sign-in" )
 
+            .midburn_logo
+
             h1=t('welcome_spark')
             h2=t('login')
 
@@ -11,28 +13,28 @@ block wrapper
                 div( class="alert alert-danger" )
                     p=errorMessage
 
-            form( action="login", method="post" )
+            form( action="/#{language}/login", method="post" )
                 input( type="hidden", name="r", value=r )
-                div( class="form-group" )
+                .form-groug
                     label=t('email')
                     input( type="text", class="form-control", name="email" )
-                div( class="form-group" )
+                .form-group
                     label=t('password')
                     input( type="password", class="form-control", name="password" )
-                div( class="form-group")
+                .form-group
                     input( type="checkbox", name="remember")
                     |&nbsp;
                     label=t('remember_me')
                 button( type="submit", class="btn btn-info" )=t('login')
                 |&nbsp;
-                a( href="reset_password" )
+                a( href="/#{language}/reset_password" )
                     span( class="fa fa-user")=t('forgot_password')
             br
             p=t('need_account')
                 |&nbsp;
                 a( href="signup", class="btn btn-default" )
                     span( class="fa fa-user")=t('sign_up')
-            br
+            p
             p Change Language / החלפת שפה:&nbsp;&nbsp;
                 a( href="/he/login" )
                     img( src="/images/flags/he.gif" )
