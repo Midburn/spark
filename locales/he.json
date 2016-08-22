@@ -17,5 +17,7 @@
   "npo": "עמותת מידברן",
   "male": "זכר",
   "female": "נקבה",
-  "reset_password": "איפוס סיסמה"
+  "reset_password": "איפוס סיסמה",
+  "hebrew": "עברית",
+  "english": "אנגלית"
 }

@@ -22,5 +22,7 @@
   "npo": "Midburn NPO",
   "male": "Male",
   "female": "Female",
-  "reset_password": "Reset Password"
+  "reset_password": "Reset Password",
+  "hebrew": "Hebrew",
+  "english": "English"
 }

@@ -1,11 +1,7 @@
-/*body {*/
-/*padding: 50px;*/
-/*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
-/*}*/
-
-/*a {*/
-/*color: #00B7FF;*/
-/*}*/
+body {
+    min-height: 2000px;
+    padding-top: 70px;
+}
 
 .midburn_logo {
     background-image: url("../images/midburn_logo_120.png");

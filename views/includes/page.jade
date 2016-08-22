@@ -1,21 +1,40 @@
 extends layout
 block wrapper
-    nav( class="navbar navbar-default" )
+    nav( class="navbar navbar-default navbar-fixed-top" )
         .container
             .navbar-header
+                button( type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#navbar", aria-expanded="false", aria-controls="navbar")
+                    span( class="sr-only" ) Toggle navigation
+                    span( class="icon-bar" )
+                    span( class="icon-bar" )
+                    span( class="icon-bar" )
                 a( class="navbar-brand", href="/home" ) Spark
             div( id="navbar", class="navbar-collapse collapse" )
                 ul( class="nav navbar-nav" )
                     li( class="active" )
-                        a( href="home" ) Home
+                        a( href="/#{language}/home" ) Home
                     li( class="" )
                         //TODO Set active tab by code
                         a( href="npo" )=t('npo')
                 ul( class="nav navbar-nav navbar-right")
-                    a( href="/he#{req.url.substr(3)}" )
-                        img( src="/images/flags/he.gif" )
-                    a( href="/en#{req.url.substr(3)}" )
-                        img( src="/images/flags/en.gif" )
+                    li( class="dropdown" )
+                        a( href="#", class="dropdown-toggle", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+                            if (language=='he')
+                                img( src="/images/flags/he.gif" )
+                            if (language=='en')
+                                img( src="/images/flags/en.gif" )
+                            span( class="caret" )
+                        ul( class="dropdown-menu" )
+                            li
+                                a( href="/he#{req.url.substr(3)}" )
+                                    img( src="/images/flags/he.gif" )
+                                    |&nbsp;
+                                    span=t('hebrew')
+                            li
+                                a( href="/en#{req.url.substr(3)}" )
+                                    img( src="/images/flags/en.gif" )
+                                    |&nbsp;
+                                    span=t('english')
                     li
                         //TODO replace 'a' tag with something else
                         a #{user.attributes.first_name} #{user.attributes.last_name}
@@ -23,3 +42,4 @@ block wrapper
                         a( href="logout" ) Logout
     .container
         block content
+
