@@ -8,13 +8,12 @@ block wrapper
                     span( class="icon-bar" )
                     span( class="icon-bar" )
                     span( class="icon-bar" )
-                a( class="navbar-brand", href="/home" ) Spark
+                a( class="navbar-brand", href="/#{language}/home" ) Spark
             div( id="navbar", class="navbar-collapse collapse" )
                 ul( class="nav navbar-nav" )
-                    li( class="active" )
-                        a( href="/#{language}/home" ) Home
-                    li( class="" )
-                        //TODO Set active tab by code
+                    li( class="#{path[2] === 'home' ? 'active' : undefined }" )
+                        a( href="/#{language}/home" )=t('home')
+                    li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
                         a( href="npo" )=t('npo')
                 ul( class="nav navbar-nav navbar-right")
                     li( class="dropdown" )

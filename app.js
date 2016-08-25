@@ -24,6 +24,7 @@ app.use(fileUpload());
 
 app.use(function(req, res, next) {
     res.locals.req = req;
+    res.locals.path = req.path.split('/');
     next();
 });
 
