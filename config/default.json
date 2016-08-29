@@ -27,6 +27,10 @@
     }
   },
 
+  "i18n": {
+    "languages": ["he", "en"]
+  },
+
   // ** PRODUCTION server **
   "payment": {
     "iCreditUrl"              : "https://icredit.rivhit.co.il/API/PaymentPageRequest.svc/GetUrl",

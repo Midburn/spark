@@ -1,4 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
+var i18next = require('i18next');
 
 // load up the user model
 var User = require('../models/user').User;
@@ -39,13 +40,8 @@ module.exports = function (passport) {
 
             return usernamePromise.then(function (model) {
                 if (model) {
-                    return done(null, false, req.flash('error', 'username already exists'));
+                    return done(null, false, req.flash('error', i18next.t('user_exists')));
                 } else {
-
-                    // TODO MORE VALIDATION GOES HERE(E.G. PASSWORD VALIDATION)
-
-                    // TODO verify that password==confirm_password
-
                     var newUser = new User({email: email, first_name: user.first_name, last_name: user.last_name, gender: user.gender});
                     newUser.generateHash(password);
 

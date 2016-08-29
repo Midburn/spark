@@ -1,29 +1,29 @@
 extends layout
 block wrapper
-    nav( class="navbar navbar-default navbar-fixed-top" )
+    nav.navbar.navbar-default.navbar-fixed-top
         .container
             .navbar-header
                 button( type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#navbar", aria-expanded="false", aria-controls="navbar")
-                    span( class="sr-only" ) Toggle navigation
-                    span( class="icon-bar" )
-                    span( class="icon-bar" )
-                    span( class="icon-bar" )
-                a( class="navbar-brand", href="/#{language}/home" ) Spark
-            div( id="navbar", class="navbar-collapse collapse" )
-                ul( class="nav navbar-nav" )
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.navbar-brand( href="/#{language}/home" ) Spark
+            #navbar.navbar-collapse.collapse
+                ul.nav.navbar-nav
                     li( class="#{path[2] === 'home' ? 'active' : undefined }" )
                         a( href="/#{language}/home" )=t('home')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
                         a( href="npo" )=t('npo')
-                ul( class="nav navbar-nav navbar-right")
-                    li( class="dropdown" )
-                        a( href="#", class="dropdown-toggle", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+                ul.nav.navbar-nav.navbar-right
+                    li.dropdow
+                        a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
                             if (language=='he')
                                 img( src="/images/flags/he.gif" )
                             if (language=='en')
                                 img( src="/images/flags/en.gif" )
-                            span( class="caret" )
-                        ul( class="dropdown-menu" )
+                            span.caret
+                        ul.dropdown-menu
                             li
                                 a( href="/he#{req.url.substr(3)}" )
                                     img( src="/images/flags/he.gif" )

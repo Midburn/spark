@@ -4,46 +4,46 @@ block content
     h2 טופס בקשת חברות בעמותה
 
     if (errorMessage && errorMessage.length > 0)
-        div( class="alert alert-danger")
+        .alert.alert-danger
             p=errorMessage
 
 
     form( action="/#{language}/npo/join", method="post", enctype="multipart/form-data" )
 
 
-        div( class="form-group" )
+        .form-group
             label שם פרטי
             input( type="text", class="form-control", name="first_name", required="true", disabled=true, value='#{user.attributes.first_name}' )
 
-        div( class="form-group" )
+        .form-group
             label שם משפחה
             input( type="text", class="form-control", name="last_name", required="true", disabled=true, value='#{user.attributes.last_name}' )
 
-        div( class="form-group" )
+        .form-group
             label תאריך לידה
             input( type="text", class="form-control", name="date_of_birth", required="true", disabled=true, value='#{user.attributes.date_of_birth}' )
 
 
-        div( class="form-group" )
+        .form-group
             label מס' ת.ז.
             input( type="text", class="form-control", name="israeli_id", required="true", value='#{user.attributes.israeli_id}' )
 
-        div( class="form-group" )
+        .form-group
             label כתובת
             input( type="text", class="form-control", name="address", required="true", value='#{user.attributes.address}' )
 
-        div( class="form-group" )
+        .form-group
             label מס' טלפון סלולארי
             input( type="text", class="form-control", name="cell_phone", required="true", value='#{user.attributes.cell_phone}' )
 
-        div( class="form-group" )
+        .form-group
             label טלפון נוסף
             input( type="text", class="form-control", name="extra_phone", value='#{user.attributes.extra_phone}' )
 
         label באילו אירועי מידברן השתתפת בעבר?
 
         //TODO - load events from DB after adding support for events
-        div( class="form-group" )
+        .form-group
             input( type="checkbox", name="lala" )
             label 2014 - בראשית
             br
@@ -55,22 +55,22 @@ block content
 
         hr
 
-        div( class="form-group" )
+        .form-group
             label מידברן מעודדת את עקרון ההשתתפות, ספר/י כיצד השתתפת באחת ממסגרות מידברן בעבר
             br
             textarea( class="form-control", rows="5", cols="80", maxlength="300", name="npo_form_previous_p", required="true", placeholder="עד 300 תווים" )
 
-        div( class="form-group" )
+        .form-group
             label כיצד תשתתף/י בעתיד?
             br
             textarea( class="form-control", rows="5", cols="80", maxlength="300", name="npo_form_future_p", required="true", placeholder="עד 300 תווים" )
 
-        div( class="form-group" )
+        .form-group
             label מדוע תרצה/י להצטרף לעמותה?
             br
             textarea( class="form-control", rows="5", cols="80", maxlength="300", name="npo_form_why_join", required="true", placeholder="עד 300 תווים" )
 
-        div( class="form-group" )
+        .form-group
             label אנא צרפו צילום ברור של תעודה מזהה
             input( class="form-control", type="file", required="true", name="id_image", accept="image/*" )
 
@@ -80,7 +80,7 @@ block content
         p מטרות העמותה ותקנונה ידועים לי. אם אתקבל כחבר/ה בה, אני מתחייב/ת לקיים את הוראות התקנון ואת החלטות האסיפה הכללית של העמותה.
         p ידוע לי כי כתובת דואר אלקטרוני זו תשמש למשלוח הודעות אלי. במידה ואשנה את כתובתי (האלקטרונית), באחריותי להודיע לוועד העמותה על השינוי.
 
-        div( class="form-group" )
+        .form-group
             input( type="checkbox", name="approve_box", id="approve_box", required="true" )
             label הריני לאשר כי כל הפרטים הרשומים בטופס זה נכונים ומלאים והנני מסכים/ה לכל האמור בו
 

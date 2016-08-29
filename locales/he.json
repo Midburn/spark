@@ -20,5 +20,15 @@
   "reset_password": "איפוס סיסמה",
   "hebrew": "עברית",
   "english": "אנגלית",
-  "home": "בית"
+  "home": "בית",
+  "password_mismatch": "הסיסמאות לא זהות",
+  "minimum_password": "על הסיסמה להכיל {{length}} תווים לפחות",
+  "bad_email": "כתובת אימייל לא חוקית",
+  "confirm_password": "אשרו סיסמה",
+  "first_name": "שם פרטי",
+  "last_name": "שם משפחה",
+  "gender": "מגדר",
+  "gender_error": "יש לבחור מגדר",
+  "mandatory_field": "זהו שדה חובה",
+  "user_exists": "שגיאה: במערכת כבר רשום משתמש עם אימייל זה"
 }

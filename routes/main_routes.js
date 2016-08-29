@@ -1,4 +1,7 @@
 var security = require('../libs/security');
+var config = require('config');
+
+var i18nConfig = config.get('i18n');
 
 module.exports = function (app, passport) {
 
@@ -6,11 +9,17 @@ module.exports = function (app, passport) {
     // INDEX PAGE (renders to login) =======
     // =====================================
     app.get('/', function (req, res) {
-        res.redirect('/he');
+        res.redirect('/he/login');
     });
 
-    app.get('/:lng/', function (req, res) {
-        res.render('pages/login');
+    app.get('/:lng/', function (req, res, next) {
+        if (i18nConfig.languages.indexOf(req.params.lng) > -1) {
+            res.redirect('/' + req.params.lng + '/login');
+        }
+        else {
+            res.status(404);
+            next();
+        }
     });
 
     app.get('/:lng/home', security.protectGet, function (req, res) {

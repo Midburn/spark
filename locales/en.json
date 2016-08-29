@@ -25,5 +25,15 @@
   "reset_password": "Reset Password",
   "hebrew": "Hebrew",
   "english": "English",
-  "home": "Home"
+  "home": "Home",
+  "password_mismatch": "Passwords don't match",
+  "minimum_password": "Minimum {{length}} characters",
+  "bad_email": "Incorrect email",
+  "confirm_password": "Confirm Password",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "gender": "Gender",
+  "gender_error": "Please select your gender",
+  "mandatory_field": "This field is mandatory",
+  "user_exists": "Error: A user with this email is already registered in the system"
 }

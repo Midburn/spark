@@ -1,50 +1,56 @@
 extends ../includes/layout
 block wrapper
     br
-    div( class='col-md-3 col-md-offset-4 well' )
-        span( class="fa fa-sign-up" )
+    .col-md-4.col-md-offset-4.well
+        .midburn_logo
 
-            .midburn_logo
+        h2=t('sign_up')
 
-            h2 Sign Up
+        if (errorMessage && errorMessage.length > 0)
+            .alert.alert-danger
+                p=errorMessage
 
-            if (errorMessage && errorMessage.length > 0)
-                div( class="alert alert-danger")
-                    p=errorMessage
-
-            form( action="signup", method="post" )
-                .form-group
-                    label=t('email')
-                    input( type="text", class="form-control", name="email" )
-                .form-group
-                    label=t('password')
-                    input( type="password", class="form-control", name="password" )
-                //TODO - Write a JS that will give feedback if password not match, or not qualify to the policy
-                .form-group
-                    label Confirm Password
-                    input( type="password", class="form-control", name="confirm_password" )
-                .form-group
-                    label First Name
-                    input( type="text", class="form-control", name="first_name" )
-                .form-group
-                    label Last Name
-                    input( type="text", class="form-control", name="last_name" )
-                .form-group
-                    label Gender
-                    br
-                    input(type="radio", name="gender", value="male" )
-                    | &nbsp;#{t('male')}
-                    | &nbsp;&nbsp;
-                    input(type="radio", name="gender", value="female")
-                    | &nbsp;#{t('female')}
-                button( type="submit", class="btn btn-info" )=t('sign_up')
-                p
-                p Change Language / החלפת שפה:&nbsp;&nbsp;
-                    a( href="/he/signup" )
-                        img( src="/images/flags/he.gif" )
-                    | &nbsp;
-                    a( href="/en/signup" )
-                        img( src="/images/flags/en.gif" )
+        form( action="signup", method="post", data-toggle="validator", role="form" )
+            .form-group
+                label=t('email')
+                input( type="email", class="form-control", name="email", data-error="#{t('bad_email')}", required )
+                .help-block.with-errors
+            .form-group
+                label=t('password')
+                input( type="password", class="form-control", name="password", id="password", data-minlength='6', data-error="#{t('minimum_password', {'length': 6})}", required )
+                .help-block.with-errors
+            .form-group
+                label=t('confirm_password')
+                input( type="password", class="form-control", name="confirm_password", id="confirm_password",
+                data-match="#password", data-match-error="#{t('password_mismatch')}", data-error="#{t('mandatory_field')}", required )
+                .help-block.with-errors
+            .form-group
+                label=t('first_name')
+                input( type="text", class="form-control", name="first_name", data-error="#{t('mandatory_field')}", required )
+                .help-block.with-errors
+            .form-group
+                label=t('last_name')
+                input( type="text", class="form-control", name="last_name", data-error="#{t('mandatory_field')}", required )
+                .help-block.with-errors
+            .form-group
+                label=t('gender')
+                br
+                label
+                    input(type="radio", name="gender", value="male", required, data-error="#{t('gender_error')}" )
+                    | &nbsp; #{t('male')}
+                | &nbsp;
+                label
+                    input(type="radio", name="gender", value="female", required, data-error="#{t('gender_error')}")
+                    | &nbsp; #{t('female')}
+                .help-block.with-errors
+            button( type="submit", class="btn btn-info" )=t('sign_up')
+            p
+            p Change Language / החלפת שפה:&nbsp;&nbsp;
+                a( href="/he/signup" )
+                    img( src="/images/flags/he.gif" )
+                | &nbsp;
+                a( href="/en/signup" )
+                    img( src="/images/flags/en.gif" )
 
 
 
