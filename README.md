@@ -12,32 +12,45 @@ Get the files using GIT clone.
 
 ### Installing node modules
 Run
-```sh
+```
     npm install
 ```
 
 ### Setting up the database.
 To create the database for the first time, run:
-```sh
+```
     mysql -u root -p < sql/create_db.sql
 ```
 To create the database schema, run:
-```sh
+```
     mysql -u root -p < sql/schema.sql
 ```
 
 ### Configure your environment
-All the configurations are set in the config file in the _/config_ folder.
+All the configurations are set in the config file in the 
+```
+/config
+```
+folder.
 
 To override this configurations to match your development environment:
 
-1. Create a file named _/config/local-development.json_.
-2. Open the file and copy all the settings you wish to override from _/config/default.json_. 
+1. Create a file named 
+```
+/config/local-development.json
+```
+2. Open the file and copy all the settings you wish to override from 
+```
+/config/default.json
+```
 
 **Notes**:
  
 * You only need to copy the settings you need to override, not all the settings.
-* The file format should be the same as _/config/default.json_.
+* The file format should be the same as 
+```
+/config/default.json
+```
   
 ## Setting your IDE
 The source files include a Intellij/WebStorm project. You can install the community version of IntelliJ (https://www.jetbrains.com/idea/#chooseYourEdition) for free and open the project.
@@ -62,17 +75,22 @@ This plugins will add syntax highlighting and IDE integration.
 ## Development
 
 ### Localization (i18)
-The strings are stored in _/locales_ folder. The file name is the language code.
+The strings are stored in 
+```
+/locales
+```
+folder. The file name is the language code.
 
 To use in a JADE template:
-```jade
+
+```
 // To set a HTML element with a translatable data:
 HTML_ELEMENT=t('KEY')
 // Example:
 h1=t('welcome_spark')
 
 // Text injection inside attributes
-#{t('KEY')}
+\#{t('KEY')}
 // Example:
 input( data-error="#{t('bad_email')}" )
 ```
