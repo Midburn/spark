@@ -31,8 +31,7 @@ module.exports = function (app, passport) {
     // =====================================
     var loginPost = function (req, res, next) {
         passport.authenticate('local-login', {
-            successRedirect: 'home',
-            failureRedirect: 'login'
+            failureFlash : true
         }, function (err, user, info) {
             if (err) {
                 return res.render('pages/login', {errorMessage: err.message});
@@ -43,7 +42,7 @@ module.exports = function (app, passport) {
             }
             return req.logIn(user, function (err) {
                 if (err) {
-                    return res.render('pages/login', {errorMessage: err.message});
+                    return res.render('pages/login', {errorMessage: req.flash('error')});
                 } else {
                     var r = req.body['r'];
                     if (r) {
@@ -72,9 +71,7 @@ module.exports = function (app, passport) {
     // =====================================
     var signUpPost = function (req, res, next) {
         passport.authenticate('local-signup', {
-            successRedirect : 'profile', // redirect to the secure profile section
-            failureRedirect : 'signup', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
+            failureFlash : true
         }, function (err, user, info) {
             if (err) {
                 return res.render('pages/signup', {errorMessage: err.message});

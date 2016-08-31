@@ -9,3 +9,9 @@ body {
     width: 89px;
     margin: auto;
 }
+
+.form-group.required label:after {
+    color: #d00;
+    content: " *";
+    font-size: larger;
+}

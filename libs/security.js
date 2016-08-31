@@ -14,7 +14,7 @@ var isLoggedIn = function (req, res, next) {
     }
 
     // If they aren't, redirect them to the login page. 'r' holds the return URL.
-    res.redirect('login?r=' + req.url);
+    res.redirect('/' + req.params.lng + '/login?r=' + req.url);
 };
 
 var isAdmin = function isLoggedIn(req, res, next) {
