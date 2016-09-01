@@ -75,11 +75,28 @@ This plugins will add syntax highlighting and IDE integration.
 ## Development
 
 ### Localization (i18)
+
+We use **i18next** for multi-language support.    
+
 The strings are stored in 
 ```
 /locales
 ```
 folder. The file name is the language code.
+
+Tips:
+
+1. Try to make the text in Hebrew to be gender independent. If you need to separate between genders, use 
+```
+_male
+```
+ or 
+```
+_female
+```
+ suffix.
+2. Use variables in the text if needed, don't concatenate texts.
+3. i18next supports many string operations including formatting, single/plural forms and more. Take a look at http://i18next.com/translate/. 
 
 To use in a JADE template:
 
@@ -90,7 +107,7 @@ HTML_ELEMENT=t('KEY')
 h1=t('welcome_spark')
 
 // Text injection inside attributes
-\#{t('KEY')}
+#{t('KEY')}
 // Example:
 input( data-error="#{t('bad_email')}" )
 ```

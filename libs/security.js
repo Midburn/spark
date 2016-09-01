@@ -1,35 +1,35 @@
 var csurf = require('csurf');
 var csrfProtection = csurf({cookie: true});
 
+var User = require('../models/user').User;
+
 // Route middleware to make sure a user is logged in
 var isLoggedIn = function (req, res, next) {
 
-    // If user is authenticated in the session, carry on
     if (req.isAuthenticated()) {
-        console.log('user logged in', req.user);
+        // If user is authenticated in the session, carry on
         return next();
     }
     else {
-        console.log('user not logged in');
+        // If they aren't, redirect them to the login page. 'r' holds the return URL.
+        res.redirect('/' + req.params.lng + '/login?r=' + req.url);
     }
-
-    // If they aren't, redirect them to the login page. 'r' holds the return URL.
-    res.redirect('/' + req.params.lng + '/login?r=' + req.url);
 };
 
-var isAdmin = function isLoggedIn(req, res, next) {
+var isLoggedInAdmin = function (req, res, next) {
 
-    // If user is authenticated in the session, carry on
     if (req.isAuthenticated()) {
-        console.log('user logged in', req.user);
-        return next();
+        if (req.user.isAdmin) {
+            return next();
+        }
+        else {
+            res.sendStatus(403);
+        }
     }
     else {
-        console.log('user not logged in');
+        // If they aren't, redirect them to the login page. 'r' holds the return URL.
+        res.redirect('/en/login?r=' + req.url);
     }
-
-    // If they aren't, redirect them to the login page. 'r' holds the return URL.
-    res.redirect('login?r=' + req.url);
 };
 
 var connectMiddleware = function (list) {
@@ -49,5 +49,4 @@ module.exports.protectGet = isLoggedIn;
 
 module.exports.protectPost = connectMiddleware([csrfProtection, isLoggedIn]);
 
-// TODO admin role...
-//module.exports.adminGet = connectMiddleware([isLoggedIn, ]);
+module.exports.protectAdminGet = isLoggedInAdmin;

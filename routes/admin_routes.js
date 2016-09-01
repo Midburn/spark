@@ -1,7 +1,6 @@
 var security = require('../libs/security');
 var mail = require('../libs/mail');
 
-// load up the user model
 var User = require('../models/user').User;
 var UserStatus = require('../models/user').NPO_STATUS;
 
@@ -11,15 +10,15 @@ var serverConfig = config.get('server');
 
 module.exports = function (app) {
 
-    app.get('/admin', function (req, res, next) {
+    app.get('/admin', security.protectAdminGet, function (req, res, next) {
         res.render('admin/admin_home.jade', {user: req.user});
     });
 
-    app.get('/admin/npo', function (req, res, next) {
+    app.get('/admin/npo', security.protectAdminGet, function (req, res, next) {
         res.render('admin/admin_npo.jade', {user: req.user});
     });
 
-    app.post('/admin/npo', function (req, res, next) {
+    app.post('/admin/npo', security.protectAdminGet, function (req, res, next) {
         if (req.body.action && req.body.emails) {
             switch (req.body.action) {
                 case 'approve_membership' :
@@ -48,7 +47,7 @@ module.exports = function (app) {
                                 }
                                 else {
                                     //TODO handle error.
-                                    console.log("Incorrect status - " , theUser.attributes.npo_membership_status);
+                                    console.log("Incorrect status - ", theUser.attributes.npo_membership_status);
                                     return res.render('admin/admin_npo', {errorMessage: 'email ' + recipient + ' - incorrect status'});
                                 }
                             });

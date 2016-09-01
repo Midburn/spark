@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS users (
   reset_password_expires    DATETIME,
   enabled                   BOOLEAN DEFAULT TRUE,
   activated                 BOOLEAN DEFAULT FALSE,
+  roles                     VARCHAR(200) DEFAULT  '',
 
   # Profile fields
   first_name                VARCHAR(64),

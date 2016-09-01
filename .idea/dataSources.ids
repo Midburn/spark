@@ -44,6 +44,7 @@
       <column name="npo_form_previous_p" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="npo_form_future_p" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="npo_form_why_join" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="roles" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="user_id"/>
       <exported-key name="payments_ibfk_1" table="payments" schema="" catalog="spark" columns="user_id"/>
       <index name="email" unique="true" columns="email"/>

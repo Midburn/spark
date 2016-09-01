@@ -16,6 +16,10 @@ var User = bookshelf.Model.extend({
     virtuals: {
         fullName: function() {
             return this.attributes.first_name + ' ' + this.attributes.last_name;
+        },
+
+        isAdmin: function() {
+            return (this.attributes.roles.split(',').indexOf('admin') > -1);
         }
     }
 });
