@@ -3,12 +3,12 @@ extends ../includes/page
 block content
     h1=t('npo')
 
-    h3 Your Membership Status: #{t('npo_' + user.attributes.npo_membership_status)}
+    h3 Your Membership Status: #{t('npo_' + npoMember.attributes.membership_status)}
 
-    if (user.attributes.npo_membership_status == 'request_approved' || user.attributes.npo_membership_status == 'member_should_pay')
+    if (npoMember.attributes.membership_status == 'request_approved' || npoMember.attributes.membership_status == 'member_should_pay')
         h2 Membership fee for 2016
         a.btn.btn-default( href="npo/pay_fee" ) Pay
 
-    if (user.attributes.npo_membership_status == 'not_member')
+    if (npoMember.attributes.membership_status == 'not_member')
         h3 Want to become a member? Apply for membership!
         a.btn.btn-default( href="npo/join" ) Apply Now

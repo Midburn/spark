@@ -4,7 +4,8 @@ var mail = require('../libs/mail');
 
 var Payment = require('../models/payment').Payment;
 var User = require('../models/user').User;
-var UserStatus = require('../models/user').NPO_STATUS;
+var NpoMember = require('../models/npo_member').NpoMember;
+var NpoStatus = require('../models/npo_member').NPO_STATUS;
 
 var config = require('config');
 var npoConfig = config.get('npo');
@@ -21,19 +22,19 @@ module.exports = function (app) {
                 payment.save().then(function () {
                     //TODO We make temporary HUGH assumption here that we can only pay for NPO. Change before implementing tickets sale.
                     var year = 2016;
-                    new User({user_id: payment.attributes.user_id}).fetch().then(function (user) {
-                        user.set('npo_membership_status', UserStatus.member_paid);
-                        user.save().then(function () {
+                    new NpoMember({user_id: payment.attributes.user_id}).fetch().then(function (member) {
+                        member.set('membership_status', NpoStatus.member_paid);
+                        member.save().then(function () {
                             mail.send(
-                                user.email,
+                                member.email,
                                 npoConfig.email,
                                 'Your Midburn membership fee received!',
                                 'emails/npo_fee_paid',
-                                {name: user.fullName, year: year});
+                                {name: req.user.fullName, year: year});
                             res.render('pages/payment_received', {user: req.user});
-                        }).catch(User.NotFoundError, function () {
+                        }).catch(NpoMember.NotFoundError, function () {
                             //TODO handle error
-                            console.error("User", user.user_id, "not found in DB while processing payment", payment.payment_id);
+                            console.error("User", member.user_id, "not found in DB while processing payment", payment.payment_id);
                         })
                     });
                 });

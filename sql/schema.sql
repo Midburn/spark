@@ -5,9 +5,9 @@ USE spark;
 #  DROP  #
 ##########
 
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS payments;
-
+DROP TABLE IF EXISTS npo_members;
+DROP TABLE IF EXISTS users;
 
 ############
 #  CREATE  #
@@ -36,16 +36,7 @@ CREATE TABLE IF NOT EXISTS users (
   address                   VARCHAR(100),
   cell_phone                CHAR(10),
   extra_phone               CHAR(10),
-
-
-  # NPO fields
-  npo_membership_status     ENUM('not_member', 'request_approved', 'member_paid', 'member_should_pay', 'banned', 'request_rejected', 'applied_for_membership') DEFAULT 'not_member',
-  npo_application_date      TIMESTAMP,
-  npo_membership_start_date DATE,
-  npo_membership_end_date   DATE,
-  npo_form_previous_p       LONGTEXT,
-  npo_form_future_p         LONGTEXT,
-  npo_form_why_join         LONGTEXT
+  npo_member                BOOLEAN DEFAULT FALSE
 )
   ENGINE = innodb;
 
@@ -59,6 +50,24 @@ CREATE TABLE IF NOT EXISTS payments (
   url                       VARCHAR(256),
   user_id                   INTEGER,
   payed                     BOOLEAN DEFAULT FALSE,
+
+  CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (user_id)
+)
+  ENGINE = innodb;
+
+CREATE TABLE IF NOT EXISTS npo_members (
+  created_at                TIMESTAMP,
+  updated_at                TIMESTAMP,
+
+  user_id                   INTEGER PRIMARY KEY,
+
+  membership_status     ENUM('not_member', 'request_approved', 'member_paid', 'member_should_pay', 'banned', 'request_rejected', 'applied_for_membership') DEFAULT 'not_member',
+  application_date      TIMESTAMP,
+  membership_start_date DATE,
+  membership_end_date   DATE,
+  form_previous_p       LONGTEXT,
+  form_future_p         LONGTEXT,
+  form_why_join         LONGTEXT,
 
   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (user_id)
 )

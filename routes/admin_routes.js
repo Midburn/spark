@@ -32,8 +32,8 @@ module.exports = function (app) {
                                     console.log("User not found!");
                                     return res.render('admin/admin_npo', {errorMessage: 'email ' + recipient + ' not found'});
                                 }
-                                if (theUser.attributes.npo_membership_status == UserStatus.applied_for_membership) {
-                                    theUser.attributes.npo_membership_status = UserStatus.request_approved;
+                                if (theUser.attributes.membership_status == UserStatus.applied_for_membership) {
+                                    theUser.attributes.membership_status = UserStatus.request_approved;
                                     theUser.save().then(function (model) {
                                         var payLink = serverConfig.url + "/he/npo/pay_fee?user='" + recipient;
                                         mail.send(
@@ -47,7 +47,7 @@ module.exports = function (app) {
                                 }
                                 else {
                                     //TODO handle error.
-                                    console.log("Incorrect status - ", theUser.attributes.npo_membership_status);
+                                    console.log("Incorrect status - ", theUser.attributes.membership_status);
                                     return res.render('admin/admin_npo', {errorMessage: 'email ' + recipient + ' - incorrect status'});
                                 }
                             });

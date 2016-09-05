@@ -165,6 +165,11 @@ process.on('unhandledRejection', function (reason, p) {
     console.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
+process.on('warning', function (warning) {
+    console.warn(warning.name);    // Print the warning name
+    console.warn(warning.message); // Print the warning message
+    console.warn(warning.stack);   // Print the stack trace
+});
 
 // == Export our app ==
 module.exports = app;

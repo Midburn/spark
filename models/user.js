@@ -26,15 +26,6 @@ var User = bookshelf.Model.extend({
 
 // Create the model and expose it
 module.exports = {
-    User: User,
-    NPO_STATUS: {
-        not_member:             'not_member',
-        request_approved:       'request_approved',
-        member_paid:            'member_paid',
-        member_should_pay:      'member_should_pay',
-        banned:                 'banned',
-        request_rejected:       'request_rejected',
-        applied_for_membership: 'applied_for_membership'
-    }
+    User: User
 };
 
