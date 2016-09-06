@@ -38,7 +38,7 @@ block wrapper
                         //TODO replace 'a' tag with something else
                         a #{user.attributes.first_name} #{user.attributes.last_name}
                     li
-                        a( href="logout" ) Logout
+                        a( href="logout" )=t('logout')
     .container
         block content
 

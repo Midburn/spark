@@ -65,11 +65,10 @@ module.exports = function (passport) {
             new User({email: email}).fetch().then(function (data) {
                 var user = data;
                 if (user === null) {
-                    return done(null, false, req.flash('error', 'Invalid username or password'));
+                    return done(null, false, req.flash('error', i18next.t('invalid_user_password')));
                 } else {
                     if (!user.validPassword(password)) {
-                        //return done(null, false, req.flash('errorMessage', 'Invalid username or password'));
-                        return done(null, false, req.flash('error', 'Invalid username or password'));
+                        return done(null, false, req.flash('error', i18next.t('invalid_user_password')));
                     } else {
 
                         //TODO check here that the user is enabled and activated.
