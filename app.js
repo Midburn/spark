@@ -100,9 +100,8 @@ app.set('view engine', 'jade');
 
 // Routes
 require('./routes/main_routes.js')(app, passport);
-require('./routes/admin_routes.js')(app, passport);
-require('./routes/user_routes.js')(app, passport);
-require('./routes/npo_routes.js')(app, passport);
+app.use('/:lng/admin', require('./routes/admin_routes'));
+app.use('/:lng/npo', require('./routes/npo_routes'));
 
 // Mail
 var mail = require('./libs/mail');

@@ -1,9 +1,9 @@
 {
   "server": {
-    "port"      : 3000,
-    "hostname"  : "royzahor.ddns.net",
-    "protocol"  : "http",                     // http or https
-    "url"       : "http://royzahor.ddns.net:3000"  // full URL including protocol and port. NO trailing slash
+    "port"      : 80,
+    "hostname"  : "spark.midburn.org",
+    "protocol"  : "https",                     // http or https
+    "url"       : "https://spark.midburn.org"  // full URL including protocol and port. NO trailing slash
   },
 
   "database": {
