@@ -22,9 +22,11 @@ CREATE TABLE IF NOT EXISTS users (
   email                     VARCHAR(100) UNIQUE,
   password                  VARCHAR(100),
   reset_password_token      VARCHAR(32) UNIQUE,
-  reset_password_expires    DATETIME,
+  reset_password_expires    TIMESTAMP,
+  email_validation_token    VARCHAR(32) UNIQUE,
+  email_validation_expires  TIMESTAMP,
   enabled                   BOOLEAN DEFAULT TRUE,
-  activated                 BOOLEAN DEFAULT FALSE,
+  validated                 BOOLEAN DEFAULT FALSE,
   roles                     VARCHAR(200) DEFAULT  '',
 
   # Profile fields
@@ -38,7 +40,7 @@ CREATE TABLE IF NOT EXISTS users (
   extra_phone               CHAR(10),
   npo_member                BOOLEAN DEFAULT FALSE
 )
-  ENGINE = innodb;
+  ENGINE = innodb, DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS payments (
   created_at                TIMESTAMP,
@@ -53,7 +55,7 @@ CREATE TABLE IF NOT EXISTS payments (
 
   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (user_id)
 )
-  ENGINE = innodb;
+  ENGINE = innodb, DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS npo_members (
   created_at                TIMESTAMP,
@@ -71,6 +73,6 @@ CREATE TABLE IF NOT EXISTS npo_members (
 
   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (user_id)
 )
-  ENGINE = innodb;
+  ENGINE = innodb, DEFAULT CHARSET=utf8;
 
 

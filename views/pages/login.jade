@@ -11,14 +11,18 @@ block wrapper
             .alert.alert-danger
                 p=errorMessage
 
-        form( action="/#{language}/login", method="post" )
+        if (successMessage && successMessage.length > 0)
+            .alert.alert-success
+                p=successMessage
+
+        form( action="/#{language}/login", method="post", data-toggle="validator", role="form" )
             input( type="hidden", name="r", value=r )
             .form-groug
                 label=t('email')
-                input( type="text", class="form-control", name="email" )
+                input( type="text", class="form-control", name="email", required )
             .form-group
                 label=t('password')
-                input( type="password", class="form-control", name="password" )
+                input( type="password", class="form-control", name="password", required )
             .form-group
                 input( type="checkbox", name="remember")
                 |&nbsp;

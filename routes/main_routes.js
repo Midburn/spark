@@ -1,7 +1,14 @@
-var security = require('../libs/security');
-var config = require('config');
+var i18next = require('i18next');
 
+var config = require('config');
 var i18nConfig = config.get('i18n');
+var serverConfig = config.get('server');
+var mailConfig = config.get('mail');
+
+var security = require('../libs/security');
+var mail = require('../libs/mail');
+
+var User = require('../models/user').User;
 
 module.exports = function (app, passport) {
 
@@ -30,8 +37,12 @@ module.exports = function (app, passport) {
     // LOGIN ===============================
     // =====================================
     var loginPost = function (req, res, next) {
+        if (req.body.email.length == 0 || req.body.password.length == 0) {
+            return res.render('pages/login', {errorMessage: i18next.t('invalid_user_password')});
+        }
+
         passport.authenticate('local-login', {
-            failureFlash : true
+            failureFlash: true
         }, function (err, user, info) {
             if (err) {
                 return res.render('pages/login', {errorMessage: err.message});
@@ -71,7 +82,7 @@ module.exports = function (app, passport) {
     // =====================================
     var signUpPost = function (req, res, next) {
         passport.authenticate('local-signup', {
-            failureFlash : true
+            failureFlash: true
         }, function (err, user, info) {
             if (err) {
                 return res.render('pages/signup', {errorMessage: err.message});
@@ -82,14 +93,25 @@ module.exports = function (app, passport) {
             }
 
             return req.logIn(user, function (err) {
-                if (err) {
-                    return res.render('pages/signup', {errorMessage: req.flash('error')});
+                if (!err) {
+                    // Send validation email.
+                    var link = serverConfig.url + '/' + req.params.lng +
+                        "/validate_email/" + user.attributes.email_validation_token;
+
+                    mail.send(
+                        user.attributes.email,
+                        mailConfig.from,
+                        'Spark email validation!',
+                        'emails/email_validation',
+                        {name: user.fullName, link: link});
+
+                    res.render('pages/login', {successMessage: i18next.t('email_verification_required')});
+
                 } else {
-                    // sign in the newly registered user
-                    return loginPost(req, res, next);
+                    res.render('pages/signup', {errorMessage: req.flash('error')});
                 }
             });
-        }) (req, res, next);
+        })(req, res, next);
     };
 
     // show the signup form
@@ -112,7 +134,7 @@ module.exports = function (app, passport) {
     // =====================================
     // RESET PASSWORD ======================
     // =====================================
-    var resetPasswordPost = function (req, res, next) {
+    var resetPasswordPost = function (req, res) {
         // TODO - implement
         // Tutorial is here: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
         // (start at the "forgot" stuff, login/out/sign are already implemented).
@@ -125,4 +147,20 @@ module.exports = function (app, passport) {
     });
 
     app.post('/:lng/reset_password', resetPasswordPost);
+
+    app.get('/:lng/validate_email/:token', function (req, res) {
+        var token = req.params.token;
+        console.log('Received email validation token: ' + token);
+
+        new User({email_validation_token: token}).fetch().then(function (user) {
+            if (user.validate()) {
+                user.save().then(function () {
+                    res.render('pages/login', {successMessage: i18next.t('email_verified')});
+                });
+            }
+            else {
+                res.sendStatus(400);
+            }
+        });
+    });
 };

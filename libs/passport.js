@@ -36,14 +36,15 @@ module.exports = function (passport) {
         },
         function (req, email, password, done) {
             var user = req.body;
-            var usernamePromise = new User({email: email}).fetch();
+            var userPromise = new User({email: email}).fetch();
 
-            return usernamePromise.then(function (model) {
+            return userPromise.then(function (model) {
                 if (model) {
                     return done(null, false, req.flash('error', i18next.t('user_exists')));
                 } else {
                     var newUser = new User({email: email, first_name: user.first_name, last_name: user.last_name, gender: user.gender});
                     newUser.generateHash(password);
+                    newUser.generateValidation();
 
                     newUser.save().then(function (model) {
                         return done(null, newUser, null);
@@ -70,8 +71,12 @@ module.exports = function (passport) {
                     if (!user.validPassword(password)) {
                         return done(null, false, req.flash('error', i18next.t('invalid_user_password')));
                     } else {
-
-                        //TODO check here that the user is enabled and activated.
+                        if (!user.attributes.validated) {
+                            return done(null, false, req.flash('error', i18next.t('user_not_validated', {email: email})));
+                        }
+                        if (!user.attributes.enabled) {
+                            return done(null, false, req.flash('error', i18next.t('user_disabled')));
+                        }
 
                         return done(null, user, null);
                     }
