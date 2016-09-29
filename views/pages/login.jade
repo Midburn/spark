@@ -27,18 +27,20 @@ block wrapper
                 input( type="checkbox", name="remember")
                 |&nbsp;
                 label=t('remember_me')
-            button( type="submit", class="btn btn-info" )=t('login')
-            |&nbsp;
-            a( href="/#{language}/reset_password" )=t('forgot_password')
-        br
-        p=t('need_account')
-            |&nbsp;
-            a.btn.btn-default( href="signup" )=t('sign_up')
-        p
-        p Change Language / החלפת שפה:&nbsp;&nbsp;
-            a( href="/he/login" )
-                img( src="/images/flags/he.gif" )
-            |&nbsp;
-            a( href="/en/login" )
-                img( src="/images/flags/en.gif" )
+            .text-center
+                button( type="submit", class="btn btn-info" )=t('login')
+                |&nbsp;
+                a( href="/#{language}/reset_password" )=t('forgot_password')
+        hr
+        .text-center
+            p=t('need_account')
+                |&nbsp;
+                a.btn.btn-default( href="signup" )=t('sign_up')
+            hr
+            p.text-center
+                a( href="/he/login" )
+                    img( src="/images/flags/he.gif" )
+                |&nbsp;
+                a( href="/en/login" )
+                    img( src="/images/flags/en.gif" )
 

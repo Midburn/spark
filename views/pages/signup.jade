@@ -43,14 +43,15 @@ block wrapper
                     input(type="radio", name="gender", value="female", required, data-error="#{t('gender_error')}")
                     | &nbsp; #{t('female')}
                 .help-block.with-errors
-            button( type="submit", class="btn btn-info" )=t('sign_up')
-            p
-            p Change Language / החלפת שפה:&nbsp;&nbsp;
-                a( href="/he/signup" )
-                    img( src="/images/flags/he.gif" )
-                | &nbsp;
-                a( href="/en/signup" )
-                    img( src="/images/flags/en.gif" )
+            .text-center
+                button( type="submit", class="btn btn-info" )=t('sign_up')
+                hr
+                p
+                    a( href="/he/signup" )
+                        img( src="/images/flags/he.gif" )
+                    | &nbsp;
+                    a( href="/en/signup" )
+                        img( src="/images/flags/en.gif" )
 
 
 
