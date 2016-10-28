@@ -14,17 +14,17 @@ DROP TABLE IF EXISTS users;
 ############
 
 CREATE TABLE IF NOT EXISTS users (
-  created_at                TIMESTAMP,
-  updated_at                TIMESTAMP,
+  created_at                TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at                TIMESTAMP NULL DEFAULT NULL,
 
   # Basic ID + security fields
   user_id                   INTEGER PRIMARY KEY AUTO_INCREMENT,
   email                     VARCHAR(100) UNIQUE,
   password                  VARCHAR(100),
   reset_password_token      VARCHAR(32) UNIQUE,
-  reset_password_expires    TIMESTAMP,
+  reset_password_expires    TIMESTAMP NULL DEFAULT NULL,
   email_validation_token    VARCHAR(32) UNIQUE,
-  email_validation_expires  TIMESTAMP,
+  email_validation_expires  TIMESTAMP NULL DEFAULT NULL,
   enabled                   BOOLEAN DEFAULT TRUE,
   validated                 BOOLEAN DEFAULT FALSE,
   roles                     VARCHAR(200) DEFAULT  '',
@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS users (
   ENGINE = innodb, DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS payments (
-  created_at                TIMESTAMP,
-  updated_at                TIMESTAMP,
+  created_at                TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at                TIMESTAMP NULL DEFAULT NULL,
 
   payment_id                INTEGER PRIMARY KEY AUTO_INCREMENT,
   private_sale_token        VARCHAR(40),
@@ -58,13 +58,13 @@ CREATE TABLE IF NOT EXISTS payments (
   ENGINE = innodb, DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS npo_members (
-  created_at                TIMESTAMP,
-  updated_at                TIMESTAMP,
+  created_at                TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at                TIMESTAMP NULL DEFAULT NULL,
 
   user_id                   INTEGER PRIMARY KEY,
 
   membership_status     ENUM('not_member', 'request_approved', 'member_paid', 'member_should_pay', 'banned', 'request_rejected', 'applied_for_membership') DEFAULT 'not_member',
-  application_date      TIMESTAMP,
+  application_date      TIMESTAMP NULL DEFAULT NULL,
   membership_start_date DATE,
   membership_end_date   DATE,
   form_previous_p       LONGTEXT,
