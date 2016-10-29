@@ -117,7 +117,7 @@ $ git checkout <YOUR_BRANCH_NAME> && git push origin <YOUR_BRANCH_NAME>
 
 Further reading about git [here](http://rogerdudler.github.io/git-guide/)
 
-### Localization (i18n)
+### Localization
 We use **i18next** for multi-language support.    
 
 The strings are stored in ``/locales``
