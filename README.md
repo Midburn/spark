@@ -4,16 +4,7 @@
 
 ### Table of contents
 
-  * [Table of contents](#table-of-contents)
-  * [Installation](#installation)
-  	* [Light the spark](#light-the-spark)
-  	* [Activate your account](#activate-your-account)
-  	* [Configure your environment](#configure-your-environment)
-  * [Development](#development)
-    * [Setting your IDE](#setting-your-ide)
-  	* [Branching and patching](#branching-and-patching)
-  * [Localization (i18n)](#localization-(i18n))
-  * [Templates](#templates)
+[TOC]
 
 ## Installation
 
