@@ -38,7 +38,7 @@ $ mysql -u root -p < sql/schema.sql
 ## Light the spark
 usage after installation
 ```
-$ node bin/www
+$ node server.js
 ```
 navigate to [http://localhost:3000](http://localhost:3000)
 
