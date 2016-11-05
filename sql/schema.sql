@@ -32,13 +32,18 @@ CREATE TABLE IF NOT EXISTS users (
   # Profile fields
   first_name                VARCHAR(64),
   last_name                 VARCHAR(64),
-  gender                    ENUM('male', 'female'),
+  gender                    ENUM('male', 'female', 'other'),
   date_of_birth             DATE,
   israeli_id                CHAR(9),
   address                   VARCHAR(100),
   cell_phone                CHAR(10),
   extra_phone               CHAR(10),
-  npo_member                BOOLEAN DEFAULT FALSE
+  npo_member                BOOLEAN DEFAULT FALSE,
+
+  # Camp relations
+  camp_id                   INTEGER,
+
+  CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (camp_id)
 )
   ENGINE = innodb, DEFAULT CHARSET=utf8;
 
@@ -74,5 +79,3 @@ CREATE TABLE IF NOT EXISTS npo_members (
   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (user_id)
 )
   ENGINE = innodb, DEFAULT CHARSET=utf8;
-
-

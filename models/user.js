@@ -50,4 +50,3 @@ var User = bookshelf.Model.extend({
 module.exports = {
     User: User
 };
-

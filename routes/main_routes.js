@@ -9,57 +9,66 @@ var security = require('../libs/security');
 var mail = require('../libs/mail');
 
 var User = require('../models/user').User;
+var Camp = require('../models/camp').Camp;
 
-module.exports = function (app, passport) {
+module.exports = function(app, passport) {
 
     // =====================================
     // INDEX PAGE (renders to login) =======
     // =====================================
-    app.get('/', function (req, res) {
+    app.get('/', function(req, res) {
         res.redirect('/he/login');
     });
 
-    app.get('/:lng/', function (req, res, next) {
+    app.get('/:lng/', function(req, res, next) {
         if (i18nConfig.languages.indexOf(req.params.lng) > -1) {
             res.redirect('/' + req.params.lng + '/login');
-        }
-        else {
+        } else {
             res.status(404);
             next();
         }
     });
 
-    app.get('/:lng/home', security.protectGet, function (req, res) {
-        res.render('pages/home', {user: req.user});
+    app.get('/:lng/home', security.protectGet, function(req, res) {
+        res.render('pages/home', {
+            user: req.user
+        });
     });
 
     // =====================================
     // LOGIN ===============================
     // =====================================
-    var loginPost = function (req, res, next) {
+    var loginPost = function(req, res, next) {
         if (req.body.email.length == 0 || req.body.password.length == 0) {
-            return res.render('pages/login', {errorMessage: i18next.t('invalid_user_password')});
+            return res.render('pages/login', {
+                errorMessage: i18next.t('invalid_user_password')
+            });
         }
 
         passport.authenticate('local-login', {
             failureFlash: true
-        }, function (err, user, info) {
+        }, function(err, user, info) {
             if (err) {
-                return res.render('pages/login', {errorMessage: err.message});
+                return res.render('pages/login', {
+                    errorMessage: err.message
+                });
             }
 
             if (!user) {
-                return res.render('pages/login', {errorMessage: req.flash('error')});
+                return res.render('pages/login', {
+                    errorMessage: req.flash('error')
+                });
             }
-            return req.logIn(user, function (err) {
+            return req.logIn(user, function(err) {
                 if (err) {
-                    return res.render('pages/login', {errorMessage: req.flash('error')});
+                    return res.render('pages/login', {
+                        errorMessage: req.flash('error')
+                    });
                 } else {
                     var r = req.body['r'];
                     if (r) {
                         return res.redirect(r);
-                    }
-                    else {
+                    } else {
                         return res.redirect('home');
                     }
                 }
@@ -71,28 +80,35 @@ module.exports = function (app, passport) {
     app.post('/:lng/login', loginPost);
 
     // show the login form
-    app.get('/:lng/login', function (req, res) {
+    app.get('/:lng/login', function(req, res) {
         var r = req.query.r;
         console.log(r);
-        res.render('pages/login', {errorMessage: req.flash('error'), r: r});
+        res.render('pages/login', {
+            errorMessage: req.flash('error'),
+            r: r
+        });
     });
 
     // =====================================
     // SIGNUP ==============================
     // =====================================
-    var signUpPost = function (req, res, next) {
+    var signUpPost = function(req, res, next) {
         passport.authenticate('local-signup', {
             failureFlash: true
-        }, function (err, user, info) {
+        }, function(err, user, info) {
             if (err) {
-                return res.render('pages/signup', {errorMessage: err.message});
+                return res.render('pages/signup', {
+                    errorMessage: err.message
+                });
             }
 
             if (!user) {
-                return res.render('pages/signup', {errorMessage: req.flash('error')});
+                return res.render('pages/signup', {
+                    errorMessage: req.flash('error')
+                });
             }
 
-            return req.logIn(user, function (err) {
+            return req.logIn(user, function(err) {
                 if (!err) {
                     // Send validation email.
                     var link = serverConfig.url + '/' + req.params.lng +
@@ -102,22 +118,30 @@ module.exports = function (app, passport) {
                         user.attributes.email,
                         mailConfig.from,
                         'Spark email validation!',
-                        'emails/email_validation',
-                        {name: user.fullName, link: link});
+                        'emails/email_validation', {
+                            name: user.fullName,
+                            link: link
+                        });
 
-                    res.render('pages/login', {successMessage: i18next.t('email_verification_required')});
+                    res.render('pages/login', {
+                        successMessage: i18next.t('email_verification_required')
+                    });
 
                 } else {
-                    res.render('pages/signup', {errorMessage: req.flash('error')});
+                    res.render('pages/signup', {
+                        errorMessage: req.flash('error')
+                    });
                 }
             });
         })(req, res, next);
     };
 
     // show the signup form
-    app.get('/:lng/signup', function (req, res) {
+    app.get('/:lng/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('pages/signup', {errorMessage: req.flash('error')});
+        res.render('pages/signup', {
+            errorMessage: req.flash('error')
+        });
     });
 
     // process the signup form
@@ -126,7 +150,7 @@ module.exports = function (app, passport) {
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.get('/:lng/logout', function (req, res) {
+    app.get('/:lng/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     });
@@ -134,33 +158,76 @@ module.exports = function (app, passport) {
     // =====================================
     // RESET PASSWORD ======================
     // =====================================
-    var resetPasswordPost = function (req, res) {
+    var resetPasswordPost = function(req, res) {
         // TODO - implement
         // Tutorial is here: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
         // (start at the "forgot" stuff, login/out/sign are already implemented).
 
-        res.render('pages/reset_password', {errorMessage: 'NOT IMPLEMENTED'});
+        res.render('pages/reset_password', {
+            errorMessage: 'NOT IMPLEMENTED'
+        });
     };
 
-    app.get('/:lng/reset_password', function (req, res) {
-        res.render('pages/reset_password', {errorMessage: req.flash('error')});
+    app.get('/:lng/reset_password', function(req, res) {
+        res.render('pages/reset_password', {
+            errorMessage: req.flash('error')
+        });
     });
 
     app.post('/:lng/reset_password', resetPasswordPost);
 
-    app.get('/:lng/validate_email/:token', function (req, res) {
+    app.get('/:lng/validate_email/:token', function(req, res) {
         var token = req.params.token;
         console.log('Received email validation token: ' + token);
 
-        new User({email_validation_token: token}).fetch().then(function (user) {
+        new User({
+            email_validation_token: token
+        }).fetch().then(function(user) {
             if (user.validate()) {
-                user.save().then(function () {
-                    res.render('pages/login', {successMessage: i18next.t('email_verified')});
+                user.save().then(function() {
+                    res.render('pages/login', {
+                        successMessage: i18next.t('email_verified')
+                    });
                 });
-            }
-            else {
+            } else {
                 res.sendStatus(400);
             }
+        });
+    });
+
+    /**
+     * Camps routing
+     */
+    app.get('/:lng/camps', function(req, res) {
+        res.render('pages/camps/list', {
+            campId: 123123123
+        });
+    });
+
+    // create new camp
+    app.get('/:lng/camps/new', function(req, res) {
+        var camp_name_he = 'camp name he',
+            camp_name_en = 'camp name en';
+
+        new Camp({
+            camp_name_he: camp_name_he,
+            camp_name_en: camp_name_en
+        }).fetch().then(function(camp) {
+            if (camp.validate()) {
+                camp.save().then(function() {
+                    res.render('/:lng/camps', {});
+                });
+            } else {
+                res.sendStatus(400);
+            }
+        });
+    });
+
+    // camp page
+    app.get('/:lng/camps/:id', function(req, res) {
+        var camp_id = req.params.id;
+        res.render('pages/camps/list', {
+            campId: camp_id
         });
     });
 };
