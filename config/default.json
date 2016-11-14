@@ -6,15 +6,6 @@
     "url"       : "https://spark.midburn.org"  // full URL including protocol and port. NO trailing slash
   },
 
-  "database": {
-    "host"      : "localhost",
-    "database"  : "spark",
-    "user"      : "spark",
-    "password"  : "spark",
-    "charset"   : "UTF8_GENERAL_CI",
-    "debug"     : false
-  },
-
   "mail": {
     "from"            : "spark@midburn.org",
     "host"            : "smtp.gmail.com",
