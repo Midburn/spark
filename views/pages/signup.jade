@@ -1,4 +1,7 @@
 extends ../includes/layout
+
+script( src='https://www.google.com/recaptcha/api.js' )
+
 block wrapper
     br
     .col-md-4.col-md-offset-4.well
@@ -43,6 +46,9 @@ block wrapper
                     input(type="radio", name="gender", value="female", required, data-error="#{t('gender_error')}")
                     | &nbsp; #{t('female')}
                 .help-block.with-errors
+            .form-group
+                div( class="g-recaptcha" data-sitekey="6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj")
+
             .text-center
                 button( type="submit", class="btn btn-info" )=t('sign_up')
                 hr
