@@ -8,6 +8,8 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
+var recaptcha = require('express-recaptcha');
+
 
 require('./libs/passport')(passport);
 
@@ -98,14 +100,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 
-// Routes
+// Routes setup
 require('./routes/main_routes.js')(app, passport);
 app.use('/:lng/admin', require('./routes/admin_routes'));
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
-// Mail
+// Mail setup
 var mail = require('./libs/mail');
 mail.setup(app);
+
+//Captcha setup
+recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF');//TODO change eyalliebermann app in an oficial one
+
 
 console.log('NODE_ENV =', process.env.NODE_ENV, '| app.env =' , app.get('env'));
 
