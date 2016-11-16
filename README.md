@@ -51,7 +51,6 @@ $ mysql -u root -p
 switch database to spark:
 ```
 mysql>use spark;
-
 ```
 
 update **validated** attribute on your account:
