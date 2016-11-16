@@ -48,6 +48,12 @@ after registration, log into mysql
 $ mysql -u root -p
 ```
 
+switch database to spark:
+```
+mysql>use spark;
+
+```
+
 update **validated** attribute on your account:
 ```
 UPDATE users SET validated=1 WHERE email = '<EMAIL>';
