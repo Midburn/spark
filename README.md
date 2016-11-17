@@ -24,7 +24,8 @@ make dir & clone the repo
 ```
 $ mkdir spark && git clone http://<USER_NAME>@jira.midburn.org:7990/scm/spark/spark.git
 ```
-OR (For guest access
+
+**OR** (For GUEST access)
 ```
 $ mkdir spark && git clone http://jira.midburn.org:7990/scm/spark/spark.git
 ```
