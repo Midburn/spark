@@ -135,7 +135,7 @@ Note:
 
 1. To push your branch you will need to first [create an account on JIRA](http://jira.midburn.org:7990/signup).
 2. Push your branch via the above snippet
-3. [Send a pull request](https://www.atlassian.com/git/tutorials/making-a-pull-request/).
+3. [Send a pull request](http://jira.midburn.org:7990/projects/SPARK/repos/spark/pull-requests).
 
 
 Further reading about git [here](http://rogerdudler.github.io/git-guide/)
