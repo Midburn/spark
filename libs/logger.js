@@ -4,8 +4,8 @@ var config = require('config');
 module.exports = function(module) {
     var filename = module.id;    
     
-    function log(level, msg) {
-        winston.log(level, filename + ' : ' + msg); 
+    function log(level, msg, vars) {
+        winston.log(level, filename + ' : ' + msg, vars); 
     }
     
     return {
@@ -20,22 +20,19 @@ module.exports = function(module) {
 
         
         // Aliases
-        debug : function (msg) {
-            log('debug', msg);
+        debug : function (msg, vars) {
+            log('debug', msg, vars);
         },
-        info : function (msg) {
-            log('info', msg);
+        info : function (msg, vars) {
+            log('info', msg, vars);
         },
-        warn : function (msg) {
-            log('warn', msg);
+        warn : function (msg, vars) {
+            log('warn', msg, vars);
         },
-        error  : function (msg) {
-            log('error', msg);
+        error  : function (msg, vars) {
+            log('error', msg, vars);
         },
-        fatal : function (msg) {
-            log('fatal', msg);
-        },
-
+        
         // Log
         log : log
     }
