@@ -133,9 +133,9 @@ $ git checkout <YOUR_BRANCH_NAME> && git push origin <YOUR_BRANCH_NAME>
 
 Note:
 
-# To push your branch you will need to first [create an account on JIRA](http://jira.midburn.org:7990/signup).
-# Push your branch via the above snippet
-# [Send a pull request](https://www.atlassian.com/git/tutorials/making-a-pull-request/)
+1. To push your branch you will need to first [create an account on JIRA](http://jira.midburn.org:7990/signup).
+2. Push your branch via the above snippet
+3. [Send a pull request](https://www.atlassian.com/git/tutorials/making-a-pull-request/)
 
 
 Further reading about git [here](http://rogerdudler.github.io/git-guide/)
