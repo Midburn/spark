@@ -9,9 +9,9 @@
 ## Installation
 
 ### Preconditions
->1. **NodeJS** (https://nodejs.org/en/).
->2. **mySQL** (http://dev.mysql.com/downloads/mysql/)
->3. **GIT** (https://git-scm.com/downloads)
+>1. **NodeJS** (https://nodejs.org/en/ )
+>2. **mySQL** (http://dev.mysql.com/downloads/mysql/ )
+>3. **GIT** (https://git-scm.com/downloads )
 
 On Mac after installing, please add the following lines to your ~/.bash_profile
 ```
