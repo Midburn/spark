@@ -94,6 +94,11 @@ To override this configurations to match your development environment:
 
 ## Development
 
+### Architecture
+
+![](http://i.imgur.com/LvTNs3q.png "Spark System Architecture")
+
+
 ### Setting your IDE
 The source files include a Intellij/WebStorm project. You can install the community version of IntelliJ (https://www.jetbrains.com/idea/#chooseYourEdition) for free and open the project.
 
