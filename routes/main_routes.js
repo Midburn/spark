@@ -9,6 +9,7 @@ var security = require('../libs/security');
 var mail = require('../libs/mail');
 
 var User = require('../models/user').User;
+var log = require('../libs/logger.js')(module);
 
 module.exports = function (app, passport) {
 
@@ -73,7 +74,7 @@ module.exports = function (app, passport) {
     // show the login form
     app.get('/:lng/login', function (req, res) {
         var r = req.query.r;
-        console.log(r);
+        log.info(r);
         res.render('pages/login', {errorMessage: req.flash('error'), r: r});
     });
 
@@ -150,7 +151,7 @@ module.exports = function (app, passport) {
 
     app.get('/:lng/validate_email/:token', function (req, res) {
         var token = req.params.token;
-        console.log('Received email validation token: ' + token);
+        log.info('Received email validation token: ' + token);
 
         new User({email_validation_token: token}).fetch().then(function (user) {
             if (user.validate()) {

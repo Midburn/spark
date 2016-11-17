@@ -11,7 +11,7 @@ var NpoStatus = require('../models/npo_member').NPO_STATUS;
 var config = require('config');
 var npoConfig = config.get('npo');
 var serverConfig = config.get('server');
-
+var log = require('../libs/logger.js')(module);
 
 router.get('/', security.protectAdminGet, function (req, res, next) {
     res.render('admin/home.jade', {user: req.user});
@@ -35,7 +35,7 @@ router.post('/npo', security.protectAdminGet, function (req, res, next) {
                         new User({email: recipient}).fetch().then(function (theUser) {
                             if (theUser == null) {
                                 //TODO handle error.
-                                console.log("User not found!");
+                                log.error("User not found!");
                                 return res.render('admin/admin_npo', {errorMessage: 'email ' + recipient + ' not found'});
                             }
                             if (theUser.attributes.membership_status == npoStatus.applied_for_membership) {
@@ -53,7 +53,7 @@ router.post('/npo', security.protectAdminGet, function (req, res, next) {
                             }
                             else {
                                 //TODO handle error.
-                                console.log("Incorrect status - ", theUser.attributes.membership_status);
+                                log.warn("Incorrect status - ", theUser.attributes.membership_status);
                                 return res.render('admin/admin_npo', {errorMessage: 'email ' + recipient + ' - incorrect status'});
                             }
                         });

@@ -10,7 +10,7 @@ var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 
-log.info('Spark is starting...', { module: 'app'});
+log.info('Spark is starting...');
 
 // Creating Express application
 var app = express();
@@ -85,7 +85,7 @@ i18next
     }, function () {
         middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function (req, res) {
             //endpoint function
-            console.log("ROUTE");
+            log.info("ROUTE");
         })
     });
 app.use(middleware.handle(i18next, {
@@ -93,7 +93,7 @@ app.use(middleware.handle(i18next, {
     removeLngFromUrl: false
 }));
 //i18next.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
-//    console.log('SEO friendly route ...');
+//    log.info('SEO friendly route ...');
 //    res.render('index');
 //});
 
@@ -171,12 +171,12 @@ process.on('unhandledRejection', function (reason, p) {
 });
 
 process.on('warning', function (warning) {
-    console.warn(warning.name);    // Print the warning name
-    console.warn(warning.message); // Print the warning message
-    console.warn(warning.stack);   // Print the stack trace
+    log.warn(warning.name);    // Print the warning name
+    log.warn(warning.message); // Print the warning message
+    log.warn(warning.stack);   // Print the stack trace
 });
 
 // == Export our app ==
 module.exports = app;
 
-log.info("------   Spark is running! ------");
+log.info("------   Spark is running at http://localhost:3000/ :) ------");

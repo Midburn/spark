@@ -9,6 +9,7 @@ var payment = require('../libs/payment');
 var User = require('../models/user').User;
 var NpoMember = require('../models/npo_member').NpoMember;
 var NpoStatus = require('../models/npo_member').NPO_STATUS;
+var log = require('../libs/logger.js')(module);
 
 var config = require('config');
 var npoConfig = config.get('npo');
@@ -103,7 +104,7 @@ router.get('/pay_fee', security.protectGet, function (req, res) {
 router.get('/fee_received', security.protectGet, function (req, res, next) {
 
     var token = req.query.Token;
-    console.log('Received NPO payment token: ' + token);
+    log.info('Received NPO payment token: ' + token);
 
     new Payment({public_sale_token: token}).fetch().then(function (payment) {
         if (payment) {
@@ -124,14 +125,14 @@ router.get('/fee_received', security.protectGet, function (req, res, next) {
                         res.render('pages/npo_fee_received', {user: req.user});
                     }).catch(NpoMember.NotFoundError, function () {
                         //TODO handle error
-                        console.error("User", member.user_id, "not found in DB while processing NPO payment", payment.payment_id);
+                        log.error("User", member.user_id, "not found in DB while processing NPO payment", payment.payment_id);
                     })
                 });
             });
         }
         else {
             //TODO handle error.
-            console.error("ERROR loading NPO payment from DB!", token);
+            log.error("ERROR loading NPO payment from DB!", token);
         }
     });
 });

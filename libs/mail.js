@@ -1,5 +1,6 @@
 var mailer = require('express-mailer');
 var config = require('config');
+var log = require('./logger')(module);
 
 var mailConfig = config.get('mail');
 var ourApp;
@@ -17,7 +18,7 @@ module.exports = {
     // template - REQUIRED.
     // properties - All additional properties are also passed to the template as local variables.
     send : function (recipients, from, subject, template, properties) {
-        console.log('Sending email to', recipients);
+        log.info('Sending email to', recipients);
         var locals = {
             to: recipients,
             subject: subject
@@ -28,10 +29,10 @@ module.exports = {
         ourApp.mailer.send(template, locals, function (err) {
             if (err) {
                 // handle error
-                console.error('Error sending email', err);
+                log.error('Error sending email', err);
                 return false;
             }
-            console.log('Mail sent successfully');
+            log.info('Mail sent successfully');
             return true;
         });
     }
