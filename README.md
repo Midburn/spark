@@ -96,7 +96,7 @@ To override this configurations to match your development environment:
 
 ### Architecture
 
-![](http://i.imgur.com/LvTNs3q.png "Spark System Architecture")
+![Spark System Architecture](http://i.imgur.com/LvTNs3q.png)
 
 
 ### Setting your IDE
