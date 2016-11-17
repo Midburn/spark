@@ -8,8 +8,10 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
+var log = require('winston');
 
-console.log("Spark is starting...");
+log.level = 'info';
+log.info('Spark is starting...');
 
 // Creating Express application
 var app = express();
