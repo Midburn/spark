@@ -2,10 +2,14 @@ var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
 
+var NpoMember = require('./npo_member').NpoMember;
 
 var User = bookshelf.Model.extend({
     tableName: 'users',
     idAttribute: 'user_id',
+    npoMember: function() {
+        return this.hasMany(NpoMember);
+    },
 
     generateHash: function (password) {
         this.attributes.password = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
