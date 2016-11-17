@@ -10,7 +10,12 @@ var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
 var log = require('winston');
 
-log.level = 'info';
+log.configure({
+    level: 'info',
+    transports: [
+      new (log.transports.File)({ filename: 'sparks.log' })
+    ]
+  });
 log.info('Spark is starting...');
 
 // Creating Express application
