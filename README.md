@@ -107,6 +107,11 @@ To override this configurations to match your development environment:
 
 ## Development
 
+### Architecture
+
+![Spark System Architecture](http://i.imgur.com/LvTNs3q.png)
+
+
 ### Setting your IDE
 The source files include a Intellij/WebStorm project. You can install the community version of IntelliJ (https://www.jetbrains.com/idea/#chooseYourEdition) for free and open the project.
 
@@ -143,6 +148,13 @@ $ git checkout master && git pull origin master
 $ git checkout <YOUR_BRANCH_NAME> && git push origin <YOUR_BRANCH_NAME>
 
 ```
+
+Note:
+
+1. To push your branch you will need to first [create an account on JIRA](http://jira.midburn.org:7990/signup).
+2. Push your branch via the above snippet
+3. [Send a pull request](http://jira.midburn.org:7990/projects/SPARK/repos/spark/pull-requests).
+
 
 Further reading about git [here](http://rogerdudler.github.io/git-guide/)
 
