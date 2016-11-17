@@ -27,7 +27,7 @@ var loadMember = function (user_id, next) {
 
 router.get('/', security.protectGet, function (req, res) {
     loadMember(req.user.id, function (member) {
-        res.render('pages/npo', {user: req.user, npoMember: member});
+        res.render('pages/npo', {user: req.user, npoMember: member, currentYear: (new Date).getFullYear()});
     });
 });
 
