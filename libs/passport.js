@@ -42,7 +42,12 @@ module.exports = function (passport) {
                 if (model) {
                     return done(null, false, req.flash('error', i18next.t('user_exists')));
                 } else {
-                    var newUser = new User({email: email, first_name: user.first_name, last_name: user.last_name, gender: user.gender});
+                    var newUser = new User({
+                        email: email,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        gender: user.gender
+                    });
                     newUser.generateHash(password);
                     newUser.generateValidation();
 
