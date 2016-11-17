@@ -18,6 +18,10 @@ module.exports = {
     // template - REQUIRED.
     // properties - All additional properties are also passed to the template as local variables.
     send : function (recipients, from, subject, template, properties) {
+        if (!mailConfig.enabled) {
+            log.info('NOT Sending email to', recipients);
+            return true;
+        }
         log.info('Sending email to', recipients);
         var locals = {
             to: recipients,

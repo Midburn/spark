@@ -9,14 +9,27 @@
 ## Installation
 
 ### Preconditions
->1. **NodeJS** (https://nodejs.org/en/).
->2. **mySQL** (http://dev.mysql.com/downloads/mysql/)
->3. **GIT** (https://git-scm.com/downloads)
+>1. **NodeJS** (https://nodejs.org/en/ )
+>2. **mySQL** (http://dev.mysql.com/downloads/mysql/ )
+>3. **GIT** (https://git-scm.com/downloads )
 
+### MYSQL Preconditions
 On Mac after installing, please add the following lines to your ~/.bash_profile
 ```
 $ alias mysql=/usr/local/mysql/bin/mysql
 $ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
+```
+
+Also, On first install, you might get mysql password expired or other root password related issues.
+
+To change mysql default password - run the following commands
+```
+mysql -u root -p
+```
+Enter the default root password you got during mysql setup
+Then run the following to set your password:
+```
+SET PASSWORD = PASSWORD('xxxxxxxx');
 ```
 
 ### Getting the source files
@@ -94,6 +107,11 @@ To override this configurations to match your development environment:
 
 ## Development
 
+### Architecture
+
+![Spark System Architecture](http://i.imgur.com/LvTNs3q.png)
+
+
 ### Setting your IDE
 The source files include a Intellij/WebStorm project. You can install the community version of IntelliJ (https://www.jetbrains.com/idea/#chooseYourEdition) for free and open the project.
 
@@ -130,6 +148,13 @@ $ git checkout master && git pull origin master
 $ git checkout <YOUR_BRANCH_NAME> && git push origin <YOUR_BRANCH_NAME>
 
 ```
+
+Note:
+
+1. To push your branch you will need to first [create an account on JIRA](http://jira.midburn.org:7990/signup).
+2. Push your branch via the above snippet
+3. [Send a pull request](http://jira.midburn.org:7990/projects/SPARK/repos/spark/pull-requests).
+
 
 Further reading about git [here](http://rogerdudler.github.io/git-guide/)
 

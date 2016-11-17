@@ -28,7 +28,7 @@ var loadMember = function (user_id, next) {
 
 router.get('/', security.protectGet, function (req, res) {
     loadMember(req.user.id, function (member) {
-        res.render('pages/npo', {user: req.user, npoMember: member});
+        res.render('pages/npo', {user: req.user, npoMember: member, currentYear: (new Date).getFullYear()});
     });
 });
 
@@ -90,7 +90,7 @@ router.get('/pay_fee', security.protectGet, function (req, res) {
             "Id": 0,
             "Quantity": 1,
             "UnitPrice": 1,
-            "Description": i18next.t('membership_fee', {year: 2016})
+            "Description": i18next.t('membership_fee', {year: (new Date).getFullYear()})
         }],
         serverConfig.url + '/npo/fee_received',
         1,
@@ -106,12 +106,11 @@ router.get('/fee_received', security.protectGet, function (req, res, next) {
     var token = req.query.Token;
     log.info('Received NPO payment token: ' + token);
 
+
     new Payment({public_sale_token: token}).fetch().then(function (payment) {
         if (payment) {
             payment.attributes.payed = true;
             payment.save().then(function () {
-                //TODO Support for future years.
-                var year = 2016;
 
                 new NpoMember({user_id: payment.attributes.user_id}).fetch().then(function (member) {
                     member.set('membership_status', NpoStatus.member_paid);
@@ -121,7 +120,7 @@ router.get('/fee_received', security.protectGet, function (req, res, next) {
                             npoConfig.email,
                             'Your Midburn membership fee received!',
                             'emails/npo_fee_paid',
-                            {name: req.user.fullName, year: year});
+                            {name: req.user.fullName, year: (new Date).getFullYear()});
                         res.render('pages/npo_fee_received', {user: req.user});
                     }).catch(NpoMember.NotFoundError, function () {
                         //TODO handle error

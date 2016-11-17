@@ -42,6 +42,10 @@ block wrapper
                 label
                     input(type="radio", name="gender", value="female", required, data-error="#{t('gender_error')}")
                     | &nbsp; #{t('female')}
+                | &nbsp;
+                label
+                    input(type="radio", name="gender", value="other", required, data-error="#{t('gender_error')}")
+                    | &nbsp; #{t('other')}
                 .help-block.with-errors
             .text-center
                 button( type="submit", class="btn btn-info" )=t('sign_up')
