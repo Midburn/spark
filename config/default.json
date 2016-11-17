@@ -7,15 +7,15 @@
   },
 
   "mail": {
-    "enabled"         : false,
+	"enabled"         : false,
     "from"            : "spark@midburn.org",
-    "host"            : "smtp.gmail.com",
+    "host"            : "email-smtp.eu-west-1.amazonaws.com",
     "secureConnection": true,         // use SSL
     "port"            : 465,          // port for secure SMTP
     "transportMethod" : "SMTP",       // default is SMTP. Accepts anything that nodemailer accepts
     "auth": {
-      "user": "gmail.user@gmail.com",
-      "pass": "userpass"
+      "user": "AKIAJBTYEDTLL5MBD7SQ",
+      "pass": "AiqqkfPX50kbTkJPAfeOhzxaSI4Ln9eszK+pCo7+5s4/"
     }
   },
 
