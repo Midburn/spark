@@ -13,10 +13,21 @@
 >2. **mySQL** (http://dev.mysql.com/downloads/mysql/)
 >3. **GIT** (https://git-scm.com/downloads)
 
+On Mac after installing, please add the following lines to your ~/.bash_profile
+```
+$ alias mysql=/usr/local/mysql/bin/mysql
+$ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
+```
+
 ### Getting the source files
 make dir & clone the repo
 ```
 $ mkdir spark && git clone http://<USER_NAME>@jira.midburn.org:7990/scm/spark/spark.git
+```
+
+**OR** (For GUEST access)
+```
+$ mkdir spark && git clone http://jira.midburn.org:7990/scm/spark/spark.git
 ```
 
 ### Installing node modules
