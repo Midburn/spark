@@ -8,15 +8,9 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
-var log = require('winston');
+var log = require('./libs/logger')(module);
 
-log.configure({
-    level: 'info',
-    transports: [
-      new (log.transports.File)({ filename: 'sparks.log' })
-    ]
-  });
-log.info('Spark is starting...');
+log.info('Spark is starting...', { module: 'app'});
 
 // Creating Express application
 var app = express();
@@ -119,7 +113,7 @@ app.use('/:lng/npo', require('./routes/npo_routes'));
 var mail = require('./libs/mail');
 mail.setup(app);
 
-console.log('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
+log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
 
 // ==============
 // Error handlers
@@ -185,4 +179,4 @@ process.on('warning', function (warning) {
 // == Export our app ==
 module.exports = app;
 
-console.log("Spark is running!");
+log.info("------   Spark is running! ------");
