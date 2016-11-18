@@ -104,18 +104,27 @@ module.exports = function (app, passport) {
     var signUpPost = function (req, res, next) {
         recaptcha.verify(req,function(err){ //TODO turn to middleware or promises to minimize clutter
             if (err) {
-                return res.render('pages/signup', {errorMessageResource: 'only_humans_allowed'});
+                return res.render('pages/signup', {
+                    errorMessageResource: 'only_humans_allowed',
+                    body: req.body //repopulate fields in case of error
+                });
             }
             else {
                 passport.authenticate('local-signup', {
                     failureFlash: true
                 }, function (err, user, info) {
                     if (err) {
-                        res.render('pages/signup', {errorMessage: req.flash(err.message)});
+                        res.render('pages/signup', {
+                            errorMessage: req.flash(err.message),
+                            body: req.body //repopulate fields in case of error
+                        });
                     }
 
                     if (!user) {
-                        return res.render('pages/signup', {errorMessage: req.flash('error')});
+                        return res.render('pages/signup', {
+                            errorMessage: req.flash('error'),
+                            body: req.body //repopulate fields in case of error
+                        });
                     }
 
                     return req.logIn(user, function (err) {
@@ -134,7 +143,10 @@ module.exports = function (app, passport) {
                             res.render('pages/login', {successMessageResource: 'email_verification_required'});
 
                         } else {
-                            res.render('pages/signup', {errorMessage: req.flash('error')});
+                            res.render('pages/signup', {
+                                errorMessage: req.flash('error'),
+                                body: req.body //repopulate fields in case of error
+                            });
                         }
                     });
                 })(req, res, next);

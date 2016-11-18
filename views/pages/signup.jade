@@ -19,7 +19,7 @@ block wrapper
         form( action="signup", method="post", data-toggle="validator", role="form" )
             .form-group
                 label=t('email')
-                input( type="email", class="form-control", name="email", data-error="#{t('bad_email')}", required )
+                input( type="email", class="form-control", name="email", value="#{body.email||''}", data-error="#{t('bad_email')}", required )
                 .help-block.with-errors
             .form-group
                 label=t('password')
@@ -32,11 +32,11 @@ block wrapper
                 .help-block.with-errors
             .form-group
                 label=t('first_name')
-                input( type="text", class="form-control", name="first_name", data-error="#{t('mandatory_field')}", required )
+                input( type="text", class="form-control", name="first_name", value="#{body.first_name||''}", data-error="#{t('mandatory_field')}", required )
                 .help-block.with-errors
             .form-group
                 label=t('last_name')
-                input( type="text", class="form-control", name="last_name", data-error="#{t('mandatory_field')}", required )
+                input( type="text", class="form-control", name="last_name", value="#{body.last_name||''}", data-error="#{t('mandatory_field')}", required )
                 .help-block.with-errors
             .form-group
                 label=t('gender')
