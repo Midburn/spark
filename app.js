@@ -134,8 +134,6 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-app.use(fileUpload());
-
 // Development error handler - will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
@@ -185,6 +183,9 @@ process.on('warning', function (warning) {
     log.warn(warning.message); // Print the warning message
     log.warn(warning.stack);   // Print the stack trace
 });
+
+// Allow file uploads
+app.use(fileUpload());
 
 // == Export our app ==
 module.exports = app;
