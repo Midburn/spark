@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var morganLogger = require('morgan');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
@@ -17,7 +17,10 @@ var app = express();
 
 // Middleware registration
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
+
+// Log every HTTP request
+app.use(morganLogger('dev', { stream: log.logger.stream({level: 'debug'}) }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());

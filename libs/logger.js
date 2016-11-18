@@ -23,9 +23,21 @@ module.exports = function(module) {
         logger.log(level, filename + ' : ' + msg, vars); 
     }
 
-            
+
+    // Make Morgan log work with Winston
+    // http://stackoverflow.com/a/28824464/11236
+    logger.stream = function(params) {
+        return {
+            write: function(message, encoding){
+                logger.log(params.level, message);
+            }
+        }
+    };
+    
     return {
         log : log,
+        
+        logger : logger,
         
         // Aliases
         debug : function (msg, vars) {
