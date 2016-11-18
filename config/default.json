@@ -7,15 +7,15 @@
   },
 
   "mail": {
-    "enabled"         : false,
+	"enabled"         : false,
     "from"            : "spark@midburn.org",
-    "host"            : "smtp.gmail.com",
+    "host"            : "email-smtp.eu-west-1.amazonaws.com",
     "secureConnection": true,         // use SSL
     "port"            : 465,          // port for secure SMTP
     "transportMethod" : "SMTP",       // default is SMTP. Accepts anything that nodemailer accepts
     "auth": {
-      "user": "gmail.user@gmail.com",
-      "pass": "userpass"
+      "user": "AKIAJBTYEDTLL5MBD7SQ",
+      "pass": "AiqqkfPX50kbTkJPAfeOhzxaSI4Ln9eszK+pCo7+5s4/"
     }
   },
 
@@ -38,5 +38,11 @@
   "npo": {
     "email"         : "amuta@midburn.org",
     "idImagesFolder": "d:/temp/"
+  },
+  // This is a Facebook app I set up for debugging. Before launching, should
+  // be replaced by an app set by the Midburn facebook account.
+  "facebook": {
+    "app_id": "1083906121721925",
+    "app_secret": "d60f362df1e9f35b6633b6f819ea7ccf"
   }
 }
