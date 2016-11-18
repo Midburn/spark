@@ -1,5 +1,7 @@
 var i18next = require('i18next');
 
+var recaptcha = require('express-recaptcha');
+
 var config = require('config');
 var i18nConfig = config.get('i18n');
 var serverConfig = config.get('server');
@@ -81,37 +83,46 @@ module.exports = function (app, passport) {
     // SIGNUP ==============================
     // =====================================
     var signUpPost = function (req, res, next) {
-        passport.authenticate('local-signup', {
-            failureFlash: true
-        }, function (err, user, info) {
+        recaptcha.verify(req,function(err){ //TODO turn to middleware or promises to minimize clutter
             if (err) {
-                return res.render('pages/signup', {errorMessage: err.message});
+                return res.render('pages/signup', {errorMessage: req.flash(err.message)});
             }
+            else {
+                passport.authenticate('local-signup', {
+                    failureFlash: true
+                }, function (err, user, info) {
+                    if (err) {
+                        res.render('pages/signup', {errorMessage: req.flash(err.message)});
+                    }
 
-            if (!user) {
-                return res.render('pages/signup', {errorMessage: req.flash('error')});
+                    if (!user) {
+                        return res.render('pages/signup', {errorMessage: req.flash('error')});
+                    }
+
+                    return req.logIn(user, function (err) {
+                        if (!err) {
+                            // Send validation email.
+                            var link = serverConfig.url + '/' + req.params.lng +
+                                "/validate_email/" + user.attributes.email_validation_token;
+
+                            mail.send(
+                                user.attributes.email,
+                                mailConfig.from,
+                                'Spark email validation!',
+                                'emails/email_validation',
+                                {name: user.fullName, link: link});
+
+                            res.render('pages/login', {successMessage: i18next.t('email_verification_required')});
+
+                        } else {
+                            res.render('pages/signup', {errorMessage: req.flash('error')});
+                        }
+                    });
+                })(req, res, next);
             }
+        });
 
-            return req.logIn(user, function (err) {
-                if (!err) {
-                    // Send validation email.
-                    var link = serverConfig.url + '/' + req.params.lng +
-                        "/validate_email/" + user.attributes.email_validation_token;
 
-                    mail.send(
-                        user.attributes.email,
-                        mailConfig.from,
-                        'Spark email validation!',
-                        'emails/email_validation',
-                        {name: user.fullName, link: link});
-
-                    res.render('pages/login', {successMessage: i18next.t('email_verification_required')});
-
-                } else {
-                    res.render('pages/signup', {errorMessage: req.flash('error')});
-                }
-            });
-        })(req, res, next);
     };
 
     // show the signup form

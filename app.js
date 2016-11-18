@@ -109,8 +109,8 @@ app.use('/:lng/npo', require('./routes/npo_routes'));
 var mail = require('./libs/mail');
 mail.setup(app);
 
-//Captcha setup
-recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF');//TODO change eyalliebermann app in an oficial one
+//Recaptcha setup
+recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
 
 
 console.log('NODE_ENV =', process.env.NODE_ENV, '| app.env =' , app.get('env'));
