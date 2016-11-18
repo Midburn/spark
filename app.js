@@ -1,22 +1,32 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var morganLogger = require('morgan');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
+var log = require('./libs/logger')(module);
 
-console.log("Spark is starting...");
+log.info('Spark is starting...');
 
 // Creating Express application
 var app = express();
 
 // Middleware registration
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
+
+// Log every HTTP request
+app.use(morganLogger('dev', { stream: log.logger.stream(
+    {level: 'info',
+     filter: function(message){    
+         return !
+             (message.includes('/stylesheets/') || message.includes('/images/'));
+    }
+    }) }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -84,7 +94,7 @@ i18next
     }, function () {
         middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function (req, res) {
             //endpoint function
-            console.log("ROUTE");
+            log.info("ROUTE");
         })
     });
 app.use(middleware.handle(i18next, {
@@ -92,7 +102,7 @@ app.use(middleware.handle(i18next, {
     removeLngFromUrl: false
 }));
 //i18next.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
-//    console.log('SEO friendly route ...');
+//    log.info('SEO friendly route ...');
 //    res.render('index');
 //});
 
@@ -112,7 +122,7 @@ app.use('/:lng/npo', require('./routes/npo_routes'));
 var mail = require('./libs/mail');
 mail.setup(app);
 
-console.log('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
+log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
 
 // ==============
 // Error handlers
@@ -166,16 +176,16 @@ else {
 
 // Handler for unhandled rejections
 process.on('unhandledRejection', function (reason, p) {
-    console.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+    log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
 process.on('warning', function (warning) {
-    console.warn(warning.name);    // Print the warning name
-    console.warn(warning.message); // Print the warning message
-    console.warn(warning.stack);   // Print the stack trace
+    log.warn(warning.name);    // Print the warning name
+    log.warn(warning.message); // Print the warning message
+    log.warn(warning.stack);   // Print the stack trace
 });
 
 // == Export our app ==
 module.exports = app;
 
-console.log("Spark is running!");
+log.info("------   Spark is running at http://localhost:3000/ :) ------");

@@ -1,5 +1,6 @@
 var request = require('request');
 var Payment = require('../models/payment').Payment;
+var log = require('./logger.js')(module);
 
 var config = require('config');
 var paymentConfig = config.get('payment');
@@ -22,7 +23,7 @@ module.exports = {
             },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    console.log("iCredit result:\n", body);
+                    log.info("iCredit result:\n", body);
                     new Payment({
                         user_id: userId,
                         private_sale_token: body.PrivateSaleToken,
@@ -34,7 +35,7 @@ module.exports = {
                 }
                 else {
                     //TODO handle error.
-                    console.error("iCredit ERROR!");
+                    log.error("iCredit ERROR!");
                 }
             }
         );
