@@ -11,6 +11,11 @@ block wrapper
             .alert.alert-danger
                 p=errorMessage
 
+        if (errorMessageResource && errorMessageResource.length > 0)
+            .alert.alert-danger
+                p=t(errorMessageResource)
+
+
         form( action="signup", method="post", data-toggle="validator", role="form" )
             .form-group
                 label=t('email')

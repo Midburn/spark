@@ -85,7 +85,7 @@ module.exports = function (app, passport) {
     var signUpPost = function (req, res, next) {
         recaptcha.verify(req,function(err){ //TODO turn to middleware or promises to minimize clutter
             if (err) {
-                return res.render('pages/signup', {errorMessage: req.flash(err.message)});
+                return res.render('pages/signup', {errorMessageResource: 'only_humans_allowed'});
             }
             else {
                 passport.authenticate('local-signup', {
