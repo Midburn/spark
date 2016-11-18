@@ -35,6 +35,7 @@
     "rand-token": "^0.2.1",
     "request": "^2.74.0",
     "serve-favicon": "~2.3.0",
+    "sprintf-js" : "1.0.3",
     "winston": "2.3.0"
   }
 }

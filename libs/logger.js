@@ -2,6 +2,9 @@ const path = require('path');
 const winston = require('winston');
 const config = require('config');
 const assert = require('assert');
+const sprintf = require("sprintf-js").sprintf;
+
+
 
 module.exports = function(module) {
     assert(module);
@@ -18,7 +21,7 @@ module.exports = function(module) {
           },
           formatter: function(options) {
             // Return string will be passed to logger.
-            return options.timestamp() +' '+ options.level.toUpperCase() +' '+ id + ' : ' + (options.message ? options.message : '') +
+            return sprintf("%-33s", options.timestamp() +' '+ options.level.toUpperCase() +' '+ id + ' : ')  + (options.message ? options.message : '') +
               (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
           }
         })
