@@ -9,6 +9,10 @@ var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
+var recaptcha = require('express-recaptcha');
+
+
+
 
 log.info('Spark is starting...');
 
@@ -21,7 +25,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 // Log every HTTP request
 app.use(morganLogger('dev', { stream: log.logger.stream(
     {level: 'info',
-     filter: function(message){    
+     filter: function(message){
          return !
              (message.includes('/stylesheets/') || message.includes('/images/'));
     }
@@ -120,6 +124,10 @@ app.use('/:lng/npo', require('./routes/npo_routes'));
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
+
+// Recaptcha setup with siteId & secret
+recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
+
 
 log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
 

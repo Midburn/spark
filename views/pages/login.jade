@@ -15,6 +15,10 @@ block wrapper
             .alert.alert-success
                 p=successMessage
 
+        if (successMessageResource && successMessageResource.length > 0)
+            .alert.alert-success
+                p=t(successMessageResource)
+
         form( action="/#{language}/login", method="post", data-toggle="validator", role="form" )
             input( type="hidden", name="r", value=r )
             .form-group
