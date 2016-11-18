@@ -11,18 +11,16 @@ module.exports = function(module) {
           },
           formatter: function(options) {
             // Return string will be passed to logger.
-            return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (options.message ? options.message : '') +
+            return options.timestamp() +' '+ options.level.toUpperCase() +' '+ filename + ' : ' + (options.message ? options.message : '') +
               (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
           }
         })
       ]
     });
-        
 
     function log (level, msg, vars) {
-        logger.log(level, filename + ' : ' + msg, vars); 
+        logger.log(level,  msg, vars); 
     }
-
 
     // Make Morgan log work with Winston
     // http://stackoverflow.com/a/28824464/11236
@@ -36,6 +34,7 @@ module.exports = function(module) {
                 if (message.endsWith('\n')) {
                     message = message.slice(0, -1);
                 }
+                debugger;
                 logger.log(params.level, message);
             }
         }
