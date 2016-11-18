@@ -112,7 +112,7 @@ module.exports = function (app, passport) {
                                 'emails/email_validation',
                                 {name: user.fullName, link: link});
 
-                            res.render('pages/login', {successMessage: 'email_verification_required'});
+                            res.render('pages/login', {successMessageResource: 'email_verification_required'});
 
                         } else {
                             res.render('pages/signup', {errorMessage: req.flash('error')});
