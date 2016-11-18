@@ -167,7 +167,7 @@ else {
 
 // Handler for unhandled rejections
 process.on('unhandledRejection', function (reason, p) {
-    console.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+    log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
 process.on('warning', function (warning) {
