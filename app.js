@@ -31,7 +31,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload());
 
 app.use(function(req, res, next) {
     res.locals.req = req;
@@ -185,7 +184,11 @@ process.on('warning', function (warning) {
     log.warn(warning.stack);   // Print the stack trace
 });
 
+// Allow file uploads
+app.use(fileUpload());
+
 // == Export our app ==
 module.exports = app;
 
 log.info("------   Spark is running at http://localhost:3000/ :) ------");
+
