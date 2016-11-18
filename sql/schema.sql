@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS users (
   # Profile fields
   first_name                VARCHAR(64),
   last_name                 VARCHAR(64),
-  gender                    ENUM('male', 'female'),
+  gender                    ENUM('male', 'female', 'other'),
   date_of_birth             DATE,
   israeli_id                CHAR(9),
   address                   VARCHAR(100),
