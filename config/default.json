@@ -38,5 +38,11 @@
   "npo": {
     "email"         : "amuta@midburn.org",
     "idImagesFolder": "d:/temp/"
+  },
+  // This is a Facebook app I set up for debugging. Before launching, should
+  // be replaced by an app set by the Midburn facebook account.
+  "facebook": {
+    "app_id": "1083906121721925",
+    "app_secret": "d60f362df1e9f35b6633b6f819ea7ccf"
   }
 }
