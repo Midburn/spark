@@ -29,6 +29,13 @@ module.exports = function(module) {
     logger.stream = function(params) {
         return {
             write: function(message, encoding){
+                if (params.filter && !params.filter(message)) {
+                    return;
+                }
+                
+                if (message.endsWith('\n')) {
+                    message = message.slice(0, -1);
+                }
                 logger.log(params.level, message);
             }
         }

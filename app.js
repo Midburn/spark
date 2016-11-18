@@ -19,7 +19,13 @@ var app = express();
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Log every HTTP request
-app.use(morganLogger('dev', { stream: log.logger.stream({level: 'debug'}) }));
+app.use(morganLogger('dev', { stream: log.logger.stream(
+    {level: 'info',
+     filter: function(message){    
+         return !
+             (message.includes('/stylesheets/') || message.includes('/images/'));
+    }
+    }) }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

@@ -74,7 +74,6 @@ module.exports = function (app, passport) {
     // show the login form
     app.get('/:lng/login', function (req, res) {
         var r = req.query.r;
-        log.info('pages/login, r=' + r);
         res.render('pages/login', {errorMessage: req.flash('error'), r: r});
     });
 
