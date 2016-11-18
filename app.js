@@ -11,10 +11,14 @@ var fileUpload = require('express-fileupload');
 var recaptcha = require('express-recaptcha');
 
 
-require('./libs/passport')(passport);
 
+
+console.log("Spark is starting...");
+
+// Creating Express application
 var app = express();
 
+// Middleware registration
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -30,6 +34,7 @@ app.use(function(req, res, next) {
 });
 
 // Passport setup
+require('./libs/passport')(passport);
 app.use(session({
     secret: 'SparklePoniesAreFlyingOnEsplanade',
     resave: false,
@@ -51,7 +56,7 @@ i18next
         whitelist: ['en', 'he'],
         fallbackLng: 'en',
         load: 'languageOnly',
-        debug: true,
+        debug: false,
         backend: {
             // path where resources get loaded from
             loadPath: 'locales/{{lng}}.json',
@@ -100,20 +105,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 
-// Routes setup
+// Built-in Routes
+app.use('/:lng?/admin', require('./routes/admin_routes'));
 require('./routes/main_routes.js')(app, passport);
-app.use('/:lng/admin', require('./routes/admin_routes'));
+
+// Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
-// Mail setup
+// Mail
 var mail = require('./libs/mail');
 mail.setup(app);
 
-//Recaptcha setup
+// Recaptcha setup with siteId & secret
 recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
 
 
-console.log('NODE_ENV =', process.env.NODE_ENV, '| app.env =' , app.get('env'));
+console.log('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
 
 // ==============
 // Error handlers
@@ -178,3 +185,5 @@ process.on('warning', function (warning) {
 
 // == Export our app ==
 module.exports = app;
+
+console.log("Spark is running!");

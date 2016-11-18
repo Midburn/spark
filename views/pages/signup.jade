@@ -43,6 +43,10 @@ block wrapper
                 label
                     input(type="radio", name="gender", value="female", required, data-error="#{t('gender_error')}")
                     | &nbsp; #{t('female')}
+                | &nbsp;
+                label
+                    input(type="radio", name="gender", value="other", required, data-error="#{t('gender_error')}")
+                    | &nbsp; #{t('other')}
                 .help-block.with-errors
             .form-group
                 div( class="g-recaptcha" data-sitekey="6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj")

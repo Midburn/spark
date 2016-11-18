@@ -1,9 +1,13 @@
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
+var User = require('./user').User;
 
 var NpoMember = bookshelf.Model.extend({
     tableName: 'npo_members',
-    idAttribute: 'user_id'
+    idAttribute: 'user_id',
+    user: function() {
+        return this.belongsTo(User, 'user_id');
+    }
 });
 
 // Create the model and expose it
