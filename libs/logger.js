@@ -3,7 +3,7 @@ const winston = require('winston');
 const config = require('config');
 const assert = require('assert');
 const sprintf = require("sprintf-js").sprintf;
-
+const dateFormat = require('dateformat');
 
 
 module.exports = function(module) {
@@ -17,7 +17,7 @@ module.exports = function(module) {
       transports: [
         new (winston.transports.Console)({
           timestamp: function() {
-            return Date.now();
+            return dateFormat(Date.now(), "dd/mm/yy hh:MM:ss.l");
           },
           formatter: function(options) {
             // Return string will be passed to logger.
