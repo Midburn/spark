@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS users (
   cell_phone                CHAR(10),
   extra_phone               CHAR(10),
   npo_member                BOOLEAN DEFAULT FALSE
+  facebook_id		    VARCHAR(50),
+  facebook_token            VARCHAR(255)
 )
   ENGINE = innodb, DEFAULT CHARSET=utf8;
 

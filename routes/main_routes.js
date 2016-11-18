@@ -17,7 +17,11 @@ module.exports = function (app, passport) {
     // INDEX PAGE (renders to login) =======
     // =====================================
     app.get('/', function (req, res) {
-        res.redirect('/he/login');
+        if (req.isAuthenticated()) {
+            res.redirect('/he/home');
+        } else {
+            res.redirect('/he/login');
+        }
     });
 
     app.get('/:lng/', function (req, res, next) {
@@ -77,6 +81,21 @@ module.exports = function (app, passport) {
         res.render('pages/login', {errorMessage: req.flash('error'), r: r});
     });
 
+    // OAuth
+    app.get('/auth/facebook',
+    passport.authenticate('facebook', { scope: ['email'] }));
+
+    app.get('/auth/facebook/reauth',
+    passport.authenticate('facebook', { authType: 'rerequest', scope: ['email'] }));
+
+    app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/' }),
+    function(req, res, c) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
+    });
+
+
     // =====================================
     // SIGNUP ==============================
     // =====================================
@@ -96,7 +115,7 @@ module.exports = function (app, passport) {
                 if (!err) {
                     // Send validation email.
                     var link = serverConfig.url + '/' + req.params.lng +
-                        "/validate_email/" + user.attributes.email_validation_token;
+                    "/validate_email/" + user.attributes.email_validation_token;
 
                     mail.send(
                         user.attributes.email,
@@ -105,62 +124,63 @@ module.exports = function (app, passport) {
                         'emails/email_validation',
                         {name: user.fullName, link: link});
 
-                    res.render('pages/login', {successMessage: i18next.t('email_verification_required')});
+                        res.render('pages/login', {successMessage: i18next.t('email_verification_required')});
 
-                } else {
-                    res.render('pages/signup', {errorMessage: req.flash('error')});
+                    } else {
+                        res.render('pages/signup', {errorMessage: req.flash('error')});
+                    }
+                });
+            })(req, res, next);
+        };
+
+        // show the signup form
+        app.get('/:lng/signup', function (req, res) {
+            // render the page and pass in any flash data if it exists
+            res.render('pages/signup', {errorMessage: req.flash('error')});
+        });
+
+        // process the signup form
+        app.post('/:lng/signup', signUpPost);
+
+        // =====================================
+        // LOGOUT ==============================
+        // =====================================
+        app.get('/:lng/logout', function (req, res) {
+            req.logout();
+            res.redirect('/');
+        });
+
+        // =====================================
+        // RESET PASSWORD ======================
+        // =====================================
+        var resetPasswordPost = function (req, res) {
+            // TODO - implement
+            // Tutorial is here: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
+            // (start at the "forgot" stuff, login/out/sign are already implemented).
+
+            res.render('pages/reset_password', {errorMessage: 'NOT IMPLEMENTED'});
+        };
+
+        app.get('/:lng/reset_password', function (req, res) {
+            res.render('pages/reset_password', {errorMessage: req.flash('error')});
+        });
+
+        app.post('/:lng/reset_password', resetPasswordPost);
+
+
+        app.get('/:lng/validate_email/:token', function (req, res) {
+            var token = req.params.token;
+            log.info('Received email validation token: ' + token);
+
+            new User({email_validation_token: token}).fetch().then(function (user) {
+                if (user.validate()) {
+                    user.save().then(function () {
+                        res.render('pages/login', {successMessage: i18next.t('email_verified')});
+                    });
+                }
+                else {
+                    res.sendStatus(400);
                 }
             });
-        })(req, res, next);
-    };
-
-    // show the signup form
-    app.get('/:lng/signup', function (req, res) {
-        // render the page and pass in any flash data if it exists
-        res.render('pages/signup', {errorMessage: req.flash('error')});
-    });
-
-    // process the signup form
-    app.post('/:lng/signup', signUpPost);
-
-    // =====================================
-    // LOGOUT ==============================
-    // =====================================
-    app.get('/:lng/logout', function (req, res) {
-        req.logout();
-        res.redirect('/');
-    });
-
-    // =====================================
-    // RESET PASSWORD ======================
-    // =====================================
-    var resetPasswordPost = function (req, res) {
-        // TODO - implement
-        // Tutorial is here: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
-        // (start at the "forgot" stuff, login/out/sign are already implemented).
-
-        res.render('pages/reset_password', {errorMessage: 'NOT IMPLEMENTED'});
-    };
-
-    app.get('/:lng/reset_password', function (req, res) {
-        res.render('pages/reset_password', {errorMessage: req.flash('error')});
-    });
-
-    app.post('/:lng/reset_password', resetPasswordPost);
-
-    app.get('/:lng/validate_email/:token', function (req, res) {
-        var token = req.params.token;
-        log.info('Received email validation token: ' + token);
-
-        new User({email_validation_token: token}).fetch().then(function (user) {
-            if (user.validate()) {
-                user.save().then(function () {
-                    res.render('pages/login', {successMessage: i18next.t('email_verified')});
-                });
-            }
-            else {
-                res.sendStatus(400);
-            }
         });
-    });
-};
+    };
