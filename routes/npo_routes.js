@@ -31,6 +31,12 @@ router.get('/', security.protectGet, function (req, res) {
     });
 });
 
+
+router.get('/logout', security.protectGet, function (req, res) {
+    res.redirect('/:lng/logout');
+});
+
+
 router.get('/join', security.protectGet, function (req, res) {
     loadMember(req.user.id, function (member) {
         res.render('pages/npo_join', {user: req.user, npoMember: member});
