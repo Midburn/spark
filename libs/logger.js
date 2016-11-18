@@ -1,8 +1,15 @@
-var winston = require('winston');
-var config = require('config');
+const path = require('path');
+const winston = require('winston');
+const config = require('config');
+const assert = require('assert');
 
 module.exports = function(module) {
-    var filename = module.id;    
+    assert(module);
+    assert(module.id);
+    
+    var appDir = path.dirname(require.main.filename);
+    var id = path.relative(appDir, module.id);
+    
     var logger = new (winston.Logger)({
       transports: [
         new (winston.transports.Console)({
@@ -11,7 +18,7 @@ module.exports = function(module) {
           },
           formatter: function(options) {
             // Return string will be passed to logger.
-            return options.timestamp() +' '+ options.level.toUpperCase() +' '+ filename + ' : ' + (options.message ? options.message : '') +
+            return options.timestamp() +' '+ options.level.toUpperCase() +' '+ id + ' : ' + (options.message ? options.message : '') +
               (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
           }
         })
