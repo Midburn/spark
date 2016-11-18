@@ -106,10 +106,7 @@ module.exports = function (app, passport) {
             if (err) {
                 return res.render('pages/signup', {
                     errorMessageResource: 'only_humans_allowed',
-                    //repopulate fields in case of error// TODO find a more elegant way to bind dta from model to view
-                    email:req.body.email,
-                    first_name:req.body.first_name,
-                    last_name:req.body.last_name
+                    body: req.body //repopulate fields in case of error
                 });
             }
             else {
@@ -119,20 +116,14 @@ module.exports = function (app, passport) {
                     if (err) {
                         res.render('pages/signup', {
                             errorMessage: req.flash(err.message),
-                            //repopulate fields in case of error// TODO find a more elegant way to bind dta from model to view
-                            email:req.body.email,
-                            first_name:req.body.first_name,
-                            last_name:req.body.last_name
-                            });
+                            body: req.body //repopulate fields in case of error
+                        });
                     }
 
                     if (!user) {
                         return res.render('pages/signup', {
                             errorMessage: req.flash('error'),
-                            //repopulate fields in case of error// TODO find a more elegant way to bind dta from model to view
-                            email:req.body.email,
-                            first_name:req.body.first_name,
-                            last_name:req.body.last_name
+                            body: req.body //repopulate fields in case of error
                         });
                     }
 
@@ -154,10 +145,7 @@ module.exports = function (app, passport) {
                         } else {
                             res.render('pages/signup', {
                                 errorMessage: req.flash('error'),
-                                //repopulate fields in case of error// TODO find a more elegant way to bind dta from model to view
-                                email:req.body.email,
-                                first_name:req.body.first_name,
-                                last_name:req.body.last_name
+                                body: req.body //repopulate fields in case of error
                             });
                         }
                     });
