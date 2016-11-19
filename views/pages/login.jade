@@ -17,9 +17,9 @@ block wrapper
 
         form( action="/#{language}/login", method="post", data-toggle="validator", role="form" )
             input( type="hidden", name="r", value=r )
-            .form-groug
+            .form-group
                 label=t('email')
-                input( type="text", class="form-control", name="email", required )
+                input( type="text", class="form-control", name="email", required, autofocus )
             .form-group
                 label=t('password')
                 input( type="password", class="form-control", name="password", required )
@@ -43,4 +43,3 @@ block wrapper
                 |&nbsp;
                 a( href="/en/login" )
                     img( src="/images/flags/en.gif" )
-

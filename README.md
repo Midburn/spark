@@ -135,6 +135,8 @@ We use Jade template engine, a language that compiles to HTML, to seperate logic
 
 Read more about [Jade Syntax Documentation](http://naltatis.github.io/jade-syntax-docs/)
 
+Greate Jade to HTML converter [Here](http://aramboyajyan.github.io/online-jade-template-editor/)
+
 #### i18n & templates
 To use in a JADE template:
 

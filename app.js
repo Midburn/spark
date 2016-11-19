@@ -103,6 +103,9 @@ require('./routes/main_routes.js')(app, passport);
 app.use('/:lng/admin', require('./routes/admin_routes'));
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
+// API
+require('./routes/api_routes.js')(app, passport);
+
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);

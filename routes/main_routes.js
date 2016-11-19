@@ -195,39 +195,16 @@ module.exports = function(app, passport) {
         });
     });
 
-    /**
-     * Camps routing
-     */
-    app.get('/:lng/camps', function(req, res) {
-        res.render('pages/camps/list', {
-            campId: 123123123
+    // ==============
+    // Camps Routing
+    // ==============
+    app.get('/:lng/camps', security.protectGet, function(req, res) {
+        res.render('pages/camps/new', {
+            user: req.user
         });
     });
-
-    // create new camp
-    app.get('/:lng/camps/new', function(req, res) {
-        var camp_name_he = 'camp name he',
-            camp_name_en = 'camp name en';
-
-        new Camp({
-            camp_name_he: camp_name_he,
-            camp_name_en: camp_name_en
-        }).fetch().then(function(camp) {
-            if (camp.validate()) {
-                camp.save().then(function() {
-                    res.render('/:lng/camps', {});
-                });
-            } else {
-                res.sendStatus(400);
-            }
-        });
-    });
-
-    // camp page
-    app.get('/:lng/camps/:id', function(req, res) {
-        var camp_id = req.params.id;
-        res.render('pages/camps/list', {
-            campId: camp_id
-        });
+    // Render camps template
+    app.get('/:lng/camps/:id', (req, res) => {
+        res.render('/:lng/camp', {});
     });
 };
