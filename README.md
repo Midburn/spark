@@ -63,6 +63,16 @@ Fire up the server after installation
 
 and navigate to [http://localhost:3000](http://localhost:3000)
 
+**Note** you probablly want the server to automatically detect your edits, instead of restarting it all the time.
+If so do:
+
+```
+npm install -g nodemon
+nodemon server.js
+```
+
+instead of using `node server.js`
+
 ### Activate your account
 after registration, log into mysql
 
