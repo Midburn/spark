@@ -11,6 +11,10 @@ head
     link( rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css",
     integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r",
     crossorigin="anonymous" )
+
+    if (language === 'he')
+      link( rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css")
+
     link( rel="stylesheet", href="/stylesheets/style.css" )
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
@@ -21,5 +25,3 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     crossorigin="anonymous" )
     script( src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
     script( src="https://www.google.com/recaptcha/api.js")
-
-
