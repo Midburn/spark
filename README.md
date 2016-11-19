@@ -8,7 +8,7 @@
 ## Installation
 
 ### Preconditions
->1. **NodeJS** (https://nodejs.org/en/ )
+>1. **NodeJS** (https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
 >2. **mySQL** (http://dev.mysql.com/downloads/mysql/ )
 >3. **GIT** (https://git-scm.com/downloads )
 
