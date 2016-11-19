@@ -15,14 +15,20 @@ block wrapper
             .alert.alert-success
                 p=successMessage
 
+        if (successMessageResource && successMessageResource.length > 0)
+            .alert.alert-success
+                p=t(successMessageResource)
+
         form( action="/#{language}/login", method="post", data-toggle="validator", role="form" )
             input( type="hidden", name="r", value=r )
             .form-group
                 label=t('email')
-                input( type="text", class="form-control", name="email", required, autofocus )
+                input( type="text", class="form-control", name="email", data-error="#{t('mandatory_field')}", required, autofocus )
+                .help-block.with-errors
             .form-group
                 label=t('password')
-                input( type="password", class="form-control", name="password", required )
+                input( type="password", class="form-control", name="password",data-error="#{t('mandatory_field')}", required )
+                .help-block.with-errors
             .form-group
                 input( type="checkbox", name="remember")
                 |&nbsp;
@@ -31,6 +37,7 @@ block wrapper
                 button( type="submit", class="btn btn-info" )=t('login')
                 |&nbsp;
                 a( href="/#{language}/reset_password" )=t('forgot_password')
+                <a href="/auth/facebook" class="btn btn-info"><span class="fa fa-facebook"></span> Facebook login</a>
         hr
         .text-center
             p=t('need_account')
@@ -43,3 +50,4 @@ block wrapper
                 |&nbsp;
                 a( href="/en/login" )
                     img( src="/images/flags/en.gif" )
+                    br

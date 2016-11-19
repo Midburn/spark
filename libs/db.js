@@ -1,17 +1,13 @@
-var config = require('config');
-
-var dbConfig = config.get('database');
+var dbConfig = require('../opsworks.js').db;
 
 var knex = require('knex')({
     client: 'mysql',
     connection: {
         host     : dbConfig.host,
-        user     : dbConfig.user,
+        user     : dbConfig.username,
         password : dbConfig.password,
-        database : dbConfig.database,
-        charset  : dbConfig.charset
-    },
-    debug: dbConfig.debug
+        database : dbConfig.database
+    }
 });
 
 var bookshelf = require('bookshelf')(knex);

@@ -44,6 +44,10 @@ CREATE TABLE IF NOT EXISTS users (
   camp_id                   INTEGER,
 
   CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (camp_id)
+
+  facebook_id		            VARCHAR(50),
+  facebook_token            VARCHAR(255)
+
 )
   ENGINE = innodb, DEFAULT CHARSET=utf8;
 
