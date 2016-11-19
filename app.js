@@ -11,9 +11,6 @@ var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 
-
-
-
 log.info('Spark is starting...');
 
 // Creating Express application
