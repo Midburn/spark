@@ -1,3 +1,5 @@
+server.listen(port, function () {
+        log.info('Listening on port ' + port + " (http://localhost:" + port + ")");
 #!/usr/bin/env node
 
 /**

@@ -23,20 +23,24 @@ var app = express();
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Log every HTTP request
-app.use(morganLogger('dev', { stream: log.logger.stream(
-    {level: 'info',
-     filter: function(message){
-         return !
-             (message.includes('/stylesheets/') || message.includes('/images/'));
-    }
-    }) }));
+app.use(morganLogger('dev', {
+    stream: log.logger.stream(
+        {
+            level: 'info',
+            filter: function (message) {
+                if ((typeof message === "undefined") || (message === null)) return true;
+                return !
+                    (message.includes('/stylesheets/') || message.includes('/images/'));
+            }
+        })
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.req = req;
     res.locals.path = req.path.split('/');
     next();
@@ -129,7 +133,7 @@ mail.setup(app);
 recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
 
 
-log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
+log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', app.get('env'));
 
 // ==============
 // Error handlers
