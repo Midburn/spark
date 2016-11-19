@@ -15,7 +15,7 @@ block wrapper
                         a( href="/#{language}/home" )=t('home')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
                         a( href="npo" )=t('npo')
-                ul.nav.navbar-nav.navbar-right
+                ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li.dropdow
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
                             if (language=='he')
@@ -41,4 +41,3 @@ block wrapper
                         a( href= '/#{language}/logout' )=t('logout')
     .container
         block content
-
