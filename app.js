@@ -199,5 +199,5 @@ app.use(fileUpload());
 // == Export our app ==
 module.exports = app;
 
-log.info("------   Spark is running at http://localhost:3000/ :) ------");
+log.info("--- Spark is running :) ---");
 
