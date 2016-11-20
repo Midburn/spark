@@ -159,7 +159,12 @@ module.exports = function (app, passport) {
         // show the signup form
         app.get('/:lng/signup', function (req, res) {
             // render the page and pass in any flash data if it exists
-            res.render('pages/signup', {errorMessage: req.flash('error')});
+            res.render('pages/signup', {errorMessage: req.flash('error'),
+                                        language: ':lng', 
+                                        countries: ['Israel', 'United Statel'],
+                                        occupations: ['Artist', 'Engineer'],
+                                        hobbies: ['Music', 'Movies'],
+                                        burn_man_events: ['1978', '1988']});
         });
 
         // process the signup form
