@@ -57,3 +57,6 @@ CREATE TABLE IF NOT EXISTS camp_details (
 
   CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (camp_id)
 )
+
+-- FAKE DATA
+INSERT INTO camps (camp_name_he, camp_name_en, camp_desc_he) VALUES ('campNameHE', 'campNameEN', 'campDesc');
