@@ -14,11 +14,11 @@ block wrapper
                     li( class="#{path[2] === 'home' ? 'active' : undefined }" )
                         a( href="/#{language}/home" )=t('home')
                     li( class="#{path[2] === 'camps' ? 'active' : undefined }" )
-                        a( href="/#{language}/camps" )=t('camps')
+                        a( href="/#{language}/camps" )=t('camps.nav')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
                         a( href="npo" )=t('npo')
                 ul.nav.navbar-nav.navbar-right
-                    li.dropdow
+                    li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
                             if (language=='he')
                                 img( src="/images/flags/he.gif" )
