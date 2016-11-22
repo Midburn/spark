@@ -13,6 +13,15 @@ var mail = require('../libs/mail');
 var User = require('../models/user').User;
 var log = require('../libs/logger.js')(module);
 
+    
+    var signup_choices = {
+                                            countries: ['Israel', 'United Statel'],
+                                            occupations: ['Artist', 'Engineer'],
+                                            hobbies: ['Music', 'Movies'],
+                                            burn_man_events: ['1978', '1988'],
+                                            midburn_events: ['2014', '2015','2016'],
+                                            ways_of_paricipation : ["Theme Camp", "Sound Camp", "Art Installation", "Volunteering During The Event", "Havn't decided yet"]
+                                            };
 module.exports = function (app, passport) {
 
     // =====================================
@@ -106,7 +115,8 @@ module.exports = function (app, passport) {
             if (err) {
                 return res.render('pages/signup', {
                     errorMessageResource: 'only_humans_allowed',
-                    body: req.body //repopulate fields in case of error
+                    body: req.body, //repopulate fields in case of error,
+                    choices: signup_choices
                 });
             }
             else {
@@ -116,14 +126,16 @@ module.exports = function (app, passport) {
                     if (err) {
                         res.render('pages/signup', {
                             errorMessage: req.flash(err.message),
-                            body: req.body //repopulate fields in case of error
+                            body: req.body, //repopulate fields in case of error
+                            choices: signup_choices
                         });
                     }
 
                     if (!user) {
                         return res.render('pages/signup', {
                             errorMessage: req.flash('error'),
-                            body: req.body //repopulate fields in case of error
+                            body: req.body, //repopulate fields in case of error,
+                            choices: signup_choices
                         });
                     }
 
@@ -145,7 +157,8 @@ module.exports = function (app, passport) {
                         } else {
                             res.render('pages/signup', {
                                 errorMessage: req.flash('error'),
-                                body: req.body //repopulate fields in case of error
+                                body: req.body, //repopulate fields in case of error
+                                choices: signup_choices
                             });
                         }
                     });
@@ -155,16 +168,14 @@ module.exports = function (app, passport) {
 
 
     };
-
+    
         // show the signup form
         app.get('/:lng/signup', function (req, res) {
             // render the page and pass in any flash data if it exists
             res.render('pages/signup', {errorMessage: req.flash('error'),
-                                        language: ':lng', 
-                                        countries: ['Israel', 'United Statel'],
-                                        occupations: ['Artist', 'Engineer'],
-                                        hobbies: ['Music', 'Movies'],
-                                        burn_man_events: ['1978', '1988']});
+                                        language: ':lng',
+                                         choices : signup_choices 
+                                        });
         });
 
         // process the signup form

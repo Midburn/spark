@@ -65,7 +65,7 @@ block wrapper
                 .form-group
                     label=t('nationality')
                     select(class="form-control", name="nationality", value="#{(body && body.nationality)||''}", data-error="#{t('mandatory_field')}", required )
-                        each country, i in countries
+                        each country, i in choices.countries
                             option(value=i) #{country}
                 
                 .form-group
@@ -80,13 +80,13 @@ block wrapper
                 .form-group
                     label=t('occupation')
                     select(class="form-control", name="occupation", value="#{(body && body.occupation)||''}", data-error="#{t('mandatory_field')}", required )
-                        each occupation, i in occupations
+                        each occupation, i in choices.occupations
                             option(value=occupation) #{occupation}
                 
                 .form-group
                     label=t('hobbies')
                     select(class="form-control", name="hobbies", value="#{(body && body.hobbies)||''}", data-error="#{t('mandatory_field')}", required )
-                        each hobby, i in hobbies
+                        each hobby, i in choices.hobbies
                             option(value=hobby) #{hobby}
 
 
@@ -103,13 +103,65 @@ block wrapper
 
                 .form-group
                     p=t('prev_burn_man_events')
-                    each burn_man_event, i in burn_man_events
+                    each burn_man_event, i in choices.burn_man_events
                         label( class="form-control") "#{burn_man_event}"
-                            input( type="checkbox",  id="prev_burn_man_events", name="burn_man_events" value="burn_event_#{i}", data-error="#{t('mandatory_field')}")
+                            input( type="checkbox",  id="prev_burn_man_events", name="burn_man_events" value="#{i}", data-error="#{t('mandatory_field')}")
+
+                .form-group
+                    p=t('prev_midburn_events')
+                    each midburn_event, i in choices.midburn_events
+                        label( class="form-control") "#{midburn_event}"
+                            input( type="checkbox",  id="prev_midburn_events", name="midburn_events" value="#{i}", data-error="#{t('mandatory_field')}")
+                
+                .form-group
+                    label=t('how_plan_to_participate')
+                    select(class="form-control", name="way_of_paricipation", value="#{(body && body.way_of_paricipation)||''}", data-error="#{t('mandatory_field')}", required )
+                        each way_of_paricipation, i in choices.ways_of_paricipation
+                            option(value=i) #{way_of_paricipation}
+
+
                 button(type="button", class="btn btn-previous")=t('previous')
                 button(type="button", class="btn btn-next")=t('next')
 
-            fieldset                
+            fieldset
+                .form-group
+                    label( class="form-control")=t('have_medical_training')
+                        input( type="checkbox",  id="have_medical_training", name="medical_training" value="#{(body && body.medical_training)||''}", data-error="#{t('mandatory_field')}")
+                
+                .form-group
+                    label=t('medical_training_details')
+                    input( type="text", class="form-control", id="medical_training_details", value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}", required )
+
+                .form-group
+                    label( class="form-control")=t('have_medical_condition')
+                        input( type="checkbox",  id="have_medical_condition", name="medical_condition" value="#{(body && body.medical_condition)||''}", data-error="#{t('mandatory_field')}")
+                
+                .form-group
+                    label=t('medical_condition_details')
+                    input( type="text", class="form-control", id="medical_condition_details", value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}", required )
+
+                button(type="button", class="btn btn-previous")=t('previous')
+                button(type="button", class="btn btn-next")=t('next')
+
+            fieldset
+                .form-group
+                    label( class="form-control")=t('hebrew_newsletter')
+                        input( type="checkbox",  id="hebrew_newsletter", name="newsletter" value="hebrew", data-error="#{t('mandatory_field')}") 
+                    label( class="form-control")=t('english_newsletter')
+                        input( type="checkbox",  id="english_newsletter", name="newsletter" value="english", data-error="#{t('mandatory_field')}")
+
+                .form-group
+                    label( class="form-control")=t('read_ten_principals')
+                        input( type="checkbox",  id="read_ten_principals", value="read_ten_principals", data-error="#{t('mandatory_field')}")
+                        a(src="#") link 
+                .form-group
+                    label( class="form-control")=t('read_survival_guide')
+                        input( type="checkbox",  id="read_survival_guide",  value="read_survival_guide", data-error="#{t('mandatory_field')}")
+                        a(src="#") link
+                .form-group
+                    label( class="form-control")=t('read_terms')
+                        input( type="checkbox",  id="read_terms",  value="read_terms", data-error="#{t('mandatory_field')}")
+                        a(src="#") link
                 .form-group
                     div( class="g-recaptcha" data-sitekey="6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj")
 
