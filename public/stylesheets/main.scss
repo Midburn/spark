@@ -1,5 +1,10 @@
+@import './ui';
+
 body {
     padding-top: 70px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vw;
 }
 
 .midburn_logo {
@@ -14,56 +19,42 @@ body {
     content: " *";
     font-size: larger;
 }
-
-
 /*NAVIGATION*/
-
 .navbar-brand {
     padding-left: 30px;
-    background-image: url(../images/spark_logo.png);
+    background-image: url("../images/spark_logo.png");
     background-repeat: no-repeat;
     background-position: 10px 15px;
 }
 
-<<<<<<< HEAD:public/stylesheets/style.css
-li.dropdown>ul>li>a>img, li.dropdown>ul>li>a>span {
+li.dropdown > ul > li > a > img,
+li.dropdown > ul > li > a > span {
     float: right;
 }
 
-li.dropdown>ul>li>a>span {
+li.dropdown > ul > li > a > span {
     padding-right: 0.5em;
 }
-
-
 /*FIXING COL (HEB)*/
-
 @media screen and (min-width: 992px) {
     body[lang="he"] div.camps div[class^="col"] {
         float: right;
     }
 }
-=======
+
 .main {
-  display: flex;
-  flex: 1;
-  padding: 10px;
-  background: red;
-  justify-content: center;
-  align-items: flex-start;
-  .card {
-    max-width: 540px;
-    min-width: 200px;
-    padding: 40px;
-    border-radius: 5px;
-    background: white;
-  }
-}
+    display: flex;
+    flex: 1;
+    padding: 10px;
+    background: red;
+    justify-content: center;
+    align-items: flex-start;
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vw;
+    .card {
+        max-width: 540px;
+        min-width: 200px;
+        padding: 40px;
+        border-radius: 5px;
+        background: white;
+    }
 }
-
-@import './ui';
->>>>>>> master:public/stylesheets/main.scss
