@@ -42,15 +42,15 @@ block wrapper
                 label=t('gender')
                 br
                 label
-                    input(type="radio", name="gender", value="male", required, checked=body && body.gender==='male' ,data-error="#{t('gender_error')}" )
+                    input(type="radio", name="gender", value="male", required, checked=(body && body.gender==='male') ,data-error="#{t('gender_error')}" )
                     | &nbsp; #{t('male')}
                 | &nbsp;
                 label
-                    input(type="radio", name="gender", value="female", required,  checked=body && body.gender==='female', data-error="#{t('gender_error')}")
+                    input(type="radio", name="gender", value="female", required,  checked=(body && body.gender==='female'), data-error="#{t('gender_error')}")
                     | &nbsp; #{t('female')}
                 | &nbsp;
                 label
-                    input(type="radio", name="gender", value="other", required, checked=body && body.gender==='other', data-error="#{t('gender_error')}")
+                    input(type="radio", name="gender", value="other", required, checked=(body && body.gender==='other'), data-error="#{t('gender_error')}")
                     | &nbsp; #{t('other')}
                 .help-block.with-errors
             .form-group
