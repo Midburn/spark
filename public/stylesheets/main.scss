@@ -21,3 +21,27 @@ body {
     background-repeat: no-repeat;
     background-position: 10px 15px;
 }
+
+.main {
+  display: flex;
+  flex: 1;
+  padding: 10px;
+  background: red;
+  justify-content: center;
+  align-items: flex-start;
+  .card {
+    max-width: 540px;
+    min-width: 200px;
+    padding: 40px;
+    border-radius: 5px;
+    background: white;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vw;
+}
+
+@import './ui';

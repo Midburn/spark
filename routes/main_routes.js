@@ -13,6 +13,8 @@ var mail = require('../libs/mail');
 var User = require('../models/user').User;
 var log = require('../libs/logger.js')(module);
 
+var ticket_routes = require('./ticket_routes');
+
 module.exports = function (app, passport) {
 
     // =====================================
@@ -97,7 +99,7 @@ module.exports = function (app, passport) {
         res.redirect('/');
     });
 
-
+    app.use('/:language/tickets/', ticket_routes);
     // =====================================
     // SIGNUP ==============================
     // =====================================

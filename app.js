@@ -10,6 +10,8 @@ var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
+var compileSass = require('express-compile-sass')
+
 
 log.info('Spark is starting...');
 
@@ -35,6 +37,15 @@ app.use(morganLogger('dev', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+
+var root = process.cwd();
+app.use(compileSass({
+    root: root + '/public',
+    sourceMap: true, // Includes Base64 encoded source maps in output css
+    sourceComments: true, // Includes source comments in output css
+    watchFiles: true, // Watches sass files and updates mtime on main files for each change
+    logToConsole: false // If true, will log to console.error on errors
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
@@ -116,6 +127,7 @@ app.set('view engine', 'jade');
 
 
 // Built-in Routes
+require('./routes/dev_routes.js')(app, passport);
 app.use('/:lng?/admin', require('./routes/admin_routes'));
 require('./routes/main_routes.js')(app, passport);
 
@@ -145,6 +157,7 @@ app.use(function (req, res, next) {
 
 // Development error handler - will print stacktrace
 if (app.get('env') === 'development') {
+
     app.use(function (err, req, res, next) {
         // Handle CSRF token errors
         if (err.code == 'EBADCSRFTOKEN') {
@@ -200,4 +213,3 @@ app.use(fileUpload());
 module.exports = app;
 
 log.info("--- Spark is running :) ---");
-
