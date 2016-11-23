@@ -11,15 +11,17 @@ head
     link( rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css",
     integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r",
     crossorigin="anonymous" )
-    link( rel="stylesheet", href="/stylesheets/style.css" )
+
+    if (language === 'he')
+      link( rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css")
+
+    link( rel="stylesheet", href="/stylesheets/main.scss" )
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
-    script( src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' )
-    script( src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",
+    script(async src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' )
+    script(async src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",
     integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
     crossorigin="anonymous" )
-    script( src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
-    script( src="https://www.google.com/recaptcha/api.js")
-
-
+    script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
+    script(async src="https://www.google.com/recaptcha/api.js")

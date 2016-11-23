@@ -10,7 +10,13 @@ var log = require('../libs/logger.js')(module);
 
 var User = require('../models/user').User;
 
+<<<<<<< HEAD
 module.exports = function(app, passport) {
+=======
+var ticket_routes = require('./ticket_routes');
+
+module.exports = function (app, passport) {
+>>>>>>> master
 
     // =====================================
     // INDEX PAGE (renders to login) =======
@@ -104,6 +110,7 @@ module.exports = function(app, passport) {
         }));
 
     app.get('/auth/facebook/callback',
+<<<<<<< HEAD
         passport.authenticate('facebook', {
             failureRedirect: '/'
         }),
@@ -112,6 +119,15 @@ module.exports = function(app, passport) {
             res.redirect('/');
         });
 
+=======
+    passport.authenticate('facebook', { failureRedirect: '/' }),
+    function(req, res, c) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
+    });
+
+    app.use('/:language/tickets/', ticket_routes);
+>>>>>>> master
     // =====================================
     // SIGNUP ==============================
     // =====================================

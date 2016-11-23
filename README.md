@@ -8,7 +8,7 @@
 ## Installation
 
 ### Preconditions
->1. **NodeJS** (https://nodejs.org/en/ )
+>1. **NodeJS** (https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
 >2. **mySQL** (http://dev.mysql.com/downloads/mysql/ )
 >3. **GIT** (https://git-scm.com/downloads )
 
@@ -62,6 +62,16 @@ Fire up the server after installation
 `$ node server.js`
 
 and navigate to [http://localhost:3000](http://localhost:3000)
+
+**Note** you probablly want the server to automatically detect your edits, instead of restarting it all the time.
+If so do:
+
+```
+npm install -g nodemon
+nodemon server.js
+```
+
+instead of using `node server.js`
 
 ### Activate your account
 after registration, log into mysql

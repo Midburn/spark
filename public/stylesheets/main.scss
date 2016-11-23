@@ -25,6 +25,7 @@ body {
     background-position: 10px 15px;
 }
 
+<<<<<<< HEAD:public/stylesheets/style.css
 li.dropdown>ul>li>a>img, li.dropdown>ul>li>a>span {
     float: right;
 }
@@ -41,3 +42,28 @@ li.dropdown>ul>li>a>span {
         float: right;
     }
 }
+=======
+.main {
+  display: flex;
+  flex: 1;
+  padding: 10px;
+  background: red;
+  justify-content: center;
+  align-items: flex-start;
+  .card {
+    max-width: 540px;
+    min-width: 200px;
+    padding: 40px;
+    border-radius: 5px;
+    background: white;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vw;
+}
+
+@import './ui';
+>>>>>>> master:public/stylesheets/main.scss

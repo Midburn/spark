@@ -10,8 +10,7 @@ var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
-
-
+var compileSass = require('express-compile-sass')
 
 
 log.info('Spark is starting...');
@@ -23,20 +22,33 @@ var app = express();
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Log every HTTP request
-app.use(morganLogger('dev', { stream: log.logger.stream(
-    {level: 'info',
-     filter: function(message){
-         return !
-             (message.includes('/stylesheets/') || message.includes('/images/'));
-    }
-    }) }));
+app.use(morganLogger('dev', {
+    stream: log.logger.stream(
+        {
+            level: 'info',
+            filter: function (message) {
+                if ((typeof message === "undefined") || (message === null)) return true;
+                return !
+                    (message.includes('/stylesheets/') || message.includes('/images/'));
+            }
+        })
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+
+var root = process.cwd();
+app.use(compileSass({
+    root: root + '/public',
+    sourceMap: true, // Includes Base64 encoded source maps in output css
+    sourceComments: true, // Includes source comments in output css
+    watchFiles: true, // Watches sass files and updates mtime on main files for each change
+    logToConsole: false // If true, will log to console.error on errors
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.req = req;
     res.locals.path = req.path.split('/');
     next();
@@ -115,6 +127,7 @@ app.set('view engine', 'jade');
 
 
 // Built-in Routes
+require('./routes/dev_routes.js')(app, passport);
 app.use('/:lng?/admin', require('./routes/admin_routes'));
 require('./routes/main_routes.js')(app, passport);
 
@@ -135,7 +148,7 @@ mail.setup(app);
 recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
 
 
-log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =' , app.get('env'));
+log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', app.get('env'));
 
 // ==============
 // Error handlers
@@ -150,6 +163,7 @@ app.use(function (req, res, next) {
 
 // Development error handler - will print stacktrace
 if (app.get('env') === 'development') {
+
     app.use(function (err, req, res, next) {
         // Handle CSRF token errors
         if (err.code == 'EBADCSRFTOKEN') {
@@ -204,4 +218,8 @@ app.use(fileUpload());
 // == Export our app ==
 module.exports = app;
 
+<<<<<<< HEAD
 log.info("------   Spark is running at http://localhost:3000/ :) ------");
+=======
+log.info("--- Spark is running :) ---");
+>>>>>>> master
