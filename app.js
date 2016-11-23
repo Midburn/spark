@@ -10,7 +10,7 @@ var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
-var compileSass = require('express-compile-sass')
+var compileSass = require('express-compile-sass');
 
 
 log.info('Spark is starting...');
@@ -125,9 +125,10 @@ app.use(middleware.handle(i18next, {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-
-// Built-in Routes
-require('./routes/dev_routes.js')(app, passport);
+// Infrastructure Routes
+if (app.get('env') === 'development') {
+    app.use('/dev', require('./routes/dev_routes'));
+}
 app.use('/:lng?/admin', require('./routes/admin_routes'));
 require('./routes/main_routes.js')(app, passport);
 
