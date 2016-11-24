@@ -4,7 +4,7 @@ const dbConfig = require('../opsworks.js').db;
 module.exports =  {
   database: {
       host     : dbConfig.host,
-      user     : dbConfig.username,
+      username : dbConfig.username,
       password : dbConfig.password,
       database : dbConfig.database
   },
