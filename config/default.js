@@ -6,7 +6,8 @@ module.exports =  {
       host     : dbConfig.host,
       username : dbConfig.username,
       password : dbConfig.password,
-      database : dbConfig.database
+      database : dbConfig.database,
+      debug	   : false
   },
   server: {
     port      : 80,
@@ -16,7 +17,7 @@ module.exports =  {
   },
 
   mail: {
-	enabled         : false,
+	  enabled         : true,
     from            : "spark@midburn.org",
     host            : "email-smtp.eu-west-1.amazonaws.com",
     secureConnection: true,         // use SSL

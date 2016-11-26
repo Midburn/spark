@@ -8,7 +8,8 @@ var knex = require('knex')({
         user     : dbConfig.username,
         password : dbConfig.password,
         database : dbConfig.database
-    }
+    },
+    debug: dbConfig.debug
 });
 
 var bookshelf = require('bookshelf')(knex);
