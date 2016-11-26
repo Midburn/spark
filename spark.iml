@@ -6,7 +6,10 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="spark node_modules" level="project" />
-    <orderEntry type="library" name="Node.js v0.12.4 Core Modules" level="application" />
+  </component>
+  <component name="RModuleSettingsStorage">
+    <LOAD_PATH number="0" />
+    <I18N_FOLDERS number="1" string0="$MODULE_DIR$/locales" />
   </component>
   <component name="RModuleSettingsStorage">
     <LOAD_PATH number="0" />

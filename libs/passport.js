@@ -41,20 +41,19 @@ module.exports = function (passport) {
         var user = req.body;
         var userPromise = new User({email: email}).fetch();
 
+        console.log("LOCAL SIGNUP Strategy");
         return userPromise.then(function (model) {
+            console.log("LOCAL SIGNUP Strategy");
             if (model) {
                 return done(null, false, req.flash('error', i18next.t('user_exists')));
             } else {
-                var newUser = new User({
-                    email: email,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    gender: user.gender
-                });
+                var jsonParams = Object.assign({}, user);
+                console.log("jsonParams:" + JSON.stringify(jsonParams));
+                var newUser = new User(jsonParams);
                 newUser.generateHash(password);
                 newUser.generateValidation();
 
-                newUser.save().then(function (model) {
+                return newUser.save().then(function () {
                     return done(null, newUser, null);
                 });
             }

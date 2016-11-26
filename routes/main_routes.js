@@ -15,7 +15,7 @@ var log = require('../libs/logger.js')(module);
 
 var ticket_routes = require('./ticket_routes');
 
-    
+
 var signup_choices = {
     countries: ['Israel', 'United Statel'],
     occupations: ['Artist', 'Engineer'],
@@ -127,6 +127,7 @@ module.exports = function (app, passport) {
                 passport.authenticate('local-signup', {
                     failureFlash: true
                 }, function (err, user, info) {
+                    console.log('User authenticated');
                     if (err) {
                         res.render('pages/signup', {
                             errorMessage: req.flash(err.message),
@@ -166,20 +167,23 @@ module.exports = function (app, passport) {
                             });
                         }
                     });
+                }, function() {
+                    console.log('User NOT authenticated');
+
                 })(req, res, next);
             }
         });
 
 
     };
-    
+
         // show the signup form
         app.get('/:lng/signup', function (req, res) {
             // render the page and pass in any flash data if it exists
             res.render('pages/signup', {
                 errorMessage: req.flash('error'),
                 language: ':lng',
-                choices : signup_choices 
+                choices : signup_choices
             });
         });
 
