@@ -75,7 +75,7 @@ block wrapper
                 //connect togoogle api?
                 .form-group
                     label=t('address')
-                    input( type="text", class="form-control", name="address", value="#{(body && body.address)||''}", data-error="#{t('mandatory_field')}", required )
+                    input( type="text", id="address" class="form-control", name="formatted_address", value="#{(body && body.formatted_address)||''}", data-error="#{t('mandatory_field')}", required )
 
                 .form-group
                     label=t('occupation')
@@ -124,43 +124,46 @@ block wrapper
                 button(type="button", class="btn btn-next")=t('next')
 
             fieldset
+            
                 .form-group
                     label( class="form-control")=t('have_medical_training')
                         input( type="checkbox",  id="have_medical_training", name="medical_training" value="#{(body && body.medical_training)||''}", data-error="#{t('mandatory_field')}")
                 
-                .form-group
-                    label=t('medical_training_details')
-                    input( type="text", class="form-control", id="medical_training_details", value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}", required )
+                .form-group#medical_training_details
+                    label=t('elaborate')
+                    input( type="text", class="form-control", value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}", required )
 
                 .form-group
                     label( class="form-control")=t('have_medical_condition')
                         input( type="checkbox",  id="have_medical_condition", name="medical_condition" value="#{(body && body.medical_condition)||''}", data-error="#{t('mandatory_field')}")
                 
-                .form-group
-                    label=t('medical_condition_details')
-                    input( type="text", class="form-control", id="medical_condition_details", value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}", required )
+                .form-group#medical_condition_details
+                    label=t('elaborate')
+                    input( type="text",  class="form-control", value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}", required )
 
                 button(type="button", class="btn btn-previous")=t('previous')
                 button(type="button", class="btn btn-next")=t('next')
 
             fieldset
                 .form-group
-                    label( class="form-control")=t('hebrew_newsletter')
+                    label=t('subscribe_newsletter')
+                    br
+                    label( class="form-control")=t('hebrew')
                         input( type="checkbox",  id="hebrew_newsletter", name="newsletter" value="hebrew", data-error="#{t('mandatory_field')}") 
-                    label( class="form-control")=t('english_newsletter')
+                    label( class="form-control")=t('english')
                         input( type="checkbox",  id="english_newsletter", name="newsletter" value="english", data-error="#{t('mandatory_field')}")
 
                 .form-group
                     label( class="form-control")=t('read_ten_principals')
-                        input( type="checkbox",  id="read_ten_principals", value="read_ten_principals", data-error="#{t('mandatory_field')}")
+                        input( type="checkbox",  id="read_ten_principals", value="read_ten_principals", data-error="#{t('mandatory_field')}",required)
                         a(src="#") link 
                 .form-group
                     label( class="form-control")=t('read_survival_guide')
-                        input( type="checkbox",  id="read_survival_guide",  value="read_survival_guide", data-error="#{t('mandatory_field')}")
+                        input( type="checkbox",  id="read_survival_guide",  value="read_survival_guide", data-error="#{t('mandatory_field')}", required)
                         a(src="#") link
                 .form-group
                     label( class="form-control")=t('read_terms')
-                        input( type="checkbox",  id="read_terms",  value="read_terms", data-error="#{t('mandatory_field')}")
+                        input( type="checkbox",  id="read_terms",  value="read_terms", data-error="#{t('mandatory_field')}", required)
                         a(src="#") link
                 .form-group
                     div( class="g-recaptcha" data-sitekey="6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj")
