@@ -41,9 +41,9 @@ module.exports = function (passport) {
         var user = req.body;
         var userPromise = new User({email: email}).fetch();
 
-        console.log("LOCAL SIGNUP Strategy");
+        console.log("local-signup Strategy");
+
         return userPromise.then(function (model) {
-            console.log("LOCAL SIGNUP Strategy");
             if (model) {
                 return done(null, false, req.flash('error', i18next.t('user_exists')));
             } else {
