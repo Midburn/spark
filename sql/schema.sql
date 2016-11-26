@@ -1,14 +1,3 @@
-
-USE spark;
-
-##########
-#  DROP  #
-##########
-
-DROP TABLE IF EXISTS payments;
-DROP TABLE IF EXISTS npo_members;
-DROP TABLE IF EXISTS users;
-
 ############
 #  CREATE  #
 ############
@@ -76,5 +65,3 @@ CREATE TABLE IF NOT EXISTS npo_members (
   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (user_id)
 )
   ENGINE = innodb, DEFAULT CHARSET=utf8;
-
-

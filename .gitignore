@@ -3,6 +3,7 @@
 .idea/workspace.xml
 .idea/dictionaries/*
 .idea/tasks.xml
+/.idea/runConfigurations/
 
 # Config local files (https://github.com/lorenwest/node-config/wiki/Configuration-Files)
 config/local*.json

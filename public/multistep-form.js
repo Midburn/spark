@@ -1,52 +1,78 @@
-$(document).ready(function () {
-    $('#registration-form fieldset:first-child').fadeIn('slow');
 
-    $('#registration-form input[type="text"]').on('focus', function () {
-        $(this).removeClass('input-error');
+(function (window, $) {
+
+    Object.assign(window.spark, {
+        initRegistrationForm: initRegistrationForm
     });
 
-    // next step
-    $('#registration-form .btn-next').on('click', function () {
-        var parent_fieldset = $(this).parents('fieldset');
-        var next_step = true;
 
-        parent_fieldset.find('input[type="text"],input[type="email"]').each(function () {
-            if ($(this).val() === "") {
-                $(this).addClass('input-error');
-                next_step = false;
-            } else {
-                $(this).removeClass('input-error');
+    function initRegistrationForm() {
+        const $regForm = $('#registration-form');
+        const _currentClass = "is-current";
+
+        const _formSteps = [{
+
+        }];
+
+        _setStep(0);
+
+        $regForm.find('input[type="text"]').on('focus', function () {
+            $(this).removeClass('input-error');
+        });
+
+        // previous step
+        $regForm.find('.btn-previous').on('click', function () {
+            _goBack();
+        });
+
+        //submit
+        $regForm.on('submit', function () {
+
+            $regForm.validator('validate');
+
+            var errGroups = _getCurrentVisibleForm().find('.has-error');
+
+            if (errGroups.length == 0) {
+                setTimeout(function() {
+                    // Let BS validator finish running its validations
+                    _goForward();
+                });
             }
         });
 
-        if (next_step) {
-            parent_fieldset.fadeOut(400, function () {
-                $(this).next().fadeIn();
-            });
+
+
+
+
+        function _goForward() {
+            _setStep(_getCurrentStep() + 1);
+            _clearFormErrors();
         }
 
-    });
+        function _goBack() {
+            _setStep(_getCurrentStep() - 1);
+        }
 
-    // previous step
-    $('#registration-form .btn-previous').on('click', function () {
-        $(this).parents('fieldset').fadeOut(400, function () {
-            $(this).prev().fadeIn();
-        });
-    });
+        function _getCurrentStep() {
+            return $("fieldset." +  _currentClass).index();
+        }
 
-    // submit
-    $('#registration-form').on('submit', function (e) {
+        function _setStep(number) {
+            $regForm.find('fieldset').eq(number)
+                .addClass(_currentClass)
+                .siblings().removeClass(_currentClass);
+        }
 
-        $(this).find('input[type="text"],input[type="email"]').each(function () {
-            if ($(this).val() === "") {
-                e.preventDefault();
-                $(this).addClass('input-error');
-            } else {
-                $(this).removeClass('input-error');
-            }
-        });
+        function _getCurrentVisibleForm() {
+            return $regForm.find("." + _currentClass);
+        }
 
-    });
+        function _clearFormErrors() {
+            $regForm.find(".input-error, .has-error, .has-danger")
+                .removeClass("input-error has-error has-danger");
+        }
+    }
 
-   
-});
+
+
+})(window, jQuery);

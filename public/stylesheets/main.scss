@@ -1,0 +1,54 @@
+body {
+    padding-top: 70px;
+}
+
+.midburn_logo {
+    background-image: url("../images/midburn_logo_120.png");
+    height: 120px;
+    width: 89px;
+    margin: auto;
+}
+
+.form-group.required label:after {
+    color: #d00;
+    content: " *";
+    font-size: larger;
+}
+
+.navbar-brand {
+    padding-left: 30px;
+    background-image: url(../images/spark_logo.png);
+    background-repeat: no-repeat;
+    background-position: 10px 15px;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  padding: 10px;
+  background: red;
+  justify-content: center;
+  align-items: flex-start;
+  .card {
+    max-width: 540px;
+    min-width: 200px;
+    padding: 40px;
+    border-radius: 5px;
+    background: white;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vw;
+}
+
+
+form#registration-form fieldset {
+  display: none;
+}
+
+@import './ui';
+
+

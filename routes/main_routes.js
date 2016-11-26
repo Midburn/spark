@@ -13,15 +13,18 @@ var mail = require('../libs/mail');
 var User = require('../models/user').User;
 var log = require('../libs/logger.js')(module);
 
+var ticket_routes = require('./ticket_routes');
+
     
-    var signup_choices = {
-                                            countries: ['Israel', 'United Statel'],
-                                            occupations: ['Artist', 'Engineer'],
-                                            hobbies: ['Music', 'Movies'],
-                                            burn_man_events: ['1978', '1988'],
-                                            midburn_events: ['2014', '2015','2016'],
-                                            ways_of_paricipation : ["Theme Camp", "Sound Camp", "Art Installation", "Volunteering During The Event", "Havn't decided yet"]
-                                            };
+var signup_choices = {
+    countries: ['Israel', 'United Statel'],
+    occupations: ['Artist', 'Engineer'],
+    hobbies: ['Music', 'Movies'],
+    burn_man_events: ['1978', '1988'],
+    midburn_events: ['2014', '2015','2016'],
+    ways_of_paricipation : ["Theme Camp", "Sound Camp", "Art Installation", "Volunteering During The Event", "Havn't decided yet"]
+};
+
 module.exports = function (app, passport) {
 
     // =====================================
@@ -106,11 +109,12 @@ module.exports = function (app, passport) {
         res.redirect('/');
     });
 
-
+    app.use('/:language/tickets/', ticket_routes);
     // =====================================
     // SIGNUP ==============================
     // =====================================
     var signUpPost = function (req, res, next) {
+        console.log('    // SIGNUP ==============================');
         recaptcha.verify(req,function(err){ //TODO turn to middleware or promises to minimize clutter
             if (err) {
                 return res.render('pages/signup', {
@@ -172,10 +176,11 @@ module.exports = function (app, passport) {
         // show the signup form
         app.get('/:lng/signup', function (req, res) {
             // render the page and pass in any flash data if it exists
-            res.render('pages/signup', {errorMessage: req.flash('error'),
-                                        language: ':lng',
-                                         choices : signup_choices 
-                                        });
+            res.render('pages/signup', {
+                errorMessage: req.flash('error'),
+                language: ':lng',
+                choices : signup_choices 
+            });
         });
 
         // process the signup form

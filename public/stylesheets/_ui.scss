@@ -1,0 +1,35 @@
+input.nocommit {
+  background: white;
+  color: blue;
+  border: 1px blue solid;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+input.commit {
+  background: blue;
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+
+.main {
+  display: flex;
+  flex: 1;
+  padding: 10px;
+  background: red;
+  justify-content: center;
+  align-items: flex-start;
+  .card {
+    max-width: 540px;
+    min-width: 200px;
+    padding: 30px 40px 30px 40px;
+    border-radius: 5px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+}
