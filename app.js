@@ -11,7 +11,8 @@ var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass')
-
+var LocalStrategy = require('passport-local').Strategy,
+    RememberMeStrategy = require('../..').Strategy;
 
 log.info('Spark is starting...');
 
@@ -23,19 +24,20 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // Log every HTTP request
 app.use(morganLogger('dev', {
-    stream: log.logger.stream(
-        {
-            level: 'info',
-            filter: function (message) {
-                if ((typeof message === "undefined") || (message === null)) return true;
-                return !
-                    (message.includes('/stylesheets/') || message.includes('/images/'));
-            }
-        })
+    stream: log.logger.stream({
+        level: 'info',
+        filter: function(message) {
+            if ((typeof message === "undefined") || (message === null)) return true;
+            return !
+                (message.includes('/stylesheets/') || message.includes('/images/'));
+        }
+    })
 }));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
 
 var root = process.cwd();
@@ -48,7 +50,7 @@ app.use(compileSass({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.locals.req = req;
     res.locals.path = req.path.split('/');
     next();
@@ -106,8 +108,8 @@ i18next
             //cookieExpirationDate: new Date(),
             //cookieDomain: 'SparkMidburn'
         }
-    }, function () {
-        middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function (req, res) {
+    }, function() {
+        middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function(req, res) {
             //endpoint function
             log.info("ROUTE");
         })
@@ -149,7 +151,7 @@ log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', a
 // ==============
 
 // Catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     var err = new Error('Not Found: ' + req.url);
     err.status = 404;
     next(err);
@@ -158,13 +160,15 @@ app.use(function (req, res, next) {
 // Development error handler - will print stacktrace
 if (app.get('env') === 'development') {
 
-    app.use(function (err, req, res, next) {
+    app.use(function(err, req, res, next) {
         // Handle CSRF token errors
         if (err.code == 'EBADCSRFTOKEN') {
             res.status(403);
             res.render('pages/error', {
                 errorMessage: 'Illegal action. Your connection details has been logged.',
-                error: {status: 'URL: ' + req.url}
+                error: {
+                    status: 'URL: ' + req.url
+                }
             });
             return;
         }
@@ -177,7 +181,7 @@ if (app.get('env') === 'development') {
 }
 // Production error handler - no stacktraces leaked to user
 else {
-    app.use(function (err, req, res, next) {
+    app.use(function(err, req, res, next) {
         // Handle CSRF token errors
         if (err.code == 'EBADCSRFTOKEN') {
             res.status(403);
@@ -196,18 +200,47 @@ else {
 }
 
 // Handler for unhandled rejections
-process.on('unhandledRejection', function (reason, p) {
+process.on('unhandledRejection', function(reason, p) {
     log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
-process.on('warning', function (warning) {
-    log.warn(warning.name);    // Print the warning name
+process.on('warning', function(warning) {
+    log.warn(warning.name); // Print the warning name
     log.warn(warning.message); // Print the warning message
-    log.warn(warning.stack);   // Print the stack trace
+    log.warn(warning.stack); // Print the stack trace
 });
 
 // Allow file uploads
 app.use(fileUpload());
+
+// Remember me
+app.use(passport.authenticate('remember-me'));
+
+// passport cache method
+passport.use(new RememberMeStrategy(
+    function(token, done) {
+        Token.consume(token, function(err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                return done(null, false);
+            }
+            return done(null, user);
+        });
+    },
+    function(user, done) {
+        var token = utils.generateToken(64);
+        Token.save(token, {
+            userId: user.id
+        }, function(err) {
+            if (err) {
+                return done(err);
+            }
+            return done(null, token);
+        });
+    }
+));
 
 // == Export our app ==
 module.exports = app;
