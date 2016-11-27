@@ -1,14 +1,3 @@
-
-USE spark;
-
-##########
-#  DROP  #
-##########
-
-DROP TABLE IF EXISTS payments;
-DROP TABLE IF EXISTS npo_members;
-DROP TABLE IF EXISTS users;
-
 ############
 #  CREATE  #
 ############
