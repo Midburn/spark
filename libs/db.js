@@ -1,4 +1,5 @@
-var dbConfig = require('../opsworks.js').db;
+var config = require('config');
+var dbConfig = config.get('database')
 
 var knex = require('knex')({
     client: 'mysql',
