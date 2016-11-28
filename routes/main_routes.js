@@ -1,19 +1,16 @@
 var i18next = require('i18next');
-
 var recaptcha = require('express-recaptcha');
-
 var config = require('config');
 var i18nConfig = config.get('i18n');
 var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
-
 var security = require('../libs/security');
 var mail = require('../libs/mail');
-
 var User = require('../models/user').User;
 var log = require('../libs/logger.js')(module);
-
 var ticket_routes = require('./ticket_routes');
+var LocalStrategy = require('passport-local').Strategy;
+RememberMeStrategy = require('passport-remember-me').Strategy;
 
 module.exports = function(app, passport) {
 
@@ -86,6 +83,34 @@ module.exports = function(app, passport) {
 
     // process the login form
     app.post('/:lng/login', loginPost);
+
+    // Remember me
+    app.use(passport.authenticate('remember-me'));
+
+    passport.use(new RememberMeStrategy(
+        function(token, done) {
+            Token.consume(token, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false);
+                }
+                return done(null, user);
+            });
+        },
+        function(user, done) {
+            var token = utils.generateToken(64);
+            Token.save(token, {
+                userId: user.id
+            }, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                return done(null, token);
+            });
+        }
+    ));
 
     // show the login form
     app.get('/:lng/login', function(req, res) {

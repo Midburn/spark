@@ -11,8 +11,6 @@ var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass')
-var LocalStrategy = require('passport-local').Strategy;
-    RememberMeStrategy = require('passport-remember-me').Strategy;
 
 log.info('Spark is starting...');
 
@@ -212,35 +210,6 @@ process.on('warning', function(warning) {
 
 // Allow file uploads
 app.use(fileUpload());
-
-// Remember me
-app.use(passport.authenticate('remember-me'));
-
-// passport cache method
-passport.use(new RememberMeStrategy(
-    function(token, done) {
-        Token.consume(token, function(err, user) {
-            if (err) {
-                return done(err);
-            }
-            if (!user) {
-                return done(null, false);
-            }
-            return done(null, user);
-        });
-    },
-    function(user, done) {
-        var token = utils.generateToken(64);
-        Token.save(token, {
-            userId: user.id
-        }, function(err) {
-            if (err) {
-                return done(err);
-            }
-            return done(null, token);
-        });
-    }
-));
 
 // == Export our app ==
 module.exports = app;
