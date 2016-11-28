@@ -36,8 +36,10 @@ block wrapper
             .text-center
                 button( type="submit", class="btn btn-info" )=t('login')
                 |&nbsp;
-                a( href="/#{language}/reset_password" )=t('forgot_password')
                 <a href="/auth/facebook" class="btn btn-info"><span class="fa fa-facebook"></span> Facebook login</a>
+            hr
+            .text-center
+                a( href="/#{language}/forgot_password" )=t('forgot_password_question')
         hr
         .text-center
             p=t('need_account')

@@ -25,7 +25,7 @@ module.exports = function (passport) {
     passport.deserializeUser(function (id, done) {
         new User({user_id: id}).fetch().then(function (user) {
             done(null, user);
-        })
+        });
     });
 
     // =========================================================================
@@ -147,6 +147,4 @@ module.exports = function (passport) {
             });
         }
     ));
-
-}
-;
+};
