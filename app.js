@@ -11,8 +11,8 @@ var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass')
-var LocalStrategy = require('passport-local').Strategy,
-    RememberMeStrategy = require('../..').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
+    RememberMeStrategy = require('passport-remember-me').Strategy;
 
 log.info('Spark is starting...');
 
