@@ -136,7 +136,7 @@ require('./routes/main_routes.js')(app, passport);
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
 // API
-require('./routes/api_camp_routes.js')(app, passport);
+require('./routes/api_camps_routes.js')(app, passport);
 
 // Camps
 require('./routes/camps_routes.js')(app, passport);
