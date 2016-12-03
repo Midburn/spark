@@ -47,9 +47,13 @@ module.exports = function (passport) {
             if (model) {
                 return done(null, false, req.flash('error', i18next.t('user_exists')));
             } else {
-                var jsonParams = Object.assign({}, user);
-                console.log("jsonParams:" + JSON.stringify(jsonParams));
-                var newUser = new User(jsonParams);
+                var userParams = {
+                    email: user.email,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    gender: user.gender
+                };
+                var newUser = new User(userParams);
                 newUser.generateHash(password);
                 newUser.generateValidation();
 

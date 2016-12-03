@@ -163,6 +163,9 @@ block wrapper
                         input( type="checkbox",  id="read_terms",  value="read_terms", data-error="#{t('mandatory_field')}")
                         a(src="#") link
 
+            .form-group
+                div( class="g-recaptcha" data-sitekey="6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj")
+
                 .text-center
                     button(type="button", class="btn btn-previous")=t('previous')
                     button( type="submit", class="btn btn-info" )=t('sign_up')
