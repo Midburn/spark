@@ -10,10 +10,6 @@
         const $regForm = $('#registration-form');
         const _currentClass = "is-current";
 
-        const _formSteps = [{
-
-        }];
-
         _setStep(0);
 
         $regForm.find('input[type="text"]').on('focus', function () {
@@ -27,11 +23,8 @@
 
         //submit
         $regForm.on('submit', function () {
-
             $regForm.validator('validate');
-
             var errGroups = _getCurrentVisibleForm().find('.has-error');
-
             if (errGroups.length == 0) {
                 setTimeout(function() {
                     // Let BS validator finish running its validations
@@ -41,8 +34,18 @@
         });
 
 
+        $regForm.find('#address').geocomplete({details : "#registration-form"});
+
+        $regForm.find('#have_medical_training').click(function() {
+            $regForm.find('#medical_training_details')[this.checked ? "removeClass" : "addClass"]('display-none');
+        });
+
+        $regForm.find('#have_medical_condition').click(function() {
+            $regForm.find('#medical_condition_details')[this.checked ? "removeClass" : "addClass"]('display-none');
+        });
 
 
+        /* Private functions */
 
         function _goForward() {
             _setStep(_getCurrentStep() + 1);
@@ -77,18 +80,3 @@
 
 })(window, jQuery);
 
-   
-});
-
-$(function(){
-
-    $("#address").geocomplete({details : "#registration-form"});
-});
-
-$('#have_medical_training').click(function() {
-  $('#medical_training_details')[this.checked ? "show" : "hide"]();
-});
-
-$('#have_medical_condition').click(function() {
-  $('#medical_condition_details')[this.checked ? "show" : "hide"]();
-});

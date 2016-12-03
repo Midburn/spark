@@ -128,7 +128,7 @@ block wrapper
                     label( class="form-control")=t('have_medical_training')
                         input( type="checkbox",  id="have_medical_training", name="medical_training" value="#{(body && body.medical_training)||''}", data-error="#{t('mandatory_field')}")
                 
-                .form-group#medical_training_details
+                .form-group#medical_training_details(class="display-none")
                     label=t('elaborate')
                     input( type="text", class="form-control", value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}", required )
 
@@ -136,7 +136,7 @@ block wrapper
                     label( class="form-control")=t('have_medical_condition')
                         input( type="checkbox",  id="have_medical_condition", name="medical_condition" value="#{(body && body.medical_condition)||''}", data-error="#{t('mandatory_field')}")
                 
-                .form-group#medical_condition_details
+                .form-group#medical_condition_details(class="display-none")
                     label=t('elaborate')
                     input( type="text",  class="form-control", value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}", required )
 
@@ -158,12 +158,15 @@ block wrapper
                         a(src="#") link 
                 .form-group
                     label( class="form-control")=t('read_survival_guide')
-                        input( type="checkbox",  id="read_survival_guide",  value="read_survival_guide", data-error="#{t('mandatory_field')}", required)
+                        input( type="checkbox",  id="read_survival_guide",  value="read_survival_guide", data-error="#{t('mandatory_field')}")
                         a(src="#") link
                 .form-group
                     label( class="form-control")=t('read_terms')
-                        input( type="checkbox",  id="read_terms",  value="read_terms", data-error="#{t('mandatory_field')}", required)
+                        input( type="checkbox",  id="read_terms",  value="read_terms", data-error="#{t('mandatory_field')}")
                         a(src="#") link
+
+                button(type="button", class="btn btn-previous")=t('previous')
+                button(type="submit", class="btn btn-next")=t('next')
 
             .form-group
                 div( class="g-recaptcha" data-sitekey="6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj")
@@ -178,4 +181,6 @@ block wrapper
                         | &nbsp;
                         a( href="/en/signup" )
                             img( src="/images/flags/en.gif" )
+
+
 

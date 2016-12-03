@@ -6,12 +6,14 @@ head
     meta( name='viewport', content='width=device-width, initial-scale=1.0' )
     meta( name='description', content='Spark by Midburn' )
 
+
     // load css to get to first paint as fast as possible
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous", rel="stylesheet")
     link( rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css", integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r", crossorigin="anonymous" )
     link( rel="stylesheet", href="/stylesheets/style.css" )
 
-    // blocking scripts
+
+    // blocking scripts go here:
     script( src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' )
     script( src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js", integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",crossorigin="anonymous" )
     script( src="/_core.js")
@@ -19,10 +21,14 @@ head
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
 
-    // non-blocking scripts
+
+
+    // non-blocking scripts go here:
     script( src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
     script( src="https://www.google.com/recaptcha/api.js")
-    script( src="/multistep-form.js")
+    script( src="/multistep-form.js") // todo: create "non_core.js" and bundle this into it
+
+    // for registration form geocomplete
     script( src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAEwDOIxBPNObn3UZPujRGgWNAQijV5A5M&libraries=places")
     script( src="/jquery.geocomplete.js")
 

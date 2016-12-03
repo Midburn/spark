@@ -4,5 +4,13 @@
 }
 
 #registration-form fieldset:not(.is-current) {
-    /*display: none;*/
+    display: none;
+}
+
+
+
+/* Utility Classes */
+
+.display-none {
+    display: none;
 }
