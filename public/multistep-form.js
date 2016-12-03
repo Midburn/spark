@@ -76,3 +76,19 @@
 
 
 })(window, jQuery);
+
+   
+});
+
+$(function(){
+
+    $("#address").geocomplete({details : "#registration-form"});
+});
+
+$('#have_medical_training').click(function() {
+  $('#medical_training_details')[this.checked ? "show" : "hide"]();
+});
+
+$('#have_medical_condition').click(function() {
+  $('#medical_condition_details')[this.checked ? "show" : "hide"]();
+});
