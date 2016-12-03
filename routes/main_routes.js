@@ -9,8 +9,6 @@ var mail = require('../libs/mail');
 var User = require('../models/user').User;
 var log = require('../libs/logger.js')(module);
 var ticket_routes = require('./ticket_routes');
-var LocalStrategy = require('passport-local').Strategy;
-RememberMeStrategy = require('passport-remember-me').Strategy;
 
 module.exports = function(app, passport) {
 
@@ -50,67 +48,48 @@ module.exports = function(app, passport) {
             });
         }
 
-        passport.authenticate('remember-me', {
-            failureFlash: true
-        }, function(err, user, info) {
-            if (err) {
-                return res.render('pages/login', {
-                    errorMessage: err.message
-                });
+        passport.authenticate('local', {
+            failureFlash: true,
+            failureRedirect: '/login'
+        }, function(req, res, next) {
+            if (!req.body.remember) {
+                return next();
             }
-
-            if (!user) {
-                return res.render('pages/login', {
-                    errorMessage: req.flash('error')
-                });
-            }
-            return req.logIn(user, function(err) {
-                if (err) {
-                    return res.render('pages/login', {
-                        errorMessage: req.flash('error')
-                    });
-                } else {
-                    var r = req.body['r'];
-                    if (r) {
-                        return res.redirect(r);
-                    } else {
-                        return res.redirect('home');
-                    }
-                }
-            });
-        })(req, res, next);
+        }, function(req, res) {
+            res.redirect('/');
+        });
     };
 
     // process the login form
     app.post('/:lng/login', loginPost);
 
     // Remember me
-    app.use(passport.authenticate('remember-me'));
+    // app.use(passport.authenticate('remember-me'));
 
-    passport.use(new RememberMeStrategy(
-        function(token, done) {
-            Token.consume(token, function(err, user) {
-                if (err) {
-                    return done(err);
-                }
-                if (!user) {
-                    return done(null, false);
-                }
-                return done(null, user);
-            });
-        },
-        function(user, done) {
-            var token = utils.generateToken(64);
-            Token.save(token, {
-                userId: user.id
-            }, function(err) {
-                if (err) {
-                    return done(err);
-                }
-                return done(null, token);
-            });
-        }
-    ));
+    // passport.use(new RememberMeStrategy(
+    //     function(token, done) {
+    //         Token.consume(token, function(err, user) {
+    //             if (err) {
+    //                 return done(err);
+    //             }
+    //             if (!user) {
+    //                 return done(null, false);
+    //             }
+    //             return done(null, user);
+    //         });
+    //     },
+    //     function(user, done) {
+    //         var token = utils.generateToken(64);
+    //         Token.save(token, {
+    //             userId: user.id
+    //         }, function(err) {
+    //             if (err) {
+    //                 return done(err);
+    //             }
+    //             return done(null, token);
+    //         });
+    //     }
+    // ));
 
     // show the login form
     app.get('/:lng/login', function(req, res) {
@@ -219,6 +198,7 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     // =====================================
     app.get('/:lng/logout', function(req, res) {
+        res.clearCookie('remember_me');
         req.logout();
         res.redirect('/');
     });

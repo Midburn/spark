@@ -54,5 +54,8 @@
   "welcome_home": "ברוכים הבאות הביתה, {{user}}!",
   "welcome_home_female": "ברוכה הבאה הביתה, {{user}}!",
   "welcome_home_male": "ברוך הבא הביתה, {{user}}!",
-  "welcome_spark": "ברוכים הבאות ל- Spark!"
+  "welcome_spark": "ברוכים הבאות ל- Spark!",
+  "facebook": {
+    "login": "התחבר באמצעות פייסבוק"
+  }
 }

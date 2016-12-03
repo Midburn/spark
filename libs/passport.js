@@ -1,4 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
+var RememberMeStrategy = require('passport-remember-me').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var i18next = require('i18next');
 
