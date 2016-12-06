@@ -1,5 +1,4 @@
 var LocalStrategy = require('passport-local').Strategy;
-var RememberMeStrategy = require('passport-remember-me').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var i18next = require('i18next');
 
@@ -26,7 +25,7 @@ module.exports = function (passport) {
     passport.deserializeUser(function (id, done) {
         new User({user_id: id}).fetch().then(function (user) {
             done(null, user);
-        })
+        });
     });
 
     // =========================================================================
@@ -148,6 +147,4 @@ module.exports = function (passport) {
             });
         }
     ));
-
-}
-;
+};
