@@ -45,6 +45,7 @@
     "winston": "2.3.0"
   },
   "devDependencies": {
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "node-mocks-http": "^1.5.4"
   }
 }
