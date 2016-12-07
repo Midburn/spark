@@ -115,6 +115,7 @@ module.exports = function (app, passport) {
     // =====================================
     var signUpPost = function (req, res, next) {
         console.log('    // SIGNUP ==============================');
+        console.log("json: " + JSON.stringify(req));
         recaptcha.verify(req,function(err){ //TODO turn to middleware or promises to minimize clutter
             if (err) {
                 return res.render('pages/signup', {

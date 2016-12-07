@@ -126,19 +126,19 @@ block wrapper
             fieldset
                 .form-group
                     label( class="form-control")=t('have_medical_training')
-                        input( type="checkbox",  id="have_medical_training", name="medical_training" value="#{(body && body.medical_training)||''}", data-error="#{t('mandatory_field')}")
+                        input( type="checkbox",  id="have_medical_training", name="medical_training" value="#{(body && body.medical_training)||''}")
                 
                 .form-group#medical_training_details(class="display-none")
                     label=t('elaborate')
-                    input( type="text", class="form-control", value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}", required )
+                    input( type="text", class="form-control", value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}")
 
                 .form-group
                     label( class="form-control")=t('have_medical_condition')
-                        input( type="checkbox",  id="have_medical_condition", name="medical_condition" value="#{(body && body.medical_condition)||''}", data-error="#{t('mandatory_field')}")
+                        input( type="checkbox",  id="have_medical_condition", name="medical_condition" value="#{(body && body.medical_condition)||''}")
                 
                 .form-group#medical_condition_details(class="display-none")
                     label=t('elaborate')
-                    input( type="text",  class="form-control", value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}", required )
+                    input( type="text",  class="form-control", value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}" )
 
                 button(type="button", class="btn btn-previous")=t('previous')
                 button(type="submit", class="btn btn-next")=t('next')

@@ -37,11 +37,20 @@
         $regForm.find('#address').geocomplete({details : "#registration-form"});
 
         $regForm.find('#have_medical_training').click(function() {
-            $regForm.find('#medical_training_details')[this.checked ? "removeClass" : "addClass"]('display-none');
+            var details = $regForm.find('#medical_training_details');
+            details[this.checked ? "removeClass" : "addClass"]('display-none');
+            if (this.checked)
+                details.find('input')[0].setAttribute("required",'');
+            else details.find('input')[0].removeAttribute("required");
         });
 
         $regForm.find('#have_medical_condition').click(function() {
-            $regForm.find('#medical_condition_details')[this.checked ? "removeClass" : "addClass"]('display-none');
+
+            var details = $regForm.find('#medical_condition_details');
+            details[this.checked ? "removeClass" : "addClass"]('display-none');
+            if (this.checked)
+                details.find('input')[0].setAttribute("required",'');
+            else details.find('input')[0].removeAttribute("required");
         });
 
 
