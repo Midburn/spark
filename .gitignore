@@ -5,6 +5,9 @@
 .idea/tasks.xml
 /.idea/runConfigurations/
 
+# Visual Studio Code
+.vscode/
+
 # Config local files (https://github.com/lorenwest/node-config/wiki/Configuration-Files)
 config/local*.json
 
