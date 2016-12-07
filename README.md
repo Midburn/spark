@@ -61,13 +61,13 @@ Fire up the server after installation
 
 `$ node start`
 
-and navigate to [](http://localhost:3000)
+and navigate to http://localhost:3000.
 
 **Note** You probably want the server to automatically detect your edits, instead of restarting it all the time.
 If so run once `npm install -g nodemon` and then use `nodemon start` to run the server instead of using `node start`
 
 ### Creating an admin account
-After lighting the spark, if this is the first time or if you have recreated the DB, browse to the development console [](http://localhost:3000/dev) and select **Create admin user**.
+After lighting the spark, if this is the first time or if you have recreated the DB, browse to the development console at http://localhost:3000/dev and select **Create admin user**.
 This will create a user: **a**, password: **a**)
 
 ### Configure your environment
