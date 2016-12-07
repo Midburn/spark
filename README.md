@@ -92,6 +92,9 @@ To override this configurations to match your development environment:
 
 
 ### Setting your IDE
+
+#### Intellij
+
 The source files include an Intellij/WebStorm project file. You can install get the [community version of IntelliJ](https://www.jetbrains.com/idea/#chooseYourEdition) for free and open the project.
 
 It will provide you with:
@@ -110,6 +113,10 @@ This plugins will add syntax highlighting and IDE integration.
 * Jade
 * Markdown Navigator
 * NodeJS
+
+#### Visual Studio Code
+
+Visual Studio Code is a free IDE from Microsoft that is making an attempt to compete with all the other cool kids and does a decent job. It has everything you need for Node.js development. Get it from [here](https://code.visualstudio.com) and follow this [guide](https://code.visualstudio.com/docs/runtimes/nodejs) to set it up for Node.js.
 
 ### Branching and patching
 while working on new features/patch you should branch out master using
@@ -136,7 +143,7 @@ Note:
 Further reading about git [here](http://rogerdudler.github.io/git-guide/)
 
 ### Localization
-We use the **i18next** internationalization library for multi-language support. 
+We use the **i18next** internationalization library for multi-language support.
 The strings are stored in the `/locales` folder. The file name is the language code.
 
 #### Tips:
