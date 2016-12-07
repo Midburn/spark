@@ -1,6 +1,6 @@
 extends ../includes/layout
 block wrapper
-    div.container    
+    div.container
         div.well.center-block(style="max-width:380px;")
             .midburn_logo
 
@@ -40,7 +40,7 @@ block wrapper
             hr
             .center-block
                 div
-                    a( href="/#{language}/reset_password" )=t('forgot_password')
+                    a( href="/#{language}/forgot_password" )=t('forgot_password_question')
                 div
                     span=t('need_account')
                     a( href="signup" )=t('sign_up')
