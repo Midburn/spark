@@ -2,6 +2,10 @@ body {
     padding-top: 70px;
 }
 
+span {
+    margin: 0 2px;
+}
+
 .midburn_logo {
     background-image: url("../images/midburn_logo_120.png");
     height: 120px;
@@ -17,31 +21,63 @@ body {
 
 .navbar-brand {
     padding-left: 30px;
-    background-image: url(../images/spark_logo.png);
+    background-image: url("../images/spark_logo.png");
     background-repeat: no-repeat;
     background-position: 10px 15px;
 }
 
 .main {
-  display: flex;
-  flex: 1;
-  padding: 10px;
-  background: red;
-  justify-content: center;
-  align-items: flex-start;
-  .card {
-    max-width: 540px;
-    min-width: 200px;
-    padding: 40px;
-    border-radius: 5px;
-    background: white;
-  }
+    display: flex;
+    flex: 1;
+    padding: 10px;
+    background: red;
+    justify-content: center;
+    align-items: flex-start;
+
+    .card {
+        max-width: 540px;
+        min-width: 200px;
+        padding: 40px;
+        border-radius: 5px;
+        background: white;
+    }
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vw;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
+.fb-login {
+    background: #3b5998;
+    border-color: #29487d;
+
+    &:hover {
+        background: #2b5998;
+    }
+
+    span {
+        margin-right: 8px;
+
+        &:before {
+            font-size: 20px;
+        }
+    }
+}
+
+.langs-wrapper {
+    p {
+        margin: 0 auto;
+        display: table;
+    }
+}
+// bootstrap overrides
+
+.checkbox input[type=checkbox],
+.checkbox-inline input[type=checkbox],
+.radio input[type=radio],
+.radio-inline input[type=radio] {
+    margin: 0;
+}
 @import './ui';
