@@ -69,7 +69,16 @@ module.exports = function(app, passport) {
                     data: {
                         message: e.message
                     }
-                })
-            })
+                });
+            });
+    });
+
+    /**
+     * API: (GET) return true/false if camp exist, provide camp_name_en
+     * request => /camps/<camp_name_en>
+     */
+    app.get('/camps/:camp_name_en', (req, res) => {
+        var req_camp_name_en = req.params.camp_name_en;
+        // TODO: create service for name choosing
     });
 }

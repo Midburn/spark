@@ -14,19 +14,19 @@ module.exports = function(app, passport) {
     // ==============
     // Camps Routing
     // ==============
-    // camps index
+    // camps home page
     app.get('/:lng/camps', security.protectGet, function(req, res) {
         res.render('pages/camps/index', {
-            user: req.user
+            user: req.user,
+            camp_name_en: "camp name? should be unique"
         });
     });
     // new camp
-    app.get('/:lng/camps', security.protectGet, function(req, res) {
+    app.get('/:lng/camps/new', security.protectGet, function(req, res) {
         res.render('pages/camps/new', {
             user: req.user
         });
     });
-
     // camp page (by id)
     app.get('/:lng/camps/:id', (req, res) => {
         res.render('/:lng/camp', {});

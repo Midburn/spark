@@ -13,12 +13,16 @@ block content
                     .form-group
                         label=t('camps.new.name_en')
                         input( type="text", class="form-control", name="camp_name_en", required )
+                    .form-group
+                        label=t('camps.new.main_contact')
+                        input( type="text", class="form-control", name="camp_main_contact", required )
                 .col-md-6
                     .form-group
                         label=t('camps.new.desc_he')
                         input( type="text", class="form-control", name="camp_desc_he" )
                     .form-group
                         label=t('camps.new.desc_en')
+                        //- should request user list from SPARK for auto-complete
                         input( type="text", class="form-control", name="camp_desc_en" )
                     .form-group
                         label=t('camps.new.type')
@@ -29,8 +33,8 @@ block content
                           option(value='workshops')
                           option(value='art-supporting')
                           option(value='other')
-                .text-center
+                .col-md-offset-10
                     .form-group
-                        button( type="submit", class="btn btn-info" )=t('save')
+                        button( type="submit", class="btn btn-info btn-block" )=t('camps.btn_save_camp')
                     .form-group
-                        button( type="submit", class="btn btn-success" )=t('camps.new.btn_create')
+                        button( type="submit", class="btn btn-success btn-block" )=t('camps.new.btn_create')
