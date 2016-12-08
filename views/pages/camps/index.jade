@@ -1,0 +1,13 @@
+extends ../../includes/page
+block content
+    .row.camps
+        .well
+            h2=t('camps.new.header_title')
+            h3=t('camps.new.name_choosing_title')
+        .center-block.col-md-4
+            .form-group
+                label=t('camps.new.name_en')
+                //- should request name evaluation from CAMP_API to check if name available
+                input( type="text", class="form-control", name="camp_name_en", required )
+            .form-group
+                button( type="submit", class="btn btn-info btn-block" )=t('camps.btn_continue')
