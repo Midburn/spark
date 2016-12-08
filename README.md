@@ -51,9 +51,11 @@ $ mkdir spark && git clone http://jira.midburn.org:7990/scm/spark/spark.git
 $ mysql -u root -p < sql/create_db.sql
 ```
 
-2. To create the database schema, run:
+2. To create the database schema:
+
 ```
-$ mysql -u root -p < sql/schema.sql
+Ensure knex is installed (npm install knex -g)
+knex migrate:latest
 ```
 
 ## Light the spark
