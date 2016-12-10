@@ -14,7 +14,15 @@ module.exports = function(app, passport) {
     app.post('/camps/new', function(req, res) {
         var camp_name_he = req.body.camp_name_he,
             camp_name_en = req.body.camp_name_en;
-        if (camp_name_he != null && camp_name_en != null) {
+
+        function validate() {
+            if (camp_name_he != null && camp_name_en != null) {
+                return true;
+            }
+            return false;
+        }
+
+        if (validate) {
             Camp.forge({
                     camp_name_he: camp_name_he,
                     camp_name_en: camp_name_en
@@ -47,13 +55,13 @@ module.exports = function(app, passport) {
     });
 
     /**
-     * API: (GET) return camp, provide camp_id
+     * API: (GET) return camp object, provide camp_id
      * request => /camps/1.json
      */
-    app.get('/camps/:id.json', function(req, res) {
+    app.get('/camps/:id.json', (req, res) => {
         var req_camp_id = req.params.id;
         // find and return camp object by camp_id
-        return new Camp({
+        Camp.forge({
                 camp_id: req_camp_id
             })
             .fetch()
@@ -74,11 +82,31 @@ module.exports = function(app, passport) {
     });
 
     /**
-     * API: (GET) return true/false if camp exist, provide camp_name_en
+     * API: (GET) return indication if camp exist, provide camp_name_en
      * request => /camps/<camp_name_en>
      */
     app.get('/camps/:camp_name_en', (req, res) => {
         var req_camp_name_en = req.params.camp_name_en;
-        // TODO: create service for name choosing
+        Camp.forge({
+                camp_name_en: req_camp_name_en
+            })
+            .fetch()
+            .then(function(camp) {
+                var reply = "Unavailable";
+                if (camp === null) {
+                    reply = "Available";
+                }
+                res.json({
+                    data: reply
+                });
+            })
+            .catch((e) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: e.message
+                    }
+                });
+            });
     });
 }

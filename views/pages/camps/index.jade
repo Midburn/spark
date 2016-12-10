@@ -1,13 +1,31 @@
 extends ../../includes/page
 block content
-    .row.camps
+    .row.camps.choose_name
         .well
             h2=t('camps.new.header_title')
             h3=t('camps.new.name_choosing_title')
-        .center-block.col-md-4
+        .col-md-4.col-md-offset-4
             .form-group
                 label=t('camps.new.name_en')
                 //- should request name evaluation from CAMP_API to check if name available
-                input( type="text", class="form-control", name="camp_name_en", required )
+                input(type="text", class="form-control", name="camp_name_en", required)
             .form-group
-                button( type="submit", class="btn btn-info btn-block" )=t('camps.btn_continue')
+                span.indicator="indicator"
+                button(type="submit", id="check_camp_name", class="btn btn-info btn-block")=t('camps.btn_continue')
+
+script(type="text/javascript").
+    $("button#check_camp_name").click(function() {
+        // evalute
+        var val = $("input[name='camp_name_en']").val(),
+            end_point = "camps/",
+            message;
+        var data = $.get('../' + end_point + val);
+        data.done(function() {
+            if (data.responseJSON.data === "Available") {
+                message = "Available :-)";
+            } else {
+                message = "Not Available :-(";
+            }
+            $(".choose_name span.indicator").html(message)
+        });
+    });
