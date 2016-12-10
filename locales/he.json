@@ -69,10 +69,11 @@
   "have_medical_training" : "האם יש הכשרה רפואית?",
   "have_medical_condition" : "האם יש מגבלה רפואית?", 
   "subscribe_newsletter" : "הרשם לרשימת תפוצה",
-  "read_ten_principals" : "קראתי את עשרת העקרונות",
-  "read_survival_guide" : "קראתי רת מדריך ההשרדות",
-  "read_terms" : "קראתי ומאשר/ת את התנאים",
+  "ten_principals" : "עשרת העקרונות",
+  "survival_guide" : "מדריך ההשרדות",
+  "terms" : "התנאים",
   "address" : "כתובת",
-  "elaborate" : "פרט/י"
+  "elaborate" : "פרט/י",
+  "read": " קראתי ומאשר/ת את "
 
 }

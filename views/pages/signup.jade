@@ -43,15 +43,15 @@ block wrapper
                     label=t('gender')
                     br
                     label
-                        input(type="radio", name="gender", value="male", required, data-error="#{t('gender_error')}" )
+                        input(type="radio", name="gender", value="male", required, checked =(body && body.gender==='male') , data-error="#{t('gender_error')}" )
                         | &nbsp; #{t('male')}
                     | &nbsp;
                     label
-                        input(type="radio", name="gender", value="female", required, data-error="#{t('gender_error')}")
+                        input(type="radio", name="gender", value="female", required, checked=(body && body.gender==='female') data-error="#{t('gender_error')}")
                         | &nbsp; #{t('female')}
                     | &nbsp;
                     label
-                        input(type="radio", name="gender", value="other", required, data-error="#{t('gender_error')}")
+                        input(type="radio", name="gender", value="other", required,  checked=(body && body.gender==='other') data-error="#{t('gender_error')}")
                         | &nbsp; #{t('other')}
                     .help-block.with-errors
                 .form-group
@@ -65,7 +65,7 @@ block wrapper
                 .form-group
                     label=t('nationality')
                     select(class="form-control", name="nationality", value="#{(body && body.nationality)||''}", data-error="#{t('mandatory_field')}", required )
-                        each country, i in choices.countries
+                        each country, i in choices.countries()
                             option(value=i) #{country}
 
                 .form-group
@@ -80,13 +80,13 @@ block wrapper
                 .form-group
                     label=t('occupation')
                     select(class="form-control", name="occupation", value="#{(body && body.occupation)||''}", data-error="#{t('mandatory_field')}", required )
-                        each occupation, i in choices.occupations
+                        each occupation, i in choices.occupations()
                             option(value=occupation) #{occupation}
 
                 .form-group
                     label=t('hobbies')
                     select(class="form-control", name="hobbies", value="#{(body && body.hobbies)||''}", data-error="#{t('mandatory_field')}", required )
-                        each hobby, i in choices.hobbies
+                        each hobby, i in choices.hobbies()
                             option(value=hobby) #{hobby}
 
 
@@ -99,24 +99,24 @@ block wrapper
             fieldset
                 .form-group
                     label=t('playa_name')
-                    input( type="text", class="form-control", id="playa_name", value="#{(body && body.playa_name)||''}", data-error="#{t('mandatory_field')}", required )
+                    input( type="text", class="form-control", id="playa_name", name='playa_name', value="#{(body && body.playa_name)||''}", data-error="#{t('mandatory_field')}", required )
 
                 .form-group
                     p=t('prev_burn_man_events')
-                    each burn_man_event, i in choices.burn_man_events
+                    each burn_man_event, i in choices.burning_man_events()
                         label( class="form-control") "#{burn_man_event}"
-                            input( type="checkbox",  id="prev_burn_man_events", name="burn_man_events" value="#{i}", data-error="#{t('mandatory_field')}")
+                            input( type="checkbox",  id="prev_burn_man_events", name="burn_man_events" value="#{i}")
 
                 .form-group
                     p=t('prev_midburn_events')
-                    each midburn_event, i in choices.midburn_events
+                    each midburn_event, i in choices.midburn_events()
                         label( class="form-control") "#{midburn_event}"
-                            input( type="checkbox",  id="prev_midburn_events", name="midburn_events" value="#{i}", data-error="#{t('mandatory_field')}")
+                            input( type="checkbox",  id="prev_midburn_events", name="midburn_events" value="#{i}")
 
                 .form-group
                     label=t('how_plan_to_participate')
                     select(class="form-control", name="way_of_paricipation", value="#{(body && body.way_of_paricipation)||''}", data-error="#{t('mandatory_field')}", required )
-                        each way_of_paricipation, i in choices.ways_of_paricipation
+                        each way_of_paricipation, i in choices.ways_of_paricipation()
                             option(value=i) #{way_of_paricipation}
 
 
@@ -130,15 +130,15 @@ block wrapper
                 
                 .form-group#medical_training_details(class="display-none")
                     label=t('elaborate')
-                    input( type="text", class="form-control", value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}")
+                    input( type="text", class="form-control", name='medical_training_details' value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}")
 
                 .form-group
                     label( class="form-control")=t('have_medical_condition')
-                        input( type="checkbox",  id="have_medical_condition", name="medical_condition" value="#{(body && body.medical_condition)||''}")
+                        input( type="checkbox",  id="have_medical_condition", name="medical_condition" checked=(body && body.medical_condition))
                 
-                .form-group#medical_condition_details(class="display-none")
+                .form-group#medical_condition_details(class=((body && body.medical_condition) ? '' : "display-none"))
                     label=t('elaborate')
-                    input( type="text",  class="form-control", value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}" )
+                    input( type="text",  class="form-control", name='medical_condition_details', value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}" )
 
                 button(type="button", class="btn btn-previous")=t('previous')
                 button(type="submit", class="btn btn-next")=t('next')
@@ -153,17 +153,21 @@ block wrapper
                         input( type="checkbox",  id="english_newsletter", name="newsletter" value="english", data-error="#{t('mandatory_field')}")
 
                 .form-group
-                    label( class="form-control")=t('read_ten_principals')
-                        input( type="checkbox",  id="read_ten_principals", value="read_ten_principals", data-error="#{t('mandatory_field')}",required)
-                        a(src="#") link 
+                    label( class="form-control")=t('read')
+                        a(src="#")=t('ten_principals')
+                        input( type="checkbox",  id="read_ten_principals", name="read_ten_principals", data-error="#{t('mandatory_field')}", required)
+
                 .form-group
-                    label( class="form-control")=t('read_survival_guide')
-                        input( type="checkbox",  id="read_survival_guide",  value="read_survival_guide", data-error="#{t('mandatory_field')}")
-                        a(src="#") link
+
+                    label( class="form-control")=t('read')
+                        a(src="#")=t('survival_guide')
+                        input( type="checkbox",  id="read_survival_guide", name='read_survival_guide', data-error="#{t('mandatory_field')}", required)
+
                 .form-group
-                    label( class="form-control")=t('read_terms')
-                        input( type="checkbox",  id="read_terms",  value="read_terms", data-error="#{t('mandatory_field')}")
-                        a(src="#") link
+                    label( class="form-control")=t('read')
+                        a(src="#")=t('terms')
+                        input( type="checkbox",  id="read_terms",  name="read_terms", data-error="#{t('mandatory_field')}", required)
+
 
                 button(type="button", class="btn btn-previous")=t('previous')
                 button(type="submit", class="btn btn-next")=t('next')

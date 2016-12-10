@@ -15,15 +15,7 @@ var log = require('../libs/logger.js')(module);
 
 var ticket_routes = require('./ticket_routes');
 
-
-var signup_choices = {
-    countries: ['Israel', 'United Statel'],
-    occupations: ['Artist', 'Engineer'],
-    hobbies: ['Music', 'Movies'],
-    burn_man_events: ['1978', '1988'],
-    midburn_events: ['2014', '2015','2016'],
-    ways_of_paricipation : ["Theme Camp", "Sound Camp", "Art Installation", "Volunteering During The Event", "Havn't decided yet"]
-};
+var signup_choices = require('../libs/signup-consts.js');
 
 module.exports = function (app, passport) {
 
@@ -115,7 +107,7 @@ module.exports = function (app, passport) {
     // =====================================
     var signUpPost = function (req, res, next) {
         console.log('    // SIGNUP ==============================');
-        console.log("json: " + JSON.stringify(req));
+  //      console.log("json: " + JSON.stringify(req));
         recaptcha.verify(req,function(err){ //TODO turn to middleware or promises to minimize clutter
             if (err) {
                 return res.render('pages/signup', {
