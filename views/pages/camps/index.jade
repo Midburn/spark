@@ -11,21 +11,4 @@ block content
                 input(type="text", class="form-control", name="camp_name_en", required)
             .form-group
                 span.indicator="indicator"
-                button(type="submit", id="check_camp_name", class="btn btn-info btn-block")=t('camps.btn_continue')
-
-script(type="text/javascript").
-    $("button#check_camp_name").click(function() {
-        // evalute
-        var val = $("input[name='camp_name_en']").val(),
-            end_point = "camps/",
-            message;
-        var data = $.get('../' + end_point + val);
-        data.done(function() {
-            if (data.responseJSON.data === "Available") {
-                message = "Available :-)";
-            } else {
-                message = "Not Available :-(";
-            }
-            $(".choose_name span.indicator").html(message)
-        });
-    });
+                button(type="submit", id="check_camp_name", class="btn btn-info btn-block disabled")=t('camps.btn_continue')
