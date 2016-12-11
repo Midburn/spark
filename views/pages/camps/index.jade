@@ -7,8 +7,7 @@ block content
         .col-md-4.col-md-offset-4
             .form-group
                 label=t('camps.new.name_en')
-                //- should request name evaluation from CAMP_API to check if name available
+                span.indicator
                 input(type="text", class="form-control", name="camp_name_en", required)
             .form-group
-                span.indicator="indicator"
-                button(type="submit", id="check_camp_name", class="btn btn-info btn-block disabled")=t('camps.btn_continue')
+                a(id="check_camp_name", class="btn btn-info btn-block disabled")=t('camps.btn_continue')

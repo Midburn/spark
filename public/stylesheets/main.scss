@@ -58,3 +58,20 @@ li.dropdown > ul > li > a > span {
         background: white;
     }
 }
+// CAMPS
+
+.camps {
+    span.indicator {
+        .glyphicon {
+            font-size: 18px;
+        }
+
+        .glyphicon-remove {
+            color: red;
+        }
+
+        .glyphicon-ok {
+            color: green;
+        }
+    }
+}

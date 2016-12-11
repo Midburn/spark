@@ -5,36 +5,36 @@ block content
             h1=t('camps.new.header_title')
             p=t('camps.new.header_desc')
         .col-md-12
-            form( action="/camps/new", method="post", data-toggle="validator", role="form" )
+            form(action="/camps/new", method="post", data-toggle="validator", role="form")
                 .col-md-6
                     .form-group
                         label=t('camps.new.name_he')
-                        input( type="text", class="form-control", name="camp_name_he", required )
+                        input(type="text", class="form-control", name="camp_name_he", autofocus="true", required)
                     .form-group
                         label=t('camps.new.name_en')
-                        input( type="text", class="form-control", name="camp_name_en", required )
+                        input(type="text", class="form-control", name="camp_name_en", value="#{camp_name_en}", required, disabled)
                     .form-group
                         label=t('camps.new.main_contact')
-                        input( type="text", class="form-control", name="camp_main_contact", required )
+                        select(class="form-control", name="camp_main_contact", required)
+                        
                 .col-md-6
                     .form-group
                         label=t('camps.new.desc_he')
-                        input( type="text", class="form-control", name="camp_desc_he" )
+                        input(type="text", class="form-control", name="camp_desc_he")
                     .form-group
                         label=t('camps.new.desc_en')
-                        //- should request user list from SPARK for auto-complete
-                        input( type="text", class="form-control", name="camp_desc_en" )
+                        input(type="text", class="form-control", name="camp_desc_en")
                     .form-group
                         label=t('camps.new.type')
-                        select( class="form-control", name="camp_type" )
-                          option(value='food')=t('camps.new.desc_he')
-                          option(value='drinking/bar')
-                          option(value='music')
-                          option(value='workshops')
-                          option(value='art-supporting')
-                          option(value='other')
+                        select(class="form-control", name="camp_type")
+                            option(value='food')=t('not-implemented')
+                            option(value='drinking/bar')=t('not-implemented')
+                            option(value='music')=t('not-implemented')
+                            option(value='workshops')=t('not-implemented')
+                            option(value='art-supporting')=t('not-implemented')
+                            option(value='other')=t('not-implemented')
                 .col-md-offset-10
                     .form-group
-                        button( type="submit", class="btn btn-info btn-block" )=t('camps.btn_save_camp')
+                        button(type="submit", class="btn btn-info btn-block")=t('camps.btn_save_camp')
                     .form-group
-                        button( type="submit", class="btn btn-success btn-block" )=t('camps.new.btn_create')
+                        button(type="submit", class="btn btn-success btn-block")=t('camps.btn_continue')
