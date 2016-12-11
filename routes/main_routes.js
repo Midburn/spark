@@ -15,8 +15,9 @@ var log = require('../libs/logger.js')(module);
 
 var ticket_routes = require('./ticket_routes');
 
+var async = require('async');
+var crypto = require('crypto');
 var signup_choices = require('../libs/signup-consts.js');
-
 module.exports = function (app, passport) {
 
     // =====================================
@@ -191,24 +192,6 @@ module.exports = function (app, passport) {
             res.redirect('/');
         });
 
-        // =====================================
-        // RESET PASSWORD ======================
-        // =====================================
-        var resetPasswordPost = function (req, res) {
-            // TODO - implement
-            // Tutorial is here: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
-            // (start at the "forgot" stuff, login/out/sign are already implemented).
-
-            res.render('pages/reset_password', {errorMessage: 'NOT IMPLEMENTED'});
-        };
-
-        app.get('/:lng/reset_password', function (req, res) {
-            res.render('pages/reset_password', {errorMessage: req.flash('error')});
-        });
-
-        app.post('/:lng/reset_password', resetPasswordPost);
-
-
         app.get('/:lng/validate_email/:token', function (req, res) {
             var token = req.params.token;
             log.info('Received email validation token: ' + token);
@@ -224,4 +207,164 @@ module.exports = function (app, passport) {
                 }
             });
         });
+        
+        // =====================================
+        // RESET PASSWORD ======================
+        // =====================================
+    // Consists of two distinct views,
+    // forgot password for requesting a password reset,
+    // and reset password for inputing a new password
+
+    app.get('/:lng/forgot_password', function (req, res) {
+        res.render('pages/reset_password');
+    });
+
+    //TODO reuse or move logic into user.js
+    function generateExpirationString() {
+      var date = new Date();
+      var offset = (24 * 60 * 60 * 1000); // hours*minutes*seconds*millis
+      date.setTime(date.getTime() + offset);
+      res =  date.toISOString().slice(0, 19).replace('T', ' ');
+      console.log('epiration date: ', res);
+      return res;
+    }
+
+    var resetPasswordPost = function(req, res, next) {
+      async.waterfall([
+        function (done) {
+          new User({email: req.body.email})
+          .fetch()
+          .then(function(model) {
+            if (model === null) {
+              return done(i18next.t('email_doesnt_exist_message'));
+            }
+            return done(null, model);
+          });
+        },
+        function(model, done) {
+          console.log("entering crypto");
+          //TODO reuse or move logic into user.js
+          crypto.randomBytes(20, function(err, buf) {
+            var token = buf
+              .toString('base64')
+              .replace(/\+/g, '0')
+              .replace(/\//g, '0');
+            console.log(token);
+            done(err, model, token);
+          });
+        },
+        function(model, token, done) {
+          model
+          .save({
+              reset_password_token: token,
+              reset_password_expires: generateExpirationString()
+            },
+            {patch: true})
+          .then(function(model) {
+            return done(null, model);
+          });
+          //TODO catch Bookshelf exception here
+        },
+        function(model, done) {
+          var link =
+              serverConfig.url + '/' +
+              req.params.lng +
+              "/confirm_password_reset/" +
+              model.attributes.reset_password_token;
+
+          mail.send(
+              model.attributes.email,
+              mailConfig.from,
+              i18next.t('reset_password_email_subject'),
+              'emails/reset_password',
+              {name: model.fullName, link: link});
+
+          // return done(mailsent ? null : 'Error sending mail');
+          //TODO motenko: mail.send ins't implemented for returning errors
+          //Fix mail.send to have idiomatic Node.js callback with error
+          return done(null);
+        }
+      ],
+      function(err) {
+        if (err) {
+          res.render('pages/reset_password', {errorMessage: err});
+        }
+        else {
+          res.render('pages/reset_password', {successMessage: i18next.t('reset_password_email_sent')});
+        }
+      });
     };
+
+    app.post('/:lng/reset_password', resetPasswordPost);
+
+    app.get('/:lng/confirm_password_reset/:token', function (req, res) {
+      console.log('resetting password');
+      new User({reset_password_token: req.params.token})
+      .fetch()
+      .then(function(model) {
+        if (model === null ||
+          //no such token or token expired
+          (new Date(model.attributes.reset_password_expires))
+          .getTime() < Date.now()) {
+            return res.render('pages/confirm_password_reset',
+            {errorMessage: i18next.t('bad_or_expired_token')});
+        }
+        return res.render('pages/confirm_password_reset', {token: req.params.token});
+      });
+    });
+
+    app.post('/:lng/finilize_password_reset/:token', function (req, res) {
+      console.log('finilize password reset');
+
+      if (req.body.password != req.body.confirm_password) {
+        //shouldn't happen because of server side validation
+        return res.render('pages/confirm_password_reset',
+        {errorMessage: ""});
+      }
+
+      async.waterfall([
+        function (done) {
+          new User({reset_password_token: req.params.token})
+          .fetch()
+          .then(function(model) {
+            if (model === null ||
+              //no such token or token expired
+              (new Date(model.attributes.reset_password_expires))
+              .getTime() < Date.now()) {
+                return done(i18next.t('bad_or_expired_token'));
+            }
+            return done(null, model);
+          });
+        },
+        function (model, done) {
+          //create new pasasword hash
+          model.generateHash(req.body.password);
+
+          //invalidate token and expiration
+          model.attributes.reset_password_expires = null;
+          model.attributes.reset_password_token = null;
+
+          model.save().then(function (model) {
+            return done(null, model);
+          });
+        },
+        function (model, done) {
+          mail.send(
+              model.attributes.email,
+              mailConfig.from,
+              i18next.t('password_changed_email_subject'),
+              'emails/password_changed',
+              {name: model.fullName});
+              return done(null);
+        },
+      ],
+      function(err) {
+        if (err) {
+          res.render('pages/confirm_password_reset', {errorMessage: err});
+        }
+        else {
+          res.render('pages/confirm_password_reset', {successMessage: i18next.t('password_reset_succeeded')});
+        }
+      });
+    });
+};
