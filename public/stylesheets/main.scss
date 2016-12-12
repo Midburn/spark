@@ -4,7 +4,11 @@ body {
     padding-top: 70px;
     display: flex;
     flex-direction: column;
-    min-height: 100vw;
+    min-height: 100vh;
+}
+
+span {
+    margin: 0 2px;
 }
 
 .midburn_logo {
@@ -74,4 +78,36 @@ li.dropdown > ul > li > a > span {
             color: green;
         }
     }
+}
+
+.fb-login {
+    background: #3b5998;
+    border-color: #29487d;
+
+    &:hover {
+        background: #2b5998;
+    }
+
+    span {
+        margin-right: 8px;
+
+        &:before {
+            font-size: 20px;
+        }
+    }
+}
+
+.langs-wrapper {
+    p {
+        margin: 0 auto;
+        display: table;
+    }
+}
+// bootstrap overrides
+
+.checkbox input[type=checkbox],
+.checkbox-inline input[type=checkbox],
+.radio input[type=radio],
+.radio-inline input[type=radio] {
+    margin: 0;
 }

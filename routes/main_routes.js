@@ -11,6 +11,9 @@ var ticket_routes = require('./ticket_routes');
 var User = require('../models/user').User;
 
 
+var async = require('async');
+var crypto = require('crypto');
+
 module.exports = function (app, passport) {
 
     // =====================================
@@ -230,5 +233,6 @@ module.exports = function (app, passport) {
                 res.sendStatus(400);
             }
         });
+
     });
 };

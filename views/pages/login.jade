@@ -1,53 +1,57 @@
 extends ../includes/layout
 block wrapper
-    br
-    .col-md-4.col-md-offset-4.well
-        .midburn_logo
+    div.container
+        div.well.center-block(style="max-width:380px;")
+            .midburn_logo
 
-        h1=t('welcome_spark')
-        h2=t('login')
+            h1=t('welcome_spark')
+            h2=t('login')
 
-        if (errorMessage && errorMessage.length > 0)
-            .alert.alert-danger
-                p=errorMessage
+            if (errorMessage && errorMessage.length > 0)
+                .alert.alert-danger
+                    p=errorMessage
 
-        if (successMessage && successMessage.length > 0)
-            .alert.alert-success
-                p=successMessage
+            if (successMessage && successMessage.length > 0)
+                .alert.alert-success
+                    p=successMessage
 
-        if (successMessageResource && successMessageResource.length > 0)
-            .alert.alert-success
-                p=t(successMessageResource)
+            if (successMessageResource && successMessageResource.length > 0)
+                .alert.alert-success
+                    p=t(successMessageResource)
 
-        form( action="/#{language}/login", method="post", data-toggle="validator", role="form" )
-            input( type="hidden", name="r", value=r )
-            .form-group
-                label=t('email')
-                input( type="text", class="form-control", name="email", data-error="#{t('mandatory_field')}", required, autofocus )
-                .help-block.with-errors
-            .form-group
-                label=t('password')
-                input( type="password", class="form-control", name="password",data-error="#{t('mandatory_field')}", required )
-                .help-block.with-errors
-            .form-group
-                input( type="checkbox", name="remember")
-                |&nbsp;
-                label=t('remember_me')
-            .text-center
-                button( type="submit", class="btn btn-info" )=t('login')
-                |&nbsp;
-                a( href="/#{language}/reset_password" )=t('forgot_password')
-                <a href="/auth/facebook" class="btn btn-info"><span class="fa fa-facebook"></span> Facebook login</a>
-        hr
-        .text-center
-            p=t('need_account')
-                |&nbsp;
-                a.btn.btn-default( href="signup" )=t('sign_up')
+            form( action="/#{language}/login", method="post", data-toggle="validator", role="form" )
+                input( type="hidden", name="r", value=r )
+                .form-group
+                    label=t('email')
+                    input( type="text", class="form-control", name="email", data-error="#{t('mandatory_field')}", required )
+                    .help-block.with-errors
+                .form-group
+                    label=t('password')
+                    input( type="password", class="form-control", name="password",data-error="#{t('mandatory_field')}", required )
+                    .help-block.with-errors
+                .form-group
+                    .checkbox
+                        input( type="checkbox", id="remember", name="remember")
+                        label(for="remember")=t('remember_me')
+                .center-block
+                    button( type="submit", class="btn btn-info btn-block" )=t('login')
+                    a(href="/auth/facebook", class="fb-login btn btn-info btn-block")=t('facebook.login')
+                        span(class="fa fa-facebook", aria-hidden="true")
             hr
-            p.text-center
-                a( href="/he/login" )
-                    img( src="/images/flags/he.gif" )
-                |&nbsp;
-                a( href="/en/login" )
-                    img( src="/images/flags/en.gif" )
-                    br
+            .center-block
+                div
+                    a( href="/#{language}/forgot_password" )=t('forgot_password_question')
+                div
+                    span=t('need_account')
+                    a( href="signup" )=t('sign_up')
+
+                hr
+                .langs-wrapper
+                    p
+                        span
+                            a( href="/he/login" )
+                                img( src="/images/flags/he.gif" )
+                        span
+                            a( href="/en/login" )
+                                img( src="/images/flags/en.gif" )
+  

@@ -8,9 +8,9 @@
 ## Installation
 
 ### Preconditions
->1. **NodeJS** (https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
->2. **mySQL** (http://dev.mysql.com/downloads/mysql/ )
->3. **GIT** (https://git-scm.com/downloads )
+>1. **NodeJS** ( https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
+>2. **mySQL** ( http://dev.mysql.com/downloads/mysql/ )
+>3. **GIT** ( https://git-scm.com/downloads )
 
 ### MYSQL Preconditions
 On Mac after installing, please add the following lines to your ~/.bash_profile
@@ -51,40 +51,26 @@ $ mkdir spark && git clone http://jira.midburn.org:7990/scm/spark/spark.git
 $ mysql -u root -p < sql/create_db.sql
 ```
 
-2. To create the database schema, run:
+2. To create the database schema:
+
 ```
-$ mysql -u root -p < sql/schema.sql
+Ensure knex is installed (npm install knex -g)
+knex migrate:latest
 ```
 
 ## Light the spark
 Fire up the server after installation
 
-`$ node server.js`
+`$ node start`
 
-and navigate to [http://localhost:3000](http://localhost:3000)
+and navigate to http://localhost:3000.
 
-**Note** you probablly want the server to automatically detect your edits, instead of restarting it all the time.
-If so do:
+**Note** You probably want the server to automatically detect your edits, instead of restarting it all the time.
+If so run once `npm install -g nodemon` and then use `nodemon start` to run the server instead of using `node start`
 
-```
-npm install -g nodemon
-nodemon server.js
-```
-
-instead of using `node server.js`
-
-### Activate your account
-after registration, log into mysql
-
-`$ mysql -u root -p`
-
-switch database to spark:
-
-`mysql>use spark;`
-
-update **validated** attribute on your account:
-
-`UPDATE users SET validated=1 WHERE email = '<EMAIL>';`
+### Creating an admin account
+After lighting the spark, if this is the first time or if you have recreated the DB, browse to the development console at http://localhost:3000/dev and select **Create admin user**.
+This will create a user: **a**, password: **a**)
 
 ### Configure your environment
 All the configurations are set in the config file in the `/config` folder.
@@ -108,6 +94,9 @@ To override this configurations to match your development environment:
 
 
 ### Setting your IDE
+
+#### Intellij
+
 The source files include an Intellij/WebStorm project file. You can install get the [community version of IntelliJ](https://www.jetbrains.com/idea/#chooseYourEdition) for free and open the project.
 
 It will provide you with:
@@ -126,6 +115,10 @@ This plugins will add syntax highlighting and IDE integration.
 * Jade
 * Markdown Navigator
 * NodeJS
+
+#### Visual Studio Code
+
+Visual Studio Code is a free IDE from Microsoft that is making an attempt to compete with all the other cool kids and does a decent job. It has everything you need for Node.js development. Get it from [here](https://code.visualstudio.com) and follow this [guide](https://code.visualstudio.com/docs/runtimes/nodejs) to set it up for Node.js.
 
 ### Branching and patching
 while working on new features/patch you should branch out master using
@@ -152,10 +145,10 @@ Note:
 Further reading about git [here](http://rogerdudler.github.io/git-guide/)
 
 ### Localization
-We use the **i18next** internationalization library for multi-language support. 
+We use the **i18next** internationalization library for multi-language support.
 The strings are stored in the `/locales` folder. The file name is the language code.
 
-####Tips:
+#### Tips:
 
 1. Try to make the Hebrew text gender neutral. If you need to differentiate between genders, use the `_male` or `_female` suffixes.
 2. Use variables in the text if needed, don't concatenate strings.
@@ -166,9 +159,13 @@ We use Jade template engine, a language that compiles to HTML, to seperate logic
 
 Read more about [Jade Syntax Documentation](http://naltatis.github.io/jade-syntax-docs/)
 
+<<<<<<< HEAD
 Greate Jade to HTML converter [Here](http://aramboyajyan.github.io/online-jade-template-editor/)
 
 #### i18n & templates
+=======
+#### I18N & Templates
+>>>>>>> master
 You can use i18n in Jade templates. To set an HTML element with a translatable data the general syntax is:
 ```
 HTML_ELEMENT=t('KEY')
@@ -195,6 +192,6 @@ Spark emails by default are **not being sent**. If you wish the emails from Spar
   },
 ```
 
-###README
+### README
 To edit this readme file, get acquainted with the [Markdown Syntax](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
 To help you preview and edit the readme file you can use an [online editor](https://stackedit.io) or any [browser extensions](https://chrome.google.com/webstore/detail/markdown-preview/jmchmkecamhbiokiopfpnfgbidieafmd).
