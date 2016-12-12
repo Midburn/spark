@@ -61,7 +61,7 @@ module.exports = function(app, passport) {
      */
     app.put('/camps/:id/edit', (req, res) => {
         Camp.forge({
-                id: req.params.id
+                camp_id: req.params.id
             })
             .fetch({
                 require: true
