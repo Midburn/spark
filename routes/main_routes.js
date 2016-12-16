@@ -15,9 +15,13 @@ var log = require('../libs/logger.js')(module);
 
 var ticket_routes = require('./ticket_routes');
 
-var async = require('async');
+var async = require('async')
 var crypto = require('crypto');
 var signup_choices = require('../libs/signup-consts.js');
+
+var ttt = signup_choices.ways_of_paricipation('he');
+
+
 module.exports = function (app, passport) {
 
     // =====================================
@@ -176,7 +180,7 @@ module.exports = function (app, passport) {
             // render the page and pass in any flash data if it exists
             res.render('pages/signup', {
                 errorMessage: req.flash('error'),
-                language: ':lng',
+                language: req.params.lng,
                 choices : signup_choices
             });
         });

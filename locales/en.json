@@ -62,6 +62,24 @@
   },
   "bday": "Birthday",
   "phone_number" : "Phone Number",
-  "nationality" : "Nationality"
+  "nationality" : "nationality",
+  "signup" : {
+     "participation" : {
+     "theme_camp": "Theme Camp",
+     "sound_camp": "Sound Camp",
+     "art_installation" : "Art Installation", 
+     "volunteering" : "Volunteering",
+     "havent_decided" : "Havn't decided yet"
+
+     },
+    "hobbies" : {
+      "music" : "Music",
+      "movies" : "Cinema"
+    },
+    "occupations" : {
+      "artist" : "Artist",
+      "engineer" : "Engineer"
+    }
+  }
 
 }

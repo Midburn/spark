@@ -87,6 +87,24 @@
   "password_changed_email_subject": "התראת אבטחה מ- Spark",
   "facebook": {
     "login": "התחבר באמצעות פייסבוק"
+  },
+  "signup" : {
+    "participation" : {
+      "theme_camp": "מחנה נושא",
+      "sound_camp": "מחנה סאונד",
+      "art_installation" : "מיצג אומנות", 
+      "volunteering" : "התנדבות",
+      "havent_decided" : "טרם החלטתי"
+    },
+    "hobbies" : {
+      "music" : "מוזיקה",
+      "movies" : "קולנוע"
+    },
+    "occupations" : {
+      "artist" : "אומן",
+      "engineer" : "מהנדס"
+    }
+
   }
 }
 

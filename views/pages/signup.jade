@@ -65,8 +65,8 @@ block wrapper
                 .form-group
                     label=t('nationality')
                     select(class="form-control", name="nationality", value="#{(body && body.nationality)||''}", data-error="#{t('mandatory_field')}", required )
-                        each country, i in choices.countries()
-                            option(value=i) #{country}
+                        each country, i in choices.countries(language)
+                            option(value=country.identifier) #{country.translation}
 
                 .form-group
                     label=t('passport_id')
@@ -80,14 +80,14 @@ block wrapper
                 .form-group
                     label=t('occupation')
                     select(class="form-control", name="occupation", value="#{(body && body.occupation)||''}", data-error="#{t('mandatory_field')}", required )
-                        each occupation, i in choices.occupations()
-                            option(value=occupation) #{occupation}
+                        each occupation, i in choices.occupations(language)
+                            option(value=occupation.identifier) #{occupation.translation}
 
                 .form-group
                     label=t('hobbies')
                     select(class="form-control", name="hobbies", value="#{(body && body.hobbies)||''}", data-error="#{t('mandatory_field')}", required )
-                        each hobby, i in choices.hobbies()
-                            option(value=hobby) #{hobby}
+                        each hobby, i in choices.hobbies(language)
+                            option(value=hobby.identifier) #{hobby.translation}
 
 
                 .form-group
@@ -116,8 +116,8 @@ block wrapper
                 .form-group
                     label=t('how_plan_to_participate')
                     select(class="form-control", name="way_of_paricipation", value="#{(body && body.way_of_paricipation)||''}", data-error="#{t('mandatory_field')}", required )
-                        each way_of_paricipation, i in choices.ways_of_paricipation()
-                            option(value=i) #{way_of_paricipation}
+                        each way_of_paricipation, i in choices.ways_of_paricipation(language)
+                            option(value=way_of_paricipation.identifier) #{way_of_paricipation.translation}
 
 
                 button(type="button", class="btn btn-previous")=t('previous')
