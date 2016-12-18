@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "test": "mocha"
+    "test": "mocha  \"routes/*test.js\" "
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -46,8 +46,8 @@
     "winston": "2.3.0"
   },
   "devDependencies": {
-    "mocha": "^3.2.0",
     "chai": "*",
+    "mocha": "^3.2.0",
     "supertest": "^2.0.1"
   }
 }

@@ -1,0 +1,119 @@
+.Btn {
+    white-space: nowrap;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 14px;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11),0 1px 3px rgba(0,0,0,.08);
+    background: #fff;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: #6772e5;
+    text-decoration: none;
+    transition: all 0.15s ease;
+
+    &:hover {
+        color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0 7px 14px rgba(50,50,93,.1),0 3px 6px rgba(0,0,0,.08);
+    }
+}
+
+.Btn--default {
+    color: #fff;
+    background: #6772e5;
+
+    &:hover {
+        background: #7795f8;
+    }
+}
+
+.Btn--green {
+    color: #fff;
+    background: #24b47e;
+
+    &:hover {
+        background: #24b41e;
+    }
+}
+
+.Btn--transparent {
+    &:hover {
+        color: #7795f8;
+    }
+}
+
+.pos-r {
+    position: relative;
+}
+
+.pos-a {
+    position: absolute;
+}
+
+.camps {
+    .card {
+        padding: 40px 40px 40px 120px;
+        background-color: #fafafa;
+        border-radius: 4px;
+        box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+
+        span.indicator {
+            position: absolute;
+            top: auto;
+            right: auto;
+            left: 10px;
+            bottom: 4px;
+
+            .glyphicon {
+                font-size: 18px;
+            }
+
+            .glyphicon-remove {
+                color: red;
+            }
+
+            .glyphicon-ok {
+                color: green;
+            }
+        }
+    }
+
+    input[name='camp_name_en'] {
+        padding-left: 40px;
+
+        &.error {
+            border-color: red;
+        }
+    }
+
+    img.img-responsive {
+        max-width: 120px;
+        margin: 30px auto;
+    }
+
+    .block-center {
+        margin-right: auto;
+        margin-left: auto;
+        width: auto;
+        display: table;
+    }
+}
+
+footer {
+    margin-top: 10em;
+    padding: 65px 0 55px;
+    color: #8898aa;
+    line-height: 30px;
+    font-size: 15px;
+    white-space: nowrap;
+    border-top: 2px solid rgba(207,215,223,.25);
+
+    ul {
+        padding: 0;
+        list-style-type: none;
+    }
+}
