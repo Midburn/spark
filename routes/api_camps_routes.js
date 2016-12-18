@@ -157,11 +157,31 @@ module.exports = function(app, passport) {
      * request => /users
      */
     app.get('/users', (req, res) => {
-        User.forge()
-            .fetch()
-            .then((user) => {
+        User.fetchAll()
+            .then((users) => {
                 res.status(200).json({
-                    users: user.toJSON()
+                    users: users.toJSON()
+                })
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+    });
+
+    /**
+     * API: (GET) return camps list
+     * request => /camp-list
+     */
+    app.get('/camp-list', (req, res) => {
+        Camp.fetchAll()
+            .then((camp) => {
+                res.status(200).json({
+                    camps: camp.toJSON()
                 })
             })
             .catch((err) => {

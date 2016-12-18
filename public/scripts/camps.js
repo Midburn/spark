@@ -1,22 +1,42 @@
 /**
+ * Scroll to top - footer button
+ */
+$('#scroll_top').click(function() {
+    $("html, body").stop().animate({
+        scrollTop: 0
+    }, '250', 'swing');
+});
+/**
+ * Camps reveal name chooser
+ */
+$('.camps .reveal_create_camp_btn').click(function() {
+    $('.camps .choose_name').toggleClass('hidden');
+});
+/**
  * evalute & validate camp name (English) over 3 letters
  */
-$("input[name='camp_name_en']").keyup(function() {
+$(".camps input[name='camp_name_en']").keyup(function() {
     var val = $(this).val(),
-        end_point = "camps/",
-        message, lang = $('body').attr('lang');
+        lang = $('body').attr('lang'),
+        status = $(".choose_name span.indicator span.glyphicon"),
+        input = $(".camps .choose_name input[name='camp_name_en']"),
+        btn = $('#check_camp_name');
     if (val.length > 3) {
-        var data = $.get('../' + end_point + val);
+        var data = $.get('../camps/' + val);
         data.done(function() {
             if (data.status === 204) {
-                message = "<span class='glyphicon glyphicon-ok'>Available</span>";
-                $('#check_camp_name').removeClass('disabled').attr('href', '/' + lang + '/camps/new?c=' + val);
+                input.removeClass('error');
+                status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                btn.removeClass('hidden').attr('href', '/' + lang + '/camps/new?c=' + val);
             } else {
-                message = "<span class='glyphicon glyphicon-remove'>Unavailable</span>";
-                $('#check_camp_name').addClass('disabled').removeAttr('href');
+                input.addClass('error');
+                status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                btn.addClass('hidden').removeAttr('href');
             }
-            $(".choose_name span.indicator").html(message)
         });
+    } else {
+        btn.addClass('hidden').removeAttr('href');
+        status.removeClass('glyphicon-ok')
     }
 });
 
@@ -28,7 +48,7 @@ var fetched = false;
 function fetchUsersOnce(elm) {
     if (!fetched) {
         $.getJSON('/users', function(data) {
-            users = [data.users];
+            users = data.users;
             for (var i = 0; i < users.length; i++) {
                 elm.append(template(users[i]));
             }
@@ -43,3 +63,25 @@ function fetchUsersOnce(elm) {
 $("select[name='camp_main_contact']").focus(function() {
     fetchUsersOnce($(this));
 });
+/**
+ * getting camp list from API
+ */
+var fetched = false;
+
+function fetchCampsOnce() {
+    if (!fetched) {
+        var data, tbody = $('.camps.stats > table > tbody');
+        tbody.html('');
+        $.get('/camp-list', function(data) {
+            camps = data.camps;
+            for (var i = 0; i < camps.length; i++) {
+                tbody.append(template(camps[i]));
+            }
+            data = camps;
+        });
+
+        function template(data) {
+            return "<tr><td>" + data.camp_id + "</td><td>" + data.camp_name_en + "</td><td>" + data.camp_name_he + "</td><td>" + data.created_at + "</td></tr>";
+        }
+    }
+}
