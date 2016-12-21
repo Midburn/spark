@@ -135,6 +135,12 @@ require('./routes/main_routes.js')(app, passport);
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
+// API
+require('./routes/api_camps_routes.js')(app, passport);
+
+// Camps
+require('./routes/camps_routes.js')(app, passport);
+
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
