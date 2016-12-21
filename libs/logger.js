@@ -44,7 +44,6 @@ module.exports = function(module) {
                 if (message.endsWith('\n')) {
                     message = message.slice(0, -1);
                 }
-                debugger;
                 logger.log(params.level, message);
             }
         }
