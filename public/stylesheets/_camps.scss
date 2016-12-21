@@ -54,12 +54,41 @@
     position: absolute;
 }
 
+body .dash-panel a:after {
+    content: "»";
+    padding: 0 5px;
+    position: relative;
+}
+
+body[lang="he"] .dash-panel a:after {
+    left: -4px;
+}
+
+body[lang="en"] .dash-panel a:after {
+    left: 4px;
+}
+
 .camps {
+    .panel {
+        h3 {
+            text-align: center;
+        }
+    }
+
     .card {
         padding: 40px 40px 40px 120px;
         background-color: #fafafa;
         border-radius: 4px;
         box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+
+        h2:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: #6772e5;
+            margin: 15px 0;
+        }
 
         span.indicator {
             position: absolute;
@@ -116,4 +145,29 @@ footer {
         padding: 0;
         list-style-type: none;
     }
+}
+
+// Animations
+@keyframes nudge {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+a.Btn.Btn--default.reveal_create_camp_btn {
+    margin-top: 1em;
+    animation-name: nudge;
+    animation-duration: 1500ms;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-delay: 2s;
 }

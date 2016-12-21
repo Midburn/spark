@@ -64,6 +64,19 @@
         "nav": "Camps",
         "btn_save_camp": "Save",
         "btn_continue": "Continue",
+        "dash": {
+            "title": "Theme & Art Camps",
+            "desc": "Something short and leading about the collection below&mdash;its contents, the creator, etc. Make it short and sweet, but not too short so folks don&apos;t simply skip over it entirely.",
+            "stats": {
+              "title": "Statistics & Information"
+            },
+            "members": {
+              "title": "Members Board"
+            },
+            "docs": {
+              "title": "Documents & Forms"
+            }
+        },
         "new": {
             "header_title": "Create a camp",
             "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
@@ -78,6 +91,9 @@
         }
     },
     "footer": {
-      "scrolltop": "Back to top"
+        "scrolltop": "Back to top",
+        "links": {
+
+        }
     }
 }
