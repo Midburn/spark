@@ -1,7 +1,6 @@
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
-
 var NpoMember = require('./npo_member').NpoMember;
 
 var User = bookshelf.Model.extend({
@@ -11,11 +10,11 @@ var User = bookshelf.Model.extend({
         return this.hasMany(NpoMember);
     },
 
-    generateHash: function (password) {
+    generateHash: function(password) {
         this.attributes.password = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
     },
 
-    generateValidation: function () {
+    generateValidation: function() {
         var date = new Date();
         var offset = (24 * 60 * 60 * 1000); // hours*minutes*seconds*millis
         date.setTime(date.getTime() + offset);
@@ -24,7 +23,7 @@ var User = bookshelf.Model.extend({
         this.attributes.email_validation_token = randtoken.generate(32);
     },
 
-    validate: function () {
+    validate: function() {
         var expires = new Date(this.attributes.email_validation_expires);
         if (expires.getTime() > Date.now()) {
             this.attributes.validated = true;
@@ -35,16 +34,16 @@ var User = bookshelf.Model.extend({
         return false;
     },
 
-    validPassword: function (password) {
+    validPassword: function(password) {
         return bcrypt.compareSync(password, this.attributes.password);
     },
 
     virtuals: {
-        fullName: function () {
+        fullName: function() {
             return this.attributes.first_name + ' ' + this.attributes.last_name;
         },
 
-        isAdmin: function () {
+        isAdmin: function() {
             return (this.attributes.roles.split(',').indexOf('admin') > -1);
         }
     }
@@ -54,4 +53,3 @@ var User = bookshelf.Model.extend({
 module.exports = {
     User: User
 };
-

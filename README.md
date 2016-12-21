@@ -159,7 +159,13 @@ We use Jade template engine, a language that compiles to HTML, to seperate logic
 
 Read more about [Jade Syntax Documentation](http://naltatis.github.io/jade-syntax-docs/)
 
+<<<<<<< HEAD
+Greate Jade to HTML converter [Here](http://aramboyajyan.github.io/online-jade-template-editor/)
+
+#### i18n & templates
+=======
 #### I18N & Templates
+>>>>>>> master
 You can use i18n in Jade templates. To set an HTML element with a translatable data the general syntax is:
 ```
 HTML_ELEMENT=t('KEY')
