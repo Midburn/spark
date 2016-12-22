@@ -3,10 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js",
+    "build": "babel public/scripts/r_app.js --presets react,env --out-file public/scripts/r_app.com.js",
+    "start": "npm build && node server.js",
     "test": "mocha  \"routes/*test.js\" "
   },
+  "presets": [
+    "react"
+  ],
   "dependencies": {
+    "babel-preset-env": "^1.1.4",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.1",
     "bookshelf": "^0.10.0",
@@ -40,12 +45,16 @@
     "passport-local": "^1.0.0",
     "passport-remember-me": "^0.0.1",
     "rand-token": "^0.2.1",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "request": "^2.74.0",
     "serve-favicon": "~2.3.0",
     "sprintf-js": "1.0.3",
     "winston": "2.3.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
     "chai": "*",
     "mocha": "^3.2.0",
     "supertest": "^2.0.1"

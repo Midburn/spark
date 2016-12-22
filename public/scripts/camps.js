@@ -81,7 +81,8 @@ function fetchCampsOnce() {
         });
 
         function template(data) {
-            return "<tr><td>" + data.camp_id + "</td><td>" + data.camp_name_en + "</td><td>" + data.camp_name_he + "</td><td>" + data.created_at + "</td></tr>";
+            return "<tr><td>" + data.camp_id + "</td><td>" + data.camp_name_en + "</td><td>" + data.camp_name_he + "</td><td>" + data.updated_at + "</td><td>" + data.created_at + "</td></tr>";
         }
     }
 }
+$('.camps.stats.table').load(fetchCampsOnce());
