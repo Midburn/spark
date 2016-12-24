@@ -34,6 +34,8 @@
   "npo_not_member": "Not a Member",
   "npo_request_approved": "Membership Request Approved",
   "npo_request_rejected": "Membership Request Rejected",
+  "next": "Next",
+  "previous": "Previous",
   "only_humans_allowed": "You seem to be a robot. Only humans allowed!",
   "other": "Other",
   "password": "Password",

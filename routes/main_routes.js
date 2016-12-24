@@ -19,9 +19,6 @@ var async = require('async')
 var crypto = require('crypto');
 var signup_choices = require('../libs/signup-consts.js');
 
-var ttt = signup_choices.ways_of_paricipation('he');
-
-
 module.exports = function (app, passport) {
 
     // =====================================

@@ -55,7 +55,8 @@
   "welcome_home_female": "ברוכה הבאה הביתה, {{user}}!",
   "welcome_home_male": "ברוך הבא הביתה, {{user}}!",
   "welcome_spark": "ברוכים הבאות ל- Spark!",
-
+  "next": "הבא",
+  "previous": "קודם",
   "bday": "תאריך לידה",
   "phone_number" : "מס' טלפון",
   "nationality" : "אזרחות",
