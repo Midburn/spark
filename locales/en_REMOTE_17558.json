@@ -34,8 +34,6 @@
   "npo_not_member": "Not a Member",
   "npo_request_approved": "Membership Request Approved",
   "npo_request_rejected": "Membership Request Rejected",
-  "next": "Next",
-  "previous": "Previous",
   "only_humans_allowed": "You seem to be a robot. Only humans allowed!",
   "other": "Other",
   "password": "Password",
@@ -50,7 +48,7 @@
   "user_not_validated": "Your email ({{email}}) wasn't verified yet. Check your mailbox for further instructions.",
   "welcome_home": "Welcome Home, {{user}}!",
   "welcome_spark": "Welcome to Spark!",
-"reset_password_email_subject": "Reset Your Spark Password",
+  "reset_password_email_subject": "Reset Your Spark Password",
   "back_to_login": "Back to login page",
   "reset_password_email_sent": "An email with further instructios was sent to the addresss you provided",
   "email_doesnt_exist_message": "No account with that email exists",
@@ -61,62 +59,5 @@
   "password_changed_email_subject": "Spark Security Alert",
   "facebook": {
     "login": "Login with Facebook"
-  },
-  "bday": "Birthday",
-  "phone_number" : "Phone Number",
-  "nationality" : "nationality",
-  "signup" : {
-     "participation" : {
-     "theme_camp": "Theme Camp",
-     "sound_camp": "Sound Camp",
-     "art_installation" : "Art Installation", 
-     "volunteering" : "Volunteering",
-     "havent_decided" : "Havn't decided yet"
-
-     },
-    "hobbies" : {
-      "music" : "Music",
-      "movies" : "Cinema"
-    },
-    "occupations" : {
-      "artist" : "Artist",
-      "engineer" : "Engineer"
-    }
-
-    "camps": {
-        "nav": "Camps",
-        "btn_save_camp": "Save",
-        "btn_continue": "Continue",
-        "dash": {
-            "title": "Theme & Art Camps",
-            "desc": "Something short and leading about the collection below&mdash;its contents, the creator, etc. Make it short and sweet, but not too short so folks don&apos;t simply skip over it entirely.",
-            "stats": {
-              "title": "Statistics & Information"
-            },
-            "members": {
-              "title": "Members Board"
-            },
-            "docs": {
-              "title": "Documents & Forms"
-            }
-        },
-        "new": {
-            "header_title": "Create a camp",
-            "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
-            "header_desc": "To create new camp you have to provide us some information, then your new camp will be reviewed by theme camps team leader",
-            "btn_create": "Create Camp",
-            "name_he": "Camp name (Hebrew)",
-            "name_en": "Camp name (English)",
-            "desc_he": "Camp desc (Hebrew)",
-            "desc_en": "Camp description (English)",
-            "type": "Camp type",
-            "main_contact": "Camp main contact"
-        }
-    },
-    "footer": {
-        "scrolltop": "Back to top",
-        "links": {
-
-        }
-    }
+  }
 }

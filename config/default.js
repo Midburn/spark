@@ -53,6 +53,7 @@ module.exports =  {
   // be replaced by an app set by the Midburn facebook account.
   facebook: {
     app_id: "1083906121721925",
-    app_secret: "d60f362df1e9f35b6633b6f819ea7ccf"
+    app_secret: "d60f362df1e9f35b6633b6f819ea7ccf",
+    callbackBase: "http://localhost:3000"
   }
 }

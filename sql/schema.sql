@@ -1,14 +1,3 @@
-
-USE spark;
-
-##########
-#  DROP  #
-##########
-
-DROP TABLE IF EXISTS payments;
-DROP TABLE IF EXISTS npo_members;
-DROP TABLE IF EXISTS users;
-
 ############
 #  CREATE  #
 ############
@@ -41,8 +30,11 @@ CREATE TABLE IF NOT EXISTS users (
   npo_member                BOOLEAN DEFAULT FALSE,
   facebook_id		        VARCHAR(50),
   facebook_token            VARCHAR(255),
-  nationality               VARCHAR(255),
-  default_language               CHAR(10)
+
+  # Camp relations
+  camp_id                   INTEGER,
+
+  CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (camp_id)
 )
   ENGINE = innodb, DEFAULT CHARSET=utf8;
 
