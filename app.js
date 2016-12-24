@@ -77,15 +77,18 @@ i18next
         whitelist: ['en', 'he'],
         fallbackLng: 'en',
         load: 'languageOnly',
-        debug: false,
+        debug: true,
+        ns: ["common", "countries"],
+        defaultNS: 'common',
         backend: {
             // path where resources get loaded from
-            loadPath: 'locales/{{lng}}.json',
+            loadPath: 'locales/{{lng}}/{{ns}}.json',
 
             // path to post missing resources
             addPath: 'locales/{{lng}}.missing.json',
 
-            // jsonIndent to use when storing json files
+            // jsonIndent to use when storing json files,
+            
             jsonIndent: 2
         },
         detection: {

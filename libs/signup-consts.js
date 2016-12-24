@@ -1,7 +1,7 @@
 
 var i18next = require('i18next');
 
-var countries_ = ['Israel', 'United_States'];
+var countries_ = require('./countries.js').counties; ///['israel', 'united_states_of_america', 'russia']
 
 
 var occupations_ = ['artist', 'engineer'];
@@ -19,12 +19,16 @@ function  translate(identifier, lang) {
     return { "identifier" : identifier , "translation" : i18next.t("signup." + identifier, {lng : lang}) };
 }
 
+function  translate_countries(identifier, lang) {
+    return { "identifier" : identifier , "translation" : i18next.t(identifier, {lng : lang}) };
+}
+
 var Choices = function() {};
 
     
 
     Choices.prototype.countries = function (lang) {
-        var res = countries_.map(function (x) {return translate ("countries." + x, lang);}); 
+        var res = countries_.map(function (x) {return translate_countries ("countries:" + x, lang);}); 
         return res ;
     };
 
