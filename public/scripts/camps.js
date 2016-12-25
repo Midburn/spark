@@ -1,4 +1,14 @@
 /**
+ * GLOBALS
+ */
+$(document).ajaxStart(function() {
+    $('#ajax_indicator').removeClass('done').removeClass('hide').fadeIn('fast');
+});
+$(document).ajaxComplete(function() {
+    $('#ajax_indicator').addClass('done').fadeOut('slow');
+});
+
+/**
  * Scroll to top - footer button
  */
 $('#scroll_top').click(function() {
@@ -13,13 +23,27 @@ $('.camps .reveal_create_camp_btn').click(function() {
     $('.camps .choose_name').toggleClass('hidden');
 });
 /**
- * evalute & validate camp name (English) over 3 letters
+ * evalute & validate camp name (English) must be > 3 letters
+ * listen to change with timer, to prevent redundant http requests
  */
-$(".camps input[name='camp_name_en']").keyup(function() {
-    var val = $(this).val(),
+var interval = 1500,
+    typingTimer,
+    $input = $(".camps input[name='camp_name_en']");
+
+$input.keyup(function() {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(doneTyping, interval);
+});
+
+$input.keydown(function() {
+    clearTimeout(typingTimer);
+});
+
+function doneTyping() {
+    var val = $input.val(),
         lang = $('body').attr('lang'),
         status = $(".choose_name span.indicator span.glyphicon"),
-        input = $(".camps .choose_name input[name='camp_name_en']"),
+        input = $input,
         btn = $('#check_camp_name');
     if (val.length > 3) {
         var data = $.get('../camps/' + val);
@@ -38,7 +62,7 @@ $(".camps input[name='camp_name_en']").keyup(function() {
         btn.addClass('hidden').removeAttr('href');
         status.removeClass('glyphicon-ok')
     }
-});
+}
 
 /**
  * getting user list from API
@@ -66,13 +90,13 @@ $("select[name='camp_main_contact']").focus(function() {
 /**
  * getting camp list from API
  */
-var fetched = false;
+var fetched = false, $stats_table = $('.camps.stats .table');
 
 function fetchCampsOnce() {
     if (!fetched) {
-        var data, tbody = $('.camps.stats > table > tbody');
+        var data, tbody = $stats_table.find('tbody');
         tbody.html('');
-        $.get('/camp-list', function(data) {
+        $.get('/camps', function(data) {
             camps = data.camps;
             for (var i = 0; i < camps.length; i++) {
                 tbody.append(template(camps[i]));
@@ -81,8 +105,9 @@ function fetchCampsOnce() {
         });
 
         function template(data) {
-            return "<tr><td>" + data.camp_id + "</td><td>" + data.camp_name_en + "</td><td>" + data.camp_name_he + "</td><td>" + data.updated_at + "</td><td>" + data.created_at + "</td></tr>";
+            return "<tr><td>" + data.camp_id + "</td><td><a href='camps/" + data.camp_id + "'>" + data.camp_name_en + "</a></td><td>" + data.camp_name_he + "</td><td class='hidden-xs'>" + data.updated_at + "</td><td class='hidden-xs'>" + data.created_at + "</td><td><a href='camps/" + data.camp_id + "/edit'><span class='glyphicon glyphicon-heart'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a href='camps/" + data.camp_id + "/remove'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
         }
+        fetched = true;
     }
 }
-$('.camps.stats.table').load(fetchCampsOnce());
+$stats_table.load(fetchCampsOnce());

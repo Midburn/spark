@@ -23,7 +23,8 @@ module.exports = function(app, passport) {
         }
 
         if (validate) {
-            Camp.forge({
+            Camp
+                .forge({
                     camp_name_he: camp_name_he,
                     camp_name_en: camp_name_en
                         // TODO: more data attributes here
@@ -60,7 +61,8 @@ module.exports = function(app, passport) {
      * request => /camps/new
      */
     app.put('/camps/:id/edit', (req, res) => {
-        Camp.forge({
+        Camp
+            .forge({
                 camp_id: req.params.id
             })
             .fetch({
@@ -104,7 +106,8 @@ module.exports = function(app, passport) {
      */
     app.get('/camps/:id.json', (req, res) => {
         // find and return camp object by camp_id
-        Camp.forge({
+        Camp
+            .forge({
                 camp_id: req.params.id
             })
             .fetch()
@@ -130,7 +133,8 @@ module.exports = function(app, passport) {
      */
     app.get('/camps/:camp_name_en', (req, res) => {
         var req_camp_name_en = req.params.camp_name_en;
-        Camp.forge({
+        Camp
+            .forge({
                 camp_name_en: req_camp_name_en
             })
             .fetch()
@@ -157,7 +161,8 @@ module.exports = function(app, passport) {
      * request => /users
      */
     app.get('/users', (req, res) => {
-        User.fetchAll()
+        User
+            .fetchAll()
             .then((users) => {
                 res.status(200).json({
                     users: users.toJSON()
@@ -175,10 +180,11 @@ module.exports = function(app, passport) {
 
     /**
      * API: (GET) return camps list
-     * request => /camp-list
+     * request => /camps
      */
-    app.get('/camp-list', (req, res) => {
-        Camp.fetchAll()
+    app.get('/camps', (req, res) => {
+        Camp
+            .fetchAll()
             .then((camp) => {
                 res.status(200).json({
                     camps: camp.toJSON()

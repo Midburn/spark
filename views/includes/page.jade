@@ -1,5 +1,9 @@
 extends layout
 block wrapper
+    ol.breadcrumb
+        li
+            a(href="/camps") Index
+        li.active Camp details
     nav.navbar.navbar-default.navbar-fixed-top
         .container
             .navbar-header
@@ -42,4 +46,5 @@ block wrapper
                     li
                         a( href= '/#{language}/logout' )=t('logout')
     .container
+        #ajax_indicator.hide
         block content

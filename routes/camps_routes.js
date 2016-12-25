@@ -8,6 +8,8 @@ const i18next = require('i18next'),
     mail = require('../libs/mail'),
     log = require('../libs/logger.js')(module)
 
+var Camp = require('../models/camp').Camp;
+
 module.exports = function(app, passport) {
 
     // ==============
@@ -26,14 +28,33 @@ module.exports = function(app, passport) {
             camp_name_en: req.query.c
         });
     });
-    // camp page (by id)
-    app.get('/:lng/camps/:id', security.protectGet, (req, res) => {
-        res.render('/:lng/camp', {});
-    });
     // camps statistics
     app.get('/:lng/camps-stats', security.protectGet, (req, res) => {
         res.render('pages/camps/stats', {
             user: req.user
         });
+    });
+    // camp page (by id)
+    app.get('/:lng/camps/:id', security.protectGet, (req, res) => {
+        Camp
+            .forge({
+                camp_id: req.params.id
+            })
+            .fetch()
+            .then((collection) => {
+              res.render('pages/camps/camp', {
+                  user: req.user,
+                  camp_id: req.params.id,
+                  camp: collection.toJSON()
+              });
+            })
+            .catch((e) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: e.message
+                    }
+                });
+            });
     });
 };
