@@ -82,7 +82,7 @@
       "artist" : "Artist",
       "engineer" : "Engineer"
     }
-
+    ,
     "camps": {
         "nav": "Camps",
         "btn_save_camp": "Save",
@@ -119,4 +119,5 @@
 
         }
     }
+}
 }

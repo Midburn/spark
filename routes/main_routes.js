@@ -188,7 +188,8 @@ module.exports = function (app, passport) {
     app.get('/:lng/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
         res.render('pages/signup', {
-            errorMessage: req.flash('error')
+            errorMessage: req.flash('error'),
+            choices: signup_choices
         });
     });
 
