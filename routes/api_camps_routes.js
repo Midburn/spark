@@ -6,7 +6,26 @@ var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
 
 module.exports = function(app, passport) {
-
+    /**
+     * API: (GET) get user by id
+     * request => /userss/:id
+     */
+    app.get('/users/:id', (req, res) => {
+        User
+            .forge({
+                user_id: req.params.id
+            })
+            .fetch({
+              columns: '*'
+            })
+            .then((user) => {
+                res.json({
+                    fullname: user.get('fullName'),
+                    phone: user.get('email'),
+                    email: user.get('cell_phone')
+                });
+            });
+    });
     /**
      * API: (POST) create camp
      * request => /camps/new
@@ -63,7 +82,7 @@ module.exports = function(app, passport) {
     app.put('/camps/:id/edit', (req, res) => {
         Camp
             .forge({
-                camp_id: req.params.id
+                id: req.params.id
             })
             .fetch({
                 require: true
@@ -101,14 +120,14 @@ module.exports = function(app, passport) {
     });
 
     /**
-     * API: (GET) return camp object, provide camp_id
+     * API: (GET) return camp object, provide camp id
      * request => /camps/1.json
      */
     app.get('/camps/:id.json', (req, res) => {
-        // find and return camp object by camp_id
+        // find and return camp object by camp id
         Camp
             .forge({
-                camp_id: req.params.id
+                id: req.params.id
             })
             .fetch()
             .then((collection) => {

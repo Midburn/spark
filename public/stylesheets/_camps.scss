@@ -1,3 +1,32 @@
+@import url( 'https://fonts.googleapis.com/css?family=Cabin|Rubik');
+@import './camps_mobile';
+
+body {
+    font-family: 'Cabin', sans-serif;
+}
+
+body[lang='he'] {
+    font-family: 'Rubik', sans-serif;
+}
+
+body .dash-panel a:after {
+    content: "»";
+    padding: 0 5px;
+    position: relative;
+}
+
+body[lang="he"] .dash-panel a:after {
+    left: -4px;
+}
+
+body[lang="en"] .dash-panel a:after {
+    left: 4px;
+}
+
+section {
+    padding: 0 15px;
+}
+
 .Btn {
     white-space: nowrap;
     display: inline-block;
@@ -13,6 +42,7 @@
     letter-spacing: 0.025em;
     color: #6772e5;
     text-decoration: none;
+    border: 0;
     transition: all 0.15s ease;
 
     &:hover {
@@ -52,20 +82,6 @@
 
 .pos-a {
     position: absolute;
-}
-
-body .dash-panel a:after {
-    content: "»";
-    padding: 0 5px;
-    position: relative;
-}
-
-body[lang="he"] .dash-panel a:after {
-    left: -4px;
-}
-
-body[lang="en"] .dash-panel a:after {
-    left: 4px;
 }
 
 .camps {
@@ -145,21 +161,6 @@ body[lang="en"] {
         }
     }
 }
-
-footer {
-    margin-top: 10em;
-    padding: 65px 0 55px;
-    color: #8898aa;
-    line-height: 30px;
-    font-size: 15px;
-    white-space: nowrap;
-    border-top: 2px solid rgba(207,215,223,.25);
-
-    ul {
-        padding: 0;
-        list-style-type: none;
-    }
-}
 // Animations
 @keyframes nudge {
     0% {
@@ -213,4 +214,50 @@ div#ajax_indicator.done {
 .shad {
     box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
 }
-@import './camps_mobile';
+
+.camps.camp_editing {
+    textarea {
+        max-height: 34px;
+        resize: none;
+    }
+
+    input,
+    textarea {
+        margin: 1em 0 1.5em;
+        border: 0;
+        border-bottom: 3px solid #7795f8;
+        border-radius: 0;
+        box-shadow: none;
+
+        &:active,
+        &:focus {
+            box-shadow: none;
+        }
+    }
+    // Card transition
+    .cards--wrapper {
+        width: 100%;
+        display: block;
+        position: relative;
+        // overflow: hidden;
+        min-height: 100vh;
+
+        &:after {
+            content: '.';
+            display: block;
+            visibility: hidden;
+        }
+
+        .card {
+            width: 100%;
+            transition: 500ms;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card.card-hide {
+            left: 2500px;
+        }
+    }
+}
