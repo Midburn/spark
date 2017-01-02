@@ -21,11 +21,10 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
     include footer
     //- Scripts
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' )
-    script(async src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",
+    script(src='/gentelella/vendors/jquery/dist/jquery.min.js' )
+    script(src="/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
     integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
     crossorigin="anonymous" )
     script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
     script(async src="https://www.google.com/recaptcha/api.js")
-    script(src="https://unpkg.com/vue/dist/vue.js")
-    script(type="text/javascript", src="/scripts/camps.js")
+    script(src="/scripts/camps.js")

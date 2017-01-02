@@ -1,3 +1,40 @@
+@import url( 'https://fonts.googleapis.com/css?family=Cabin|Rubik');
+@import './camps_mobile';
+
+body {
+    font-family: 'Cabin', sans-serif;
+}
+
+body[lang='he'] {
+    font-family: 'Rubik', sans-serif;
+}
+
+body .dash-panel a:after {
+    content: "»";
+    padding: 0 5px;
+    position: relative;
+}
+
+body[lang="he"] .dash-panel a:after {
+    left: -4px;
+}
+
+body[lang="en"] {
+    .camps {
+        .card {
+            padding: 40px 120px 40px 40px;
+        }
+
+        .dash-panel a:after {
+            left: 4px;
+        }
+    }
+}
+
+section {
+    padding: 0 15px;
+}
+
 .Btn {
     white-space: nowrap;
     display: inline-block;
@@ -13,6 +50,7 @@
     letter-spacing: 0.025em;
     color: #6772e5;
     text-decoration: none;
+    border: 0;
     transition: all 0.15s ease;
 
     &:hover {
@@ -54,20 +92,6 @@
     position: absolute;
 }
 
-body .dash-panel a:after {
-    content: "»";
-    padding: 0 5px;
-    position: relative;
-}
-
-body[lang="he"] .dash-panel a:after {
-    left: -4px;
-}
-
-body[lang="en"] .dash-panel a:after {
-    left: 4px;
-}
-
 .camps {
     .panel {
         h3 {
@@ -79,7 +103,6 @@ body[lang="en"] .dash-panel a:after {
         padding: 40px 40px 40px 120px;
         background-color: #fafafa;
         border-radius: 4px;
-        box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
 
         h2:after {
             content: '';
@@ -88,6 +111,14 @@ body[lang="en"] .dash-panel a:after {
             height: 4px;
             background: #6772e5;
             margin: 15px 0;
+        }
+
+        input[name='camp_name_en'] {
+            padding-left: 40px;
+
+            &.error {
+                border-color: red;
+            }
         }
 
         span.indicator {
@@ -111,14 +142,6 @@ body[lang="en"] .dash-panel a:after {
         }
     }
 
-    input[name='camp_name_en'] {
-        padding-left: 40px;
-
-        &.error {
-            border-color: red;
-        }
-    }
-
     img.img-responsive {
         max-width: 120px;
         margin: 30px auto;
@@ -132,21 +155,20 @@ body[lang="en"] .dash-panel a:after {
     }
 }
 
-footer {
-    margin-top: 10em;
-    padding: 65px 0 55px;
-    color: #8898aa;
-    line-height: 30px;
-    font-size: 15px;
-    white-space: nowrap;
-    border-top: 2px solid rgba(207,215,223,.25);
+body[lang="en"] {
+    .camps {
+        .card {
+            input[name='camp_name_en'] {
+                padding-left: 12px;
+            }
 
-    ul {
-        padding: 0;
-        list-style-type: none;
+            span.indicator {
+                left: auto;
+                right: 10px;
+            }
+        }
     }
 }
-
 // Animations
 @keyframes nudge {
     0% {
@@ -170,4 +192,78 @@ a.Btn.Btn--default.reveal_create_camp_btn {
     animation-fill-mode: both;
     animation-timing-function: ease-in-out;
     animation-delay: 2s;
+}
+
+div#ajax_indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 10px;
+    width: 0;
+    display: block;
+    z-index: 90192301;
+    background-color: #ff7058;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    -webkit-transition: width 0.6s ease;
+    -o-transition: width 0.6s ease;
+    transition: width 0.6s ease;
+    background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    background-image: -o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    -webkit-background-size: 40px 40px;
+    background-size: 40px 40px;
+}
+
+div#ajax_indicator.done {
+    width: 100%;
+}
+
+.shad {
+    box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+}
+
+.camps.camp_editing {
+    textarea {
+        max-height: 34px;
+        resize: none;
+    }
+
+    input,
+    textarea {
+        margin: 1em 0 1.5em;
+        border: 0;
+        border-bottom: 3px solid #7795f8;
+        border-radius: 0;
+        box-shadow: none;
+
+        &:active,
+        &:focus {
+            box-shadow: none;
+        }
+    }
+    // Card transition
+    .cards--wrapper {
+        display: block;
+        position: relative;
+        overflow: hidden;
+
+        &:after {
+            content: '.';
+            display: block;
+            visibility: hidden;
+        }
+
+        .card {
+            width: 100%;
+            transition: 300ms;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card.card-hide {
+            left: 3000px;
+        }
+    }
 }

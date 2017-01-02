@@ -2,40 +2,18 @@ extends ../../includes/page
 block content
     .camps.stats
         section
-            .heading
-                h3=t('Camp Statistics')
-        table.table.table-striped
-            thead
-                tr
-                  th #
-                  |                 
-                  th Camp Name (EN)
-                  |                 
-                  th Camp Name (HE)
-                  |                 
-                  th Created at
-            tbody
-              tr
-                td 1
-                |                 
-                td The stranglers
-                |                 
-                td hebrew name
-                |                 
-                td 21-07-2015
-              tr
-                td 2
-                |                 
-                td Imaginary dragon
-                |                 
-                td hebrew name
-                |                 
-                td 21-07-2015
-              tr
-                td 3
-                |                 
-                td Karma is a bitch
-                |                 
-                td hebrew name
-                |                 
-                td 21-07-2015
+            .heading.card.row
+                h2=t('Camp Statistics')
+                .form-group
+                    input.form-control(type="text", placeholder="Search camp", autofocus)
+            table.table.table-striped
+                thead
+                    tr
+                        th #
+                        th Name (EN)
+                        th Name (HE)
+                        th.hidden-xs Last update
+                        th.hidden-xs Created at
+                        th.admin-edit Edit
+                        th.admin-remove Remove
+                tbody

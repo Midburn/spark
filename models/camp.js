@@ -2,6 +2,9 @@ var bookshelf = require('../libs/db').bookshelf;
 
 var Camp = bookshelf.Model.extend({
     tableName: 'camps',
+    details: function() {
+      return this.hasOne(CampDetails)
+    }
 });
 
 var CampDetails = bookshelf.Model.extend({
