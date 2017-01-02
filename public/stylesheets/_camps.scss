@@ -19,8 +19,16 @@ body[lang="he"] .dash-panel a:after {
     left: -4px;
 }
 
-body[lang="en"] .dash-panel a:after {
-    left: 4px;
+body[lang="en"] {
+    .camps {
+        .card {
+            padding: 40px 120px 40px 40px;
+        }
+
+        .dash-panel a:after {
+            left: 4px;
+        }
+    }
 }
 
 section {
@@ -236,11 +244,9 @@ div#ajax_indicator.done {
     }
     // Card transition
     .cards--wrapper {
-        width: 100%;
         display: block;
         position: relative;
-        // overflow: hidden;
-        min-height: 100vh;
+        overflow: hidden;
 
         &:after {
             content: '.';
@@ -250,14 +256,14 @@ div#ajax_indicator.done {
 
         .card {
             width: 100%;
-            transition: 500ms;
+            transition: 300ms;
             position: absolute;
             top: 0;
             left: 0;
         }
 
         .card.card-hide {
-            left: 2500px;
+            left: 3000px;
         }
     }
 }

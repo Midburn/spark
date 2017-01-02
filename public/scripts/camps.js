@@ -30,7 +30,7 @@ $('.camps .reveal_create_camp_btn').click(function() {
  * evalute & validate camp name (English) must be > 3 letters
  * listen to change with timer, to prevent redundant http requests
  */
-var interval = 1500,
+var interval = 1200,
     typingTimer,
     $input = $(".camps.camp_index input[name='camp_name_en']");
 
@@ -117,12 +117,30 @@ function fetchCampsOnce() {
 }
 $stats_table.load(fetchCampsOnce());
 
+// TODO: fix inner height for dynamic width size changing
+function innerHeightChange() {
+    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
+    $('.camps.camp_editing .cards--wrapper').css({
+        'min-height': card_height + 'px'
+    });
+}
+innerHeightChange();
 // Camp details card transition
 $('.card-switcher--card2').click(function() {
-  $('.card-second').removeClass('card-hide');
-  $('.card-first').addClass('card-hide');
+    $('.card-second').removeClass('card-hide');
+    $('.card-first').addClass('card-hide');
+    $('.card-switcher--card1').removeClass('Btn--default');
+    $('.card-switcher--card1').addClass('Btn--transparent');
+    $('.card-switcher--card2').removeClass('Btn--transparent');
+    $('.card-switcher--card2').addClass('Btn--default');
+    innerHeightChange();
 });
 $('.card-switcher--card1').click(function() {
-  $('.card-second').addClass('card-hide');
-  $('.card-first').removeClass('card-hide');
+    $('.card-second').addClass('card-hide');
+    $('.card-first').removeClass('card-hide');
+    $('.card-switcher--card1').removeClass('Btn--transparent');
+    $('.card-switcher--card2').removeClass('Btn--default');
+    $('.card-switcher--card2').addClass('Btn--transparent');
+    $('.card-switcher--card1').addClass('Btn--default');
+    innerHeightChange();
 });
