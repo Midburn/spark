@@ -73,11 +73,12 @@ module.exports = function(app, passport) {
      */
     // Read
     app.get('/:lng/camps/:id', security.protectGet, (req, res) => {
+debugger;
         Camp
             .forge({
                 id: req.params.id
             })
-            .fetch()
+            .fetch({withRelated: ['camp_details']})
             .then((camp) => {
                 User.forge({
                     user_id: camp.toJSON().main_contact
@@ -86,7 +87,8 @@ module.exports = function(app, passport) {
                         user: req.user,
                         id: req.params.id,
                         camp_management: user.toJSON(),
-                        camp: camp.toJSON()
+                        camp: camp.toJSON(),
+                        camp_details: JSON.stringify(camp.related('author'))
                     });
                 });
             })

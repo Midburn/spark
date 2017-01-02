@@ -1,0 +1,83 @@
+extends ../../includes/page
+block content
+    .camps.camp_editing
+        section
+            .heading.card.row
+                .col-md-12
+                    h2 Editing: #{camp.camp_name_en}
+                    span.label.label-info Camp # #{camp.id}
+                    h6 Since: #{camp.created_at}
+            .controls.card.row
+                .col-xs-12    
+                    //- Card switcher
+                    button.Btn.Btn--default.card-switcher--card1 Basic Information
+                    button.Btn.Btn--transparent.card-switcher--card2 Camp Details
+            .cards--wrapper.row
+                //- Card 1
+                .card.card-first
+                    h4 Camp Name & Description
+                    .camp-info.panel
+                        .panel-body
+                            .names.col-md-6
+                                .input-group.col-xs-12
+                                    label(for='edit_camp_name_en') Name (EN)
+                                    input.form-control(id='edit_camp_name_en', name='camp_name_en', value='#{camp.camp_name_en}', autofocus)
+                                .input-group.col-xs-12
+                                    label(for='edit_camp_name_he') Name (HE)
+                                    input.form-control(id='edit_camp_name_he', name='camp_name_he', value='#{camp.camp_name_he}')
+                            .descriptions.col-md-6
+                                .input-group.col-xs-12
+                                    label(for='edit_camp_desc_en') Description (EN)
+                                    textarea.form-control(id='edit_camp_desc_en', name='camp_desc_en') #{camp.camp_desc_en}
+                                .input-group.col-xs-12
+                                    label(for='edit_camp_desc_he') Description (HE)
+                                    textarea.form-control(id='edit_camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
+                    h4 Camp Contact Personnel
+                    .camp-leaders.panel
+                        .panel-body
+                            .personnel
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_type') Main Contact
+                                        select.form-control(id='edit_camp_main_contact', name='main_contact')
+                                            option.selected(value='#{camp.main_contact}', selected) #{camp.main_contact}
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_type') Main Contact
+                                        select.form-control(id='edit_camp_moop_contact', name='moop_contact')
+                                            option.selected(value='#{camp.moop_contact}', selected) #{camp.moop_contact}
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_type') Main Contact
+                                        select.form-control(id='edit_camp_safety_contact', name='safety_contact')
+                                            option.selected(value='#{camp.safety_contact}', selected) #{camp.safety_contact}
+                    h4 Camp Behaviour
+                    .camp-leaders.panel
+                        .panel-body
+                            .behaviour
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_type') Type
+                                        select.form-control(id='edit_camp_type', name='camp_type')
+                                            option.selected(value='#{camp.type}', selected) #{camp.type}
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_status') Status
+                                        select.form-control(id='edit_camp_status', name='camp_status')
+                                            option.selected(value='#{camp.status}', selected) #{camp.status}
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_enabled') Active
+                                        select.form-control(id='edit_camp_enabled', name='camp_enabled')
+                                            option.selected(value='#{camp.enabled}', selected) #{camp.enabled}
+                //- Card 2
+                .card.card-second.card-hide
+                    h4 More Details
+                    .camp-details.panel
+                        .panel-body
+                            .names.col-md-6
+                                .input-group.col-xs-12
+                                    label(for='edit_camp_name_en') Details 1
+                                    input.form-control(id='edit_camp_name_en', name='camp_name_en', value='#{camp.camp_name_en}', autofocus)
+            .row.card.card-save
+                button.Btn.Btn--default Save
