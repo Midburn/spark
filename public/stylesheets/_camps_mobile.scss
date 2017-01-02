@@ -1,0 +1,18 @@
+@media (max-width: 768px) {
+    body > .container {
+        padding-top: 0 !important;
+    }
+
+    .camps {
+        .card {
+            padding: 20px 15px !important;
+        }
+    }
+    .footer-links {
+        ul {
+            li {
+                display: block !important;
+            }
+        }
+    }
+}
