@@ -1,0 +1,49 @@
+extends ../../includes/page
+block content
+    .camps.camp_details
+        section
+            .heading.card.row
+                .col-md-8
+                    h2 #{camp.camp_name_en}
+                    span.label.label-info Camp # #{id}
+                    span.label.label-primary Camp Style: #{camp.type}
+                    h6 Since: #{camp.created_at}
+                    p Camp description #{camp.camp_desc_en}
+                .col-md-4
+                    ul.list-group
+                        li.list-group-item
+                            span Time active #{camp.camp_activity_time}
+                        li.list-group-item
+                            span Children friendly #{camp.child_friendly}
+                        li.list-group-item
+                            span Noise #{camp.noise_level}
+                        li.list-group-item
+                            span Art? #{camp.support_art}
+            .row.card
+                .management.panel.col-md-12
+                    h4 Camp Management
+                    .panel-body.col-md-4
+                        a(href='/users/#{camp.main_contact}') Main contact
+                        .contact-info
+                            h5 #{camp_management.first_name}
+                            span.email #{camp_management.email}
+                            span.phone #{camp_management.phone}
+                    .panel-body.col-md-4
+                        a(href='/users/#{camp.moop_contact}') Moop contact
+                        .contact-info
+                            button.get_info get_info
+                            h5.fullname
+                            span.email
+                            span.phone
+                    .panel-body.col-md-4
+                        a(href='/users/#{camp.safety_contact}') Safety contact
+                        .contact-info
+                            button.get_info get_info
+                            h5.fullname
+                            span.email
+                            span.phone
+                            
+                .documents.col-md-12.panel
+                    h4 Camp Documents
+                    .panel-body
+                        | documents list here

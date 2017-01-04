@@ -23,7 +23,7 @@ block wrapper
                 input( type="hidden", name="r", value=r )
                 .form-group
                     label=t('email')
-                    input( type="text", class="form-control", name="email", data-error="#{t('mandatory_field')}", required )
+                    input( type="text", class="form-control", name="email", data-error="#{t('mandatory_field')}", autofocus="true", required )
                     .help-block.with-errors
                 .form-group
                     label=t('password')

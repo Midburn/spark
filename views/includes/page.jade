@@ -42,6 +42,6 @@ block wrapper
                     li
                         a( href= '/#{language}/logout' )=t('logout')
     .container
+        #ajax_indicator.hide
+        include crumbs
         block content
-
-block footer
