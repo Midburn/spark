@@ -5,8 +5,10 @@ block content
             .container
                 h1.jumbotron-heading=t('camps.dash.title')
                 p.lead.text-muted=t('camps.dash.desc')
-                p
-                    a.Btn.Btn--default.reveal_create_camp_btn(href='#', role='button')=t('camps.new.btn_create')
+                div.block-center    
+                    div.input-group
+                        a.Btn.Btn--default.reveal_create_camp_btn(href='#', role='button')=t('camps.new.btn_create')
+                        a.Btn.Btn--default(href='/join')=t('camps.join.join_a_camp')
 
         section.jumbotron.card.shad.choose_name.hidden
             .center-block

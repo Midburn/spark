@@ -54,30 +54,86 @@ block content
                     h4 Camp Behaviour
                     .camp-leaders.panel
                         .panel-body
-                            .behaviour
+                            .camp-modifiers
                                 .col-md-4
                                     .input-group.col-xs-12
                                         label(for='edit_camp_type') Type
                                         select.form-control(id='edit_camp_type', name='camp_type')
-                                            option.selected(value='#{camp.type}', selected) #{camp.type}
+                                            option.selected(value='#{camp.camp_type}', selected) #{camp.camp_type}
+                                            option food
+                                            option drinking/bar
+                                            option music
+                                            option workshops
+                                            option art-supporting
+                                            option other
                                 .col-md-4
                                     .input-group.col-xs-12
                                         label(for='edit_camp_status') Status
                                         select.form-control(id='edit_camp_status', name='camp_status')
-                                            option.selected(value='#{camp.status}', selected) #{camp.status}
+                                            option.selected(value='#{camp.camp_status}', selected) #{camp.camp_status}
+                                            option deleted
+                                            option open
+                                            option closed
+                                            option inactive
                                 .col-md-4
                                     .input-group.col-xs-12
                                         label(for='edit_camp_enabled') Active
                                         select.form-control(id='edit_camp_enabled', name='camp_enabled')
-                                            option.selected(value='#{camp.enabled}', selected) #{camp.enabled}
+                                            option.selected(value='#{camp.camp_enabled}', selected) #{camp.camp_enabled}
                 //- Card 2
                 .card.card-second.card-hide
-                    h4 More Details
+                    h4 Camp Behavior
                     .camp-details.panel
                         .panel-body
-                            .names.col-md-6
-                                .input-group.col-xs-12
-                                    label(for='edit_camp_name_en') Details 1
-                                    input.form-control(id='edit_camp_name_en', name='camp_name_en', value='#{camp.camp_name_en}', autofocus)
+                            .camp-behavior
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_activity_time') camp_activity_time
+                                        input.form-control(id='edit_camp_activity_time', name='camp_activity_time', value='#{details.camp_activity_time}', autofocus)
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_child_friendly') child_friendly
+                                        input.form-control(id='edit_child_friendly', name='child_friendly', value='#{details.child_friendly}')
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_noise_level') noise_level
+                                        input.form-control(id='edit_noise_level', name='noise_level', value='#{details.noise_level}')
+                      h4 Camp Public Area
+                      .camp-details.panel
+                          .panel-body
+                              .camp-public
+                                  .col-md-4
+                                      .input-group.col-xs-12
+                                          label(for='edit_public_activity_area_sqm') public_activity_area_sqm
+                                          input.form-control(id='edit_public_activity_area_sqm', name='public_activity_area_sqm', value='#{details.public_activity_area_sqm}')
+                                  .col-md-4
+                                      .input-group.col-xs-12
+                                          label(for='edit_public_activity_area_desc') public_activity_area_desc
+                                          input.form-control(id='edit_public_activity_area_desc', name='public_activity_area_desc', value='#{details.public_activity_area_desc}')
+                                  .col-md-4
+                                      .input-group.col-xs-12
+                                          label(for='edit_support_art') support_art
+                                          input.form-control(id='edit_support_art', name='public_support_art', value='#{details.support_art}')
+                      h4 Camp Location
+                      .camp-details.panel
+                          .panel-body
+                              .camp-location
+                                  .col-md-4
+                                      .input-group.col-xs-12
+                                          label(for='edit_location_comments') location_comments
+                                          input.form-control(id='edit_location_comments', name='location_comments', value='#{details.location_comments}')
+                                  .col-md-4
+                                      .input-group.col-xs-12
+                                          label(for='edit_camp_location_street') camp_location_street
+                                          input.form-control(id='edit_camp_location_street', name='camp_location_street', value='#{details.camp_location_street}')
+                                  .col-md-4
+                                      .input-group.col-xs-12
+                                          label(for='edit_camp_location_street_time') camp_location_street_time
+                                          input.form-control(id='edit_camp_location_street_time', name='public_camp_location_street_time', value='#{details.camp_location_street_time}')
+                                  .col-md-4
+                                      .input-group.col-xs-12
+                                          label(for='edit_camp_location_area') camp_location_area
+                                          input.form-control(id='edit_camp_location_area', name='public_camp_location_area', value='#{details.camp_location_area}')
+
             .row.card.card-save
                 button.Btn.Btn--default Save

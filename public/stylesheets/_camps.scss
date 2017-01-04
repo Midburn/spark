@@ -52,8 +52,10 @@ section {
     text-decoration: none;
     border: 0;
     transition: all 0.15s ease;
+    margin: 0 10px;
 
-    &:hover {
+    &:hover,
+    &:focus {
         color: #fff;
         transform: translateY(-3px);
         box-shadow: 0 7px 14px rgba(50,50,93,.1),0 3px 6px rgba(0,0,0,.08);

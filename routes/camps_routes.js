@@ -73,12 +73,13 @@ module.exports = function(app, passport) {
      */
     // Read
     app.get('/:lng/camps/:id', security.protectGet, (req, res) => {
-debugger;
         Camp
             .forge({
                 id: req.params.id
             })
-            .fetch({withRelated: ['camp_details']})
+            .fetch({
+                withRelated: ['details']
+            })
             .then((camp) => {
                 User.forge({
                     user_id: camp.toJSON().main_contact
@@ -86,9 +87,9 @@ debugger;
                     res.render('pages/camps/camp', {
                         user: req.user,
                         id: req.params.id,
-                        camp_management: user.toJSON(),
+                        main_contact: user.toJSON(),
                         camp: camp.toJSON(),
-                        camp_details: JSON.stringify(camp.related('author'))
+                        details: camp.related('details').toJSON()
                     });
                 });
             })
@@ -107,11 +108,14 @@ debugger;
             .forge({
                 id: req.params.id
             })
-            .fetch()
+            .fetch({
+              withRelated: ['details']
+            })
             .then((camp) => {
                 res.render('pages/camps/edit', {
                     user: req.user,
-                    camp: camp.toJSON()
+                    camp: camp.toJSON(),
+                    details: camp.related('details').toJSON()
                 })
             })
     });
