@@ -66,7 +66,7 @@ block wrapper
                     label=t('nationality')
                     select(class="form-control", name="nationality", value="#{(body && body.nationality)||''}", data-error="#{t('mandatory_field')}", required )
                         each country, i in choices.countries(language)
-                            option(value=country.identifier, selected=body.nationality===country.identifier) #{country.translation}
+                            option(value=country.identifier, selected=(body&&body.nationality===country.identifier)) #{country.translation}
 
                 .form-group
                     label=t('passport_id')
@@ -81,13 +81,13 @@ block wrapper
                     label=t('occupation')
                     select(class="form-control", name="occupation", value="#{(body && body.occupation)||''}", data-error="#{t('mandatory_field')}", required )
                         each occupation, i in choices.occupations(language)
-                            option(value=occupation.identifier, selected=body.occupation===occupation.identifier) #{occupation.translation}
+                            option(value=occupation.identifier, selected=(body&&body.occupation===occupation.identifier)) #{occupation.translation}
 
                 .form-group
                     label=t('hobbies')
                     select(class="form-control", name="hobbies", value="#{(body && body.hobbies)||''}", data-error="#{t('mandatory_field')}", required )
                         each hobby, i in choices.hobbies(language)
-                            option(value=hobby.identifier, selected=body.hobbies===hobby.identifier) #{hobby.translation}
+                            option(value=hobby.identifier, selected=(body&&body.hobbies===hobby.identifier)) #{hobby.translation}
 
 
                 .form-group

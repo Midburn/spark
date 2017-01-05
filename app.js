@@ -77,7 +77,7 @@ i18next
         whitelist: ['en', 'he'],
         fallbackLng: 'en',
         load: 'languageOnly',
-        debug: true,
+        debug: false,
         ns: ["common", "countries"],
         defaultNS: 'common',
         backend: {
