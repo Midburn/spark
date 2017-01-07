@@ -6,33 +6,59 @@ block content
             p=t('camps.new.header_desc')
         .col-md-12
             form(action="/camps/new", method="post", data-toggle="validator", role="form")
-                .col-md-6
-                    .form-group
-                        label=t('camps.new.name_he')
-                        input(type="text", class="form-control", name="camp_name_he", autofocus="true", required)
-                    .form-group
-                        label=t('camps.new.name_en')
-                        input(type="text", class="form-control", name="camp_name_en", value="#{camp_name_en}", required, disabled)
-                    .form-group
-                        label=t('camps.new.main_contact')
-                        select(class="form-control", name="camp_main_contact", required)
-                        
-                .col-md-6
-                    .form-group
-                        label=t('camps.new.desc_he')
-                        input(type="text", class="form-control", name="camp_desc_he")
-                    .form-group
-                        label=t('camps.new.desc_en')
-                        input(type="text", class="form-control", name="camp_desc_en")
-                    .form-group
-                        label=t('camps.new.type')
-                        select(class="form-control", name="camp_type")
-                            option(value='food')=t('not-implemented')
-                            option(value='drinking/bar')=t('not-implemented')
-                            option(value='music')=t('not-implemented')
-                            option(value='workshops')=t('not-implemented')
-                            option(value='art-supporting')=t('not-implemented')
-                            option(value='other')=t('not-implemented')
+              .row.form-block
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.name_he')
+                    input(type="text", class="form-control", name="camp_name_he", autofocus="true", required)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.name_en')
+                    input(type="text", class="form-control", name="camp_name_en", value="#{camp_name_en}", required, disabled)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.desc_he')
+                    input(type="text", class="form-control", name="camp_desc_he")
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.desc_en')
+                    input(type="text", class="form-control", name="camp_desc_en")
+              .row.form-block
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.main_contact')
+                    select(class="form-control", name="camp_main_contact", required)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.moop_contact')
+                    select(class="form-control", name="camp_moop_contact", required)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.safety_contact')
+                    select(class="form-control", name="camp_safety_contact", required)
+              .row.form-block
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.camp_size')
+                    input(type="number",min="1",class="form-control", name="camp_size", required)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.camp_type')
+                    input(type="text", id="campTypeContainer",class="form-control", name="camp_type", required)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.camp_type')
+                    select(class="form-control", name="noise_lvl", required)
+                      option(value="quiet") quiet
+                      option(value="medium") medium
+                      option(value="noisy") noisy
+                      option(value="very noisy") very noisy
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.camp_type')
+                    select(class="form-control", name="camp_hours", required)
+                      option(value="morning") morning
+                      option(value="noon") noon
+                      option(value="evening") evening
+                      option(value="night") night
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.camp_type')
+                    input(type="text", id="kidsFriendlyContainer",class="form-control", name="camp_kids_friendly", required)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.size_for_activity')
+                    input(type="number",min="1",class="form-control", name="size_for_activity", required)
+                .form-group.col-md-6.col-sm-12
+                    label=t('camps.new.public_area_reason')
+                    input(type="text", class="form-control", name="public_area_reason")
                 .col-md-offset-10
                     .form-group
                         button(type="submit", class="btn btn-info btn-block")=t('camps.btn_save_camp')

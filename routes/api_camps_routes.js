@@ -4,6 +4,7 @@ var security = require('../libs/security');
 
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
+var CampDetails = require('../models/camp').CampDetails;
 
 module.exports = function(app, passport) {
 
@@ -15,6 +16,8 @@ module.exports = function(app, passport) {
         var camp_name_he = req.body.camp_name_he,
             camp_name_en = req.body.camp_name_en;
 
+        console.log(req.body);
+
         validate = () => {
             if (camp_name_he != null && camp_name_en != null) {
                 return true;
@@ -25,8 +28,14 @@ module.exports = function(app, passport) {
         if (validate) {
             Camp.forge({
                     camp_name_he: camp_name_he,
-                    camp_name_en: camp_name_en
-                        // TODO: more data attributes here
+                    camp_name_en: camp_name_en,
+                    camp_desc_he: req.body.camp_desc_he,
+                    camp_desc_en: req.body.camp_desc_en,
+                    type: req.body.camp_type,
+                    status: 1,
+                    main_contact: req.body.camp_main_contact,
+                    moop_contact: req.body.camp_moop_contact,
+                    safety_contact: req.body.camp_safety_contact
                 })
                 .save()
                 .then((camp) => {
@@ -36,6 +45,22 @@ module.exports = function(app, passport) {
                             message: 'camp created'
                         }
                     });
+                    CampDetails.forge({
+                      camp_id: camp.attributes.id,
+                      camp_activity_time: req.body.camp_hours,
+                      child_friendly: (req.body.camp_kids_friendly) ? 1: 0,
+                      noise_level: req.body.noise_lvl,
+                      public_activity_area_sqm: req.body.size_for_activity,
+                      public_activity_area_desc: req.body.public_area_reason
+                    })
+                    .save()
+                    .then((campDetails) => {
+                      console.log('success adding camp objects');
+                    })
+                    .catch((e) => {
+                      console.log(`Error creating campdetails object for campid ${camp.attributes.id}`);
+                      console.log(e);
+                    })
                 })
                 .catch((e) => {
                     res.status(500).json({

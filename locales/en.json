@@ -87,7 +87,9 @@
             "desc_he": "Camp desc (Hebrew)",
             "desc_en": "Camp description (English)",
             "type": "Camp type",
-            "main_contact": "Camp main contact"
+            "main_contact": "Camp main contact",
+            "moop_contact": "Camp moop contact",
+            "safety_contact": "Camp safety contact"
         }
     },
     "footer": {

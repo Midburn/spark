@@ -45,24 +45,25 @@ $(".camps input[name='camp_name_en']").keyup(function() {
  */
 var fetched = false;
 
-function fetchUsersOnce(elm) {
-    if (!fetched) {
-        $.getJSON('/users', function(data) {
-            users = data.users;
-            for (var i = 0; i < users.length; i++) {
-                elm.append(template(users[i]));
-            }
-        });
+// function fetchUsersOnce(elm) {
+//     if (!fetched) {
+//         $.getJSON('/users', function(data) {
+//             users = data.users;
+//             for (var i = 0; i < users.length; i++) {
+//                 elm.append(template(users[i]));
+//             }
+//         });
+//
+//         function template(data) {
+//             return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
+//         }
+//         fetched = true;
+//     }
+// }
+// $("select[name='camp_main_contact']").focus(function() {
+//     fetchUsersOnce($(this));
+// });
 
-        function template(data) {
-            return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
-        }
-        fetched = true;
-    }
-}
-$("select[name='camp_main_contact']").focus(function() {
-    fetchUsersOnce($(this));
-});
 /**
  * getting camp list from API
  */

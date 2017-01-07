@@ -94,7 +94,9 @@
             "desc_he": "תיאור מחנה (עברית)",
             "desc_en": "תיאור מחנה (אנגלית)",
             "type": "סוג מחנה",
-            "main_contact": "איש קשר ראשי"
+            "main_contact": "איש קשר ראשי",
+            "moop_contact": "איש קשר חשל\"ש",
+            "safety_contact": "אחראי בטיחות"
         }
     },
     "footer": {

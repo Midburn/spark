@@ -147,6 +147,14 @@ footer {
     }
 }
 
+.form-block{
+  background: rgba(200,200,200,0.5);
+  border-radius: 5px;
+  padding: 0.5em 0.8em;
+  margin-bottom: 0.8em;
+  margin-top: 0.8em;
+}
+
 // Animations
 @keyframes nudge {
     0% {

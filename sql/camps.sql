@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS camps (
   camp_desc_en              MEDIUMTEXT,
 
   # Modifiers
-  type                      ENUM('food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other')
+  type                      TEXT,
   status                    ENUM('deleted', 'open', 'closed', 'inactive'),
   enabled                   BOOLEAN DEFAULT FALSE,
 
@@ -40,23 +40,22 @@ CREATE TABLE IF NOT EXISTS camps (
 
 CREATE TABLE IF NOT EXISTS camp_details (
 
-  camp_activity_time        ENUM('morning', 'noon' ,'evening' ,'night')
-  child_friendly            BOOLEAN
-  noise_level               ENUM('quiet' ,'medium' ,'noisy' ,'very noisy')
-  public_activity_area_sqm  INTEGER
-  public_activity_area_desc MEDIUMTEXT
-  support_art               BOOLEAN
+  camp_id                   INTEGER PRIMARY KEY,
+  camp_activity_time        ENUM('morning', 'noon' ,'evening' ,'night'),
+  child_friendly            BOOLEAN,
+  noise_level               ENUM('quiet' ,'medium' ,'noisy' ,'very noisy'),
+  public_activity_area_sqm  INTEGER,
+  public_activity_area_desc MEDIUMTEXT,
+  support_art               BOOLEAN,
 
   # Location
-  location_comments         MEDIUMTEXT
-  camp_location_street      TEXT
-  camp_location_street_time TEXT
-  camp_location_area        INTEGER
-
-  arriving_ats
+  location_comments         MEDIUMTEXT,
+  camp_location_street      TEXT,
+  camp_location_street_time TEXT,
+  camp_location_area        INTEGER,
 
   CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (camp_id)
 )
 
 -- FAKE DATA
-INSERT INTO camps (camp_name_he, camp_name_en, camp_desc_he) VALUES ('campNameHE', 'campNameEN', 'campDesc');
+-- INSERT INTO camps (camp_name_he, camp_name_en, camp_desc_he) VALUES ('campNameHE', 'campNameEN', 'campDesc');
