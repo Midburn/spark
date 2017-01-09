@@ -63,11 +63,13 @@ $ mysql -u root -p < sql/create_db.sql
 ```
 
 2. To create the database schema:
+```
+$ mysql -u root -p < sql/schema.sql
+$ mysql -u root -p < sql/camps.sql
+```
 
-```
-Ensure knex is installed (npm install knex -g)
-knex migrate:latest
-```
+**Note** seems knex migrations are not up to date, so should not be used at the moment, need to decide whether we are using knex or plain sql files
+
 
 ## Light the spark
 Fire up the server after installation
