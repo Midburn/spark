@@ -52,10 +52,10 @@ section {
     text-decoration: none;
     border: 0;
     transition: all 0.15s ease;
-    margin: 0 10px;
+    margin: 0 10px 10px;
 
-    &:hover,
-    &:focus {
+    &:focus,
+    &:hover {
         color: #fff;
         transform: translateY(-3px);
         box-shadow: 0 7px 14px rgba(50,50,93,.1),0 3px 6px rgba(0,0,0,.08);
@@ -186,7 +186,7 @@ body[lang="en"] {
     }
 }
 
-a.Btn.Btn--default.reveal_create_camp_btn {
+.anim-bouncy {
     margin-top: 1em;
     animation-name: nudge;
     animation-duration: 1500ms;
@@ -225,25 +225,7 @@ div#ajax_indicator.done {
     box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
 }
 
-.camps.camp_editing {
-    textarea {
-        max-height: 34px;
-        resize: none;
-    }
-
-    input,
-    textarea {
-        margin: 1em 0 1.5em;
-        border: 0;
-        border-bottom: 3px solid #7795f8;
-        border-radius: 0;
-        box-shadow: none;
-
-        &:active,
-        &:focus {
-            box-shadow: none;
-        }
-    }
+.camps {
     // Card transition
     .cards--wrapper {
         display: block;
@@ -266,6 +248,33 @@ div#ajax_indicator.done {
 
         .card.card-hide {
             left: 3000px;
+            visibility: hidden;
         }
     }
+
+    .camp_editing {
+        textarea {
+            max-height: 34px;
+            resize: none;
+        }
+
+        input,
+        textarea {
+            margin: 1em 0 1.5em;
+            border: 0;
+            border-bottom: 3px solid #7795f8;
+            border-radius: 0;
+            box-shadow: none;
+
+            &:active,
+            &:focus {
+                box-shadow: none;
+            }
+        }
+    }
+}
+button.card--close {
+    position: absolute;
+    top: 0;
+    right: 0;
 }

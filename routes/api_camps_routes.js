@@ -223,4 +223,30 @@ module.exports = function(app, passport) {
                 });
             });
     });
+
+    /**
+     * API: (GET) return enabled & open camps list
+     * request => /camps_open
+     */
+    app.get('/camps_open', (req, res) => {
+        Camp
+            .forge({
+                camp_status: 'open',
+                camp_enabled: 1
+            })
+            .fetch()
+            .then((camp) => {
+                res.status(200).json({
+                    camps: camp.toJSON()
+                })
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+    });
 }

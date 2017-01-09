@@ -21,12 +21,6 @@ $('#scroll_top').click(function() {
     }, '250', 'swing');
 });
 /**
- * Camps reveal name chooser
- */
-$('.camps .reveal_create_camp_btn').click(function() {
-    $('.camps .choose_name').toggleClass('hidden');
-});
-/**
  * evalute & validate camp name (English) must be > 3 letters
  * listen to change with timer, to prevent redundant http requests
  */
@@ -119,14 +113,15 @@ $stats_table.load(fetchCampsOnce());
 
 // TODO: fix inner height for dynamic width size changing
 function innerHeightChange() {
-    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
-    $('.camps.camp_editing .cards--wrapper').css({
+    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight() + 20;
+    $('.camps .cards--wrapper').css({
         'min-height': card_height + 'px'
     });
 }
 innerHeightChange();
 // Camp details card transition
 $('.card-switcher--card2').click(function() {
+    // show card-2 ; hide card-1
     $('.card-second').removeClass('card-hide');
     $('.card-first').addClass('card-hide');
     $('.card-switcher--card1').removeClass('Btn--default');
@@ -136,6 +131,7 @@ $('.card-switcher--card2').click(function() {
     innerHeightChange();
 });
 $('.card-switcher--card1').click(function() {
+    // show card-1 ; hide card-2
     $('.card-second').addClass('card-hide');
     $('.card-first').removeClass('card-hide');
     $('.card-switcher--card1').removeClass('Btn--transparent');
@@ -143,4 +139,44 @@ $('.card-switcher--card1').click(function() {
     $('.card-switcher--card2').addClass('Btn--transparent');
     $('.card-switcher--card1').addClass('Btn--default');
     innerHeightChange();
+});
+$('.reveal_create_camp_btn').click(function() {
+    $('.choose_name').toggleClass('card-hide');
+    innerHeightChange();
+});
+$('.reveal_join_camp_btn').click(function() {
+    $('.card-second').toggleClass('card-hide');
+    innerHeightChange();
+});
+$('.reveal_manage_camp_btn').click(function() {
+    $('.card-third').toggleClass('card-hide');
+    innerHeightChange();
+});
+$('.card--close').click(function() {
+    $('.card').addClass('card-hide');
+});
+/*
+ * Component: Join a camp
+ */
+var fetched = false;
+
+function fetchOpenCampsOnce(elm) {
+    if (!fetched) {
+        $.get('/camps_open', function(data) {
+            camps = [data.camps];
+            for (var i = 0; i < camps.length; i++) {
+                $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
+            }
+        });
+        fetched = true;
+    }
+}
+$('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
+    fetchOpenCampsOnce($(this));
+});
+/*
+ * Component: Editing camp
+ */
+$('#camp_editing_save').click(function() {
+
 });
