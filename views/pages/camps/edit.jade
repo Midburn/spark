@@ -38,17 +38,17 @@ block content
                             .personnel
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_type') Main Contact
+                                        label(for='edit_camp_main_contact') Main Contact
                                         select.form-control(id='edit_camp_main_contact', name='main_contact')
                                             option.selected(value='#{camp.main_contact}', selected) #{camp.main_contact}
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_type') Main Contact
+                                        label(for='edit_camp_moop_contact') Main Contact
                                         select.form-control(id='edit_camp_moop_contact', name='moop_contact')
                                             option.selected(value='#{camp.moop_contact}', selected) #{camp.moop_contact}
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_type') Main Contact
+                                        label(for='edit_camp_safety_contact') Main Contact
                                         select.form-control(id='edit_camp_safety_contact', name='safety_contact')
                                             option.selected(value='#{camp.safety_contact}', selected) #{camp.safety_contact}
                     h4 Camp Behaviour
@@ -68,7 +68,7 @@ block content
                                             option other
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_status') Status
+                                        label(for='edit_camp_status') Status #{camp.camp_status}
                                         select.form-control(id='edit_camp_status', name='camp_status')
                                             option.selected(value='#{camp.camp_status}', selected) #{camp.camp_status}
                                             option deleted
@@ -77,9 +77,11 @@ block content
                                             option inactive
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_enabled') Active
-                                        select.form-control(id='edit_camp_enabled', name='camp_enabled')
-                                            option.selected(value='#{camp.camp_enabled}', selected) #{camp.camp_enabled}
+                                        label(for='edit_camp_enabled') Publication: &nbsp;
+                                        if camp.camp_enabled == 0
+                                            span Camp is inactive
+                                        else
+                                            span Camp is active
                 //- Card 2
                 .card.card-second.card-hide
                     h4 Camp Behavior

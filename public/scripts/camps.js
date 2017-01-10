@@ -68,7 +68,7 @@ function doneTyping() {
 var fetched = false;
 
 function fetchUsersOnce(elm) {
-    if (!fetched) {
+    if (!elm.attr('fetched')) {
         $.getJSON('/users', function(data) {
             users = data.users;
             for (var i = 0; i < users.length; i++) {
@@ -79,10 +79,10 @@ function fetchUsersOnce(elm) {
         function template(data) {
             return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
         }
-        fetched = true;
+        elm.attr('fetched', true);
     }
 }
-$("select[name='camp_main_contact'], #edit_camp_main_contact").focus(function() {
+$("select[name='camp_main_contact'], #edit_camp_main_contact, #edit_camp_moop_contact, #edit_camp_safety_contact").focus(function() {
     fetchUsersOnce($(this));
 });
 /**
@@ -178,5 +178,25 @@ $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
  * Component: Editing camp
  */
 $('#camp_editing_save').click(function() {
-
+    var camp_id = 1,
+        camp_data = {
+            camp_name_he: $('#edit_camp_name_he').val(),
+            camp_name_en: $('#edit_camp_name_en').val(),
+            camp_desc_he: $('#edit_camp_desc_he').val(),
+            camp_desc_en: $('#edit_camp_desc_en').val(),
+            main_contact: $('#edit_camp_main_contact option:selected').val(),
+            moop_contact: $('#edit_camp_moop_contact option:selected').val(),
+            safety_contact: $('#edit_camp_safety_contact option:selected').val(),
+            camp_status: $('#edit_camp_status option:selected').val(),
+            camp_type: $('#edit_camp_type option:selected').val(),
+            camp_enabled: $('#edit_camp_enabled option:selected').val()
+        };
+    $.ajax({
+        url: '/camps/' + camp_id + '/edit',
+        type: 'PUT',
+        data: camp_data,
+        success: function(result) {
+            console.log(result);
+        }
+    });
 });

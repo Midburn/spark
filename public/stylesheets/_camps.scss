@@ -273,8 +273,21 @@ div#ajax_indicator.done {
         }
     }
 }
+
 button.card--close {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+textarea {
+    max-height: 34px;
+}
+
+textarea:focus {
+    min-height: 100px;
 }

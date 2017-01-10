@@ -92,12 +92,12 @@ module.exports = function(app, passport) {
                         camp_name_en: req.body.camp_name_en,
                         camp_desc_he: req.body.camp_desc_he,
                         camp_desc_en: req.body.camp_desc_en,
-                        camp_type: req.body.type,
-                        camp_status: req.body.status,
-                        camp_enabled: req.body.enabled,
                         main_contact: req.body.main_contact,
                         moop_contact: req.body.moop_contact,
-                        safety_contact: req.body.safety_contact
+                        safety_contact: req.body.safety_contact,
+                        camp_status: req.body.status,
+                        camp_type: req.body.type,
+                        camp_enabled: req.body.enabled
                     })
                     .then(function() {
                         res.json({
