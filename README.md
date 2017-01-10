@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Midburn/Spark.svg?branch=master)](https://travis-ci.org/Midburn/Spark)
 
 # Spark by Midburn
 
