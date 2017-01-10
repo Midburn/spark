@@ -71,10 +71,10 @@ function doneTyping() {
 /**
  * getting user list from API
  */
-var fetchedUsersOnce = false;
+var fetched = false;
 
 function fetchUsersOnce(elm) {
-    if (!fetchedUsersOnce) {
+    if (!fetched) {
         $.getJSON('/users', function(data) {
             users = data.users;
             for (var i = 0; i < users.length; i++) {
@@ -85,7 +85,7 @@ function fetchUsersOnce(elm) {
         function template(data) {
             return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
         }
-        fetchedUsersOnce = true;
+        fetched = true;
     }
 }
 $("select[name='camp_main_contact'], #edit_camp_main_contact").focus(function() {
@@ -94,11 +94,11 @@ $("select[name='camp_main_contact'], #edit_camp_main_contact").focus(function() 
 /**
  * getting camp list from API
  */
-var fetchedCampsOnce = false,
+var fetched = false,
     $stats_table = $('.camps.stats .table');
 
 function fetchCampsOnce() {
-    if (!fetchedCampsOnce) {
+    if (!fetched) {
         var data, tbody = $stats_table.find('tbody');
         tbody.html('');
         $.get('/camps', function(data) {
@@ -112,7 +112,7 @@ function fetchCampsOnce() {
         function template(data) {
             return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.camp_name_he + "</td><td class='hidden-xs'>" + data.updated_at + "</td><td class='hidden-xs'>" + data.created_at + "</td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a href='camps/" + data.id + "/remove'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
         }
-        fetchedCampsOnce = true;
+        fetched = true;
     }
 }
 $stats_table.load(fetchCampsOnce());
