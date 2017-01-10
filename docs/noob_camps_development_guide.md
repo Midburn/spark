@@ -8,7 +8,7 @@
 ### setup Spark dev environment
 
 ```
-$ git clone http://jira.midburn.org:7990/scm/spark/spark.git
+$ git clone https://github.com/Midburn/Spark.git
 $ cd spark
 spark$ nvm install
 spark$ nvm use

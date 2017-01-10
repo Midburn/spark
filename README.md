@@ -43,14 +43,15 @@ SET PASSWORD = PASSWORD('xxxxxxxx');
 ```
 
 ### Getting the source files
-make dir & clone the repo
+* Fork the project on GitHub
+* make dir & clone the repo
 ```
-$ mkdir spark && git clone http://<USER_NAME>@jira.midburn.org:7990/scm/spark/spark.git
+$ mkdir spark && git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
 
 **OR** (For GUEST access)
 ```
-$ mkdir spark && git clone http://jira.midburn.org:7990/scm/spark/spark.git
+$ mkdir spark && git clone https://github.com/Midburn/Spark.git
 ```
 
 ### Installing node modules
