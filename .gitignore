@@ -4,6 +4,7 @@
 .idea/dictionaries/*
 .idea/tasks.xml
 /.idea/runConfigurations/
+/.idea
 
 # Visual Studio Code
 .vscode/
