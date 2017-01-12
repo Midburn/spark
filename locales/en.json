@@ -81,7 +81,7 @@
             "header_title": "Create a camp",
             "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
             "header_desc": "To create new camp you have to provide us some information, then your new camp will be reviewed by theme camps team leader",
-            "btn_create": "Create Camp",
+            "btn_create": "Create a Camp",
             "name_he": "Camp name (Hebrew)",
             "name_en": "Camp name (English)",
             "desc_he": "Camp desc (Hebrew)",
@@ -90,7 +90,9 @@
             "main_contact": "Camp main contact",
             "moop_contact": "Camp moop contact",
             "safety_contact": "Camp safety contact"
-        }
+        },
+        "join": {
+          "join_a_camp": "Join a camp"
     },
     "footer": {
         "scrolltop": "Back to top",
