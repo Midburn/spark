@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS camp_details;
 
 CREATE TABLE IF NOT EXISTS camps (
   created_at                TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at                TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  updated_at                TIMESTAMP NULL DEFAULT NULL,
 
   # General information
   id                        INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS camps (
   camp_desc_en              MEDIUMTEXT,
 
   # Modifiers
-  type                      VARCHAR(50),
-  status                    VARCHAR(50),
-  enabled                   BOOLEAN NOT NULL DEFAULT 0,
+  type                      ENUM('food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other'),
+  status                    ENUM('deleted', 'open', 'closed', 'inactive'),
+  enabled                   BOOLEAN DEFAULT FALSE,
 
   # Users relations
   main_contact              INTEGER,

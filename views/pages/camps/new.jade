@@ -88,8 +88,7 @@ block content
                             .form-group.col-md-6.col-sm-12
                                 label=t('camps.new.public_area_reason')
                                 input(type="text", class="form-control", name="public_area_reason")
-                            .col-md-offset-10
-                                .form-group
-                                    button(type="submit", class="btn btn-info btn-block")=t('camps.btn_save_camp')
-                                .form-group
-                                    button(type="submit", class="btn btn-success btn-block")=t('camps.btn_continue')
+                            
+                .row.card.card-save
+                    button(type="submit", id='camp_create_save', class="Btn Btn--default")=t('camps.btn_save_camp')
+                    button(type="submit", id='camp_create_continue', class="Btn Btn--green")=t('camps.btn_continue')

@@ -1,4 +1,3 @@
-use spark;
 ############
 #  CREATE  #
 ############
@@ -30,8 +29,13 @@ CREATE TABLE IF NOT EXISTS users (
   extra_phone               CHAR(10),
   npo_member                BOOLEAN DEFAULT FALSE,
   facebook_id		        VARCHAR(50),
-  facebook_token            VARCHAR(255)
+  facebook_token            VARCHAR(255),
 
+  # Camp relations
+  camp_id                   INTEGER-- ,
+
+  -- there is a circular dependency here - schemq.sql depends on camps.sql and the other way around
+  -- CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (camp_id)
 )
   ENGINE = innodb, DEFAULT CHARSET=utf8;
 

@@ -21,12 +21,6 @@ $('#scroll_top').click(function() {
     }, '250', 'swing');
 });
 /**
- * Camps reveal name chooser
- */
-$('.camps .reveal_create_camp_btn').click(function() {
-    $('.camps .choose_name').toggleClass('hidden');
-});
-/**
  * evalute & validate camp name (English) must be > 3 letters
  * listen to change with timer, to prevent redundant http requests
  */

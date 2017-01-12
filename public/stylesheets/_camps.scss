@@ -9,12 +9,6 @@ body[lang='he'] {
     font-family: 'Rubik', sans-serif;
 }
 
-body .dash-panel a:after {
-    content: "»";
-    padding: 0 5px;
-    position: relative;
-}
-
 body[lang="he"] .dash-panel a:after {
     left: -4px;
 }
@@ -194,7 +188,6 @@ body[lang="en"] {
         }
     }
 }
-
 // Animations
 @keyframes nudge {
     0% {
@@ -300,7 +293,7 @@ div#ajax_indicator.done {
 
 button.card--close {
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 0;
 }
 
