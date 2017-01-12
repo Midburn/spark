@@ -55,7 +55,7 @@ exports.up = function (knex, Promise) {
             table.text('form_future_p', 'LONGTEXT');
             table.text('form_why_join', 'LONGTEXT');
             table.foreign('user_id', 'users.user_id');
-        }),
+        })
         ]);
 };
 

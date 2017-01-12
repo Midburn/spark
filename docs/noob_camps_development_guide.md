@@ -13,15 +13,14 @@ $ cd spark
 spark$ nvm install
 spark$ nvm use
 spark$ npm install
-spark$ npm install -g nodemon
+spark$ npm install -g nodemon knex
 ```
 
 ### Create the DB
 
 ```
-spark$ sudo mysql -u root < sql/create_db.sql
-spark$ sudo mysql -u root < sql/schema.sql
-spark$ sudo mysql -u root < sql/camps.sql
+spark$ sudo mysql -u root < migrations/create_db.sql
+spark$ knex migrate:latest
 ```
 
 ### Start the server
