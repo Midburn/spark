@@ -1,13 +1,33 @@
 footer.text-muted
     .container
-        div
-            a(id='scroll_top', href='javascript:;')=t('footer.scrolltop')
-        div
-            h4="INFORMATION"
-            ul
-                li
-                    a(href='http://www.midburn.org')=t('Visit the homepage')
-                li
-                    a(href='http://midburn.org/he-ten-principles/')=t('Midburn 10 Priciples')
-                li 
-                    a(href='http://contribute-spark/')=t('How to contribute?')
+        .row
+            .footer-nav.col-xs-12.col-sm-6
+                h4="Midburn"
+                ul
+                    li
+                        a(href='http://www.midburn.org')=t('Visit the homepage')
+                    li
+                        a(href='http://midburn.org/he-ten-principles/')=t('Midburn 10 priciples')
+                    li
+                        a(href='http://')=t('NPO')
+            .footer-nav.col-xs-12.col-sm-6
+                h4="Spark"
+                ul
+                    li
+                        a(href='#')=t('report error')
+                    li
+                        a(href='#')=t('ask question')
+                    li
+                        a(href='#')=t('help translate')
+            .footer-icons.col-xs-12
+                img.img-responsive.center-block(src='../../images/midburn_logo_120.png')
+            .footer-links.col-xs-12.text-center
+                ul
+                    li
+                        span Spark is a open source project of Midburn IT.
+                    li
+                        a(href='#')=t('want to contribute?')
+                    li
+                        a(href='#')=t('help!')
+                    li    
+                        a(id='scroll_top', href='javascript:;')=t('footer.scrolltop')

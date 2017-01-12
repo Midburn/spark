@@ -3,15 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "babel public/scripts/r_app.js --presets react,env --out-file public/scripts/r_app.com.js",
-    "start": "npm build && node server.js",
+    "start": "webpack && node server.js",
     "test": "mocha  \"routes/*test.js\" "
   },
-  "presets": [
-    "react"
-  ],
   "dependencies": {
-    "babel-preset-env": "^1.1.4",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-react": "^6.16.0",
+    "babel-register": "^6.18.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.1",
     "bookshelf": "^0.10.0",
@@ -25,6 +24,7 @@
     "dateformat": "1.0.12",
     "debug": "~2.2.0",
     "express": "~4.13.4",
+    "express-breadcrumbs": "0.0.2",
     "express-compile-sass": "3.0.4",
     "express-fileupload": "0.0.5",
     "express-mailer": "^0.3.1",
@@ -48,12 +48,16 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "request": "^2.74.0",
+    "requirejs": "^2.3.2",
     "serve-favicon": "~2.3.0",
     "sprintf-js": "1.0.3",
+    "webpack": "^1.14.0",
     "winston": "2.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
     "babel-preset-react": "^6.16.0",
     "chai": "*",
     "mocha": "^3.2.0",

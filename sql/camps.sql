@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS camps (
   updated_at                TIMESTAMP NULL DEFAULT NULL,
 
   # General information
-  camp_id                   INTEGER PRIMARY KEY AUTO_INCREMENT,
+  id                        INTEGER PRIMARY KEY AUTO_INCREMENT,
   camp_name_he              VARCHAR(50) UNIQUE,
   camp_name_en              VARCHAR(50) UNIQUE,
   camp_desc_he              MEDIUMTEXT,
@@ -58,4 +58,4 @@ CREATE TABLE IF NOT EXISTS camp_details (
 )
 
 -- FAKE DATA
--- INSERT INTO camps (camp_name_he, camp_name_en, camp_desc_he) VALUES ('campNameHE', 'campNameEN', 'campDesc');
+INSERT INTO camps (camp_name_he, camp_name_en, camp_desc_he) VALUES ('campNameHE', 'campNameEN', 'campDesc');
