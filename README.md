@@ -65,11 +65,10 @@ $ mysql -u root -p < sql/create_db.sql
 
 2. To create the database schema:
 ```
-$ mysql -u root -p < sql/schema.sql
-$ mysql -u root -p < sql/camps.sql
+$ mysql -u root -p < migrations/create_db.sql
+$ npm install -g knex
+$ knex migrate:latest
 ```
-
-**Note** seems knex migrations are not up to date, so should not be used at the moment, need to decide whether we are using knex or plain sql files
 
 
 ## Light the spark
