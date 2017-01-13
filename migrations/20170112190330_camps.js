@@ -21,11 +21,8 @@ exports.up = function (knex, Promise) {
 
             // Users relations
             table.integer('main_contact').unsigned();
-            table.foreign('main_contact').references('users.user_id');
             table.integer('moop_contact').unsigned();
-            table.foreign('moop_contact').references('users.user_id');
             table.integer('safety_contact').unsigned();
-            table.foreign('safety_contact').references('users.user_id');
         }),
 
         // Camp Details table
@@ -43,13 +40,11 @@ exports.up = function (knex, Promise) {
             table.text('camp_location_street_time');
             table.integer('camp_location_area');
             table.integer('camp_id').unsigned();
-            table.foreign('camp_id').references('camps.id');
         }),
         
         // Add users camp_id field
         knex.schema.table('users', function (table) {
             table.integer('camp_id').unsigned();
-            table.foreign('camp_id').references('camps.id');
         })
     ]);
 };

@@ -40,7 +40,6 @@ exports.up = function (knex, Promise) {
             table.string('url', 256);
             table.integer('user_id').unsigned();
             table.boolean('payed').defaultTo(false);
-            table.foreign('user_id').references('users.user_id');
         }),
 
     // NPO table
@@ -54,7 +53,6 @@ exports.up = function (knex, Promise) {
             table.text('form_previous_p', 'LONGTEXT');
             table.text('form_future_p', 'LONGTEXT');
             table.text('form_why_join', 'LONGTEXT');
-            table.foreign('user_id', 'users.user_id');
         })
         ]);
 };

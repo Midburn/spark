@@ -19,7 +19,7 @@ spark$ npm install -g nodemon knex
 ### Create the DB
 
 ```
-spark$ sudo mysql -u root < migrations/create_db.sql
+spark$ npm install -g knex
 spark$ knex migrate:latest
 ```
 

@@ -20,27 +20,7 @@ Spark is being developed by the Midburn IT team, with the purpose of utilizing i
 
 ### Preconditions
 >1. **NodeJS** ( https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
->2. **mySQL** ( http://dev.mysql.com/downloads/mysql/ )
->3. **GIT** ( https://git-scm.com/downloads )
-
-### MYSQL Preconditions
-On Mac after installing, please add the following lines to your ~/.bash_profile
-```
-$ alias mysql=/usr/local/mysql/bin/mysql
-$ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
-```
-
-Also, On first install, you might get mysql password expired or other root password related issues.
-
-To change mysql default password - run the following commands
-```
-mysql -u root -p
-```
-Enter the default root password you got during mysql setup
-Then run the following to set your password:
-```
-SET PASSWORD = PASSWORD('xxxxxxxx');
-```
+>2. **GIT** ( https://git-scm.com/downloads )
 
 ### Getting the source files
 * Fork the project on GitHub
@@ -58,14 +38,11 @@ $ mkdir spark && git clone https://github.com/Midburn/Spark.git
 `$ cd spark && npm install`
 
 ### Setting up the database
-1. To create the database for the first time, run:
-```
-$ mysql -u root -p < sql/create_db.sql
-```
+Local developer environment uses Sqlite do doesn't require any special DB setup.
 
-2. To create the database schema:
+We use Knex to run and manage the migrations
+
 ```
-$ mysql -u root -p < migrations/create_db.sql
 $ npm install -g knex
 $ knex migrate:latest
 ```
@@ -172,13 +149,9 @@ We use Jade template engine, a language that compiles to HTML, to seperate logic
 
 Read more about [Jade Syntax Documentation](http://naltatis.github.io/jade-syntax-docs/)
 
-<<<<<<< HEAD
 Greate Jade to HTML converter [Here](http://aramboyajyan.github.io/online-jade-template-editor/)
 
 #### i18n & templates
-=======
-#### I18N & Templates
->>>>>>> master
 You can use i18n in Jade templates. To set an HTML element with a translatable data the general syntax is:
 ```
 HTML_ELEMENT=t('KEY')
@@ -208,3 +181,34 @@ Spark emails by default are **not being sent**. If you wish the emails from Spar
 ### README
 To edit this readme file, get acquainted with the [Markdown Syntax](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
 To help you preview and edit the readme file you can use an [online editor](https://stackedit.io) or any [browser extensions](https://chrome.google.com/webstore/detail/markdown-preview/jmchmkecamhbiokiopfpnfgbidieafmd).
+
+### Using Mysql
+
+If you want to test the code with a real DB you should setup to use Mysql
+
+On Mac after installing, please add the following lines to your ~/.bash_profile
+```
+$ alias mysql=/usr/local/mysql/bin/mysql
+$ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
+```
+
+Also, On first install, you might get mysql password expired or other root password related issues.
+
+To change mysql default password - run the following commands
+```
+mysql -u root -p
+```
+Enter the default root password you got during mysql setup
+Then run the following to set your password:
+```
+SET PASSWORD = PASSWORD('xxxxxxxx');
+```
+
+Edit opsworks.js file and set the relevant settings to point to your mysql client.
+
+Then, run:
+
+```
+spark$ sudo mysql -u root < migrations/create_db.sql
+spark$ knex migrate:latest
+```

@@ -2,13 +2,8 @@ const dbConfig = require('../opsworks.js').db;
 
 
 module.exports =  {
-  database: {
-      host     : dbConfig.host,
-      username : dbConfig.username,
-      password : dbConfig.password,
-      database : dbConfig.database,
-      debug	   : false
-  },
+  database: dbConfig,
+
   server: {
     port      : 80,
     hostname  : "spark.midburn.org",
@@ -56,4 +51,4 @@ module.exports =  {
     app_secret: "d60f362df1e9f35b6633b6f819ea7ccf",
     callbackBase: "http://localhost:3000"
   }
-}
+};
