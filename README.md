@@ -38,6 +38,7 @@ $ mkdir spark && git clone https://github.com/Midburn/Spark.git
 `$ cd spark && npm install`
 
 ### Setting up the database
+
 Local developer environment uses Sqlite do doesn't require any special DB setup.
 
 We use Knex to run and manage the migrations
@@ -47,6 +48,7 @@ $ npm install -g knex
 $ knex migrate:latest
 ```
 
+See [/docs/database.md](/docs/database.md) for more details about our database setup.
 
 ## Light the spark
 Fire up the server after installation
@@ -182,33 +184,5 @@ Spark emails by default are **not being sent**. If you wish the emails from Spar
 To edit this readme file, get acquainted with the [Markdown Syntax](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
 To help you preview and edit the readme file you can use an [online editor](https://stackedit.io) or any [browser extensions](https://chrome.google.com/webstore/detail/markdown-preview/jmchmkecamhbiokiopfpnfgbidieafmd).
 
-### Using Mysql
-
-If you want to test the code with a real DB you should setup to use Mysql
-
-On Mac after installing, please add the following lines to your ~/.bash_profile
-```
-$ alias mysql=/usr/local/mysql/bin/mysql
-$ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
-```
-
-Also, On first install, you might get mysql password expired or other root password related issues.
-
-To change mysql default password - run the following commands
-```
-mysql -u root -p
-```
-Enter the default root password you got during mysql setup
-Then run the following to set your password:
-```
-SET PASSWORD = PASSWORD('xxxxxxxx');
-```
-
-Edit opsworks.js file and set the relevant settings to point to your mysql client.
-
-Then, run:
-
-```
-spark$ sudo mysql -u root < migrations/create_db.sql
-spark$ knex migrate:latest
-```
+### Database
+See [/docs/database.md](/docs/database.md)
