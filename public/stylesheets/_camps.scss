@@ -1,5 +1,6 @@
 @import url( 'https://fonts.googleapis.com/css?family=Cabin|Rubik');
 @import './camps_mobile';
+$card-bg: #fafafa;
 
 body {
     font-family: 'Cabin', sans-serif;
@@ -56,7 +57,7 @@ section {
     }
 }
 
-.Btn--default {
+.Btn__default {
     color: #fff;
     background: #6772e5;
 
@@ -65,7 +66,7 @@ section {
     }
 }
 
-.Btn--green {
+.Btn__green {
     color: #fff;
     background: #24b47e;
 
@@ -74,7 +75,7 @@ section {
     }
 }
 
-.Btn--transparent {
+.Btn__transparent {
     &:hover {
         color: #7795f8;
     }
@@ -103,6 +104,10 @@ body[lang="en"] .dash-panel a:after {
 }
 
 .camps {
+    .controls {
+        margin-bottom: 2em;
+    }
+
     .panel {
         h3 {
             text-align: center;
@@ -111,9 +116,13 @@ body[lang="en"] .dash-panel a:after {
 
     .card {
         padding: 40px 40px 40px 120px;
-        background-color: #fafafa;
+        margin-bottom: 4em;
+        background-color: $card-bg;
         border-radius: 4px;
-        box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+
+        &__shad {
+            box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+        }
 
         h2:after {
             content: '';
@@ -246,6 +255,8 @@ div#ajax_indicator.done {
     // Card transition
     .cards--wrapper {
         display: block;
+        background: $card-bg;
+        margin-bottom: 2em;
         position: relative;
         overflow: hidden;
 
@@ -269,7 +280,7 @@ div#ajax_indicator.done {
         }
     }
 
-    .camp_editing {
+    .camp_edit {
         textarea {
             max-height: 34px;
             resize: none;

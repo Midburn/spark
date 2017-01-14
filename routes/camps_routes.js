@@ -87,7 +87,6 @@ module.exports = function(app, passport) {
                     res.render('pages/camps/camp', {
                         user: req.user,
                         id: req.params.id,
-                        main_contact: user.toJSON(),
                         camp: camp.toJSON(),
                         details: camp.related('details').toJSON()
                     });

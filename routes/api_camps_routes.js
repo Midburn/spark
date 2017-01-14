@@ -51,11 +51,10 @@ module.exports = function(app, passport) {
                     camp_name_en: camp_name_en,
                     camp_desc_he: req.body.camp_desc_he,
                     camp_desc_en: req.body.camp_desc_en,
-                    type: req.body.camp_type,
-                    status: 1,
                     main_contact: req.body.camp_main_contact,
                     moop_contact: req.body.camp_moop_contact,
-                    safety_contact: req.body.camp_safety_contact
+                    safety_contact: req.body.camp_safety_contact,
+                    type: req.body.camp_type
                 })
                 .save()
                 .then((camp) => {
@@ -117,17 +116,17 @@ module.exports = function(app, passport) {
                         camp_name_en: req.body.camp_name_en,
                         camp_desc_he: req.body.camp_desc_he,
                         camp_desc_en: req.body.camp_desc_en,
-                        main_contact: req.body.main_contact,
-                        moop_contact: req.body.moop_contact,
-                        safety_contact: req.body.safety_contact,
-                        camp_status: req.body.status,
-                        camp_type: req.body.type,
-                        camp_enabled: req.body.enabled
+                        status: req.body.status,
+                        type: req.body.type,
+                        enabled: req.body.enabled,
+                        // main_contact: req.body.main_contact,
+                        // moop_contact: req.body.moop_contact,
+                        // safety_contact: req.body.safety_contact
                     })
                     .then(function() {
                         res.json({
                             error: false,
-                            data: camp.toJSON()
+                            status: 'updated'
                         });
                     })
                     .catch(function(err) {

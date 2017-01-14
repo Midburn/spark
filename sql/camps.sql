@@ -61,11 +61,11 @@ CREATE TABLE IF NOT EXISTS camp_details (
 
 -- FAKE DATA
 -- TODO: create a corresponding user (there is a constraint on it)
---INSERT INTO camps (
+-- INSERT INTO camps (
 --    camp_name_he, camp_name_en, camp_desc_he, camp_desc_en, type, status, enabled, main_contact, moop_contact, safety_contact
---) VALUES (
+-- ) VALUES (
 --    'Camp Lebowski', 'Camp Lebowski',
 --    'לפעמים יש מחנה. מחנה שנכון לזמן ולמקום שלו... שפשוט מתאים בול. לא צריך להגיד, אבל אנחנו מדברים על הדודאים. בואו סובבו גלגל מזל וקבלו White Russian בזמן שאתם מוקפים בניהליסטים. בואו להרגע עם Creedence ותזכו לחזות איך השטיח סוגר את הפינות. לא מפריע לנו שתדליקו איזה J תוך כדי. אתם נכנסים לעולם של כאב.',
 --    'לפעמים יש מחנה. מחנה שנכון לזמן ולמקום שלו... שפשוט מתאים בול. לא צריך להגיד, אבל אנחנו מדברים על הדודאים. בואו סובבו גלגל מזל וקבלו White Russian בזמן שאתם מוקפים בניהליסטים. בואו להרגע עם Creedence ותזכו לחזות איך השטיח סוגר את הפינות. לא מפריע לנו שתדליקו איזה J תוך כדי. אתם נכנסים לעולם של כאב.',
---    'bar', null, null, 1, 1, 1
---);
+--    'bar', 0, 0, 1, 1, 1
+-- );
