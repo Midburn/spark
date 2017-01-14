@@ -65,8 +65,6 @@ function doneTyping() {
 /**
  * getting user list from API
  */
-var fetched = false;
-
 function fetchUsersOnce(elm) {
     if (!elm.attr('fetched')) {
         $.getJSON('/users', function(data) {
