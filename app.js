@@ -78,9 +78,14 @@ i18next
         fallbackLng: 'en',
         load: 'languageOnly',
         debug: false,
+        //namespaces
+        namespaces: ['common', 'cmaps'],
+        defaultNS: 'common',
+        fallbackNS: 'common',
+
         backend: {
             // path where resources get loaded from
-            loadPath: 'locales/{{lng}}.json',
+            loadPath: 'locales/{{lng}}/{{na}}.json',
 
             // path to post missing resources
             addPath: 'locales/{{lng}}.missing.json',

@@ -1,0 +1,35 @@
+{
+        "nav": "Camps",
+        "btn_save_camp": "Save",
+        "btn_continue": "Continue",
+        "dash": {
+            "title": "Theme & Art Camps",
+            "desc": "Something short and leading about the collection below&mdash;its contents, the creator, etc. Make it short and sweet, but not too short so folks don&apos;t simply skip over it entirely.",
+            "stats": {
+                "title": "Statistics & Information"
+            },
+            "members": {
+                "title": "Members Board"
+            },
+            "docs": {
+                "title": "Documents & Forms"
+            }
+        },
+        "new": {
+            "header_title": "Create a camp",
+            "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
+            "header_desc": "To create new camp you have to provide us some information, then your new camp will be reviewed by theme camps team leader",
+            "btn_create": "Create a Camp",
+            "name_he": "Camp name (Hebrew)",
+            "name_en": "Camp name (English)",
+            "desc_he": "Camp desc (Hebrew)",
+            "desc_en": "Camp description (English)",
+            "type": "Camp type",
+            "main_contact": "Camp main contact",
+            "moop_contact": "Camp moop contact",
+            "safety_contact": "Camp safety contact"
+        },
+        "join": {
+            "join_a_camp": "Join a camp"
+        }
+}
