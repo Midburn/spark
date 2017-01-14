@@ -56,10 +56,16 @@ CREATE TABLE IF NOT EXISTS camp_details (
   CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (id)
 );
 
--- CHARSET
-ALTER TABLE camps CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE camp_details CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- TODO: investigate why this doesn't work
+-- ALTER TABLE users ADD CONSTRAINT FOREIGN KEY (camp_id) REFERENCES camps (camp_id);
 
 -- FAKE DATA
-INSERT INTO camps (camp_name_he, camp_name_en, camp_desc_he, camp_desc_en, type, status, enabled, main_contact, moop_contact, safety_contact) VALUES ('Camp Lebowski', 'Camp Lebowski', 'לפעמים יש מחנה. מחנה שנכון לזמן ולמקום שלו... שפשוט מתאים בול. לא צריך להגיד, אבל אנחנו מדברים על הדודאים. בואו סובבו גלגל מזל וקבלו White Russian בזמן שאתם מוקפים בניהליסטים. בואו להרגע עם Creedence ותזכו לחזות איך השטיח סוגר את הפינות. לא מפריע לנו שתדליקו איזה J תוך כדי. אתם נכנסים לעולם של כאב.', 'לפעמים יש מחנה. מחנה שנכון לזמן ולמקום שלו... שפשוט מתאים בול. לא צריך להגיד, אבל אנחנו מדברים על הדודאים. בואו סובבו גלגל מזל וקבלו White Russian בזמן שאתם מוקפים בניהליסטים. בואו להרגע עם Creedence ותזכו לחזות איך השטיח סוגר את הפינות. לא מפריע לנו שתדליקו איזה J תוך כדי. אתם נכנסים לעולם של כאב.', 'bar', null, null, 1, 1, 1);
-INSERT INTO camp_details (camp_activity_time, child_friendly, noise_level, public_activity_area_sqm, public_activity_area_desc, support_art, location_comments, camp_location_street, camp_location_street_time, camp_location_area, camp_id) VALUES ('morning', null, 'quiet', null, 10, 'playground', null, 'comments?', null, null, 1, 1);
+-- TODO: create a corresponding user (there is a constraint on it)
+--INSERT INTO camps (
+--    camp_name_he, camp_name_en, camp_desc_he, camp_desc_en, type, status, enabled, main_contact, moop_contact, safety_contact
+--) VALUES (
+--    'Camp Lebowski', 'Camp Lebowski',
+--    'לפעמים יש מחנה. מחנה שנכון לזמן ולמקום שלו... שפשוט מתאים בול. לא צריך להגיד, אבל אנחנו מדברים על הדודאים. בואו סובבו גלגל מזל וקבלו White Russian בזמן שאתם מוקפים בניהליסטים. בואו להרגע עם Creedence ותזכו לחזות איך השטיח סוגר את הפינות. לא מפריע לנו שתדליקו איזה J תוך כדי. אתם נכנסים לעולם של כאב.',
+--    'לפעמים יש מחנה. מחנה שנכון לזמן ולמקום שלו... שפשוט מתאים בול. לא צריך להגיד, אבל אנחנו מדברים על הדודאים. בואו סובבו גלגל מזל וקבלו White Russian בזמן שאתם מוקפים בניהליסטים. בואו להרגע עם Creedence ותזכו לחזות איך השטיח סוגר את הפינות. לא מפריע לנו שתדליקו איזה J תוך כדי. אתם נכנסים לעולם של כאב.',
+--    'bar', null, null, 1, 1, 1
+--);
