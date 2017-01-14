@@ -9,12 +9,6 @@ body[lang='he'] {
     font-family: 'Rubik', sans-serif;
 }
 
-body .dash-panel a:after {
-    content: "»";
-    padding: 0 5px;
-    position: relative;
-}
-
 body[lang="he"] .dash-panel a:after {
     left: -4px;
 }
@@ -94,6 +88,20 @@ section {
     position: absolute;
 }
 
+body .dash-panel a:after {
+    content: "»";
+    padding: 0 5px;
+    position: relative;
+}
+
+body[lang="he"] .dash-panel a:after {
+    left: -4px;
+}
+
+body[lang="en"] .dash-panel a:after {
+    left: 4px;
+}
+
 .camps {
     .panel {
         h3 {
@@ -105,6 +113,7 @@ section {
         padding: 40px 40px 40px 120px;
         background-color: #fafafa;
         border-radius: 4px;
+        box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
 
         h2:after {
             content: '';
@@ -141,6 +150,14 @@ section {
             .glyphicon-ok {
                 color: green;
             }
+        }
+    }
+
+    input[name='camp_name_en'] {
+        padding-left: 40px;
+
+        &.error {
+            border-color: red;
         }
     }
 
@@ -276,7 +293,7 @@ div#ajax_indicator.done {
 
 button.card--close {
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 0;
 }
 
