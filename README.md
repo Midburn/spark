@@ -1,6 +1,17 @@
 
 # Spark by Midburn
 
+Spark is a system of services that help facilitate & run a burn event throughout the year. It contains:
+- Profiles
+- Ticketing
+- Theme Camps & Art
+- Static Content
+- ... ?
+
+It does ***not*** contain Ticket Queue Management, which is handled by a separate system).
+
+Spark is being developed by the Midburn IT team, with the purpose of utilizing it to run Midburn 2017, and in the future other regional events.
+
 ## Table of contents
 
 [TOC]
@@ -32,14 +43,15 @@ SET PASSWORD = PASSWORD('xxxxxxxx');
 ```
 
 ### Getting the source files
-make dir & clone the repo
+* Fork the project on GitHub
+* make dir & clone the repo
 ```
-$ mkdir spark && git clone http://<USER_NAME>@jira.midburn.org:7990/scm/spark/spark.git
+$ mkdir spark && git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
 
 **OR** (For GUEST access)
 ```
-$ mkdir spark && git clone http://jira.midburn.org:7990/scm/spark/spark.git
+$ mkdir spark && git clone https://github.com/Midburn/Spark.git
 ```
 
 ### Installing node modules
@@ -52,11 +64,13 @@ $ mysql -u root -p < sql/create_db.sql
 ```
 
 2. To create the database schema:
+```
+$ mysql -u root -p < sql/schema.sql
+$ mysql -u root -p < sql/camps.sql
+```
 
-```
-Ensure knex is installed (npm install knex -g)
-knex migrate:latest
-```
+**Note** seems knex migrations are not up to date, so should not be used at the moment, need to decide whether we are using knex or plain sql files
+
 
 ## Light the spark
 Fire up the server after installation
