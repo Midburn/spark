@@ -68,13 +68,13 @@
             "title": "Theme & Art Camps",
             "desc": "Something short and leading about the collection below&mdash;its contents, the creator, etc. Make it short and sweet, but not too short so folks don&apos;t simply skip over it entirely.",
             "stats": {
-              "title": "Statistics & Information"
+                "title": "Statistics & Information"
             },
             "members": {
-              "title": "Members Board"
+                "title": "Members Board"
             },
             "docs": {
-              "title": "Documents & Forms"
+                "title": "Documents & Forms"
             }
         },
         "new": {
@@ -87,10 +87,12 @@
             "desc_he": "Camp desc (Hebrew)",
             "desc_en": "Camp description (English)",
             "type": "Camp type",
-            "main_contact": "Camp main contact"
+            "main_contact": "Camp main contact",
+            "moop_contact": "Camp moop contact",
+            "safety_contact": "Camp safety contact"
         },
         "join": {
-          "join_a_camp": "Join a camp"
+            "join_a_camp": "Join a camp"
         }
     },
     "footer": {
