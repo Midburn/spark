@@ -79,13 +79,13 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        namespaces: ['common', 'cmaps'],
+        ns: ['common', 'camps'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
         backend: {
             // path where resources get loaded from
-            loadPath: 'locales/{{lng}}/{{na}}.json',
+            loadPath: 'locales/{{lng}}/{{ns}}.json',
 
             // path to post missing resources
             addPath: 'locales/{{lng}}.missing.json',

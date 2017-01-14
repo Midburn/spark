@@ -30,6 +30,9 @@
             "safety_contact": "אחראי בטיחות"
         },
         "join": {
-            "join_a_camp": "Join a camp"
-        }
+            "join_a_camp": "הצטרף למחנה"
+        },
+        "manage": {
+            "manage_a_camp": "נהל מחנה"
+        } 
 }

@@ -31,5 +31,9 @@
         },
         "join": {
             "join_a_camp": "Join a camp"
+            
+        },
+        "manage": {
+            "manage_a_camp": "Manage a camp"
         }
 }
