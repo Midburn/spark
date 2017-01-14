@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS camp_details;
 
 CREATE TABLE IF NOT EXISTS camps (
   created_at                TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at                TIMESTAMP NULL DEFAULT NULL,
+  updated_at                TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
 
   # General information
   id                        INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS camps (
   camp_desc_en              MEDIUMTEXT,
 
   # Modifiers
-  type                      ENUM('food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other'),
-  status                    ENUM('deleted', 'open', 'closed', 'inactive'),
-  enabled                   BOOLEAN DEFAULT FALSE,
+  type                      VARCHAR(50),
+  status                    VARCHAR(50),
+  enabled                   BOOLEAN NOT NULL DEFAULT 0,
 
   # Users relations
   main_contact              INTEGER,
@@ -36,16 +36,15 @@ CREATE TABLE IF NOT EXISTS camps (
   CONSTRAINT FOREIGN KEY (moop_contact) REFERENCES users (user_id),
   CONSTRAINT FOREIGN KEY (safety_contact) REFERENCES users (user_id)
 )
-  ENGINE = innodb, DEFAULT CHARSET=utf8;
-
+go
 CREATE TABLE IF NOT EXISTS camp_details (
-
-  camp_activity_time        ENUM('morning', 'noon' ,'evening' ,'night'),
-  child_friendly            BOOLEAN,
-  noise_level               ENUM('quiet' ,'medium' ,'noisy' ,'very noisy'),
+  id                        INTEGER PRIMARY KEY AUTO_INCREMENT,
+  camp_activity_time        VARCHAR(50),
+  child_friendly            BOOLEAN NOT NULL DEFAULT 0,
+  noise_level               VARCHAR(50),
   public_activity_area_sqm  INTEGER,
   public_activity_area_desc MEDIUMTEXT,
-  support_art               BOOLEAN,
+  support_art               BOOLEAN NOT NULL DEFAULT 0,
 
   # Location
   location_comments         MEDIUMTEXT,
