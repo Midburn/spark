@@ -4,8 +4,8 @@ block content
         section
             .heading.card.row
                 .col-md-12
-                    h2=t('camps.new.header_title')
-                    h6=t('camps.new.header_desc')
+                    h2=t('camps:new.header_title')
+                    h6=t('camps:new.header_desc')
             .controls.card.row
                 .col-xs-12    
                     //- Card switcher
@@ -19,17 +19,17 @@ block content
                         .panel-body
                             .names.col-md-6
                                 .input-group.col-xs-12
-                                    label=t('camps.new.name_he')
+                                    label=t('camps:new.name_he')
                                     input(type="text", class="form-control", name="camp_name_he", autofocus="true", required)
                                 .input-group.col-xs-12
-                                    label=t('camps.new.name_en')
+                                    label=t('camps:new.name_en')
                                     input(type="text", class="form-control", name="camp_name_en", value="#{camp_name_en}", required, disabled)
                             .descriptions.col-md-6
                                 .input-group.col-xs-12
-                                    label=t('camps.new.desc_he')
+                                    label=t('camps:new.desc_he')
                                     input(type="text", class="form-control", name="camp_desc_he")
                                 .input-group.col-xs-12
-                                    label=t('camps.new.desc_en')
+                                    label=t('camps:new.desc_en')
                                     input(type="text", class="form-control", name="camp_desc_en")
                     h4 Camp Contact Personnel
                     .camp-leaders.panel
@@ -37,15 +37,15 @@ block content
                             .personnel
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label=t('camps.new.main_contact')
+                                        label=t('camps:new.main_contact')
                                         select(class="form-control", name="camp_main_contact", required)
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label=t('camps.new.moop_contact')
+                                        label=t('camps:new.moop_contact')
                                         select(class="form-control", name="camp_moop_contact", required)
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label=t('camps.new.safety_contact')
+                                        label=t('camps:new.safety_contact')
                                         select(class="form-control", name="camp_safety_contact", required)
                     h4 Camp Behaviour
                     .camp-leaders.panel
@@ -53,11 +53,11 @@ block content
                             .behaviour
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label=t('camps.new.camp_size')
+                                        label=t('camps:new.camp_size')
                                         input(type="number",min="1",class="form-control", name="camp_size", required)
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label=t('camps.new.camp_type')
+                                        label=t('camps:new.camp_type')
                                         input(type="text", id="campTypeContainer",class="form-control", name="camp_type", required)
                 //- Card 2
                 .card.card-second.card-hide
@@ -66,29 +66,29 @@ block content
                         .panel-body
                                 .names.col-md-6
                                     .input-group.col-xs-12
-                                        label=t('camps.new.camp_type')
+                                        label=t('camps:new.camp_type')
                                         select(class="form-control", name="noise_lvl", required)
                                           option(value="quiet") quiet
                                           option(value="medium") medium
                                           option(value="noisy") noisy
                                           option(value="very noisy") very noisy
                             .form-group.col-md-6.col-sm-12
-                                label=t('camps.new.camp_type')
+                                label=t('camps:new.camp_type')
                                 select(class="form-control", name="camp_hours", required)
                                   option(value="morning") morning
                                   option(value="noon") noon
                                   option(value="evening") evening
                                   option(value="night") night
                             .form-group.col-md-6.col-sm-12
-                                label=t('camps.new.camp_type')
+                                label=t('camps:new.camp_type')
                                 input(type="text", id="kidsFriendlyContainer",class="form-control", name="camp_kids_friendly", required)
                             .form-group.col-md-6.col-sm-12
-                                label=t('camps.new.size_for_activity')
+                                label=t('camps:new.size_for_activity')
                                 input(type="number",min="1",class="form-control", name="size_for_activity", required)
                             .form-group.col-md-6.col-sm-12
-                                label=t('camps.new.public_area_reason')
+                                label=t('camps:new.public_area_reason')
                                 input(type="text", class="form-control", name="public_area_reason")
                             
                 .row.card.card-save
-                    button(type="submit", id='camp_create_save', class="Btn Btn--default")=t('camps.btn_save_camp')
-                    button(type="submit", id='camp_create_continue', class="Btn Btn--green")=t('camps.btn_continue')
+                    button(type="submit", id='camp_create_save', class="Btn Btn--default")=t('camps:btn_save_camp')
+                    button(type="submit", id='camp_create_continue', class="Btn Btn--green")=t('camps:btn_continue')
