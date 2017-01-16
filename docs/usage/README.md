@@ -12,8 +12,8 @@ Spark is not ready for usage yet.
 
 In the mean-time, have a look at our personas and user stories.
 
-* [Personas (Google Doc)]() - Real or fictional people that we think will be interested in using Spark. Feel free to add yourself!
-* [User stories (Google Doc)]() - How the personas will use our system. Feel free to add your own user stories and what features you would like us to implement.
+* [Personas (Google Doc)](https://docs.google.com/document/d/1qRzGgiZMb0maTPRWRK9GqQkOaqmQxgzLqACZjuNbul8/edit) - Real or fictional people that we think will be interested in using Spark. Feel free to add yourself!
+* [User stories (Google Doc)](https://docs.google.com/document/d/1y7L6Wdu6SXSBsJlDa6i84nfMlQfvfyNUNYK9stmxQRk/edit) - How the personas will use our system. Feel free to add your own user stories and what features you would like us to implement.
 
 ## Integration guide
 
