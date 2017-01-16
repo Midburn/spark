@@ -29,7 +29,7 @@ describe('Main routes', function () {
     request
         .get('/he/signup')
         .expect(/הרשמה.*סיסמה/)
-        .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=iw/)
+        .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=he/)
         .expect(200, done);
   });
   
