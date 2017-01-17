@@ -9,12 +9,6 @@ body[lang='he'] {
     font-family: 'Rubik', sans-serif;
 }
 
-body .dash-panel a:after {
-    content: "»";
-    padding: 0 5px;
-    position: relative;
-}
-
 body[lang="he"] .dash-panel a:after {
     left: -4px;
 }
@@ -52,7 +46,9 @@ section {
     text-decoration: none;
     border: 0;
     transition: all 0.15s ease;
+    margin: 0 10px 10px;
 
+    &:focus,
     &:hover {
         color: #fff;
         transform: translateY(-3px);
@@ -92,6 +88,20 @@ section {
     position: absolute;
 }
 
+body .dash-panel a:after {
+    content: "»";
+    padding: 0 5px;
+    position: relative;
+}
+
+body[lang="he"] .dash-panel a:after {
+    left: -4px;
+}
+
+body[lang="en"] .dash-panel a:after {
+    left: 4px;
+}
+
 .camps {
     .panel {
         h3 {
@@ -103,6 +113,7 @@ section {
         padding: 40px 40px 40px 120px;
         background-color: #fafafa;
         border-radius: 4px;
+        box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
 
         h2:after {
             content: '';
@@ -139,6 +150,14 @@ section {
             .glyphicon-ok {
                 color: green;
             }
+        }
+    }
+
+    input[name='camp_name_en'] {
+        padding-left: 40px;
+
+        &.error {
+            border-color: red;
         }
     }
 
@@ -184,7 +203,7 @@ body[lang="en"] {
     }
 }
 
-a.Btn.Btn--default.reveal_create_camp_btn {
+.anim-bouncy {
     margin-top: 1em;
     animation-name: nudge;
     animation-duration: 1500ms;
@@ -223,25 +242,7 @@ div#ajax_indicator.done {
     box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
 }
 
-.camps.camp_editing {
-    textarea {
-        max-height: 34px;
-        resize: none;
-    }
-
-    input,
-    textarea {
-        margin: 1em 0 1.5em;
-        border: 0;
-        border-bottom: 3px solid #7795f8;
-        border-radius: 0;
-        box-shadow: none;
-
-        &:active,
-        &:focus {
-            box-shadow: none;
-        }
-    }
+.camps {
     // Card transition
     .cards--wrapper {
         display: block;
@@ -264,6 +265,46 @@ div#ajax_indicator.done {
 
         .card.card-hide {
             left: 3000px;
+            visibility: hidden;
         }
     }
+
+    .camp_editing {
+        textarea {
+            max-height: 34px;
+            resize: none;
+        }
+
+        input,
+        textarea {
+            margin: 1em 0 1.5em;
+            border: 0;
+            border-bottom: 3px solid #7795f8;
+            border-radius: 0;
+            box-shadow: none;
+
+            &:active,
+            &:focus {
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+button.card--close {
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+textarea {
+    max-height: 34px;
+}
+
+textarea:focus {
+    min-height: 100px;
 }
