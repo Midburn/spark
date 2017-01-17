@@ -4,9 +4,9 @@ The Spark project uses [Knex.js](http://knexjs.org/) to manage database connecti
 
 ### Database configuration
 
-Knex uses the database configuration from the [opsworks.js](/opsworks.js) file.
+In production, Knex uses the database configuration from the [opsworks.js](/opsworks.js) file.
 
-By default it is configured to use Sqlite which doesn't require any special installation or setup.
+By default (local dev machine) it is configured to use Sqlite which doesn't require any special installation or setup.
 
 ### Running migrations
 
