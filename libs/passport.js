@@ -7,7 +7,7 @@ var facebookConfig = require('config').get("facebook");
 var constants = require('../models/constants');
 
 var drupal_login = function(user, email, password, done) {
-    new DrupalUser({name: email}).fetch().then(function(drupalUser) {
+    DrupalUser.forge({name: email}).fetch().then(function(drupalUser) {
         if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status == 1) {
             if (user) {
                 user.generateHash(password);
@@ -37,8 +37,10 @@ var drupal_login = function(user, email, password, done) {
 
 var login = function(email, password, done) {
     new User({email: email}).fetch().then(function (user) {
-        if (user === null || !user.validPassword(password)) {
+        if (user === null) {
             drupal_login(user, email, password, done);
+        } else if (!user.validPassword(password)) {
+            done(false, i18next.t('invalid_user_password'));
         } else if (!user.attributes.validated) {
             done(false, i18next.t('user_not_validated', {email: email}));
         } else if (!user.attributes.enabled) {
