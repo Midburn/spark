@@ -1,7 +1,8 @@
 var bookshelf = require('../libs/db').bookshelf;
+var constants = require('./constants.js');
 
 var Payment = bookshelf.Model.extend({
-    tableName: 'payments',
+    tableName: constants.PAYMENTS_TABLE_NAME,
     idAttribute: 'payment_id'
 });
 

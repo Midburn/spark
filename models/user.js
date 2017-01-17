@@ -2,9 +2,10 @@ var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
 var NpoMember = require('./npo_member').NpoMember;
+var constants = require('./constants.js');
 
 var User = bookshelf.Model.extend({
-    tableName: 'users',
+    tableName: constants.USERS_TABLE_NAME,
     idAttribute: 'user_id',
     npoMember: function() {
         return this.hasMany(NpoMember);
@@ -49,7 +50,12 @@ var User = bookshelf.Model.extend({
     }
 });
 
+var DrupalUser = bookshelf.Model.extend({
+    tableName: constants.DRUPAL_USERS_TABLE_NAME
+});
+
 // Create the model and expose it
 module.exports = {
-    User: User
+    User: User,
+    DrupalUser: DrupalUser
 };
