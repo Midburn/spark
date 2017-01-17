@@ -6,29 +6,32 @@ var DrupalUser = require('../models/user').DrupalUser;
 var facebookConfig = require('config').get("facebook");
 var constants = require('../models/constants');
 
-var drupal_login = function(user, email, password, done) {
+/***
+ * tries to login based on drupal users table
+ * once user is successfully logged-in, an automatic sign-up flow is performed which creates a corresponding spark user
+ * @param email
+ * @param password
+ * @param done
+ */
+var drupal_login = function(email, password, done) {
     DrupalUser.forge({name: email}).fetch().then(function(drupalUser) {
         if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status == 1) {
-            if (user) {
-                user.generateHash(password);
-                user.attributes.validated = true;
-                user.save().then(function(savedUser) {
-                    done(savedUser);
-                });
-            } else {
-                signup(email, password, {
-                    first_name: email,
-                    last_name: "",
-                    gender: constants.USER_GENDERS_DEFAULT,
-                    validated: true
-                }, function(newUser, error) {
-                    if (newUser) {
-                        done(newUser);
-                    } else {
-                        done(false, error);
-                    }
-                });
-            }
+            // valid drupal password
+            // drupal user status is 1
+            // can sign up a spark user with some defaults
+            // TODO: get these details from the old profiles system
+            signup(email, password, {
+                first_name: email,
+                last_name: "",
+                gender: constants.USER_GENDERS_DEFAULT,
+                validated: true
+            }, function(newUser, error) {
+                if (newUser) {
+                    done(newUser);
+                } else {
+                    done(false, error);
+                }
+            });
         } else {
             done(false, i18next.t('invalid_user_password'));
         }
@@ -38,7 +41,10 @@ var drupal_login = function(user, email, password, done) {
 var login = function(email, password, done) {
     new User({email: email}).fetch().then(function (user) {
         if (user === null) {
-            drupal_login(user, email, password, done);
+            // no corresponding spark user is found
+            // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
+            // on next login - there will be a spark user, so drupal login will not be attempted again
+            drupal_login(email, password, done);
         } else if (!user.validPassword(password)) {
             done(false, i18next.t('invalid_user_password'));
         } else if (!user.attributes.validated) {
