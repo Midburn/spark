@@ -1,12 +1,10 @@
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var i18next = require('i18next');
-
-// load up the user model
 var User = require('../models/user').User;
 var DrupalUser = require('../models/user').DrupalUser;
-
 var facebookConfig = require('config').get("facebook");
+var constants = require('../models/constants');
 
 var drupal_login = function(user, email, password, done) {
     new DrupalUser({name: email}).fetch().then(function(drupalUser) {
@@ -18,7 +16,12 @@ var drupal_login = function(user, email, password, done) {
                     done(savedUser);
                 });
             } else {
-                signup(email, password, {validated: true}, function(newUser, error) {
+                signup(email, password, {
+                    first_name: email,
+                    last_name: "",
+                    gender: constants.USER_GENDERS_DEFAULT,
+                    validated: true
+                }, function(newUser, error) {
                     if (newUser) {
                         done(newUser);
                     } else {
