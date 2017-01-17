@@ -19,3 +19,4 @@ Spark is being developed by the Midburn IT team, with the purpose of utilizing i
 
 - [Development guide](/docs/development/README.md) - how to work on the development of the Spark project.
 - [Usage guide](/docs/usage/README.md) - how to use the Spark system and description of what it provides.
+ 
