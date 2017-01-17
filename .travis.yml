@@ -1,6 +1,6 @@
 language: node_js
 node_js: 7.4.0
-services:
-  - mysql
 script:
-  bin/run_tests.sh
+  - npm install -g knex
+  - knex migrate:latest
+  - npm test
