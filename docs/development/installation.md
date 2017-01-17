@@ -5,37 +5,12 @@ This is a step-by-step guide to getting you up and running with Spark so you can
 ### Preconditions
 
 * **NodeJS** ( https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
-* **mySQL** ( http://dev.mysql.com/downloads/mysql/ )
 * **GIT** ( https://git-scm.com/downloads )
-
-### MYSQL Preconditions
-
-On Mac after installing, please add the following lines to your ~/.bash_profile
-
-```
-$ alias mysql=/usr/local/mysql/bin/mysql
-$ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
-```
-
-Also, On first install, you might get mysql password expired or other root password related issues.
-
-To change mysql default password - run the following commands
-
-```
-mysql -u root -p
-```
-
-Enter the default root password you got during mysql setup
-Then run the following to set your password:
-
-```
-SET PASSWORD = PASSWORD('xxxxxxxx');
-```
 
 ### Getting the source files
 
 * Fork the project on GitHub (this can be done in the GitHub web interface)
-* clone your fork repo
+* clone your forked repo
 
 ```
 $ git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
@@ -47,34 +22,45 @@ To be able to sync with Midburn repository you should add it as a remote:
 $ git remote add midburn https://github.com/Midburn/Spark.git
 ```
 
-### Installing node modules
+### Installing Node
+
+It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
+
+We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
 
 ```
 $ cd spark
-$ npm install
-$ npm install -g nodemon knex
+spark$ nvm install
+spark$ nvm use
+```
+
+### Installing Node modules
+
+```
+$ cd spark
+spark$ npm install
+spark$ npm install -g nodemon knex
 ```
 
 ### Setting up the database
 
-1. To create the database for the first time, run:
+Local development environment uses Sqlite do doesn't require any special DB setup.
+
+The database file is located (by default) at spark/dev.sqlite3
+
+We use Knex to run and manage the migrations.
+
 ```
-$ mysql -u root -p < sql/create_db.sql
+spark$ knex migrate:latest
 ```
 
-2. To create the database schema:
-```
-$ mysql -u root -p < sql/schema.sql
-$ mysql -u root -p < sql/camps.sql
-```
-
-**Note** seems knex migrations are not up to date, so should not be used at the moment, need to decide whether we are using knex or plain sql files
+See [/docs/database.md](/docs/database.md) for more details about our database setup.
 
 ## Light the spark
 
 Fire up the server after installation
 
-`$ nodemon server.js`
+`spark$ nodemon server.js`
 
 and navigate to http://localhost:3000.
 

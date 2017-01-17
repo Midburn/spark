@@ -20,6 +20,7 @@ If you want to contribute code you should review the following documents as well
 
 Additional documents:
 
+* [database - installation / setup / usage notes](/docs/development/database.md)
 * [Setting your IDE for Spark development](/docs/development/IDE.md)
 * [Spark architecture](/docs/development/architecture.md)
 

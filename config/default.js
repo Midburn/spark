@@ -1,14 +1,8 @@
 const opsworks = require('../opsworks.js');
-const dbConfig = opsworks.db;
 
 module.exports =  {
-  database: {
-      host     : dbConfig.host,
-      username : dbConfig.username,
-      password : dbConfig.password,
-      database : dbConfig.database,
-      debug	   : false
-  },
+  database: opsworks.db,
+  
   server: opsworks.server,
 
   mail: opsworks.mail,
@@ -20,6 +14,6 @@ module.exports =  {
   payment: opsworks.payment,
 
   npo: opsworks.npo,
-
+  
   facebook: opsworks.facebook
 };
