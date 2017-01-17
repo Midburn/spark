@@ -6,7 +6,7 @@ module.exports = {
     NPO_MEMBERS_TABLE_NAME: "npo_members",
     CAMPS_TABLE_NAME: "camps",
     CAMP_DETAILS_TABLE_NAME: "camp_details",
-    DRUPAL_USERS_TABLE_NAME: "drupal-users",
+    DRUPAL_USERS_TABLE_NAME: "drupal_users",
 
     // enums
     USER_GENDERS: ['male', 'female', 'other'],

@@ -4,8 +4,71 @@ var i18next = require('i18next');
 
 // load up the user model
 var User = require('../models/user').User;
+var DrupalUser = require('../models/user').DrupalUser;
 
 var facebookConfig = require('config').get("facebook");
+
+var drupal_login = function(user, email, password, done) {
+    new DrupalUser({name: email}).fetch().then(function(drupalUser) {
+        if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status == 1) {
+            if (user) {
+                user.generateHash(password);
+                user.attributes.validated = true;
+                user.save().then(function(savedUser) {
+                    done(savedUser);
+                });
+            } else {
+                signup(email, password, {validated: true}, function(newUser, error) {
+                    if (newUser) {
+                        done(newUser);
+                    } else {
+                        done(false, error);
+                    }
+                });
+            }
+        } else {
+            done(false, i18next.t('invalid_user_password'));
+        }
+    });
+};
+
+var login = function(email, password, done) {
+    new User({email: email}).fetch().then(function (user) {
+        if (user === null || !user.validPassword(password)) {
+            drupal_login(user, email, password, done);
+        } else if (!user.attributes.validated) {
+            done(false, i18next.t('user_not_validated', {email: email}));
+        } else if (!user.attributes.enabled) {
+            done(false, i18next.t('user_disabled'));
+        } else {
+            done(user);
+        }
+    });
+};
+
+var signup = function(email, password, user, done) {
+    var userPromise = new User({email: email}).fetch();
+    userPromise.then(function (model) {
+        if (model) {
+            done(false, i18next.t('user_exists'));
+        } else {
+            var newUser = new User({
+                email: email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                gender: user.gender,
+                validated: user.validated
+            });
+            newUser.generateHash(password);
+            if (!user.validated) {
+                newUser.generateValidation();
+            }
+            newUser.save().then(function (model) {
+                done(newUser);
+            });
+        }
+    });
+};
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
@@ -38,25 +101,11 @@ module.exports = function (passport) {
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
     function (req, email, password, done) {
-        var user = req.body;
-        var userPromise = new User({email: email}).fetch();
-
-        return userPromise.then(function (model) {
-            if (model) {
-                return done(null, false, req.flash('error', i18next.t('user_exists')));
+        signup(email, password, req.body, function(user, error) {
+            if (user) {
+                done(null, user, null);
             } else {
-                var newUser = new User({
-                    email: email,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    gender: user.gender
-                });
-                newUser.generateHash(password);
-                newUser.generateValidation();
-
-                newUser.save().then(function (model) {
-                    return done(null, newUser, null);
-                });
+                done(null, false, req.flash('error', error));
             }
         });
     }));
@@ -71,23 +120,11 @@ module.exports = function (passport) {
             passReqToCallback: true
         },
         function (req, email, password, done) {
-            new User({email: email}).fetch().then(function (data) {
-                var user = data;
-                if (user === null) {
-                    return done(null, false, req.flash('error', i18next.t('invalid_user_password')));
+            login(email, password, function(user, error) {
+                if (user) {
+                    done(null, user, null);
                 } else {
-                    if (!user.validPassword(password)) {
-                        return done(null, false, req.flash('error', i18next.t('invalid_user_password')));
-                    } else {
-                        if (!user.attributes.validated) {
-                            return done(null, false, req.flash('error', i18next.t('user_not_validated', {email: email})));
-                        }
-                        if (!user.attributes.enabled) {
-                            return done(null, false, req.flash('error', i18next.t('user_disabled')));
-                        }
-
-                        return done(null, user, null);
-                    }
+                    done(null, false, req.flash('error', error));
                 }
             });
         }));

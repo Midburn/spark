@@ -45,13 +45,17 @@ var User = bookshelf.Model.extend({
         },
 
         isAdmin: function() {
-            return (this.attributes.roles.split(',').indexOf('admin') > -1);
+            return (this.attributes.roles && this.attributes.roles.split(',').indexOf('admin') > -1);
         }
     }
 });
 
 var DrupalUser = bookshelf.Model.extend({
-    tableName: constants.DRUPAL_USERS_TABLE_NAME
+    tableName: constants.DRUPAL_USERS_TABLE_NAME,
+
+    validPassword: function(password) {
+        return password == this.attributes.pass;
+    }
 });
 
 // Create the model and expose it
