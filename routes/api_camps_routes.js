@@ -112,16 +112,16 @@ module.exports = function(app, passport) {
             })
             .then(function(camp) {
                 camp.save({
-                        camp_name_he: req.body.camp_name_he,
-                        camp_name_en: req.body.camp_name_en,
+                        // camp_name_he: req.body.camp_name_he,
+                        // camp_name_en: req.body.camp_name_en,
                         camp_desc_he: req.body.camp_desc_he,
                         camp_desc_en: req.body.camp_desc_en,
                         status: req.body.status,
                         type: req.body.type,
                         enabled: req.body.enabled,
-                        // main_contact: req.body.main_contact,
-                        // moop_contact: req.body.moop_contact,
-                        // safety_contact: req.body.safety_contact
+                        main_contact: req.body.main_contact,
+                        moop_contact: req.body.moop_contact,
+                        safety_contact: req.body.safety_contact
                     })
                     .then(function() {
                         res.json({
@@ -255,8 +255,8 @@ module.exports = function(app, passport) {
     app.get('/camps_open', (req, res) => {
         Camp
             .forge({
-                camp_status: 'open',
-                camp_enabled: 1
+                status: 'open',
+                enabled: 1
             })
             .fetch()
             .then((camp) => {
