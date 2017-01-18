@@ -1,15 +1,11 @@
 var config = require('config');
-var dbConfig = config.get('database')
+var dbConfig = config.get('database');
 
 var knex = require('knex')({
-    client: 'mysql',
-    connection: {
-        host     : dbConfig.host,
-        user     : dbConfig.username,
-        password : dbConfig.password,
-        database : dbConfig.database
-    },
-    debug: dbConfig.debug
+    client: dbConfig.client,
+    connection: dbConfig,
+    debug: dbConfig.debug,
+    useNullAsDefault: true
 });
 
 var bookshelf = require('bookshelf')(knex);

@@ -25,11 +25,11 @@ describe('Main routes', function () {
   });
 
 
-  it('shows signup formin Hebrew', function testSlash(done) {
+  it('shows signup form in Hebrew', function testSlash(done) {
     request
         .get('/he/signup')
         .expect(/הרשמה.*סיסמה/)
-        .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=iw/)
+        .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=he/)
         .expect(200, done);
   });
   
