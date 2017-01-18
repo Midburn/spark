@@ -2,18 +2,19 @@
 
 # Spark by Midburn
 
-Spark is a system of services that help facilitate & run a burn event throughout the year.
+Spark is "burn in a box" suite of services that composes everything required to run a burn event throughout the year.
 
 It contains:
 - Profiles
 - Ticketing
 - Theme Camps & Art
-- Static Content
 - ... ?
 
-It does ***not*** contain Ticket Queue Management, which is handled by a separate system).
+It **does not** contain:
+- Static Content
+- Ticket Queue Management
 
-Spark is being developed by the Midburn IT team, with the purpose of utilizing it to run Midburn 2017, and in the future other regional events.
+Spark is being developed by the Midburn Tech Team, with the purpose of utilizing it to run Midburn 2017, and in the future other regional events. The Minimal Viable Product we're starting with is the Camps system.
 
 ### Quickstart
 
