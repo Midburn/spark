@@ -54,7 +54,7 @@ We use Knex to run and manage the migrations.
 spark$ knex migrate:latest
 ```
 
-See [/docs/database.md](/docs/database.md) for more details about our database setup.
+See [/docs/database.md](/docs/development/database.md) for more details about our database setup.
 
 ## Light the spark
 
