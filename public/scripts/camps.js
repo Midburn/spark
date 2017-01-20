@@ -94,7 +94,8 @@ var fetchedCampsOnce = false,
 
 function fetchCampsOnce() {
     if (!fetchedCampsOnce) {
-        var data, tbody = $stats_table.find('tbody');
+        var data,
+            tbody = $stats_table.find('tbody');
         tbody.html('');
         $.get('/camps', function(data) {
             camps = data.camps;
@@ -156,7 +157,7 @@ $('.reveal_manage_camp_btn').click(function() {
 $('.card--close').click(function() {
     $('.card').addClass('card-hide');
 });
-/*
+/**
  * Component: Join a camp
  */
 var fetched = false;
@@ -175,7 +176,7 @@ function fetchOpenCampsOnce(elm) {
 $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
     fetchOpenCampsOnce($(this));
 });
-/*
+/**
  * Component: Editing camp
  */
 $('#camp_edit_save').click(function() {
@@ -202,7 +203,7 @@ $('#camp_edit_save').click(function() {
     });
 });
 
-/*
+/**
  * Component: Create new camp
  */
 $('#camp_create_save').click(function() {
@@ -231,3 +232,24 @@ $('#camp_create_save').click(function() {
         }
     });
 });
+/**
+ * Component: join a camp
+ */
+$('#join_camp_request_join_btn').click(function() {
+    var join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val(),
+        user_id = $('#join_camp_request_join_user_id').val();
+    if (join_camp_name_en !== undefined) {
+        $.get('/camps/join/' + join_camp_name_en + '/' + user_id, (res) => {
+            success(res);
+        })
+    } else {
+        alert('Choose a camp to request a join.')
+    }
+
+    function success(res) {
+        // Run modal with user details to approve request
+        var template = '<ul><li>Camp Name: <u>' + res.camp_name_en + '</u></li><li>Full Name: <u>' + [res.first_name, res.last_name].join(', ') + '</u></li><li> Email: <u>' + res.email + '</u></li></ul>';
+        $('#join_camp_request_modal .user_details').html(template);
+        $('#join_camp_request_modal').modal('show');
+    }
+})

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "preinstall": "npm install",
     "start": "webpack && node server.js",
     "test": "mocha  \"routes/*test.js\" "
   },
