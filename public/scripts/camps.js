@@ -82,8 +82,9 @@ function fetchUsersOnce(elm) {
         elm.attr('fetched', true);
     }
 }
-$("select[name='camp_main_contact'], #edit_camp_main_contact, #edit_camp_moop_contact, #edit_camp_safety_contact").focus(function() {
-    fetchUsersOnce($(this));
+$(".camps.camp_create, .camps.camp_edit").load(function() {
+    var $inputs = ['create_camp_main_contact'];
+    fetchUsersOnce($($inputs));
 });
 /**
  * getting camp list from API
@@ -124,20 +125,20 @@ $('.card-switcher--card2').click(function() {
     // show card-2 ; hide card-1
     $('.card-second').removeClass('card-hide');
     $('.card-first').addClass('card-hide');
-    $('.card-switcher--card1').removeClass('Btn--default');
-    $('.card-switcher--card1').addClass('Btn--transparent');
-    $('.card-switcher--card2').removeClass('Btn--transparent');
-    $('.card-switcher--card2').addClass('Btn--default');
+    $('.card-switcher--card1').removeClass('Btn__default');
+    $('.card-switcher--card1').addClass('Btn__transparent');
+    $('.card-switcher--card2').removeClass('Btn__transparent');
+    $('.card-switcher--card2').addClass('Btn__default');
     innerHeightChange();
 });
 $('.card-switcher--card1').click(function() {
     // show card-1 ; hide card-2
     $('.card-second').addClass('card-hide');
     $('.card-first').removeClass('card-hide');
-    $('.card-switcher--card1').removeClass('Btn--transparent');
-    $('.card-switcher--card2').removeClass('Btn--default');
-    $('.card-switcher--card2').addClass('Btn--transparent');
-    $('.card-switcher--card1').addClass('Btn--default');
+    $('.card-switcher--card1').removeClass('Btn__transparent');
+    $('.card-switcher--card2').removeClass('Btn__default');
+    $('.card-switcher--card2').addClass('Btn__transparent');
+    $('.card-switcher--card1').addClass('Btn__default');
     innerHeightChange();
 });
 $('.reveal_create_camp_btn').click(function() {
@@ -177,7 +178,7 @@ $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
 /*
  * Component: Editing camp
  */
-$('#camp_editing_save').click(function() {
+$('#camp_edit_save').click(function() {
     var camp_id = 1,
         camp_data = {
             camp_name_he: $('#edit_camp_name_he').val(),
@@ -187,13 +188,43 @@ $('#camp_editing_save').click(function() {
             main_contact: $('#edit_camp_main_contact option:selected').val(),
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
-            camp_status: $('#edit_camp_status option:selected').val(),
-            camp_type: $('#edit_camp_type option:selected').val(),
-            camp_enabled: $('#edit_camp_enabled option:selected').val()
+            status: $('#edit_camp_status option:selected').val(),
+            type: $('#edit_camp_type option:selected').val(),
+            enabled: $('#edit_camp_enabled option:selected').val()
         };
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
         type: 'PUT',
+        data: camp_data,
+        success: function(result) {
+            console.log(result);
+        }
+    });
+});
+
+/*
+ * Component: Create new camp
+ */
+$('#camp_create_save').click(function() {
+    var camp_id = 1,
+        camp_data = {
+            camp_name_he: $('#create_camp_name_he').val(),
+            camp_name_en: $('#create_camp_name_en').val(),
+            camp_desc_he: $('#create_camp_desc_he').val(),
+            camp_desc_en: $('#create_camp_desc_en').val(),
+            main_contact: $('#create_camp_main_contact option:selected').val(),
+            moop_contact: $('#create_camp_moop_contact option:selected').val(),
+            safety_contact: $('#create_camp_safety_contact option:selected').val(),
+            type: $('#create_camp_type option:selected').val(),
+            camp_activity_time: $('#create_camp_activity_time option:selected').val(),
+            child_friendly: $('#create_child_friendly').val(),
+            noise_level: $('#create_noise_level option:selected').val(),
+            public_activity_area_sqm: $('#create_public_activity_area_sqm').val(),
+            public_activity_area_desc: $('#create_public_activity_area_desc').val()
+        };
+    $.ajax({
+        url: '/camps/new',
+        type: 'POST',
         data: camp_data,
         success: function(result) {
             console.log(result);
