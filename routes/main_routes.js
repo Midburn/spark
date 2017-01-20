@@ -203,7 +203,7 @@ module.exports = function (app, passport) {
     // forgot password for requesting a password reset,
     // and reset password for inputing a new password
 
-    app.get('/:lng/forgot_password', function (req, res) {
+    app.get('/:lng/reset_password', function (req, res) {
         res.render('pages/reset_password', {
             user: req.user
         });
@@ -357,24 +357,23 @@ module.exports = function (app, passport) {
         }
       });
     });
+
+    app.get('/:lng/validate_email/:token', function(req, res) {
+        var token = req.params.token;
+        log.info('Received email validation token: ' + token);
+
+        new User({
+            email_validation_token: token
+        }).fetch().then(function(user) {
+            if (user.validate()) {
+                user.save().then(function() {
+                    res.render('pages/login', {
+                        successMessage: i18next.t('email_verified')
+                    });
+                });
+            } else {
+                res.sendStatus(400);
+            }
+        });
+    });
 };
-
-    // app.get('/:lng/validate_email/:token', function(req, res) {
-    //     var token = req.params.token;
-    //     log.info('Received email validation token: ' + token);
-
-    //     new User({
-    //         email_validation_token: token
-    //     }).fetch().then(function(user) {
-    //         if (user.validate()) {
-    //             user.save().then(function() {
-    //                 res.render('pages/login', {
-    //                     successMessage: i18next.t('email_verified')
-    //                 });
-    //             });
-    //         } else {
-    //             res.sendStatus(400);
-    //         }
-    //     });
-
-    // });
