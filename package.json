@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "start": "webpack && node server.js",
-    "test": "mocha  \"routes/*test.js\" "
+    "test": "mocha  \"routes/*test.js\" ",
+    "log": "curl -X POST -g $npm_config_webhook --data-urlencode 'payload={\"channel\": \"'\"#${npm_config_channel:-sparksystem-log}\"'\", \"username\": \"'\"${npm_config_username:-bot}\"'\", \"text\": \"'\"${npm_config_text}\"'\", \"icon_emoji\": \"'\"${npm_config_emoji:-ghost}\"'\"}'"
   },
   "dependencies": {
     "babel-core": "^6.21.0",

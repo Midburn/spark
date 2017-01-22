@@ -4,3 +4,7 @@ script:
   - npm install -g knex
   - knex migrate:latest
   - npm test
+after_success:
+  - [ "${TRAVIS_PULL_REQUEST}" != "false" ] || npm run log --username=travis-ci --emoji=satellite_antenna --text=":sunglasses: Travis build success https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}" --webhook="${SLACK_LOG_WEBHOOK}"
+after_failure:
+  - [ "${TRAVIS_PULL_REQUEST}" != "false" ] || npm run log --username=travis-ci --emoji=satellite_antenna --text=":scream: Travis build failure https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}" --webhook="${SLACK_LOG_WEBHOOK}"
