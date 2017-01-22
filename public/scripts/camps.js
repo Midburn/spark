@@ -115,7 +115,7 @@ $stats_table.load(fetchCampsOnce());
 
 // TODO: fix inner height for dynamic width size changing
 function innerHeightChange() {
-    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight() + 20;
+    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
     $('.camps .cards--wrapper').css({
         'min-height': card_height + 'px'
     });
@@ -207,8 +207,7 @@ $('#camp_edit_save').click(function() {
  * Component: Create new camp
  */
 $('#camp_create_save').click(function() {
-    var camp_id = 1,
-        camp_data = {
+    var camp_data = {
             camp_name_he: $('#create_camp_name_he').val(),
             camp_name_en: $('#create_camp_name_en').val(),
             camp_desc_he: $('#create_camp_desc_he').val(),
@@ -236,20 +235,52 @@ $('#camp_create_save').click(function() {
  * Component: join a camp
  */
 $('#join_camp_request_join_btn').click(function() {
-    var join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val(),
+    var join_camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id'),
+        join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val(),
         user_id = $('#join_camp_request_join_user_id').val();
     if (join_camp_name_en !== undefined) {
-        $.get('/camps/join/' + join_camp_name_en + '/' + user_id, (res) => {
-            success(res);
+        $.get('/camps/join/' + join_camp_id + '/' + user_id, (res) => {
+            fetchSuccess(res);
         })
     } else {
         alert('Choose a camp to request a join.')
     }
 
-    function success(res) {
+    function fetchSuccess(res) {
         // Run modal with user details to approve request
-        var template = '<ul><li>Camp Name: <u>' + res.camp_name_en + '</u></li><li>Full Name: <u>' + [res.first_name, res.last_name].join(', ') + '</u></li><li> Email: <u>' + res.email + '</u></li></ul>';
+        var template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + [res.first_name, res.last_name].join(', ') + '</u></li><li> Email: <u>' + res.email + '</u></li></ul>';
         $('#join_camp_request_modal .user_details').html(template);
         $('#join_camp_request_modal').modal('show');
     }
+
+    // Send request
+    // allow user 4 second to cancel
+    $('#join_camp_send_request_btn').click(function() {
+        var request_data = {},
+            _sendRequestBtn = $(this);
+        $('#join_camp_close_btn').text('Cancel').click(function(e) {
+            e.preventDefault();
+            clearTimeout(_srt);
+            $(this).text('Close');
+            _sendRequestBtn.removeClass('Btn__is-loading').text('Send Request');
+        });
+        _sendRequestBtn.addClass('Btn__is-loading').text('Sending');
+
+        function _sendRequest() {
+            $.ajax({
+                url: '/camps/join/request',
+                type: 'POST',
+                data: request_data,
+                success: function() {
+                    $('#join_camp_request_modal > div').html('<h4>Your request have sent. We will contact you soon.</h4>');
+                    setTimeout(function() {
+                        $('#join_camp_request_modal').modal('hide');
+                    }, 4000);
+                }
+            });
+        }
+        var _srt = setTimeout(function() {
+            _sendRequest();
+        }, 4000);
+    });
 })

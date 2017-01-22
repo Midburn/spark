@@ -31,63 +31,52 @@ module.exports = function(app, passport) {
         var camp_name_he = req.body.camp_name_he,
             camp_name_en = req.body.camp_name_en;
 
-        console.log(req.body);
-
-        validate = () => {
-            if (camp_name_he != null && camp_name_en != null) {
-                return true;
-            }
-            return false;
-        }
-
-        if (validate) {
-            Camp.forge({
-                camp_name_he: camp_name_he,
-                camp_name_en: camp_name_en,
-                camp_desc_he: req.body.camp_desc_he,
-                camp_desc_en: req.body.camp_desc_en,
-                main_contact: req.body.camp_main_contact,
-                moop_contact: req.body.camp_moop_contact,
-                safety_contact: req.body.camp_safety_contact,
-                type: req.body.camp_type
-            }).save().then((camp) => {
-                res.json({
+        Camp.forge({
+            camp_name_he: camp_name_he,
+            camp_name_en: camp_name_en,
+            camp_desc_he: req.body.camp_desc_he,
+            camp_desc_en: req.body.camp_desc_en,
+            main_contact: req.body.camp_main_contact,
+            moop_contact: req.body.camp_moop_contact,
+            safety_contact: req.body.camp_safety_contact,
+            type: req.body.camp_type
+        }).save().then((camp) => {
+            res.json({
+                error: false,
+                data: {
+                    message: 'camp created'
+                }
+            });
+            CampDetails.forge({
+                camp_id: camp.attributes.id,
+                camp_activity_time: req.body.camp_hours,
+                child_friendly: req.body.camp_kids_friendly,
+                noise_level: req.body.noise_lvl,
+                public_activity_area_sqm: req.body.size_for_activity,
+                public_activity_area_desc: req.body.public_area_reason
+            }).save().then((campDetails) => {
+                res.status(200).json({
                     error: false,
                     data: {
-                        message: 'camp created'
+                        message: 'success'
                     }
                 });
-                CampDetails.forge({
-                    camp_id: camp.attributes.id,
-                    camp_activity_time: req.body.camp_hours,
-                    child_friendly: (req.body.camp_kids_friendly)
-                        ? 1
-                        : 0,
-                    noise_level: req.body.noise_lvl,
-                    public_activity_area_sqm: req.body.size_for_activity,
-                    public_activity_area_desc: req.body.public_area_reason
-                }).save().then((campDetails) => {
-                    console.log('success adding camp objects');
-                }).catch((e) => {
-                    console.log(`Error creating campdetails object for campid ${camp.attributes.id}`);
-                    console.log(e);
-                })
             }).catch((e) => {
                 res.status(500).json({
                     error: true,
                     data: {
-                        message: e.message
+                        message: err.message
                     }
                 });
-            });
-        } else {
+            })
+        }).catch((e) => {
             res.status(500).json({
                 error: true,
                 data: {
-                    message: "No data provided"
+                    message: e.message
                 }
             });
-        }
+        });
     });
 
     /**
@@ -222,8 +211,8 @@ module.exports = function(app, passport) {
      * API: (GET) send camp join request
      * request => /camps/join
      */
-    app.get('/camps/join/:camp_name_en/:id', (req, res) => {
-        var camp_name = req.params.camp_name_en,
+    app.get('/camps/join/:camp_id/:id', (req, res) => {
+        var camp_id = req.params.camp_id,
             user_id = req.params.id;
         // Send email to camp manager for a join request, with user details;
         User.forge({user_id: user_id}).fetch({require: true, columns: '*'}).then((user) => {
@@ -236,5 +225,12 @@ module.exports = function(app, passport) {
                 }
             });
         });
+    });
+    /**
+     * API: (POST) receive request and forward to mail
+     * request => /camps/join/request
+     */
+    app.post('/camps/join/request', (req, res) => {
+        res.status(200).json({error: false})
     });
 }
