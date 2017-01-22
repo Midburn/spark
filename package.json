@@ -1,6 +1,8 @@
 {
   "name": "spark",
-  "version": "0.0.0",
+  "version": "1.1",  // the version number is available to the scripts in the npm_package_version environment variable
+                     // this is part of the deployment proess, so it is important to update the version number
+                     // version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases
   "private": true,
   "scripts": {
     "start": "webpack && node server.js",
