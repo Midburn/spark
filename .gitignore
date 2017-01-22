@@ -54,3 +54,5 @@ jspm_packages
 *.orig
 
 /dev.sqlite3
+/*.tar.gz
+/public/scripts/camps_bundle.js

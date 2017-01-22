@@ -13,3 +13,27 @@
 * merge the change in package.json to master
 * don't forget to push!
 * now, you can publish the release in GitHub
+
+## Continuous integration / deployment
+
+Travis is run on every pull requests / commit to branch.
+
+Have a look at the [.travis.yml](/.travis.yml) to see what it does.
+
+After tests are successful, we build a deployment package and publish it to slack.
+
+### Testing travis build locally
+
+You should set the following environment variables (modify accordingly..)
+
+```
+SLACK_API_TOKEN=""
+SLACK_LOG_WEBHOOK=""
+TRAVIS_PULL_REQUEST="false"
+TRAVIS_REPO_SLUG="Midburn/Spark"
+TRAVIS_BRANCH="master"
+TRAVIS_BUILD_NUMBER="5"
+TRAVIS_BUILD_ID="198736627323"
+```
+
+Now, run the commands from .travis.yml file
