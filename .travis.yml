@@ -1,12 +1,17 @@
 language: node_js
-node_js: 7.4.0
 script:
   - npm install -g knex
   - knex migrate:latest
   - npm test
-after_success:
-  - [ "${TRAVIS_PULL_REQUEST}" != "false" ] || [ "${SLACK_LOG_WEBHOOK}" == "" ] || npm run log --username=travis-ci --emoji=satellite_antenna --text=":sunglasses: Travis build success https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}" --webhook="${SLACK_LOG_WEBHOOK}"
-  - npm run build --file="spark-`npm view spark version`-${TRAVIS_BRANCH}-${TRAVIS_BUILD_ID}.tar.gz"
-  - [ "${TRAVIS_PULL_REQUEST}" != "false" ] || [ "${SLACK_API_TOKEN}" == "" ] || npm run upload --file="spark-`npm view spark version`-${TRAVIS_BRANCH}-${TRAVIS_BUILD_ID}.tar.gz" --text="Travis build for ${TRAVIS_REPO_SLUG}, branch ${TRAVIS_BRANCH}, build number ${TRAVIS_BUILD_NUMBER}, build id ${TRAVIS_BUILD_ID}" --token="${SLACK_API_TOKEN}"
-after_failure:
-  - [ "${TRAVIS_PULL_REQUEST}" != "false" ] || [ "${SLACK_LOG_WEBHOOK}" == "" ] || npm run log --username=travis-ci --emoji=satellite_antenna --text=":scream: Travis build failure https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}" --webhook="${SLACK_LOG_WEBHOOK}"
+after_success: |
+  if [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_LOG_WEBHOOK}" != "" ]; then
+    npm run log --username=travis-ci --emoji=satellite_antenna --text=":sunglasses: Travis build success https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}" --webhook="${SLACK_LOG_WEBHOOK}"
+  fi
+  npm run build --file="spark-`npm view spark version`-${TRAVIS_BRANCH}-${TRAVIS_BUILD_ID}.tar.gz"
+  if [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" == "" ]; then
+    npm run upload --file="spark-`npm view spark version`-${TRAVIS_BRANCH}-${TRAVIS_BUILD_ID}.tar.gz" --text="Travis build for ${TRAVIS_REPO_SLUG}, branch ${TRAVIS_BRANCH}, build number ${TRAVIS_BUILD_NUMBER}, build id ${TRAVIS_BUILD_ID}" --token="${SLACK_API_TOKEN}"
+  fi
+after_failure: |
+  if [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_LOG_WEBHOOK}" != "" ]; then
+    npm run log --username=travis-ci --emoji=satellite_antenna --text=":scream: Travis build failure https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}" --webhook="${SLACK_LOG_WEBHOOK}"
+  fi
