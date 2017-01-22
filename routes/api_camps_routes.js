@@ -223,7 +223,7 @@ module.exports = function(app, passport) {
      * request => /camps/join
      */
     app.get('/camps/join/:camp_name_en/:id', (req, res) => {
-        var camp_id = req.params.camp_name_en,
+        var camp_name = req.params.camp_name_en,
             user_id = req.params.id;
         // Send email to camp manager for a join request, with user details;
         User.forge({user_id: user_id}).fetch({require: true, columns: '*'}).then((user) => {
