@@ -22,7 +22,13 @@
     "build": "tar -czf \"${npm_config_file}\" . --exclude=.github* --exclude=.idea* --exclude=.git* --exclude=dev.sqlite3 --exclude=opsworks.js --exclude=*.tar.gz --exclude=vagrant --exclude=docs --exclude=.travis.yml --exclude=*.iml && echo \"created build package: ${npm_config_file}\"",
 
     "//upload": "uploads the deployment package to slack and returns the package private url",
-    "upload": "curl -F \"file=@${npm_config_file}\" -F \"filename=${npm_config_file}\" -F \"token=${npm_config_token}\" \"${npm_config_url:-https://slack.com/api/files.upload}\" | jq -r .file.url_private > \"${npm_config_file}.slack_url\""
+    "upload": "curl -F \"file=@${npm_config_file}\" -F \"filename=${npm_config_file}\" -F \"token=${npm_config_token}\" \"${npm_config_url:-https://slack.com/api/files.upload}\" | jq -r .file.url_private > \"${npm_config_file}.slack_url\"",
+
+    "//download": "download a deployment package from private slack url",
+    "download": "curl -H \"Authorization: Bearer ${npm_config_token}\" -g \"${npm_config_url}\" -o \"${npm_config_file}\"",
+
+    "//deploy": "prepare the directory of an extracted deployment package",
+    "deploy": "echo SPARK_DEPLOYMENT_TIME=\\\"$(date \"+%F %T\")\\\" >> .env"
   },
   "dependencies": {
     "babel-core": "^6.21.0",

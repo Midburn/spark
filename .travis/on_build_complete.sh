@@ -86,6 +86,7 @@ _exit_success_send_slack_notification() {
     exit 0
 }
 
+## main function
 
 main() {
     local is_success="${1}"
