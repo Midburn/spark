@@ -10,7 +10,7 @@
 
   "private": true,
   "scripts": {
-    "start": "webpack && node server.js",
+    "start": "node server.js",
     "test": "mocha  \"routes/*test.js\" ",
 
     "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
@@ -19,7 +19,7 @@
     "log": "curl -X POST -g $npm_config_webhook --data-urlencode 'payload={\"channel\": \"'\"#${npm_config_channel:-sparksystem-log}\"'\", \"username\": \"'\"${npm_config_username:-bot}\"'\", \"text\": \"'\"${npm_config_text}\"'\", \"icon_emoji\": \"'\"${npm_config_emoji:-ghost}\"'\"}'",
 
     "//build": "builds the deployment package",
-    "build": "webpack && tar -czf \"${npm_config_file}\" . --exclude=.github* --exclude=.idea* --exclude=.git* --exclude=dev.sqlite3 --exclude=opsworks.js --exclude=*.tar.gz --exclude=vagrant --exclude=docs --exclude=.travis.yml --exclude=*.iml && echo \"created build package: ${npm_config_file}\"",
+    "build": "tar -czf \"${npm_config_file}\" . --exclude=.github* --exclude=.idea* --exclude=.git* --exclude=dev.sqlite3 --exclude=opsworks.js --exclude=*.tar.gz --exclude=vagrant --exclude=docs --exclude=.travis.yml --exclude=*.iml && echo \"created build package: ${npm_config_file}\"",
 
     "//upload": "uploads the deployment package to slack and returns the package private url",
     "upload": "curl -F \"file=@${npm_config_file}\" -F \"filename=${npm_config_file}\" -F \"token=${npm_config_token}\" \"${npm_config_url:-https://slack.com/api/files.upload}\" | jq -r .file.url_private > \"${npm_config_file}.slack_url\""
@@ -63,13 +63,10 @@
     "passport-local": "^1.0.0",
     "passport-remember-me": "^0.0.1",
     "rand-token": "^0.2.1",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
     "serve-favicon": "~2.3.0",
     "sprintf-js": "1.0.3",
-    "webpack": "^1.14.0",
     "winston": "2.3.0"
   },
   "devDependencies": {
