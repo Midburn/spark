@@ -23,6 +23,7 @@
     "csurf": "^1.9.0",
     "dateformat": "1.0.12",
     "debug": "~2.2.0",
+    "dotenv": "^4.0.0",
     "express": "~4.13.4",
     "express-breadcrumbs": "0.0.2",
     "express-compile-sass": "3.0.4",

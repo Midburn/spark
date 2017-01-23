@@ -54,3 +54,6 @@ jspm_packages
 *.orig
 
 /dev.sqlite3
+
+# dotenv file (containing all of our secrets!!)
+.env
