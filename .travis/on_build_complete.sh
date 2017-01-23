@@ -81,9 +81,8 @@ _exit_error_send_slack_notification() {
 }
 
 _exit_success_send_slack_notification() {
-    local package_filename="${1}"
-    local file_url=`_get_package_url "${package_filename}"`
-    _send_slack_notification ":sunglasses: Travis build success\npackage_version=${package_version}\nfile_url=${file_url}\n"
+    local package_version="${1}"
+    _send_slack_notification ":sunglasses: Travis build success\npackage_url=`_get_package_url "${package_version}"`\n"
     exit 0
 }
 
@@ -93,8 +92,12 @@ main() {
     if [ "${is_success}" == "1" ]; then
         echo "building and uploading deployment package"
         local package_version=`_get_package_version`
-#        _build_package "${package_version}" || _exit_error_send_slack_notification
-        _upload_package "${package_version}" || _exit_error_send_slack_notification
+        if [ "${SKIP_BUILD}" != "1" ]; then
+            _build_package "${package_version}" || _exit_error_send_slack_notification
+        fi
+        if [ "${SKIP_UPLOAD}" != "1" ]; then
+            _upload_package "${package_version}" || _exit_error_send_slack_notification
+        fi
         _exit_success_send_slack_notification "${package_version}"
     else
         _exit_error_send_slack_notification
