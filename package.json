@@ -1,16 +1,28 @@
 {
   "name": "spark",
+
+  "//version": [
+    "the version number is available to the scripts in the npm_package_version environment variable",
+    "this is part of the deployment proess, so it is important to update the version number",
+    "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
+  ],
   "version": "1.1.0",
-  "//version": ["the version number is available to the scripts in the npm_package_version environment variable",
-                "this is part of the deployment proess, so it is important to update the version number",
-                "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"],
+
   "private": true,
   "scripts": {
     "start": "webpack && node server.js",
     "test": "mocha  \"routes/*test.js\" ",
+
+    "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
+
+    "//log": "send a generic log notification to slack",
     "log": "curl -X POST -g $npm_config_webhook --data-urlencode 'payload={\"channel\": \"'\"#${npm_config_channel:-sparksystem-log}\"'\", \"username\": \"'\"${npm_config_username:-bot}\"'\", \"text\": \"'\"${npm_config_text}\"'\", \"icon_emoji\": \"'\"${npm_config_emoji:-ghost}\"'\"}'",
+
+    "//build": "builds the deployment package",
     "build": "webpack && tar -czf \"${npm_config_file}\" . --exclude=.github* --exclude=.idea* --exclude=.git* --exclude=dev.sqlite3 --exclude=opsworks.js --exclude=*.tar.gz --exclude=vagrant --exclude=docs --exclude=.travis.yml --exclude=*.iml && echo \"created build package: ${npm_config_file}\"",
-    "upload": "curl -F file=@${npm_config_file} -F channels=${npm_config_channel:-sparksystem-log} -F initial_comment=\"${npm_config_text}\" -F token=${npm_config_token} ${npm_config_url:-https://slack.com/api/files.upload}"
+
+    "//upload": "uploads the deployment package to slack and returns the package private url",
+    "upload": "curl -F \"file=@${npm_config_file}\" -F \"filename=${npm_config_file}\" -F \"token=${npm_config_token}\" \"${npm_config_url:-https://slack.com/api/files.upload}\" | jq -r .file.url_private > \"${npm_config_file}.slack_url\""
   },
   "dependencies": {
     "babel-core": "^6.21.0",

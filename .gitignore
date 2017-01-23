@@ -56,3 +56,4 @@ jspm_packages
 /dev.sqlite3
 /*.tar.gz
 /public/scripts/camps_bundle.js
+/*.slack_url
