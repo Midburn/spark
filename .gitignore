@@ -57,3 +57,4 @@ jspm_packages
 /*.tar.gz
 /public/scripts/camps_bundle.js
 /*.slack_url
+/.nvm
