@@ -4,6 +4,6 @@ script:
   - knex migrate:latest
   - npm test
 after_success:
-  - .travis/on_build_complete "1"
+  - sh .travis/on_build_complete "1"
 after_failure:
-  - .travis/on_build_complete "0"
+  - sh .travis/on_build_complete "0"
