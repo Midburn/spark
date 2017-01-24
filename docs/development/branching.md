@@ -1,4 +1,4 @@
-# Branching, patching and merging
+# Branching and patching
 
 ### Forking and cloning - initial Git setup
 
@@ -64,5 +64,6 @@ Be sure to checkout our [Contribution guidelines](/CONTRIBUTING.md) to ensure yo
 
 ### Next Steps
 
+* [Releases and deployment](/docs/development/releases-and-deployment.md)
 * [Spark Contribution guidelines](/CONTRIBUTING.md)
 * Further reading about git [here](http://rogerdudler.github.io/git-guide/)
