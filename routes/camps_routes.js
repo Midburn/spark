@@ -1,8 +1,3 @@
-// To compile .JSX files
-require('babel-register')({
-    presets: ['react']
-});
-
 const i18next = require('i18next'),
     recaptcha = require('express-recaptcha'),
     config = require('config'),
@@ -13,10 +8,6 @@ const i18next = require('i18next'),
     mail = require('../libs/mail'),
     log = require('../libs/logger.js')(module),
     breadcrumbs = require('express-breadcrumbs');
-
-var React = require('react'),
-    ReactDOMServer = require('react-dom/server'),
-    Component = require('../Component.jsx');
 
 var Camp = require('../models/camp').Camp,
     User = require('../models/user').User;
@@ -87,7 +78,6 @@ module.exports = function(app, passport) {
                     res.render('pages/camps/camp', {
                         user: req.user,
                         id: req.params.id,
-                        main_contact: user.toJSON(),
                         camp: camp.toJSON(),
                         details: camp.related('details').toJSON()
                     });
@@ -144,14 +134,5 @@ module.exports = function(app, passport) {
                         });
                     });
             });
-    });
-    //
-    // (TESTING) React rendered camp list
-    //
-    app.get('/:lng/react', (req, res) => {
-        var HTML = ReactDOMServer.renderToString(
-            React.createElement(Component)
-        );
-        res.send(HTML);
     });
 };
