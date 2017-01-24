@@ -1,5 +1,6 @@
 @import url( 'https://fonts.googleapis.com/css?family=Cabin|Rubik');
 @import './camps_mobile';
+$card-bg: #fafafa;
 
 body {
     font-family: 'Cabin', sans-serif;
@@ -50,33 +51,72 @@ section {
 
     &:focus,
     &:hover {
-        color: #fff;
+        color: #000;
         transform: translateY(-3px);
         box-shadow: 0 7px 14px rgba(50,50,93,.1),0 3px 6px rgba(0,0,0,.08);
     }
-}
 
-.Btn--default {
-    color: #fff;
-    background: #6772e5;
+    &__card {
+        width: 100%;
+        height: 100%;
+        margin-bottom: 0 0 10px 0;
 
-    &:hover {
-        background: #7795f8;
+        img {
+            float: left;
+            max-width: 55px;
+            margin: 8px auto;
+        }
+
+        .title {
+            margin: 0;
+            float: right;
+        }
+
+        .arrow {
+            display: block;
+            width: 80%;
+            font-size: 34px;
+            text-align: right;
+            float: right;
+        }
     }
-}
 
-.Btn--green {
-    color: #fff;
-    background: #24b47e;
-
-    &:hover {
-        background: #24b41e;
+    &__center {
+        margin: 0 auto;
     }
-}
 
-.Btn--transparent {
-    &:hover {
-        color: #7795f8;
+    &__close {
+        box-shadow: none;
+        background: transparent;
+
+        &:focus,
+        &:hover {
+            box-shadow: none;
+        }
+    }
+
+    &__default {
+        color: #fff;
+        background: #6772e5;
+
+        &:hover {
+            background: #7795f8;
+        }
+    }
+
+    &__green {
+        color: #fff;
+        background: #24b47e;
+
+        &:hover {
+            background: #24b41e;
+        }
+    }
+
+    &__transparent {
+        &:hover {
+            color: #7795f8;
+        }
     }
 }
 
@@ -103,6 +143,10 @@ body[lang="en"] .dash-panel a:after {
 }
 
 .camps {
+    .controls {
+        margin-bottom: 2em;
+    }
+
     .panel {
         h3 {
             text-align: center;
@@ -111,9 +155,17 @@ body[lang="en"] .dash-panel a:after {
 
     .card {
         padding: 40px 40px 40px 120px;
-        background-color: #fafafa;
+        margin-bottom: 4em;
+        background-color: $card-bg;
         border-radius: 4px;
-        box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+
+        &__shad {
+            box-shadow: 0 15px 35px rgba(50,50,93,.1),0 5px 15px rgba(0,0,0,.07);
+        }
+
+        &__even-pad {
+            padding: 20px !important;
+        }
 
         h2:after {
             content: '';
@@ -159,18 +211,6 @@ body[lang="en"] .dash-panel a:after {
         &.error {
             border-color: red;
         }
-    }
-
-    img.img-responsive {
-        max-width: 120px;
-        margin: 30px auto;
-    }
-
-    .block-center {
-        margin-right: auto;
-        margin-left: auto;
-        width: auto;
-        display: table;
     }
 }
 
@@ -246,6 +286,8 @@ div#ajax_indicator.done {
     // Card transition
     .cards--wrapper {
         display: block;
+        background: $card-bg;
+        margin-bottom: 2em;
         position: relative;
         overflow: hidden;
 
@@ -269,7 +311,7 @@ div#ajax_indicator.done {
         }
     }
 
-    .camp_editing {
+    .camp_edit {
         textarea {
             max-height: 34px;
             resize: none;

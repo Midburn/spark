@@ -23,24 +23,23 @@ block content
                 .management.panel.col-md-12
                     h4 Camp Management
                     .panel-body.col-md-4
-                        a(href='/users/#{camp.main_contact}') #{main_contact.first_name} (Main contact)
+                        a(href='/users/#{camp.main_contact}') Main contact
                         .contact-info
-                            ul
-                                li
-                                    span.email #{main_contact.email}
-                                li
-                                    span.phone #{main_contact.phone}
+                            button.Btn.Btn__transparent.get_info More Info
+                            h5.fullname
+                            span.email
+                            span.phone
                     .panel-body.col-md-4
                         a(href='/users/#{camp.moop_contact}') Moop contact
                         .contact-info
-                            button.Btn.Btn--transparent.get_info More Info
+                            button.Btn.Btn__transparent.get_info More Info
                             h5.fullname
                             span.email
                             span.phone
                     .panel-body.col-md-4
                         a(href='/users/#{camp.safety_contact}') Safety contact
                         .contact-info
-                            button.Btn.Btn--transparent.get_info More Info
+                            button.Btn.Btn__transparent.get_info More Info
                             h5.fullname
                             span.email
                             span.phone

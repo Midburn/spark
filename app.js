@@ -115,7 +115,7 @@ i18next
         middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function(req, res) {
             //endpoint function
             log.info("ROUTE");
-        })
+        });
     });
 app.use(middleware.handle(i18next, {
     ignoreRoutes: ['images/', 'images', 'images/', '/images/', 'stylesheets', '/favicon.ico'],
