@@ -100,3 +100,126 @@ TRAVIS_BUILD_ID="198736627323"
 ```
 
 Now, you can run the commands from .travis.yml file
+
+
+## Manual deployment environment
+
+This procedure can be used to manually setup and deploy to a linux server.
+
+### Setting up the environment
+
+* tested on Ubuntu 16.04.1 LTS (Xenial) - but should work on any Linux variant with minor changes.
+
+```
+sudo apt-get install -y jq nginx
+sudo mkdir -p /opt/spark/.nvm
+sudo chown -R $USER /opt/spark
+curl -o- "https://raw.githubusercontent.com/creationix/nvm/v0.33.0/nvm.sh" > /opt/spark/.nvm/nvm.sh
+export NVM_DIR="/opt/spark/.nvm"
+source "${NVM_DIR}/nvm.sh"
+echo "export NVM_DIR=/opt/spark/.nvm" >> /home/ubuntu/.bashrc
+echo "source /opt/spark/.nvm/nvm.sh" >> /home/ubuntu/.bashrc
+```
+
+Create an init.d service for the spark web-app
+
+**Note** the service will be able to start only after you do a deployment
+
+```
+echo "#!/usr/bin/env bash" > /opt/spark/start.sh
+echo "export NVM_DIR=/opt/spark/.nvm" >> /opt/spark/start.sh
+echo "source /opt/spark/.nvm/nvm.sh" >> /opt/spark/start.sh
+echo "cd /opt/spark/latest && npm start" >> /opt/spark/start.sh
+chmod +x /opt/spark/start.sh
+curl -o- https://raw.githubusercontent.com/fhd/init-script-template/master/template | sudo tee /etc/init.d/midburn-spark
+sudo chmod +x /etc/init.d/midburn-spark
+sudo nano /etc/init.d/midburn-spark
+```
+
+In /etc/init.d/spark file, set the following:
+
+```
+dir="/opt/spark/latest"
+cmd="/opt/spark/start.sh"
+user="ubuntu"
+```
+
+Setup nginx as a proxy to the local web-app on port 3000
+
+```
+sudo nano /etc/nginx/sites-available/midburn-spark
+```
+
+Paste the configuration, something like this:
+
+```
+server {
+    listen       80;
+    server_name  54.194.247.12;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
+```
+
+Restart nginx
+
+```
+sudo service nginx restart
+```
+
+### Configuring the environment
+
+Replace "..." with the actual values
+
+```
+echo 'SLACK_API_TOKEN="..."' >> /opt/spark/.env
+echo 'SLACK_LOG_WEBHOOK="..."' >> /opt/spark/.env
+```
+
+Create an opsworks.js file too (it will be copied to the deployment directory)
+
+Fill it with relevant configurations
+
+```
+nano /opt/spark/opsworks.js
+```
+
+Currently we use sqlite3 database, so you should create a file that will contain it
+
+```
+touch /opt/spark/dev.sqlite3
+```
+
+### Downloading a deployment package
+
+Replace "..." with a private slack package url (which you probably got from slack notification about build success)
+
+```
+DEPLOYMENT_PACKAGE_URL="..."
+. /opt/spark/.env
+curl -H "Authorization: Bearer ${SLACK_API_TOKEN}" -g "${DEPLOYMENT_PACKAGE_URL}" -o- > /opt/spark/package.tar.gz
+```
+
+### deploying the downloaded package
+
+```
+rm -rf /opt/spark/new && mkdir -p /opt/spark/new && cd /opt/spark/new
+tar xzf /opt/spark/package.tar.gz
+ln -s /opt/spark/.env .env && ln -s /opt/spark/opsworks.js opsworks.js && ln -s /opt/spark/dev.sqlite3 dev.sqlite3
+nvm install && nvm use
+npm run deploy
+node_modules/.bin/knex migrate:latest
+[ -d /opt/spark/old ] && rm -rf /opt/spark/old
+[ -d /opt/spark/latest ] && mv /opt/spark/latest /opt/spark/old
+mv /opt/spark/new /opt/spark/latest
+sudo /etc/init.d/midburn-spark restart
+```
+
+### Checking server logs / debugging problems
+
+```
+sudo /etc/init.d/midburn-spark status
+sudo tail /var/log/midburn-spark.*
+```
