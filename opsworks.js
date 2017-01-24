@@ -7,7 +7,7 @@
 exports.db = {
     "client"        : "sqlite3",
     "debug"         : false,
-    "filename"      : "./dev.sqlite3"
+    "filename"      : "./db/dev.sqlite3"
 };
 
 // mysql configuration example

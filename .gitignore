@@ -54,3 +54,4 @@ jspm_packages
 *.orig
 
 /dev.sqlite3
+/db/

@@ -1,0 +1,18 @@
+web:
+  build: .
+  ports:
+    - "80:3000"    
+  volumes:
+    - ./db:/opt/spark/db
+#  links:
+#    - db
+#  environment:
+#    MYSQL_DATABASE: sparksystem
+#    MYSQL_ROOT_PASSWORD: sparksystem
+    
+ 
+#db:
+#  image: mysql:5.7
+#  environment:
+#    MYSQL_DATABASE: sparksystem
+#    MYSQL_ROOT_PASSWORD: sparksystem
