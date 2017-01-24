@@ -7,6 +7,12 @@ If you just want to use Spark or integrate it with your system, refer to the [Sp
 
 ## TL;DR / Quickstart
 
+#### run with docker-compose
+-  Just run on the Spark folder:
+  ``` > docker-compose up```
+-  For running with MySql, just uncomment the rest of the docker-compose file
+(thanks a bunch to @netoneko)
+
 * [Install the Spark development environment](/docs/development/installation.md)
 
 If you want to update the documentation, have a look here:
