@@ -1,0 +1,64 @@
+extends ../../includes/page
+block content
+    .camps.camp_create.row
+            .heading.card.card__shad.row
+                .col-md-12
+                    h2=t('camps:program.page_title')
+                    h6=t('camps:program.page_desc')
+            .controls.row
+                .col-xs-12
+            .cards--wrapper.card__shad.row.card
+                h4=t('camps:program.card_title')
+                .prog-info.panel
+                    .panel-body
+                        .names.col-md-6
+                            .input-group.col-xs-12
+                                label(for='create_prog_name_he')=t('camps:program.name_he')
+                                input(id='create_prog_name_he', type="text", class="form-control", name="prog_name_he", autofocus="true")
+                            .input-group.col-xs-12
+                                label(for='create_prog_name_en')=t('camps:program.name_en')
+                                input(id='create_prog_name_en', type="text", class="form-control", name="prog_name_en")
+                        .descriptions.col-md-6
+                            .input-group.col-xs-12
+                                label(for='create_prog_desc_he')=t('camps:program.desc_he')
+                                input(id='create_prog_desc_he', type="text", class="form-control", name="prog_desc_he")
+                            .input-group.col-xs-12
+                                label(for='create_prog_desc_en')=t('camps:program.desc_en')
+                                input(id='create_prog_desc_en', type="text", class="form-control", name="prog_desc_en")
+                        .date.col-md-6
+                            .input-group.col-xs-12
+                                label(for='create_prog_date')=t('camps:program.date')
+                                input(id='create_prog_date', type="date", class="form-control", name="prog_date")
+                        .time.col-md-6
+                            .input-group.col-xs-12
+                                label(for='create_prog_time')=t('camps:program.time')
+                                input(id='create_prog_time', type="time", class="form-control", name="prog_time")
+                        .message.col-xs-12.text-center
+                            p=t('camps:program.request')
+                h4=t('camps:program.type')
+                .prog-type.panel
+                    .panel-body
+                        .behaviour
+                            .col-md-6
+                                .input-group.col-xs-12
+                                    label(for='create_prog_type1')=t('camps:program.type')
+                                    input(id='create_prog_type1', type="text", class="form-control", name="type")
+                            .col-md-6
+                                .input-group.col-xs-12 
+                                    label(for='create_prog_type2', style="visibility:hidden;") test
+                                    input(id='create_prog_type2', type="text", class="form-control", name="type")
+                h4=t('camps:program.access')
+                .prog-type.panel
+                    .panel-body
+                        .accessability
+                            .col-md-6
+                                .input-group.col-xs-12
+                                    label(for='create_camp_child_friendly')=t('camps:program.kids_friendly')
+                                    input(id='create_camp_child_friendly', type="text", class="form-control", name="type")
+                            .col-md-6
+                                .input-group.col-xs-12 
+                                    label(for='create_program_adult_only')=t('camps:program.adult_only')
+                                    input(id='create_program_adult_only', type="text", class="form-control", name="type")
+                .controls.row
+                    .col-xs-12
+                        button(type="submit", id='prog_create_save', class="Btn Btn__default")=t('camps:btn_save_camp')

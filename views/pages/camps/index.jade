@@ -5,6 +5,8 @@ block content
             .container
                 h1.jumbotron-heading=t('camps:dash.title')
                 p.lead.text-muted=t('camps:dash.desc')
+                a(href='/#{language}/program') Click me
+
                 div.block-center
                     div.input-group
                         a.Btn.Btn__default.reveal_create_camp_btn(href='javascript:;', role='button')=t('camps:new.btn_create')
