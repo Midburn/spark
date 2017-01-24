@@ -74,7 +74,7 @@ var program1 = document.querySelector("#create_prog_type1"),
     program2 = document.querySelector("#create_prog_type2"),
     adultOnly = document.querySelector("#create_program_adult_only");
 var programOptions1 = {
-        options: ['Workshop', 'Party', 'Lecture', 'Show'],
+        options: ['Wrokshop', 'Party', 'Lecture', 'Show'],
         shouldAddOther: false,
         onChange: onChangeCallback    
     },
