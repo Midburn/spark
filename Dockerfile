@@ -8,7 +8,7 @@ RUN npm install && npm cache clean
 
 ADD . /opt/spark
 
-RUN ./node_modules/.bin/webpack
+#RUN ./node_modules/.bin/webpack
 
 VOLUME /opt/spark/db
 
