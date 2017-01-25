@@ -231,6 +231,18 @@ body[lang="en"] {
 
 .multi-select-option {
     margin-top: 3px;
+    
+    span {
+        margin: 0 3px;
+    }
+}
+
+.multi-select-option-other {
+    input {
+        height: 30px;
+        margin: 0 3px;
+        padding: 2px 5px;
+    }
 }
 // Animations
 @keyframes nudge {
