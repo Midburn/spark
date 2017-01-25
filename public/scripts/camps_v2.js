@@ -72,7 +72,8 @@ function onChangeCallback(res) {
 // New Program multiSelect
 var program1 = document.querySelector("#create_prog_type1"),
     program2 = document.querySelector("#create_prog_type2"),
-    adultOnly = document.querySelector("#create_program_adult_only");
+    childFriendlyProg = document.querySelector("#create_prog_child_friendly"),
+    adultOnly = document.querySelector("#create_prog_adult_only");
 var programOptions1 = {
         options: ['Wrokshop', 'Party', 'Lecture', 'Show'],
         shouldAddOther: false,
@@ -83,14 +84,20 @@ var programOptions1 = {
         shouldAddOther: true,
         onChange: onChangeCallback    
     },
+    childFriendlyProgOptions = {
+        options: ['Kids Friendly'],
+        shouldAddOther: false,
+        onChange: onChangeCallback
+    },
     adultOnlylyOptions = {
         options: ['Adult Only'],
         shouldAddOther: false,
         onChange: onChangeCallback
     };
-if (program1 != null && program2 != null){
+if (program1 != null && program2 != null && adultOnly != null){
     var programSelect1 = new MultiChoiceSelector(program1, programOptions1),
         programSelect2 = new MultiChoiceSelector(program2, programOptions2),
+        childFriendlyProgSelector = new MultiChoiceSelector(childFriendlyProg, childFriendlyProgOptions),
         adultOnlySelector = new MultiChoiceSelector(adultOnly, adultOnlylyOptions);
 }
 

@@ -273,4 +273,13 @@ module.exports = function(app, passport) {
                 });
             });
     });
+
+    /**
+     * API: (POST) create Program
+     * request => /camps/program
+     */
+    app.post('/camps/program', (req, res) => {
+        console.log(success);
+        //TODO
+    });
 }
