@@ -9,7 +9,7 @@ Before contributing, please review this guide.
 
 ## <a name="question"></a> Got a Question or Problem?
 
-* Join our Slack and ask us at #sparksystem channel
+* [Join our Slack](https://www.hamsterpad.com/chat/midburnos) and ask us at #sparksystem channel
 * Email: **tech@midburn.org**
 
 ## <a name="issue"></a> Found an Issue?
