@@ -58,3 +58,10 @@ exports.facebook = {
     app_secret: "",
     callbackBase: "http://localhost:3000"
 };
+
+exports.recaptcha = {
+    ignore: true, // when ignore is true - recaptcha is enabled but if it fails it ignores and continues sign up anyway
+    // TODO change eyalliebermann app in an oficial one
+    sitekey: "6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj",
+    secretkey: "6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF"
+};

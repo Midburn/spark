@@ -4,6 +4,7 @@ var config = require('config');
 var i18nConfig = config.get('i18n');
 var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
+var recaptchaConfig = config.get('recaptcha');
 var security = require('../libs/security');
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
@@ -121,29 +122,36 @@ module.exports = function (app, passport) {
     // =====================================
     // SIGNUP ==============================
     // =====================================
+    var _renderSignup = function(res, req) {
+        return res.render('pages/signup', {
+            errorMessage: req.flash('error'),
+            body: req.body, //repopulate fields in case of error
+            recaptcha_sitekey: recaptchaConfig.sitekey
+        });
+    };
+
+    var _renderSignupError = function(res, req, error) {
+        return res.render('pages/signup', {
+            errorMessageResource: error,
+            body: req.body, //repopulate fields in case of error
+            recaptcha_sitekey: recaptchaConfig.sitekey
+        });
+    };
+
     var signUpPost = function(req, res, next) {
         recaptcha.verify(req, function(err) { //TODO turn to middleware or promises to minimize clutter
-            if (err) {
-                return res.render('pages/signup', {
-                    errorMessageResource: 'only_humans_allowed',
-                    body: req.body //repopulate fields in case of error
-                });
+            if (err && !recaptchaConfig.ignore) {
+                return _renderSignupError(res, req, 'only_humans_allowed');
             } else {
                 passport.authenticate('local-signup', {
                     failureFlash: true
                 }, function(err, user, info) {
                     if (err) {
-                        res.render('pages/signup', {
-                            errorMessage: req.flash(err.message),
-                            body: req.body //repopulate fields in case of error
-                        });
+                        return _renderSignupError(res, req, req.flash(err.message));
                     }
 
                     if (!user) {
-                        return res.render('pages/signup', {
-                            errorMessage: req.flash('error'),
-                            body: req.body //repopulate fields in case of error
-                        });
+                        return _renderSignupError(res, req, req.flash('error'));
                     }
 
                     return req.logIn(user, function(err) {
@@ -166,10 +174,7 @@ module.exports = function (app, passport) {
                             });
 
                         } else {
-                            res.render('pages/signup', {
-                                errorMessage: req.flash('error'),
-                                body: req.body //repopulate fields in case of error
-                            });
+                            return _renderSignupError(res, req, req.flash('error'));
                         }
                     });
                 })(req, res, next);
@@ -180,9 +185,7 @@ module.exports = function (app, passport) {
     // show the signup form
     app.get('/:lng/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('pages/signup', {
-            errorMessage: req.flash('error')
-        });
+        return _renderSignup(res, req);
     });
 
     // process the signup form
