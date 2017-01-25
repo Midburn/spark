@@ -69,6 +69,16 @@
     },
     "footer": {
         "scrolltop": "חזור למעלה",
+        "visit_homepage": "בקרו באתר מידברן",
+        "ten_principles": "עשרת העקרונות",
+        "report_error": "דווחו על תקלה",
+        "ask_question": "רוצה לשאול שאלה?",
+        "help_translate": "עזרו לנו לתרגם",
+        "spark": "Spark הינו פרוייקט",
+        "open_source": "קוד פתוח",
+        "project": "של מידברן-טק.",
+        "want_to_help": "רוצה לעזור לנו לקודד?",
+        "toc": "מידע משעמם לעורכי דין",
         "links": {
 
         }
