@@ -120,6 +120,11 @@ function innerHeightChange() {
     });
 }
 innerHeightChange();
+
+function closeCards(currentButton){
+    $('.card').addClass('card-hide');
+}
+
 // Camp details card transition
 $('.card-switcher--card2').click(function() {
     // show card-2 ; hide card-1
@@ -142,19 +147,37 @@ $('.card-switcher--card1').click(function() {
     innerHeightChange();
 });
 $('.reveal_create_camp_btn').click(function() {
-    $('.choose_name').toggleClass('card-hide');
+    if(!($('.choose_name').hasClass('card-hide'))){
+        $('.choose_name').toggleClass('card-hide');
+        return;
+    } else {
+        closeCards();
+        $('.choose_name').removeClass('card-hide');
+    }
     innerHeightChange();
 });
 $('.reveal_join_camp_btn').click(function() {
-    $('.card-second').toggleClass('card-hide');
+    if(!($('.card-second').hasClass('card-hide'))){
+        $('.card-second').toggleClass('card-hide');
+        return;
+    } else {
+        closeCards();
+        $('.card-second').removeClass('card-hide');
+    }
     innerHeightChange();
 });
 $('.reveal_manage_camp_btn').click(function() {
-    $('.card-third').toggleClass('card-hide');
+    if(!($('.card-third').hasClass('card-hide'))){
+        $('.card-third').toggleClass('card-hide');
+        return;
+    } else {
+        closeCards();
+        $('.card-third').removeClass('card-hide');
+    }
     innerHeightChange();
 });
 $('.card--close').click(function() {
-    $('.card').addClass('card-hide');
+    closeCards();
 });
 /*
  * Component: Join a camp
