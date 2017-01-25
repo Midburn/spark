@@ -23,6 +23,7 @@ Additional documents:
 * [database - installation / setup / usage notes](/docs/development/database.md)
 * [Setting your IDE for Spark development](/docs/development/IDE.md)
 * [Spark architecture](/docs/development/architecture.md)
+* [Releases and deployment](/docs/development/releases-and-deployment.md)
 
 ## Localization
 We use the **i18next** internationalization library for multi-language support.

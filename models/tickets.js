@@ -12,5 +12,5 @@ const ticketModel = function(req) {
         return this.state();
       }
     }
-}
+};
 module.exports = ticketModel;

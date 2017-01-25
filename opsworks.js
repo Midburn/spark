@@ -16,9 +16,9 @@ exports.db = {
 //     "debug"         : false,
 //     "host"          : "localhost",
 //     "database"      : "spark",
-//     "username"      : "spark",
+//     "user"          : "spark",
 //     "password"      : "spark",
-//     "charset"       : "UTF8_GENERAL_CI",
+//     "charset"       : "utf8",
 // };
 
 exports.server = {

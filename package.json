@@ -1,10 +1,34 @@
 {
   "name": "spark",
-  "version": "0.0.0",
+
+  "//version": [
+    "the version number is available to the scripts in the npm_package_version environment variable",
+    "this is part of the deployment proess, so it is important to update the version number",
+    "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
+  ],
+  "version": "1.1.0",
+
   "private": true,
   "scripts": {
-    "start": "webpack && node server.js",
-    "test": "mocha  \"routes/*test.js\" "
+    "start": "node server.js",
+    "test": "mocha  \"routes/*test.js\" ",
+
+    "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
+
+    "//log": "send a generic log notification to slack",
+    "log": "curl -X POST -g $npm_config_webhook --data-urlencode 'payload={\"channel\": \"'\"#${npm_config_channel:-sparksystem-log}\"'\", \"username\": \"'\"${npm_config_username:-bot}\"'\", \"text\": \"'\"${npm_config_text}\"'\", \"icon_emoji\": \"'\"${npm_config_emoji:-ghost}\"'\"}'",
+
+    "//build": "builds the deployment package",
+    "build": "touch \"${npm_config_file}\" && tar -czf \"${npm_config_file}\" . --exclude=.github* --exclude=.idea* --exclude=.git* --exclude=dev.sqlite3 --exclude=opsworks.js --exclude=*.tar.gz --exclude=vagrant --exclude=docs --exclude=.travis.yml --exclude=*.iml && echo \"created build package: ${npm_config_file}\"",
+
+    "//upload": "uploads the deployment package to slack and returns the package private url",
+    "upload": "curl -F \"file=@${npm_config_file}\" -F \"filename=${npm_config_file}\" -F \"token=${npm_config_token}\" \"${npm_config_url:-https://slack.com/api/files.upload}\" | jq -r .file.url_private > \"${npm_config_file}.slack_url\"",
+
+    "//download": "download a deployment package from private slack url",
+    "download": "curl -H \"Authorization: Bearer ${npm_config_token}\" -g \"${npm_config_url}\" -o \"${npm_config_file}\"",
+
+    "//deploy": "prepare the directory of an extracted deployment package",
+    "deploy": "echo SPARK_DEPLOYMENT_TIME=\\\"$(date \"+%F %T\")\\\" >> .env"
   },
   "dependencies": {
     "babel-core": "^6.21.0",
@@ -45,13 +69,10 @@
     "passport-local": "^1.0.0",
     "passport-remember-me": "^0.0.1",
     "rand-token": "^0.2.1",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
     "serve-favicon": "~2.3.0",
     "sprintf-js": "1.0.3",
-    "webpack": "^1.14.0",
     "winston": "2.3.0"
   },
   "devDependencies": {
