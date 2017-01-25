@@ -13,7 +13,7 @@ block content
             .cards--wrapper.card__shad.row
                 //- Card 1
                 .card.card-first
-                    h4 Camp Name & Description
+                    h4=t('camps:new.name_card_header')
                     .camp-info.panel
                         .panel-body
                             .names.col-md-6
@@ -30,7 +30,7 @@ block content
                                 .input-group.col-xs-12
                                     label(for='create_camp_desc_en')=t('camps:new.desc_en')
                                     input(id='create_camp_desc_en', type="text", class="form-control", name="camp_desc_en")
-                    h4 Camp Contact Personnel
+                    h4=t('camps:new.contact_card_header')
                     .camp-leaders.panel
                         .panel-body
                             .personnel
@@ -46,7 +46,7 @@ block content
                                     .input-group.col-xs-12
                                         label(for='create_camp_safety_contact')=t('camps:new.safety_contact')
                                         select(id='create_camp_safety_contact', class="form-control", name="safety_contact")
-                    h4 Camp Behaviour
+                    h4=t('camps:new.type_card_header')
                     .camp-leaders.panel
                         .panel-body
                             .behaviour
@@ -56,11 +56,11 @@ block content
                                 //-         input(id='create_camp_size', type="number", min="1", class="form-control", name="camp_size")
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='create_camp_type')=t('camps:new.camp_type')
+                                        label(for='create_camp_type')=t('camps:new.type')
                                         input(id='create_camp_type', type="text", class="form-control", name="type")
                 //- Card 2
                 .card.card-second.card-hide
-                    h4 Camp Behaviour
+                    h4=t('camps:new.behaviour_card_header')
                     .camp-details.panel
                         .panel-body
                             .camp-behavior
@@ -68,10 +68,10 @@ block content
                                     .input-group.col-xs-12
                                         label(for='create_camp_activity_time')=t('camps:new.camp_activity_time')
                                         select(id='create_camp_activity_time', class="form-control", name="camp_activity_time")
-                                            option(value="morning") morning
-                                            option(value="noon") noon
-                                            option(value="evening") evening
-                                            option(value="night") night
+                                            option(value="morning")=t('camps:new.camp_activity_time_morning')
+                                            option(value="noon")=t('camps:new.camp_activity_time_noon')
+                                            option(value="evening")=t('camps:new.camp_activity_time_evening')
+                                            option(value="night")=t('camps:new.camp_activity_time_night')
                                 .col-md-4
                                     .input-group.col-xs-12
                                         label(for='create_camp_child_friendly')=t('camps:new.camp_child_friendly')
@@ -80,11 +80,11 @@ block content
                                     .input-group.col-xs-12
                                         label(for='create_camp_noise_level')=t('camps:new.camp_noise_level')
                                         select(id='create_camp_noise_level', class="form-control", name="noise_level")
-                                            option(value="quiet") quiet
-                                            option(value="medium") medium
-                                            option(value="noisy") noisy
-                                            option(value="very noisy") very noisy
-                    h4 Camp Public Area
+                                            option(value="quiet")=t('camps:new.camp_noise_level_quiet')
+                                            option(value="medium")=t('camps:new.camp_noise_level_medium')
+                                            option(value="noisy")=t('camps:new.camp_noise_level_noisy')
+                                            option(value="very noisy")=t('camps:new.camp_noise_level_very_noisy')
+                    h4=t('camps:new.public_area_card_title')
                     .camp-details.panel
                         .panel-body
                             .camp-public
@@ -100,7 +100,7 @@ block content
                                     .input-group.col-xs-12
                                         label(for='create_support_art')=t('camps:new.support_art')
                                         input.form-control(id='create_support_art', type="text", name='support_art')
-                    h4 Camp Location
+                    h4=t('camps:new.location_card_title')
                     .camp-details.panel
                         .panel-body
                             .camp-location
