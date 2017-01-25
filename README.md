@@ -8,7 +8,7 @@ It contains:
 - Theme Camps (MVP)
 - Profiles
 - Ticketing
-- NGO
+- NGO (non-profit org, members, ...)
 - Art Installations
 - ... ?
 
