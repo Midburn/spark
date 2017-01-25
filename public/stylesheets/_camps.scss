@@ -71,13 +71,23 @@ section {
             margin: 0;
             float: right;
         }
-
+        .title_he {
+            margin: 0;
+            float: left;
+        }
         .arrow {
             display: block;
             width: 80%;
             font-size: 34px;
             text-align: right;
             float: right;
+        }
+        .arrow_he {
+            display: block;
+            width: 85%;
+            font-size: 34px;
+            text-align: left;
+            float: left;
         }
     }
 

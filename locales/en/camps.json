@@ -30,8 +30,10 @@
             "safety_contact": "Camp safety contact"
         },
         "join": {
-            "join_a_camp": "Join a camp"
-            
+            "join_a_camp": "Join a camp",
+            "header_title": "Join a camp",
+            "camp_choosing_title": "Choose a camp you would wish to join",
+            "name_en": "Camp name (English)"
         },
         "manage": {
             "manage_a_camp": "Manage a camp"

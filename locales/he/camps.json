@@ -30,7 +30,10 @@
             "safety_contact": "אחראי בטיחות"
         },
         "join": {
-            "join_a_camp": "הצטרף למחנה"
+            "join_a_camp": "הצטרף למחנה",
+            "header_title": "הצטרף למחנה",
+            "camp_choosing_title": "בחר מחנה אליו תרצה להצטרף",
+            "name_en": "שם המחנה (אנגלית)"
         },
         "manage": {
             "manage_a_camp": "נהל מחנה"
