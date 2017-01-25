@@ -74,15 +74,36 @@ _upload_package() {
     fi
 }
 
+_deploy() {
+    local package_version="${1}"
+    if [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ]; then
+        echo -e "${SPARK_DEPLOYMENT_KEY}" > deployment.key
+        chmod 400 deployment.key
+        if ssh -i deployment.key "${SPARK_DEPLOYMENT_HOST}" "`_get_package_url "${package_version}"`"; then
+            echo; echo "OK"
+            return 0
+        else
+            echo; echo "ERROR"
+            return 1
+        fi
+    else
+        echo "skipping deployment"
+        return 0
+    fi
+}
 
 _exit_error_send_slack_notification() {
     _send_slack_notification ":scream: Travis build failure"
+    echo
+    echo "ERROR!"
     exit 1
 }
 
 _exit_success_send_slack_notification() {
     local package_version="${1}"
     _send_slack_notification ":sunglasses: Travis build success\npackage_url=`_get_package_url "${package_version}"`\n"
+    echo
+    echo "GREAT SUCCESS!"
     exit 0
 }
 
@@ -98,6 +119,9 @@ main() {
         fi
         if [ "${SKIP_UPLOAD}" != "1" ]; then
             _upload_package "${package_version}" || _exit_error_send_slack_notification
+        fi
+        if [ "${SKIP_DEPLOY}" != "1" ]; then
+            _deploy "${package_version}" || _exit_error_send_slack_notification
         fi
         _exit_success_send_slack_notification "${package_version}"
     else
