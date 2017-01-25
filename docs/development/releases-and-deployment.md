@@ -121,7 +121,7 @@ echo "export NVM_DIR=/opt/spark/.nvm" >> /home/ubuntu/.bashrc
 echo "source /opt/spark/.nvm/nvm.sh" >> /home/ubuntu/.bashrc
 ```
 
-Create an init.d service for the spark web-app
+Create a systemd service for the spark web-app
 
 **Note** the service will be able to start only after you do a deployment
 
@@ -131,17 +131,23 @@ echo "export NVM_DIR=/opt/spark/.nvm" >> /opt/spark/start.sh
 echo "source /opt/spark/.nvm/nvm.sh" >> /opt/spark/start.sh
 echo "cd /opt/spark/latest && npm start" >> /opt/spark/start.sh
 chmod +x /opt/spark/start.sh
-curl -o- https://raw.githubusercontent.com/fhd/init-script-template/master/template | sudo tee /etc/init.d/midburn-spark
-sudo chmod +x /etc/init.d/midburn-spark
-sudo nano /etc/init.d/midburn-spark
+sudo nano /etc/systemd/system/midburn-spark.service
 ```
 
-In /etc/init.d/spark file, set the following:
+Paste the following:
 
 ```
-dir="/opt/spark/latest"
-cmd="/opt/spark/start.sh"
-user="ubuntu"
+[Unit]
+Description=start the Midburn Spark web app
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/spark/latest
+ExecStart=/opt/spark/start.sh
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 Setup nginx as a proxy to the local web-app on port 3000
@@ -186,7 +192,7 @@ Fill it with relevant configurations
 nano /opt/spark/opsworks.js
 ```
 
-Currently we use sqlite3 database, so you should create a file that will contain it
+For simple sqlite3 installation, you should create a file that will contain the database
 
 ```
 touch /opt/spark/dev.sqlite3
@@ -207,19 +213,122 @@ curl -H "Authorization: Bearer ${SLACK_API_TOKEN}" -g "${DEPLOYMENT_PACKAGE_URL}
 ```
 rm -rf /opt/spark/new && mkdir -p /opt/spark/new && cd /opt/spark/new
 tar xzf /opt/spark/package.tar.gz
-ln -s /opt/spark/.env .env && ln -s /opt/spark/opsworks.js opsworks.js && ln -s /opt/spark/dev.sqlite3 dev.sqlite3
+ln -s /opt/spark/.env .env && ln -s /opt/spark/opsworks.js opsworks.js
+[ -f /opt/spark/dev.sqlite3 ] && ln -s /opt/spark/dev.sqlite3 dev.sqlite3
 nvm install && nvm use
+ln -s node_modules/.bin/knex knex
 npm run deploy
-node_modules/.bin/knex migrate:latest
+./knex migrate:latest
 [ -d /opt/spark/old ] && rm -rf /opt/spark/old
 [ -d /opt/spark/latest ] && mv /opt/spark/latest /opt/spark/old
 mv /opt/spark/new /opt/spark/latest
-sudo /etc/init.d/midburn-spark restart
+sudo service midburn-spark restart
 ```
 
 ### Checking server logs / debugging problems
 
 ```
-sudo /etc/init.d/midburn-spark status
+sudo service midburn-spark status
 sudo tail /var/log/midburn-spark.*
+```
+
+### Server add-ons
+
+##### local SMTP server
+
+This will setup the server for simple smtp sending directly from the instance.
+
+**Note** For production you should use a 3rd party mail provider.
+
+To setup postfix for local only mail sending:
+
+```
+sudo apt-get install mailutils
+```
+
+You will get a text UI for choosing options, select the following:
+
+* configuration type: internet site
+* system mail name: keep the default
+
+```
+sudo nano /etc/postfix/main.cf
+```
+
+Change inet_interfaces parameter to localhost
+
+```
+inet_interfaces = localhost
+```
+
+Restart postfix
+
+```
+sudo sevice postfix restart
+```
+
+Test the mail sending (replace user@example.com with your email):
+
+```
+echo "Hello world" | mail -s "Testing 123" user@example.com
+```
+
+If you used the default [/opsworks.js](/opsworks.js) file - it is already configured to send mail from localhost, so no change is required.
+
+##### local Mysql server
+
+This will setup a local mysql server (MariaDB)
+
+```
+sudo apt-get install -y mariadb-server
+```
+
+first, put the spark user password in a variable (but without writing it so it won't be saved in history)
+
+```
+read SPARK_DB_PASSWORD
+```
+
+Create a spark user accessible from localhost only and the spark DB
+
+```
+echo "CREATE USER 'spark'@'localhost' IDENTIFIED BY '${SPARK_DB_PASSWORD}'" | sudo mysql
+echo "CREATE DATABASE spark CHARACTER SET = 'utf8' COLLATE = 'utf8_general_ci';" | sudo mysql
+echo "GRANT ALL ON spark.* TO 'spark'@'localhost';" | sudo mysql
+```
+
+You can test if it works
+
+```
+mysql -h localhost -u spark -p spark
+```
+
+Modify the spark configuration
+
+```
+nano /opt/spark/opsworks.js
+```
+
+Remove the sqlite configuration and uncomment the mysql configuration.
+
+It should look something like this:
+
+```
+exports.db = {
+    "client"        : "mysql",
+    "debug"         : false,
+    "host"          : "localhost",
+    "database"      : "spark",
+    "user"          : "spark",
+    "password"      : "... the password ...",
+    "charset"       : "utf8",
+};
+```
+
+Run migrations (assuming you have a deployment installed)
+
+```
+cd /opt/spark/latest
+./knex migrate:latest
+sudo service midburn-spark restart
 ```
