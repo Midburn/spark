@@ -12,37 +12,32 @@ block content
                 .col-md-4
                     ul.list-group
                         li.list-group-item
-                            span Time active #{details.camp_activity_time}
+                            span Time active
+                                span.badge #{details.camp_activity_time}
                         li.list-group-item
-                            span Children friendly #{details.child_friendly}
+                            span Children friendly
+                                span.badge #{details.child_friendly ? 'yes':'no'}
                         li.list-group-item
-                            span Noise #{details.noise_level}
+                            span Noise level
+                                span.badge #{details.noise_level}
                         li.list-group-item
-                            span Art? #{details.support_art}
+                            span Art?
+                                span.badge #{details.support_art ? 'yes':'no'}
             .row.card
                 .management.panel.col-md-12
                     h4 Camp Management
-                    .panel-body.col-md-4
-                        a(href='/users/#{camp.main_contact}') Main contact
+                    .panel-body.col-sm-4
                         .contact-info
-                            button.Btn.Btn__transparent.get_info More Info
-                            h5.fullname
-                            span.email
-                            span.phone
-                    .panel-body.col-md-4
-                        a(href='/users/#{camp.moop_contact}') Moop contact
+                            h5 Main contact
+                            a.Btn.Btn__transparent.Btn__sm.get_info(href='/users/#{camp.main_contact}') More Info
+                    .panel-body.col-sm-4
                         .contact-info
-                            button.Btn.Btn__transparent.get_info More Info
-                            h5.fullname
-                            span.email
-                            span.phone
-                    .panel-body.col-md-4
-                        a(href='/users/#{camp.safety_contact}') Safety contact
+                            h5 Moop contact
+                            a.Btn.Btn__transparent.Btn__sm.get_info(href='/users/#{camp.moop_contact}') More Info
+                    .panel-body.col-sm-4
                         .contact-info
-                            button.Btn.Btn__transparent.get_info More Info
-                            h5.fullname
-                            span.email
-                            span.phone
+                            h5 Safety contact
+                            a.Btn.Btn__transparent.Btn__sm.get_info(href='/users/#{camp.safety_contact}') More Info
 
                 .documents.col-md-12.panel
                     h4 Camp Documents
