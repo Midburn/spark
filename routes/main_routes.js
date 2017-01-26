@@ -4,27 +4,32 @@ var config = require('config');
 var i18nConfig = config.get('i18n');
 var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
-var security = require('../libs/security');
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
 var ticket_routes = require('./ticket_routes');
 var User = require('../models/user').User;
-
+var userRole = require('../libs/user_role');
 
 var async = require('async');
 var crypto = require('crypto');
 
 module.exports = function (app, passport) {
 
-    // =====================================
-    // INDEX PAGE (renders to login) =======
-    // =====================================
-    app.get('/', function(req, res) {
-        if (req.isAuthenticated()) {
-            res.redirect('/he/home');
+    userRole.failureHandler = function (req, res, role) {
+        var accept = req.headers.accept || '';
+        res.status(403);
+        if (~accept.indexOf('html')) {
+            res.redirect('/' + (req.params.lng || 'he') + '/login?r=' + req.url);
         } else {
-            res.redirect('/he/login');
+            res.send('Access Denied - You don\'t have role: "' + role + '"');
         }
+    };
+
+    // =====================================
+    // INDEX PAGE ==========================
+    // =====================================
+    app.get('/', userRole.isLoggedIn(), function(req, res) {
+        res.redirect('/he/home');
     });
 
     app.get('/:lng/', function(req, res, next) {
@@ -36,7 +41,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.get('/:lng/home', security.protectGet, function(req, res) {
+    app.get('/:lng/home', userRole.isLoggedIn(), function(req, res) {
         res.render('pages/home', {
             user: req.user
         });
