@@ -29,6 +29,18 @@ app.get('/foo/bar', userRole.is('camp manager'), function(req, res) {
 });
 ```
 
+### Using roles from inside routes code
+
+```
+app.get('/foo/bar', function(req, res) {
+    if (req.user.is('camp manager')) {
+        // user is a camp manager
+    };
+});
+```
+
+
+
 ### Using roles from Jade templates
 
 ```
