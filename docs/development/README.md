@@ -24,6 +24,7 @@ Additional documents:
 * [Setting your IDE for Spark development](/docs/development/IDE.md)
 * [Spark architecture](/docs/development/architecture.md)
 * [Releases and deployment](/docs/development/releases-and-deployment.md)
+* [Users roles and permissions](/docs/development/user-roles-and-permissions.md)
 
 ## Localization
 We use the **i18next** internationalization library for multi-language support.
