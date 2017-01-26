@@ -10,7 +10,7 @@ In user table, each user has a "roles" columns. This column can contain comma-se
 
 A role is just a string which is common to both the roles column and can be checked in the app from routes or views.
 
-We user the [connect-roles](https://github.com/ForbesLindesay/connect-roles) module.
+We use the [connect-roles](https://github.com/ForbesLindesay/connect-roles) module.
 Check out their documentation for more details.
 
 ### Limitting routes to specific roles
