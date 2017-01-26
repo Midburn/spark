@@ -17,9 +17,9 @@ userRole.use(function(req, role) {
             return true;
         } else {
             // normal authenticated user (not admin)
-            // only logged in role is valid
-            // all other roles return false (we don't have any other roles at the moment..)
-            return (role == userRole.LOGGED_IN);
+            // has the logged in role
+            // checks custom roles in user object
+            return (role == userRole.LOGGED_IN || req.user.hasRole(role));
         }
     } else {
         // unauthenticated user
