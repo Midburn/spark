@@ -1,14 +1,4 @@
-var userRole = new (require('connect-roles'))({
-    failureHandler: function (req, res, role) {
-        var accept = req.headers.accept || '';
-        res.status(403);
-        if (~accept.indexOf('html')) {
-            res.redirect('/' + (req.params.lng || 'he') + '/login?r=' + req.url);
-        } else {
-            res.send('Access Denied - You don\'t have role: "' + role + '"');
-        }
-    }
-});
+var userRole = new (require('connect-roles'))();
 
 // pre-defined roles constants / shortcuts - to allow autocompletion and prevent unexpected errors
 
