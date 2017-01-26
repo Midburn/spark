@@ -8,8 +8,8 @@ block content
             .controls.row
                 .col-xs-12
                     //- Card switcher
-                    button.Btn.Btn__default.card-switcher--card1 Basic Information
-                    button.Btn.Btn__transparent.card-switcher--card2 Camp Details
+                    button.Btn.Btn__default.card-switcher--card1=t('.camps:dash.basic_info')
+                    button.Btn.Btn__transparent.card-switcher--card2=t('.camps:dash.details')
             .cards--wrapper.card__shad.row
                 //- Card 1
                 .card.card-first
@@ -51,13 +51,10 @@ block content
                         .panel-body
                             .behaviour
                                 .col-md-4
-<<<<<<< HEAD
                                     .input-group.col-xs-12
                                         label(for='create_camp_type')=t('camps:new.type')
-=======
                                     .col-xs-12
                                         label(for='create_camp_type')=t('camps:new.camp_type')
->>>>>>> 3d1e33b0fbb44027081615a2813ceffc85618208
                                         input(id='create_camp_type', type="text", class="form-control", name="type")
                 //- Card 2
                 .card.card-second.card-hide
