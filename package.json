@@ -69,10 +69,13 @@
     "passport-local": "^1.0.0",
     "passport-remember-me": "^0.0.1",
     "rand-token": "^0.2.1",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
     "serve-favicon": "~2.3.0",
     "sprintf-js": "1.0.3",
+    "webpack": "^1.14.0",
     "winston": "2.3.0"
   },
   "devDependencies": {

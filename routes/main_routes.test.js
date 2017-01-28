@@ -10,7 +10,7 @@ describe('Main routes', function () {
     it('responds to / with redirect to hebrew', function testSlash(done) {
         request
             .get('/')
-            .expect('Location', '/he/login')
+            .expect('Location', '/he/login?r=/')
             .expect(302, done);
     });
 
