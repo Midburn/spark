@@ -45,7 +45,8 @@ module.exports = function(app, passport) {
             res.json({
                 error: false,
                 data: {
-                    message: 'camp created'
+                    message: 'camp created',
+                    camp_id: camp.attributes.id
                 }
             });
             CampDetails.forge({

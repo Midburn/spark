@@ -120,7 +120,9 @@ function innerHeightChange() {
         'min-height': card_height + 'px'
     });
 }
-innerHeightChange();
+$(function() {
+    innerHeightChange();
+});
 // Camp details card transition
 $('.card-switcher--card2').click(function() {
     // show card-2 ; hide card-1
@@ -235,11 +237,11 @@ $('#camp_edit_unpublish').click(function() {
 });
 
 /**
- * Component: Create new camp
+ * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function() {
     var camp_data = {
-        camp_name_he: $('#create_camp_name_he').val(),
+        camp_name_he: $('#create_camp_name_he').val() || 'just another camp',
         camp_name_en: $('#create_camp_name_en').val(),
         camp_desc_he: $('#create_camp_desc_he').val(),
         camp_desc_en: $('#create_camp_desc_en').val(),
@@ -253,14 +255,41 @@ $('#camp_create_save').click(function() {
         public_activity_area_sqm: $('#create_public_activity_area_sqm').val(),
         public_activity_area_desc: $('#create_public_activity_area_desc').val()
     };
-    $.ajax({
-        url: '/camps/new',
-        type: 'POST',
-        data: camp_data,
-        success: function(result) {
-            console.log(result);
-        }
+    // show modal & present details in modal
+    $('#create_camp_request_modal').modal('show');
+    $('.camp_details').html(_campDataAsAList());
+    // approve create camp
+    $('#camp_create_save_modal_request').click(function() {
+        _sendRequest();
     });
+    function _campDataAsAList() {
+        var _list = '';
+        $.each(camp_data, function(label, data) {
+            _list += '<li>' + label + ': <b>' + data + '</b></li>';
+        })
+        return $('<ul>').html(_list);
+    }
+    function _sendRequest() {
+        $.ajax({
+            url: '/camps/new',
+            type: 'POST',
+            data: camp_data,
+            success: function(result) {
+                var camp_id = result.data.camp_id;
+                $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br>you can edit it here: /camps/' + camp_id + '/edit</h4>');
+                $('#create_camp_request_modal').find('#camp_create_save_modal_request').hide();
+                // 5 sec countdown to close modal
+                var sec = 5;
+                setInterval(function() {
+                  $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
+                    sec -= 1;
+                }, 1000);
+                setTimeout(function() {
+                    $('#create_camp_request_modal').modal('hide');
+                }, 5000);
+            }
+        });
+    }
 });
 /**
  * Component: join a camp
