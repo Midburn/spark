@@ -241,7 +241,7 @@ $('#camp_edit_unpublish').click(function() {
  */
 $('#camp_create_save').click(function() {
     var camp_data = {
-        camp_name_he: $('#create_camp_name_he').val() || 'just another camp',
+        camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+ new Date()),
         camp_name_en: $('#create_camp_name_en').val(),
         camp_desc_he: $('#create_camp_desc_he').val(),
         camp_desc_en: $('#create_camp_desc_en').val(),
@@ -276,12 +276,12 @@ $('#camp_create_save').click(function() {
             data: camp_data,
             success: function(result) {
                 var camp_id = result.data.camp_id;
-                $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br>you can edit it here: /camps/' + camp_id + '/edit</h4>');
+                $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href=' + $('body').attr('lang') + '/camps/' + camp_id + '/edit>here</a><span></h4>');
                 $('#create_camp_request_modal').find('#camp_create_save_modal_request').hide();
                 // 5 sec countdown to close modal
                 var sec = 5;
                 setInterval(function() {
-                  $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
+                    $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
                     sec -= 1;
                 }, 1000);
                 setTimeout(function() {
