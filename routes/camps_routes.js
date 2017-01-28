@@ -4,7 +4,7 @@ const i18next = require('i18next'),
     i18nConfig = config.get('i18n'),
     serverConfig = config.get('server'),
     mailConfig = config.get('mail'),
-    security = require('../libs/security'),
+    userRole = require('../libs/user_role'),
     mail = require('../libs/mail'),
     log = require('../libs/logger.js')(module),
     breadcrumbs = require('express-breadcrumbs');
@@ -19,7 +19,7 @@ module.exports = function(app, passport) {
     // Camps Routing
     // ==============
     // camps index page, create new camp
-    app.get('/:lng/camps', security.protectGet, (req, res) => {
+    app.get('/:lng/camps', userRole.isLoggedIn(), (req, res) => {
         app.use(breadcrumbs.setHome());
         req.breadcrumbs('camps-index');
         res.render('pages/camps/index', {
@@ -28,7 +28,7 @@ module.exports = function(app, passport) {
         });
     });
     // new camp
-    app.get('/:lng/camps/new', security.protectGet, (req, res) => {
+    app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-new_camp');
         res.render('pages/camps/new', {
             user: req.user,
@@ -36,7 +36,7 @@ module.exports = function(app, passport) {
         });
     });
     // camps statistics
-    app.get('/:lng/camps-stats', security.protectGet, (req, res) => {
+    app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-statistic');
         res.render('pages/camps/stats', {
             user: req.user,
@@ -44,7 +44,7 @@ module.exports = function(app, passport) {
         });
     });
     // camps members board
-    app.get('/:lng/camps-members', security.protectGet, (req, res) => {
+    app.get('/:lng/camps-members', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-members_board');
         res.render('pages/camps/members', {
             user: req.user,
@@ -52,7 +52,7 @@ module.exports = function(app, passport) {
         });
     });
     // camps documents
-    app.get('/:lng/camps-docs', security.protectGet, (req, res) => {
+    app.get('/:lng/camps-docs', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-documents_and_forms');
         res.render('pages/camps/docs', {
             user: req.user,
@@ -63,7 +63,7 @@ module.exports = function(app, passport) {
      * CRUD Routes
      */
     // Read
-    app.get('/:lng/camps/:id', security.protectGet, (req, res) => {
+    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
         Camp
             .forge({
                 id: req.params.id
@@ -93,7 +93,7 @@ module.exports = function(app, passport) {
             });
     });
     // Edit
-    app.get('/:lng/camps/:id/edit', security.protectGet, (req, res) => {
+    app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
         Camp
             .forge({
                 id: req.params.id
@@ -110,7 +110,7 @@ module.exports = function(app, passport) {
             })
     });
     // Destroy
-    app.get('/:lng/camps/:id/remove', security.protectGet, (req, res) => {
+    app.get('/:lng/camps/:id/remove', userRole.isLoggedIn(), (req, res) => {
         Camp
             .forge({
                 id: req.params.id
