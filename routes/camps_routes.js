@@ -137,7 +137,7 @@ module.exports = function(app, passport) {
     });
     // Test Route for New Camp Program
     // new Program
-    app.get('/:lng/program', security.protectGet, (req, res) => {
+    app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-new_program');
         res.render('pages/camps/program', {
             user: req.user,
