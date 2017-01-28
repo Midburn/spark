@@ -1,6 +1,9 @@
 @import url( 'https://fonts.googleapis.com/css?family=Cabin|Rubik');
 @import './camps_mobile';
 $card-bg: #fafafa;
+$green: #24b47e;
+$red: #D50000;
+$teal: #26A69A;
 
 body {
     font-family: 'Cabin', sans-serif;
@@ -60,8 +63,16 @@ section {
         font-size: 12px;
     }
 
+    &__lg {
+        height: 80px;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
     &__inline {
-      margin-top: 22px;
+        margin-top: 22px;
     }
 
     &__card {
@@ -124,7 +135,7 @@ section {
 
     &__green {
         color: #fff;
-        background: #24b47e;
+        background: $green;
 
         &:hover {
             background: #24b41e;
@@ -138,8 +149,9 @@ section {
     }
 
     &__is-loading {
-      position: relative;
-      padding-right: 3em;
+        position: relative;
+        padding-right: 3em;
+
         &:after {
             -webkit-animation: spinAround 500ms infinite linear;
             animation: spinAround 500ms infinite linear;
@@ -265,6 +277,22 @@ body[lang="en"] {
                 right: 10px;
             }
         }
+    }
+}
+
+.multi-select-option {
+    margin-top: 3px;
+    
+    span {
+        margin: 0 3px;
+    }
+}
+
+.multi-select-option-other {
+    input {
+        height: 30px;
+        margin: 0 3px;
+        padding: 2px 5px;
     }
 }
 // Animations
@@ -412,4 +440,23 @@ textarea {
 
 textarea:focus {
     min-height: 100px;
+}
+
+.bg {
+    &__green {
+        background: $green;
+    }
+
+    &__red {
+        background: $red;
+    }
+
+    &__teal {
+        background: $teal;
+        color: #FFF;
+    }
+}
+
+.no-flt {
+    float: none !important;
 }

@@ -17,6 +17,9 @@
             },
             "docs": {
                 "title": "מסמכים וטפסים"
+            },
+            "program": {
+                "title": "תוכניה"
             }
         },
         "new": {
@@ -138,5 +141,22 @@
             "location_street": "רחוב",
             "location_time": "שעה",
             "location_area": "אזור"
+        },
+        "program": {
+            "page_title": "צור פעילות חדשה",
+            "page_desc": "TODO - This is a short description",
+            "details": "מידע כללי",
+            "name_he": "שם הפעילות - עברית",
+            "name_en": "שם הפעילות - אנגלית",
+            "desc_he": "תאור הפעילות - עברית",
+            "desc_en": "תאור הפעילות - אנגלית",
+            "date": "תאריך",
+            "time": "זמן",
+            "request": "* אנו שומרים על עקרון הא-מסחריות ומיידיות ולכן אין לציין שמות מנחים, אמנים וכו׳",
+            "type": "סוג הפעילות",
+            "choose_type": "סוג",
+            "access": "תאימות",
+            "kids_friendly": "מתאים לילדים",
+            "adult_only": "למבוגרים בלבד"
         }
 }

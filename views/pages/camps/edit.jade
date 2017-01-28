@@ -2,6 +2,7 @@ extends ../../includes/page
 block content
     .camps.camp_edit
         section
+            meta.hidden.meta(id='meta__camp_name_en', value='#{camp.camp_name_en}')
             .heading.card.card__shad.row
                 .col-md-12
                     h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
@@ -57,30 +58,32 @@ block content
                             .camp-modifiers
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_type') #{t('camps:edit.type')}: #{camp.camp_type || 'n/a'}
-                                        select.form-control(id='edit_camp_type', name='camp_type')
+                                        label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}: #{camp.type || 'n/a'}
+                                        select.form-control(id='edit_camp_type', name='type')
                                             option(selected) ---
-                                            option=t('camps:edit.food')
-                                            option=t('camps:edit.drinking')
-                                            option=t('camps:edit.music')
-                                            option=t('camps:edit.workshops')
-                                            option=t('camps:edit.art_supporting')
-                                            option=t('camps:edit.other')
+                                            option(value='food')=t('camps:edit.food')
+                                            option(value='drinking/bar')=t('camps:edit.drinking')
+                                            option(value='music')=t('camps:edit.music')
+                                            option(value='workshops')=t('camps:edit.workshops')
+                                            option(value='art-supporting')=t('camps:edit.art_supporting')
+                                            option(value='other')=t('camps:edit.other')
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_status') #{t('camps:edit.status')}: #{camp.camp_status || 'n/a'}
-                                        select.form-control(id='edit_camp_status', name='camp_status')
+                                        label(for='edit_camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || 'n/a'}
+                                        select.form-control(id='edit_camp_status', name='status')
                                             option(selected) ---
                                             option(value='open')=t('camps:edit.open')
                                             option(value='closed')=t('camps:edit.closed')
                                             option(value='inactive')=t('camps:edit.inactive')
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_enabled') #{t('camps:edit.publication')}: &nbsp;
-                                        if camp.camp_enabled == 0
-                                            span=t('camps:edit.public')
-                                        else
-                                            span=t('camps:edit.invisible')
+                                        label(for='edit_camp_enabled') #{t('camps:edit.publication')}:
+                                        p
+                                            if camp.enabled == '1'
+                                                button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish') Unpublish
+                                                span.badge.bg__green=t('camps:edit.public')
+                                            else
+                                                span.badge.bg__red=t('camps:edit.invisible')
                 //- Card 2
                 .card.card-second.card-hide
                     h4=t('camps:edit.behavior_title')
@@ -138,4 +141,5 @@ block content
 
             .controls.row
                 .col-xs-12
+                    input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:edit.location_street')=t('btn_save_camp')

@@ -75,6 +75,9 @@
             },
             "docs": {
                 "title": "Documents & Forms"
+            },
+            "program": {
+                "title": "Camp Program"
             }
         },
         "new": {

@@ -17,6 +17,9 @@
             },
             "docs": {
                 "title": "Documents & Forms"
+            },
+            "program": {
+                "title": "Camp Program"
             }
         },
         "new": {
@@ -32,7 +35,7 @@
             "desc_he": "Camp desc (Hebrew)",
             "desc_en": "Camp description (English)",
             "contact_card_header": "Camp Contact Personnel",
-            "type": "Type",
+            "type": "Camp type",
             "main_contact": "Camp main contact",
             "moop_contact": "Camp moop contact",
             "safety_contact": "Camp safety contact",
@@ -138,5 +141,22 @@
             "location_street": "Street",
             "location_time": "Time",
             "location_area": "Area"
+        },
+        "program": {
+            "page_title": "Create new Program",
+            "page_desc": "TODO - This is a short description",
+            "details": "Basic information",
+            "name_he": "Program Name (he)",
+            "name_en": "Program Name (en)",
+            "desc_he": "Program Description (he)",
+            "desc_en": "Program Description (en)",
+            "date": "Date",
+            "time": "Time",
+            "request": "* We follow the decommodification and immediacy principles and therefore request not to include names of artists, lecturers, etc.",
+            "type": "Program Type",
+            "choose_type": "Type",
+            "access": "Program Accessibility",
+            "kids_friendly": "Kids Friendly",
+            "adult_only": "Adult Only"
         }
 }

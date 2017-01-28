@@ -10,10 +10,21 @@ block content
                     h6 #{t('camps:camps.since')}: #{camp.created_at}
                     p #{t('camps:camps.desc')} #{camp.camp_desc_en}
                 .col-md-4
-                    ul.list-group
+                    ul.list-group.text-center
                         li.list-group-item
-                            span #{t('camps:camps.active_time')} #{details.camp_activity_time}
-                            span.badge #{details.camp_activity_time}
+                            if camp.enabled
+                              span.no-flt.badge.bg__green Published
+                            else
+                              span.no-flt.badge.bg__red Draft
+                        li.list-group-item
+                            span Status
+                                if camp.status == 'open'
+                                    span.badge.bg__teal Open
+                                else
+                                    span.badge.bg__red Close
+                        li.list-group-item
+                            span Time active
+                                span.badge #{details.camp_activity_time}
                         li.list-group-item
                             span #{t('camps:camps.child_friendly')} #{details.child_friendly}
                             span.badge #{details.child_friendly ? 'yes':'no'}
@@ -24,32 +35,26 @@ block content
                             span #{t('camps:camps.art')} #{details.support_art}
                             span.badge #{details.support_art ? 'yes':'no'}
             .row.card
-                .management.panel.col-md-12
+                .row.management.panel.col-md-12
                     h4=t('camps:camps.management_title')
                     .panel-body.col-md-4
-                        a(href='/users/#{camp.main_contact}')=t('camps:camps.main_contact')
                         .contact-info
-                            button.Btn.Btn__transparent.get_info=t('camps:camps.more_info')
-                            h5.fullname
-                            span.email
-                            span.phone
+                            a.Btn.Btn__lg(href='/users/#{camp.main_contact}')
+                                span Main contact
+                                h6=t('camps:camps.more_info')
                     .panel-body.col-md-4
-                        a(href='/users/#{camp.moop_contact}')=t('camps:camps.moop_contact')
                         .contact-info
-                            button.Btn.Btn__transparent.get_info=t('camps:camps.more_info')
-                            h5.fullname
-                            span.email
-                            span.phone
+                            a.Btn.Btn__lg(href='/users/#{camp.moop_contact}')
+                                span Moop contact
+                                h6=t('camps:camps.more_info')
                     .panel-body.col-md-4
-                        a(href='/users/#{camp.safety_contact}')=t('camps:camps.safety_contact')
                         .contact-info
-                            button.Btn.Btn__transparent.get_info=t('camps:camps.more_info')
-                            h5.fullname
-                            span.email
-                            span.phone
+                            a.Btn.Btn__lg(href='/users/#{camp.safety_contact}')
+                                span Safety contact
+                                h6=t('camps:camps.more_info')
+                            
 
-            .row.card
-                .documents.col-md-12.panel
+                .row.documents.col-md-12.panel
                     h4=t('camps:camps.docs')
                     .panel-body
                         | documents list here

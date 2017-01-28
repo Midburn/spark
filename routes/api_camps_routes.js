@@ -39,12 +39,14 @@ module.exports = function(app, passport) {
             main_contact: req.body.camp_main_contact,
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
-            type: req.body.camp_type
+            type: req.body.camp_type,
+            created_at: Date()
         }).save().then((camp) => {
             res.json({
                 error: false,
                 data: {
-                    message: 'camp created'
+                    message: 'camp created',
+                    camp_id: camp.attributes.id
                 }
             });
             CampDetails.forge({
@@ -84,15 +86,14 @@ module.exports = function(app, passport) {
      * request => /camps/1/edit
      */
     app.put('/camps/:id/edit', (req, res) => {
-        Camp.forge({id: req.params.id}).fetch({require: true}).then(function(camp) {
+        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
             camp.save({
-                // camp_name_he: req.body.camp_name_he,
                 // camp_name_en: req.body.camp_name_en,
+                camp_name_he: req.body.camp_name_he,
                 camp_desc_he: req.body.camp_desc_he,
                 camp_desc_en: req.body.camp_desc_en,
                 status: req.body.status,
                 type: req.body.type,
-                enabled: req.body.enabled,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
@@ -114,7 +115,52 @@ module.exports = function(app, passport) {
                 }
             });
         });
-    })
+    });
+    // PUBLISH
+    app.put('/camps/:id/publish', (req, res) => {
+        // If camp met all its requirements, can publish
+        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+            camp.save({enabled: '1'}).then(function() {
+                res.json({error: false, status: 'Publish'});
+            }).catch(function(err) {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+        }).catch(function(err) {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
+    // UNPUBLISH
+    app.put('/camps/:id/unpublish', (req, res) => {
+        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+            camp.save({enabled: '0'}).then(function() {
+                res.json({error: false, status: 'Unpublish'});
+            }).catch(function(err) {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+        }).catch(function(err) {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
 
     /**
      * API: (GET) return camp object, provide camp id
@@ -196,8 +242,12 @@ module.exports = function(app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({status: 'open', enabled: 1}).fetch().then((camp) => {
-            res.status(200).json({camps: camp.toJSON()})
+        Camp.forge({status: 'open', enabled: '1'}).fetch().then((camp) => {
+            if (camp !== null) {
+                res.status(200).json({camps: camp.toJSON()})
+            } else {
+                res.status(404).send('Not found');
+            }
         }).catch((err) => {
             res.status(500).json({
                 error: true,
@@ -232,5 +282,14 @@ module.exports = function(app, passport) {
      */
     app.post('/camps/join/request', (req, res) => {
         res.status(200).json({error: false})
+    });
+
+    /**
+     * API: (POST) create Program
+     * request => /camps/program
+     */
+    app.post('/camps/program', (req, res) => {
+        console.log(success);
+        //TODO
     });
 }
