@@ -130,6 +130,10 @@ app.use(middleware.handle(i18next, {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// user roles / permissions
+var userRole = require('./libs/user_role');
+app.use(userRole.middleware());
+
 // Infrastructure Routes
 if (app.get('env') === 'development') {
     app.use('/dev', require('./routes/dev_routes'));
@@ -152,7 +156,6 @@ mail.setup(app);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
-
 
 log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', app.get('env'));
 

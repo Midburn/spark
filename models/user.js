@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
 var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
+var userRole = require('../libs/user_role');
 
 var User = bookshelf.Model.extend({
     tableName: constants.USERS_TABLE_NAME,
@@ -39,13 +40,17 @@ var User = bookshelf.Model.extend({
         return bcrypt.compareSync(password, this.attributes.password);
     },
 
+    hasRole: function(role) {
+        return (this.attributes.roles && this.attributes.roles.split(',').indexOf(role) > -1);
+    },
+
     virtuals: {
         fullName: function() {
             return this.attributes.first_name + ' ' + this.attributes.last_name;
         },
 
         isAdmin: function() {
-            return (this.attributes.roles && this.attributes.roles.split(',').indexOf('admin') > -1);
+            return this.hasRole(userRole.ADMIN);
         }
     }
 });
