@@ -54,3 +54,9 @@ jspm_packages
 *.orig
 
 /dev.sqlite3
+
+*.pyc
+/*.tar.gz
+/public/scripts/camps_bundle.js
+/*.slack_url
+/.nvm

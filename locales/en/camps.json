@@ -30,8 +30,10 @@
             "safety_contact": "Camp safety contact"
         },
         "join": {
-            "join_a_camp": "Join a camp"
-            
+            "header_title": "Join a camp",
+            "camp_choosing_title": "The list below includes camp that are open for new members. choose one to apply a join request.",
+            "request": "Request a join"
+
         },
         "manage": {
             "manage_a_camp": "Manage a camp"

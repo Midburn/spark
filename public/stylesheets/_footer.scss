@@ -1,7 +1,6 @@
 footer {
     background-color: #f6f9fc;
     margin-top: 10em;
-    padding: 65px 0 55px;
     color: #8898aa;
     line-height: 30px;
     font-size: 15px;
@@ -35,9 +34,18 @@ footer {
         }
     }
 
+    .footer-nav {
+        height: 100px;
+        text-align: center;
+        a {
+            margin: 30px 0;
+            display: block;
+        }
+    }
     .footer-links {
         ul {
             li {
+                margin: 0 10px;
                 padding: 0 5px;
                 display: inline-block;
             }

@@ -10,40 +10,36 @@ block content
                 div.block-center
                     div.input-group
                         a.Btn.Btn__default.reveal_create_camp_btn(href='javascript:;', role='button')=t('camps:new.btn_create')
-                        a.Btn.Btn__default.reveal_join_camp_btn(href='javascript:;', role='button')=t('camps:join.join_a_camp')
+                        a.Btn.Btn__default.reveal_join_camp_btn(href='javascript:;', role='button')=t('camps:join.header_title')
                         a.Btn.Btn__default.reveal_manage_camp_btn(href='javascript:;', role='button')=t('camps:manage.manage_a_camp')
                 .cards--wrapper
-                    .shad.choose_name.card.card-first.card-hide
+                    .choose_name.card.card-first.card__even-pad.card-hide
                         button.card--close.Btn.Btn__close
                             span.glyphicon.glyphicon-remove(aria-hidden='true')
                         h2=t('camps:new.header_title')
                         h4=t('camps:new.name_choosing_title')
+                        .col-sm-8.col-xs-12
+                            .pos-r
+                                label=t('camps:new.name_en')
+                                input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
+                                span.indicator
+                                    span.glyphicon
+                        .col-sm-4.col-xs-12
+                            a.Btn.Btn__green.Btn__inline(id="check_camp_name", role='button')=t('camps:btn_continue')
 
-                        .form-group.pos-r
-                            label=t('camps:new.name_en')
-                            input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
-                            span.indicator
-                                span.glyphicon
-                        .form-group
-                            a.Btn.Btn__green.hidden(id="check_camp_name", role='button')=t('camps:btn_continue')
-
-                    .shad.join_camp.card.card-second.card-hide
+                    .join_camp.card.card-second.card-hide
                         button.card--close.Btn.Btn__close
                             span.glyphicon.glyphicon-remove(aria-hidden='true')
                         h2=t('camps:join.header_title')
                         h4=t('camps:join.camp_choosing_title')
-
-                        .form-group
-                            label=t('camps:join.name_en')
+                        .col-sm-8.col-xs-12
+                            label=t('camps:new.name_en')
+                            input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
                             select(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
-                        .form-group
-                            a.Btn.Btn__green(id="join_camp", role='button')=t('camps:btn_continue')
-                            span.indicator
-                                span.glyphicon
-                        .form-group
-                            a.Btn.Btn__green.hidden(id="request_camp_join", role='button')=t('camps:join.request')
+                        .col-sm-4.col-xs-12
+                            a.Btn.Btn__green.Btn__inline(id="join_camp_request_join_btn", role='button')=t('camps:join.request')
 
-                    .shad.camp_manage.card.card-third.card__even-pad.card-hide
+                    .camp_manage.card.card-third.card__even-pad.card-hide
                         button.card--close.Btn.Btn__close
                             span.glyphicon.glyphicon-remove(aria-hidden='true')
                         .row
@@ -64,3 +60,18 @@ block content
                                     img.img-responsive(src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MDUgNTA1IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MDUgNTA1OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4Ij4KPGNpcmNsZSBzdHlsZT0iZmlsbDojMkIzQjRFOyIgY3g9IjI1Mi41IiBjeT0iMjUyLjUiIHI9IjI1Mi41Ii8+Cjxwb2x5Z29uIHN0eWxlPSJmaWxsOiNGRkZGRkY7IiBwb2ludHM9IjMyNS42LDg2LjEgMzI1LjYsMTM5LjcgMzc5LjEsMTM5LjcgMzc5LjEsNDE4LjkgMTI1LjksNDE4LjkgMTI1LjksODYuMSAiLz4KPHBvbHlnb24gc3R5bGU9ImZpbGw6I0U2RTlFRTsiIHBvaW50cz0iMzI1LjYsODYuMSAzNzkuMSwxMzkuNyAzMjUuNiwxMzkuNyAiLz4KPGc+Cgk8cmVjdCB4PSIxNTMiIHk9IjI2NS41IiBzdHlsZT0iZmlsbDojODREQkZGOyIgd2lkdGg9IjE5OSIgaGVpZ2h0PSIxMi4yIi8+Cgk8cmVjdCB4PSIxNTMiIHk9IjIzNCIgc3R5bGU9ImZpbGw6Izg0REJGRjsiIHdpZHRoPSIxOTkiIGhlaWdodD0iMTIuMiIvPgoJPHJlY3QgeD0iMTUzIiB5PSIyMDIuNCIgc3R5bGU9ImZpbGw6Izg0REJGRjsiIHdpZHRoPSIxOTkiIGhlaWdodD0iMTIuMiIvPgoJPHJlY3QgeD0iMTUzIiB5PSIyOTciIHN0eWxlPSJmaWxsOiM4NERCRkY7IiB3aWR0aD0iMTk5IiBoZWlnaHQ9IjEyLjIiLz4KCTxyZWN0IHg9IjE1MyIgeT0iMzI4LjUiIHN0eWxlPSJmaWxsOiM4NERCRkY7IiB3aWR0aD0iMTk5IiBoZWlnaHQ9IjEyLjIiLz4KCTxyZWN0IHg9IjE1MyIgeT0iMzYwIiBzdHlsZT0iZmlsbDojODREQkZGOyIgd2lkdGg9IjkzLjgiIGhlaWdodD0iMTIuMiIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=")
                                     span.title=t('camps:dash.docs.title')
                                     span.arrow →
+
+        // Camp join request modal
+        .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')
+            .modal-dialog.card.card__even-pad.card__shad(role='document')
+                div
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        h4.modal-title Join a camp request
+                    .modal-body
+                        p The request to the camp manager will be sent with these details
+                        .user_details
+                    .modal-footer
+                        button.Btn.Btn__transparent(id='join_camp_close_btn', type='button', data-dismiss='modal') Close
+                        button.Btn.Btn__green(id='join_camp_send_request_btn', type='button') Send Request

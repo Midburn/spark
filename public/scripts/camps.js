@@ -94,7 +94,8 @@ var fetchedCampsOnce = false,
 
 function fetchCampsOnce() {
     if (!fetchedCampsOnce) {
-        var data, tbody = $stats_table.find('tbody');
+        var data,
+            tbody = $stats_table.find('tbody');
         tbody.html('');
         $.get('/camps', function(data) {
             camps = data.camps;
@@ -114,7 +115,7 @@ $stats_table.load(fetchCampsOnce());
 
 // TODO: fix inner height for dynamic width size changing
 function innerHeightChange() {
-    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight() + 20;
+    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
     $('.camps .cards--wrapper').css({
         'min-height': card_height + 'px'
     });
@@ -156,30 +157,37 @@ $('.reveal_manage_camp_btn').click(function() {
 $('.card--close').click(function() {
     $('.card').addClass('card-hide');
 });
-/*
+/**
  * Component: Join a camp
  */
-var fetched = false;
+var fetchOpenCampsOnce = false;
 
-function fetchOpenCampsOnce(elm) {
-    if (!fetched) {
-        $.get('/camps_open', function(data) {
-            camps = [data.camps];
-            for (var i = 0; i < camps.length; i++) {
-                $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
+function fetchOpenCamps(elm) {
+    if (!fetchOpenCampsOnce) {
+        $.ajax({
+            url: '/camps_open',
+            type: 'GET',
+            success: function(data) {
+                camps = [data.camps];
+                for (var i = 0; i < camps.length; i++) {
+                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
+                }
+            },
+            error: function(data) {
+                alert('woops! no camps found.');
             }
         });
-        fetched = true;
+        fetchOpenCampsOnce = true;
     }
 }
 $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
-    fetchOpenCampsOnce($(this));
+    fetchOpenCamps($(this));
 });
-/*
+/**
  * Component: Editing camp
  */
 $('#camp_edit_save').click(function() {
-    var camp_id = 1,
+    var camp_id = $('#camp_edit_camp_id').val(),
         camp_data = {
             camp_name_he: $('#edit_camp_name_he').val(),
             camp_name_en: $('#edit_camp_name_en').val(),
@@ -188,8 +196,8 @@ $('#camp_edit_save').click(function() {
             main_contact: $('#edit_camp_main_contact option:selected').val(),
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
-            status: $('#edit_camp_status option:selected').val(),
-            type: $('#edit_camp_type option:selected').val(),
+            status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
+            type: $('#edit_camp_type option:selected').attr('value') || $('label[for="edit_camp_type"]').attr('data-camp-type'),
             enabled: $('#edit_camp_enabled option:selected').val()
         };
     $.ajax({
@@ -202,56 +210,29 @@ $('#camp_edit_save').click(function() {
     });
 });
 
-/*
+/**
  * Component: Create new camp
  */
 $('#camp_create_save').click(function() {
-    var camp_id = 1,
-        camp_data = {
-            camp_name_he: $('#create_camp_name_he').val(),
-            camp_name_en: $('#create_camp_name_en').val(),
-            camp_desc_he: $('#create_camp_desc_he').val(),
-            camp_desc_en: $('#create_camp_desc_en').val(),
-            main_contact: $('#create_camp_main_contact option:selected').val(),
-            moop_contact: $('#create_camp_moop_contact option:selected').val(),
-            safety_contact: $('#create_camp_safety_contact option:selected').val(),
-            type: $('#create_camp_type option:selected').val(),
-            camp_activity_time: $('#create_camp_activity_time option:selected').val(),
-            child_friendly: $('#create_child_friendly').val(),
-            noise_level: $('#create_noise_level option:selected').val(),
-            public_activity_area_sqm: $('#create_public_activity_area_sqm').val(),
-            public_activity_area_desc: $('#create_public_activity_area_desc').val()
-        };
+    var camp_data = {
+        camp_name_he: $('#create_camp_name_he').val(),
+        camp_name_en: $('#create_camp_name_en').val(),
+        camp_desc_he: $('#create_camp_desc_he').val(),
+        camp_desc_en: $('#create_camp_desc_en').val(),
+        main_contact: $('#create_camp_main_contact option:selected').val(),
+        moop_contact: $('#create_camp_moop_contact option:selected').val(),
+        safety_contact: $('#create_camp_safety_contact option:selected').val(),
+        type: $('#create_camp_type option:selected').val(),
+        camp_activity_time: $('#create_camp_activity_time option:selected').val(),
+        child_friendly: $('#create_child_friendly').val(),
+        noise_level: $('#create_noise_level option:selected').val(),
+        public_activity_area_sqm: $('#create_public_activity_area_sqm').val(),
+        public_activity_area_desc: $('#create_public_activity_area_desc').val()
+    };
     $.ajax({
         url: '/camps/new',
         type: 'POST',
         data: camp_data,
-        success: function(result) {
-            console.log(result);
-        }
-    });
-});
-
-/*
- * Component: Create new program
- */
-$('#prog_create_save').click(function() {
-    var prog_id = 1, //TODO - make dynamic
-        prog_data = {
-            prog_name_he: $('#create_prog_name_he').val(),
-            prog_name_en: $('#create_prog_name_en').val(),
-            prog_desc_he: $('#create_prog_desc_he').val(),
-            prog_desc_en: $('#create_prog_desc_en').val(),
-            prog_date: $('#create_prog_date').val(),
-            prog_time: $('#create_prog_time').val(),
-            type: $('#create_prog_type1 #create_prog_type2').val(),
-            prog_child_friendly: $('#create_prog_child_friendly').val(),
-            prog_adult_only: $('#create_prog_adult_only').val()
-        };
-    $.ajax({
-        url: '/camps/program',
-        type: 'POST',
-        data: prog_data,
         success: function(result) {
             console.log(result);
         }

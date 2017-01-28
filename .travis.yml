@@ -1,6 +1,12 @@
 language: node_js
-node_js: 7.4.0
+cache:
+  directories:
+    - node_modules
 script:
   - npm install -g knex
   - knex migrate:latest
   - npm test
+after_success:
+  - .travis/on_build_complete.sh "1"
+after_failure:
+  - .travis/on_build_complete.sh "0"
