@@ -160,21 +160,28 @@ $('.card--close').click(function() {
 /**
  * Component: Join a camp
  */
-var fetched = false;
+var fetchOpenCampsOnce = false;
 
-function fetchOpenCampsOnce(elm) {
-    if (!fetched) {
-        $.get('/camps_open', function(data) {
-            camps = [data.camps];
-            for (var i = 0; i < camps.length; i++) {
-                $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
+function fetchOpenCamps(elm) {
+    if (!fetchOpenCampsOnce) {
+        $.ajax({
+            url: '/camps_open',
+            type: 'GET',
+            success: function(data) {
+                camps = [data.camps];
+                for (var i = 0; i < camps.length; i++) {
+                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
+                }
+            },
+            error: function(data) {
+                alert('woops! no camps found.');
             }
         });
-        fetched = true;
+        fetchOpenCampsOnce = true;
     }
 }
 $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
-    fetchOpenCampsOnce($(this));
+    fetchOpenCamps($(this));
 });
 /**
  * Component: Editing camp
@@ -189,8 +196,8 @@ $('#camp_edit_save').click(function() {
             main_contact: $('#edit_camp_main_contact option:selected').val(),
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
-            status: $('#edit_camp_status option:selected').attr('value') || 'n/a',
-            type: $('#edit_camp_type option:selected').attr('value') || 'n/a',
+            status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
+            type: $('#edit_camp_type option:selected').attr('value') || $('label[for="edit_camp_type"]').attr('data-camp-type'),
             enabled: $('#edit_camp_enabled option:selected').val()
         };
     $.ajax({
@@ -211,6 +218,20 @@ $('#camp_edit_publish').click(function() {
             console.log(result);
         }
     });
+});
+$('#camp_edit_unpublish').click(function() {
+    var camp_name = $('#meta__camp_name_en').attr('value'),
+        agree_unpublish = confirm('Un-publish camp\n\n\nThis action will remove ' + camp_name + ' from the public camps list.\n\n\n---\n Are you sure?');
+    if (agree_unpublish) {
+        var camp_id = $('#camp_edit_camp_id').val();
+        $.ajax({
+            url: '/camps/' + camp_id + '/unpublish',
+            type: 'PUT',
+            success: function(result) {
+                console.log(result);
+            }
+        });
+    }
 });
 
 /**

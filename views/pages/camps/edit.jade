@@ -2,6 +2,7 @@ extends ../../includes/page
 block content
     .camps.camp_edit
         section
+            meta.hidden.meta(id='meta__camp_name_en', value='#{camp.camp_name_en}')
             .heading.card.card__shad.row
                 .col-md-12
                     h2 Editing: #{camp.camp_name_en}
@@ -57,7 +58,7 @@ block content
                             .camp-modifiers
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_type') Type: #{camp.type || 'n/a'}
+                                        label(for='edit_camp_type', data-camp-type='#{camp.type}') Type: #{camp.type || 'n/a'}
                                         select.form-control(id='edit_camp_type', name='type')
                                             option(selected) ---
                                             option(value='food') food
@@ -68,7 +69,7 @@ block content
                                             option(value='other') other
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_status') Status: #{camp.status || 'n/a'}
+                                        label(for='edit_camp_status', data-camp-status='#{camp.status}') Status: #{camp.status || 'n/a'}
                                         select.form-control(id='edit_camp_status', name='status')
                                             option(selected) ---
                                             option(value='open') Open
@@ -76,13 +77,13 @@ block content
                                             option(value='inactive') Inactive
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_enabled') Publication: &nbsp;
-                                        if camp.camp_enabled == 0
-                                            span
-                                                | Camp is public
-                                        else
-                                            span
-                                                | Camp is invisible
+                                        label(for='edit_camp_enabled') Publication:
+                                        p
+                                            if camp.enabled == '1'
+                                                button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish') Unpublish
+                                                span.badge.bg__green Camp is public
+                                            else
+                                                span.badge.bg__red Camp is invisible
                 //- Card 2
                 .card.card-second.card-hide
                     h4 Camp Behavior

@@ -39,7 +39,8 @@ module.exports = function(app, passport) {
             main_contact: req.body.camp_main_contact,
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
-            type: req.body.camp_type
+            type: req.body.camp_type,
+            created_at: Date()
         }).save().then((camp) => {
             res.json({
                 error: false,
@@ -118,8 +119,30 @@ module.exports = function(app, passport) {
     app.put('/camps/:id/publish', (req, res) => {
         // If camp met all its requirements, can publish
         Camp.forge({id: req.params.id}).fetch().then(function(camp) {
-            camp.save({enabled: req.body.enabled}).then(function() {
+            camp.save({enabled: '1'}).then(function() {
                 res.json({error: false, status: 'Publish'});
+            }).catch(function(err) {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+        }).catch(function(err) {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
+    // UNPUBLISH
+    app.put('/camps/:id/unpublish', (req, res) => {
+        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+            camp.save({enabled: '0'}).then(function() {
+                res.json({error: false, status: 'Unpublish'});
             }).catch(function(err) {
                 res.status(500).json({
                     error: true,
@@ -218,8 +241,12 @@ module.exports = function(app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({status: 'open', enabled: 1}).fetch().then((camp) => {
-            res.status(200).json({camps: camp.toJSON()})
+        Camp.forge({status: 'open', enabled: '1'}).fetch().then((camp) => {
+            if (camp !== null) {
+                res.status(200).json({camps: camp.toJSON()})
+            } else {
+                res.status(404).send('Not found');
+            }
         }).catch((err) => {
             res.status(500).json({
                 error: true,
