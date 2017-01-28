@@ -329,6 +329,29 @@ $('#join_camp_request_join_btn').click(function() {
     /**
      * Component: create camp program
      */
-
-    // TODO
+    $('#prog_create_save').click(function() {
+      alert('not yet son.')
+      /*
+      var program_data = {
+          prog_name_he: $('#create_prog_name_he').val(),
+          prog_name_en: $('#create_prog_name_en').val(),
+          prog_desc_he: $('#create_prog_desc_he').val(),
+          prog_desc_en: $('#create_prog_desc_en').val(),
+          ?: $('#create_prog_date').val(),
+          ?: $('#create_prog_time').val(),
+          ?: $('#create_prog_type1').val(),
+          ?: $('#create_prog_type2').val(),
+          ?: $('#create_prog_child_friendly').val(),
+          ?: $('#create_prog_adult_only').val(),
+      };
+      $.ajax({
+          url: '/camps/program',
+          type: 'POST',
+          data: program_data,
+          success: function(result) {
+              console.log(result);
+          }
+      });
+      */
+    });
 })
