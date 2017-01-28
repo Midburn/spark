@@ -57,19 +57,19 @@ block content
                             .camp-modifiers
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_type') Type: #{camp.camp_type || 'n/a'}
-                                        select.form-control(id='edit_camp_type', name='camp_type')
+                                        label(for='edit_camp_type') Type: #{camp.type || 'n/a'}
+                                        select.form-control(id='edit_camp_type', name='type')
                                             option(selected) ---
-                                            option food
-                                            option drinking/bar
-                                            option music
-                                            option workshops
-                                            option art-supporting
-                                            option other
+                                            option(value='food') food
+                                            option(value='drinking/bar') drinking/bar
+                                            option(value='music') music
+                                            option(value='workshops') workshops
+                                            option(value='art-supporting') art-supporting
+                                            option(value='other') other
                                 .col-md-4
                                     .input-group.col-xs-12
-                                        label(for='edit_camp_status') Status: #{camp.camp_status || 'n/a'}
-                                        select.form-control(id='edit_camp_status', name='camp_status')
+                                        label(for='edit_camp_status') Status: #{camp.status || 'n/a'}
+                                        select.form-control(id='edit_camp_status', name='status')
                                             option(selected) ---
                                             option(value='open') Open
                                             option(value='closed') Closed
@@ -78,9 +78,11 @@ block content
                                     .input-group.col-xs-12
                                         label(for='edit_camp_enabled') Publication: &nbsp;
                                         if camp.camp_enabled == 0
-                                            span Camp is public
+                                            span
+                                                | Camp is public
                                         else
-                                            span Camp is invisible
+                                            span
+                                                | Camp is invisible
                 //- Card 2
                 .card.card-second.card-hide
                     h4 Camp Behavior
@@ -138,4 +140,6 @@ block content
 
             .controls.row
                 .col-xs-12
+                    input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save') Save
+                    button.Btn.Btn__green(id='camp_edit_publish') Publish

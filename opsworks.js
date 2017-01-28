@@ -4,22 +4,22 @@
  * should be modified on production with correct configurations
  */
 
-exports.db = {
-    "client"        : "sqlite3",
-    "debug"         : false,
-    "filename"      : "./dev.sqlite3"
-};
+// exports.db = {
+//     "client"        : "sqlite3",
+//     "debug"         : false,
+//     "filename"      : "./dev.sqlite3"
+// };
 
 // mysql configuration example
-// exports.db = {
-//     "client"        : "mysql",
-//     "debug"         : false,
-//     "host"          : "localhost",
-//     "database"      : "spark",
-//     "user"          : "spark",
-//     "password"      : "spark",
-//     "charset"       : "utf8",
-// };
+exports.db = {
+    "client"        : "mysql",
+    "debug"         : false,
+    "host"          : "localhost",
+    "database"      : "spark",
+    "user"          : "root",
+    "password"      : "xxddcc",
+    "charset"       : "utf8",
+};
 
 exports.server = {
     port      : 3000,
