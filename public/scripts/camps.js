@@ -314,4 +314,21 @@ $('#join_camp_request_join_btn').click(function() {
             _sendRequest();
         }, 4000);
     });
+    /**
+     * Component: camp members
+     */
+
+    // TODO
+
+    /**
+      * Component: camp document & forms
+      */
+
+    // TODO
+
+    /**
+     * Component: create camp program
+     */
+
+    // TODO
 })
