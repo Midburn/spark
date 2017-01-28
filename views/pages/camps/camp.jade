@@ -35,26 +35,26 @@ block content
                             span #{t('camps:camps.art')} #{details.support_art}
                                 span.badge #{details.support_art ? 'yes':'no'}
             .row.card
-                .row.management.panel.col-md-12
+                .row.management.col-md-12
                     h4=t('camps:camps.management_title')
-                    .panel-body.col-md-4
+                    .panel-body.col-xs-12.col-md-4
                         .contact-info
-                            a.Btn.Btn__lg(href='/users/#{camp.main_contact}')
+                            a.Btn.Btn__card(href='/users/#{camp.main_contact}')
                                 span Main contact
                                 h6=t('camps:camps.more_info')
-                    .panel-body.col-md-4
+                    .panel-body.col-xs-12.col-md-4
                         .contact-info
-                            a.Btn.Btn__lg(href='/users/#{camp.moop_contact}')
+                            a.Btn.Btn__card(href='/users/#{camp.moop_contact}')
                                 span Moop contact
                                 h6=t('camps:camps.more_info')
-                    .panel-body.col-md-4
+                    .panel-body.col-xs-12.col-md-4
                         .contact-info
-                            a.Btn.Btn__lg(href='/users/#{camp.safety_contact}')
+                            a.Btn.Btn__card(href='/users/#{camp.safety_contact}')
                                 span Safety contact
                                 h6=t('camps:camps.more_info')
                             
 
-                .row.documents.col-md-12.panel
+                .row.documents.col-md-12
                     h4=t('camps:camps.docs')
                     .panel-body
                         | documents list here
