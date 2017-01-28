@@ -8,12 +8,12 @@ block content
         .controls.row
             .col-xs-12
                 //- Card switcher
-                button.Btn.Btn__default.card-switcher--card1 Basic Information
-                button.Btn.Btn__transparent.card-switcher--card2 Camp Details
+                button.Btn.Btn__default.card-switcher--card1=t('camps:new.basic_info')
+                button.Btn.Btn__transparent.card-switcher--card2=t('camps:new.details')
         .cards--wrapper.card__shad.row
             //- Card 1
             .card.card-first
-                h4 Camp Name & Description
+                h4=t('camps:new.name_card_header')
                 .camp-info.panel
                     .panel-body
                         .names.col-md-6
@@ -52,7 +52,7 @@ block content
                         .behaviour
                             .col-md-4
                                 .col-xs-12
-                                    label(for='create_camp_type')=t('camps:new.camp_type')
+                                    label(for='create_camp_type')=t('camps:new.type')
                                     input(id='create_camp_type', type="text", class="form-control", name="type")
             //- Card 2
             .card.card-second.card-hide
@@ -64,10 +64,10 @@ block content
                                 .col-xs-12
                                     label(for='create_camp_activity_time')=t('camps:new.camp_activity_time')
                                     select(id='create_camp_activity_time', class="form-control", name="camp_activity_time")
-                                        option(value="morning") morning
-                                        option(value="noon") noon
-                                        option(value="evening") evening
-                                        option(value="night") night
+                                        option(value="morning")=t('camps:new.camp_activity_time_morning')
+                                        option(value="noon")=t('camps:new.camp_activity_time_noon')
+                                        option(value="evening")=t('camps:new.camp_activity_time_evening')
+                                        option(value="night")=t('camps:new.camp_activity_time_night')
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_child_friendly')=t('camps:new.camp_child_friendly')
@@ -76,10 +76,10 @@ block content
                                 .col-xs-12
                                     label(for='create_camp_noise_level')=t('camps:new.camp_noise_level')
                                     select(id='create_camp_noise_level', class="form-control", name="noise_level")
-                                        option(value="quiet") quiet
-                                        option(value="medium") medium
-                                        option(value="noisy") noisy
-                                        option(value="very noisy") very noisy
+                                        option(value="quiet")=t('camps:new.camp_noise_level_quiet')
+                                        option(value="medium")=t('camps:new.camp_noise_level_medium')
+                                        option(value="noisy")=t('camps:new.camp_noise_level_noisy')
+                                        option(value="very noisy")=t('camps:new.camp_noise_level_very_noisy')
                 h4 Camp Public Area
                 .camp-details.panel
                     .panel-body
