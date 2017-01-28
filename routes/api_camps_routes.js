@@ -282,4 +282,13 @@ module.exports = function(app, passport) {
     app.post('/camps/join/request', (req, res) => {
         res.status(200).json({error: false})
     });
+
+    /**
+     * API: (POST) create Program
+     * request => /camps/program
+     */
+    app.post('/camps/program', (req, res) => {
+        console.log(success);
+        //TODO
+    });
 }
