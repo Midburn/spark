@@ -128,6 +128,8 @@
             "inactive": "לא זמין",
             "publication": "פומביות",
             "public": "מחנה פומבי",
+            "publish": "פרסם",
+            "unpublish": "הסרה מפרסום",
             "invisible": "מחנה פרטי", 
             "camp_activity_time": "שעות פעילות",
             "camp_child_friendly": "ידידותי לילדים",
