@@ -80,8 +80,8 @@ block content
                                         label(for='edit_camp_enabled') #{t('camps:edit.publication')}:
                                         p
                                             if camp.enabled == '1'
-                                                button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish') Unpublish
                                                 span.badge.bg__green=t('camps:edit.public')
+                                                button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
                                             else
                                                 span.badge.bg__red=t('camps:edit.invisible')
                 //- Card 2
@@ -143,4 +143,4 @@ block content
                 .col-xs-12
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
-                    button.Btn.Btn__green(id='camp_edit_publish') Publish
+                    button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
