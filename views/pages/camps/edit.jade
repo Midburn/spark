@@ -102,44 +102,45 @@ block content
                                     .input-group.col-xs-12
                                         label(for='edit_noise_level')=t('camps:edit.camp_noise_level')
                                         input.form-control(id='edit_noise_level', name='noise_level', value='#{details.noise_level}')
-                      h4=t('camps:edit.public_area_title')
-                      .camp-details.panel
-                          .panel-body
-                              .camp-public
-                                  .col-md-4
-                                      .input-group.col-xs-12
-                                          label(for='edit_public_activity_area_sqm')=t('camps:edit.public_activity_area_sqm')
-                                          input.form-control(id='edit_public_activity_area_sqm', name='public_activity_area_sqm', value='#{details.public_activity_area_sqm}')
-                                  .col-md-4
-                                      .input-group.col-xs-12
-                                          label(for='edit_public_activity_area_desc')=t('camps:edit.public_activity_area_desc')
-                                          input.form-control(id='edit_public_activity_area_desc', name='public_activity_area_desc', value='#{details.public_activity_area_desc}')
-                                  .col-md-4
-                                      .input-group.col-xs-12
-                                          label(for='edit_support_art')=t('camps:edit.support_art')
-                                          input.form-control(id='edit_support_art', name='public_support_art', value='#{details.support_art}')
-                      h4=t('camps:edit.location_title')
-                      .camp-details.panel
-                          .panel-body
-                              .camp-location
-                                  .col-md-4
-                                      .input-group.col-xs-12
-                                          label(for='edit_location_comments')=t('camps:edit.location_comments')
-                                          input.form-control(id='edit_location_comments', name='location_comments', value='#{details.location_comments}')
-                                  .col-md-4
-                                      .input-group.col-xs-12
-                                          label(for='edit_camp_location_street')=t('camps:edit.location_street')
-                                          input.form-control(id='edit_camp_location_street', name='camp_location_street', value='#{details.camp_location_street}')
-                                  .col-md-4
-                                      .input-group.col-xs-12
-                                          label(for='edit_camp_location_street_time')=t('camps:edit.location_time')
-                                          input.form-control(id='edit_camp_location_street_time', name='public_camp_location_street_time', value='#{details.camp_location_street_time}')
-                                  .col-md-4
-                                      .input-group.col-xs-12
-                                          label(for='edit_camp_location_area')=t('camps:edit.location_area')
-                                          input.form-control(id='edit_camp_location_area', name='public_camp_location_area', value='#{details.camp_location_area}')
+                    h4=t('camps:edit.public_area_title')
+                    .camp-details.panel
+                        .panel-body
+                            .camp-public
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_public_activity_area_sqm')=t('camps:edit.public_activity_area_sqm')
+                                        input.form-control(id='edit_public_activity_area_sqm', name='public_activity_area_sqm', value='#{details.public_activity_area_sqm}')
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_public_activity_area_desc')=t('camps:edit.public_activity_area_desc')
+                                        input.form-control(id='edit_public_activity_area_desc', name='public_activity_area_desc', value='#{details.public_activity_area_desc}')
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_support_art')=t('camps:edit.support_art')
+                                        input.form-control(id='edit_support_art', name='public_support_art', value='#{details.support_art}')
+                    h4=t('camps:edit.location_title')
+                    .camp-details.panel
+                        .panel-body
+                            .camp-location
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_location_comments')=t('camps:edit.location_comments')
+                                        input.form-control(id='edit_location_comments', name='location_comments', value='#{details.location_comments}')
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_location_street')=t('camps:edit.location_street')
+                                        input.form-control(id='edit_camp_location_street', name='camp_location_street', value='#{details.camp_location_street}')
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_location_street_time')=t('camps:edit.location_time')
+                                        input.form-control(id='edit_camp_location_street_time', name='public_camp_location_street_time', value='#{details.camp_location_street_time}')
+                                .col-md-4
+                                    .input-group.col-xs-12
+                                        label(for='edit_camp_location_area')=t('camps:edit.location_area')
+                                        input.form-control(id='edit_camp_location_area', name='public_camp_location_area', value='#{details.camp_location_area}')
 
             .controls.row
                 .col-xs-12
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
+                    button.Btn.Btn__green(id='camp_edit_publish') Publish
