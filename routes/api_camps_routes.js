@@ -163,18 +163,21 @@ module.exports = function(app, passport) {
     });
 
     /**
-     * API: (GET) return camp object, provide camp id
-     * request => /camps/1.json
+     * API: (GET) return published camps with:
+     * camp_name_en, camp_name_he, camp_desc_en, camp_desc_he, status,
+     * accept_families, contact_person_full_name, phone, email, facebook_page
+     * request => /published_camps
      */
-    app.get('/camps/:id.json', (req, res) => {
-        // find and return camp object by camp id
-        Camp.forge({id: req.params.id}).fetch().then((collection) => {
-            res.json({error: false, data: collection.toJSON()});
-        }).catch((e) => {
+    app.get('/published_camps', (req, res) => {
+        Camp.forge({enabled: 1}).fetch({
+            columns: ['camp_name_en', 'camp_name_he', 'camp_desc_en', 'camp_desc_he', 'status', 'accept_families', 'facebook_page_url', 'contact_person_id']
+        }).then((camp) => {
+            res.status(200).json({camps: camp.toJSON()})
+        }).catch((err) => {
             res.status(500).json({
                 error: true,
                 data: {
-                    message: e.message
+                    message: err.message
                 }
             });
         });
