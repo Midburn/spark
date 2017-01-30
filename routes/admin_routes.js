@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
 
-var security = require('../libs/security');
+var userRole = require('../libs/user_role');
 var mail = require('../libs/mail');
 
 var User = require('../models/user').User;
@@ -13,18 +13,18 @@ var npoConfig = config.get('npo');
 var serverConfig = config.get('server');
 var log = require('../libs/logger.js')(module);
 
-router.get('/', security.protectAdminGet, function (req, res, next) {
+router.get('/', userRole.isAdmin(), function (req, res, next) {
     res.render('admin/home.jade', {user: req.user});
 });
 
-router.get('/npo', security.protectAdminGet, function (req, res, next) {
+router.get('/npo', userRole.isAdmin(), function (req, res, next) {
     NpoMember.forge().query({where: {membership_status: NpoStatus.applied_for_membership}})
         .fetchAll({withRelated: ['user']}).then(function (members) {
         res.render('admin/npo.jade', {members: members.models});
     });
 });
 
-router.post('/npo', security.protectAdminGet, function (req, res, next) {
+router.post('/npo', userRole.isAdmin(), function (req, res, next) {
     if (req.body.action && req.body.emails) {
         switch (req.body.action) {
             case 'approve_membership' :

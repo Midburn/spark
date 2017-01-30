@@ -11,6 +11,7 @@ var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass');
+var recaptchaConfig = require('config').get('recaptcha');
 
 log.info('Spark is starting...');
 
@@ -130,6 +131,10 @@ app.use(middleware.handle(i18next, {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// user roles / permissions
+var userRole = require('./libs/user_role');
+app.use(userRole.middleware());
+
 // Infrastructure Routes
 if (app.get('env') === 'development') {
     app.use('/dev', require('./routes/dev_routes'));
@@ -151,8 +156,7 @@ var mail = require('./libs/mail');
 mail.setup(app);
 
 // Recaptcha setup with siteId & secret
-recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
-
+recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
 
 log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', app.get('env'));
 

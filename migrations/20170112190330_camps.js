@@ -1,8 +1,10 @@
+var constants = require('../models/constants.js');
+
 exports.up = function (knex, Promise) {
     return Promise.all([
 
         // Camps table
-        knex.schema.createTable('camps', function (table) {
+        knex.schema.createTable(constants.CAMPS_TABLE_NAME, function (table) {
             table.timestamps();
 
             // General information
@@ -15,8 +17,8 @@ exports.up = function (knex, Promise) {
             table.text('camp_desc_en', 'mediumtext');
 
             // Modifiers
-            table.enu('type', ['food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other']);
-            table.enu('status', ['deleted', 'open', 'closed', 'inactive']);
+            table.enu('type', constants.CAMP_TYPES);
+            table.enu('status', constants.CAMP_STATUSES);
             table.boolean('enabled').defaultTo(false);
 
             // Users relations
@@ -26,10 +28,10 @@ exports.up = function (knex, Promise) {
         }),
 
         // Camp Details table
-        knex.schema.createTable('camp_details', function (table) {
-            table.enu('camp_activity_time', ['morning', 'noon' ,'evening' ,'night']);
+        knex.schema.createTable(constants.CAMP_DETAILS_TABLE_NAME, function (table) {
+            table.enu('camp_activity_time', constants.CAMP_ACTIVITY_TIMES);
             table.boolean('child_friendly');
-            table.enu('noise_level', ['quiet' ,'medium' ,'noisy' ,'very noisy']);
+            table.enu('noise_level', constants.CAMP_NOISE_LEVELS);
             table.integer('public_activity_area_sqm');
             table.text('public_activity_area_desc', 'mediumtext');
             table.boolean('support_art');
@@ -43,7 +45,7 @@ exports.up = function (knex, Promise) {
         }),
         
         // Add users camp_id field
-        knex.schema.table('users', function (table) {
+        knex.schema.table(constants.USERS_TABLE_NAME, function (table) {
             table.integer('camp_id').unsigned();
         })
     ]);

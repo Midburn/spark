@@ -1,33 +1,26 @@
 footer.text-muted
     .container
         .row
-            .footer-nav.col-xs-12.col-sm-6
-                h4="Midburn"
-                ul
-                    li
-                        a(href='http://www.midburn.org') Visit the homepage
-                    li
-                        a(href='http://midburn.org/he-ten-principles/') Midburn 10 priciples
-                    li
-                        a(href='http://')=t('NPO')
-            .footer-nav.col-xs-12.col-sm-6
-                h4="Spark"
-                ul
-                    li
-                        a(href='#')=t('report error')
-                    li
-                        a(href='#')=t('ask question')
-                    li
-                        a(href='#')=t('help translate')
-            .footer-icons.col-xs-12
+            .footer-nav.col-xs-12.col-sm-4
+                a(href='http://www.midburn.org')=t('footer.visit_homepage')
+            .footer-icons.footer-nav.col-xs-12.col-sm-4
                 img.img-responsive.center-block(src='../../images/midburn_logo_120.png')
+            .footer-nav.col-xs-12.col-sm-4
+                a(href='#')=t('footer.report_error')
+        .row
             .footer-links.col-xs-12.text-center
                 ul
                     li
-                        span Spark is a open source project of Midburn IT.
+                        span=t('footer.spark')
+                        a(href='https://github.com/Midburn/Spark')=t('footer.open_source')
+                        span=t('footer.project')
                     li
-                        a(href='#')=t('want to contribute?')
+                        a(href='https://goo.gl/forms/fpJ2vcDrLSojyORy1')=t('footer.want_to_help')
+        .row
+            .footer-links.col-xs-12.text-center
+                ul
                     li
-                        a(href='#')=t('help!')
+                        a(href='http://midburn.org/terms-and-privacy/')=t('footer.toc')
+                    
                     li    
                         a(id='scroll_top', href='javascript:;')=t('footer.scrolltop')
