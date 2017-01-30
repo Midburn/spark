@@ -170,7 +170,7 @@ module.exports = function(app, passport) {
      */
     app.get('/published_camps', (req, res) => {
         Camp.forge({enabled: 1}).fetch({
-            columns: ['camp_name_en', 'camp_name_he', 'camp_desc_en', 'camp_desc_he', 'status']
+            columns: ['camp_name_en', 'camp_name_he', 'camp_desc_en', 'camp_desc_he', 'status', 'accept_families', 'facebook_page_url', 'contact_person_id']
         }).then((camp) => {
             res.status(200).json({camps: camp.toJSON()})
         }).catch((err) => {
