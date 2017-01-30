@@ -8,10 +8,11 @@ block content
                     input.form-control(type="text", placeholder="#{t('camps:stats.search')}", autofocus)
             table.table.table-striped
                 thead
-                    tr
+                    tr.headers
                         th #
                         th=t('camps:stats.name_en')
-                        th=t('camps:stats.name_he')
+                        th.contact_person=t('camps:stats.contact_person')
+                        th.status=t('camps:stats.status')
                         th.hidden-xs=t('camps:stats.last_update')
                         th.hidden-xs=t('camps:stats.created_at')
                         th.admin-edit=t('camps:stats.edit')

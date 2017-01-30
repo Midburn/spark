@@ -36,6 +36,8 @@ module.exports = function(app, passport) {
             camp_name_en: camp_name_en,
             camp_desc_he: req.body.camp_desc_he,
             camp_desc_en: req.body.camp_desc_en,
+            contact_person_id: req.body.contact_person,
+            facebook_page_url: req.body.facebook_page_url,
             main_contact: req.body.camp_main_contact,
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
@@ -94,9 +96,11 @@ module.exports = function(app, passport) {
                 camp_desc_en: req.body.camp_desc_en,
                 status: req.body.status,
                 type: req.body.type,
+                contact_person_id: req.body.contact_person,
+                facebook_page_url: req.body.facebook_page_url,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
-                safety_contact: req.body.safety_contact
+                safety_contact: req.body.safety_contact,
             }).then(function() {
                 res.json({error: false, status: 'updated'});
             }).catch(function(err) {

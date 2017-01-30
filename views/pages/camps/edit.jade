@@ -33,6 +33,19 @@ block content
                                 .col-xs-12
                                     label(for='edit_camp_desc_he')=t('camps:edit.name_he')
                                     textarea.form-control(id='edit_camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
+                    h4=t('camps:edit.website_publication')
+                    .camp-publication.panel
+                        .panel-body
+                            .information
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='edit_camp_contact_person_id')=t('camps:edit.contact_person_id')
+                                        select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
+                                            option.selected(value='#{camp.contact_person_id}', selected) #{camp.contact_person_id}
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
+                                        input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
                     h4=t('camps:edit.contact_title')
                     .camp-leaders.panel
                         .panel-body
@@ -78,12 +91,12 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_enabled') #{t('camps:edit.publication')}:
-                                        p
-                                            if camp.enabled == '1'
-                                                span.badge.bg__green=t('camps:edit.public')
-                                                button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
-                                            else
-                                                span.badge.bg__red=t('camps:edit.invisible')
+                                        
+                                        if camp.enabled == '1'
+                                            span.badge.bg__green=t('camps:edit.public')
+                                            button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
+                                        else
+                                            span.badge.bg__red=t('camps:edit.invisible')
                 //- Card 2
                 .card.card-second.card-hide
                     h4=t('camps:edit.behavior_title')

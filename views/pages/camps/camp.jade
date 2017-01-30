@@ -23,6 +23,9 @@ block content
                                 else
                                     span.badge.bg__red Close
                         li.list-group-item
+                            span Accept Families?
+                                span.badge #{camp.accept_families}
+                        li.list-group-item
                             span Time active
                                 span.badge #{details.camp_activity_time}
                         li.list-group-item
@@ -34,6 +37,20 @@ block content
                         li.list-group-item
                             span #{t('camps:camps.art')} #{details.support_art}
                                 span.badge #{details.support_art ? 'yes':'no'}
+            .row.card
+                .row.publication.col-md-12
+                    h4 Publication
+                    .panel-body.col-xs-12.col-md-4
+                        .contact-person.Btn.Btn__card
+                            a(href='/users/#{camp.contact_person}')
+                                span Contact person
+                            h6 Name
+                            h6 Phone
+                            h6 Email
+                    .panel-body.col-xs-12.col-md-4
+                        .facebook-info.Btn.Btn__card
+                            a(href='#{camp.facebook_page_url}', target='_blank')
+                                span Camp Facebook
             .row.card
                 .row.management.col-md-12
                     h4=t('camps:camps.management_title')

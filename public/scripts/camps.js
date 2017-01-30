@@ -82,9 +82,11 @@ function fetchUsersOnce(elm) {
         elm.attr('fetched', true);
     }
 }
-$(".camps.camp_create, .camps.camp_edit").load(function() {
-    var $inputs = ['create_camp_main_contact'];
-    fetchUsersOnce($($inputs));
+$(function() {
+    var $inputs = '#edit_camp_contact_person_id, #create_camp_contact_person_id';
+    if ($('.camps').is('.camp_edit') || $('.camps').is('.camp_create')) {
+        fetchUsersOnce($($inputs));
+    }
 });
 /**
  * getting camp list from API
@@ -106,7 +108,9 @@ function fetchCampsOnce() {
         });
 
         function template(data) {
-            return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.camp_name_he + "</td><td class='hidden-xs'>" + data.updated_at + "</td><td class='hidden-xs'>" + data.created_at + "</td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a href='camps/" + data.id + "/remove'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
+            var last_update = new Date(data.updated_at).toDateString(),
+                created_at = new Date(data.created_at).toDateString();
+            return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a href='camps/" + data.id + "/remove'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
         }
         fetchedCampsOnce = true;
     }
@@ -124,7 +128,7 @@ $(function() {
     innerHeightChange();
 });
 
-function closeCards(currentButton){
+function closeCards(currentButton) {
     $('.card').addClass('card-hide');
 }
 
@@ -150,7 +154,7 @@ $('.card-switcher--card1').click(function() {
     innerHeightChange();
 });
 $('.reveal_create_camp_btn').click(function() {
-    if(!($('.choose_name').hasClass('card-hide'))){
+    if (!($('.choose_name').hasClass('card-hide'))) {
         $('.choose_name').toggleClass('card-hide');
         return;
     } else {
@@ -160,7 +164,7 @@ $('.reveal_create_camp_btn').click(function() {
     innerHeightChange();
 });
 $('.reveal_join_camp_btn').click(function() {
-    if(!($('.card-second').hasClass('card-hide'))){
+    if (!($('.card-second').hasClass('card-hide'))) {
         $('.card-second').toggleClass('card-hide');
         return;
     } else {
@@ -170,7 +174,7 @@ $('.reveal_join_camp_btn').click(function() {
     innerHeightChange();
 });
 $('.reveal_manage_camp_btn').click(function() {
-    if(!($('.card-third').hasClass('card-hide'))){
+    if (!($('.card-third').hasClass('card-hide'))) {
         $('.card-third').toggleClass('card-hide');
         return;
     } else {
@@ -218,6 +222,8 @@ $('#camp_edit_save').click(function() {
             camp_name_en: $('#edit_camp_name_en').val(),
             camp_desc_he: $('#edit_camp_desc_he').val(),
             camp_desc_en: $('#edit_camp_desc_en').val(),
+            contact_person_id: $('#edit_camp_contact_person option:selected').val(),
+            facebook_page_url: $('#edit_camp_facebook_page_url').val(),
             main_contact: $('#edit_camp_main_contact option:selected').val(),
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
@@ -268,6 +274,8 @@ $('#camp_create_save').click(function() {
         camp_name_en: $('#create_camp_name_en').val(),
         camp_desc_he: $('#create_camp_desc_he').val(),
         camp_desc_en: $('#create_camp_desc_en').val(),
+        contact_person_id: $('#create_camp_contact_person_id option:selected').val(),
+        facebook_page_url: $('#create_camp_facebook_page_url').val(),
         main_contact: $('#create_camp_main_contact option:selected').val(),
         moop_contact: $('#create_camp_moop_contact option:selected').val(),
         safety_contact: $('#create_camp_safety_contact option:selected').val(),
@@ -299,7 +307,7 @@ $('#camp_create_save').click(function() {
             data: camp_data,
             success: function(result) {
                 var camp_id = result.data.camp_id;
-                $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href=' + $('body').attr('lang') + '/camps/' + camp_id + '/edit>here</a><span></h4>');
+                $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin,  $('body').attr('lang')].join('/') + '/camps/' + camp_id + '/edit">here</a><span></h4>');
                 $('#create_camp_request_modal').find('#camp_create_save_modal_request').hide();
                 // 5 sec countdown to close modal
                 var sec = 5;

@@ -30,6 +30,18 @@ block content
                             .col-xs-12
                                 label(for='create_camp_desc_en')=t('camps:new.desc_en')
                                 input(id='create_camp_desc_en', type="text", class="form-control", name="camp_desc_en")
+                h4=t('camps:edit.website_publication')
+                .camp-publication.panel
+                    .panel-body
+                        .information
+                            .col-md-6
+                                .col-xs-12
+                                    label(for='create_camp_contact_person_id')=t('camps:edit.contact_person_id')
+                                    select.form-control(id='create_camp_contact_person_id', name='contact_person_id')
+                            .col-md-6
+                                .col-xs-12
+                                    label(for='create_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
+                                    input.form-control(id='create_camp_facebook_page_url', name='facebook_page_url')
                 h4 Camp Contact Personnel
                 .camp-leaders.panel
                     .panel-body
