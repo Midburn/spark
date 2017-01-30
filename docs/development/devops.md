@@ -77,9 +77,6 @@ sudo service nginx restart
 
 Create a .env file in /opt/spark/.env based on [/.env-example](/.env-example)
 
-
-Replace "..." with the actual values
-
 For simple sqlite3 installation, you should create a file that will contain the database
 
 ```
