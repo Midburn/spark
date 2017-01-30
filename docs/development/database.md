@@ -4,7 +4,7 @@ The Spark project uses [Knex.js](http://knexjs.org/) to manage database connecti
 
 ### Database configuration
 
-In production, Knex uses the database configuration from the [opsworks.js](/opsworks.js) file.
+Knex uses the database configuration from the [.env](/.env-example) file.
 
 By default (local dev machine) it is configured to use Sqlite which doesn't require any special installation or setup.
 
@@ -62,18 +62,15 @@ SET PASSWORD = PASSWORD('xxxxxxxx');
 
 ##### Mysql configuration in Spark project
 
-Edit [opsworks.js](/opsworks.js) file and uncomment the relevant lines regarding mysql:
+Edit your .env file and set to use local mysql
 
 ```
-exports.db = {
-    "client"        : "mysql",
-    "debug"         : false,
-    "host"          : "localhost",
-    "database"      : "spark",
-    "username"      : "spark",
-    "password"      : "spark",
-    "charset"       : "UTF8_GENERAL_CI",
-};
+SPARK_DB_CLIENT=mysql
+SPARK_DB_HOSTNAME=localhost
+SPARK_DB_DBNAME=spark
+SPARK_DB_USER=spark
+SPARK_DB_PASSWORD=spark
+SPARK_DB_DEBUG=false
 ```
 
 Create the Spark database and user:
