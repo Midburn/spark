@@ -20,17 +20,17 @@ block content
                     .camp-info.panel
                         .panel-body
                             .names.col-md-6
-                                .input-group.col-xs-12
+                                .col-xs-12
                                     label(for='edit_camp_name_en')=t('camps:edit.name_en')
-                                    input.form-control(id='edit_camp_name_en', name='camp_name_en', value='#{camp.camp_name_en}', autofocus)
-                                .input-group.col-xs-12
+                                    input.form-control(id='edit_camp_name_en', name='camp_name_en', value='#{camp.camp_name_en}', readonly, autofocus)
+                                .col-xs-12
                                     label(for='edit_camp_name_he')=t('camps:edit.name_he')
                                     input.form-control(id='edit_camp_name_he', name='camp_name_he', value='#{camp.camp_name_he}')
                             .descriptions.col-md-6
-                                .input-group.col-xs-12
+                                .col-xs-12
                                     label(for='edit_camp_desc_en')=t('camps:edit.desc_en')
                                     textarea.form-control(id='edit_camp_desc_en', name='camp_desc_en') #{camp.camp_desc_en}
-                                .input-group.col-xs-12
+                                .col-xs-12
                                     label(for='edit_camp_desc_he')=t('camps:edit.name_he')
                                     textarea.form-control(id='edit_camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
                     h4=t('camps:edit.contact_title')
@@ -38,17 +38,17 @@ block content
                         .panel-body
                             .personnel
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_main_contact')=t('camps:edit.main_contact')
                                         select.form-control(id='edit_camp_main_contact', name='main_contact')
                                             option.selected(value='#{camp.main_contact}', selected) #{camp.main_contact}
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_moop_contact')=t('camps:edit.moop_contact')
                                         select.form-control(id='edit_camp_moop_contact', name='moop_contact')
                                             option.selected(value='#{camp.moop_contact}', selected) #{camp.moop_contact}
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_safety_contact')=t('camps:edit.safety_contact')
                                         select.form-control(id='edit_camp_safety_contact', name='safety_contact')
                                             option.selected(value='#{camp.safety_contact}', selected) #{camp.safety_contact}
@@ -57,7 +57,7 @@ block content
                         .panel-body
                             .camp-modifiers
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}: #{camp.type || 'n/a'}
                                         select.form-control(id='edit_camp_type', name='type')
                                             option(selected) ---
@@ -68,7 +68,7 @@ block content
                                             option(value='art-supporting')=t('camps:edit.art_supporting')
                                             option(value='other')=t('camps:edit.other')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || 'n/a'}
                                         select.form-control(id='edit_camp_status', name='status')
                                             option(selected) ---
@@ -76,7 +76,7 @@ block content
                                             option(value='closed')=t('camps:edit.closed')
                                             option(value='inactive')=t('camps:edit.inactive')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_enabled') #{t('camps:edit.publication')}:
                                         p
                                             if camp.enabled == '1'
@@ -91,15 +91,15 @@ block content
                         .panel-body
                             .camp-behavior
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_activity_time')=t('camps:edit.camp_activity_time')
                                         input.form-control(id='edit_camp_activity_time', name='camp_activity_time', value='#{details.camp_activity_time}', autofocus)
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_child_friendly')=t('camps:edit.camp_child_friendly')
                                         input.form-control(id='edit_child_friendly', name='child_friendly', value='#{details.child_friendly}')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_noise_level')=t('camps:edit.camp_noise_level')
                                         input.form-control(id='edit_noise_level', name='noise_level', value='#{details.noise_level}')
                     h4=t('camps:edit.public_area_title')
@@ -107,15 +107,15 @@ block content
                         .panel-body
                             .camp-public
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_public_activity_area_sqm')=t('camps:edit.public_activity_area_sqm')
                                         input.form-control(id='edit_public_activity_area_sqm', name='public_activity_area_sqm', value='#{details.public_activity_area_sqm}')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_public_activity_area_desc')=t('camps:edit.public_activity_area_desc')
                                         input.form-control(id='edit_public_activity_area_desc', name='public_activity_area_desc', value='#{details.public_activity_area_desc}')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_support_art')=t('camps:edit.support_art')
                                         input.form-control(id='edit_support_art', name='public_support_art', value='#{details.support_art}')
                     h4=t('camps:edit.location_title')
@@ -123,19 +123,19 @@ block content
                         .panel-body
                             .camp-location
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_location_comments')=t('camps:edit.location_comments')
                                         input.form-control(id='edit_location_comments', name='location_comments', value='#{details.location_comments}')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_location_street')=t('camps:edit.location_street')
                                         input.form-control(id='edit_camp_location_street', name='camp_location_street', value='#{details.camp_location_street}')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_location_street_time')=t('camps:edit.location_time')
                                         input.form-control(id='edit_camp_location_street_time', name='public_camp_location_street_time', value='#{details.camp_location_street_time}')
                                 .col-md-4
-                                    .input-group.col-xs-12
+                                    .col-xs-12
                                         label(for='edit_camp_location_area')=t('camps:edit.location_area')
                                         input.form-control(id='edit_camp_location_area', name='public_camp_location_area', value='#{details.camp_location_area}')
 
