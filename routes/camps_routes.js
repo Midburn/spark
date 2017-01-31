@@ -1,13 +1,22 @@
+// To compile .JSX files
+require('babel-register')({
+    presets: ['react']
+});
+
 const i18next = require('i18next'),
     recaptcha = require('express-recaptcha'),
     config = require('config'),
     i18nConfig = config.get('i18n'),
     serverConfig = config.get('server'),
     mailConfig = config.get('mail'),
-    userRole = require('../libs/user_role'),
+    security = require('../libs/security'),
     mail = require('../libs/mail'),
     log = require('../libs/logger.js')(module),
     breadcrumbs = require('express-breadcrumbs');
+
+// var React = require('react'),
+//     ReactDOMServer = require('react-dom/server'),
+//     Component = require('../Component.jsx');
 
 var Camp = require('../models/camp').Camp,
     User = require('../models/user').User;
@@ -19,7 +28,7 @@ module.exports = function(app, passport) {
     // Camps Routing
     // ==============
     // camps index page, create new camp
-    app.get('/:lng/camps', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps', security.protectGet, (req, res) => {
         app.use(breadcrumbs.setHome());
         req.breadcrumbs('camps-index');
         res.render('pages/camps/index', {
@@ -28,7 +37,7 @@ module.exports = function(app, passport) {
         });
     });
     // new camp
-    app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/new', security.protectGet, (req, res) => {
         req.breadcrumbs('camps-new_camp');
         res.render('pages/camps/new', {
             user: req.user,
@@ -36,7 +45,7 @@ module.exports = function(app, passport) {
         });
     });
     // camps statistics
-    app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps-stats', security.protectGet, (req, res) => {
         req.breadcrumbs('camps-statistic');
         res.render('pages/camps/stats', {
             user: req.user,
@@ -44,7 +53,7 @@ module.exports = function(app, passport) {
         });
     });
     // camps members board
-    app.get('/:lng/camps-members', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps-members', security.protectGet, (req, res) => {
         req.breadcrumbs('camps-members_board');
         res.render('pages/camps/members', {
             user: req.user,
@@ -52,7 +61,7 @@ module.exports = function(app, passport) {
         });
     });
     // camps documents
-    app.get('/:lng/camps-docs', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps-docs', security.protectGet, (req, res) => {
         req.breadcrumbs('camps-documents_and_forms');
         res.render('pages/camps/docs', {
             user: req.user,
@@ -63,7 +72,7 @@ module.exports = function(app, passport) {
      * CRUD Routes
      */
     // Read
-    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id', security.protectGet, (req, res) => {
         Camp
             .forge({
                 id: req.params.id
@@ -78,6 +87,7 @@ module.exports = function(app, passport) {
                     res.render('pages/camps/camp', {
                         user: req.user,
                         id: req.params.id,
+                        main_contact: user.toJSON(),
                         camp: camp.toJSON(),
                         details: camp.related('details').toJSON()
                     });
@@ -93,7 +103,7 @@ module.exports = function(app, passport) {
             });
     });
     // Edit
-    app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id/edit', security.protectGet, (req, res) => {
         Camp
             .forge({
                 id: req.params.id
@@ -110,7 +120,7 @@ module.exports = function(app, passport) {
             })
     });
     // Destroy
-    app.get('/:lng/camps/:id/remove', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id/remove', security.protectGet, (req, res) => {
         Camp
             .forge({
                 id: req.params.id
@@ -135,13 +145,13 @@ module.exports = function(app, passport) {
                     });
             });
     });
-    // Test Route for New Camp Program
-    // new Program
-    app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs('camps-new_program');
-        res.render('pages/camps/program', {
-            user: req.user,
-            camp_name_en: req.query.c
-        });
+    //
+    // (TESTING) React rendered camp list
+    //
+    app.get('/:lng/react', (req, res) => {
+        var HTML = ReactDOMServer.renderToString(
+            React.createElement(Component)
+        );
+        res.send(HTML);
     });
 };

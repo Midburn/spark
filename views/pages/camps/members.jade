@@ -1,7 +1,30 @@
 extends ../../includes/page
 block content
     .camps.camp_editing
-        section
+        section(ng-app="myApp", ng-controller="myCtrl")
             .heading.card.row
                 .col-md-12
-                    h2 Members Boards
+                  h2 Members Boards
+            .row
+                .col-md-12
+                  input(type='text', ng-model="searchMembers" , class="form-control", autofocus="true")
+            .row
+                .col-md-12
+                  table(class='table table-striped')
+                    thead
+                      tr
+                        th(ng-click='changeOrderBy("name")') Name
+                        th(ng-click='changeOrderBy("email")') Email
+                        th(ng-click='changeOrderBy("phone")') Phone
+                        th(ng-click='changeOrderBy("status")') Status
+                        th(ng-click='changeOrderBy("hasTicket")') Has Ticket
+                        th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
+                    tbody
+                      tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
+                        td {{member.name}}
+                        td {{member.email}}
+                        td {{member.phone}}
+                        td {{member.status}}
+                        td {{member.hasTicket}}
+                        td
+                          input(type='checkbox', ng-model='member.earlyArrival')
