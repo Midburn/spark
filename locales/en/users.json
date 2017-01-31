@@ -1,0 +1,22 @@
+{
+    "birthday": "Date of Birth",
+    "occupation": "Occupation",
+    "hobbies": "Hobbies",
+    "fields": {
+        "occupations": {
+            "artist": "Artist",
+            "engineer": "Engineer"
+        },
+        "hobbies": {
+            "music" : "Music",
+            "movies": "Muvies"
+        },
+        "ways_of_paricipation" : {
+            "theme_camp" : "Theme Camp" , 
+            "sound_camp" : "Sound Camp", 
+            "art_installation" : "Art Installation", 
+            "volunteering": "Volunteering",
+            "havent_decided": "Haven't decided yet..."
+        }
+    }
+}

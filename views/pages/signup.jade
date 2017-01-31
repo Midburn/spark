@@ -55,69 +55,69 @@ block wrapper
                         | &nbsp; #{t('other')}
                     .help-block.with-errors
                 .form-group
-                    label=t('bday')
+                    label=t('users:birthday')
                     input(type="date", class="form-control",name="bday", value="#{(body && body.bday)||''}", data-error="#{t('mandatory_field')}", required )
 
                 .form-group
-                    label=t('phone_number')
+                    label=t('users:phone_number')
                     input( type="text", class="form-control", name="phone_number", value="#{(body && body.last_name)||''}", data-error="#{t('mandatory_field')}", required )
 
                 .form-group
-                    label=t('nationality')
+                    label=t('users:nationality')
                     select(class="form-control", name="nationality", value="#{(body && body.nationality)||''}", data-error="#{t('mandatory_field')}", required )
-                        each country, i in choices.countries(language)
-                            option(value=country.identifier, selected=(body&&body.nationality===country.identifier)) #{country.translation}
+                        each country, i in choices.COUNTRIES
+                            option(value=country, selected=(body&&body.nationality===country)) #{t('users:fields.countries.' + country)}
 
                 .form-group
-                    label=t('passport_id')
+                    label=t('users:passport_id')
                     input( type="text", class="form-control", name="passport_id", value="#{(body && body.passport_id)||''}", data-error="#{t('mandatory_field')}", required )
 
                 //connect togoogle api?
                 .form-group
-                    label=t('address')
+                    label=t('users:address')
                     input( type="text", id="address" class="form-control", name="formatted_address", value="#{(body && body.formatted_address)||''}", data-error="#{t('mandatory_field')}", required )
 
                 .form-group
-                    label=t('occupation')
+                    label=t('users:occupation')
                     select(class="form-control", name="occupation", value="#{(body && body.occupation)||''}", data-error="#{t('mandatory_field')}", required )
-                        each occupation, i in choices.occupations(language)
-                            option(value=occupation.identifier, selected=(body&&body.occupation===occupation.identifier)) #{occupation.translation}
+                        each occupation, i in choices.OCCUPATIONS
+                            option(value=occupation, selected=(body&&body.occupation===occupation)) #{t('users:fields.occupations.' + occupation)}
 
                 .form-group
-                    label=t('hobbies')
+                    label=t('users:hobbies')
                     select(class="form-control", name="hobbies", value="#{(body && body.hobbies)||''}", data-error="#{t('mandatory_field')}", required )
-                        each hobby, i in choices.hobbies(language)
-                            option(value=hobby.identifier, selected=(body&&body.hobbies===hobby.identifier)) #{hobby.translation}
+                        each hobby, i in choices.HOBBIES
+                            option(value=hobby, selected=(body&&body.hobbies===hobby)) #{t('users:fields.hobbies.' + hobby)}
 
 
                 .form-group
-                    label=t('id_copy')
+                    label=t('users:profile_image')
                     input( type="file", class="form-control", id="id_copy_file",  data-error="#{t('mandatory_field')}", required )
 
                 button(type="submit", class="btn btn-next")=t('next')
 
             fieldset
                 .form-group
-                    label=t('playa_name')
+                    label=t('users:playa_name')
                     input( type="text", class="form-control", id="playa_name", name='playa_name', value="#{(body && body.playa_name)||''}", data-error="#{t('mandatory_field')}", required )
 
                 .form-group
-                    p=t('prev_burn_man_events')
-                    each burn_man_event, i in choices.burning_man_events()
+                    p=t('users:prev_burn_man_events')
+                    each burn_man_event, i in choices.BURNING_MAN_EVENTS
                         label( class="form-control") "#{burn_man_event}"
                             input( type="checkbox",  id="prev_burn_man_events", name="burn_man_events" value="#{i}")
 
                 .form-group
-                    p=t('prev_midburn_events')
-                    each midburn_event, i in choices.midburn_events()
+                    p=t('users:prev_midburn_events')
+                    each midburn_event, i in choices.MIDBURN_EVENTS
                         label( class="form-control") "#{midburn_event}"
                             input( type="checkbox",  id="prev_midburn_events", name="midburn_events" value="#{i}")
 
                 .form-group
-                    label=t('how_plan_to_participate')
+                    label=t('users:how_plan_to_participate')
                     select(class="form-control", name="way_of_paricipation", value="#{(body && body.way_of_paricipation)||''}", data-error="#{t('mandatory_field')}", required )
-                        each way_of_paricipation, i in choices.ways_of_paricipation(language)
-                            option(value=way_of_paricipation.identifier) #{way_of_paricipation.translation}
+                        each way_of_paricipation, i in choices.WAYS_OF_PARICIPATION
+                            option(value=way_of_paricipation) #{t('users:fields.ways_of_paricipation.' + way_of_paricipation)}
 
 
                 button(type="button", class="btn btn-previous")=t('previous')
@@ -125,7 +125,7 @@ block wrapper
 
             fieldset
                 .form-group
-                    label( class="form-control")=t('have_medical_training')
+                    label( class="form-control")=t('users:have_medical_training')
                         input( type="checkbox",  id="have_medical_training", name="medical_training" value="#{(body && body.medical_training)||''}")
                 
                 .form-group#medical_training_details(class="display-none")
@@ -133,7 +133,7 @@ block wrapper
                     input( type="text", class="form-control", name='medical_training_details' value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}")
 
                 .form-group
-                    label( class="form-control")=t('have_medical_condition')
+                    label( class="form-control")=t('users:have_medical_condition')
                         input( type="checkbox",  id="have_medical_condition", name="medical_condition" checked=(body && body.medical_condition))
                 
                 .form-group#medical_condition_details(class=((body && body.medical_condition) ? '' : "display-none"))

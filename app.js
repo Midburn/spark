@@ -80,7 +80,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps'],
+        ns: ['common', 'camps', 'users'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
