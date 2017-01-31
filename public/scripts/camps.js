@@ -119,10 +119,10 @@ function fetchCampsOnce() {
     }
 }
 function _removeCamp(camp_id) {
-    var approve_delete = confirm('You are about to delete this camp, \n\nAre you sure?');
-    if (approve_delete) {
-        $.post("camps / " + camp_id + " / remove", function(res) {
-            console.log(res);
+    var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + ' forever.\n\n\n---\n Are you sure?');
+    if (agree_remove) {
+        $.get("camps/" + camp_id + "/remove", function(res) {
+            window.location.reload();
         });
     }
 }
