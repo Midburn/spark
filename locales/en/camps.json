@@ -71,15 +71,19 @@
             "request": "Request to join"
         },
         "manage": {
-            "manage_a_camp": "Manage a camp"
+            "manage_a_camp": "Manage camps"
         },
         "stats": {
             "title": "Camp Statistics",
             "name_en": "Name (English)",
             "name_he": "Name (Hebrew)",
+            "contact_person": "Contact Person",
+            "status": "Status",
             "last_update": "Last update",
             "created_at": "Created at",
             "edit": "Edit",
+            "published": "Published",
+            "facebook_page_url": "Facebook Page",
             "remove": "Remove",
             "search": "Search Camp"
         },

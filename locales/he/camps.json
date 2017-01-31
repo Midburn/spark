@@ -71,15 +71,19 @@
             "name_en": "שם המחנה (אנגלית)"
         },
         "manage": {
-            "manage_a_camp": "נהל מחנה"
+            "manage_a_camp": "נהל מחנות"
         },
         "stats": {
             "title": "נתוני מחנה",
             "name_en": "שם (אנגלית)",
             "name_he": "שם (עברית)",
+            "contact_person": "איש קשר",
+            "status": "סטטוס",
             "last_update": "עדכון אחרון",
             "created_at": "נוצר בתאריך",
             "edit": "עריכה",
+            "published": "מפורסם",
+            "facebook_page_url": "דף פייסבוק",
             "remove": "הסרה",
             "search": "חפש מחנה"
         },
@@ -130,7 +134,7 @@
             "public": "מחנה פומבי",
             "publish": "פרסם",
             "unpublish": "הסרה מפרסום",
-            "invisible": "מחנה פרטי", 
+            "invisible": "מחנה פרטי",
             "camp_activity_time": "שעות פעילות",
             "camp_child_friendly": "ידידותי לילדים",
             "camp_noise_level": "רמת רעש",

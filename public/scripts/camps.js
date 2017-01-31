@@ -24,7 +24,7 @@ $('#scroll_top').click(function() {
  * evalute & validate camp name (English) must be > 3 letters
  * listen to change with timer, to prevent redundant http requests
  */
-var interval = 1200,
+var interval = 800,
     typingTimer,
     $input = $(".camps.camp_index input[name='camp_name_en']");
 
@@ -109,14 +109,32 @@ function fetchCampsOnce() {
 
         function template(data) {
             var last_update = new Date(data.updated_at).toDateString(),
-                created_at = new Date(data.created_at).toDateString();
-            return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a href='camps/" + data.id + "/remove'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
+                created_at = new Date(data.created_at).toDateString(),
+                enabled = data.enabled
+                    ? 'Yes'
+                    : 'No';
+            return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + enabled + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
         }
         fetchedCampsOnce = true;
     }
 }
+function _removeCamp(camp_id) {
+    var approve_delete = confirm('You are about to delete this camp, \n\nAre you sure?');
+    if (approve_delete) {
+        $.post("camps / " + camp_id + " / remove", function(res) {
+            console.log(res);
+        });
+    }
+}
 $stats_table.load(fetchCampsOnce());
 
+// Search camp
+$('#camps_stats_search_camp').keyup(function(input) {
+    $('.camps.stats table').find('tr:not(.headers)').hide();
+    var camp_name_en = input.target.value;
+    $('.camps.stats table').find('td:contains("' + camp_name_en + '")').parent().show();
+
+});
 // TODO: fix inner height for dynamic width size changing
 function innerHeightChange() {
     var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
@@ -214,6 +232,7 @@ $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
 });
 /**
  * Component: Editing camp
+ * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
     var camp_id = $('#camp_edit_camp_id').val(),
@@ -222,14 +241,25 @@ $('#camp_edit_save').click(function() {
             camp_name_en: $('#edit_camp_name_en').val(),
             camp_desc_he: $('#edit_camp_desc_he').val(),
             camp_desc_en: $('#edit_camp_desc_en').val(),
-            contact_person_id: $('#edit_camp_contact_person option:selected').val(),
+            contact_person_id: $('#edit_camp_contact_person_id option:selected').val(),
             facebook_page_url: $('#edit_camp_facebook_page_url').val(),
             main_contact: $('#edit_camp_main_contact option:selected').val(),
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
             status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
             type: $('#edit_camp_type option:selected').attr('value') || $('label[for="edit_camp_type"]').attr('data-camp-type'),
-            enabled: $('#edit_camp_enabled option:selected').val()
+            enabled: $('#edit_camp_enabled option:selected').val(),
+            noise_level: $('#edit_camp_noise_level option:selected').val(),
+            camp_activity_time: $('#edit_camp_activity_time option:selected').text(),
+            child_friendly: $('#edit_camp_child_friendly:checked').length,
+            noise_level: $('#edit_camp_noise_level option:selected').val(),
+            public_activity_area_sqm: $('#edit_camp_public_activity_area_sqm').val(),
+            public_activity_area_desc: $('#edit_camp_public_area_desc').val(),
+            support_art: $('#edit_support_art:checked').length,
+            location_comments: $('#edit_location_comments').val(),
+            camp_location_street: $('#edit_camp_location_street').val(),
+            camp_location_street_time: $('#edit_camp_location_street_time').val(),
+            camp_location_area: $('#edit_camp_location_area').val()
         };
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
@@ -281,10 +311,15 @@ $('#camp_create_save').click(function() {
         safety_contact: $('#create_camp_safety_contact option:selected').val(),
         type: $('#create_camp_type option:selected').val(),
         camp_activity_time: $('#create_camp_activity_time option:selected').val(),
-        child_friendly: $('#create_child_friendly').val(),
-        noise_level: $('#create_noise_level option:selected').val(),
-        public_activity_area_sqm: $('#create_public_activity_area_sqm').val(),
-        public_activity_area_desc: $('#create_public_activity_area_desc').val()
+        child_friendly: $('#create_camp_child_friendly:checked').length,
+        noise_level: $('#create_camp_noise_level option:selected').val(),
+        public_activity_area_sqm: $('#create_camp_public_activity_area_sqm').val(),
+        public_activity_area_desc: $('#create_camp_public_area_desc').val(),
+        support_art: $('#create_support_art:checked').length,
+        location_comments: $('#create_location_comments').val(),
+        camp_location_street: $('#create_camp_location_street').val(),
+        camp_location_street_time: $('#create_camp_location_street_time').val(),
+        camp_location_area: $('#create_camp_location_area').val()
     };
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
@@ -307,17 +342,17 @@ $('#camp_create_save').click(function() {
             data: camp_data,
             success: function(result) {
                 var camp_id = result.data.camp_id;
-                $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin,  $('body').attr('lang')].join('/') + '/camps/' + camp_id + '/edit">here</a><span></h4>');
+                $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin, $('body').attr('lang')].join('/') + '/camps/' + camp_id + '/edit">here</a><span></h4>');
                 $('#create_camp_request_modal').find('#camp_create_save_modal_request').hide();
-                // 5 sec countdown to close modal
-                var sec = 5;
+                // 10 sec countdown to close modal
+                var sec = 10;
                 setInterval(function() {
                     $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
                     sec -= 1;
                 }, 1000);
                 setTimeout(function() {
                     $('#create_camp_request_modal').modal('hide');
-                }, 5000);
+                }, sec * 1000);
             }
         });
     }
