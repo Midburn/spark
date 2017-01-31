@@ -1,0 +1,38 @@
+extends layout
+block content
+    .row
+        .x_panel
+            .x_title
+                h2
+                    =" "+title.text
+                    small=title.small
+                if rightPanelToolbox
+                    ul.nav.navbar-right.panel_toolbox
+                        li
+                            a.collapse-link
+                                i.fa.fa-chevron-up
+                        li.dropdown
+                            a.dropdown-toggle(role='button', aria-expanded='false', href='#', data-toggle='dropdown')
+                                i.fa.fa-wrench
+                            ul.dropdown-menu(role='menu')
+                        li
+                            a
+                                i.fa.fa-close
+                .clearfix
+            .x_content
+                if subtitle
+                    p
+                        | Add class
+                        code bulk_action
+                        |  to table for bulk actions options on row select
+                .table-responsive
+                    table.table.table-striped.table-bordered.dataTable
+                        thead
+                            tr
+                                for column in columns
+                                    th(class="sorting"+(column.sorting?"_"+column.sorting:""))= column.title
+                        tbody
+                            for row in rows
+                                tr(role="row")
+                                    for cell in row.cells
+                                        td= cell.text

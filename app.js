@@ -12,6 +12,9 @@ var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass');
 var recaptchaConfig = require('config').get('recaptcha');
+var KnexSessionStore = require('connect-session-knex')(session);
+var knex = require('./libs/db').knex;
+
 
 log.info('Spark is starting...');
 
@@ -49,6 +52,8 @@ app.use(compileSass({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+
 app.use(function(req, res, next) {
     res.locals.req = req;
     res.locals.path = req.path.split('/');
@@ -57,11 +62,13 @@ app.use(function(req, res, next) {
 
 // Passport setup
 require('./libs/passport')(passport);
+var sessionStore = new KnexSessionStore({knex: knex});
 app.use(session({
     secret: 'SparklePoniesAreFlyingOnEsplanade',
     resave: false,
     saveUninitialized: false,
-    maxAge: 1000 * 60 * 30
+    maxAge: 1000 * 60 * 30,
+    store: sessionStore
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -139,8 +146,9 @@ app.use(userRole.middleware());
 if (app.get('env') === 'development') {
     app.use('/dev', require('./routes/dev_routes'));
 }
-app.use('/:lng?/admin', require('./routes/admin_routes'));
 require('./routes/main_routes.js')(app, passport);
+
+app.use('/:lng?/admin', require('./routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
