@@ -61,6 +61,7 @@ section {
 
     &__sm {
         font-size: 12px;
+        margin: 1em;
     }
 
     &__lg {
@@ -288,7 +289,7 @@ body[lang="en"] {
 
 .multi-select-option {
     margin-top: 3px;
-    
+
     span {
         margin: 0 3px;
     }
