@@ -132,7 +132,8 @@ module.exports = function (app, passport) {
         return res.render('pages/signup', {
             errorMessage: req.flash('error'),
             body: req.body, //repopulate fields in case of error
-            recaptcha_sitekey: recaptchaConfig.sitekey
+            recaptcha_sitekey: recaptchaConfig.sitekey,
+            choices: signup_choices
         });
     };
 
