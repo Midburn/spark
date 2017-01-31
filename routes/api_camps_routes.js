@@ -36,6 +36,8 @@ module.exports = function(app, passport) {
             camp_name_en: camp_name_en,
             camp_desc_he: req.body.camp_desc_he,
             camp_desc_en: req.body.camp_desc_en,
+            contact_person_id: req.body.contact_person,
+            facebook_page_url: req.body.facebook_page_url,
             main_contact: req.body.camp_main_contact,
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
@@ -94,11 +96,28 @@ module.exports = function(app, passport) {
                 camp_desc_en: req.body.camp_desc_en,
                 status: req.body.status,
                 type: req.body.type,
+                contact_person_id: req.body.contact_person,
+                facebook_page_url: req.body.facebook_page_url,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
             }).then(function() {
-                res.json({error: false, status: 'updated'});
+              // TODO: not working with this table. need-a-fix
+                CampDetails.forge({
+                    camp_id: req.params.id,
+                    camp_activity_time: req.body.camp_activity_time,
+                    child_friendly: req.body.child_friendly,
+                    noise_level: req.body.noise_level,
+                    public_activity_area_sqm: req.body.public_activity_area_sqm,
+                    public_activity_area_desc: req.body.public_activity_area_desc,
+                    support_art: req.body.support_art,
+                    location_comments: req.body.location_comments,
+                    camp_location_street: req.body.camp_location_street,
+                    camp_location_street_time: req.body.camp_location_street_time,
+                    camp_location_area: req.body.camp_location_area
+                }).save().then(() => {
+                    res.json({error: false, status: 'Camp updated'});
+                });
             }).catch(function(err) {
                 res.status(500).json({
                     error: true,
@@ -170,7 +189,16 @@ module.exports = function(app, passport) {
      */
     app.get('/published_camps', (req, res) => {
         Camp.forge({enabled: 1}).fetch({
-            columns: ['camp_name_en', 'camp_name_he', 'camp_desc_en', 'camp_desc_he', 'status', 'accept_families', 'facebook_page_url', 'contact_person_id']
+            columns: [
+                'camp_name_en',
+                'camp_name_he',
+                'camp_desc_en',
+                'camp_desc_he',
+                'status',
+                'accept_families',
+                'facebook_page_url',
+                'contact_person_id'
+            ]
         }).then((camp) => {
             res.status(200).json({camps: camp.toJSON()})
         }).catch((err) => {

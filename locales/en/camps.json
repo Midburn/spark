@@ -71,15 +71,19 @@
             "request": "Request to join"
         },
         "manage": {
-            "manage_a_camp": "Manage a camp"
+            "manage_a_camp": "Manage camps"
         },
         "stats": {
             "title": "Camp Statistics",
             "name_en": "Name (English)",
             "name_he": "Name (Hebrew)",
+            "contact_person": "Contact Person",
+            "status": "Status",
             "last_update": "Last update",
             "created_at": "Created at",
             "edit": "Edit",
+            "published": "Published",
+            "facebook_page_url": "Facebook Page",
             "remove": "Remove",
             "search": "Search Camp"
         },
@@ -111,7 +115,7 @@
             "desc_en": "Description (English)",
             "desc_he": "Description (Hebrew)",
             "contact_title": "Camp Contact Personnel",
-            "main_contact": "Main contact",
+            "main_contact": "Main Contact",
             "moop_contact": "Moop Contact",
             "safety_contact": "Safety Contact",
             "behavior_title": "Behavior",
@@ -130,7 +134,7 @@
             "public": "Camp is public",
             "publish": "Publish",
             "unpublish": "Unpublish",
-            "invisible": "Camp is invisible", 
+            "invisible": "Camp is invisible",
             "camp_activity_time": "Activity time",
             "camp_child_friendly": "Child friendly",
             "camp_noise_level": "Noise level",
@@ -142,7 +146,10 @@
             "location_comments": "Comments",
             "location_street": "Street",
             "location_time": "Time",
-            "location_area": "Area"
+            "location_area": "Area",
+            "website_publication": "Website Publication",
+            "contact_person_id": "Contact Person",
+            "facebook_page_url": "Facebook Page Link"
         },
         "program": {
             "page_title": "Create new Program",
