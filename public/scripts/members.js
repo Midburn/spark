@@ -1,6 +1,6 @@
-var app = angular.module("myApp", []);
+var app = angular.module("ngCamps", []);
 
-app.controller("myCtrl", function($scope) {
+app.controller("membersController", function($scope) {
   function getMembers(){
     $scope.members = [
       {
@@ -56,20 +56,3 @@ app.controller("myCtrl", function($scope) {
     $scope.orderMembers = orderByValue;
   }
 });
-
-
-
-
-// http://www.json-generator.com/
-// [
-//   '{{repeat(5, 7)}}',
-//   {
-//     _id: '{{objectId()}}',
-//     name: '{{firstName()}} {{surname()}}',
-//     email: '{{email()}}',
-//     phone: '+972 {{phone()}}',
-//     status: '{{random("Approved", "Waiting", "Not in Camp")}}',
-//     hasTicket: '{{bool()}}',
-//     earlyArrival: '{{bool()}}'
-//   }
-// ]

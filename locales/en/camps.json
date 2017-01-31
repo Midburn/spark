@@ -88,6 +88,9 @@
             "remove": "Remove",
             "search": "Search Camp"
         },
+        "members": {
+          "title": "Members Boards"
+        },
         "camps": {
             "title": "Camp",
             "style": "Camp Style",
