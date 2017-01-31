@@ -9,6 +9,7 @@
             "join_request_desc": "The request to the camp manager will be sent with these details",
             "join_close": "Close",
             "join_send": "Send Request",
+            "arrow": "→",
             "stats": {
                 "title": "Statistics & Information"
             },
