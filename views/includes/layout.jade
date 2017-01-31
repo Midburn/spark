@@ -16,21 +16,19 @@ head
       link( rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css")
 
     link( rel="stylesheet", href="/stylesheets/main.scss" )
-    link( rel="stylesheet", href="/stylesheets/style.css" )
-    script(src='/gentelella/vendors/jquery/dist/jquery.min.js' )
-    script( src="/_core.js")
-    script(src="/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
-    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
-    crossorigin="anonymous" )
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
     include footer
     //- Scripts
+    script(src='/gentelella/vendors/jquery/dist/jquery.min.js' )
+    script(src="/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
+        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
+        crossorigin="anonymous" )
     script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
-    script(async src="https://www.google.com/recaptcha/api.js")
+    script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
     script(src="/scripts/camps.js")
-    
-    script( src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAEwDOIxBPNObn3UZPujRGgWNAQijV5A5M&language=#{language}&libraries=places")
+    script(src="/scripts/multiselect.js")
+    script(src="/scripts/camps_v2.js")
     script( src="/jquery.geocomplete.js")
     script( src="/multistep-form.js") 

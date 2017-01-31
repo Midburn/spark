@@ -1,11 +1,85 @@
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var i18next = require('i18next');
-
-// load up the user model
 var User = require('../models/user').User;
-
+var DrupalUser = require('../models/user').DrupalUser;
 var facebookConfig = require('config').get("facebook");
+var constants = require('../models/constants');
+
+/***
+ * tries to login based on drupal users table
+ * once user is successfully logged-in, an automatic sign-up flow is performed which creates a corresponding spark user
+ * @param email
+ * @param password
+ * @param done
+ */
+var drupal_login = function(email, password, done) {
+    DrupalUser.forge({name: email}).fetch().then(function(drupalUser) {
+        if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status == 1) {
+            // valid drupal password
+            // drupal user status is 1
+            // can sign up a spark user with some defaults
+            // TODO: get these details from the old profiles system
+            signup(email, password, {
+                first_name: email,
+                last_name: "",
+                gender: constants.USER_GENDERS_DEFAULT,
+                validated: true
+            }, function(newUser, error) {
+                if (newUser) {
+                    done(newUser);
+                } else {
+                    done(false, error);
+                }
+            });
+        } else {
+            done(false, i18next.t('invalid_user_password'));
+        }
+    });
+};
+
+var login = function(email, password, done) {
+    new User({email: email}).fetch().then(function (user) {
+        if (user === null) {
+            // no corresponding spark user is found
+            // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
+            // on next login - there will be a spark user, so drupal login will not be attempted again
+            drupal_login(email, password, done);
+        } else if (!user.validPassword(password)) {
+            done(false, i18next.t('invalid_user_password'));
+        } else if (!user.attributes.validated) {
+            done(false, i18next.t('user_not_validated', {email: email}));
+        } else if (!user.attributes.enabled) {
+            done(false, i18next.t('user_disabled'));
+        } else {
+            done(user);
+        }
+    });
+};
+
+var signup = function(email, password, user, done) {
+    var userPromise = new User({email: email}).fetch();
+    userPromise.then(function (model) {
+        if (model) {
+            done(false, i18next.t('user_exists'));
+        } else {
+            var newUser = new User({
+                email: email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                gender: user.gender,
+                validated: user.validated
+            });
+            newUser.generateHash(password);
+            if (!user.validated) {
+                newUser.generateValidation();
+            }
+            newUser.save().then(function (model) {
+                done(newUser);
+            });
+        }
+    });
+};
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
@@ -38,28 +112,11 @@ module.exports = function (passport) {
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
     function (req, email, password, done) {
-        var user = req.body;
-        var userPromise = new User({email: email}).fetch();
-
-        console.log("local-signup Strategy");
-
-        return userPromise.then(function (model) {
-            if (model) {
-                return done(null, false, req.flash('error', i18next.t('user_exists')));
+        signup(email, password, req.body, function(user, error) {
+            if (user) {
+                done(null, user, null);
             } else {
-                var userParams = {
-                    email: user.email,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    gender: user.gender
-                };
-                var newUser = new User(userParams);
-                newUser.generateHash(password);
-                newUser.generateValidation();
-
-                return newUser.save().then(function () {
-                    return done(null, newUser, null);
-                });
+                done(null, false, req.flash('error', error));
             }
         });
     }));
@@ -74,23 +131,11 @@ module.exports = function (passport) {
             passReqToCallback: true
         },
         function (req, email, password, done) {
-            new User({email: email}).fetch().then(function (data) {
-                var user = data;
-                if (user === null) {
-                    return done(null, false, req.flash('error', i18next.t('invalid_user_password')));
+            login(email, password, function(user, error) {
+                if (user) {
+                    done(null, user, null);
                 } else {
-                    if (!user.validPassword(password)) {
-                        return done(null, false, req.flash('error', i18next.t('invalid_user_password')));
-                    } else {
-                        if (!user.attributes.validated) {
-                            return done(null, false, req.flash('error', i18next.t('user_not_validated', {email: email})));
-                        }
-                        if (!user.attributes.enabled) {
-                            return done(null, false, req.flash('error', i18next.t('user_disabled')));
-                        }
-
-                        return done(null, user, null);
-                    }
+                    done(null, false, req.flash('error', error));
                 }
             });
         }));

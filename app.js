@@ -11,6 +11,7 @@ var fileUpload = require('express-fileupload');
 var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass');
+var recaptchaConfig = require('config').get('recaptcha');
 
 log.info('Spark is starting...');
 
@@ -48,7 +49,7 @@ app.use(compileSass({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.locals.req = req;
     res.locals.path = req.path.split('/');
     next();
@@ -78,8 +79,11 @@ i18next
         fallbackLng: 'en',
         load: 'languageOnly',
         debug: false,
-        ns: ["common", "countries"],
+        //namespaces
+        ns: ['common', 'camps'],
         defaultNS: 'common',
+        fallbackNS: 'common',
+
         backend: {
             // path where resources get loaded from
             loadPath: 'locales/{{lng}}/{{ns}}.json',
@@ -87,8 +91,7 @@ i18next
             // path to post missing resources
             addPath: 'locales/{{lng}}.missing.json',
 
-            // jsonIndent to use when storing json files,
-            
+            // jsonIndent to use when storing json files
             jsonIndent: 2
         },
         detection: {
@@ -113,7 +116,7 @@ i18next
         middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function(req, res) {
             //endpoint function
             log.info("ROUTE");
-        })
+        });
     });
 app.use(middleware.handle(i18next, {
     ignoreRoutes: ['images/', 'images', 'images/', '/images/', 'stylesheets', '/favicon.ico'],
@@ -127,6 +130,10 @@ app.use(middleware.handle(i18next, {
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+// user roles / permissions
+var userRole = require('./libs/user_role');
+app.use(userRole.middleware());
 
 // Infrastructure Routes
 if (app.get('env') === 'development') {
@@ -149,8 +156,7 @@ var mail = require('./libs/mail');
 mail.setup(app);
 
 // Recaptcha setup with siteId & secret
-recaptcha.init('6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj', '6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF'); //TODO change eyalliebermann app in an oficial one
-
+recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
 
 log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', app.get('env'));
 

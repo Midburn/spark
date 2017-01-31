@@ -2,9 +2,11 @@ var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
 var NpoMember = require('./npo_member').NpoMember;
+var constants = require('./constants.js');
+var userRole = require('../libs/user_role');
 
 var User = bookshelf.Model.extend({
-    tableName: 'users',
+    tableName: constants.USERS_TABLE_NAME,
     idAttribute: 'user_id',
     npoMember: function() {
         return this.hasMany(NpoMember);
@@ -38,18 +40,34 @@ var User = bookshelf.Model.extend({
         return bcrypt.compareSync(password, this.attributes.password);
     },
 
+    hasRole: function(role) {
+        return (this.attributes.roles && this.attributes.roles.split(',').indexOf(role) > -1);
+    },
+
     virtuals: {
         fullName: function() {
             return this.attributes.first_name + ' ' + this.attributes.last_name;
         },
 
         isAdmin: function() {
-            return (this.attributes.roles.split(',').indexOf('admin') > -1);
+            return this.hasRole(userRole.ADMIN);
         }
+    }
+});
+
+var DrupalUser = bookshelf.Model.extend({
+    tableName: constants.DRUPAL_USERS_TABLE_NAME,
+
+    validPassword: function(password) {
+        var child_process = require('child_process');
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password+"\n"});
+        msg = res.toString('ascii');
+        return (msg.indexOf('Yey! win') > -1);
     }
 });
 
 // Create the model and expose it
 module.exports = {
-    User: User
+    User: User,
+    DrupalUser: DrupalUser
 };

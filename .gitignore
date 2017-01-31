@@ -4,6 +4,7 @@
 .idea/dictionaries/*
 .idea/tasks.xml
 /.idea/runConfigurations/
+/.idea
 
 # Visual Studio Code
 .vscode/
@@ -52,3 +53,10 @@ jspm_packages
 # Git merges
 *.orig
 
+/dev.sqlite3
+
+*.pyc
+/*.tar.gz
+/public/scripts/camps_bundle.js
+/*.slack_url
+/.nvm
