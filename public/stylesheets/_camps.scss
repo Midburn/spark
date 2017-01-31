@@ -80,13 +80,19 @@ section {
         height: 100%;
         margin: 0 0 10px;
 
-        img {
+        .en {
             float: left;
             max-width: 55px;
             margin: 10px auto;
         }
 
-        .title {
+        .he {
+            float: right;
+            max-width: 55px;
+            margin: 10px auto;
+        }
+
+        .title_en {
             margin: 0;
             float: right;
         }
@@ -94,7 +100,7 @@ section {
             margin: 0;
             float: left;
         }
-        .arrow {
+        .arrow_en {
             display: block;
             width: 80%;
             font-size: 34px;
@@ -103,7 +109,7 @@ section {
         }
         .arrow_he {
             display: block;
-            width: 85%;
+            width: 90%;
             font-size: 34px;
             text-align: left;
             float: left;
