@@ -1,6 +1,7 @@
 extends ../../includes/page
 block content
     .camps.members
+        input.hidden(id='camp_members_camp_id', type='hidden', value='#{user.attributes.camp_id}')
         section(ng-app="ngCamps", ng-controller="membersController")
             .heading.card.row
                 h2=t('camps:members.title')

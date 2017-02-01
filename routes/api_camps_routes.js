@@ -102,7 +102,7 @@ module.exports = function(app, passport) {
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
             }).then(function() {
-              // TODO: not working with this table. need-a-fix
+                // TODO: not working with this table. need-a-fix
                 CampDetails.forge({
                     camp_id: req.params.id,
                     camp_activity_time: req.body.camp_activity_time,
@@ -326,24 +326,19 @@ module.exports = function(app, passport) {
 
     /**
      * API: (GET) return camp members, provide camp id
+     * query user with attribute: camp_id
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', (req, res) => {
-       User
-           .forge({
-               camp_id: req.params.id
-           })
-           .fetch({require:true})
-           .then((users) => {
-               res.json({	users	})
-           })
-           .catch((e) => {
-               res.status(500).json({
-                   error: true,
-                   data: {
-                       message: e.message
-                   }
-               });
-           });
-   });
+        User.forge({camp_id: req.params.id}).fetch({require: true}).then((users) => {
+            res.status(200).json({users: users.toJSON()})
+        }).catch((e) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: e.message
+                }
+            });
+        });
+    });
 }
