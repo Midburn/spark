@@ -323,4 +323,22 @@ module.exports = function(app, passport) {
         console.log(success);
         //TODO
     });
+
+    /**
+     * API: (GET) return camp members, provide camp id
+     * query user with attribute: camp_id
+     * request => /camps/1/members
+     */
+    app.get('/camps/:id/members', (req, res) => {
+        User.forge({camp_id: req.params.id}).fetch({require: true}).then((users) => {
+            res.status(200).json({users: users.toJSON()})
+        }).catch((e) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: e.message
+                }
+            });
+        });
+    });
 }
