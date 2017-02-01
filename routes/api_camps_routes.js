@@ -187,7 +187,11 @@ module.exports = function(app, passport) {
      * accept_families, contact_person_full_name, phone, email, facebook_page
      * request => /published_camps
      */
-    app.get('/published_camps', (req, res) => {
+    app.get('/published_camps', (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', 'http://10.0.0.12:8080');
+        res.header('Access-Control-Allow-Methods', 'GET');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        // res.status(200).json({camps: 1})
         Camp.forge({enabled: 1}).fetch({
             columns: [
                 'camp_name_en',
