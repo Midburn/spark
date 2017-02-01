@@ -102,7 +102,7 @@ module.exports = function(app, passport) {
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
             }).then(function() {
-              // TODO: not working with this table. need-a-fix
+                // TODO: not working with this table. need-a-fix
                 CampDetails.forge({
                     camp_id: req.params.id,
                     camp_activity_time: req.body.camp_activity_time,
