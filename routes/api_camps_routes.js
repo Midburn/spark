@@ -36,7 +36,7 @@ module.exports = function(app, passport) {
             camp_name_en: camp_name_en,
             camp_desc_he: req.body.camp_desc_he,
             camp_desc_en: req.body.camp_desc_en,
-            contact_person_id: req.body.contact_person,
+            contact_person_id: req.body.contact_person_id,
             facebook_page_url: req.body.facebook_page_url,
             main_contact: req.body.camp_main_contact,
             moop_contact: req.body.camp_moop_contact,
@@ -96,8 +96,9 @@ module.exports = function(app, passport) {
                 camp_desc_en: req.body.camp_desc_en,
                 status: req.body.status,
                 type: req.body.type,
-                contact_person_id: req.body.contact_person,
+                contact_person_id: req.body.contact_person_id,
                 facebook_page_url: req.body.facebook_page_url,
+                accept_families: req.body.accept_families,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
@@ -185,22 +186,59 @@ module.exports = function(app, passport) {
      * API: (GET) return published camps with:
      * camp_name_en, camp_name_he, camp_desc_en, camp_desc_he, status,
      * accept_families, contact_person_full_name, phone, email, facebook_page
-     * request => /published_camps
+     * request => /camps_published
      */
-    app.get('/published_camps', (req, res) => {
-        Camp.forge({enabled: 1}).fetch({
-            columns: [
-                'camp_name_en',
-                'camp_name_he',
-                'camp_desc_en',
-                'camp_desc_he',
-                'status',
-                'accept_families',
-                'facebook_page_url',
-                'contact_person_id'
-            ]
-        }).then((camp) => {
-            res.status(200).json({camps: camp.toJSON()})
+    app.get('/camps_published', (req, res, next) => {
+        // Allow this address to http-request to this endpoint.
+        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = 'http://10.0.0.12:8080';
+
+        res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
+        res.header('Access-Control-Allow-Methods', 'GET');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        Camp.fetchAll().then((camp) => {
+            var published_camps = [];
+            for (var i = 0; i < camp.models.length; i++) {
+                if (camp.models[i].attributes.enabled == '1') {
+                    var fetched_camp = {
+                        id: camp.models[i].attributes.id,
+                        name_en: camp.models[i].attributes.camp_name_en,
+                        name_he: camp.models[i].attributes.camp_name_he,
+                        desc_en: camp.models[i].attributes.camp_desc_en,
+                        desc_he: camp.models[i].attributes.camp_desc_he,
+                        contact_person_id: camp.models[i].attributes.contact_person_id,
+                        facebook_page_url: camp.models[i].attributes.facebook_page_url,
+                        status: camp.models[i].attributes.status,
+                        accept_families: camp.models[i].attributes.accept_families
+                    };
+                    published_camps.push(fetched_camp);
+                }
+            }
+            res.status(200).json({published_camps})
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
+    /**
+     * API: (GET) return camp's contact person with:
+     * name_en, name_he, email, phone
+     * request => /camps_contact_person/:id
+     */
+    app.get('/camps_contact_person/:id', (req, res, next) => {
+        // Allow this address to http-request to this endpoint.
+        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = 'http://10.0.0.12:8080';
+
+        res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
+        res.header('Access-Control-Allow-Methods', 'GET');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        User.forge({user_id: req.params.id}).fetch({
+            require: true, columns: ['fullName', 'email', 'phone']
+        }).then((user) => {
+            res.status(200).json({user: user.toJSON()})
         }).catch((err) => {
             res.status(500).json({
                 error: true,

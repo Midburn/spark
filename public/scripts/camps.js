@@ -241,7 +241,7 @@ $('#camp_edit_save').click(function() {
             camp_name_en: $('#edit_camp_name_en').val(),
             camp_desc_he: $('#edit_camp_desc_he').val(),
             camp_desc_en: $('#edit_camp_desc_en').val(),
-            contact_person_id: $('#edit_camp_contact_person_id option:selected').val(),
+            contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value') || $('label[for="edit_camp_contact_person_id"]').attr('data-camp-contact-person-id'),
             facebook_page_url: $('#edit_camp_facebook_page_url').val(),
             main_contact: $('#edit_camp_main_contact option:selected').val(),
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
@@ -259,7 +259,8 @@ $('#camp_edit_save').click(function() {
             location_comments: $('#edit_location_comments').val(),
             camp_location_street: $('#edit_camp_location_street').val(),
             camp_location_street_time: $('#edit_camp_location_street_time').val(),
-            camp_location_area: $('#edit_camp_location_area').val()
+            camp_location_area: $('#edit_camp_location_area').val(),
+            accept_families: $('#edit_camp_accept_families:checked').length
         };
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
