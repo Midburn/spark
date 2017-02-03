@@ -77,12 +77,12 @@ var program1 = document.querySelector("#create_prog_type1"),
 var programOptions1 = {
         options: ['Wrokshop', 'Party', 'Lecture', 'Show'],
         shouldAddOther: false,
-        onChange: onChangeCallback    
+        onChange: onChangeCallback
     },
     programOptions2 = {
         options: ['Tour', 'Game', 'Movie'],
         shouldAddOther: true,
-        onChange: onChangeCallback    
+        onChange: onChangeCallback
     },
     childFriendlyProgOptions = {
         options: ['Kids Friendly'],
@@ -103,8 +103,7 @@ if (program1 != null && program2 != null && adultOnly != null){
 
 // New Camp multiSelect
 
-var input = document.querySelector("#create_camp_type"),
-    kidsFriendly = document.querySelector("#create_camp_child_friendly");
+var input = document.querySelector("#create_camp_type");
 
 var kidsFriendlyOptions = {
         options: ['Kids Friendly'],
@@ -119,7 +118,4 @@ var kidsFriendlyOptions = {
 
 if (input != null) {
     var multiSelect = new MultiChoiceSelector(input, options);
-}
-if (kidsFriendly != null) {
-    kidsFriendlySelector = new MultiChoiceSelector(kidsFriendly, kidsFriendlyOptions);
 }

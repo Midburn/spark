@@ -5,11 +5,12 @@ block content
             .heading.card.row
                 .col-md-8
                     h2 #{camp.camp_name_en}
+                    a.hidden(href='/edit') Edit camp
                     span.label.label-info #{t('camps:camps.title')} # #{id}
                     span.label.label-primary #{t('camps:camps.style')}: #{camp.type}
-                    h6 #{t('camps:camps.since')}: #{camp.created_at}
+                    h5 #{t('camps:camps.since')}: #{camp.created_at}
                     p #{t('camps:camps.desc')} #{camp.camp_desc_en}
-                .col-md-4
+                .col-md-12
                     ul.list-group.text-center
                         li.list-group-item
                             if camp.enabled
@@ -23,17 +24,37 @@ block content
                                 else
                                     span.badge.bg__red Close
                         li.list-group-item
+                            span Accept Families?
+                                span.badge #{camp.accept_families}
+                        li.list-group-item
                             span Time active
                                 span.badge #{details.camp_activity_time}
                         li.list-group-item
                             span #{t('camps:camps.child_friendly')} #{details.child_friendly}
                                 span.badge #{details.child_friendly ? 'yes':'no'}
                         li.list-group-item
-                            span #{t('camps:camps.noise')} #{details.noise_level}
+                            span #{t('camps:new.camp_noise_level')} #{details.noise_level}
                                 span.badge #{details.noise_level}
                         li.list-group-item
                             span #{t('camps:camps.art')} #{details.support_art}
                                 span.badge #{details.support_art ? 'yes':'no'}
+            .row.card
+                .row.publication.col-md-12
+                    h4 Publication
+                    .panel-body.col-xs-12.col-md-4
+                        .contact-person.Btn.Btn__card
+                            a(href='/users/#{camp.contact_person}')
+                                span=t('camps:stats.contact_person')
+                            h6 Name
+                                span.name
+                            h6 Phone
+                                span.phone
+                            h6 Email
+                                span.email
+                    .panel-body.col-xs-12.col-md-4
+                        .facebook-info.Btn.Btn__card
+                            a(href='#{camp.facebook_page_url}', target='_blank')
+                                span=t('camps:stats.facebook_page_url')
             .row.card
                 .row.management.col-md-12
                     h4=t('camps:camps.management_title')

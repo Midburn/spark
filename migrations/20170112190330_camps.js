@@ -43,7 +43,7 @@ exports.up = function (knex, Promise) {
             table.integer('camp_location_area');
             table.integer('camp_id').unsigned();
         }),
-        
+
         // Add users camp_id field
         knex.schema.table(constants.USERS_TABLE_NAME, function (table) {
             table.integer('camp_id').unsigned();
