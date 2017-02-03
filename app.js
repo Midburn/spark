@@ -48,6 +48,7 @@ app.use(compileSass({
     logToConsole: false // If true, will log to console.error on errors
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
 app.use(function(req, res, next) {
     res.locals.req = req;

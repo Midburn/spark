@@ -39,7 +39,15 @@ spark$ nvm use
 ```
 $ cd spark
 spark$ npm install
-spark$ npm install -g nodemon knex
+spark$ npm install -g nodemon knex bower
+```
+
+### Installing bower dependencies
+
+[Bower](https://bower.io/) provides web static files dependencies
+
+```
+spark$ bower install
 ```
 
 ### Setting up the database

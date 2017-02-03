@@ -1,0 +1,7 @@
+{
+  "name": "spark",
+  "private": true,
+  "dependencies": {
+    "gentelella": "^1.4.0"
+  }
+}
