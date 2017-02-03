@@ -98,6 +98,7 @@ module.exports = function(app, passport) {
                 type: req.body.type,
                 contact_person_id: req.body.contact_person_id,
                 facebook_page_url: req.body.facebook_page_url,
+                accept_families: req.body.accept_families,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
@@ -235,7 +236,7 @@ module.exports = function(app, passport) {
         res.header('Access-Control-Allow-Methods', 'GET');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
         User.forge({user_id: req.params.id}).fetch({
-            columns: ['fullName', 'email', 'phone']
+            require: true, columns: ['fullName', 'email', 'phone']
         }).then((user) => {
             res.status(200).json({user: user.toJSON()})
         }).catch((err) => {
