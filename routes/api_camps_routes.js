@@ -236,7 +236,7 @@ module.exports = function(app, passport) {
         res.header('Access-Control-Allow-Methods', 'GET');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
         User.forge({user_id: req.params.id}).fetch({
-            require: true, columns: ['fullName', 'email', 'phone']
+            require: true, columns: ['name', 'firstname', 'lastname', 'email', 'phone']
         }).then((user) => {
             res.status(200).json({user: user.toJSON()})
         }).catch((err) => {

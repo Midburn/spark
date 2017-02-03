@@ -18,7 +18,7 @@ block content
                             button.card--close--he.Btn.Btn__close
                                  span.glyphicon.glyphicon-remove(aria-hidden='true')
                         else
-                            .choose_name.card.card-first.card__even-pad.card-hide
+                            .choose_name.card.card-first.card__padding--even.card-hide
                                 button.card--close.Btn.Btn__close
                                      span.glyphicon.glyphicon-remove(aria-hidden='true')
 
@@ -50,7 +50,7 @@ block content
                         .col-sm-4.col-xs-12
                             a.Btn.Btn__green.Btn__inline(id="join_camp_request_join_btn", role='button')=t('camps:join.request')
 
-                    .camp_manage.card.card-third.card__even-pad.card-hide
+                    .camp_manage.card.card-third.card__padding--even.card-hide
                         if language === 'he'
                             button.card--close--he.Btn.Btn__close
                                  span.glyphicon.glyphicon-remove(aria-hidden='true')
@@ -81,7 +81,7 @@ block content
 
         // Camp join request modal
         .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')
-            .modal-dialog.card.card__even-pad.card__shad(role='document')
+            .modal-dialog.card.card__padding--even.card__shad(role='document')
                 div
                     .modal-header
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
