@@ -60,3 +60,6 @@ jspm_packages
 /public/scripts/camps_bundle.js
 /*.slack_url
 /.nvm
+
+# dotenv file (containing all of our secrets!!)
+.env
