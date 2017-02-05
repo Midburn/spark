@@ -62,7 +62,14 @@
             "location_comments": "הערות",
             "camp_location_street": "רחוב",
             "camp_location_street_time": "שעה",
-            "camp_location_area": "אזור"
+            "camp_location_area": "אזור",
+            "create_camp_request": "שלח בקשה ליצירת מחנה",
+            "create_camp_request_text": "הבקשה שלך תשלח עם הפרטים הבאים",
+            "send_request": "שלח בקשה",
+            "close": "סגור",
+            "website_publication": "אתרים",
+            "contact_person_id": "איש קשר",
+            "facebook_page_url": "קישור לעמוד פייסבוק"
         },
         "join": {
             "join_a_camp": "הצטרף למחנה",

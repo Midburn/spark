@@ -62,7 +62,14 @@
             "location_comments": "Comments",
             "camp_location_street": "Street",
             "camp_location_street_time": "Street time",
-            "camp_location_area": "Area"
+            "camp_location_area": "Area",
+            "create_camp_request": "Create a camp request",
+            "create_camp_request_text": "The request of creating new camp will be sent with these details",
+            "send_request": "Send Request",
+            "close": "Close",
+            "website_publication": "Website Publication",
+            "contact_person_id": "Contact Person",
+            "facebook_page_url": "Facebook Page Link"
         },
         "join": {
             "join_a_camp": "Join a camp",
