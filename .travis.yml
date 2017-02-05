@@ -3,7 +3,8 @@ cache:
   directories:
     - node_modules
 script:
-  - npm install -g knex
+  - npm install -g knex bower
+  - bower install
   - knex migrate:latest
   - npm test
 after_success:
