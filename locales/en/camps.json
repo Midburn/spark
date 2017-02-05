@@ -112,7 +112,21 @@
             "more_info": "More Info",
             "moop_contact": "Moop Contact",
             "safety_contact": "Safety Contact",
-            "docs": "Camp Documents"
+            "docs": "Camp Documents",
+            "edit": "Edit Camp",
+            "published": "Published",
+            "draft": "Draft",
+            "status": "Status",
+            "status_open": "Open",
+            "status_closed": "Closed",
+            "accept_families": "Accept Families?",
+            "time_active": "Time active",
+            "yes": "yes",
+            "no": "no",
+            "publication": "Publication",
+            "name": "Name",
+            "phone": "Phone",
+            "email": "Email"
         },
         "edit": {
             "title": "Editing",
