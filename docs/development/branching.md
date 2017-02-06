@@ -9,7 +9,7 @@ To contribute to the project you should fork it - this can be done in the GitHub
 Then, you should be able to get a repository URL for your fork and clone it:
 
 ```
-$ git clone git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
+$ git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
 
 To be able to sync with Midburn repository you should add it as a remote

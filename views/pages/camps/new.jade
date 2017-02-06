@@ -30,6 +30,18 @@ block content
                             .col-xs-12
                                 label(for='create_camp_desc_en')=t('camps:new.desc_en')
                                 input(id='create_camp_desc_en', type="text", class="form-control", name="camp_desc_en")
+                h4=t('camps:edit.website_publication')
+                .camp-publication.panel
+                    .panel-body
+                        .information
+                            .col-md-6
+                                .col-xs-12
+                                    label(for='create_camp_contact_person_id')=t('camps:edit.contact_person_id')
+                                    select.form-control(id='create_camp_contact_person_id', name='contact_person_id')
+                            .col-md-6
+                                .col-xs-12
+                                    label(for='create_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
+                                    input.form-control(id='create_camp_facebook_page_url', name='facebook_page_url')
                 h4 Camp Contact Personnel
                 .camp-leaders.panel
                     .panel-body
@@ -53,7 +65,15 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_type')=t('camps:new.type')
-                                    input(id='create_camp_type', type="text", class="form-control", name="type")
+                                    input.form-control(id='create_camp_type', type="text", name="type")
+                            .col-md-4
+                                .col-xs-12
+                                    label(for='create_camp_status') #{t('camps:edit.status')}:
+                                    select.form-control(id='create_camp_status', name='status')
+                                        option(selected) ---
+                                        option(value='open')=t('camps:edit.open')
+                                        option(value='closed')=t('camps:edit.closed')
+                                        option(value='inactive')=t('camps:edit.inactive')
             //- Card 2
             .card.card-second.card-hide
                 h4 Camp Behaviour
@@ -71,7 +91,7 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_child_friendly')=t('camps:new.camp_child_friendly')
-                                    input(id='create_camp_child_friendly', type="text", class="form-control", name="child_friendly")
+                                    input(id='create_camp_child_friendly', type="checkbox", class="form-control", name="child_friendly")
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_noise_level')=t('camps:new.camp_noise_level')
@@ -87,15 +107,15 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_public_activity_area_sqm')=t('camps:new.public_activity_area_sqm')
-                                    input(id='create_camp_public_activity_area_sqm', type="number",min="1",class="form-control", name="public_activity_area_sqm")
+                                    input.form-control(id='create_camp_public_activity_area_sqm', type="number", min="1", name="public_activity_area_sqm")
                             .col-md-4
                                 .col-xs-12
-                                    label(for='create_camp_public_area_reason')=t('camps:new.public_activity_area_desc')
-                                    input(id='create_camp_public_area_reason', type="text", class="form-control", name="public_activity_area_desc")
+                                    label(for='create_camp_public_area_desc')=t('camps:new.public_activity_area_desc')
+                                    input(id='create_camp_public_area_desc', type="text", class="form-control", name="public_activity_area_desc")
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_support_art')=t('camps:new.support_art')
-                                    input.form-control(id='create_support_art', type="text", name='support_art')
+                                    input.form-control(id='create_support_art', type="checkbox", name='support_art')
                 h4 Camp Location
                 .camp-details.panel
                     .panel-body
@@ -115,7 +135,7 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_location_area')=t('camps:new.camp_location_area')
-                                    input.form-control(id='create_camp_location_area', name='camp_location_area')
+                                    input.form-control(id='create_camp_location_area', type='number', name='camp_location_area')
 
         .controls.row
             .col-xs-12
@@ -123,7 +143,7 @@ block content
 
         // Camp create request modal
         .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
-            .modal-dialog.card.card__even-pad.card__shad(role='document')
+            .modal-dialog.card.card__padding--even.card__shad(role='document')
                 div
                     .modal-header
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
