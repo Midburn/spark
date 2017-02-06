@@ -152,6 +152,27 @@ block content
                     .modal-body
                         p=t('camps:new.create_camp_request_text')
                         .camp_details
+                            ul
+                                li.camp_name_he=t('camps:new.name_he')
+                                li.camp_name_en=t('camps:new.name_en')
+                                li.camp_desc_he=t('camps:new.desc_he')
+                                li.camp_desc_en=t('camps:new.desc_en')
+                                li.contact_person_id=t('camps:new.contact_person_id')
+                                li.facebook_page_url=t('camps:new.facebook_page_url')
+                                li.main_contact=t('camps:new.main_contact')
+                                li.moop_contact=t('camps:new.moop_contact')
+                                li.safety_contact=t('camps:new.safety_contact')
+                                li.type=t('camps:new.type')
+                                li.camp_activity_time=t('camps:new.camp_activity_time')
+                                li.child_friendly=t('camps:new.camp_child_friendly')
+                                li.noise_level=t('camps:new.camp_noise_level')
+                                li.public_activity_area_sqm=t('camps:new.public_activity_area_sqm')
+                                li.public_activity_area_desc=t('camps:new.public_activity_area_desc')
+                                li.support_art=t('camps:new.support_art')
+                                li.location_comments=t('camps:new.location_comments')
+                                li.camp_location_street=t('camps:new.camp_location_street')
+                                li.camp_location_street_time=t('camps:new.camp_location_street_time')
+                                li.camp_location_area=t('camps:new.camp_location_area')
                     .modal-footer
                         button.Btn.Btn__transparent(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('camps:new.close')
                         button.Btn.Btn__green(id='camp_create_save_modal_request', type='button')=t('camps:new.send_request') 

@@ -338,17 +338,24 @@ $('#camp_create_save').click(function() {
     };
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
-    $('.camp_details').html(_campDataAsAList());
+    _campDataAsAList(); //TODO - if works change name
+    //Guy temporarily removed - $('.camp_details').html(_campDataAsAList());
     // approve create camp
     $('#camp_create_save_modal_request').click(function() {
         _sendRequest();
     });
     function _campDataAsAList() {
-        var _list = '';
+        //var _list = '';
         $.each(camp_data, function(label, data) {
-            _list += '<li>' + label + ': <b>' + data + '</b></li>';
+            //_list += '<li>' + label + ': <b>' + data + '</b></li>';
+            if(data) {
+                $('.' + label).append(': <b>' + data + '</b>');
+            } else {
+                $('.' + label).hide();
+            }
+            
         })
-        return $('<ul>').html(_list);
+        //return $('<ul>').html(_list);
     }
     function _sendRequest() {
         $.ajax({
