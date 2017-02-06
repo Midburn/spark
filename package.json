@@ -9,6 +9,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
+    "pretest": "npm run lint",
     "test": "mocha  \"routes/*test.js\" ",
     "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
     "//log": "send a generic log notification to slack",
