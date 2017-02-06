@@ -119,7 +119,7 @@ function fetchCampsOnce() {
     }
 }
 function _removeCamp(camp_id) {
-    var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + ' forever.\n\n\n---\n Are you sure?');
+    var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');
     if (agree_remove) {
         $.get("camps/" + camp_id + "/remove", function(res) {
             window.location.reload();
