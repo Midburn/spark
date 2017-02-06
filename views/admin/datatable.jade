@@ -1,11 +1,10 @@
 extends layout
 block content
-    .row
+    div(id="datatable-admin").row
         .x_panel
             .x_title
                 h2
                     =" "+title.text
-                    small=title.small
                 if rightPanelToolbox
                     ul.nav.navbar-right.panel_toolbox
                         li
@@ -19,20 +18,15 @@ block content
                             a
                                 i.fa.fa-close
                 .clearfix
+                if title.small
+                    .alert.alert-success=title.small
+                h5
+                    button.add= "+ "+addTitle
             .x_content
-                if subtitle
-                    p
-                        | Add class
-                        code bulk_action
-                        |  to table for bulk actions options on row select
                 .table-responsive
-                    table.table.table-striped.table-bordered.dataTable
+                    table.table.table-striped.table-bordered.dataTable(data-table-ajax=ajax, data-table-options=tableOptionsString)
                         thead
                             tr
                                 for column in columns
-                                    th(class="sorting"+(column.sorting?"_"+column.sorting:""))= column.title
-                        tbody
-                            for row in rows
-                                tr(role="row")
-                                    for cell in row.cells
-                                        td= cell.text
+                                    th(data-attr=column.attr)= column.title ? column.title : column.attr
+                                th(data-attr="actions")= "Actions"

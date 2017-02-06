@@ -17,10 +17,11 @@ html(lang='en')
         link(href='/bower_components/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css', rel='stylesheet')
         // jVectorMap
         link(href='/bower_components/gentelella/production/css/maps/jquery-jvectormap-2.0.3.css', rel='stylesheet')
+        // datatables
+        link(href='/bower_components/gentelella/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css', rel='stylesheet')
         // Custom Theme Style
         link(href='/bower_components/gentelella/build/css/custom.min.css', rel='stylesheet')
-        // datatables
-        link(href='/bower_components/gentelella/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css')
 
     body.nav-md
         .container.body
@@ -175,5 +176,9 @@ html(lang='en')
         // datatables
         script(src='/bower_components/gentelella/vendors/datatables.net/js/jquery.dataTables.min.js')
         script(src='/bower_components/gentelella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')
+        script(src='/bower_components/gentelella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js')
+        script(src='/bower_components/gentelella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')
+        // uri.js - for url manipulations
+        script(src='/bower_components/urijs/src/URI.min.js')
         // admin
         script(src='/scripts/admin.js')

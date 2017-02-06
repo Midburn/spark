@@ -63,6 +63,8 @@ app.use(function(req, res, next) {
 
 // Passport setup
 require('./libs/passport')(passport);
+
+// using session storage in DB - allows multiple server instances + cross session support between node js apps
 var sessionStore = new KnexSessionStore({knex: knex});
 app.use(session({
     secret: 'SparklePoniesAreFlyingOnEsplanade',

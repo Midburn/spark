@@ -5,6 +5,7 @@ var userRole = require('../libs/user_role');
 var mail = require('../libs/mail');
 
 var User = require('../models/user').User;
+var Camp = require('../models/camp').Camp;
 var NpoMember = require('../models/npo_member').NpoMember;
 var NpoStatus = require('../models/npo_member').NPO_STATUS;
 
@@ -12,61 +13,12 @@ var config = require('config');
 var npoConfig = config.get('npo');
 var serverConfig = config.get('server');
 var log = require('../libs/logger.js')(module);
+var datatableAdmin = require('../libs/admin').datatableAdmin;
+var adminRender = require('../libs/admin').adminRender;
 
-/**
- * private function to render admin views
- * creates template params for the views
- *
- * currently there are some frontend elements supported in the view but not in backend, you can add them to options if you want:
- *
-    // options.notifications = {
-    //     number: 8,
-    //     items: [
-    //         {
-    //             title: "John Smith",
-    //             time: "3 mins ago",
-    //             img: {src: "/gentelella/images/user.png", alt: "Profile Image"},
-    //             message: "Film festivals used to be do-or-die moments for movie makers. They were where..."
-    //         },
-    //         {
-    //             title: "John Smith",
-    //             time: "3 mins ago",
-    //             img: {src: "/gentelella/images/user.png", alt: "Profile Image"},
-    //             message: "Film festivals used to be do-or-die moments for movie makers. They were where..."
-    //         }
-    //     ],
-    //     all: {
-    //         text: "See All Alerts",
-    //         href: "/admin/alerts"
-    //     }
-    // };
-
-    options.showUserMenu = true;
-
-     options.sideBarFooter = [
-         {title: "Settings", glyphicon: "cog"},
-         {title: "FullScreen", glyphicon: "fullscreen"},
-         {title: "Lock", glyphicon: "eye-close"},
-         {title: "Logout", glyphicon: "off"}
-     ];
- *
- */
-var _adminRender = function(req, res, name, options) {
-    if (!options) options = {};
-    options.user = req.user;
-    options.sideBar = [
-        {title: "Home", icon: "home", href: "/admin"},
-        {title: "Users", icon: "users", href: "/admin/users"},
-        {title: "Camps", icon: "sitemap", href: "/admin/camps"},
-        {title: "Midburn NPO", icon: "users", children: [
-            {title: "Members", href: "/admin/npo"}
-        ]}
-    ];
-    res.render(name, options);
-};
 
 router.get('/', userRole.isAdmin(), function (req, res) {
-    _adminRender(req, res, 'admin/home.jade', {
+    adminRender(req, res, 'admin/home.jade', {
         tiles: [
             {top: {icon: "user", title: "Total Users"}, count: {text: "250", green: false}, bottom: {title: "Users admin", href: "/admin/users"}},
             {top: {icon: "sitemap", title: "Total Camps"}, count: {text: "5", green: false}, bottom: {title: "Camps admin", href: "/admin/camps"}}
@@ -80,41 +32,100 @@ router.get('/', userRole.isAdmin(), function (req, res) {
     });
 });
 
-router.get('/users', userRole.isAdmin(), function(req, res) {
-    User.fetchPage({pageSize: 2, page: 1})
-        .then(function(users){
-            rows = [];
-            users.forEach(function(user) {
-                rows.push({
-                    even: true,
-                    cells: [
-                        {text: user.id, last: false, sorting: "asc"},
-                        {text: user.attributes.email, last: false},
-                        {text: user.attributes.first_name, last: false},
-                        {text: user.attributes.last_name, last: true}
-                    ]
-                })
-            });
-            _adminRender(req, res, 'admin/users.jade', {
-                title: {text: "Spark users", small: ""},
-                columns: [
-                    {title: "Id", last: false},
-                    {title: "Email", last: false},
-                    {title: "First name", last: false},
-                    {title: "Last name", last: true}
-                ],
-                rows: rows
-            });
-        })
-    ;
+datatableAdmin("users", router, {
+    "model": User,
+    "columns": [
+        {title: "Id", attr: "user_id", type: "primary"},
+        {title: "Email", attr: "email", type: "string"},
+        {title: "First name", attr: "first_name", type: "string"},
+        {title: "Last name", attr: "last_name", type: "string"}
+    ],
+    selectColumns: ["user_id", "email", "first_name", "last_name"],
+    defaultOrder: [[ 1, "asc" ]],
+    filter: function(qb, searchTerm) {
+        qb
+            .where('email', 'LIKE', '%'+searchTerm+'%')
+            .orWhere('first_name', 'LIKE', '%'+searchTerm+'%')
+            .orWhere('last_name', 'LIKE', '%'+searchTerm+'%')
+        ;
+        if (!isNaN(searchTerm)) {
+            qb.orWhere('user_id', '=', searchTerm)
+        }
+    },
+    addTitle: "Add User",
+    addCallback: function(body, done) {
+        passport.signup(body.email, "", body, function(user, error) {
+            if (user) {
+                done(true, "Great Success! 1 user added");
+            } else {
+                done(false, error);
+            }
+        });
+    },
+    editTitle: "Edit User",
+    editKey: "user_id",
+    editCallback: function(user_id, body, done) {
+        User.forge({user_id:user_id}).save(body).then(function() {
+            done(true, "Great success! updated user id "+user_id);
+        }).catch(function(e) {
+            done(false, "unexpected error: "+e);
+        });
+    }
 });
+
+
+datatableAdmin("camps", router, {
+    "model": Camp,
+    "columns": [
+        {"attr": "id", type: "primary"},
+        {"attr": "camp_name_he", type: "string"},
+        {"attr": "camp_name_en", type: "string"},
+        {"attr": "camp_desc_he", type: "string"},
+        {"attr": "camp_desc_en", type: "string"},
+        {"attr": "type", type: "string"},
+        {"attr": "status", type: "string"},
+        {"attr": "enabled", type: "string"}
+    ],
+    selectColumns: ["id", "camp_name_he", "camp_name_en", "camp_desc_he", "camp_desc_en", "type", "status", "enabled"],
+    defaultOrder: [[ 1, "asc" ]],
+    filter: function(qb, searchTerm) {
+        qb
+            .where('camp_name_he', 'LIKE', '%'+searchTerm+'%')
+            .orWhere('camp_name_en', 'LIKE', '%'+searchTerm+'%')
+            .orWhere('camp_desc_he', 'LIKE', '%'+searchTerm+'%')
+            .orWhere('camp_desc_en', 'LIKE', '%'+searchTerm+'%')
+        ;
+        if (!isNaN(searchTerm)) {
+            qb.orWhere('id', '=', searchTerm)
+        }
+    },
+    addTitle: "Add Camp",
+    addCallback: function(body, done) {
+        Camp.forge().save(body).then(function() {
+            done(true, "Great success! 1 camp added");
+        }).catch(function(e) {
+            done(false, "unexpected error: "+e);
+        });
+    },
+    editTitle: "Edit Camp",
+    editKey: "id",
+    editCallback: function(camp_id, body, done) {
+        Camp.forge({camp_id:camp_id}).save(body).then(function() {
+            done(true, "Great success! updated camp id "+camp_id);
+        }).catch(function(e) {
+            done(false, "unexpected error: "+e);
+        });
+    }
+});
+
 
 router.get('/npo', userRole.isAdmin(), function (req, res) {
     NpoMember.forge().query({where: {membership_status: NpoStatus.applied_for_membership}})
         .fetchAll({withRelated: ['user']}).then(function (members) {
-        _adminRender(req, res, 'admin/npo.jade', {members: members.models});
+        adminRender(req, res, 'admin/npo.jade', {members: members.models});
     });
 });
+
 
 router.post('/npo', userRole.isAdmin(), function (req, res, next) {
     if (req.body.action && req.body.emails) {
@@ -128,7 +139,7 @@ router.post('/npo', userRole.isAdmin(), function (req, res, next) {
                             if (theUser == null) {
                                 //TODO handle error.
                                 log.error("User not found!");
-                                return _adminRender(req, req, 'admin/admin_npo', {errorMessage: 'email ' + recipient + ' not found'});
+                                return adminRender(req, req, 'admin/admin_npo', {errorMessage: 'email ' + recipient + ' not found'});
                             }
                             if (theUser.attributes.membership_status == npoStatus.applied_for_membership) {
                                 theUser.attributes.membership_status = npoStatus.request_approved;
@@ -146,7 +157,7 @@ router.post('/npo', userRole.isAdmin(), function (req, res, next) {
                             else {
                                 //TODO handle error.
                                 log.warn("Incorrect status - ", theUser.attributes.membership_status);
-                                return _adminRender(req, req, 'admin/admin_npo', {errorMessage: 'email ' + recipient + ' - incorrect status'});
+                                return adminRender(req, req, 'admin/admin_npo', {errorMessage: 'email ' + recipient + ' - incorrect status'});
                             }
                         });
                     }
@@ -154,5 +165,6 @@ router.post('/npo', userRole.isAdmin(), function (req, res, next) {
         }
     }
 });
+
 
 module.exports = router;
