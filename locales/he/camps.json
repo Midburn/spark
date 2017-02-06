@@ -5,14 +5,22 @@
         "dash": {
             "title": "מחנות נושא ואמנות",
             "desc": "לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק.",
+            "join_request": "בקשה להצטרף למחנה",
+            "join_request_desc": "הבקשה להצטרפות תשלח עם הפרטים האלו",
+            "join_close": "סגור",
+            "join_send": "שלח בקשה",
+            "arrow": "←",
             "stats": {
-                "title": "סטטיסטיקה ואינפורמציה"
+                "title": "ניהול מחנות"
             },
             "members": {
                 "title": "חברים במחנה"
             },
             "docs": {
                 "title": "מסמכים וטפסים"
+            },
+            "program": {
+                "title": "תוכניה"
             }
         },
         "new": {
@@ -20,21 +28,145 @@
             "name_choosing_title": "בחר שם למחנה, השם חייב להיות ייחודי ולכן המערכת תוודא את הבחירה שלך. היעזר בסבלנות.",
             "header_desc": "ליצירת מחנה עליך לספק מידע אודות המחנה, לאחר מכן המחנה יועבר לבדיקה על ידי ראש מחנות נושא עד לקבלת אישור",
             "btn_create": "צור מחנה",
+            "basic_info": "פרטים בסיסיים",
+            "details": "פרטי מחנה",
+            "name_card_header": "שם מחנה ותיאור",
             "name_he": "שם מחנה (עברית)",
             "name_en": "שם מחנה (אנגלית)",
             "desc_he": "תיאור מחנה (עברית)",
             "desc_en": "תיאור מחנה (אנגלית)",
+            "contact_card_header": "אנשי קשר למחנה",
             "type": "סוג מחנה",
             "main_contact": "איש קשר ראשי",
             "moop_contact": "איש קשר חשל\"ש",
-            "safety_contact": "אחראי בטיחות"
+            "safety_contact": "אחראי בטיחות",
+            "type_card_header": "סוג מחנה",
+            "camp_type": "סגנון",
+            "behaviour_card_header": "סגנון מחנה",
+            "camp_activity_time": "זמן פעילות",
+            "camp_activity_time_morning": "בוקר",
+            "camp_activity_time_noon": "צהרים",
+            "camp_activity_time_evening": "ערב",
+            "camp_activity_time_night": "לילה",
+            "camp_child_friendly": "מתאים לילדים",
+            "camp_noise_level": "רמת רעש",
+            "camp_noise_level_quiet": "שקט",
+            "camp_noise_level_medium": "בינוני",
+            "camp_noise_level_noisy": "רועש",
+            "camp_noise_level_very_noisy": "רועש מאוד",
+            "public_area_card_title": "שטח מחנה ציבורי",
+            "public_activity_area_sqm": "שטח ציבורי (מ״ר)",
+            "public_activity_area_desc": "תיאור שטח ציבורי",
+            "support_art": "ארט",
+            "location_card_title": "מיקום המחנה",
+            "location_comments": "הערות",
+            "camp_location_street": "רחוב",
+            "camp_location_street_time": "שעה",
+            "camp_location_area": "אזור"
         },
         "join": {
+            "join_a_camp": "הצטרף למחנה",
             "header_title": "הצטרף למחנה",
             "camp_choosing_title": "הרשימה מטה מכילה מחנות פתוחים להצתרפות חברים חדשים. נא לבחור מהרשימה.",
-            "request": "שלח בקשת הצתרפות"
+            "request": "שלח בקשת הצטרפות",
+            "name_en": "שם המחנה (אנגלית)"
         },
         "manage": {
-            "manage_a_camp": "נהל מחנה"
+            "manage_a_camp": "נהל מחנות"
+        },
+        "stats": {
+            "title": "נתוני מחנה",
+            "name_en": "שם (אנגלית)",
+            "name_he": "שם (עברית)",
+            "contact_person": "איש קשר",
+            "status": "סטטוס",
+            "last_update": "עדכון אחרון",
+            "created_at": "נוצר בתאריך",
+            "edit": "עריכה",
+            "published": "מפורסם",
+            "facebook_page_url": "דף פייסבוק",
+            "remove": "הסרה",
+            "search": "חפש מחנה"
+        },
+        "members": {
+          "title": "משתתפים במחנה"
+        },
+        "camps": {
+            "title": "מחנה",
+            "style": "סגנון מחנה",
+            "since": "מאז",
+            "desc": "תאור מחנה",
+            "active_time": "זמן פעילות",
+            "child_friendly": "ידידותי לילדים",
+            "noise": "רמת רעש",
+            "art": "אמנות?",
+            "management_title": "הנהלת מחנה",
+            "main_contact": "איש קשר ראשי",
+            "more_info": "פרטים נוספים",
+            "moop_contact": "איש קשר מופ",
+            "safety_contact": "איש קשר בטיחות",
+            "docs": "מסמכים"
+        },
+        "edit": {
+            "title": "עורך",
+            "camp": "מחנה",
+            "since": "מאז",
+            "basic_info": "פרטים",
+            "details": "פרטים בסיסיים",
+            "name_and_desc": "שם מחנה ותיאור",
+            "name_en": "שם (אנגלית)",
+            "name_he": "שם (עברית)",
+            "desc_en": "תיאור (אנגלית)",
+            "desc_he": "תיאור (עברית)",
+            "contact_title": "אנשי קשר",
+            "main_contact": "איש קשר ראשי",
+            "moop_contact": "איש קשר מופ",
+            "safety_contact": "איש קשר בטיחות",
+            "behavior_title": "התנהגות",
+            "type": "סוג",
+            "food": "אוכל",
+            "drinking": "שתיה/בר",
+            "music": "מוסיקה",
+            "workshops": "סדנא",
+            "art_supporting": "תמיכה באמנות",
+            "other": "אחר",
+            "status": "סטטוס",
+            "open": "פתוח",
+            "closed": "סגור",
+            "inactive": "לא זמין",
+            "publication": "פומביות",
+            "public": "מחנה פומבי",
+            "publish": "פרסם",
+            "unpublish": "הסרה מפרסום",
+            "invisible": "מחנה פרטי",
+            "camp_activity_time": "שעות פעילות",
+            "camp_child_friendly": "ידידותי לילדים",
+            "camp_noise_level": "רמת רעש",
+            "public_area_title": "שטח מחנה ציבורי",
+            "public_activity_area_sqm": "שטח ציבורי (מ״ר)",
+            "public_activity_area_desc": "תיאור שטח ציבורי",
+            "support_art": "תמיכה באמנות",
+            "location_title": "מיקום מחנה",
+            "location_comments": "הערות",
+            "location_street": "רחוב",
+            "location_time": "שעה",
+            "location_area": "אזור"
+        },
+        "program": {
+            "page_title": "צור פעילות חדשה",
+            "page_desc": "TODO - This is a short description",
+            "details": "מידע כללי",
+            "name_he": "שם הפעילות - עברית",
+            "name_en": "שם הפעילות - אנגלית",
+            "desc_he": "תאור הפעילות - עברית",
+            "desc_en": "תאור הפעילות - אנגלית",
+            "date": "תאריך",
+            "time": "זמן",
+            "request": "* אנו שומרים על עקרון הא-מסחריות ומיידיות ולכן אין לציין שמות מנחים, אמנים וכו׳",
+            "type": "סוג הפעילות",
+            "choose_type": "סוג",
+            "access": "תאימות",
+            "kids_friendly": "מתאים לילדים",
+            "adult_only": "למבוגרים בלבד"
         }
 }

@@ -62,6 +62,16 @@
     },
     "footer": {
         "scrolltop": "Back to top",
+        "visit_homepage": "Visit Midburn website",
+        "ten_principles": "The 10 Principles",
+        "report_error": "Report an error",
+        "ask_question": "Ask a question",
+        "help_translate": "Help translating the site",
+        "spark": "Spark is a",
+        "open_source": "open source",
+        "project": "project of Midburn Tech.",
+        "want_to_help": "Want to help us code?",
+        "toc": "Boring legal stuff",
         "links": {
 
         }

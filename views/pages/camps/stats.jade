@@ -2,18 +2,23 @@ extends ../../includes/page
 block content
     .camps.stats
         section
-            .heading.card.row
-                h2=t('Camp Statistics')
+            .heading.card.card__shad.row
+                h2=t('camps:stats.title')
                 .form-group
-                    input.form-control(type="text", placeholder="Search camp", autofocus)
-            table.table.table-striped
-                thead
-                    tr
-                        th #
-                        th Name (EN)
-                        th Name (HE)
-                        th.hidden-xs Last update
-                        th.hidden-xs Created at
-                        th.admin-edit Edit
-                        th.admin-remove Remove
-                tbody
+                    input.form-control(id='camps_stats_search_camp', type="text", placeholder="#{t('camps:stats.search')}", autofocus)
+            .row
+                .col-xs-12.card__shad
+                    table.table.table-striped.table-hover
+                        thead
+                            tr.headers
+                                th #
+                                th.camp_name_en=t('camps:stats.name_en')
+                                th.contact_person=t('camps:stats.contact_person')
+                                th.status=t('camps:stats.status')
+                                th.hidden-xs=t('camps:stats.last_update')
+                                th.hidden-xs=t('camps:stats.created_at')
+                                th.published=t('camps:stats.published')
+                                th.facebook_page_url=t('camps:stats.facebook_page_url')
+                                th.admin-edit=t('camps:stats.edit')
+                                th.admin-remove=t('camps:stats.remove')
+                        tbody

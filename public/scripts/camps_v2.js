@@ -69,8 +69,41 @@ function onChangeCallback(res) {
     console.log("multi select callback: " + res);
 }
 
-var input = document.querySelector("#create_camp_type"),
-    kidsFriendly = document.querySelector("#create_camp_child_friendly");
+// New Program multiSelect
+var program1 = document.querySelector("#create_prog_type1"),
+    program2 = document.querySelector("#create_prog_type2"),
+    childFriendlyProg = document.querySelector("#create_prog_child_friendly"),
+    adultOnly = document.querySelector("#create_prog_adult_only");
+var programOptions1 = {
+        options: ['Wrokshop', 'Party', 'Lecture', 'Show'],
+        shouldAddOther: false,
+        onChange: onChangeCallback
+    },
+    programOptions2 = {
+        options: ['Tour', 'Game', 'Movie'],
+        shouldAddOther: true,
+        onChange: onChangeCallback
+    },
+    childFriendlyProgOptions = {
+        options: ['Kids Friendly'],
+        shouldAddOther: false,
+        onChange: onChangeCallback
+    },
+    adultOnlylyOptions = {
+        options: ['Adult Only'],
+        shouldAddOther: false,
+        onChange: onChangeCallback
+    };
+if (program1 != null && program2 != null && adultOnly != null){
+    var programSelect1 = new MultiChoiceSelector(program1, programOptions1),
+        programSelect2 = new MultiChoiceSelector(program2, programOptions2),
+        childFriendlyProgSelector = new MultiChoiceSelector(childFriendlyProg, childFriendlyProgOptions),
+        adultOnlySelector = new MultiChoiceSelector(adultOnly, adultOnlylyOptions);
+}
+
+// New Camp multiSelect
+
+var input = document.querySelector("#create_camp_type");
 
 var kidsFriendlyOptions = {
         options: ['Kids Friendly'],
@@ -81,6 +114,8 @@ var kidsFriendlyOptions = {
         options: ['אוכל', 'שתיה', 'מוזיקה'],
         shouldAddOther: true,
         onChange: onChangeCallback
-    }
-var multiSelect = new MultiChoiceSelector(input, options),
-    kidsFriendlySelector = new MultiChoiceSelector(kidsFriendly, kidsFriendlyOptions);
+    };
+
+if (input != null) {
+    var multiSelect = new MultiChoiceSelector(input, options);
+}

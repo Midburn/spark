@@ -1,7 +1,28 @@
 extends ../../includes/page
 block content
-    .camps.camp_editing
-        section
-            .heading.card.row
-                .col-md-12
-                    h2 Members Boards
+    .camps.members
+        input.hidden(id='camp_members_camp_id', type='hidden', value='#{user.attributes.camp_id}')
+        section(ng-app="ngCamps", ng-controller="membersController")
+            .heading.card.card__shad.row
+                h2=t('camps:members.title')
+                .form-group
+                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:stats.search')}", autofocus)
+            .row
+                .col-xs-12.card__shad
+                    table.table.table-striped.table-hover
+                      thead
+                        tr
+                          th(ng-click='changeOrderBy("name")') Name
+                          th(ng-click='changeOrderBy("email")') Email
+                          th(ng-click='changeOrderBy("phone")') Phone
+                          th(ng-click='changeOrderBy("status")') Status
+                          th(ng-click='changeOrderBy("hasTicket")') Has Ticket
+                          th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
+                      tbody
+                        tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
+                          td {{member.name}}
+                          td {{member.email}}
+                          td {{member.phone}}
+                          td {{member.status}}
+                          td {{member.hasTicket ? 'yes':'no'}}
+                          td {{member.earlyArrival ? 'yes':'no'}}

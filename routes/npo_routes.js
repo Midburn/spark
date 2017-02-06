@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
 
-var security = require('../libs/security');
+var userRole = require('../libs/user_role');
 var i18next = require('i18next');
 var mail = require('../libs/mail');
 var payment = require('../libs/payment');
@@ -26,19 +26,19 @@ var loadMember = function (user_id, next) {
     })
 };
 
-router.get('/', security.protectGet, function (req, res) {
+router.get('/', userRole.isLoggedIn(), function (req, res) {
     loadMember(req.user.id, function (member) {
         res.render('pages/npo', {user: req.user, npoMember: member, currentYear: (new Date).getFullYear()});
     });
 });
 
-router.get('/join', security.protectGet, function (req, res) {
+router.get('/join', userRole.isLoggedIn(), function (req, res) {
     loadMember(req.user.id, function (member) {
         res.render('pages/npo_join', {user: req.user, npoMember: member});
     });
 });
 
-router.post('/join', security.protectGet, function (req, res) {
+router.post('/join', userRole.isLoggedIn(), function (req, res) {
 
     if (!req.files) {
         res.send('No files were uploaded.');
@@ -84,7 +84,7 @@ router.post('/join', security.protectGet, function (req, res) {
     })
 });
 
-router.get('/pay_fee', security.protectGet, function (req, res) {
+router.get('/pay_fee', userRole.isLoggedIn(), function (req, res) {
     payment.doPay(
         [{
             "Id": 0,
@@ -101,7 +101,7 @@ router.get('/pay_fee', security.protectGet, function (req, res) {
         res);
 });
 
-router.get('/fee_received', security.protectGet, function (req, res, next) {
+router.get('/fee_received', userRole.isLoggedIn(), function (req, res, next) {
 
     var token = req.query.Token;
     log.info('Received NPO payment token: ' + token);
