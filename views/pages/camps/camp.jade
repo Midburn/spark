@@ -20,9 +20,11 @@ block content
                         li.list-group-item
                             span Status
                                 if camp.status == 'open'
-                                    span.badge.bg__teal Open
+                                    span.badge.bg__green Open
+                                if camp.status == 'closed'
+                                    span.badge.bg__red Closed
                                 else
-                                    span.badge.bg__red Close
+                                    span.badge.bg__teal Inactive
                         li.list-group-item
                             span Accept Families?
                                 span.badge #{camp.accept_families}
