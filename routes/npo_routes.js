@@ -142,7 +142,7 @@ router.get('/fee_received', userRole.isLoggedIn(), function (req, res, next) {
                             'Your Midburn membership fee received!',
                             'emails/npo_fee_paid', {
                                 name: req.user.fullName,
-                                year:  new Date().getFullYear()
+                                year: new Date().getFullYear()
                             });
                         res.render('pages/npo_fee_received', {
                             user: req.user
