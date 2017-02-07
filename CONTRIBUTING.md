@@ -65,7 +65,8 @@ Before you submit your pull request consider the following guidelines:
 - Have you searched for existing, related issues and pull requests?
 - Is this a new feature that can stand alone as an external component?
 - Is the change being proposed clearly explained and motivated?
-
+- Does `npm lint` pass? (We use eslint with [Standard.js](http://standardjs.com/) style)
+- Does `npm test` pass?
 See: [Branching, patching and merging documentation](/docs/development/branching.md) for more details.
 
 That's it! Thank you for your contribution!
