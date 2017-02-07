@@ -1,12 +1,13 @@
 var express = require('express');
-var router = express.Router({mergeParams: true});
+var router = express.Router({
+    mergeParams: true
+});
 
 var userRole = require('../libs/user_role');
 var i18next = require('i18next');
 var mail = require('../libs/mail');
 var payment = require('../libs/payment');
 
-var User = require('../models/user').User;
 var NpoMember = require('../models/npo_member').NpoMember;
 var NpoStatus = require('../models/npo_member').NPO_STATUS;
 var log = require('../libs/logger.js')(module);
@@ -16,25 +17,37 @@ var npoConfig = config.get('npo');
 var serverConfig = config.get('server');
 
 var loadMember = function (user_id, next) {
-    new NpoMember({user_id: user_id}).fetch().then(function (member) {
+    new NpoMember({
+        user_id: user_id
+    }).fetch().then(function (member) {
         if (member !== null) {
             next(member);
-        }
-        else {
-            next({attributes: {membership_status: NpoStatus.not_member}});
+        } else {
+            next({
+                attributes: {
+                    membership_status: NpoStatus.not_member
+                }
+            });
         }
     })
 };
 
 router.get('/', userRole.isLoggedIn(), function (req, res) {
     loadMember(req.user.id, function (member) {
-        res.render('pages/npo', {user: req.user, npoMember: member, currentYear: (new Date).getFullYear()});
+        res.render('pages/npo', {
+            user: req.user,
+            npoMember: member,
+            currentYear: new Date().getFullYear()
+        });
     });
 });
 
 router.get('/join', userRole.isLoggedIn(), function (req, res) {
     loadMember(req.user.id, function (member) {
-        res.render('pages/npo_join', {user: req.user, npoMember: member});
+        res.render('pages/npo_join', {
+            user: req.user,
+            npoMember: member
+        });
     });
 });
 
@@ -71,13 +84,16 @@ router.post('/join', userRole.isLoggedIn(), function (req, res) {
         //TODO maybe add more field to save
 
         req.user.save().then(function () {
-            member.save(null, {method: 'insert'}).then(function () {
+            member.save(null, {
+                method: 'insert'
+            }).then(function () {
                 mail.send(
                     req.user.attributes.email,
                     npoConfig.email,
                     'Your Midburn membership application is being processed',
-                    'emails/npo_membership_applied',
-                    {name: req.user.fullName});
+                    'emails/npo_membership_applied', {
+                        name: req.user.fullName
+                    });
                 res.redirect('/' + req.params.lng + '/npo');
             });
         });
@@ -90,7 +106,9 @@ router.get('/pay_fee', userRole.isLoggedIn(), function (req, res) {
             "Id": 0,
             "Quantity": 1,
             "UnitPrice": 1,
-            "Description": i18next.t('membership_fee', {year: (new Date).getFullYear()})
+            "Description": i18next.t('membership_fee', {
+                year: (new Date()).getFullYear()
+            })
         }],
         serverConfig.url + '/npo/fee_received',
         1,
@@ -106,30 +124,36 @@ router.get('/fee_received', userRole.isLoggedIn(), function (req, res, next) {
     var token = req.query.Token;
     log.info('Received NPO payment token: ' + token);
 
-
-    new Payment({public_sale_token: token}).fetch().then(function (payment) {
+    new Payment({
+        public_sale_token: token
+    }).fetch().then(function (payment) {
         if (payment) {
             payment.attributes.payed = true;
             payment.save().then(function () {
 
-                new NpoMember({user_id: payment.attributes.user_id}).fetch().then(function (member) {
+                new NpoMember({
+                    user_id: payment.attributes.user_id
+                }).fetch().then(function (member) {
                     member.set('membership_status', NpoStatus.member_paid);
                     member.save().then(function () {
                         mail.send(
                             member.email,
                             npoConfig.email,
                             'Your Midburn membership fee received!',
-                            'emails/npo_fee_paid',
-                            {name: req.user.fullName, year: (new Date).getFullYear()});
-                        res.render('pages/npo_fee_received', {user: req.user});
+                            'emails/npo_fee_paid', {
+                                name: req.user.fullName,
+                                year:  new Date().getFullYear()
+                            });
+                        res.render('pages/npo_fee_received', {
+                            user: req.user
+                        });
                     }).catch(NpoMember.NotFoundError, function () {
                         //TODO handle error
                         log.error("User", member.user_id, "not found in DB while processing NPO payment", payment.payment_id);
                     })
                 });
             });
-        }
-        else {
+        } else {
             //TODO handle error.
             log.error("ERROR loading NPO payment from DB!", token);
         }

@@ -24,5 +24,8 @@ module.exports = {
         "no-trailing-spaces": ["off"],
         "key-spacing": ["off"],
         "block-spacing": ["off"],
+        "space-unary-ops": ["off"],
+        "comma-dangle": ["off"],
+        "one-var": ["off"],
     }
 };

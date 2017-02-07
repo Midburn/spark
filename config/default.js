@@ -1,6 +1,6 @@
 const opsworks = require('../opsworks.js');
 
-module.exports =  {
+module.exports = {
   database: opsworks.db,
 
   server: opsworks.server,
