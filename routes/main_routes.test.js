@@ -1,3 +1,6 @@
+// This is magically used in code such as user.attributes.password.length.should.be.above(20);
+var should = require('chai').should(); // eslint-disable-line no-unused-vars
+
 var app = require('../app.js');
 var request = require('supertest')(app);
 var DrupalUser = require('../models/user').DrupalUser;
