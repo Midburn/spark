@@ -24,11 +24,10 @@ $ git remote add midburn https://github.com/Midburn/Spark.git
 
 ### Installing Node
 
-It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
+Optional - It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
+(If you are not planning to use nvm, just skip these commands).
 
 We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
-
-If you are not planning to use nvm, just skip these commands.
 
 ```
 $ cd spark
