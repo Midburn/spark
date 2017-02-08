@@ -287,3 +287,29 @@ Now, to deploy you can run something like this:
 ssh -i ~/spark-deployment.id_rsa ubuntu@server 'PACKAGE_URL'
 ```
 
+#### production environment
+
+For production environment you should make the following changes:
+* add NODE_ENV=production to the /opt/spark/.env file
+* source the .env file by adding the line "source /opt/spark/.env" to the following:
+  * ~/.bashrc
+  * /opt/spark/start.sh
+* allow external services (e.g. travis) to notify production server about named releases
+  * this allows travis to let the server know there is a release ready and what is the URL but doesn't actually deploy it
+  * `mkdir -p /opt/spark/releases`
+  * `nano /opt/spark/release-notify.sh`
+    * `#!/usr/bin/env bash`
+    * `echo "${2}" > "/opt/spark/releases/${1}"`
+  * `nano /opt/spark/deploy.sh`
+    * modify only the first line - to get package url from the named releases:
+    * ```DEPLOYMENT_PACKAGE_URL=`cat "/opt/spark/releases/${1}"````
+  * you can test it by specifying a named releases and then deploying it:
+    * (replace PACKAGE_URL with an actual package url)
+    * `/opt/spark/release-notify.sh v1.test PACKAGE_URL`
+    * `/opt/spark/deploy.sh v1.test`
+  * setup an ssh key for the release notifications:
+    * `ssh-keygen -t rsa -b 4096 -C "spark-release-notify" -f /opt/spark/spark_release_notify.id_rsa`
+    * ```echo "command=\"/opt/spark/release-notify.sh $SSH_ORIGINAL_COMMAND\" `cat /opt/spark/spark_release_notify.id_rsa.pub`" >> ~/.ssh/authorized_keys```
+  * test it
+    * `ssh -i ~/spark_release_notify.id_rsa ubuntu@server 'RELEASE_NAME' 'PACKAGE_URL'`
+    * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'
