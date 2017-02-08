@@ -19,9 +19,10 @@
 * merge the change in package.json to master
 * don't forget to push!
 * now, you can publish the release in GitHub
+* Whenever a release is published, the production server is updated with the release name and package but does not deploy it
+* notification is sent to slack #sparksystemlog with the release name - notifying you that it's ready for deployment
 
 ## Deploying to production
-* Whenever a release is published, the production server is updated with the release name and package but does not deploy it
 * currently deployment is only possible via ssh, easiest way is using the following command (in Linux):
   * `ssh -i spark_production_deployment.id_rsa ubuntu@54.171.158.83 RELEASE_TAG_NAME`
 
