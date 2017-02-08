@@ -312,4 +312,4 @@ For production environment you should make the following changes:
     * ```echo "command=\"/opt/spark/release-notify.sh $SSH_ORIGINAL_COMMAND\" `cat /opt/spark/spark_release_notify.id_rsa.pub`" >> ~/.ssh/authorized_keys```
   * test it
     * `ssh -i ~/spark_release_notify.id_rsa ubuntu@server 'RELEASE_NAME' 'PACKAGE_URL'`
-    * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'
+    * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'`
