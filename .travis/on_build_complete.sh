@@ -85,7 +85,21 @@ _upload_package() {
 _deploy() {
     local package_version="${1}"
     local is_tagged="${2}"
-    if [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ]; then
+    if [ "${is_tagged}" == "1" ]; then
+        if [ "${SPARK_RELEASE_NOTIFICATION_KEY}" != "" ] && [ "${SPARK_RELEASE_NOTIFICATION_HOST}" != "" ]; then
+            echo -e "${SPARK_RELEASE_NOTIFICATION_KEY}" > release_notify.key
+            chmod 400 release_notify.key
+            if ssh -o StrictHostKeyChecking=no -i release_notify.key "${SPARK_RELEASE_NOTIFICATION_HOST}" "${package_version}" "`_get_package_url "${package_version}" "${is_tagged}"`"; then
+                echo; echo "OK"
+                return 0
+            else
+                echo; echo "ERROR"
+                return 1
+            fi
+        else
+            echo "skipping release notification because no SPARK_RELEASE_NOTIFICATION_KEY or SPARK_RELEASE_NOTIFICATION_HOST variables"
+        fi
+    elif [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ]; then
         echo -e "${SPARK_DEPLOYMENT_KEY}" > deployment.key
         chmod 400 deployment.key
         if ssh -o StrictHostKeyChecking=no -i deployment.key "${SPARK_DEPLOYMENT_HOST}" "`_get_package_url "${package_version}" "${is_tagged}"`"; then
@@ -112,6 +126,9 @@ _exit_success_send_slack_notification() {
     local package_version="${1}"
     local is_tagged="${2}"
     _send_slack_notification ":sunglasses: Travis build success\npackage_url=`_get_package_url "${package_version}" "${is_tagged}"`\n"
+    if [ "${is_tagged}" == "1" ]; then
+        _send_slack_notification ":champagne: Spark release ${package_version} is ready for deployment!"
+    fi
     echo
     echo "GREAT SUCCESS!"
     exit 0
