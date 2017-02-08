@@ -313,3 +313,8 @@ For production environment you should make the following changes:
   * test it
     * `ssh -i ~/spark_release_notify.id_rsa ubuntu@server 'RELEASE_NAME' 'PACKAGE_URL'`
     * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'`
+  * add variables in travis settings:
+    * SPARK_RELEASE_NOTIFICATION_KEY - the private key for release notification
+    * SPARK_RELEASE_NOTIFICATION_HOST - the host of the production instance
+  * publish a release in GitHub and then try to deploy it
+    * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'`
