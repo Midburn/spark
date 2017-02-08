@@ -57,6 +57,7 @@
     "bad_or_expired_token": "Password reset link is expired or broken",
     "password_reset_succeeded": "Password reset completed successfully",
     "password_changed_email_subject": "Spark Security Alert",
+    "volunteers": "volunteers",
     "facebook": {
         "login": "Login with Facebook"
     },
