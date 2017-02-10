@@ -324,8 +324,7 @@ $('#camp_create_save').click(function() {
         main_contact: $('#create_camp_main_contact option:selected').val(),
         moop_contact: $('#create_camp_moop_contact option:selected').val(),
         safety_contact: $('#create_camp_safety_contact option:selected').val(),
-        type: $('#create_camp_type option:selected').val(), //TODO - returns 'undefined'
-        camp_status: $('#create_camp_status').val(),
+        type: $('#create_camp_type option:selected').val(),
         camp_activity_time: $('#create_camp_activity_time option:selected').val(),
         child_friendly: $('#create_camp_child_friendly:checked').length,
         noise_level: $('#create_camp_noise_level option:selected').val(),
@@ -339,21 +338,24 @@ $('#camp_create_save').click(function() {
     };
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
-    _campAppendData(); //TODO - if works change name
+    _campDataAsAList(); //TODO - if works change name
+    //Guy temporarily removed - $('.camp_details').html(_campDataAsAList());
     // approve create camp
     $('#camp_create_save_modal_request').click(function() {
         _sendRequest();
     });
-    function _campAppendData() {
+    function _campDataAsAList() {
+        //var _list = '';
         $.each(camp_data, function(label, data) {
+            //_list += '<li>' + label + ': <b>' + data + '</b></li>';
             if(data) {
-                $('.' + label).show();
-                $('.' + label + ' span').text(': ' + data).css('font-weight', 'bold');
+                $('.' + label).append(': <b>' + data + '</b>');
             } else {
                 $('.' + label).hide();
             }
             
         })
+        //return $('<ul>').html(_list);
     }
     function _sendRequest() {
         $.ajax({
