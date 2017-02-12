@@ -287,6 +287,41 @@ Now, to deploy you can run something like this:
 ssh -i ~/spark-deployment.id_rsa ubuntu@server 'PACKAGE_URL'
 ```
 
+##### Setting up Let's encrypt for auto-renewed SSL certificates
+
+* `sudo apt-get install letsencrypt`
+* `sudo letsencrypt certonly --webroot -w /opt/spark/latest/public/ -d spark.midburn.org`
+* modify nginx configuration:
+```
+server {
+    listen       80;
+    server_name  spark.midburn.org 54.171.158.83;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name spark.midburn.org;
+
+    ssl_certificate /etc/letsencrypt/live/spark.midburn.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/spark.midburn.org/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
+```
+* add a cronjob to renew the certificate automatically
+* `sudo nano /etc/cron.weekly/letsencrypt`
+```
+#!/bin/sh
+# renew letsencrypt ssl certificates
+echo `date` >> /var/log/letsencrypt-weekly
+letsencrypt renew 2>&1 | tee -a /var/log/letsencrypt-weekly
+service nginx reload
+```
+
 #### production environment
 
 For production environment you should make the following changes:
