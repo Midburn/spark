@@ -63,7 +63,7 @@ var datatableAdmin = function(name, router, opts) {
 
     var _renderEditPage = function(req, res, error, successMsg) {
         var _adminRender = function(titleText) {
-            adminRender(req, res, 'admin/datatable-add.jade', {
+            adminRender(req, res, 'admin/datatable-edit.jade', {
                 title: {
                     text: titleText,
                     small: successMsg ? successMsg : error,
@@ -86,7 +86,7 @@ var datatableAdmin = function(name, router, opts) {
                         column.value = "";
                     }
                 });
-                _adminRender(req, res, opts.editTitle);
+                _adminRender(opts.editTitle);
             });
         } else {
             // add new object
