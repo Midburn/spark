@@ -4,11 +4,13 @@ block content
         section
             meta.hidden.meta(id='meta__camp_name_en', value='#{camp.camp_name_en}')
             .heading.card.card__shad.row
-                .col-md-12
+                .col-xs-12.col-sm-8
                     h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
                     span.label.label-info #{t('camps:edit.camp')} # #{camp.id}
                     h6 #{t('camps:edit.since')}: #{camp.created_at}
-            .controls.card.row
+                .col-xs-12.col-sm-4
+                    a.Btn.Btn__sm(href='/#{language}/camps/#{camp.id}') View camp
+            .controls.row
                 .col-xs-12    
                     //- Card switcher
                     button.Btn.Btn__default.card-switcher--card1=t('camps:edit.basic_info')
@@ -31,7 +33,7 @@ block content
                                     label(for='edit_camp_desc_en')=t('camps:edit.desc_en')
                                     textarea.form-control(id='edit_camp_desc_en', name='camp_desc_en') #{camp.camp_desc_en}
                                 .col-xs-12
-                                    label(for='edit_camp_desc_he')=t('camps:edit.name_he')
+                                    label(for='edit_camp_desc_he')=t('camps:edit.desc_he')
                                     textarea.form-control(id='edit_camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
                     h4=t('camps:edit.website_publication')
                     .camp-publication.panel
@@ -39,13 +41,21 @@ block content
                             .information
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_contact_person_id') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
+                                        label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
                                         select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
                                             option(selected) ---
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
                                         input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='edit_camp_accept_families')=t('camps:edit.accept_families')
+                                        input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
+                                        script.
+                                            // set checkbox status
+                                            var checkbox = document.getElementById("edit_camp_accept_families");
+                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
                     h4=t('camps:edit.contact_title')
                     .camp-leaders.panel
                         .panel-body
@@ -114,7 +124,7 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
-                                        input.form-control(id='edit_child_friendly', type="checkbox", name='child_friendly')
+                                        input.checkbox(id='edit_child_friendly', type="checkbox", name='child_friendly')
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_noise_level') #{t('camps:edit.camp_noise_level')}: #{details.noise_level}
@@ -138,7 +148,7 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_support_art')=t('camps:edit.support_art')
-                                        input.form-control(id='edit_support_art', type="checkbox", name='public_support_art', value='#{details.support_art}')
+                                        input.checkbox(id='edit_support_art', type="checkbox", name='public_support_art', value='#{details.support_art}')
                     h4=t('camps:edit.location_title')
                     .camp-details.panel
                         .panel-body

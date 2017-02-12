@@ -64,76 +64,48 @@ module.exports = function(app, passport) {
      */
     // Read
     app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
-        Camp
-            .forge({
-                id: req.params.id
-            })
-            .fetch({
-                withRelated: ['details']
-            })
-            .then((camp) => {
-                User.forge({
-                    user_id: camp.toJSON().main_contact
-                }).fetch().then((user) => {
-                    res.render('pages/camps/camp', {
-                        user: req.user,
-                        id: req.params.id,
-                        camp: camp.toJSON(),
-                        details: camp.related('details').toJSON()
-                    });
-                });
-            })
-            .catch((e) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: e.message
-                    }
+        Camp.forge({id: req.params.id}).fetch({withRelated: ['details']}).then((camp) => {
+            User.forge({user_id: camp.toJSON().main_contact}).fetch().then((user) => {
+                res.render('pages/camps/camp', {
+                    user: req.user,
+                    id: req.params.id,
+                    camp: camp.toJSON(),
+                    details: camp.related('details').toJSON()
                 });
             });
+        }).catch((e) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: e.message
+                }
+            });
+        });
     });
     // Edit
     app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
-        Camp
-            .forge({
-                id: req.params.id
+        Camp.forge({id: req.params.id}).fetch({withRelated: ['details']}).then((camp) => {
+            res.render('pages/camps/edit', {
+                user: req.user,
+                camp: camp.toJSON(),
+                details: camp.related('details').toJSON()
             })
-            .fetch({
-              withRelated: ['details']
-            })
-            .then((camp) => {
-                res.render('pages/camps/edit', {
-                    user: req.user,
-                    camp: camp.toJSON(),
-                    details: camp.related('details').toJSON()
-                })
-            })
+        })
     });
     // Destroy
     app.get('/:lng/camps/:id/remove', userRole.isLoggedIn(), (req, res) => {
-        Camp
-            .forge({
-                id: req.params.id
-            })
-            .fetch({
-                require: true
-            })
-            .then((camp) => {
-                camp.destroy()
-                    .then(() => {
-                        res.render('pages/camps/stats', {
-                            user: req.user
-                        });
-                    })
-                    .catch(function(err) {
-                        res.status(500).json({
-                            error: true,
-                            data: {
-                                message: err.message
-                            }
-                        });
-                    });
+        Camp.forge({id: req.params.id}).fetch().then((camp) => {
+            camp.save({status: 'inactive'}).then(() => {
+                res.render('pages/camps/stats', {user: req.user});
+            }).catch(function(err) {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
+        });
     });
     // Test Route for New Camp Program
     // new Program

@@ -4,7 +4,7 @@ footer.text-muted
             .footer-nav.col-xs-12.col-sm-4
                 a(href='http://www.midburn.org')=t('footer.visit_homepage')
             .footer-icons.footer-nav.col-xs-12.col-sm-4
-                img.img-responsive.center-block(src='../../images/midburn_logo_120.png')
+                img.img-responsive.center-block(src='/images/midburn_logo_120.png')
             .footer-nav.col-xs-12.col-sm-4
                 a(href='#')=t('footer.report_error')
         .row
@@ -20,7 +20,7 @@ footer.text-muted
             .footer-links.col-xs-12.text-center
                 ul
                     li
-                        a(href='http://midburn.org/terms-and-privacy/')=t('footer.toc')
+                        a(href="#{t('footer.toc_link')}" target='_blank')=t('footer.toc')
                     
                     li    
                         a(id='scroll_top', href='javascript:;')=t('footer.scrolltop')
