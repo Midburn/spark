@@ -287,3 +287,106 @@ Now, to deploy you can run something like this:
 ssh -i ~/spark-deployment.id_rsa ubuntu@server 'PACKAGE_URL'
 ```
 
+#### production environment
+
+For production environment you should make the following changes:
+* add NODE_ENV=production to the /opt/spark/.env file
+* source the .env file by adding the line "source /opt/spark/.env" to the following:
+  * ~/.bashrc
+  * /opt/spark/start.sh
+* allow external services (e.g. travis) to notify production server about named releases
+  * this allows travis to let the server know there is a release ready and what is the URL but doesn't actually deploy it
+  * `mkdir -p /opt/spark/releases`
+  * `nano /opt/spark/release-notify.sh`
+    * `#!/usr/bin/env bash`
+    * `echo "${2}" > "/opt/spark/releases/${1}"`
+  * `nano /opt/spark/deploy.sh`
+    * modify only the first line - to get package url from the named releases:
+    * ```DEPLOYMENT_PACKAGE_URL=`cat "/opt/spark/releases/${1}"````
+  * you can test it by specifying a named releases and then deploying it:
+    * (replace PACKAGE_URL with an actual package url)
+    * `/opt/spark/release-notify.sh v1.test PACKAGE_URL`
+    * `/opt/spark/deploy.sh v1.test`
+  * setup an ssh key for the release notifications:
+    * `ssh-keygen -t rsa -b 4096 -C "spark-release-notify" -f /opt/spark/spark_release_notify.id_rsa`
+    * ```echo "command=\"/opt/spark/release-notify.sh $SSH_ORIGINAL_COMMAND\" `cat /opt/spark/spark_release_notify.id_rsa.pub`" >> ~/.ssh/authorized_keys```
+  * test it
+    * `ssh -i ~/spark_release_notify.id_rsa ubuntu@server 'RELEASE_NAME' 'PACKAGE_URL'`
+    * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'`
+  * add variables in travis settings:
+    * SPARK_RELEASE_NOTIFICATION_KEY - the private key for release notification
+    * SPARK_RELEASE_NOTIFICATION_HOST - the host of the production instance
+  * publish a release in GitHub and then try to deploy it
+    * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'`
+* setup slack slash-command integration
+  * create directory /opt/spark/slack
+  * `npm init`
+  * `npm install --save express body-parser`
+  * `nano /opt/spark/slack/index.js`
+```
+var express = require('express')
+var bodyParser = require("body-parser");
+var fs = require('fs');
+var child_process = require('child_process');
+
+var app = express()
+app.use(bodyParser.urlencoded({extended:false}));
+
+var _isValidToken = function(token) {
+    return (process.env.SLACK_DEPLOY_TOKEN && token && token === process.env.SLACK_DEPLOY_TOKEN);
+}
+
+var _isUserAllowedToDeployed = function(user_name) {
+    return (process.env.SLACK_DEPLOY_ALLOWED_USERS && user_name && process.env.SLACK_DEPLOY_ALLOWED_USERS.split(',').indexOf(user_name) > -1);
+}
+
+app.post('/deploy', function (req, res) {
+    if (!_isValidToken(req.body.token)) {
+        res.status(500).send('invalid token');
+    } else if (!_isUserAllowedToDeployed(req.body.user_name)) {
+        res.status(500).send('user is not allowed to deploy');
+    } else if (!req.body.text || !fs.existsSync("/opt/spark/releases/"+req.body.text)) {
+        res.status(500).send('server was not notified about this release name, please ensure it is correct and/or check relevant travis build log');
+    } else {
+        res.json({
+            "response_type": "in_channel",
+            "text":"Deploying Spark "+req.body.text+" to production, please wait..."
+        });
+        var output = child_process.execSync("/opt/spark/deploy.sh "+req.body.text+" "+req.body.response_url);
+        console.log(output.toString());
+    }
+})
+
+app.listen(3100, function () {
+  console.log('Spark-slack listening on port 3100')
+})
+```
+  * `nano /opt/spark/slack/package.json`
+    * modify the start script to this:
+    * `"start": "bash -c 'source ../.env && node index.js'"`
+  * add the following to /opt/spark/.env file:
+    * SLACK_DEPLOY_TOKEN
+    * SLACK_DEPLOY_ALLOWED_USERS
+  * `nano /opt/spark/start-slack.sh`
+```
+#!/usr/bin/env bash
+export NVM_DIR=/opt/spark/.nvm
+source /opt/spark/.nvm/nvm.sh
+source /opt/spark/.env
+cd /opt/spark/slack && npm start
+```
+  * `sudo nano /etc/systemd/system/midburn-spark-slack.service`
+```
+[Unit]
+Description=start the Midburn Spark web app
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/spark/latest
+ExecStart=/opt/spark/start.sh
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
+```
+  * start the service: `sudo service midburn-spark-slack start`

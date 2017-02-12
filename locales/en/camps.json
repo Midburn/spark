@@ -11,7 +11,7 @@
             "join_send": "Send Request",
             "arrow": "→",
             "stats": {
-                "title": "Statistics & Information"
+                "title": "Camps Managment"
             },
             "members": {
                 "title": "Members Board"
@@ -75,7 +75,7 @@
             "manage_a_camp": "Manage camps"
         },
         "stats": {
-            "title": "Camp Statistics",
+            "title": "Camp Management",
             "name_en": "Name (English)",
             "name_he": "Name (Hebrew)",
             "contact_person": "Contact Person",

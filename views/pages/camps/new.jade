@@ -5,7 +5,7 @@ block content
             .col-md-12
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
-        .controls.card.row
+        .controls.row
             .col-xs-12
                 //- Card switcher
                 button.Btn.Btn__default.card-switcher--card1=t('camps:new.basic_info')
@@ -143,7 +143,7 @@ block content
 
         // Camp create request modal
         .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
-            .modal-dialog.card.card__even-pad.card__shad(role='document')
+            .modal-dialog.card.card__padding--even.card__shad(role='document')
                 div
                     .modal-header
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
