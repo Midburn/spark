@@ -52,44 +52,6 @@ var User = bookshelf.Model.extend({
         isAdmin: function() {
             return this.hasRole(userRole.ADMIN);
         }
-    },
-
-    admin: {
-        columns: [
-            {title: "Id", attr: "user_id", type: "primary"},
-            {title: "Email", attr: "email", type: "string"},
-            {title: "First name", attr: "first_name", type: "string"},
-            {title: "Last name", attr: "last_name", type: "string"}
-        ],
-        defaultOrder: [[ 1, "asc" ]],
-        filter: function(qb, searchTerm) {
-            qb
-                .where('email', 'LIKE', '%'+searchTerm+'%')
-                .orWhere('first_name', 'LIKE', '%'+searchTerm+'%')
-                .orWhere('last_name', 'LIKE', '%'+searchTerm+'%')
-            ;
-            if (!isNaN(searchTerm)) {
-                qb.orWhere('user_id', '=', searchTerm)
-            }
-        },
-        addTitle: "Add User",
-        addCallback: function(body, done) {
-            passport.signup(body.email, "", body, function(user, error) {
-                if (user) {
-                    done(true, "Great Success! 1 user added");
-                } else {
-                    done(false, error);
-                }
-            });
-        },
-        editKey: "user_id",
-        editCallback: function(user_id, body, done) {
-            User.forge({user_id:user_id}).save(body).then(function() {
-                done(true, "Great success! updated user id "+user_id);
-            }).catch(function(e) {
-                done(false, "unexpected error: "+e);
-            });
-        }
     }
 });
 
