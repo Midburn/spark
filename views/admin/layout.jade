@@ -8,17 +8,21 @@ html(lang='en')
         meta(name='viewport', content='width=device-width, initial-scale=1')
         title Spark Admin
         // Bootstrap
-        link(href='/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
         // Font Awesome
-        link(href='/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
         // iCheck
-        link(href='/gentelella/vendors/iCheck/skins/flat/green.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/vendors/iCheck/skins/flat/green.css', rel='stylesheet')
         // bootstrap-progressbar
-        link(href='/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css', rel='stylesheet')
         // jVectorMap
-        link(href='/gentelella/css/maps/jquery-jvectormap-2.0.3.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/production/css/maps/jquery-jvectormap-2.0.3.css', rel='stylesheet')
+        // datatables
+        link(href='/bower_components/gentelella/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css', rel='stylesheet')
         // Custom Theme Style
-        link(href='/gentelella/build/css/custom.min.css', rel='stylesheet')
+        link(href='/bower_components/gentelella/build/css/custom.min.css', rel='stylesheet')
+
     body.nav-md
         .container.body
             .main_container
@@ -32,10 +36,10 @@ html(lang='en')
                         // START menu profile quick info
                         .profile
                             .profile_pic
-                                img.img-circle.profile_img(src='/gentelella/images/user.png', alt='...')
+                                img.img-circle.profile_img(src='/bower_components/gentelella/production/images/user.png', alt='...')
                             .profile_info
                                 span Welcome,
-                                h2 John Doe
+                                h2= user.attributes.fullName ? user.attributes.fullName : user.attributes.email
                         // END menu profile quick info
                         p
                         | &nbsp;
@@ -44,29 +48,28 @@ html(lang='en')
                         #sidebar-menu.main_menu_side.hidden-print.main_menu
                             .menu_section
                                 ul.nav.side-menu
-                                    li
-                                        a(href='/admin/')
-                                            i.fa.fa-home
-                                            |  Home
-                                    li
-                                        a
-                                            i.fa.fa-users
-                                            |  Midburn NPO
-                                            span.fa.fa-chevron-down
-                                        ul.nav.child_menu
-                                            li
-                                                a(href='/admin/npo') Members
+                                    for item in sideBar
+                                        li
+                                            if item.children
+                                                a
+                                                    i(class="fa fa-"+item.icon)
+                                                    = "|  "+item.title
+                                                    span.fa.fa-chevron-down
+                                                ul.nav.child_menu
+                                                    for child in item.children
+                                                        li
+                                                            a(href=child.href)= child.title
+                                            else
+                                                a(href=item.href)
+                                                    i(class="fa fa-"+item.icon)
+                                                    = "|  "+item.title
                         // END sidebar menu
                         // START menu footer buttons
-                        .sidebar-footer.hidden-small
-                            a(data-toggle='tooltip', data-placement='top', title='Settings')
-                                span.glyphicon.glyphicon-cog(aria-hidden='true')
-                            a(data-toggle='tooltip', data-placement='top', title='FullScreen')
-                                span.glyphicon.glyphicon-fullscreen(aria-hidden='true')
-                            a(data-toggle='tooltip', data-placement='top', title='Lock')
-                                span.glyphicon.glyphicon-eye-close(aria-hidden='true')
-                            a(data-toggle='tooltip', data-placement='top', title='Logout')
-                                span.glyphicon.glyphicon-off(aria-hidden='true')
+                        if sideBarFooter
+                            .sidebar-footer.hidden-small
+                                for item in sideBarFooter
+                                    a(data-toggle='tooltip', data-placement='top', title=item.title)
+                                        span(class="glyphicon glyphicon-"+item.glyphicon, ariaHidden='true')
                         // END menu footer buttons
                 // START top navigation
                 .top_nav
@@ -77,51 +80,47 @@ html(lang='en')
                                     i.fa.fa-bars
                             ul.nav.navbar-nav.navbar-right
                                 li
-                                    a.user-profile.dropdown-toggle(href='javascript:;', data-toggle='dropdown', aria-expanded='false')
-                                        img(src='/gentelella/images/user.png', alt='')
-                                        | John Doe
-                                        span.fa.fa-angle-down
-                                    ul.dropdown-menu.dropdown-usermenu.pull-right
-                                        li
-                                            a(href='javascript:;')  Profile
-                                        li
-                                            a(href='javascript:;')
-                                                span.badge.bg-red.pull-right 50%
-                                                span Settings
-                                        li
-                                            a(href='javascript:;') Help
-                                        li
-                                            a(href='login.html')
-                                                i.fa.fa-sign-out.pull-right
-                                                |  Log Out
-                                li.dropdown(role='presentation')
-                                    a.dropdown-toggle.info-number(href='javascript:;', data-toggle='dropdown', aria-expanded='false')
-                                        i.fa.fa-envelope-o
-                                        span.badge.bg-green 6
-                                    ul#menu1.dropdown-menu.list-unstyled.msg_list(role='menu')
-                                        li
-                                            a
-                                                span.image
-                                                    img(src='/gentelella/images/user.png', alt='Profile Image')
-                                                span
-                                                    span John Smith
-                                                    span.time 3 mins ago
-                                                span.message
-                                                    | Film festivals used to be do-or-die moments for movie makers. They were where...
-                                        li
-                                            a
-                                                span.image
-                                                    img(src='/gentelella/images/user.png', alt='Profile Image')
-                                                span
-                                                    span John Smith
-                                                    span.time 3 mins ago
-                                                span.message
-                                                    | Film festivals used to be do-or-die moments for movie makers. They were where...
-                                        li
-                                            .text-center
-                                                a
-                                                    strong See All Alerts
-                                                    i.fa.fa-angle-right
+                                    a.user-profile.dropdown-toggle(data-toggle='dropdown', aria-expanded='false')
+                                        img(src='/bower_components/gentelella/production/images/user.png', alt='')
+                                        = user.attributes.fullName ? user.attributes.fullName : user.attributes.email
+                                        if showUserMenu
+                                            span.fa.fa-angle-down
+                                    if showUserMenu
+                                        ul.dropdown-menu.dropdown-usermenu.pull-right
+                                            li
+                                                a(href='javascript:;')  Profile
+                                            li
+                                                a(href='javascript:;')
+                                                    span.badge.bg-red.pull-right 50%
+                                                    span Settings
+                                            li
+                                                a(href='javascript:;') Help
+                                            li
+                                                a(href='login.html')
+                                                    i.fa.fa-sign-out.pull-right
+                                                    |  Log Out
+                                if notifications
+                                    li.dropdown(role='presentation')
+                                        a.dropdown-toggle.info-number(href='javascript:;', data-toggle='dropdown', aria-expanded='false')
+                                            i.fa.fa-envelope-o
+                                            span.badge.bg-green= notifications.number
+                                        ul#menu1.dropdown-menu.list-unstyled.msg_list(role='menu')
+                                            if notifications.items
+                                                for item in notifications.items
+                                                    li
+                                                        a
+                                                            span.image
+                                                                img(src=item.img.src, alt=item.img.alt)
+                                                            span
+                                                                span= item.title
+                                                                span.time= item.time
+                                                            span.message= item.message
+                                                li
+                                                    .text-center
+                                                        a
+                                                            strong= notifications.all.text
+                                                            i.fa.fa-angle-right
+                                                            href= notifications.all.href
                 // END top navigation
 
                 // START page content
@@ -139,38 +138,45 @@ html(lang='en')
                 // END footer content
 
         // jQuery
-        script(src='/gentelella/vendors/jquery/dist/jquery.min.js')
+        script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js')
         // Bootstrap
-        script(src='/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js')
+        script(src='/bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js')
         // FastClick
-        script(src='/gentelella/vendors/fastclick/lib/fastclick.js')
+        script(src='/bower_components/gentelella/vendors/fastclick/lib/fastclick.js')
         // NProgress
-        script(src='/gentelella/vendors/nprogress/nprogress.js')
+        script(src='/bower_components/gentelella/vendors/nprogress/nprogress.js')
         // Chart.js
-        script(src='/gentelella/vendors/Chart.js/dist/Chart.min.js')
+        script(src='/bower_components/gentelella/vendors/Chart.js/dist/Chart.min.js')
         // gauge.js
-        script(src='/gentelella/vendors/bernii/gauge.js/dist/gauge.min.js')
+        script(src='/bower_components/gentelella/vendors/gauge.js/dist/gauge.min.js')
         // bootstrap-progressbar
-        script(src='/gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js')
+        script(src='/bower_components/gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js')
         // iCheck
-        script(src='/gentelella/vendors/iCheck/icheck.min.js')
+        script(src='/bower_components/gentelella/vendors/iCheck/icheck.min.js')
         // Skycons
-        script(src='/gentelella/vendors/skycons/skycons.js')
+        script(src='/bower_components/gentelella/vendors/skycons/skycons.js')
         // Flot
-        script(src='/gentelella/vendors/Flot/jquery.flot.js')
-        script(src='/gentelella/vendors/Flot/jquery.flot.pie.js')
-        script(src='/gentelella/vendors/Flot/jquery.flot.time.js')
-        script(src='/gentelella/vendors/Flot/jquery.flot.stack.js')
-        script(src='/gentelella/vendors/Flot/jquery.flot.resize.js')
+        script(src='/bower_components/gentelella/vendors/Flot/jquery.flot.js')
+        script(src='/bower_components/gentelella/vendors/Flot/jquery.flot.pie.js')
+        script(src='/bower_components/gentelella/vendors/Flot/jquery.flot.time.js')
+        script(src='/bower_components/gentelella/vendors/Flot/jquery.flot.stack.js')
+        script(src='/bower_components/gentelella/vendors/Flot/jquery.flot.resize.js')
         // Flot plugins
-        script(src='/gentelella/js/flot/jquery.flot.orderBars.js')
-        script(src='/gentelella/js/flot/date.js')
-        script(src='/gentelella/js/flot/jquery.flot.spline.js')
-        script(src='/gentelella/js/flot/curvedLines.js')
+        script(src='/bower_components/gentelella/vendors/flot.orderbars/js/jquery.flot.orderBars.js')
+        script(src='/bower_components/gentelella/vendors/DateJS/build/production/date.min.js')
+        script(src='/bower_components/gentelella/vendors/flot-spline/js/jquery.flot.spline.min.js')
+        script(src='/bower_components/gentelella/vendors/flot.curvedlines/curvedLines.js')
         // jVectorMap
-        script(src='/gentelella/js/maps/jquery-jvectormap-2.0.3.min.js')
+        //script(src='/bower_components/gentelella/js/maps/jquery-jvectormap-2.0.3.min.js')
         // bootstrap-daterangepicker
-        script(src='/gentelella/js/moment/moment.min.js')
-        script(src='/gentelella/js/datepicker/daterangepicker.js')
+        script(src='/bower_components/gentelella/production/js/moment/moment.min.js')
+        script(src='/bower_components/gentelella/production/js/datepicker/daterangepicker.js')
         // Custom Theme Scripts
-        script(src='/gentelella/build/js/custom.min.js')
+        script(src='/bower_components/gentelella/build/js/custom.min.js')
+        // datatables
+        script(src='/bower_components/gentelella/vendors/datatables.net/js/jquery.dataTables.min.js')
+        script(src='/bower_components/gentelella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')
+        script(src='/bower_components/gentelella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js')
+        script(src='/bower_components/gentelella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')
+        // admin
+        script(src='/scripts/admin.js')

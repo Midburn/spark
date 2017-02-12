@@ -70,7 +70,9 @@ var signup = function(email, password, user, done) {
                 gender: user.gender,
                 validated: user.validated
             });
-            newUser.generateHash(password);
+            if (password) {
+                newUser.generateHash(password);
+            }
             if (!user.validated) {
                 newUser.generateValidation();
             }
@@ -196,3 +198,5 @@ module.exports = function (passport) {
         }
     ));
 };
+
+module.exports.signup = signup;  // used by admin UI to allow to create user from admin
