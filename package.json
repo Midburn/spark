@@ -26,6 +26,7 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
+    "async": "^2.1.4",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-preset-react": "^6.16.0",
