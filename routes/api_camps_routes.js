@@ -359,8 +359,34 @@ module.exports = function(app, passport) {
      * request => /camps/program
      */
     app.post('/camps/program', (req, res) => {
-        console.log(success);
-        //TODO
+      Camp.forge({
+        // camp id
+      }).then((camp) => {
+          CampProgram.forge({
+              // new program details here
+          }).save().then((campProgram) => {
+              res.status(200).json({
+                  error: false,
+                  data: {
+                      message: 'success'
+                  }
+              });
+          }).catch((e) => {
+              res.status(500).json({
+                  error: true,
+                  data: {
+                      message: err.message
+                  }
+              });
+          })
+      }).catch((e) => {
+          res.status(500).json({
+              error: true,
+              data: {
+                  message: e.message
+              }
+          });
+      });
     });
 
     /**
