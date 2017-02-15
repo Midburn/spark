@@ -287,6 +287,41 @@ Now, to deploy you can run something like this:
 ssh -i ~/spark-deployment.id_rsa ubuntu@server 'PACKAGE_URL'
 ```
 
+##### Setting up Let's encrypt for auto-renewed SSL certificates
+
+* `sudo apt-get install letsencrypt`
+* `sudo letsencrypt certonly --webroot -w /opt/spark/latest/public/ -d spark.midburn.org`
+* modify nginx configuration:
+```
+server {
+    listen       80;
+    server_name  spark.midburn.org 54.171.158.83;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name spark.midburn.org;
+
+    ssl_certificate /etc/letsencrypt/live/spark.midburn.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/spark.midburn.org/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
+```
+* add a cronjob to renew the certificate automatically
+* `sudo nano /etc/cron.weekly/letsencrypt`
+```
+#!/bin/sh
+# renew letsencrypt ssl certificates
+echo `date` >> /var/log/letsencrypt-weekly
+letsencrypt renew 2>&1 | tee -a /var/log/letsencrypt-weekly
+service nginx reload
+```
+
 #### production environment
 
 For production environment you should make the following changes:
@@ -318,3 +353,75 @@ For production environment you should make the following changes:
     * SPARK_RELEASE_NOTIFICATION_HOST - the host of the production instance
   * publish a release in GitHub and then try to deploy it
     * `ssh -i ~/spark_deployment.id_rsa ubuntu@server 'RELEASE_NAME'`
+* setup slack slash-command integration
+  * create directory /opt/spark/slack
+  * `npm init`
+  * `npm install --save express body-parser`
+  * `nano /opt/spark/slack/index.js`
+```
+var express = require('express')
+var bodyParser = require("body-parser");
+var fs = require('fs');
+var child_process = require('child_process');
+
+var app = express()
+app.use(bodyParser.urlencoded({extended:false}));
+
+var _isValidToken = function(token) {
+    return (process.env.SLACK_DEPLOY_TOKEN && token && token === process.env.SLACK_DEPLOY_TOKEN);
+}
+
+var _isUserAllowedToDeployed = function(user_name) {
+    return (process.env.SLACK_DEPLOY_ALLOWED_USERS && user_name && process.env.SLACK_DEPLOY_ALLOWED_USERS.split(',').indexOf(user_name) > -1);
+}
+
+app.post('/deploy', function (req, res) {
+    if (!_isValidToken(req.body.token)) {
+        res.status(500).send('invalid token');
+    } else if (!_isUserAllowedToDeployed(req.body.user_name)) {
+        res.status(500).send('user is not allowed to deploy');
+    } else if (!req.body.text || !fs.existsSync("/opt/spark/releases/"+req.body.text)) {
+        res.status(500).send('server was not notified about this release name, please ensure it is correct and/or check relevant travis build log');
+    } else {
+        res.json({
+            "response_type": "in_channel",
+            "text":"Deploying Spark "+req.body.text+" to production, please wait..."
+        });
+        var output = child_process.execSync("/opt/spark/deploy.sh "+req.body.text+" "+req.body.response_url);
+        console.log(output.toString());
+    }
+})
+
+app.listen(3100, function () {
+  console.log('Spark-slack listening on port 3100')
+})
+```
+  * `nano /opt/spark/slack/package.json`
+    * modify the start script to this:
+    * `"start": "bash -c 'source ../.env && node index.js'"`
+  * add the following to /opt/spark/.env file:
+    * SLACK_DEPLOY_TOKEN
+    * SLACK_DEPLOY_ALLOWED_USERS
+  * `nano /opt/spark/start-slack.sh`
+```
+#!/usr/bin/env bash
+export NVM_DIR=/opt/spark/.nvm
+source /opt/spark/.nvm/nvm.sh
+source /opt/spark/.env
+cd /opt/spark/slack && npm start
+```
+  * `sudo nano /etc/systemd/system/midburn-spark-slack.service`
+```
+[Unit]
+Description=start the Midburn Spark web app
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/spark/latest
+ExecStart=/opt/spark/start.sh
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
+```
+  * start the service: `sudo service midburn-spark-slack start`
