@@ -24,7 +24,8 @@ $ git remote add midburn https://github.com/Midburn/Spark.git
 
 ### Installing Node
 
-It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
+Optional - It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
+(If you are not planning to use nvm, just skip these commands).
 
 We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
 
@@ -60,16 +61,16 @@ See [/docs/database.md](/docs/development/database.md) for more details about ou
 
 Fire up the server after installation
 
-`spark$ nodemon server.js`
+`spark$ nodemon`
 
-and navigate to http://localhost:3000.
+and navigate to [http://localhost:3000]().
 
 **Note** nodemon should take care of refreshing the server when you make changes.
 
 ### Creating an admin account
 
 After lighting the spark, if this is the first time or if you have recreated the DB
-browse to the development console at http://localhost:3000/dev and select **Create admin user**.
+browse to the development console at [http://localhost:3000/dev]() and select **Create admin user**.
 
 This will create a user: **a**, password: **a**
 

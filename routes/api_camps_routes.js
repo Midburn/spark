@@ -190,7 +190,8 @@ module.exports = function(app, passport) {
      */
     app.get('/camps_published', (req, res, next) => {
         // Allow this address to http-request to this endpoint.
-        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = 'http://10.0.0.12:8080';
+        // TODO: add env check - if (app.get('env') === 'development')
+        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin');
 
         res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
         res.header('Access-Control-Allow-Methods', 'GET');
@@ -198,7 +199,7 @@ module.exports = function(app, passport) {
         Camp.fetchAll().then((camp) => {
             var published_camps = [];
             for (var i = 0; i < camp.models.length; i++) {
-                if (camp.models[i].attributes.enabled == '1') {
+                if (camp.models[i].attributes.enabled == '1' && camp.models[i].attributes.status != 'inactive') {
                     var fetched_camp = {
                         id: camp.models[i].attributes.id,
                         name_en: camp.models[i].attributes.camp_name_en,
@@ -230,7 +231,7 @@ module.exports = function(app, passport) {
      */
     app.get('/camps_contact_person/:id', (req, res, next) => {
         // Allow this address to http-request to this endpoint.
-        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = 'http://10.0.0.12:8080';
+        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin');
 
         res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
         res.header('Access-Control-Allow-Methods', 'GET');

@@ -119,7 +119,7 @@ function fetchCampsOnce() {
     }
 }
 function _removeCamp(camp_id) {
-    var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + ' forever.\n\n\n---\n Are you sure?');
+    var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');
     if (agree_remove) {
         $.get("camps/" + camp_id + "/remove", function(res) {
             window.location.reload();
@@ -234,7 +234,6 @@ $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
  * Component: View camp details
  */
 function _fetchCampContactPersonDetails() {
-    var contact_person_id = $('.contact-person').attr('data-camp-contact-person-id');
     $.get('/camps_contact_person/' + contact_person_id, function(res) {
         $('span.contact_person_name').text(res.user.name);
         $('span.contact_person_phone').text(res.user.phone);
@@ -242,7 +241,10 @@ function _fetchCampContactPersonDetails() {
     });
 }
 if ($('.camps').hasClass('camp_details')) {
-    _fetchCampContactPersonDetails();
+    var contact_person_id = $('.contact-person').attr('data-camp-contact-person-id');
+    if (contact_person_id !== "null") {
+        _fetchCampContactPersonDetails();
+    }
 }
 /**
  * Component: Editing camp
