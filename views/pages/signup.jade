@@ -16,54 +16,175 @@ block wrapper
                 p=t(errorMessageResource)
 
 
-        form( action="signup", method="post", data-toggle="validator", role="form" )
-            .form-group
-                label=t('email')
-                input( type="email", class="form-control", name="email", value="#{body && body.email || ''}", data-error="#{t('bad_email')}", required )
-                .help-block.with-errors
-            .form-group
-                label=t('password')
-                input( type="password", class="form-control", name="password", id="password", data-minlength='6', data-error="#{t('minimum_password', {'length': 6})}", required )
-                .help-block.with-errors
-            .form-group
-                label=t('confirm_password')
-                input( type="password", class="form-control", name="confirm_password", id="confirm_password",
-                data-match="#password", data-match-error="#{t('password_mismatch')}", data-error="#{t('mandatory_field')}", required )
-                .help-block.with-errors
-            .form-group
-                label=t('first_name')
-                input( type="text", class="form-control", name="first_name", value="#{body && body.first_name || ''}", data-error="#{t('mandatory_field')}", required )
-                .help-block.with-errors
-            .form-group
-                label=t('last_name')
-                input( type="text", class="form-control", name="last_name", value="#{(body && body.last_name)||''}", data-error="#{t('mandatory_field')}", required )
-                .help-block.with-errors
-            .form-group
-                label=t('gender')
-                br
-                label
-                    input(type="radio", name="gender", value="male", required, checked=(body && body.gender==='male') ,data-error="#{t('gender_error')}" )
-                    | &nbsp; #{t('male')}
-                | &nbsp;
-                label
-                    input(type="radio", name="gender", value="female", required,  checked=(body && body.gender==='female'), data-error="#{t('gender_error')}")
-                    | &nbsp; #{t('female')}
-                | &nbsp;
-                label
-                    input(type="radio", name="gender", value="other", required, checked=(body && body.gender==='other'), data-error="#{t('gender_error')}")
-                    | &nbsp; #{t('other')}
-                .help-block.with-errors
-            .form-group
-                div( class="g-recaptcha" data-sitekey=recaptcha_sitekey)
-            .text-center
-                button( type="submit", class="btn btn-info" )=t('sign_up')
-                hr
-                p
-                    a( href="/he/signup" )
-                        img( src="/images/flags/he.gif" )
+        form( action="signup", id = "registration-form", method="post", data-toggle="validator", role="form" )
+            fieldset
+                .form-group
+                    label=t('email')
+                    input( type="email", class="form-control", name="email", value="#{body && body.email || ''}", data-error="#{t('bad_email')}", required )
+                    .help-block.with-errors
+                .form-group
+                    label=t('password')
+                    input( type="password", class="form-control", name="password", id="password", data-minlength='6', data-error="#{t('minimum_password', {'length': 6})}", required )
+                    .help-block.with-errors
+                .form-group
+                    label=t('confirm_password')
+                    input( type="password", class="form-control", name="confirm_password", id="confirm_password",
+                    data-match="#password", data-match-error="#{t('password_mismatch')}", data-error="#{t('mandatory_field')}", required )
+                    .help-block.with-errors
+                .form-group
+                    label=t('first_name')
+                    input( type="text", class="form-control", name="first_name", value="#{body && body.first_name || ''}", data-error="#{t('mandatory_field')}", required )
+                    .help-block.with-errors
+                .form-group
+                    label=t('last_name')
+                    input( type="text", class="form-control", name="last_name", value="#{(body && body.last_name)||''}", data-error="#{t('mandatory_field')}", required )
+                    .help-block.with-errors
+                .form-group
+                    label=t('gender')
+                    br
+                    label
+                        input(type="radio", name="gender", value="male", required, checked =(body && body.gender==='male') , data-error="#{t('gender_error')}" )
+                        | &nbsp; #{t('male')}
                     | &nbsp;
-                    a( href="/en/signup" )
-                        img( src="/images/flags/en.gif" )
+                    label
+                        input(type="radio", name="gender", value="female", required, checked=(body && body.gender==='female') data-error="#{t('gender_error')}")
+                        | &nbsp; #{t('female')}
+                    | &nbsp;
+                    label
+                        input(type="radio", name="gender", value="other", required,  checked=(body && body.gender==='other') data-error="#{t('gender_error')}")
+                        | &nbsp; #{t('other')}
+                    .help-block.with-errors
+                .form-group
+                    label=t('users:birthday')
+                    input(type="date", class="form-control",name="bday", value="#{(body && body.bday)||''}", data-error="#{t('mandatory_field')}", required )
+
+                .form-group
+                    label=t('users:phone_number')
+                    input( type="text", class="form-control", name="phone_number", value="#{(body && body.last_name)||''}", data-error="#{t('mandatory_field')}", required )
+
+                .form-group
+                    label=t('users:nationality')
+                    select(class="form-control", name="nationality", value="#{(body && body.nationality)||''}", data-error="#{t('mandatory_field')}", required )
+                        each country, i in choices.COUNTRIES
+                            option(value=country, selected=(body&&body.nationality===country)) #{t('users:fields.countries.' + country)}
+
+                .form-group
+                    label=t('users:passport_id')
+                    input( type="text", class="form-control", name="passport_id", value="#{(body && body.passport_id)||''}", data-error="#{t('mandatory_field')}", required )
+
+                //connect togoogle api?
+                .form-group
+                    label=t('users:address')
+                    input( type="text", id="address" class="form-control", name="formatted_address", value="#{(body && body.formatted_address)||''}", data-error="#{t('mandatory_field')}", required )
+
+                .form-group
+                    label=t('users:occupation')
+                    select(class="form-control", name="occupation", value="#{(body && body.occupation)||''}", data-error="#{t('mandatory_field')}", required )
+                        each occupation, i in choices.OCCUPATIONS
+                            option(value=occupation, selected=(body&&body.occupation===occupation)) #{t('users:fields.occupations.' + occupation)}
+
+                .form-group
+                    label=t('users:hobbies')
+                    select(class="form-control", name="hobbies", value="#{(body && body.hobbies)||''}", data-error="#{t('mandatory_field')}", required )
+                        each hobby, i in choices.HOBBIES
+                            option(value=hobby, selected=(body&&body.hobbies===hobby)) #{t('users:fields.hobbies.' + hobby)}
+
+
+                .form-group
+                    label=t('users:profile_image')
+                    input( type="file", class="form-control", id="id_copy_file",  data-error="#{t('mandatory_field')}", required )
+
+                button(type="submit", class="btn btn-next")=t('next')
+
+            fieldset
+                .form-group
+                    label=t('users:playa_name')
+                    input( type="text", class="form-control", id="playa_name", name='playa_name', value="#{(body && body.playa_name)||''}", data-error="#{t('mandatory_field')}", required )
+
+                .form-group
+                    p=t('users:prev_burn_man_events')
+                    each burn_man_event, i in choices.BURNING_MAN_EVENTS
+                        label( class="form-control") "#{burn_man_event}"
+                            input( type="checkbox",  id="prev_burn_man_events", name="burn_man_events" value="#{i}")
+
+                .form-group
+                    p=t('users:prev_midburn_events')
+                    each midburn_event, i in choices.MIDBURN_EVENTS
+                        label( class="form-control") "#{midburn_event}"
+                            input( type="checkbox",  id="prev_midburn_events", name="midburn_events" value="#{i}")
+
+                .form-group
+                    label=t('users:how_plan_to_participate')
+                    select(class="form-control", name="way_of_paricipation", value="#{(body && body.way_of_paricipation)||''}", data-error="#{t('mandatory_field')}", required )
+                        each way_of_paricipation, i in choices.WAYS_OF_PARICIPATION
+                            option(value=way_of_paricipation) #{t('users:fields.ways_of_paricipation.' + way_of_paricipation)}
+
+
+                button(type="button", class="btn btn-previous")=t('previous')
+                button(type="submit", class="btn btn-next")=t('next')
+
+            fieldset
+                .form-group
+                    label( class="form-control")=t('users:have_medical_training')
+                        input( type="checkbox",  id="have_medical_training", name="medical_training" value="#{(body && body.medical_training)||''}")
+                
+                .form-group#medical_training_details(class="display-none")
+                    label=t('elaborate')
+                    input( type="text", class="form-control", name='medical_training_details' value="#{(body && body.medical_training_details)||''}", data-error="#{t('mandatory_field')}")
+
+                .form-group
+                    label( class="form-control")=t('users:have_medical_condition')
+                        input( type="checkbox",  id="have_medical_condition", name="medical_condition" checked=(body && body.medical_condition))
+                
+                .form-group#medical_condition_details(class=((body && body.medical_condition) ? '' : "display-none"))
+                    label=t('elaborate')
+                    input( type="text",  class="form-control", name='medical_condition_details', value="#{(body && body.medical_condition_details)||''}", data-error="#{t('mandatory_field')}" )
+
+                button(type="button", class="btn btn-previous")=t('previous')
+                button(type="submit", class="btn btn-next")=t('next')
+
+            fieldset
+                .form-group
+                    label=t('subscribe_newsletter')
+                    br
+                    label( class="form-control")=t('hebrew')
+                        input( type="checkbox",  id="hebrew_newsletter", name="newsletter" value="hebrew", data-error="#{t('mandatory_field')}")
+                    label( class="form-control")=t('english')
+                        input( type="checkbox",  id="english_newsletter", name="newsletter" value="english", data-error="#{t('mandatory_field')}")
+
+                .form-group
+                    label( class="form-control")=t('read')
+                        a(src="#")=t('ten_principals')
+                        input( type="checkbox",  id="read_ten_principals", name="read_ten_principals", data-error="#{t('mandatory_field')}", required)
+
+                .form-group
+
+                    label( class="form-control")=t('read')
+                        a(src="#")=t('survival_guide')
+                        input( type="checkbox",  id="read_survival_guide", name='read_survival_guide', data-error="#{t('mandatory_field')}", required)
+
+                .form-group
+                    label( class="form-control")=t('read')
+                        a(src="#")=t('terms')
+                        input( type="checkbox",  id="read_terms",  name="read_terms", data-error="#{t('mandatory_field')}", required)
+
+
+                button(type="button", class="btn btn-previous")=t('previous')
+                button(type="submit", class="btn btn-next")=t('next')
+
+            .form-group
+                div( class="g-recaptcha" data-sitekey="6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj")
+
+                .text-center
+                    button(type="button", class="btn btn-previous")=t('previous')
+                    button( type="submit", class="btn btn-info" )=t('sign_up')
+                    hr
+                    p
+                        a( href="/he/signup" )
+                            img( src="/images/flags/he.gif" )
+                        | &nbsp;
+                        a( href="/en/signup" )
+                            img( src="/images/flags/en.gif" )
 
 
 

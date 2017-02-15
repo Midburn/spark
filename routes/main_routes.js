@@ -14,6 +14,7 @@ var userRole = require('../libs/user_role');
 
 var async = require('async');
 var crypto = require('crypto');
+var signup_choices = require('../libs/signup-consts.js');
 
 module.exports = function (app, passport) {
 
@@ -131,7 +132,8 @@ module.exports = function (app, passport) {
         return res.render('pages/signup', {
             errorMessage: req.flash('error'),
             body: req.body, //repopulate fields in case of error
-            recaptcha_sitekey: recaptchaConfig.sitekey
+            recaptcha_sitekey: recaptchaConfig.sitekey,
+            choices: signup_choices
         });
     };
 
@@ -139,6 +141,7 @@ module.exports = function (app, passport) {
         return res.render('pages/signup', {
             errorMessageResource: error,
             body: req.body, //repopulate fields in case of error
+            choices: signup_choices,
             recaptcha_sitekey: recaptchaConfig.sitekey
         });
     };
@@ -383,5 +386,6 @@ module.exports = function (app, passport) {
                 res.sendStatus(400);
             }
         });
+
     });
 };

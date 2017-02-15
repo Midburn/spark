@@ -1,0 +1,23 @@
+{
+    
+    "birthday": "תאריך לידה",
+    "occupation": "מקצוע",
+    "hobbies": "תחביבים",
+    "fields": {
+        "occupations": {
+            "artist": "אומן",
+            "engineer": "מהנדס"
+        },
+        "hobbies": {
+            "music" :"מוזיק",
+            "movies": "קולנועה"
+        },
+        "ways_of_paricipation" : {
+            "theme_camp" : "מחנה נושא" , 
+            "sound_camp" : "מחנה סאונד", 
+            "art_installation" : "מיצג אומנות", 
+            "volunteering": "התנדבות",
+            "havent_decided": "טרם החלטתי..."
+        }    
+    }
+}

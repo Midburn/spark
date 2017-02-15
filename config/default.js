@@ -1,5 +1,5 @@
 const opsworks = require('../opsworks.js');
-
+console.log(opsworks.db  + " " + JSON.stringify(opsworks.db));
 module.exports =  {
   database: opsworks.db,
 

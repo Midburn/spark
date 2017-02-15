@@ -16,7 +16,9 @@ head
       link( rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css")
 
     link( rel="stylesheet", href="/stylesheets/main.scss" )
-    // Font-awesome
+    script(src='/gentelella/vendors/jquery/dist/jquery.min.js' )
+    script( src="/scripts/_core.js")
+ // Font-awesome
     link(href='/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
@@ -34,3 +36,6 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     script(src="/scripts/camps_v2.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
     script(src="/scripts/members.js")
+
+    script( src="/scripts/multistep-form.js") 
+    script( src="/scripts/jquery.geocomplete.js")
