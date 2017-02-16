@@ -345,18 +345,6 @@ $('#camp_create_save').click(function () {
     $('#camp_create_save_modal_request').click(function () {
         _sendRequest();
     });
-    function _campAppendData() {
-        $.each(camp_data, function (label, data) {
-            if(data) {
-                $('.' + label).show();
-                $('.' + label + ' span').text(': ' + data).css('font-weight', 'bold');
-            } else {
-                $('.' + label).hide();
-            }
-            
-        })
-    }      
-
     function _sendRequest() {
         $.ajax({
             url: '/camps/new',
