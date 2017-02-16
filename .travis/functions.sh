@@ -104,7 +104,7 @@ _deploy() {
         else
             echo "skipping release notification because no SPARK_RELEASE_NOTIFICATION_KEY or SPARK_RELEASE_NOTIFICATION_HOST variables"
         fi
-    elif [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ]; then
+    elif [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ] && [ "${SPARK_DEPLOYMENT_HOST}" != "" ]; then
         echo -e "${SPARK_DEPLOYMENT_KEY}" > deployment.key
         chmod 400 deployment.key
         if ssh -o StrictHostKeyChecking=no -i deployment.key "${SPARK_DEPLOYMENT_HOST}" `_get_package_url`; then
