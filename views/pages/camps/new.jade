@@ -30,26 +30,26 @@ block content
                             .col-xs-12
                                 label(for='create_camp_desc_en')=t('camps:new.desc_en')
                                 input(id='create_camp_desc_en', type="text", class="form-control", name="camp_desc_en")
-                h4=t('camps:edit.website_publication')
+                h4=t('camps:new.website_publication')
                 .camp-publication.panel
                     .panel-body
                         .information
                             .col-md-6
                                 .col-xs-12
-                                    label(for='create_camp_contact_person_id')=t('camps:edit.contact_person_id')
+                                    label(for='create_camp_contact_person_id')=t('camps:new.contact_person_id')
                                     select.form-control(id='create_camp_contact_person_id', name='contact_person_id')
                             .col-md-6
                                 .col-xs-12
-                                    label(for='create_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
+                                    label(for='create_camp_facebook_page_url')=t('camps:new.facebook_page_url')
                                     input.form-control(id='create_camp_facebook_page_url', name='facebook_page_url')
-                h4 Camp Contact Personnel
+                h4=t('camps:new.contact_card_header')
                 .camp-leaders.panel
                     .panel-body
                         .personnel
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_main_contact')=t('camps:new.main_contact')
-                                    select(id='create_camp_main_contact', class="form-control", name="main_contact")
+                                    select.form__input--important(id='create_camp_main_contact', class="form-control", name="main_contact")
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_moop_contact')=t('camps:new.moop_contact')
@@ -58,7 +58,7 @@ block content
                                 .col-xs-12
                                     label(for='create_camp_safety_contact')=t('camps:new.safety_contact')
                                     select(id='create_camp_safety_contact', class="form-control", name="safety_contact")
-                h4 Camp Behaviour
+                h4=t('camps:new.type_card_header')
                 .camp-leaders.panel
                     .panel-body
                         .behaviour
@@ -76,7 +76,7 @@ block content
                                         option(value='inactive')=t('camps:edit.inactive')
             //- Card 2
             .card.card-second.card-hide
-                h4 Camp Behaviour
+                h4=t('camps:new.behaviour_card_header')
                 .camp-details.panel
                     .panel-body
                         .camp-behavior
@@ -91,7 +91,7 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_child_friendly')=t('camps:new.camp_child_friendly')
-                                    input(id='create_camp_child_friendly', type="checkbox", class="form-control", name="child_friendly")
+                                    input(id='create_camp_child_friendly', type="checkbox", class="checkbox", name="child_friendly")
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_noise_level')=t('camps:new.camp_noise_level')
@@ -100,7 +100,7 @@ block content
                                         option(value="medium")=t('camps:new.camp_noise_level_medium')
                                         option(value="noisy")=t('camps:new.camp_noise_level_noisy')
                                         option(value="very noisy")=t('camps:new.camp_noise_level_very_noisy')
-                h4 Camp Public Area
+                h4=t('camps:new.public_area_card_title')
                 .camp-details.panel
                     .panel-body
                         .camp-public
@@ -115,8 +115,8 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_support_art')=t('camps:new.support_art')
-                                    input.form-control(id='create_support_art', type="checkbox", name='support_art')
-                h4 Camp Location
+                                    input.checkbox(id='create_support_art', type="checkbox", name='support_art')
+                h4=t('camps:new.location_card_title')
                 .camp-details.panel
                     .panel-body
                         .camp-location
@@ -148,10 +148,53 @@ block content
                     .modal-header
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
-                        h4.modal-title Create a camp request
+                        h4.modal-title=t('camps:new.create_camp_request')
                     .modal-body
-                        p The request of creating new camp will be sent with these details
+                        p=t('camps:new.create_camp_request_text')
                         .camp_details
+                            ul
+                                li.camp_name_he=t('camps:new.name_he')
+                                    span
+                                li.camp_name_en=t('camps:new.name_en')
+                                    span
+                                li.camp_desc_he=t('camps:new.desc_he')
+                                    span
+                                li.camp_desc_en=t('camps:new.desc_en')
+                                    span
+                                li.contact_person_id=t('camps:new.contact_person_id')
+                                    span
+                                li.facebook_page_url=t('camps:new.facebook_page_url')
+                                    span
+                                li.main_contact=t('camps:new.main_contact')
+                                    span
+                                li.moop_contact=t('camps:new.moop_contact')
+                                    span
+                                li.safety_contact=t('camps:new.safety_contact')
+                                    span
+                                li.type=t('camps:new.type')
+                                    span
+                                li.camp_status=t('camps:edit.status')
+                                    span
+                                li.camp_activity_time=t('camps:new.camp_activity_time')
+                                    span
+                                li.child_friendly=t('camps:new.camp_child_friendly')
+                                    span
+                                li.noise_level=t('camps:new.camp_noise_level')
+                                    span
+                                li.public_activity_area_sqm=t('camps:new.public_activity_area_sqm')
+                                    span
+                                li.public_activity_area_desc=t('camps:new.public_activity_area_desc')
+                                    span
+                                li.support_art=t('camps:new.support_art')
+                                    span
+                                li.location_comments=t('camps:new.location_comments')
+                                    span
+                                li.camp_location_street=t('camps:new.camp_location_street')
+                                    span
+                                li.camp_location_street_time=t('camps:new.camp_location_street_time')
+                                    span
+                                li.camp_location_area=t('camps:new.camp_location_area')
+                                    span
                     .modal-footer
-                        button.Btn.Btn__transparent(id='create_camp_close_btn', type='button', data-dismiss='modal') Close
-                        button.Btn.Btn__green(id='camp_create_save_modal_request', type='button') Send Request
+                        button.Btn.Btn__transparent(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('camps:new.close')
+                        button.Btn.Btn__green(id='camp_create_save_modal_request', type='button')=t('camps:new.send_request') 

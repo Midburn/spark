@@ -50,7 +50,7 @@ block content
                                         input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_accept_families')=t('camps:edit.accept_families')
+                                        label(for='edit_camp_accept_families')=t('camps:camps.accept_families')
                                         input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
                                         script.
                                             // set checkbox status
@@ -63,7 +63,7 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_main_contact')=t('camps:edit.main_contact')
-                                        select.form-control(id='edit_camp_main_contact', name='main_contact')
+                                        select.form-control.form__input--important(id='edit_camp_main_contact', name='main_contact')
                                             option.selected(value='#{camp.main_contact}', selected) #{camp.main_contact}
                                 .col-md-4
                                     .col-xs-12

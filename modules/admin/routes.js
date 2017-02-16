@@ -1,8 +1,12 @@
 var express = require('express');
-var router = express.Router({mergeParams: true});
+var router = express.Router({
+    mergeParams: true
+});
 var modules = require('../../libs/modules');
+
 var userRole = modules.require('core', 'libs/user_role');
 var mail = modules.require('core', 'libs/mail');
+
 var User = modules.require('core', 'models/user').User;
 var Camp = modules.require('core', 'models/camp').Camp;
 var NpoMember = modules.require('core', 'models/npo_member').NpoMember;
@@ -15,7 +19,6 @@ var log = modules.require('core', 'libs/logger.js')(module);
 var datatableAdmin = modules.require('admin', 'libs/admin').datatableAdmin;
 var adminRender = modules.require('admin', 'libs/admin').adminRender;
 var passport = modules.require('core', 'libs/passport');
-
 
 router.get('/', userRole.isAdmin(), function (req, res) {
     adminRender(req, res, 'admin/home.jade', {
@@ -73,7 +76,6 @@ datatableAdmin("users", router, {
     }
 });
 
-
 datatableAdmin("camps", router, {
     "model": Camp,
     "columns": [
@@ -118,30 +120,47 @@ datatableAdmin("camps", router, {
     }
 });
 
-
 router.get('/npo', userRole.isAdmin(), function (req, res) {
     NpoMember.forge().query({where: {membership_status: NpoStatus.applied_for_membership}})
         .fetchAll({withRelated: ['user']}).then(function (members) {
-        adminRender(req, res, 'admin/npo.jade', {members: members.models});
+        res.render('admin/npo.jade', {members: members.models});
     });
 });
 
+router.get('/npo', userRole.isAdmin(), function (req, res, next) {
+    NpoMember.forge().query({
+            where: {
+                membership_status: NpoStatus.applied_for_membership
+            }
+        })
+        .fetchAll({
+            withRelated: ['user']
+        }).then(function (members) {
+            res.render('admin/npo.jade', {
+                members: members.models
+            });
+        });
+});
 
 router.post('/npo', userRole.isAdmin(), function (req, res, next) {
     if (req.body.action && req.body.emails) {
         switch (req.body.action) {
-            case 'approve_membership' :
+            case 'approve_membership':
                 var rows = req.body.emails.split('\n');
                 rows.forEach(function (row) {
                     var recipient = row.trim();
                     if (recipient.length > 0) {
-                        new User({email: recipient}).fetch().then(function (theUser) {
+                        new User({
+                            email: recipient
+                        }).fetch().then(function (theUser) {
                             if (theUser == null) {
                                 //TODO handle error.
                                 log.error("User not found!");
-                                return adminRender(req, req, 'admin/admin_npo', {errorMessage: 'email ' + recipient + ' not found'});
+                                return res.render('admin/admin_npo', {
+                                    errorMessage: 'email ' + recipient + ' not found'
+                                });
                             }
-                            if (theUser.attributes.membership_status == npoStatus.applied_for_membership) {
+                            if (theUser.attributes.membership_status === npoStatus.applied_for_membership) {
                                 theUser.attributes.membership_status = npoStatus.request_approved;
                                 theUser.save().then(function (model) {
                                     var payLink = serverConfig.url + "/he/npo/pay_fee?user='" + recipient;
@@ -149,15 +168,18 @@ router.post('/npo', userRole.isAdmin(), function (req, res, next) {
                                         recipient,
                                         npoConfig.email,
                                         'Your Midburn membership approved!',
-                                        'emails/npo_membership_approved',
-                                        {name: theUser.fullName, payLink: payLink});
+                                        'emails/npo_membership_approved', {
+                                            name: theUser.fullName,
+                                            payLink: payLink
+                                        });
                                     res.redirect('/admin/npo');
                                 });
-                            }
-                            else {
+                            } else {
                                 //TODO handle error.
                                 log.warn("Incorrect status - ", theUser.attributes.membership_status);
-                                return adminRender(req, req, 'admin/admin_npo', {errorMessage: 'email ' + recipient + ' - incorrect status'});
+                                return res.render('admin/admin_npo', {
+                                    errorMessage: 'email ' + recipient + ' - incorrect status'
+                                });
                             }
                         });
                     }
@@ -165,6 +187,5 @@ router.post('/npo', userRole.isAdmin(), function (req, res, next) {
         }
     }
 });
-
 
 module.exports = router;

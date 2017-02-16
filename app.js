@@ -16,14 +16,13 @@ var KnexSessionStore = require('connect-session-knex')(session);
 var knex = require('./libs/db').knex;
 var modules = require('./libs/modules');
 
-
 log.info('Spark is starting...');
 
 // Creating Express application
 var app = express();
 
 // Middleware registration
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
 
 // Log every HTTP request
 app.use(morganLogger('dev', {
@@ -52,11 +51,9 @@ app.use(compileSass({
     logToConsole: false // If true, will log to console.error on errors
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
+app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
 
 modules.addPublicPaths(app);
-
-app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 app.use(function(req, res, next) {
     res.locals.req = req;
@@ -68,7 +65,9 @@ app.use(function(req, res, next) {
 require('./libs/passport')(passport);
 
 // using session storage in DB - allows multiple server instances + cross session support between node js apps
-var sessionStore = new KnexSessionStore({knex: knex});
+var sessionStore = new KnexSessionStore({
+    knex: knex
+});
 app.use(session({
     secret: 'SparklePoniesAreFlyingOnEsplanade',
     resave: false,
@@ -196,7 +195,7 @@ if (app.get('env') === 'development') {
 
     app.use(function(err, req, res, next) {
         // Handle CSRF token errors
-        if (err.code == 'EBADCSRFTOKEN') {
+        if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
             res.render('pages/error', {
                 errorMessage: 'Illegal action. Your connection details has been logged.',
@@ -217,7 +216,7 @@ if (app.get('env') === 'development') {
 else {
     app.use(function(err, req, res, next) {
         // Handle CSRF token errors
-        if (err.code == 'EBADCSRFTOKEN') {
+        if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
             res.render('pages/error', {
                 errorMessage: 'Illegal action. Your connection details has been logged.',

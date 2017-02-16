@@ -13,9 +13,11 @@ var constants = require('../models/constants');
  * @param password
  * @param done
  */
-var drupal_login = function(email, password, done) {
-    DrupalUser.forge({name: email}).fetch().then(function(drupalUser) {
-        if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status == 1) {
+var drupal_login = function (email, password, done) {
+    DrupalUser.forge({
+        name: email
+    }).fetch().then(function (drupalUser) {
+        if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status === 1) {
             // valid drupal password
             // drupal user status is 1
             // can sign up a spark user with some defaults
@@ -25,7 +27,7 @@ var drupal_login = function(email, password, done) {
                 last_name: "",
                 gender: constants.USER_GENDERS_DEFAULT,
                 validated: true
-            }, function(newUser, error) {
+            }, function (newUser, error) {
                 if (newUser) {
                     done(newUser);
                 } else {
@@ -38,8 +40,10 @@ var drupal_login = function(email, password, done) {
     });
 };
 
-var login = function(email, password, done) {
-    new User({email: email}).fetch().then(function (user) {
+var login = function (email, password, done) {
+    new User({
+        email: email
+    }).fetch().then(function (user) {
         if (user === null) {
             // no corresponding spark user is found
             // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
@@ -48,7 +52,9 @@ var login = function(email, password, done) {
         } else if (!user.validPassword(password)) {
             done(false, i18next.t('invalid_user_password'));
         } else if (!user.attributes.validated) {
-            done(false, i18next.t('user_not_validated', {email: email}));
+            done(false, i18next.t('user_not_validated', {
+                email: email
+            }));
         } else if (!user.attributes.enabled) {
             done(false, i18next.t('user_disabled'));
         } else {
@@ -57,8 +63,10 @@ var login = function(email, password, done) {
     });
 };
 
-var signup = function(email, password, user, done) {
-    var userPromise = new User({email: email}).fetch();
+var signup = function (email, password, user, done) {
+    var userPromise = new User({
+        email: email
+    }).fetch();
     userPromise.then(function (model) {
         if (model) {
             done(false, i18next.t('user_exists'));
@@ -99,7 +107,9 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
-        new User({user_id: id}).fetch().then(function (user) {
+        new User({
+            user_id: id
+        }).fetch().then(function (user) {
             done(null, user);
         });
     });
@@ -108,20 +118,20 @@ module.exports = function (passport) {
     // LOCAL SIGNUP ============================================================
     // =========================================================================
     passport.use('local-signup', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true // allows us to pass back the entire request to the callback
-    },
-    function (req, email, password, done) {
-        signup(email, password, req.body, function(user, error) {
-            if (user) {
-                done(null, user, null);
-            } else {
-                done(null, false, req.flash('error', error));
-            }
-        });
-    }));
+            // by default, local strategy uses username and password, we will override with email
+            usernameField: 'email',
+            passwordField: 'password',
+            passReqToCallback: true // allows us to pass back the entire request to the callback
+        },
+        function (req, email, password, done) {
+            signup(email, password, req.body, function (user, error) {
+                if (user) {
+                    done(null, user, null);
+                } else {
+                    done(null, false, req.flash('error', error));
+                }
+            });
+        }));
 
     // =========================================================================
     // LOCAL LOGIN =============================================================
@@ -152,33 +162,37 @@ module.exports = function (passport) {
             enableProof: true,
             profileFields: ['id', 'email', 'first_name', 'last_name']
         },
-        function(accessToken, refreshToken, profile, cb) {
-            if (profile.emails == undefined) {
+        function (accessToken, refreshToken, profile, cb) {
+            if (profile.emails === undefined) {
                 // TODO: redirect user to http://lvh.me:3000/auth/facebook/reauth
                 console.log("User didn't agree to send us his email. ");
                 return cb(null, false);
             }
 
             User.query({
-                where: { facebook_id: profile.id },
-                orWhere: { email: profile.emails[0].value }
+                where: {
+                    facebook_id: profile.id
+                },
+                orWhere: {
+                    email: profile.emails[0].value
+                }
             }).fetch().then(function (model) {
                 if (model) {
                     // 1. Clear the user's password (the user will now only be
                     //    able to login through FacebookStrategy)
                     // 2. Save updated token and details
                     model.save({
-                        password: "",
-                        facebook_token: accessToken,
-                        facebook_id: profile.id,
-                        // I'm not quite sure about this.
-                        // If a user changes his Facebook email, should we change
-                        // it in our system? I think we should. Not convinced though.
-                        email: profile.emails[0].values
-                    })
-                    .then(function (_model) {
-                        return cb(null, model, null);
-                    });
+                            password: "",
+                            facebook_token: accessToken,
+                            facebook_id: profile.id,
+                            // I'm not quite sure about this.
+                            // If a user changes his Facebook email, should we change
+                            // it in our system? I think we should. Not convinced though.
+                            email: profile.emails[0].values
+                        })
+                        .then(function (_model) {
+                            return cb(null, model, null);
+                        });
                 } else {
                     var newUser = new User({
                         facebook_id: profile.id,
@@ -198,5 +212,3 @@ module.exports = function (passport) {
         }
     ));
 };
-
-module.exports.signup = signup;  // used by admin UI to allow to create user from admin

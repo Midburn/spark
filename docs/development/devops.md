@@ -75,20 +75,7 @@ sudo service nginx restart
 
 ### Configuring the environment
 
-Replace "..." with the actual values
-
-```
-echo 'SLACK_API_TOKEN="..."' >> /opt/spark/.env
-echo 'SLACK_LOG_WEBHOOK="..."' >> /opt/spark/.env
-```
-
-Create an opsworks.js file too (it will be copied to the deployment directory)
-
-Fill it with relevant configurations
-
-```
-nano /opt/spark/opsworks.js
-```
+Create a .env file in /opt/spark/.env based on [/.env-example](/.env-example)
 
 For simple sqlite3 installation, you should create a file that will contain the database
 
@@ -125,7 +112,6 @@ popd
 
 echo "Copying configurations..."
 cp /opt/spark/.env /opt/spark/new/.env
-cp /opt/spark/opsworks.js /opt/spark/new/opsworks.js
 [ -f /opt/spark/dev.sqlite3 ] && cp /opt/spark/dev.sqlite3 /opt/spark/new/dev.sqlite3
 
 echo "Setting up the deployment directory..."
@@ -210,8 +196,6 @@ Test the mail sending (replace user@example.com with your email):
 echo "Hello world" | mail -s "Testing 123" user@example.com
 ```
 
-If you used the default [/opsworks.js](/opsworks.js) file - it is already configured to send mail from localhost, so no change is required.
-
 ##### local Mysql server
 
 This will setup a local mysql server (MariaDB)
@@ -243,7 +227,7 @@ mysql -h localhost -u spark -p spark
 Modify the spark configuration
 
 ```
-nano /opt/spark/opsworks.js
+nano /opt/spark/.env
 ```
 
 Remove the sqlite configuration and uncomment the mysql configuration.
@@ -251,15 +235,12 @@ Remove the sqlite configuration and uncomment the mysql configuration.
 It should look something like this:
 
 ```
-exports.db = {
-    "client"        : "mysql",
-    "debug"         : false,
-    "host"          : "localhost",
-    "database"      : "spark",
-    "user"          : "spark",
-    "password"      : "... the password ...",
-    "charset"       : "utf8",
-};
+SPARK_DB_CLIENT=mysql
+SPARK_DB_HOSTNAME=localhost
+SPARK_DB_DBNAME=spark
+SPARK_DB_USER=spark
+SPARK_DB_PASSWORD=YOUR_PASSWORD
+SPARK_DB_DEBUG=false
 ```
 
 Run migrations (assuming you have a deployment installed)
@@ -285,6 +266,41 @@ Now, to deploy you can run something like this:
 
 ```
 ssh -i ~/spark-deployment.id_rsa ubuntu@server 'PACKAGE_URL'
+```
+
+##### Setting up Let's encrypt for auto-renewed SSL certificates
+
+* `sudo apt-get install letsencrypt`
+* `sudo letsencrypt certonly --webroot -w /opt/spark/latest/public/ -d spark.midburn.org`
+* modify nginx configuration:
+```
+server {
+    listen       80;
+    server_name  spark.midburn.org 54.171.158.83;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name spark.midburn.org;
+
+    ssl_certificate /etc/letsencrypt/live/spark.midburn.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/spark.midburn.org/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
+```
+* add a cronjob to renew the certificate automatically
+* `sudo nano /etc/cron.weekly/letsencrypt`
+```
+#!/bin/sh
+# renew letsencrypt ssl certificates
+echo `date` >> /var/log/letsencrypt-weekly
+letsencrypt renew 2>&1 | tee -a /var/log/letsencrypt-weekly
+service nginx reload
 ```
 
 #### production environment
