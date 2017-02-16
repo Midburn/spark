@@ -6,7 +6,8 @@ script:
   - npm install -g knex
   - knex migrate:latest
   - npm test
+  - .travis/deploy.sh
 after_success:
-  - .travis/on_build_complete.sh "1"
+  - .travis/notify.sh "1"
 after_failure:
-  - .travis/on_build_complete.sh "0"
+  - .travis/notify.sh "0"
