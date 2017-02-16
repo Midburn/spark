@@ -1,2 +1,3 @@
 public/gentelella/**/*.js
 *.min.js
+*.test.js

@@ -78,7 +78,9 @@ var signup = function (email, password, user, done) {
                 gender: user.gender,
                 validated: user.validated
             });
-            newUser.generateHash(password);
+            if (password) {
+                newUser.generateHash(password);
+            }
             if (!user.validated) {
                 newUser.generateValidation();
             }
@@ -134,13 +136,14 @@ module.exports = function (passport) {
     // =========================================================================
     // LOCAL LOGIN =============================================================
     // =========================================================================
-    passport.use('local-login', new LocalStrategy({
+    passport.use('local-login', new LocalStrategy(
+        {
             usernameField: 'email',
             passwordField: 'password',
             passReqToCallback: true
         },
         function (req, email, password, done) {
-            login(email, password, function (user, error) {
+            login(email, password, function(user, error) {
                 if (user) {
                     done(null, user, null);
                 } else {
@@ -149,10 +152,10 @@ module.exports = function (passport) {
             });
         }));
 
-    // ==========
-    // Facebook login
-    // ==========
-    passport.use(new FacebookStrategy({
+        // ==========
+        // Facebook login
+        // ==========
+        passport.use(new FacebookStrategy({
             clientID: facebookConfig.app_id,
             clientSecret: facebookConfig.app_secret,
             callbackURL: facebookConfig.callbackBase + "/auth/facebook/callback",

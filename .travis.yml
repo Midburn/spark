@@ -2,8 +2,10 @@ language: node_js
 cache:
   directories:
     - node_modules
+    - bower_components
 script:
-  - npm install -g knex
+  - npm install -g knex bower
+  - bower install
   - knex migrate:latest
   - npm test
   - .travis/deploy.sh

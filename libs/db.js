@@ -11,6 +11,7 @@ var knex = require('knex')({
 var bookshelf = require('bookshelf')(knex);
 
 bookshelf.plugin('virtuals');
+bookshelf.plugin('pagination');
 
 module.exports = {
     bookshelf: bookshelf,
