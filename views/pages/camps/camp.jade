@@ -18,14 +18,14 @@ block content
                     ul.list-group.text-center
                         li.list-group-item
                             if camp.enabled
-                              span.no-flt.badge.bg__green=t('camps:camps.publised')
+                              span.no-flt.badge.bg__green=t('camps:camps.published')
                             else
                               span.no-flt.badge.bg__red=t('camps:camps.draft')
                         li.list-group-item
                             span=t('camps:camps.status')
                                 if camp.status == 'open'
                                     span.badge.bg__teal=t('camps:camps.status_open')
-                                if camp.status == 'closed'
+                                else if camp.status == 'closed'
                                     span.badge.bg__red=t('camps:camps.status_closed')
                                 else
                                     span.badge.bg__teal=t('camps:edit.inactive')

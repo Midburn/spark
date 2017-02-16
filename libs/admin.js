@@ -4,27 +4,42 @@
 
 var userRole = require('../libs/user_role');
 
-
 /**
  * constants
  */
 
-const SIDE_BAR = [
-    {title: "Home", icon: "home", href: "/admin"},
-    {title: "Users", icon: "users", href: "/admin/users"},
-    {title: "Camps", icon: "sitemap", href: "/admin/camps"},
-    {title: "Midburn NPO", icon: "users", children: [
-        {title: "Members", href: "/admin/npo"}
-    ]}
+const SIDE_BAR = [{
+        title: "Home",
+        icon: "home",
+        href: "/admin"
+    },
+    {
+        title: "Users",
+        icon: "users",
+        href: "/admin/users"
+    },
+    {
+        title: "Camps",
+        icon: "sitemap",
+        href: "/admin/camps"
+    },
+    {
+        title: "Midburn NPO",
+        icon: "users",
+        children: [{
+            title: "Members",
+            href: "/admin/npo"
+        }]
+    }
 ];
 
-const PAGE_LENGTH_MENU = [2, 5, 10];  // the options in the results per page select box
-const DEFAULT_PAGE_LENGTH  = 5;  // the default option from the PAGE_LENGTH_MENU
+const PAGE_LENGTH_MENU = [2, 5, 10]; // the options in the results per page select box
+const DEFAULT_PAGE_LENGTH = 5; // the default option from the PAGE_LENGTH_MENU
 const ADMIN_URL_PREFIX = "/admin";
 const ADD_URL_TEMPLATE = "/{name}/add";
 const EDIT_URL_TEMPLATE = "/{name}/edit/{id}";
 const TABLE_AJAX_URL_TEMPLATE = "/{name}/table";
-const TABLE_PAGE_TITLE_TEMPLATE = "Spark {name}"; 
+const TABLE_PAGE_TITLE_TEMPLATE = "Spark {name}";
 
 /**
  * render a template under the admin template
@@ -41,21 +56,23 @@ var adminRender = function(req, res, name, options) {
     res.render(name, options);
 };
 
-
 var datatableAdmin = function(name, router, opts) {
 
     var _renderTablePage = function(req, res, msg) {
         adminRender(req, res, 'admin/datatable.jade', {
-            title: {text: TABLE_PAGE_TITLE_TEMPLATE.replace('{name}', name), small: msg},
+            title: {
+                text: TABLE_PAGE_TITLE_TEMPLATE.replace('{name}', name),
+                small: msg
+            },
             columns: opts.columns,
-            ajax: ADMIN_URL_PREFIX+TABLE_AJAX_URL_TEMPLATE.replace('{name}', name),
+            ajax: ADMIN_URL_PREFIX + TABLE_AJAX_URL_TEMPLATE.replace('{name}', name),
             tableOptionsString: JSON.stringify({
                 "lengthMenu": PAGE_LENGTH_MENU, // the options in the page length select list
                 "pageLength": DEFAULT_PAGE_LENGTH, // initial page length (number of rows per page)
                 "order": opts.defaultOrder,
-                "addUrl": ADMIN_URL_PREFIX+ADD_URL_TEMPLATE.replace('{name}', name),
+                "addUrl": ADMIN_URL_PREFIX + ADD_URL_TEMPLATE.replace('{name}', name),
                 "editKey": opts.editKey,
-                "editUrl": ADMIN_URL_PREFIX+EDIT_URL_TEMPLATE.replace('{name}', name)
+                "editUrl": ADMIN_URL_PREFIX + EDIT_URL_TEMPLATE.replace('{name}', name)
             }),
             addTitle: opts.addTitle
         });
@@ -66,7 +83,7 @@ var datatableAdmin = function(name, router, opts) {
             adminRender(req, res, 'admin/datatable-edit.jade', {
                 title: {
                     text: titleText,
-                    small: successMsg ? successMsg : error,
+                    small: successMsg || error,
                     smallType: successMsg ? "success" : "error"
                 },
                 columns: opts.columns
@@ -74,7 +91,7 @@ var datatableAdmin = function(name, router, opts) {
         };
         if (req.params.object_id) {
             // edit existing object - need to fetch it first
-            var forgeObj={};
+            var forgeObj = {};
             forgeObj[opts.editKey] = req.params.object_id;
             opts.model.forge(forgeObj).fetch().then(function(object) {
                 opts.columns.forEach(function(column) {
@@ -101,15 +118,20 @@ var datatableAdmin = function(name, router, opts) {
         }
     };
 
-    router.get('/'+name+'/table', userRole.isAdmin(), function(req, res) {
+    router.get('/' + name + '/table', userRole.isAdmin(), function(req, res) {
         try {
             // initialize from datatables query params
             var resultsPerPage = req.query.length;
             var currentPage = (req.query.start / resultsPerPage) + 1;
-            var orderBy = (req.query.order[0].dir == "asc" ? "" : "-") + req.query.columns[req.query.order[0].column].data;
+            var orderBy = (req.query.order[0].dir === "asc" ? "" : "-") + req.query.columns[req.query.order[0].column].data;
             var searchTerm = req.query.search.value;
         } catch (e) {
-            res.status(500).json({error: true, data: { message: e.message } });
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: e.message
+                }
+            });
         }
         var recordsTotal = 0;
         opts.model
@@ -117,10 +139,10 @@ var datatableAdmin = function(name, router, opts) {
             .then(function(count) {
                 recordsTotal = count;
                 opts.model.query(function(qb) {
-                    if (searchTerm) {
-                        opts.filter(qb, searchTerm);
-                    }
-                })
+                        if (searchTerm) {
+                            opts.filter(qb, searchTerm);
+                        }
+                    })
                     .orderBy(orderBy)
                     .fetchPage({
                         columns: opts.selectColumns,
@@ -138,18 +160,23 @@ var datatableAdmin = function(name, router, opts) {
                             recordsTotal: recordsTotal, // total records before filtering
                             recordsFiltered: rows.pagination.rowCount // total records after filtering
                         })
-                    })
-                ;
+                    });
             })
-            .catch(function(e){
-                res.status(500).json({error: true, data: { message: e.message } });
-            })
-        ;
+            .catch(function(e) {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: e.message
+                    }
+                });
+            });
     });
 
-    router.get('/'+name+'/add', userRole.isAdmin(), function(req, res){_renderEditPage(req, res, "")});
+    router.get('/' + name + '/add', userRole.isAdmin(), function(req, res) {
+        _renderEditPage(req, res, "")
+    });
 
-    router.post('/'+name+'/add', userRole.isAdmin(), function(req, res) {
+    router.post('/' + name + '/add', userRole.isAdmin(), function(req, res) {
         opts.addCallback(req.body, function(ok, msg) {
             if (ok) {
                 _renderTablePage(req, res, msg);
@@ -159,9 +186,11 @@ var datatableAdmin = function(name, router, opts) {
         });
     });
 
-    router.get('/'+name+'/edit/:object_id', userRole.isAdmin(), function(req, res) {_renderEditPage(req, res, "")});
+    router.get('/' + name + '/edit/:object_id', userRole.isAdmin(), function(req, res) {
+        _renderEditPage(req, res, "")
+    });
 
-    router.post('/'+name+'/edit/:object_id', userRole.isAdmin(), function(req, res) {
+    router.post('/' + name + '/edit/:object_id', userRole.isAdmin(), function(req, res) {
         opts.editCallback(req.params.object_id, req.body, function(ok, msg) {
             if (ok) {
                 _renderEditPage(req, res, false, msg);
@@ -171,10 +200,11 @@ var datatableAdmin = function(name, router, opts) {
         })
     });
 
-    router.get('/'+name, userRole.isAdmin(), function(req, res){_renderTablePage(req, res, "")});
+    router.get('/' + name, userRole.isAdmin(), function(req, res) {
+        _renderTablePage(req, res, "")
+    });
 
 };
-
 
 module.exports = {
     datatableAdmin: datatableAdmin,

@@ -14,7 +14,9 @@ const ADMIN_USER_FIRST_NAME = "Admin routes";
 var adminLoggedIn = false;
 
 var givenAdminUserIsRegistered = function() {
-    return User.forge({email: ADMIN_USER_EMAIL}).fetch().then(function(user){
+    return User.forge({
+        email: ADMIN_USER_EMAIL
+    }).fetch().then(function(user) {
         if (user) {
             return Promise.resolve(user);
         } else {
@@ -38,10 +40,13 @@ var givenAdminUserIsLoggedIn = function() {
         return givenAdminUserIsRegistered().then(function() {
             return request
                 .post('/he/login')
-                .send({email: ADMIN_USER_EMAIL, password: ADMIN_USER_PASSWORD, r: "/admin"})
+                .send({
+                    email: ADMIN_USER_EMAIL,
+                    password: ADMIN_USER_PASSWORD,
+                    r: "/admin"
+                })
                 .expect(302)
-                .expect('Location', '/admin')
-            ;
+                .expect('Location', '/admin');
         });
     } else {
         return Promise.resolve();
@@ -49,10 +54,10 @@ var givenAdminUserIsLoggedIn = function() {
 };
 
 var adminHomeShouldShowSomeData = function() {
-    return request.get('/he/admin').expect(200).expect(function(res){
+    return request.get('/he/admin').expect(200).expect(function(res) {
         if (
-            (res.text.indexOf("Total Users") < 0)
-            || (res.text.indexOf("Total Camps") < 0)
+            (res.text.indexOf("Total Users") < 0) ||
+            (res.text.indexOf("Total Camps") < 0)
         ) {
             throw new Error();
         }
@@ -77,8 +82,10 @@ var adminTableAjaxShouldContainAdminUser = function() {
 };
 
 var givenAdminUserEditPageUrl = function() {
-    return User.forge({email: ADMIN_USER_EMAIL}).fetch().then(function(user){
-        return "/admin/users/edit/"+user.id;
+    return User.forge({
+        email: ADMIN_USER_EMAIL
+    }).fetch().then(function(user) {
+        return "/admin/users/edit/" + user.id;
     })
 };
 
@@ -95,23 +102,32 @@ var shouldShowEditAdminUserPage = function() {
 };
 
 var givenAdminUserLastNameIs = function(last_name) {
-    return User.where('email', '=', ADMIN_USER_EMAIL).save({last_name: last_name}, {method: "update", patch: true});
+    return User.where('email', '=', ADMIN_USER_EMAIL).save({
+        last_name: last_name
+    }, {
+        method: "update",
+        patch: true
+    });
 };
 
 var shouldChangeAdminUserLastNameTo = function(last_name) {
     return givenAdminUserEditPageUrl()
         .then(function(admin_user_edit_page_url) {
             console.log(admin_user_edit_page_url);
-            return request.post(admin_user_edit_page_url).send({last_name: last_name}).expect(200);
+            return request.post(admin_user_edit_page_url).send({
+                last_name: last_name
+            }).expect(200);
         })
         .then(function() {
-            return User.forge({email: ADMIN_USER_EMAIL}).fetch();
+            return User.forge({
+                email: ADMIN_USER_EMAIL
+            }).fetch();
         }).then(function(user) {
-            user.attributes.last_name.should.equal(last_name+"");
+            user.attributes.last_name.should.equal(last_name + "");
         });
 };
 
-describe('Admin routes', function () {
+describe('Admin routes', function() {
     it('should show some statistical data on admin homepage', function() {
         return givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
     });

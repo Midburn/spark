@@ -23,7 +23,8 @@ $(document).ready(function() {
             "order": options.order
         })
     ;
-    var $addButton = $('#datatable-admin .add').click(function() {
-        window.location.href = options.addUrl;
-    });
-} );
+    // NOT IN USE. UNCOMMENT WHEN NEEDED
+    // var $addButton = $('#datatable-admin .add').click(function() {
+    //     window.location.href = options.addUrl;
+    // });
+});

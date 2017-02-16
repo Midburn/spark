@@ -18,7 +18,6 @@ var log = require('../libs/logger.js')(module);
 var datatableAdmin = require('../libs/admin').datatableAdmin;
 var adminRender = require('../libs/admin').adminRender;
 
-
 router.get('/', userRole.isAdmin(), function (req, res) {
     adminRender(req, res, 'admin/home.jade', {
         tiles: [
@@ -75,7 +74,6 @@ datatableAdmin("users", router, {
     }
 });
 
-
 datatableAdmin("camps", router, {
     "model": Camp,
     "columns": [
@@ -120,7 +118,6 @@ datatableAdmin("camps", router, {
     }
 });
 
-
 router.get('/npo', userRole.isAdmin(), function (req, res) {
     NpoMember.forge().query({where: {membership_status: NpoStatus.applied_for_membership}})
         .fetchAll({withRelated: ['user']}).then(function (members) {
@@ -161,7 +158,7 @@ router.post('/npo', userRole.isAdmin(), function (req, res, next) {
                                     errorMessage: 'email ' + recipient + ' not found'
                                 });
                             }
-                            if (theUser.attributes.membership_status == npoStatus.applied_for_membership) {
+                            if (theUser.attributes.membership_status === npoStatus.applied_for_membership) {
                                 theUser.attributes.membership_status = npoStatus.request_approved;
                                 theUser.save().then(function (model) {
                                     var payLink = serverConfig.url + "/he/npo/pay_fee?user='" + recipient;
