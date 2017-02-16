@@ -45,7 +45,6 @@ _get_package_url() {
 
 ## utility functions
 
-
 _send_slack_notification() {
     local msg_text="${1}"
     echo "sending slack notification: '${msg_text}'"
@@ -105,7 +104,9 @@ _deploy() {
             echo "skipping release notification because no SPARK_RELEASE_NOTIFICATION_KEY or SPARK_RELEASE_NOTIFICATION_HOST variables"
         fi
     elif [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ] && [ "${SPARK_DEPLOYMENT_HOST}" != "" ]; then
-        echo -e "${SPARK_DEPLOYMENT_KEY}" > deployment.key
+        if [ ! -f deployment.key ]; then
+            echo -e "${SPARK_DEPLOYMENT_KEY}" > deployment.key
+        fi
         chmod 400 deployment.key
         if ssh -o StrictHostKeyChecking=no -i deployment.key "${SPARK_DEPLOYMENT_HOST}" `_get_package_url`; then
             echo; echo "OK"
