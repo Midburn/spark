@@ -53,6 +53,8 @@ app.use(compileSass({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
+app.use('/modules/admin/public', express.static(path.join(__dirname, '/modules/admin/public')));
+
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 app.use(function(req, res, next) {
@@ -138,7 +140,10 @@ app.use(middleware.handle(i18next, {
 //});
 
 // View engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', [
+    path.join(__dirname, 'views'),
+    path.join(__dirname, 'modules/admin/views')
+]);
 app.set('view engine', 'jade');
 
 // user roles / permissions
@@ -151,7 +156,7 @@ if (app.get('env') === 'development') {
 }
 require('./routes/main_routes.js')(app, passport);
 
-app.use('/:lng?/admin', require('./routes/admin_routes'));
+app.use('/:lng?/admin', require('./modules/admin/routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));

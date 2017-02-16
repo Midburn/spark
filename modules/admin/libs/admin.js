@@ -2,7 +2,7 @@
  * provides functionality related to the admin UI
  */
 
-var userRole = require('../libs/user_role');
+var userRole = require('../../../libs/user_role');
 
 
 /**

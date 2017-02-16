@@ -1,10 +1,10 @@
 var should = require('chai').should(); //actually call the function
-var app = require('../app.js');
+var app = require('../../../app.js');
 var request = require('supertest').agent(app);
-var DrupalUser = require('../models/user').DrupalUser;
-var User = require('../models/user').User;
-var knex = require('../libs/db').knex;
-var constants = require('../models/constants');
+var DrupalUser = require('../../../models/user').DrupalUser;
+var User = require('../../../models/user').User;
+var knex = require('../../../libs/db').knex;
+var constants = require('../../../models/constants');
 var _ = require('underscore');
 
 const ADMIN_USER_EMAIL = "admin_routes_test@localhost";
