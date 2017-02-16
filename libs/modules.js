@@ -45,3 +45,13 @@ modules.addRoutes = function(app) {
         }
     });
 };
+
+modules.require = function(module, name) {
+    if (module == 'core') {
+        // core
+        return require('../' + name);
+    } else {
+        // module
+        return require('../modules/'+module+'/'+name);
+    }
+};

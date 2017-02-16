@@ -1,8 +1,8 @@
 /**
  * provides functionality related to the admin UI
  */
-
-var userRole = require('../../../libs/user_role');
+var modules = require('../../../libs/modules');
+var userRole = modules.require('core', 'libs/user_role');
 
 
 /**
@@ -74,12 +74,13 @@ var datatableAdmin = function(name, router, opts) {
         };
         if (req.params.object_id) {
             // edit existing object - need to fetch it first
-            var forgeObj={};
-            forgeObj[opts.editKey] = req.params.object_id;
-            opts.model.forge(forgeObj).fetch().then(function(object) {
+            var fetchObj = {};
+            fetchObj[opts.editKey] = req.params.object_id;
+            api.core.users.fetch(fetchObj).then(function(user) {
                 opts.columns.forEach(function(column) {
-                    if (object.attributes[column.attr]) {
-                        column.value = object.attributes[column.attr];
+                    // if (object.attributes[column.attr]) {
+                    if (user[column.attr]) {
+                        column.value = user[column.attr];
                     } else if (req.body && req.body[column.attr]) {
                         column.value = req.body[column.attr]
                     } else {
@@ -88,6 +89,11 @@ var datatableAdmin = function(name, router, opts) {
                 });
                 _adminRender(opts.editTitle);
             });
+            // var forgeObj={};
+            // forgeObj[opts.editKey] = req.params.object_id;
+            // opts.model.forge(forgeObj).fetch().then(function(object) {
+            //
+            // });
         } else {
             // add new object
             opts.columns.forEach(function(column) {

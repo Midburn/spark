@@ -1,21 +1,20 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
-
-var userRole = require('../../libs/user_role');
-var mail = require('../../libs/mail');
-
-var User = require('../../models/user').User;
-var Camp = require('../../models/camp').Camp;
-var NpoMember = require('../../models/npo_member').NpoMember;
-var NpoStatus = require('../../models/npo_member').NPO_STATUS;
+var modules = require('../../libs/modules');
+var userRole = modules.require('core', 'libs/user_role');
+var mail = modules.require('core', 'libs/mail');
+var User = modules.require('core', 'models/user').User;
+var Camp = modules.require('core', 'models/camp').Camp;
+var NpoMember = modules.require('core', 'models/npo_member').NpoMember;
+var NpoStatus = modules.require('core', 'models/npo_member').NPO_STATUS;
 
 var config = require('config');
 var npoConfig = config.get('npo');
 var serverConfig = config.get('server');
-var log = require('../../libs/logger.js')(module);
-var datatableAdmin = require('./libs/admin').datatableAdmin;
-var adminRender = require('./libs/admin').adminRender;
-var passport = require('../../libs/passport');
+var log = modules.require('core', 'libs/logger.js')(module);
+var datatableAdmin = modules.require('admin', 'libs/admin').datatableAdmin;
+var adminRender = modules.require('admin', 'libs/admin').adminRender;
+var passport = modules.require('core', 'libs/passport');
 
 
 router.get('/', userRole.isAdmin(), function (req, res) {
