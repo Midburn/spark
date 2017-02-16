@@ -4,7 +4,7 @@ const breadcrumbs = require('express-breadcrumbs');
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
-module.exports = function (app, passport) {
+module.exports = function(app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
     // ==============
@@ -105,7 +105,7 @@ module.exports = function (app, passport) {
                 res.render('pages/camps/stats', {
                     user: req.user
                 });
-            }).catch(function (err) {
+            }).catch(function(err) {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -115,6 +115,24 @@ module.exports = function (app, passport) {
             });
         });
     });
+    /*
+     * import csv module
+     */
+    app.get('/:lng/import/:type', userRole.isLoggedIn(), (req, res) => {
+        switch (req.params.type) {
+            case 'csv':
+                _CSV();
+                break;
+            default:
+
+        }
+
+        function _CSV() {
+            // import csv into the database
+            
+        }
+    })
+
     // Test Route for New Camp Program
     // new Program
     app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {

@@ -16,29 +16,29 @@ function Camps() {
     }
 
     function getUsersList() {
-        $.getJSON('/users', function (data) {
+        $.getJSON('/users', function(data) {
             _usersList = data.users;
             renderContactsList();
         });
     }
 
     function getCampsList() {
-        $.get('/camps', function (data) {
+        $.get('/camps', function(data) {
             _campsList = data.camps;
         });
     }
 
     /*eslint-disable */
     function renderCampList() {
-        _campsList.forEach(function (camp) {
+        _campsList.forEach(function(camp) {
             //TODO add to camps table
         })
     }
     /*eslint-enable */
 
     function renderContactsList() {
-        _usersList.forEach(function (user) {
-            $("select[name='main_contact'], select[name='moop_contact'], select[name='safety_contact']").each(function (i, elm) {
+        _usersList.forEach(function(user) {
+            $("select[name='main_contact'], select[name='moop_contact'], select[name='safety_contact']").each(function(i, elm) {
                 var option = _create('option', '', []);
                 option.value = user.user_id;
                 option.innerHTML = user.fullName;
@@ -60,14 +60,15 @@ function Camps() {
         fetchData();
     }
 
-    init();
+    
+    if ($('.camp_create')) {
+        init();
+    }
 
     return {
         render: render
     }
 }
-
-var camps_model = new Camps(); // eslint-disable-line no-unused-vars
 
 function onChangeCallback(res) {
     console.log("multi select callback: " + res);
