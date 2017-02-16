@@ -14,6 +14,7 @@ var compileSass = require('express-compile-sass');
 var recaptchaConfig = require('config').get('recaptcha');
 var KnexSessionStore = require('connect-session-knex')(session);
 var knex = require('./libs/db').knex;
+var modules = require('./libs/modules');
 
 
 log.info('Spark is starting...');
@@ -53,7 +54,7 @@ app.use(compileSass({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
-app.use('/modules/admin/public', express.static(path.join(__dirname, '/modules/admin/public')));
+modules.addPublicPaths(app);
 
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
@@ -141,9 +142,12 @@ app.use(middleware.handle(i18next, {
 
 // View engine setup
 app.set('views', [
-    path.join(__dirname, 'views'),
-    path.join(__dirname, 'modules/admin/views')
-]);
+    // core views
+    path.join(__dirname, 'views')
+].concat(
+    // module views
+    modules.getViewPaths()
+));
 app.set('view engine', 'jade');
 
 // user roles / permissions
@@ -156,7 +160,7 @@ if (app.get('env') === 'development') {
 }
 require('./routes/main_routes.js')(app, passport);
 
-app.use('/:lng?/admin', require('./modules/admin/routes/admin_routes'));
+modules.addRoutes(app);
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
