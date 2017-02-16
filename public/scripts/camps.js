@@ -1,13 +1,13 @@
 /**
  * GLOBALS
  */
-$(document).ajaxStart(function () {
+$(document).ajaxStart(function() {
     $('#ajax_indicator').removeClass('done').removeClass('hide').fadeIn('fast');
 });
-$(document).ajaxComplete(function () {
+$(document).ajaxComplete(function() {
     $('#ajax_indicator').addClass('done').fadeOut('slow');
 });
-$(function () {
+$(function() {
     // tooltips
     $('[data-toggle="tooltip"]').tooltip()
 });
@@ -15,7 +15,7 @@ $(function () {
 /**
  * Scroll to top - footer button
  */
-$('#scroll_top').click(function () {
+$('#scroll_top').click(function() {
     $("html, body").stop().animate({
         scrollTop: 0
     }, '250', 'swing');
@@ -28,12 +28,12 @@ var interval = 800,
     typingTimer,
     $input = $(".camps.camp_index input[name='camp_name_en']");
 
-$input.keyup(function () {
+$input.keyup(function() {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(doneTyping, interval);
 });
 
-$input.keydown(function () {
+$input.keydown(function() {
     clearTimeout(typingTimer);
 });
 
@@ -45,7 +45,7 @@ function doneTyping() {
         btn = $('#check_camp_name');
     if (val.length > 3) {
         var data = $.get('../camps/' + val);
-        data.done(function () {
+        data.done(function() {
             if (data.status === 204) {
                 input.removeClass('error');
                 status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
@@ -70,7 +70,7 @@ function getUserTemplate(data) {
  */
 function fetchUsersOnce(elm) {
     if (!elm.attr('fetched')) {
-        $.getJSON('/users', function (data) {
+        $.getJSON('/users', function(data) {
             users = data.users;
             for (var i = 0; i < users.length; i++) {
                 elm.append(getUserTemplate(users[i]));
@@ -80,7 +80,7 @@ function fetchUsersOnce(elm) {
         elm.attr('fetched', true);
     }
 }
-$(function () {
+$(function() {
     var $inputs = '#edit_camp_contact_person_id, #create_camp_contact_person_id';
     if ($('.camps').is('.camp_edit') || $('.camps').is('.camp_create')) {
         fetchUsersOnce($($inputs));
@@ -106,7 +106,7 @@ function fetchCampsOnce() {
         var data, // eslint-disable-line no-unused-vars
             tbody = $stats_table.find('tbody');
         tbody.html('');
-        $.get('/camps', function (data) {
+        $.get('/camps', function(data) {
             camps = data.camps;
             for (var i = 0; i < camps.length; i++) {
                 tbody.append(getCampsTemplate(camps[i]));
@@ -121,7 +121,7 @@ function fetchCampsOnce() {
 function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
     var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');
     if (agree_remove) {
-        $.get("camps/" + camp_id + "/remove", function (res) {
+        $.get("camps/" + camp_id + "/remove", function(res) {
             window.location.reload();
         });
     }
@@ -129,7 +129,7 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
 $stats_table.load(fetchCampsOnce());
 
 // Search camp
-$('#camps_stats_search_camp').keyup(function (input) {
+$('#camps_stats_search_camp').keyup(function(input) {
     $('.camps.stats table').find('tr:not(.headers)').hide();
     var camp_name_en = input.target.value;
     $('.camps.stats table').find('td:contains("' + camp_name_en + '")').parent().show();
@@ -142,7 +142,7 @@ function innerHeightChange() {
         'min-height': card_height + 'px'
     });
 }
-$(function () {
+$(function() {
     innerHeightChange();
 });
 
@@ -151,7 +151,7 @@ function closeCards(currentButton) {
 }
 
 // Camp details card transition
-$('.card-switcher--card2').click(function () {
+$('.card-switcher--card2').click(function() {
     // show card-2 ; hide card-1
     $('.card-second').removeClass('card-hide');
     $('.card-first').addClass('card-hide');
@@ -161,7 +161,7 @@ $('.card-switcher--card2').click(function () {
     $('.card-switcher--card2').addClass('Btn__default');
     innerHeightChange();
 });
-$('.card-switcher--card1').click(function () {
+$('.card-switcher--card1').click(function() {
     // show card-1 ; hide card-2
     $('.card-second').addClass('card-hide');
     $('.card-first').removeClass('card-hide');
@@ -171,7 +171,7 @@ $('.card-switcher--card1').click(function () {
     $('.card-switcher--card1').addClass('Btn__default');
     innerHeightChange();
 });
-$('.reveal_create_camp_btn').click(function () {
+$('.reveal_create_camp_btn').click(function() {
     if (!($('.choose_name').hasClass('card-hide'))) {
         $('.choose_name').toggleClass('card-hide');
         return;
@@ -181,7 +181,7 @@ $('.reveal_create_camp_btn').click(function () {
     }
     innerHeightChange();
 });
-$('.reveal_join_camp_btn').click(function () {
+$('.reveal_join_camp_btn').click(function() {
     if (!($('.card-second').hasClass('card-hide'))) {
         $('.card-second').toggleClass('card-hide');
         return;
@@ -191,7 +191,7 @@ $('.reveal_join_camp_btn').click(function () {
     }
     innerHeightChange();
 });
-$('.reveal_manage_camp_btn').click(function () {
+$('.reveal_manage_camp_btn').click(function() {
     if (!($('.card-third').hasClass('card-hide'))) {
         $('.card-third').toggleClass('card-hide');
         return;
@@ -201,7 +201,7 @@ $('.reveal_manage_camp_btn').click(function () {
     }
     innerHeightChange();
 });
-$('.card--close').click(function () {
+$('.card--close').click(function() {
     closeCards();
 });
 /**
@@ -214,27 +214,27 @@ function fetchOpenCamps(elm) {
         $.ajax({
             url: '/camps_open',
             type: 'GET',
-            success: function (data) {
+            success: function(data) {
                 camps = [data.camps];
                 for (var i = 0; i < camps.length; i++) {
                     $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
                 }
             },
-            error: function (data) {
+            error: function(data) {
                 alert('woops! no camps found.');
             }
         });
         fetchOpenCampsOnce = true;
     }
 }
-$('.camp_index .join_camp select[name="camp_name_en"]').focus(function () {
+$('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
     fetchOpenCamps($(this));
 });
 /**
  * Component: View camp details
  */
 function _fetchCampContactPersonDetails() {
-    $.get('/camps_contact_person/' + contact_person_id, function (res) {
+    $.get('/camps_contact_person/' + contact_person_id, function(res) {
         $('span.contact_person_name').text(res.user.name);
         $('span.contact_person_phone').text(res.user.phone);
         $('span.contact_person_email').text(res.user.email);
@@ -250,7 +250,7 @@ if ($('.camps').hasClass('camp_details')) {
  * Component: Editing camp
  * (PUT) /camps/:camp_id/edit
  */
-$('#camp_edit_save').click(function () {
+$('#camp_edit_save').click(function() {
     var camp_id = $('#camp_edit_camp_id').val(),
         camp_data = {
             camp_name_he: $('#edit_camp_name_he').val(),
@@ -281,22 +281,22 @@ $('#camp_edit_save').click(function () {
         url: '/camps/' + camp_id + '/edit',
         type: 'PUT',
         data: camp_data,
-        success: function (result) {
+        success: function(result) {
             console.log(result);
         }
     });
 });
-$('#camp_edit_publish').click(function () {
+$('#camp_edit_publish').click(function() {
     var camp_id = $('#camp_edit_camp_id').val();
     $.ajax({
         url: '/camps/' + camp_id + '/publish',
         type: 'PUT',
-        success: function (result) {
+        success: function(result) {
             console.log(result);
         }
     });
 });
-$('#camp_edit_unpublish').click(function () {
+$('#camp_edit_unpublish').click(function() {
     var camp_name = $('#meta__camp_name_en').attr('value'),
         agree_unpublish = confirm('Un-publish camp\n\n\nThis action will remove ' + camp_name + ' from the public camps list.\n\n\n---\n Are you sure?');
     if (agree_unpublish) {
@@ -304,7 +304,7 @@ $('#camp_edit_unpublish').click(function () {
         $.ajax({
             url: '/camps/' + camp_id + '/unpublish',
             type: 'PUT',
-            success: function (result) {
+            success: function(result) {
                 console.log(result);
             }
         });
@@ -314,7 +314,7 @@ $('#camp_edit_unpublish').click(function () {
 /**
  * Component: Create new camp with approval modal
  */
-$('#camp_create_save').click(function () {
+$('#camp_create_save').click(function() {
     var camp_data = {
         camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+new Date()),
         camp_name_en: $('#create_camp_name_en').val(),
@@ -342,12 +342,12 @@ $('#camp_create_save').click(function () {
     $('#create_camp_request_modal').modal('show');
     _campAppendData();
     // approve create camp
-    $('#camp_create_save_modal_request').click(function () {
+    $('#camp_create_save_modal_request').click(function() {
         _sendRequest();
     });
 
     function _campAppendData() {
-        $.each(camp_data, function (label, data) {
+        $.each(camp_data, function(label, data) {
             if (data) {
                 $('.' + label).show();
                 $('.' + label + ' span').text(': ' + data).css('font-weight', 'bold');
@@ -363,17 +363,17 @@ $('#camp_create_save').click(function () {
             url: '/camps/new',
             type: 'POST',
             data: camp_data,
-            success: function (result) {
+            success: function(result) {
                 var camp_id = result.data.camp_id;
                 $('#create_camp_request_modal').find('.modal-body').html('<h4>Camp created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin, $('body').attr('lang')].join('/') + '/camps/' + camp_id + '/edit">here</a><span></h4>');
                 $('#create_camp_request_modal').find('#camp_create_save_modal_request').hide();
                 // 10 sec countdown to close modal
                 var sec = 10;
-                setInterval(function () {
+                setInterval(function() {
                     $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
                     sec -= 1;
                 }, 1000);
-                setTimeout(function () {
+                setTimeout(function() {
                     $('#create_camp_request_modal').modal('hide');
                 }, sec * 1000);
             }
@@ -383,7 +383,7 @@ $('#camp_create_save').click(function () {
 /**
  * Component: join a camp
  */
-$('#join_camp_request_join_btn').click(function () {
+$('#join_camp_request_join_btn').click(function() {
     var join_camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id'),
         join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val(),
         user_id = $('#join_camp_request_join_user_id').val();
@@ -404,10 +404,10 @@ $('#join_camp_request_join_btn').click(function () {
 
     // Send request
     // allow user 4 second to cancel
-    $('#join_camp_send_request_btn').click(function () {
+    $('#join_camp_send_request_btn').click(function() {
         var request_data = {},
             _sendRequestBtn = $(this);
-        $('#join_camp_close_btn').text('Cancel').click(function (e) {
+        $('#join_camp_close_btn').text('Cancel').click(function(e) {
             e.preventDefault();
             clearTimeout(_srt);
             $(this).text('Close');
@@ -420,15 +420,15 @@ $('#join_camp_request_join_btn').click(function () {
                 url: '/camps/join/request',
                 type: 'POST',
                 data: request_data,
-                success: function () {
+                success: function() {
                     $('#join_camp_request_modal > div').html('<h4>Your request have sent. We will contact you soon.</h4>');
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $('#join_camp_request_modal').modal('hide');
                     }, 4000);
                 }
             });
         }
-        var _srt = setTimeout(function () {
+        var _srt = setTimeout(function() {
             _sendRequest();
         }, 4000);
     });
@@ -437,17 +437,17 @@ $('#join_camp_request_join_btn').click(function () {
  * Component: view camp details
  */
 $('.camp_details').load(function() {
-  // Fetch & inject user data
-  function _fetchUserData(user_id) {
-    $.getJSON('/users/' + user_id, function(response){
-      console.log(response)
-      //_injectUserData(response)
+    // Fetch & inject user data
+    function _fetchUserData(user_id) {
+        $.getJSON('/users/' + user_id, function(response) {
+            console.log(response)
+            //_injectUserData(response)
+        })
+    }
+    $('.fetch_user_info').click(function() {
+        user_id = $(this).attr('data-user-id');
+        _fetchUserData(user_id);
     })
-  }
-  $('.fetch_user_info').click(function() {
-      user_id = $(this).attr('data-user-id');
-      _fetchUserData(user_id);
-  })
 })
 
 /**

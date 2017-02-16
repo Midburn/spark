@@ -1,4 +1,4 @@
-var config = require('config');
+// var config = require('config');
 
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
