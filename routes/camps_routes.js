@@ -1,18 +1,10 @@
-const i18next = require('i18next'),
-    recaptcha = require('express-recaptcha'),
-    config = require('config'),
-    i18nConfig = config.get('i18n'),
-    serverConfig = config.get('server'),
-    mailConfig = config.get('mail'),
-    userRole = require('../libs/user_role'),
-    mail = require('../libs/mail'),
-    log = require('../libs/logger.js')(module),
-    breadcrumbs = require('express-breadcrumbs');
+const userRole = require('../libs/user_role');
+const breadcrumbs = require('express-breadcrumbs');
 
-var Camp = require('../models/camp').Camp,
-    User = require('../models/user').User;
+var Camp = require('../models/camp').Camp;
+var User = require('../models/user').User;
 
-module.exports = function(app, passport) {
+module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
     // ==============
@@ -64,8 +56,14 @@ module.exports = function(app, passport) {
      */
     // Read
     app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
-        Camp.forge({id: req.params.id}).fetch({withRelated: ['details']}).then((camp) => {
-            User.forge({user_id: camp.toJSON().main_contact}).fetch().then((user) => {
+        Camp.forge({
+            id: req.params.id
+        }).fetch({
+            withRelated: ['details']
+        }).then((camp) => {
+            User.forge({
+                user_id: camp.toJSON().main_contact
+            }).fetch().then((user) => {
                 res.render('pages/camps/camp', {
                     user: req.user,
                     id: req.params.id,
@@ -84,7 +82,11 @@ module.exports = function(app, passport) {
     });
     // Edit
     app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
-        Camp.forge({id: req.params.id}).fetch({withRelated: ['details']}).then((camp) => {
+        Camp.forge({
+            id: req.params.id
+        }).fetch({
+            withRelated: ['details']
+        }).then((camp) => {
             res.render('pages/camps/edit', {
                 user: req.user,
                 camp: camp.toJSON(),
@@ -94,10 +96,16 @@ module.exports = function(app, passport) {
     });
     // Destroy
     app.get('/:lng/camps/:id/remove', userRole.isLoggedIn(), (req, res) => {
-        Camp.forge({id: req.params.id}).fetch().then((camp) => {
-            camp.save({status: 'inactive'}).then(() => {
-                res.render('pages/camps/stats', {user: req.user});
-            }).catch(function(err) {
+        Camp.forge({
+            id: req.params.id
+        }).fetch().then((camp) => {
+            camp.save({
+                status: 'inactive'
+            }).then(() => {
+                res.render('pages/camps/stats', {
+                    user: req.user
+                });
+            }).catch(function (err) {
                 res.status(500).json({
                     error: true,
                     data: {

@@ -1,7 +1,7 @@
 var csurf = require('csurf');
-var csrfProtection = csurf({cookie: true});
-
-var User = require('../models/user').User;
+var csrfProtection = csurf({
+    cookie: true
+});
 
 // Route middleware to make sure a user is logged in
 var isLoggedIn = function (req, res, next) {
@@ -9,8 +9,7 @@ var isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {
         // If user is authenticated in the session, carry on
         return next();
-    }
-    else {
+    } else {
         // If they aren't, redirect them to the login page. 'r' holds the return URL.
         res.redirect('/' + req.params.lng + '/login?r=' + req.url);
     }
@@ -21,12 +20,10 @@ var isLoggedInAdmin = function (req, res, next) {
     if (req.isAuthenticated()) {
         if (req.user.isAdmin) {
             return next();
-        }
-        else {
+        } else {
             res.sendStatus(403);
         }
-    }
-    else {
+    } else {
         // If they aren't, redirect them to the login page. 'r' holds the return URL.
         res.redirect('/en/login?r=' + req.url);
     }

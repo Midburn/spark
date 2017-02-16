@@ -1,5 +1,7 @@
 var express = require('express');
-var router = express.Router({mergeParams: true});
+var router = express.Router({
+    mergeParams: true
+});
 
 var User = require('../models/user').User;
 
@@ -19,9 +21,8 @@ router.get('/create-admin', function (req, res) {
     newUser.generateHash('a');
 
     newUser.save().then(function (model) {
-            res.redirect("/");
-        }
-    );
+        res.redirect("/");
+    });
 
     res.redirect("./");
 });
@@ -31,7 +32,7 @@ router.get('/view-debug/*', function (req, res) {
     if (path === '') {
         res.render('dev_tools/view_debug');
     } else {
-        res.render('${path}', JSON.parse(req.query.params));
+        res.render('${path}', JSON.parse(req.query.params)); // eslint-disable-line no-template-curly-in-string
     }
 });
 
