@@ -9,10 +9,11 @@ block content
                     span.label.label-info #{t('camps:camps.title')} # #{id}
                     span.label.label-primary #{t('camps:camps.style')}: #{camp.type}
                     h5 #{t('camps:camps.since')}: #{camp.created_at}
+                    h5 #{t('camps:camps.desc')}
                     .col-xs-12.col-sm-6
-                        p #{t('camps:camps.desc')} #{camp.camp_desc_en}
+                        p #{camp.camp_desc_en}
                     .col-xs-12.col-sm-6
-                        #{camp.camp_desc_he}
+                        p #{camp.camp_desc_he}
                 .col-xs-12.col-sm-2
                     a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
                     ul.list-group.text-center
