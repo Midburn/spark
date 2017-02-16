@@ -30,7 +30,6 @@ pushd /opt/spark/deployment
 
     # setup configuration files
     cp /opt/spark-source/vagrant/vagrant.env .env
-    cp /opt/spark-source/opsworks.js opsworks.js
 
     # prepare the deployment directory
     npm run deploy

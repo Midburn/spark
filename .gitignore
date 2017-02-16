@@ -61,3 +61,6 @@ jspm_packages
 /*.slack_url
 /.nvm
 /bower_components
+
+# dotenv file (containing all of our secrets!!)
+.env
