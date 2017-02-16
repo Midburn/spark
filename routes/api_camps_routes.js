@@ -212,15 +212,9 @@ module.exports = function (app, passport) {
      * camp_name_en, camp_name_he, camp_desc_en, camp_desc_he, status,
      * accept_families, contact_person_full_name, phone, email, facebook_page
      * request => /camps_published
+     * method: JSONP
      */
     app.get('/camps_published', (req, res, next) => {
-        // Allow this address to http-request to this endpoint.
-        // TODO: add env check - if (app.get('env') === 'development')
-        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin');
-
-        res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
-        res.header('Access-Control-Allow-Methods', 'GET');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
         Camp.fetchAll().then((camp) => {
             var published_camps = [];
             for (var i = 0; i < camp.models.length; i++) {
@@ -239,11 +233,11 @@ module.exports = function (app, passport) {
                     published_camps.push(fetched_camp);
                 }
             }
-            res.status(200).json({
+            res.status(200).jsonp({
                 published_camps
             })
         }).catch((err) => {
-            res.status(500).json({
+            res.status(500).jsonp({
                 error: true,
                 data: {
                     message: err.message
@@ -255,25 +249,31 @@ module.exports = function (app, passport) {
      * API: (GET) return camp's contact person with:
      * name_en, name_he, email, phone
      * request => /camps_contact_person/:id
+     * method: JSONP
      */
     app.get('/camps_contact_person/:id', (req, res, next) => {
         // Allow this address to http-request to this endpoint.
-        var API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin');
-
-        res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
-        res.header('Access-Control-Allow-Methods', 'GET');
-        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        // var API_PUBLISHED_CAMPS_ALLOW_ORIGIN;
+        // if (app.get('env') === 'development') {
+        //    API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin.dev');
+        // } else {
+        //   API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin.prod');
+        // }
+        // 
+        // res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
+        // res.header('Access-Control-Allow-Methods', 'GET');
+        // res.header('Access-Control-Allow-Headers', 'Content-Type');
         User.forge({
             user_id: req.params.id
         }).fetch({
             require: true,
-            columns: ['name', 'firstname', 'lastname', 'email', 'phone']
+            columns: ['first_name', 'last_name', 'email', 'cell_phone']
         }).then((user) => {
-            res.status(200).json({
+            res.status(200).jsonp({
                 user: user.toJSON()
             })
         }).catch((err) => {
-            res.status(500).json({
+            res.status(500).jsonp({
                 error: true,
                 data: {
                     message: err.message
