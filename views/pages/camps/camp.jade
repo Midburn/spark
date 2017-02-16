@@ -65,8 +65,15 @@ block content
                     h4=t('camps:camps.management_title')
                     .col-xs-12.col-md-4
                         .contact-info
-                            a.Btn.Btn__card(href='/users/#{camp.main_contact}')
+                            button.Btn.Btn__card.fetch_user_info(data-user-id='#{camp.main_contact}')
                                 span=t('camps:camps.main_contact')
+                                .info.hidden
+                                    h6 #{t('camps:camps.name')}: 
+                                        span.contact_person_name
+                                    h6 #{t('camps:camps.phone')}: 
+                                        span.contact_person_phone
+                                    h6 #{t('camps:camps.email')}: 
+                                        span.contact_person_email
                                 h6=t('camps:camps.more_info')
                     .col-xs-12.col-md-4
                         .contact-info

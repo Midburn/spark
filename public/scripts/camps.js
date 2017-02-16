@@ -432,21 +432,36 @@ $('#join_camp_request_join_btn').click(function () {
             _sendRequest();
         }, 4000);
     });
-    /**
-     * Component: camp members
-     */
-
-    // TODO
-
-    /**
-     * Component: camp document & forms
-     */
-
-    // TODO
-
-    /**
-     * Component: create camp program
-     */
-
-    // TODO
 })
+/*
+ * Component: view camp details
+ */
+$('.camp_details').load(function() {
+  // Fetch & inject user data
+  function _fetchUserData(user_id) {
+    $.getJSON('/users/' + user_id, function(response){
+      console.log(response)
+      //_injectUserData(response)
+    })
+  }
+  $('.fetch_user_info').click(function() {
+      user_id = $(this).attr('data-user-id');
+      _fetchUserData(user_id);
+  })
+})
+
+/**
+ * Component: camp members
+ */
+
+// TODO
+
+/**
+ * Component: camp document & forms
+ */
+
+// TODO
+
+/**
+ * Component: create camp program
+ */
