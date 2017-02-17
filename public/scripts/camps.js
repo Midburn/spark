@@ -95,9 +95,9 @@ var fetchedCampsOnce = false,
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
         created_at = new Date(data.created_at).toDateString(),
-        enabled = data.enabled ?
-        'Yes' :
-        'No';
+        enabled = data.enabled
+            ? 'Yes'
+            : 'No';
     return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + enabled + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
 }
 
@@ -139,12 +139,10 @@ $('#camps_stats_search_camp').keyup(function(input) {
 function innerHeightChange() {
     var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
     $('.camps .cards--wrapper').css({
+        'visibility': 'visible',
         'min-height': card_height + 'px'
     });
 }
-$(function() {
-    innerHeightChange();
-});
 
 function closeCards(currentButton) {
     $('.card').addClass('card-hide');
@@ -316,7 +314,7 @@ $('#camp_edit_unpublish').click(function() {
  */
 $('#camp_create_save').click(function() {
     var camp_data = {
-        camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+new Date()),
+        camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+ new Date()),
         camp_name_en: $('#create_camp_name_en').val(),
         camp_desc_he: $('#create_camp_desc_he').val(),
         camp_desc_en: $('#create_camp_desc_en').val(),
@@ -436,19 +434,30 @@ $('#join_camp_request_join_btn').click(function() {
 /*
  * Component: view camp details
  */
-$('.camp_details').load(function() {
+if ($('.camp_details')) {
     // Fetch & inject user data
+    var user_type;
     function _fetchUserData(user_id) {
         $.getJSON('/users/' + user_id, function(response) {
-            console.log(response)
-            //_injectUserData(response)
+            _injectUserData(response)
         })
     }
+    function _injectUserData(user_data) {
+        var name = user_data.name,
+            email = user_data.email,
+            cell_phone = user_data.cell_phone,
+            type = '.info.' + user_type;
+        $(type + ' .contact_person_name').text(name);
+        $(type + ' .contact_person_phone').text(email);
+        $(type + ' .contact_person_email').text(cell_phone);
+        $(type).removeClass('hidden').fadeIn('fast');
+    }
     $('.fetch_user_info').click(function() {
-        user_id = $(this).attr('data-user-id');
+        var user_id = $(this).attr('data-user-id')
+        user_type = $(this).attr('data-user-type');
         _fetchUserData(user_id);
     })
-})
+}
 
 /**
  * Component: camp members

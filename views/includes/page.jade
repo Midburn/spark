@@ -37,8 +37,7 @@ block wrapper
                                     |&nbsp;
                                     span=t('english')
                     li
-                        //TODO replace 'a' tag with something else
-                        a #{user.attributes.first_name} #{user.attributes.last_name}
+                        a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
                     li
                         a( href= '/#{language}/logout' )=t('logout')
     .container

@@ -184,6 +184,14 @@ module.exports = function (app, passport) {
             }
         });
     };
+    /*
+     * Who-am-i show user's details
+     */
+     app.get('/:lng/whoami', (req,res)=> {
+       res.render('pages/whoami', {
+           user: req.user
+       });
+     });
 
     // show the signup form
     app.get('/:lng/signup', function (req, res) {

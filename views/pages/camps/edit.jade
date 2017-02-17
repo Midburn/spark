@@ -9,7 +9,7 @@ block content
                     span.label.label-info #{t('camps:edit.camp')} # #{camp.id}
                     h6 #{t('camps:edit.since')}: #{camp.created_at}
                 .col-xs-12.col-sm-4
-                    a.Btn.Btn__sm(href='/#{language}/camps/#{camp.id}') View camp
+                    a.Btn.Btn__sm(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             .controls.row
                 .col-xs-12    
                     //- Card switcher

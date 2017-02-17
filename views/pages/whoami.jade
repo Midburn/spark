@@ -1,0 +1,13 @@
+extends ../includes/page
+block content
+    .camps.camp_details
+        section
+            .heading.card.card__shad.card__padding--even.row.text-left(style='direction:ltr;')
+                h1 User details #{user.user_id}
+                
+                .col-xs-12
+                    h5 Name: #{user.name}
+                    h5 Email: #{user.email}
+                    h5 Roles: #{user.roles}
+                    h5 Camp:
+                        a(href='/:lng/camps/#{user.camp_id}') #{user.camp_id}

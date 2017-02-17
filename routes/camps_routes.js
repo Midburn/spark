@@ -116,7 +116,7 @@ module.exports = function (app, passport) {
         });
     });
     // Destroy
-    app.get('/:lng/camps/:id/destroy', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id/destroy', userRole.isAdmin(), (req, res) => {
         Camp.forge({
             id: req.params.id
         }).fetch().then((camp) => {

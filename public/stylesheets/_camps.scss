@@ -383,6 +383,7 @@ div#ajax_indicator.done {
     // Card transition
     .cards--wrapper {
         display: block;
+        visibility: hidden;
         background: $card-bg;
         margin-bottom: 2em;
         position: relative;
