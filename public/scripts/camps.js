@@ -434,24 +434,24 @@ $('#join_camp_request_join_btn').click(function() {
 /*
  * Component: view camp details
  */
+// Fetch & inject user data
+var user_type;
+function _fetchUserData(user_id) {
+    $.getJSON('/users/' + user_id, function(response) {
+        _injectUserData(response)
+    })
+}
+function _injectUserData(user_data) {
+    var name = user_data.name,
+        email = user_data.email,
+        cell_phone = user_data.cell_phone,
+        type = '.info.' + user_type;
+    $(type + ' .contact_person_name').text(name);
+    $(type + ' .contact_person_phone').text(email);
+    $(type + ' .contact_person_email').text(cell_phone);
+    $(type).removeClass('hidden').fadeIn('fast');
+}
 if ($('.camp_details')) {
-    // Fetch & inject user data
-    var user_type;
-    function _fetchUserData(user_id) {
-        $.getJSON('/users/' + user_id, function(response) {
-            _injectUserData(response)
-        })
-    }
-    function _injectUserData(user_data) {
-        var name = user_data.name,
-            email = user_data.email,
-            cell_phone = user_data.cell_phone,
-            type = '.info.' + user_type;
-        $(type + ' .contact_person_name').text(name);
-        $(type + ' .contact_person_phone').text(email);
-        $(type + ' .contact_person_email').text(cell_phone);
-        $(type).removeClass('hidden').fadeIn('fast');
-    }
     $('.fetch_user_info').click(function() {
         var user_id = $(this).attr('data-user-id')
         user_type = $(this).attr('data-user-type');
