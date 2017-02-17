@@ -474,3 +474,4 @@ if ($('.camp_details')) {
 /**
  * Component: create camp program
  */
+ 
