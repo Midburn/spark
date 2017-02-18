@@ -8,7 +8,7 @@ This procedure can be used to manually setup and deploy to a linux server.
 
 * tested on Ubuntu 16.04.1 LTS (Xenial) - but should work on any Linux variant with minor changes.
 
-```
+```shell
 sudo apt-get install -y jq nginx
 sudo mkdir -p /opt/spark/.nvm
 sudo chown -R $USER /opt/spark
@@ -23,7 +23,7 @@ Create a systemd service for the spark web-app
 
 **Note** the service will be able to start only after you do a deployment
 
-```
+```shell
 echo "#!/usr/bin/env bash" > /opt/spark/start.sh
 echo "export NVM_DIR=/opt/spark/.nvm" >> /opt/spark/start.sh
 echo "source /opt/spark/.nvm/nvm.sh" >> /opt/spark/start.sh
@@ -69,7 +69,7 @@ server {
 
 Restart nginx
 
-```
+```shell
 sudo service nginx restart
 ```
 
@@ -79,13 +79,13 @@ Create a .env file in /opt/spark/.env based on [/.env-example](/.env-example)
 
 For simple sqlite3 installation, you should create a file that will contain the database
 
-```
+```shell
 touch /opt/spark/dev.sqlite3
 ```
 
 Create the deploy script which will download and deploy from a package url
 
-```
+```shell
 nano /opt/spark/deploy.sh
 ```
 
@@ -136,7 +136,7 @@ echo "DONE"
 
 Make it executable
 
-```
+```shell
 chmod +x /opt/spark/deploy.sh
 ```
 
@@ -144,13 +144,13 @@ chmod +x /opt/spark/deploy.sh
 
 Run:
 
-```
+```shell
 /opt/spark/deploy.sh <PACKAGE_URL>
 ```
 
 ### Checking server logs / debugging problems
 
-```
+```shell
 sudo service midburn-spark status
 sudo tail /var/log/midburn-spark.*
 ```
@@ -165,7 +165,7 @@ This will setup the server for simple smtp sending directly from the instance.
 
 To setup postfix for local only mail sending:
 
-```
+```shell
 sudo apt-get install mailutils
 ```
 
@@ -174,7 +174,7 @@ You will get a text UI for choosing options, select the following:
 * configuration type: internet site
 * system mail name: keep the default
 
-```
+```shell
 sudo nano /etc/postfix/main.cf
 ```
 
@@ -186,13 +186,13 @@ inet_interfaces = localhost
 
 Restart postfix
 
-```
+```shell
 sudo sevice postfix restart
 ```
 
 Test the mail sending (replace user@example.com with your email):
 
-```
+```shell
 echo "Hello world" | mail -s "Testing 123" user@example.com
 ```
 
@@ -200,7 +200,7 @@ echo "Hello world" | mail -s "Testing 123" user@example.com
 
 This will setup a local mysql server (MariaDB)
 
-```
+```shell
 sudo apt-get install -y mariadb-server
 ```
 
@@ -212,7 +212,7 @@ read SPARK_DB_PASSWORD
 
 Create a spark user accessible from localhost only and the spark DB
 
-```
+```shell
 echo "CREATE USER 'spark'@'localhost' IDENTIFIED BY '${SPARK_DB_PASSWORD}'" | sudo mysql
 echo "CREATE DATABASE spark CHARACTER SET = 'utf8' COLLATE = 'utf8_general_ci';" | sudo mysql
 echo "GRANT ALL ON spark.* TO 'spark'@'localhost';" | sudo mysql
@@ -220,13 +220,13 @@ echo "GRANT ALL ON spark.* TO 'spark'@'localhost';" | sudo mysql
 
 You can test if it works
 
-```
+```shell
 mysql -h localhost -u spark -p spark
 ```
 
 Modify the spark configuration
 
-```
+```shell
 nano /opt/spark/.env
 ```
 
@@ -245,7 +245,7 @@ SPARK_DB_DEBUG=false
 
 Run migrations (assuming you have a deployment installed)
 
-```
+```shell
 cd /opt/spark/latest
 ./knex migrate:latest
 sudo service midburn-spark restart
@@ -257,14 +257,14 @@ We will use an ssh key limited for specific command, only for deployment. This a
 
 Generate the key and set it in authorized_keys limited to deploy command only:
 
-```
+```shell
 ssh-keygen -t rsa -b 4096 -C "spark-deployment" -f /opt/spark/spark_deployment.id_rsa
 echo "command="/opt/spark/deploy.sh $SSH_ORIGINAL_COMMAND" `cat /opt/spark/spark-deployment.id_rsa.pub`" >> ~/.ssh/authorized_keys
 ```
 
 Now, to deploy you can run something like this:
 
-```
+```shell
 ssh -i ~/spark-deployment.id_rsa ubuntu@server 'PACKAGE_URL'
 ```
 
