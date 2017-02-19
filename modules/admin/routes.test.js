@@ -1,11 +1,14 @@
+const modules = require('../../libs/modules');
 var should = require('chai').should(); //actually call the function
-var app = require('../../app.js');
+var app = modules.require('core', 'app.js');
 var request = require('supertest').agent(app);
-var DrupalUser = require('../../models/user').DrupalUser;
-var User = require('../../models/user').User;
-var knex = require('../../libs/db').knex;
-var constants = require('../../models/constants');
+var DrupalUser = modules.require('users', 'models/user').DrupalUser;
+var User = modules.require('users', 'models/user').User;
+var knex = modules.require('core', 'libs/db').knex;
+var constants = modules.require('core', 'models/constants');
 var _ = require('underscore');
+var api = modules.require('api', 'libs/api');
+var testlib = modules.require('core', 'libs/testlib');
 
 const ADMIN_USER_EMAIL = "admin_routes_test@localhost";
 const ADMIN_USER_PASSWORD = "123456";
@@ -55,7 +58,7 @@ var givenAdminUserIsLoggedIn = function() {
 };
 
 var adminHomeShouldShowSomeData = function() {
-    return request.get('/he/admin').expect(200).expect(function(res) {
+    return request.get('/admin').expect(200).expect(function(res) {
         if (
             (res.text.indexOf("Total Users") < 0) ||
             (res.text.indexOf("Total Camps") < 0)
@@ -72,7 +75,6 @@ var givenUserAdminTableAjaxUrl = function() {
 
 var adminTableAjaxShouldContainAdminUser = function() {
     return request.get(givenUserAdminTableAjaxUrl()).expect(200).expect(function(res) {
-        console.log(JSON.parse(res.text).data);
         _(JSON.parse(res.text).data)
             .findWhere({
                 email: ADMIN_USER_EMAIL,
@@ -114,17 +116,14 @@ var givenAdminUserLastNameIs = function(last_name) {
 var shouldChangeAdminUserLastNameTo = function(last_name) {
     return givenAdminUserEditPageUrl()
         .then(function(admin_user_edit_page_url) {
-            console.log(admin_user_edit_page_url);
             return request.post(admin_user_edit_page_url).send({
                 last_name: last_name
             }).expect(200);
         })
         .then(function() {
-            return User.forge({
-                email: ADMIN_USER_EMAIL
-            }).fetch();
+            return api.users.fetchByEmail(testlib.getAdminHttpRequest(), ADMIN_USER_EMAIL);
         }).then(function(user) {
-            user.attributes.last_name.should.equal(last_name + "");
+            user.last_name.should.equal(last_name + "");
         });
 };
 

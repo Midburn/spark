@@ -1,8 +1,8 @@
-var bookshelf = require('../libs/db').bookshelf;
+var bookshelf = require('../../../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
-var NpoMember = require('./npo_member').NpoMember;
-var constants = require('./constants.js');
+var NpoMember = require('./../../../models/npo_member').NpoMember;
+var constants = require('./../../../models/constants.js');
 var userRole = require('../libs/user_role');
 
 var User = bookshelf.Model.extend({
@@ -60,7 +60,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function(password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password+"\n"});
+        var res = child_process.execFileSync('python', ["modules/users/libs/drupal_7_pw.py", this.attributes.pass], {'input': password+"\n"});
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }

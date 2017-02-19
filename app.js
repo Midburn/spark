@@ -62,7 +62,7 @@ app.use(function(req, res, next) {
 });
 
 // Passport setup
-require('./libs/passport')(passport);
+require('./modules/users/libs/passport')(passport);
 
 // using session storage in DB - allows multiple server instances + cross session support between node js apps
 var sessionStore = new KnexSessionStore({
@@ -150,25 +150,34 @@ app.set('views', [
 app.set('view engine', 'jade');
 
 // user roles / permissions
-var userRole = require('./libs/user_role');
+var userRole = require('./modules/users/libs/user_role');
+
+userRole.failureHandler = function (req, res, role) {
+    if (req.url !== '/') {
+        // set 403 status for any page which failed auth except homepage
+        res.status(403);
+    }
+    res.redirect('/' + (req.params.lng || 'he') + '/login?r=' + req.url);
+};
+
 app.use(userRole.middleware());
 
 // Infrastructure Routes
 if (app.get('env') === 'development') {
     app.use('/dev', require('./routes/dev_routes'));
 }
-require('./routes/main_routes.js')(app, passport);
 
-modules.addRoutes(app);
+modules.addRoutes(app, passport);
 
-// Module's Routes
+// NP
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
-// API
-require('./routes/api_camps_routes.js')(app, passport);
-
 // Camps
+require('./routes/api_camps_routes.js')(app, passport);
 require('./routes/camps_routes.js')(app, passport);
+
+// modules
+require('./routes/main_routes.js')(app, passport);
 
 // Mail
 var mail = require('./libs/mail');

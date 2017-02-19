@@ -1,8 +1,8 @@
-const userRole = require('../libs/user_role');
+const userRole = require('../modules/users/libs/user_role');
 const breadcrumbs = require('express-breadcrumbs');
 
 var Camp = require('../models/camp').Camp;
-var User = require('../models/user').User;
+var User = require('../modules/users/models/user').User;
 
 module.exports = function (app, passport) {
     // Breadcrumbs

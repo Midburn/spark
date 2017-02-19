@@ -21,7 +21,8 @@ block content
                 if title.small
                     .alert.alert-success=title.small
                 h5
-                    button.add= "+ "+addTitle
+                    a(href=addUrl)
+                        button.add= "+ "+addTitle
             .x_content
                 .table-responsive
                     table.table.table-striped.table-bordered.dataTable(data-table-ajax=ajax, data-table-options=tableOptionsString)

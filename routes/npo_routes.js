@@ -3,10 +3,10 @@ var router = express.Router({
     mergeParams: true
 });
 
-var userRole = require('../libs/user_role');
+var userRole = require('../modules/users/libs/user_role');
 var i18next = require('i18next');
 var mail = require('../libs/mail');
-var payment = require('../libs/payment');
+var payment = require('../modules/payment/libs/payment');
 
 var NpoMember = require('../models/npo_member').NpoMember;
 var NpoStatus = require('../models/npo_member').NPO_STATUS;

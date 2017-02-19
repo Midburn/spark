@@ -1,5 +1,5 @@
 var bookshelf = require('../libs/db').bookshelf;
-var User = require('./user').User;
+var User = require('./../modules/users/models/user').User;
 var constants = require('./constants.js');
 
 var NpoMember = bookshelf.Model.extend({

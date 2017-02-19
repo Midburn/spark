@@ -38,16 +38,16 @@ modules.getViewPaths = function() {
     });
 };
 
-modules.addRoutes = function(app) {
+modules.addRoutes = function(app, passport) {
     _(modules.getModuleNames()).each(function(moduleName) {
         if (fs.existsSync(path.join(__dirname, "..", "modules", moduleName, "routes.js"))) {
-            app.use('/:lng?/'+moduleName, require('../modules/'+moduleName+'/routes'));
+            require('../modules/'+moduleName+'/routes')(app, passport);
         }
     });
 };
 
 modules.require = function(module, name) {
-    if (module == 'core') {
+    if (module === 'core') {
         // core
         return require('../' + name);
     } else {

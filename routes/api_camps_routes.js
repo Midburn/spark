@@ -1,6 +1,6 @@
 // var config = require('config');
 
-var User = require('../models/user').User;
+var User = require('../modules/users/models/user').User;
 var Camp = require('../models/camp').Camp;
 var CampDetails = require('../models/camp').CampDetails;
 

@@ -4,7 +4,7 @@ var i18next = require('i18next');
 var User = require('../models/user').User;
 var DrupalUser = require('../models/user').DrupalUser;
 var facebookConfig = require('config').get("facebook");
-var constants = require('../models/constants');
+var constants = require('../../../models/constants');
 
 /***
  * tries to login based on drupal users table
@@ -212,3 +212,5 @@ module.exports = function (passport) {
         }
     ));
 };
+
+module.exports.signup = signup;

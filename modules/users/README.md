@@ -1,4 +1,6 @@
-# Spark users / roles and permissions system
+# Spark users module
+
+User management, permissions, sign-up, sign-in, etc..
 
 ## Users
 
