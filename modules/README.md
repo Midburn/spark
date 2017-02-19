@@ -4,16 +4,21 @@
 
 All Spark modules are under modules directory.
 
-### Module directory structure
+### Module directory structure and files description
 
-* modules/_MODULE_NAME_/README.md - module documentation - must exist otherwise module won't be loaded
-* modules/_MODULE_NAME_/libs - nodeJS server-side libraries
-* modules/_MODULE_NAME_/public - front-end / static files - added automatically and available in url /modules/_MODULE_NAME_/public/...
-* modules/_MODULE_NAME_/routes - expressJS routes and route tests - mounted in url /:lng?/_MODULE_NAME_/
-* modules/_MODULE_NAME_/views - Jade templates - the path is automatically added to the view paths list
-* modules/_MODULE_NAME_/api - Spark api methods for this module
-
-### Integrating the module with core Spark
-
-* modules are automatically loaded, as long as they use the above directory structure
-* any npm or bower dependencies for your module should be added to the main spark package.json / bower.json files
+* modules
+    * module_name
+        * README.md - module documentation - must exist otherwise module won't be loaded
+        * routes.js - module routes
+        * routes.test.js - module routes test
+            * (any file ending with test.js will run as part of the test suite)
+    * libs/ - server-side libraries
+        * can be required using `modules.require('module_name', 'libs/libsname');`
+        * this can be used to provide cross-module dependencies
+    * public/ - frontend / static files
+        * exposed automatically (if directory exists) and available in url /modules/module_name/public/...
+    * views - jade templates
+        * included automatically as part of the template engine view paths
+        * if for example you have a template under `modules/module_name/views/module/example.jade`
+        * it will be available under view path `module/example.jade`
+    * api - provide api methods to be included in the [Spark API](/modules/api/README.md)
