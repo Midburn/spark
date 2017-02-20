@@ -29,7 +29,7 @@ function main(argv) {
     Promise.all(_(users_data).map(function(user) {
         let email = user.email.trim();
         if (!email) throw new Error();
-        return knex(constants.USERS_TABLE_NAME).where({email: email}).count("*").then(function(res){
+        return knex(constants.USERS_TABLE_NAME).where({email: email}).count("*").then(function(res) {
             if (res[0]["count(*)"] > 0) {
                 console.log("user already exists for email "+email+" - skipping inserting this user");
                 return true;
@@ -53,7 +53,7 @@ function main(argv) {
             let email = camp.email.trim();
             return knex(constants.USERS_TABLE_NAME).where({email: email}).then(function(users) {
                 if (users.length > 1) throw new Error();
-                let user = (users.length == 1) ? users[0] : null;
+                let user = (users.length === 1) ? users[0] : null;
                 let user_id = user ? user["user_id"] : null;
                 let camp_name_en = camp.camp_name_en;
                 return knex(constants.CAMPS_TABLE_NAME).where({camp_name_en: camp_name_en}).count("*").then(function(res) {
@@ -73,8 +73,8 @@ function main(argv) {
                         });
                     }
                 }).then(function() {
-                    return knex(constants.CAMPS_TABLE_NAME).where({camp_name_en: camp_name_en}).then(function(camps){
-                        if (camps.length != 1) throw new Error();
+                    return knex(constants.CAMPS_TABLE_NAME).where({camp_name_en: camp_name_en}).then(function(camps) {
+                        if (camps.length !== 1) throw new Error();
                         let camp = camps[0];
                         let camp_id = camp.id;
                         return knex(constants.CAMPS_TABLE_NAME).where({camp_name_en: camp_name_en}).update({
