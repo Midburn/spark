@@ -21,6 +21,7 @@
 
     "//build": "builds the deployment package",
     "build": "touch \"${npm_config_file}\" && tar --exclude=.github* --exclude=.idea* --exclude=.git* --exclude=*.sqlite3 --exclude=opsworks.js --exclude=*.tar.gz --exclude=vagrant --exclude=docs --exclude=.travis* --exclude=*.iml --exclude=.env --exclude=*.log -czf \"${npm_config_file}\" . && echo \"created build package: ${npm_config_file}\"",
+
     "//upload": "uploads the deployment package to slack and returns the package private url",
     "upload": "curl -F \"file=@${npm_config_file}\" -F \"filename=${npm_config_file}\" -F \"token=${npm_config_token}\" \"${npm_config_url:-https://slack.com/api/files.upload}\" | jq -r .file.url_private > \"${npm_config_file}.slack_url\"",
 
@@ -29,6 +30,7 @@
 
     "//deploy": "prepare the directory of an extracted deployment package",
     "deploy": "echo SPARK_DEPLOYMENT_TIME=\\\"$(date \"+%F %T\")\\\" >> .env",
+
     "//lint": "runs static analysis using eslint",
     "lint": "./node_modules/.bin/eslint ."
   },
@@ -50,6 +52,7 @@
     "connect-session-knex": "^1.3.1",
     "cookie-parser": "~1.4.3",
     "csurf": "^1.9.0",
+    "csv": "^1.1.1",
     "dateformat": "1.0.12",
     "debug": "~2.2.0",
     "dotenv": "^4.0.0",
