@@ -63,7 +63,7 @@ function doneTyping() {
 }
 
 function getUserTemplate(data) {
-    return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
+    return "<option value='" + data.user_id + "'>" + data.name + "</option>"
 }
 /**
  * getting user list from API
