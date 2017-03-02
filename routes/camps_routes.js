@@ -1,35 +1,52 @@
 const userRole = require('../libs/user_role');
 const breadcrumbs = require('express-breadcrumbs');
 
+
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
 module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
+
+    // Set Breadcrumbs home information 
+    app.use(breadcrumbs.setHome({
+        name: 'camps:breadcrumbs.root'
+    }));
+
     // ==============
     // Camps Routing
     // ==============
     // camps index page, create new camp
     app.get('/:lng/camps', userRole.isLoggedIn(), (req, res) => {
-        app.use(breadcrumbs.setHome());
-        req.breadcrumbs('camps-index');
+        req.breadcrumbs({
+            name: 'camps:breadcrumbs.home',
+            url: req.breadcrumbs.url +'/camps'
+        });
         res.render('pages/camps/index', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
         });
     });
+    // index - catch no language
+    // app.get('/camps', userRole.isLoggedIn(), function (req, res) {
+    //     res.redirect('/:lng/camps');
+    // });
     // new camp
     app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs('camps-new_camp');
+        req.breadcrumbs({
+            name: 'camps:breadcrumbs.new',
+            url: req.breadcrumbs.url +'/camps/new'
+        });
         res.render('pages/camps/new', {
             user: req.user,
-            camp_name_en: req.query.c
+            camp_name_en: req.query.c,
+            breadcrumbs: req.breadcrumbs()
         });
     });
     // camps statistics
     app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs('camps-statistic');
+        req.breadcrumbs(i18next.t('camps:breadcrumbs.stats'));
         res.render('pages/camps/stats', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
@@ -37,7 +54,7 @@ module.exports = function (app, passport) {
     });
     // camps members board
     app.get('/:lng/camps-members', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs('camps-members_board');
+        req.breadcrumbs(i18next.t('camps:breadcrumbs.members'));
         res.render('pages/camps/members', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
@@ -45,7 +62,7 @@ module.exports = function (app, passport) {
     });
     // camps documents
     app.get('/:lng/camps-docs', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs('camps-documents_and_forms');
+        req.breadcrumbs(i18next.t('camps:breadcrumbs.docs'));
         res.render('pages/camps/docs', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
