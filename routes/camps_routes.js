@@ -21,7 +21,7 @@ module.exports = function (app, passport) {
     app.get('/:lng/camps', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs({
             name: 'camps:breadcrumbs.home',
-            url: req.breadcrumbs.url +'/camps'
+            url: '/camps'
         });
         res.render('pages/camps/index', {
             user: req.user,
@@ -36,7 +36,7 @@ module.exports = function (app, passport) {
     app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs({
             name: 'camps:breadcrumbs.new',
-            url: req.breadcrumbs.url +'/camps/new'
+            url: '/camps/new'
         });
         res.render('pages/camps/new', {
             user: req.user,
