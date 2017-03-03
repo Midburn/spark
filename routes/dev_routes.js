@@ -10,25 +10,25 @@ router.get('/', function (req, res) {
 });
 
 router.get('/create-admin', function (req, res) {
-    // var newUser = new User({
-    //     email: 'a',
-    //     first_name: 'Development',
-    //     last_name: 'Admin',
-    //     gender: 'female',
-    //     validated: true,
-    //     roles: 'admin'
-    // });
+    var newUser = new User({
+        email: 'a',
+        first_name: 'Development',
+        last_name: 'Admin',
+        gender: 'female',
+        validated: true,
+        roles: 'admin'
+    });
     // newUser.save();
 
     // newUser.generateHash('a');
-    var newUser = new User({
-        email: 'asaf1@omc.co.il',
-        first_name: 'Development',
-        last_name: 'asi',
-        gender: 'female',
-        validated: true,
-        roles: 'camp_mgr'
-    });
+    // var newUser = new User({
+    //     email: 'asaf1@omc.co.il',
+    //     first_name: 'Development',
+    //     last_name: 'asi',
+    //     gender: 'female',
+    //     validated: true,
+    //     roles: 'camp_mgr'
+    // });
     newUser.generateHash('a');
     
     
