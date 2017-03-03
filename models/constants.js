@@ -37,6 +37,13 @@ module.exports = {
     CAMP_DETAILS_TABLE_NAME: "camp_details",
     DRUPAL_USERS_TABLE_NAME: "drupal_users",
 
+    VOL_DEPARTMENTS: "vol_departments",
+    VOLUNTEERS: "volunteers",
+    VOL_DEPARTMENT_ROLES: "vol_departments_roles",
+    VOL_TYPES_IN_SHIFT: "vol_types_in_shift",
+    VOL_SHIFTS: "vol_shifts",
+    VOL_SCHEDULE: "vol_schedule",
+
     // -- enums --
     
     USER_GENDERS: get_enum(user_genders), 
