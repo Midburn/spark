@@ -10,6 +10,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/create-admin', function (req, res) {
+    // test!
     var newUser = new User({
         email: 'a',
         first_name: 'Development',
