@@ -6,16 +6,38 @@ exports.up = function(knex, Promise) {
         table.increments();
         table.string('name_en'); 
         table.string('name_he');
+      }).then(function() {
+        return knex(constants.VOL_DEPARTMENTS).insert([
+          {name_en: 'Tech', name_he: 'טכנולוגיה'},
+          {name_en: 'Gate', name_he: 'שער'},
+          {name_en: 'Volunteers', name_he: 'מתנדבים'}
+        ]);
       }),
       //roles in the department
       knex.schema.createTable(constants.VOL_DEPARTMENT_ROLES, function(table) {
         table.increments();
-        table.string('name'); 
+        table.string('name')
+
+      }).then(function() {
+          return knex(constants.VOL_DEPARTMENT_ROLES).insert([
+            {name: 'Admin'},
+            {name: 'Admin of department / HR'},
+            {name: 'View all shifts'},
+            {name: 'View all personal data'}
+          ]);
       }),
       //types in shift
       knex.schema.createTable(constants.VOL_TYPES_IN_SHIFT, function(table) {
         table.increments();
         table.string('name'); 
+      }).then(function() {
+        return knex(constants.VOL_TYPES_IN_SHIFT).insert([
+          {name: 'Volunteer'},
+          {name: 'Manager'},
+          {name: 'Day Manager'},
+          {name: 'Shift Manager'},
+          {name: 'Other'}
+        ]);
       }),
       //volunteers
       knex.schema.createTable(constants.VOLUNTEERS, function(table) {
@@ -48,7 +70,6 @@ exports.up = function(knex, Promise) {
         //references
         table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS);
       }),
-      
       knex.schema.createTable(constants.VOL_SCHEDULE, function(table) {
           table.integer('user_id');
           table.integer('shift_id');
@@ -60,7 +81,7 @@ exports.up = function(knex, Promise) {
           table.foreign('user_id').references('user_id').inTable(constants.VOLUNTEERS);
           table.foreign('shift_id').references('id').inTable(constants.VOL_SHIFTS);
 
-      }),
+      })
   ]);
 };
 
