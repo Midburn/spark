@@ -9,12 +9,6 @@ module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
 
-    // Set Breadcrumbs home information 
-    // app.use(breadcrumbs.setHome({
-    //     name: 'camps:breadcrumbs.root',
-    //     url: '/'
-    // }));
-
     // ==============
     // Camps Routing
     // ==============
