@@ -1,7 +1,6 @@
 const userRole = require('../libs/user_role');
 const breadcrumbs = require('express-breadcrumbs');
 
-
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
@@ -32,7 +31,7 @@ module.exports = function (app, passport) {
         },
         {
             name: 'camps:breadcrumbs.new',
-            url: '/' + req.params.lng + '/camps/new/?c=' +  req.query.c
+            url: '/' + req.params.lng + '/camps/new/?c=' + req.query.c
         }]);
         res.render('pages/camps/new', {
             user: req.user,
