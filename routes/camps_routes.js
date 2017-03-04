@@ -10,9 +10,10 @@ module.exports = function (app, passport) {
     app.use(breadcrumbs.init());
 
     // Set Breadcrumbs home information 
-    app.use(breadcrumbs.setHome({
-        name: 'camps:breadcrumbs.root'
-    }));
+    // app.use(breadcrumbs.setHome({
+    //     name: 'camps:breadcrumbs.root',
+    //     url: '/'
+    // }));
 
     // ==============
     // Camps Routing
@@ -21,23 +22,24 @@ module.exports = function (app, passport) {
     app.get('/:lng/camps', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs({
             name: 'camps:breadcrumbs.home',
-            url: '/camps'
+            url: '/' + req.params.lng + '/camps'
         });
         res.render('pages/camps/index', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
         });
     });
-    // index - catch no language
-    // app.get('/camps', userRole.isLoggedIn(), function (req, res) {
-    //     res.redirect('/:lng/camps');
-    // });
+
     // new camp
     app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs({
+        req.breadcrumbs([{
+            name: 'camps:breadcrumbs.home',
+            url: '/' + req.params.lng + '/camps'
+        },
+        {
             name: 'camps:breadcrumbs.new',
-            url: '/camps/new'
-        });
+            url: '/' + req.params.lng + '/camps/new/?c=' +  req.query.c
+        }]);
         res.render('pages/camps/new', {
             user: req.user,
             camp_name_en: req.query.c,
@@ -46,7 +48,14 @@ module.exports = function (app, passport) {
     });
     // camps statistics
     app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs(i18next.t('camps:breadcrumbs.stats'));
+        req.breadcrumbs([{
+            name: 'camps:breadcrumbs.home',
+            url: '/' + req.params.lng + '/camps'
+        },
+        {
+            name: 'camps:breadcrumbs.stats',
+            url: '/' + req.params.lng + '/camps-stats'
+        }]);
         res.render('pages/camps/stats', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
@@ -54,7 +63,14 @@ module.exports = function (app, passport) {
     });
     // camps members board
     app.get('/:lng/camps-members', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs(i18next.t('camps:breadcrumbs.members'));
+        req.breadcrumbs([{
+            name: 'camps:breadcrumbs.home',
+            url: '/' + req.params.lng + '/camps'
+        },
+        {
+            name: 'camps:breadcrumbs.members',
+            url: '/' + req.params.lng + '/camps-members'
+        }]);
         res.render('pages/camps/members', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
@@ -62,7 +78,14 @@ module.exports = function (app, passport) {
     });
     // camps documents
     app.get('/:lng/camps-docs', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs(i18next.t('camps:breadcrumbs.docs'));
+        req.breadcrumbs([{
+            name: 'camps:breadcrumbs.home',
+            url: '/' + req.params.lng + '/camps'
+        },
+        {
+            name: 'camps:breadcrumbs.docs',
+            url: '/' + req.params.lng + '/camps-docs'
+        }]);
         res.render('pages/camps/docs', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
