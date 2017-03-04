@@ -2,24 +2,24 @@ var constants = require('../models/constants.js');
 exports.up = function(knex, Promise) {
   return Promise.all([
       //volunteer departments
-      knex.schema.createTable(constants.VOL_DEPARTMENTS, function(table) {
+      knex.schema.createTable(constants.VOL_DEPARTMENTS_TABLE_NAME, function(table) {
         table.increments();
         table.string('name_en'); 
         table.string('name_he');
       }).then(function() {
-        return knex(constants.VOL_DEPARTMENTS).insert([
+        return knex(constants.VOL_DEPARTMENTS_TABLE_NAME).insert([
           {name_en: 'Tech', name_he: 'טכנולוגיה'},
           {name_en: 'Gate', name_he: 'שער'},
           {name_en: 'Volunteers', name_he: 'מתנדבים'}
         ]);
       }),
       //roles in the department
-      knex.schema.createTable(constants.VOL_DEPARTMENT_ROLES, function(table) {
+      knex.schema.createTable(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME, function(table) {
         table.increments();
         table.string('name')
 
       }).then(function() {
-          return knex(constants.VOL_DEPARTMENT_ROLES).insert([
+          return knex(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME).insert([
             {name: 'Admin'},
             {name: 'Admin of department / HR'},
             {name: 'View all shifts'},
@@ -27,11 +27,11 @@ exports.up = function(knex, Promise) {
           ]);
       }),
       //types in shift
-      knex.schema.createTable(constants.VOL_TYPES_IN_SHIFT, function(table) {
+      knex.schema.createTable(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME, function(table) {
         table.increments();
         table.string('name'); 
       }).then(function() {
-        return knex(constants.VOL_TYPES_IN_SHIFT).insert([
+        return knex(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME).insert([
           {name: 'Volunteer'},
           {name: 'Manager'},
           {name: 'Day Manager'},
@@ -40,7 +40,7 @@ exports.up = function(knex, Promise) {
         ]);
       }),
       //volunteers
-      knex.schema.createTable(constants.VOLUNTEERS, function(table) {
+      knex.schema.createTable(constants.VOLUNTEERS_TABLE_NAME, function(table) {
         table.integer('user_id');
         table.integer('department_id'); 
         table.integer('event_id');
@@ -53,11 +53,11 @@ exports.up = function(knex, Promise) {
         table.primary(['user_id', 'department_id', 'event_id'])
         //references
         table.foreign('user_id').references('id').inTable(constants.USERS_TABLE_NAME);
-        table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS);
-        table.foreign('role_id').references('id').inTable(constants.VOL_DEPARTMENT_ROLES);
-        table.foreign('type_in_shift_id').references('id').inTable(constants.VOL_TYPES_IN_SHIFT);
+        table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
+        table.foreign('role_id').references('id').inTable(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME);
+        table.foreign('type_in_shift_id').references('id').inTable(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME);
       }),
-      knex.schema.createTable(constants.VOL_SHIFTS, function(table) {
+      knex.schema.createTable(constants.VOL_SHIFTS_TABLE_NAME, function(table) {
         table.increments();
         table.integer('department_id')
         table.string('location');
@@ -68,9 +68,9 @@ exports.up = function(knex, Promise) {
         table.string('comment');
         table.timestamp('modified_date');
         //references
-        table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS);
+        table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
       }),
-      knex.schema.createTable(constants.VOL_SCHEDULE, function(table) {
+      knex.schema.createTable(constants.VOL_SCHEDULE_TABLE_NAME, function(table) {
           table.integer('user_id');
           table.integer('shift_id');
           table.boolean('attended');
@@ -78,14 +78,13 @@ exports.up = function(knex, Promise) {
           //key
           table.primary(['user_id', 'shift_id'])
           //references
-          table.foreign('user_id').references('user_id').inTable(constants.VOLUNTEERS);
-          table.foreign('shift_id').references('id').inTable(constants.VOL_SHIFTS);
+          table.foreign('user_id').references('user_id').inTable(constants.VOLUNTEERS_TABLE_NAME);
+          table.foreign('shift_id').references('id').inTable(constants.VOL_SHIFTS_TABLE_NAME);
 
       })
   ]);
 };
 
 exports.down = function(knex, Promise) {
-  return Promise.all(
-      [knex.schema.dropTable(constants.VOL_DEPARTMENTS)])
+ 
 };

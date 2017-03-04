@@ -37,12 +37,12 @@ module.exports = {
     CAMP_DETAILS_TABLE_NAME: "camp_details",
     DRUPAL_USERS_TABLE_NAME: "drupal_users",
 
-    VOL_DEPARTMENTS: "vol_departments",
-    VOLUNTEERS: "volunteers",
-    VOL_DEPARTMENT_ROLES: "vol_departments_roles",
-    VOL_TYPES_IN_SHIFT: "vol_types_in_shift",
-    VOL_SHIFTS: "vol_shifts",
-    VOL_SCHEDULE: "vol_schedule",
+    VOL_DEPARTMENTS_TABLE_NAME: "vol_departments",
+    VOLUNTEERS_TABLE_NAME: "volunteers",
+    VOL_DEPARTMENT_ROLES_TABLE_NAME: "vol_departments_roles",
+    VOL_TYPES_IN_SHIFT_TABLE_NAME: "vol_types_in_shift",
+    VOL_SHIFTS_TABLE_NAME: "vol_shifts",
+    VOL_SCHEDULE_TABLE_NAME: "vol_schedule",
 
     // -- enums --
     
