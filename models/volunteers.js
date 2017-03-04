@@ -16,7 +16,7 @@ var Department = bookshelf.Model.extend({
         return this.hasMany(Volunteer, 'department_id');
     },
     shifts: function() {
-        return this.hasMany(Shift, 'shift_id')
+        return this.hasMany(Shift, 'id')
     }
 });
 //Volunteer
@@ -31,9 +31,11 @@ var Volunteer = bookshelf.Model.extend({
     type_in_shift: function() {
         return this.hasOne(TypeInShift, 'type_in_shift_id');
     },
-    schedules: function() {
-        return this.hasMany(Schedule, 'user_id');
-    }
+    //TODO
+    /*
+    shifts: function() {
+        return this.hasMany(Shift, 'user_id').through(Shift, 'shift_id', 'user_id');
+    }*/
 });
 
 //Shift
@@ -51,9 +53,9 @@ var Shift = bookshelf.Model.extend({
 var Schedule = bookshelf.Model.extend({
     tableName: constants.VOL_SCHEDULE_TABLE_NAME,
     volunteer: function() {
-        return this.belongsTo(Volunteer, 'user_id')
+        return this.belongsTo(Volunteer, 'user_id', 'user_id')
     },
-    shidt: function() {
+    shifts: function() {
         return this.belongsTo(Shift, 'shift_id')
     }
 

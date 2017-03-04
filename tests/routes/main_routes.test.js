@@ -1,11 +1,11 @@
 // This is magically used in code such as user.attributes.password.length.should.be.above(20);
 var should = require('chai').should(); // eslint-disable-line no-unused-vars
 
-var app = require('../app.js');
+var app = require('../../app.js');
 var request = require('supertest')(app);
-var DrupalUser = require('../models/user').DrupalUser;
-var User = require('../models/user').User;
-var knex = require('../libs/db').knex;
+var DrupalUser = require('../../models/user').DrupalUser;
+var User = require('../../models/user').User;
+var knex = require('../../libs/db').knex;
 
 describe('Main routes', function () {
     it('responds to / with redirect to hebrew', function testSlash(done) {
