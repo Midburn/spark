@@ -27,12 +27,12 @@ block wrapper
                             span.caret
                         ul.dropdown-menu
                             li
-                                a( href="/he#{req.url.substr(3)}" )
+                                a( href="/he#{req.originalUrl.substr(3)}" )
                                     img( src="/images/flags/he.gif" )
                                     |&nbsp;
                                     span=t('hebrew')
                             li
-                                a( href="/en#{req.url.substr(3)}" )
+                                a( href="/en#{req.originalUrl.substr(3)}" )
                                     img( src="/images/flags/en.gif" )
                                     |&nbsp;
                                     span=t('english')
