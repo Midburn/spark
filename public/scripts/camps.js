@@ -169,6 +169,7 @@ $('.card-switcher--card1').click(function() {
     $('.card-switcher--card1').addClass('Btn__default');
     innerHeightChange();
 });
+
 $('.reveal_create_camp_btn').click(function() {
     if (!($('.choose_name').hasClass('card-hide'))) {
         $('.choose_name').toggleClass('card-hide');

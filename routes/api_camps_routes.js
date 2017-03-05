@@ -92,6 +92,7 @@ module.exports = function(app, passport) {
      */
     app.put('/camps/:id/edit', (req, res) => {
         Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+            console.log(camp);
             camp.save({
                 // camp_name_en: req.body.camp_name_en,
                 camp_name_he: req.body.camp_name_he,

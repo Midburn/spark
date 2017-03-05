@@ -4,6 +4,9 @@ const breadcrumbs = require('express-breadcrumbs');
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
+var log = require('../libs/logger')(module);
+
+
 module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
@@ -18,6 +21,9 @@ module.exports = function (app, passport) {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
         });
+        log.info("message");
+    
+
     });
     // new camp
     app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
@@ -56,6 +62,9 @@ module.exports = function (app, passport) {
      */
     // Read
     app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+            //  console.log ("edit start");
+            // res.send('checking output');
+        log.info("executing???");      
         Camp.forge({
             id: req.params.id
         }).fetch({
@@ -82,6 +91,10 @@ module.exports = function (app, passport) {
     });
     // Edit
     app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+        // console.log ("edit start");
+        // res.send('checking output');
+        // log.info("executing???");      
+        
         Camp.forge({
             id: req.params.id
         }).fetch({
