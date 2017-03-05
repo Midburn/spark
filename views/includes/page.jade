@@ -40,7 +40,7 @@ block wrapper
                         a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
                     li
                         a( href= '/#{language}/logout' )=t('logout')
-    .container
+    .main.container
         #ajax_indicator.hide
         if (breadcrumbs !== undefined)
             include crumbs
