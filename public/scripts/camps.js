@@ -157,7 +157,7 @@ $('.card-switcher').click(function() {
     $('.card-switcher').removeClass('Btn__default');
     $('.card-switcher').removeClass('Btn__transparent');
     // find clicked card and show it
-    switch($(this).attr('id')){
+    switch ($(this).attr('id')) {
         // show card 1
         case '1':
             $('.card-first').removeClass('card-hide');
@@ -480,9 +480,8 @@ if ($('.camp_details')) {
 /**
  * Component: create camp program
  */
- 
 
  // Auto-Open current card
-$(document).ready(function(){
+$(document).ready(function () {
     innerHeightChange();
 });
