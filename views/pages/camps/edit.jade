@@ -13,8 +13,9 @@ block content
             .controls.row
                 .col-xs-12    
                     //- Card switcher
-                    button.Btn.Btn__default.card-switcher--card1=t('camps:edit.basic_info')
-                    button.Btn.Btn__transparent.card-switcher--card2=t('camps:edit.details')
+                    button.Btn.Btn__default.card-switcher#1=t('camps:edit.basic_info')
+                    button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
+                    button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')
             .cards--wrapper.card__shad.row
                 //- Card 1
                 .card.card-first
@@ -169,6 +170,15 @@ block content
                                     .col-xs-12
                                         label(for='edit_camp_location_area')=t('camps:edit.location_area')
                                         input.form-control(id='edit_camp_location_area', type='number', name='public_camp_location_area', value='#{details.camp_location_area}')
+                //- Card 3
+                .card.card-third.card-hide
+                    h4=t('camps:edit.upload_header')
+                    .camp-upload-file.panel
+                        .panel-body
+                            .names.col-md-6
+                                .col-xs-12
+                                    label(for='edit_camp_upload_security_file')=t('camps:edit.security_file')
+                                    input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
 
             .controls.row
                 .col-xs-12

@@ -184,7 +184,10 @@
             "location_area": "Area",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
-            "facebook_page_url": "Facebook Page Link"
+            "facebook_page_url": "Facebook Page Link",
+            "upload": "Files & Forms Upload",
+            "upload_header": "Upload Files",
+            "security_file": "Security Documentation"
         },
         "program": {
             "page_title": "Create new Program",

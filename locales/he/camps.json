@@ -181,7 +181,10 @@
             "location_comments": "הערות",
             "location_street": "רחוב",
             "location_time": "שעה",
-            "location_area": "אזור"
+            "location_area": "אזור",
+            "upload": "העלאת מסמכים וקבצים",
+            "upload_header": "העלאת קבצים",
+            "security_file": "תיק בטיחות"
         },
         "program": {
             "page_title": "צור פעילות חדשה",
