@@ -12,6 +12,11 @@ userRole.isAdmin = function () {
     return userRole.is(userRole.ADMIN);
 };
 
+userRole.CAMP_MANAGER = 'camp manager';
+userRole.isCampManager = function () {
+    return userRole.is(userRole.CAMP_MANAGER);
+};
+
 // roles logic - this function determines which roles a specific request / user has
 
 userRole.use(function (req, role) {
