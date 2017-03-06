@@ -186,7 +186,10 @@
             "location_area": "Area",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
-            "facebook_page_url": "Facebook Page Link"
+            "facebook_page_url": "Facebook Page Link",
+            "upload": "Files & Forms Upload",
+            "upload_header": "Upload Files",
+            "security_file": "Security Documentation"
         },
         "program": {
             "page_title": "Create new Program",
@@ -204,5 +207,16 @@
             "access": "Program Accessibility",
             "kids_friendly": "Kids Friendly",
             "adult_only": "Adult Only"
+        },
+        "docs": {
+            "title": "Documents and Forms",
+            "search": "Search Camp",
+            "doc_type": "Document type",
+            "doc_name": "Document name",
+            "upload_date": "Upload date",
+            "upload_data": "Upload data",
+            "doc_status": "Status",
+            "last_doc_status": "Last status by",
+            "camp_name_en": "Camp Name (English)"
         }
 }

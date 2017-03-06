@@ -149,24 +149,29 @@ function closeCards(currentButton) {
 }
 
 // Camp details card transition
-$('.card-switcher--card2').click(function() {
-    // show card-2 ; hide card-1
-    $('.card-second').removeClass('card-hide');
+$('.card-switcher').click(function() {
+    // hide all cards
     $('.card-first').addClass('card-hide');
-    $('.card-switcher--card1').removeClass('Btn__default');
-    $('.card-switcher--card1').addClass('Btn__transparent');
-    $('.card-switcher--card2').removeClass('Btn__transparent');
-    $('.card-switcher--card2').addClass('Btn__default');
-    innerHeightChange();
-});
-$('.card-switcher--card1').click(function() {
-    // show card-1 ; hide card-2
     $('.card-second').addClass('card-hide');
-    $('.card-first').removeClass('card-hide');
-    $('.card-switcher--card1').removeClass('Btn__transparent');
-    $('.card-switcher--card2').removeClass('Btn__default');
-    $('.card-switcher--card2').addClass('Btn__transparent');
-    $('.card-switcher--card1').addClass('Btn__default');
+    $('.card-third').addClass('card-hide');
+    $('.card-switcher').removeClass('Btn__default');
+    $('.card-switcher').removeClass('Btn__transparent');
+    // find clicked card and show it
+    switch ($(this).attr('id')) {
+        // show card 1
+        case '1':
+            $('.card-first').removeClass('card-hide');
+            $('#1').addClass('Btn__default');
+            break;
+        case '2':
+            $('.card-second').removeClass('card-hide');
+            $('#2').addClass('Btn__default');
+            break;
+        case '3':
+            $('.card-third').removeClass('card-hide');
+            $('#3').addClass('Btn__default');
+            break;
+    }
     innerHeightChange();
 });
 
@@ -475,4 +480,8 @@ if ($('.camp_details')) {
 /**
  * Component: create camp program
  */
- 
+
+ // Auto-Open current card
+$(document).ready(function () {
+    innerHeightChange();
+});
