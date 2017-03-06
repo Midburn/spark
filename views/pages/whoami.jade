@@ -2,12 +2,29 @@ extends ../includes/page
 block content
     .camps.camp_details
         section
-            .heading.card.card__shad.card__padding--even.row.text-left(style='direction:ltr;')
-                h1 User details #{user.user_id}
-                
-                .col-xs-12
-                    h5 Name: #{user.name}
-                    h5 Email: #{user.email}
-                    h5 Roles: #{user.roles}
-                    h5 Camp:
-                        a(href='/:lng/camps/#{user.camp_id}') #{user.camp_id}
+            .heading.card.card__profile.card__shad.card__padding--even
+                .row
+                    header.col-xs-12.col-sm-6.anim__mov--in
+                        a(target='_blank', href='#')
+                            img.hoverZoomLink(src='http://lorempixel.com/150/150/people/')
+                        h3  #{user.fullName}
+                        h4  #{user.attributes.email}
+                        if user.isAdmin
+                            span admin
+                    .profile-bio.col-xs-12.col-sm-6.anim__mov--in
+                        ul.profile-social-links
+                            li
+                                span Gender
+                                if user.attributes.gender === 'female'
+                                    | female icon
+                                else
+                                    | male icon
+                            li
+                                span Camp
+                                a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
+                            li
+                                span Phone
+                                #{user.attributes.cell_phone}
+                            li
+                                a(target='_blank', href='https://www.facebook.com/creativedonut')
+                                    i.fa.fa-facebook
