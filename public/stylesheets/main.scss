@@ -12,11 +12,7 @@ span {
     margin: 0 2px;
 }
 
-.container {
-    padding: 20px 15px 0;
-}
-
-.navbar + .container {
+.main {
     padding-top: 90px;
 }
 
@@ -52,23 +48,6 @@ li.dropdown > ul > li > a > span {
 @media screen and (min-width: 992px) {
     body[lang="he"] div.camps div[class^="col"] {
         float: right;
-    }
-}
-
-.main {
-    display: flex;
-    flex: 1;
-    padding: 10px;
-    background: red;
-    justify-content: center;
-    align-items: flex-start;
-
-    .card {
-        max-width: 540px;
-        min-width: 200px;
-        padding: 40px;
-        border-radius: 5px;
-        background: white;
     }
 }
 

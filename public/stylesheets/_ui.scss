@@ -13,23 +13,119 @@ input.commit {
   padding: 5px;
 }
 
+.card__profile {
+  background: #FFB300;
+  overflow: hidden;
+  header {
+    padding: 40px 20px 30px 20px;
+    margin-top: 50px;
+    opacity: 0;
+    text-align: center;
+    h1 {
+      color: #FF5722;
+    }
+    a {
+      display: inline-block;
+      position: relative;
+      margin: 25px 30px;
+      > img {
+        width: 120px;
+        max-width: 100%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        -webkit-transition: -webkit-box-shadow 0.3s ease;
+        transition: box-shadow 0.3s ease;
+        -webkit-box-shadow: 0px 0px 0px 8px rgba(0, 0, 0, 0.06);
+        box-shadow: 0px 0px 0px 8px rgba(0, 0, 0, 0.06);
+      }
+      &:hover > img {
+        -webkit-box-shadow: 0px 0px 0px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 0px 12px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  .profile-bio {
+    padding: 50px 20px 30px 20px;
+    color: #333333;
+    margin-top: 50px;
+    opacity: 0;
+  }
+}
 
-.main {
-  display: flex;
-  flex: 1;
-  padding: 10px;
-  background: red;
-  justify-content: center;
-  align-items: flex-start;
-  .card {
-    max-width: 540px;
-    min-width: 200px;
-    padding: 30px 40px 30px 40px;
-    border-radius: 5px;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
+.profile-social-links {
+  padding: 20px;
+  background: #FFFFFF;
+  margin-top: 10px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  li {
+    list-style: none;
+    padding: 0.5em;
+  }
+}
+
+@-webkit-keyframes moveUp {
+    0% {
+        background: #FFB300;
+        top: 100%;
+    }
+    50% {
+        top: 40%;
+    }
+    100% {
+        top: 50%;
+        background: #E0E0E0;
+    }
+}
+
+@keyframes moveUp {
+    0% {
+        background: #FFB300;
+        top: 100%;
+    }
+    50% {
+        top: 40%;
+    }
+    100% {
+        top: 50%;
+        background: #E0E0E0;
+    }
+}
+
+@-webkit-keyframes moveIn {
+    0% {
+        margin-top: 50px;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        margin-top: -20px;
+    }
+}
+
+@keyframes moveIn {
+    0% {
+        margin-top: 50px;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        margin-top: -20px;
+    }
+}
+
+.anim__mov--in {
+  -webkit-animation: moveIn 350ms 350ms ease forwards;
+  animation: moveIn 350ms 350ms ease forwards;
+}
+
+.anim__mov--up {
+  -webkit-animation: moveUp 350ms 350ms ease forwards;
+  animation: moveUp 350ms 350ms ease forwards;
+}
+
+@media only screen and (min-width: 768px) {
+  header {
+    max-width: 200px;
   }
 }

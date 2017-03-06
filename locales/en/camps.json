@@ -23,6 +23,14 @@
                 "title": "Camp Program"
             }
         },
+        "breadcrumbs": {
+            "root": "Home",
+            "home": "Camps",
+            "new": "New Camp",
+            "stats": "Camp Statistics",
+            "members": "Camp Members",
+            "docs": "Documents and Forms"
+        },
         "new": {
             "header_title": "Create a camp",
             "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
