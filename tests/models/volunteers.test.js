@@ -41,8 +41,8 @@ describe('Volunteer module db model', ()=> {
             });
         });
         it('should contain mapping to a Role', ()=> {
-            return new Volunteer({user_id:3, department_id:1, event_id:0}).fetch({withRelated:['role']}).then((dep)=>{
-                expect(dep.related('role')).not.to.be.undefined
+            return Volunteer.forge({id:1}).fetch({withRelated:['role'], require: true}).then((vol)=>{
+                expect(vol.related('role')).not.to.be.undefined
             });
         });
         
