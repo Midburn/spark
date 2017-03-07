@@ -5,18 +5,21 @@ var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
 module.exports = function (app, passport) {
-    // Breadcrumbs
-    app.use(breadcrumbs.init());
+    
 
     // ==============
     // Camps Routing
     // ==============
     // camps index page, create new camp
     app.get('/:lng/camps', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs({
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
-        });
+        }]);
         res.render('pages/camps/index', {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
@@ -26,6 +29,10 @@ module.exports = function (app, passport) {
     // new camp
     app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         },
@@ -42,6 +49,10 @@ module.exports = function (app, passport) {
     // camps statistics
     app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         },
@@ -57,6 +68,10 @@ module.exports = function (app, passport) {
     // camps members board
     app.get('/:lng/camps-members', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         },
@@ -72,6 +87,10 @@ module.exports = function (app, passport) {
     // camps documents
     app.get('/:lng/camps-docs', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         },
@@ -88,7 +107,23 @@ module.exports = function (app, passport) {
      * CRUD Routes
      */
     // Read
-    app.get('/:lng/camps/:id', /*userRole.isLoggedIn(),*/ (req, res) => {
+    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'camps:breadcrumbs.home',
+            url: '/' + req.params.lng + '/camps'
+        },
+        {
+            name: 'camps:breadcrumbs.stats',
+            url: '/' + req.params.lng + '/camps-stats'
+        },
+        {
+            name: 'camps:breadcrumbs.camp_stat', //TODO
+            url: '/' + req.params.lng + '/camps/' + req.params.id
+        }]);
         Camp.forge({
             id: req.params.id
         }).fetch({
@@ -102,7 +137,8 @@ module.exports = function (app, passport) {
                     userLoggedIn: req.user.hasRole('logged in'),
                     id: req.params.id,
                     camp: camp.toJSON(),
-                    details: camp.related('details').toJSON()
+                    details: camp.related('details').toJSON(),
+                    breadcrumbs: req.breadcrumbs()
                 });
             });
         }).catch((e) => {
@@ -116,6 +152,22 @@ module.exports = function (app, passport) {
     });
     // Edit
     app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'camps:breadcrumbs.home',
+            url: '/' + req.params.lng + '/camps'
+        },
+        {
+            name: 'camps:breadcrumbs.stats',
+            url: '/' + req.params.lng + '/camps-stats'
+        },
+        {
+            name: 'camps:breadcrumbs.edit',
+            url: '/' + req.params.lng + '/camps/' + req.params.id + '/edit'
+        }]);
         Camp.forge({
             id: req.params.id
         }).fetch({
@@ -124,7 +176,8 @@ module.exports = function (app, passport) {
             res.render('pages/camps/edit', {
                 user: req.user,
                 camp: camp.toJSON(),
-                details: camp.related('details').toJSON()
+                details: camp.related('details').toJSON(),
+                breadcrumbs: req.breadcrumbs()
             })
         })
     });

@@ -67,6 +67,11 @@
     "facebook": {
         "login": "התחבר באמצעות פייסבוק"
     },
+    "breadcrumbs": {
+        "home": "עמוד ראשי",
+        "npo": "עמותת מידברן",
+        "npo_join": "הצטרפות לעמותה"
+    },
     "footer": {
         "scrolltop": "חזור למעלה",
         "visit_homepage": "בקרו באתר מידברן",

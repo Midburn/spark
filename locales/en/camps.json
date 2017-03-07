@@ -29,7 +29,9 @@
             "new": "New Camp",
             "stats": "Camp Statistics",
             "members": "Camp Members",
-            "docs": "Documents and Forms"
+            "docs": "Documents and Forms",
+            "edit": "Edit Camp",
+            "camp_stat": "Camp Profile"
         },
         "new": {
             "header_title": "Create a camp",
