@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router({
     mergeParams: true
 });
-const breadcrumbs = require('express-breadcrumbs');
 
 var userRole = require('../libs/user_role');
 var i18next = require('i18next');
