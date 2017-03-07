@@ -25,7 +25,6 @@ var Department = bookshelf.Model.extend({
 //Volunteer
 var Volunteer = bookshelf.Model.extend({
     tableName: constants.VOLUNTEERS_TABLE_NAME,
-    //idAttribute: 'user_id',
     department: function() {
         return this.belongsTo(Department, 'department_id');
     },
@@ -35,6 +34,7 @@ var Volunteer = bookshelf.Model.extend({
     type_in_shift: function() {
         return this.belongsTo(TypeInShift, 'type_in_shift_id');
     }
+    
 });
 
 //Shift

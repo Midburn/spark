@@ -36,7 +36,7 @@ describe('Volunteer module db model', ()=> {
             });
         });
         it('should contain mapping to Departments', ()=> {
-            return new Volunteer({user_id:3, department_id:1, event_id:0}).fetch({withRelated:['department']}).then((dep)=>{
+            return Volunteer.where({user_id:3, department_id:1, event_id:0}).fetch().then((dep)=>{
                 expect(dep.related('department')).not.to.be.undefined
             });
         });
