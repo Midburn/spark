@@ -88,7 +88,7 @@ module.exports = function (app, passport) {
      * CRUD Routes
      */
     // Read
-    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id', (req, res) => {
         Camp.forge({
             id: req.params.id
         }).fetch({
