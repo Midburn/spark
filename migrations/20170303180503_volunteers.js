@@ -41,7 +41,6 @@ exports.up = function(knex, Promise) {
       }),
       //volunteers
       knex.schema.createTable(constants.VOLUNTEERS_TABLE_NAME, function(table) {
-        table.increments();
         table.integer('user_id');
         table.integer('department_id'); 
         table.integer('event_id');
@@ -51,7 +50,7 @@ exports.up = function(knex, Promise) {
         table.string('comment');
         table.timestamp('modified_date');
         //key
-        table.unique(['user_id', 'department_id', 'event_id'])
+        table.primary(['user_id', 'department_id', 'event_id'])
         //references
         table.foreign('user_id').references('id').inTable(constants.USERS_TABLE_NAME);
         table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
@@ -72,15 +71,14 @@ exports.up = function(knex, Promise) {
         table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
       }),
       knex.schema.createTable(constants.VOL_SCHEDULE_TABLE_NAME, function(table) {
-          table.increments();
-          table.integer('volunteer_id');
+          table.integer('user_id');
           table.integer('shift_id');
           table.boolean('attended');
           table.string('comment');
           //key
-          table.unique(['volunteer_id', 'shift_id'])
+          table.primary(['user_id', 'shift_id'])
           //references
-          table.foreign('volunteer_id').references('id').inTable(constants.VOLUNTEERS_TABLE_NAME);
+          table.foreign('user_id').references('user_id').inTable(constants.VOLUNTEERS_TABLE_NAME);
           table.foreign('shift_id').references('id').inTable(constants.VOL_SHIFTS_TABLE_NAME);
 
       })
