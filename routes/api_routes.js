@@ -1,6 +1,5 @@
-var config = require('config');
+// var config = require('config');
 var request = require('request');
-
 
 module.exports = function (app, passport) {
     /**
@@ -19,7 +18,7 @@ module.exports = function (app, passport) {
             form: { 'username': req.query.username, 'password': req.query.password }
         },
             function (error, response, body) {
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     console.log(body);
                     if (body.indexOf('token') > 0) {
                         res.status(200).jsonp({ status: 'true', 'massage': 'user authorized' });
@@ -33,7 +32,6 @@ module.exports = function (app, passport) {
                 }
             });
     });
-
 
 /*
     /////  POST not tested yet :-( ////
