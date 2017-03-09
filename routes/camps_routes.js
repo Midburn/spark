@@ -23,11 +23,13 @@ module.exports = function (app, passport) {
                 breadcrumbs: req.breadcrumbs()
             });
         } else if (req.user.hasRole('camp manager')) {
-            res.render('pages/camps/index-camp-manager', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
+            // let camp-id = getCampIdByUser(req.user);
+            // res.redirect(''/:lng/camps/' + camp-id, {
+            //     user: req.user,
+            //     breadcrumbs: req.breadcrumbs()
+            // });
         } else {
+            // User has no permissions
             res.render('pages/camps/index-user', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
