@@ -24,7 +24,7 @@ module.exports = function (app, passport) {
             });
         } else if (req.user.hasRole('camp manager')) {
             // let camp-id = getCampIdByUser(req.user);
-            // res.redirect(''/:lng/camps/' + camp-id, {
+            // res.redirect(''/:lng/camps/' + req.params.id, {
             //     user: req.user,
             //     breadcrumbs: req.breadcrumbs()
             // });
