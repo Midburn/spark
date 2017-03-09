@@ -212,3 +212,7 @@ module.exports = function (passport) {
         }
     ));
 };
+
+module.exports.sign_up = function (email, password, user, done) {
+  signup(email, password, user, done)
+};
