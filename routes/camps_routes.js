@@ -17,18 +17,18 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         });
-        if(userRole.isAdmin()) {
+        if(req.user.hasRole('admin')) {
             res.render('pages/camps/index-admin', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
             });
-        } else if (userRole.isCampManager()) {
+        } else if (req.user.hasRole('camp manager')) {
             res.render('pages/camps/index-camp-manager', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
             });
         } else {
-            res.render('pages/camps/index', {
+            res.render('pages/camps/index-user', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
             });
