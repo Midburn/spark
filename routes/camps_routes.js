@@ -17,10 +17,22 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         });
-        res.render('pages/camps/index', {
-            user: req.user,
-            breadcrumbs: req.breadcrumbs()
-        });
+        if(userRole.isAdmin()) {
+            res.render('pages/camps/index-admin', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        } else if (userRole.isCampManager()) {
+            res.render('pages/camps/index-camp-manager', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        } else {
+            res.render('pages/camps/index', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        }
     });
 
     // new camp
