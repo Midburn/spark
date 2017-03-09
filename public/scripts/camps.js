@@ -427,8 +427,9 @@ $('#join_camp_request_join_btn').click(function() {
                     setTimeout(function() {
                         $('#join_camp_request_modal').modal('hide');
                     }, 4000);
-                }, error: function (jqXHR, exception) {
-                  if (jqXHR.status == 500) {
+                },
+                error: function (jqXHR, exception) {
+                  if (jqXHR.status === 500) {
                     alert('Error!\n\n---\n\ncouldn\'t send your request due to server problem.\ntry again later, thanks.')
                   }
                 }
