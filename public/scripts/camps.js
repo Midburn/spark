@@ -385,6 +385,7 @@ $('#join_camp_request_join_btn').click(function() {
     var join_camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id'),
         join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val(),
         user_id = $('#join_camp_request_join_user_id').val();
+        
     if (join_camp_name_en !== undefined) {
         $.get('/camps/join/' + join_camp_id + '/' + user_id, (res) => {
             fetchSuccess(res);
@@ -396,11 +397,11 @@ $('#join_camp_request_join_btn').click(function() {
     function fetchSuccess(res) {
         // Save details copy for the request
         request.camp_name_en = join_camp_name_en
-        request.camp_manager_email = "nate@konimbo.co.il"
+        request.user_fullname = [res.first_name, res.last_name].join(', ')
         request.user_email = res.email
-        
+
         // Run modal with user details to approve request
-        template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + [res.first_name, res.last_name].join(', ') + '</u></li><li> Email: <u>' + res.email + '</u></li></ul>';
+        template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + request.user_fullname + '</u></li><li> Email: <u>' + request.user_email + '</u></li></ul>';
         $('#join_camp_request_modal .user_details').html(template);
         $('#join_camp_request_modal').modal('show');
     }

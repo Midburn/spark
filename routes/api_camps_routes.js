@@ -317,12 +317,15 @@ module.exports = function(app, passport) {
 
     /**
      * API: (GET) return enabled & open camps list
-     * request => /camps_open
+     * request => /camps_open+
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({status: 'open', enabled: '1'}).fetch().then((camp) => {
+        Camp.forge({status: 'open', enabled: '1'}).fetch({
+          require: true,
+          columns: ['camp_name_en']
+        }).then((camp) => {
             if (camp !== null) {
-                res.status(200).json({camps: camp.toJSON()})
+              res.status(200).json({camps: camp.toJSON()})
             } else {
                 res.status(404).send('Not found');
             }
@@ -342,9 +345,11 @@ module.exports = function(app, passport) {
     app.get('/camps/join/:camp_id/:id', (req, res) => {
         var camp_id = req.params.camp_id, // eslint-disable-line no-unused-vars
             user_id = req.params.id;
-        // Send email to camp manager for a join request, with user details;
-        User.forge({user_id: user_id}).fetch({require: true, columns: '*'}).then((user) => {
-            res.json({first_name: user.get('first_name'), last_name: user.get('last_name'), email: user.get('email'), cell_phone: user.get('cell_phone')});
+        // Fetch user details
+        User.forge({user_id: user_id})
+            .fetch({require: true, columns: ['email', 'first_name', 'last_name']})
+            .then((user) => {
+              res.json({user: user.toJSON()});
         }).catch((err) => {
             res.status(500).json({
                 error: true,
@@ -360,14 +365,16 @@ module.exports = function(app, passport) {
      * request => /camps/join/request
      */
     app.post('/camps/join/request', (req, res) => {
+      // Fetch camp manager email
+      var camp_manager_email = ""
+      // Send request by email
         mail.send(
-          req.body.camp_manager_email,
+          camp_manager_email,
           mailConfig.from,
           'Spark: someone wants to join your camp!',
           'emails/camps/join_request', {
-                user: {name: 'nate', email: req.body.user_email}
-        }).catch((err) => {
-          res.status(500).json({msg: err, error: true})
+                camp: {name: req.body.camp_name_en},
+                user: {name: req.body.user_fullname, email: req.body.user_email}
         });
         res.status(200).json({error: false})
     });
@@ -398,4 +405,27 @@ module.exports = function(app, passport) {
             });
         });
     });
+    
+    /**
+     * API: (GET) return camp manager email
+     * query user with attribute: camp_id
+     * request => /camps/1/camp_manager
+     */
+    app.get('/camps/:id/camp_manager', (req, res) => {
+      Camp.forge({camp_id: req.params.id})
+          .fetch({
+              require: true,
+              columns: ['contact_person_id']
+            })
+          .then((camp) => {
+            User.forge({user_id: camp.attributes.contact_person_id})
+                .fetch({
+                    require: true,
+                    columns: ['email']
+                  })
+                .then((user) => {
+                  res.status(200).json({user: user.toJSON()})
+                })
+      })
+    })
 }
