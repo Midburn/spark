@@ -31,6 +31,15 @@
             "members": "Camp Members",
             "docs": "Documents and Forms"
         },
+        "admin_index": {
+            "all_camps": "Manage Camps",
+            "all_members": "Manage Members",
+            "docs": "Uploaded Documents",
+            "new": "Create a Camp",
+            "all_camps_table": "All Camps",
+            "all_members_table": "All Members",
+            "docs_table": "All Documents and Forms"
+        },
         "new": {
             "header_title": "Create a camp",
             "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",

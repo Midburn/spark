@@ -10,15 +10,15 @@ block content
                 div.block-center
                     div.input-group
                         //- TODO - translate
-                        a.Btn.Btn__default.card-switcher#1(href='javascript:;', role='button') All Camps
-                        a.Btn.Btn__transparent.card-switcher#2(href='javascript:;', role='button') Members
-                        a.Btn.Btn__transparent.card-switcher#3(href='javascript:;', role='button') Docs
-                        a.Btn.Btn__green.card-switcher#4(href='javascript:;', role='button') NEW
+                        a.Btn.Btn__default.card-switcher#1(href='javascript:;', role='button')=t('camps:admin_index.all_camps')
+                        a.Btn.Btn__transparent.card-switcher#2(href='javascript:;', role='button')=t('camps:admin_index.all_members')
+                        a.Btn.Btn__transparent.card-switcher#3(href='javascript:;', role='button')=t('camps:admin_index.docs')
+                        a.Btn.Btn__green.card-switcher#4(href='javascript:;', role='button')=t('camps:admin_index.new')
             
         .cards--wrapper.card__shad.col-xs-12.row
             //- Card 1
             .card.card-first
-                h4 ALL CAMPS
+                h4=t('camps:admin_index.all_camps_table')
                 table.table.table-stats.table-striped.table-hover
                     thead
                         tr.headers
@@ -36,10 +36,11 @@ block content
 
             //- Card 2
             .card.card-second.col-xs-12.card__shad.card-hide
-                h4 MEMBERS
+                h4=t('camps:admin_index.all_members_table')
                 table.table.table-striped.table-hover
                     thead
                         tr.headers
+                            //- TODO - fix header names
                             th #
                             th.camp_name_en=t('camps:stats.name_en')
                             th.contact_person=t('camps:stats.contact_person')
@@ -54,10 +55,11 @@ block content
 
             //- Card 3
             .card.card-third.col-xs-12.card__shad.card-hide
-                h4 Docs
+                h4=t('camps:admin_index.docs_table')
                 table.table.table-striped.table-hover
                     thead
                         tr.headers
+                            //- TODO - fix header names
                             th #
                             th.camp_name_en=t('camps:stats.name_en')
                             th.contact_person=t('camps:stats.contact_person')
