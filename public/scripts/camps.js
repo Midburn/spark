@@ -90,7 +90,9 @@ $(function() {
  * getting camp list from API
  */
 var fetchedCampsOnce = false,
-    $stats_table = $('.camps.stats .table');
+    // original stats table - might remain useful
+    // $stats_table = $('.camps.stats .table');
+    $stats_table = $('.camps.camp_admin_index .table-stats');
 
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
@@ -104,7 +106,7 @@ function getCampsTemplate(data) {
 function fetchCampsOnce() {
     if (!fetchedCampsOnce) {
         var data, // eslint-disable-line no-unused-vars
-            tbody = $stats_table.find('tbody');
+            tbody = $stats_table.find('tbody'); 
         tbody.html('');
         $.get('/camps', function(data) {
             camps = data.camps;
@@ -112,6 +114,8 @@ function fetchCampsOnce() {
                 tbody.append(getCampsTemplate(camps[i]));
             }
             data = camps;
+            // fix card height after data is appended to table
+            innerHeightChange();
         });
 
         fetchedCampsOnce = true;
@@ -127,6 +131,7 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
     }
 }
 $stats_table.load(fetchCampsOnce());
+$('.camps.camp_admin_index .table-stats').load(fetchCampsOnce());
 
 // Search camp
 $('#camps_stats_search_camp').keyup(function(input) {
@@ -154,6 +159,7 @@ $('.card-switcher').click(function() {
     $('.card-first').addClass('card-hide');
     $('.card-second').addClass('card-hide');
     $('.card-third').addClass('card-hide');
+    $('.card-forth').addClass('card-hide');
     $('.card-switcher').removeClass('Btn__default');
     $('.card-switcher').removeClass('Btn__transparent');
     // find clicked card and show it
@@ -170,6 +176,10 @@ $('.card-switcher').click(function() {
         case '3':
             $('.card-third').removeClass('card-hide');
             $('#3').addClass('Btn__default');
+            break;
+        case '4':
+            $('.card-forth').removeClass('card-hide');
+            $('#4').addClass('Btn__default');
             break;
     }
     innerHeightChange();

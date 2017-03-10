@@ -1,6 +1,6 @@
 extends ../../includes/page
 block content
-    .camps.camp_index.heading.card.card__shad.row
+    .camps.camp_admin_index.heading.card.card__shad.row
         section.jumbotron.row
             .container.col-md-12
                 h1.jumbotron-heading=t('camps:dash.title')
@@ -10,74 +10,74 @@ block content
                 div.block-center
                     div.input-group
                         //- TODO - translate
-                        a.Btn.Btn__default.card-switcher--card1(href='javascript:;', role='button') All Camps
-                        a.Btn.Btn__default.card-switcher--card2(href='javascript:;', role='button') Members
-                        a.Btn.Btn__default(href='javascript:;', role='button') Docs
-                        a.Btn.Btn__green(href='javascript:;', role='button') NEW
+                        a.Btn.Btn__default.card-switcher#1(href='javascript:;', role='button') All Camps
+                        a.Btn.Btn__transparent.card-switcher#2(href='javascript:;', role='button') Members
+                        a.Btn.Btn__transparent.card-switcher#3(href='javascript:;', role='button') Docs
+                        a.Btn.Btn__green.card-switcher#4(href='javascript:;', role='button') NEW
             
-        .cards--wrapper.card__shad.row
+        .cards--wrapper.card__shad.col-xs-12.row
             //- Card 1
-            .card.card-first.card-hide
+            .card.card-first
                 h4 ALL CAMPS
-                .camp-info.panel
-                    .panel-body
-                        table.table.table-striped.table-hover
-                            thead
-                                tr.headers
-                                    th #
-                                    th.camp_name_en=t('camps:stats.name_en')
-                                    th.contact_person=t('camps:stats.contact_person')
-                                    th.status=t('camps:stats.status')
-                                    th.hidden-xs=t('camps:stats.last_update')
-                                    th.hidden-xs=t('camps:stats.created_at')
-                                    th.published=t('camps:stats.published')
-                                    th.facebook_page_url=t('camps:stats.facebook_page_url')
-                                    th.admin-edit=t('camps:stats.edit')
-                                    th.admin-remove=t('camps:stats.remove')
-                            tbody
+                table.table.table-stats.table-striped.table-hover
+                    thead
+                        tr.headers
+                            th #
+                            th.camp_name_en=t('camps:stats.name_en')
+                            th.contact_person=t('camps:stats.contact_person')
+                            th.status=t('camps:stats.status')
+                            th.hidden-xs=t('camps:stats.last_update')
+                            th.hidden-xs=t('camps:stats.created_at')
+                            th.published=t('camps:stats.published')
+                            th.facebook_page_url=t('camps:stats.facebook_page_url')
+                            th.admin-edit=t('camps:stats.edit')
+                            th.admin-remove=t('camps:stats.remove')
+                    tbody
 
             //- Card 2
-            .card.card-second.card-hide
+            .card.card-second.col-xs-12.card__shad.card-hide
                 h4 MEMBERS
-                .col-xs-12.card__shad
-                    table.table.table-striped.table-hover
-                        thead
-                            tr.headers
-                                th #
-                                th.camp_name_en=t('camps:stats.name_en')
-                                th.contact_person=t('camps:stats.contact_person')
-                                th.status=t('camps:stats.status')
-                                th.hidden-xs=t('camps:stats.last_update')
-                                th.hidden-xs=t('camps:stats.created_at')
-                                th.published=t('camps:stats.published')
-                                th.facebook_page_url=t('camps:stats.facebook_page_url')
-                                th.admin-edit=t('camps:stats.edit')
-                                th.admin-remove=t('camps:stats.remove')
-                        tbody
+                table.table.table-striped.table-hover
+                    thead
+                        tr.headers
+                            th #
+                            th.camp_name_en=t('camps:stats.name_en')
+                            th.contact_person=t('camps:stats.contact_person')
+                            th.status=t('camps:stats.status')
+                            th.hidden-xs=t('camps:stats.last_update')
+                            th.hidden-xs=t('camps:stats.created_at')
+                            th.published=t('camps:stats.published')
+                            th.facebook_page_url=t('camps:stats.facebook_page_url')
+                            th.admin-edit=t('camps:stats.edit')
+                            th.admin-remove=t('camps:stats.remove')
+                    tbody
 
             //- Card 3
-            .card.card-third.card-hide
+            .card.card-third.col-xs-12.card__shad.card-hide
                 h4 Docs
-                .col-xs-12.card__shad
-                    table.table.table-striped.table-hover
-                        thead
-                            tr.headers
-                                th #
-                                th.camp_name_en=t('camps:stats.name_en')
-                                th.contact_person=t('camps:stats.contact_person')
-                                th.status=t('camps:stats.status')
-                                th.hidden-xs=t('camps:stats.last_update')
-                                th.hidden-xs=t('camps:stats.created_at')
-                                th.published=t('camps:stats.published')
-                                th.facebook_page_url=t('camps:stats.facebook_page_url')
-                                th.admin-edit=t('camps:stats.edit')
-                                th.admin-remove=t('camps:stats.remove')
-                        tbody
+                table.table.table-striped.table-hover
+                    thead
+                        tr.headers
+                            th #
+                            th.camp_name_en=t('camps:stats.name_en')
+                            th.contact_person=t('camps:stats.contact_person')
+                            th.status=t('camps:stats.status')
+                            th.hidden-xs=t('camps:stats.last_update')
+                            th.hidden-xs=t('camps:stats.created_at')
+                            th.published=t('camps:stats.published')
+                            th.facebook_page_url=t('camps:stats.facebook_page_url')
+                            th.admin-edit=t('camps:stats.edit')
+                            th.admin-remove=t('camps:stats.remove')
+                    tbody
             //- Card 4
-            //- TODO - fix display of new camp
-            .card.card-forth.card-hide
-                h4 NEW
-                .col-xs-12.card__shad
-                    .cards--wrapper
-                        .choose_name.card.card-hide
-                            //- TODO - add input field
+            .choose_name.card.card-forth.card-hide.card__shad.col-xs-12
+                h2=t('camps:new.header_title')
+                h4=t('camps:new.name_choosing_title')
+                .col-sm-8.col-xs-12
+                    .pos-r
+                        label=t('camps:new.name_en')
+                        input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
+                        span.indicator
+                            span.glyphicon
+                .col-sm-4.col-xs-12
+                    a.Btn.Btn__green.Btn__inline.hidden(id="check_camp_name", role='button')=t('camps:btn_continue')
