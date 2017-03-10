@@ -17,7 +17,7 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         });
-        if(req.user.hasRole('admin')) {
+        if (req.user.hasRole('admin')) {
             res.render('pages/camps/index-admin', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
