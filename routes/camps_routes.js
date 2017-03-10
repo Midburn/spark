@@ -23,12 +23,15 @@ module.exports = function (app, passport) {
                 breadcrumbs: req.breadcrumbs()
             });
         } else if (req.user.hasRole('camp manager')) {
-            // let camp-id = getCampIdByUser(req.user);
-            // res.redirect(''/:lng/camps/' + req.params.id, {
-            //     user: req.user,
-            //     breadcrumbs: req.breadcrumbs()
-            // });
+            /**
+             * Add an API to get camp id by user id
+             * then redirect to camp profile page.
+             */
         } else {
+            /**
+             * Add test if user is part of camp
+             * if so - redirect to camp profile (without edit option)
+             */
             // User has no permissions
             res.render('pages/camps/index-user', {
                 user: req.user,
