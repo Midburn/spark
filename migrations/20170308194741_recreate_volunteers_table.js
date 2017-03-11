@@ -25,8 +25,9 @@ exports.up = function(knex, Promise) {
             table.primary(['velunteer_id', 'shift_id']);
             //references
             table.foreign('velunteer_id').references('id').inTable(constants.VOLUNTEERS_TABLE_NAME);
-        })
-    ]);
+        }),
+        knex.schema.dropTable(constants.VOLUNTEERS_TABLE_NAME + '_delete')
+    ])
 };
 
 exports.down = function(knex, Promise) {

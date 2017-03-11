@@ -163,7 +163,7 @@ require('./routes/api_camps_routes.js')(app, passport);
 // Camps
 require('./routes/camps_routes.js')(app, passport);
 
-require('./routes/volunteers.js')(app, passport);
+require('./routes/volunteers_routes.js')(app, passport);
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);

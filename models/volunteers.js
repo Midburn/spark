@@ -1,10 +1,11 @@
 var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants.js');
+var User = require('./user').User;
 
 var Role = bookshelf.Model.extend({
     tableName: constants.VOL_DEPARTMENT_ROLES_TABLE_NAME,
     volunteers: function() {
-        return this.belongsToMany(Volunteer,'id', 'role_id');
+        return this.belongsToMany(Volunteer, 'id', 'role_id');
     }
 });
 
@@ -33,8 +34,17 @@ var Volunteer = bookshelf.Model.extend({
     },
     type_in_shift: function() {
         return this.belongsTo(TypeInShift, 'type_in_shift_id');
+    },
+    user_info: function() {
+        return this.belongsTo(User, 'user_id');
     }
-    
+}, {
+    get_by_user: function(user_id_) {
+        console.log('Looking for volunteer data for user ' + user_id_);
+        return new Volunteer().fetchAll({ user_id: user_id_ }).then(function(users) {
+            return users;
+        });
+    }
 });
 
 //Shift
