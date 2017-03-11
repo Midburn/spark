@@ -158,6 +158,8 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
 // API
+require('./routes/api_routes.js')(app, passport);
+
 require('./routes/api_camps_routes.js')(app, passport);
 
 // Camps

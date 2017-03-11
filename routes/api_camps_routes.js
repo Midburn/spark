@@ -45,7 +45,8 @@ module.exports = function(app, passport) {
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
             type: req.body.camp_type,
-            created_at: Date()
+            created_at: Date(),
+            updated_at: Date()
         }).save().then((camp) => {
             res.json({
                 error: false,
@@ -72,7 +73,7 @@ module.exports = function(app, passport) {
                 res.status(500).json({
                     error: true,
                     data: {
-                        message: err.message
+                        message: e.message
                     }
                 });
             })

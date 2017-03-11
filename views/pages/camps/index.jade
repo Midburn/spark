@@ -7,11 +7,12 @@ block content
                 p.lead.text-muted=t('camps:dash.desc')
                 div.block-center
                     div.input-group
-                        a.Btn.Btn__default.reveal_create_camp_btn(href='javascript:;', role='button')=t('camps:new.btn_create')
-                        //- a.Btn.Btn__default.reveal_join_camp_btn(href='javascript:;', role='button')=t('camps:join.header_title')
-                        //- role dependant btn, is_admin= 'manage camps'
-                        //- is_camp_manager= 'manage your camp'
-                        a.Btn.Btn__default.reveal_manage_camp_btn(href='javascript:;', role='button')=t('camps:manage.manage_a_camp')
+                        if userIs('admin')
+                            a.Btn.Btn__default.reveal_create_camp_btn(href='javascript:;', role='button')=t('camps:new.btn_create')
+                        if userIs('camp manager')
+                            a.Btn.Btn__default.reveal_manage_camp_btn(href='javascript:;', role='button')=t('camps:manage.manage_a_camp')
+                        if !userIs('camp manager')
+                            a.Btn.Btn__default.reveal_join_camp_btn(href='javascript:;', role='button')=t('camps:join.header_title')
                 .cards--wrapper
                     .choose_name.card.card-first.card-hide
                         if language === 'he'
