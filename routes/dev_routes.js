@@ -10,15 +10,67 @@ router.get('/', function (req, res) {
 });
 
 router.get('/create-admin', function (req, res) {
+    // create user admin
     var newUser = new User({
         email: 'a',
         first_name: 'Development',
         last_name: 'Admin',
         gender: 'female',
         validated: true,
-        roles: 'admin'
+        roles: 'admin',
+        reset_password_token: 'a',
+        email_validation_token: 'a',
     });
     newUser.generateHash('a');
+    newUser.save();
+
+    var newUser = new User({
+        email: 'u',
+        first_name: 'Development',
+        last_name: 'Camp_mgr',
+        gender: 'female',
+        validated: true,
+        roles: 'camp_mgr',
+        reset_password_token: 'a',
+        email_validation_token: 'a',
+    });
+    newUser.generateHash('u');
+    
+    newUser.save().then(function (model) {
+        res.redirect("/");
+    });
+
+    res.redirect("./");
+});
+
+router.get('/create-camp-manager', function (req, res) {
+    var newUser = new User({
+        email: 'b',
+        first_name: 'Camp',
+        last_name: 'Manager',
+        gender: 'female',
+        validated: true,
+        roles: 'camp manager'
+    });
+    newUser.generateHash('b');
+
+    newUser.save().then(function (model) {
+        res.redirect("/");
+    });
+
+    res.redirect("./");
+});
+
+router.get('/create-simple-user', function (req, res) {
+    var newUser = new User({
+        email: 'u',
+        first_name: 'Just a',
+        last_name: 'User',
+        gender: 'male',
+        validated: true,
+        roles: ''
+    });
+    newUser.generateHash('u');
 
     newUser.save().then(function (model) {
         res.redirect("/");

@@ -4,6 +4,7 @@ const breadcrumbs = require('express-breadcrumbs');
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
+var log = require('../libs/logger')(module);
 module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
@@ -132,6 +133,10 @@ module.exports = function (app, passport) {
     });
     // Edit
     app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+        // console.log ("edit start");
+        // res.send('checking output');
+        // log.info("executing???");      
+        
         Camp.forge({
             id: req.params.id
         }).fetch({
@@ -155,7 +160,7 @@ module.exports = function (app, passport) {
                 res.render('pages/camps/stats', {
                     user: req.user
                 });
-            }).catch(function (err) {
+            }).catch(function(err) {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -165,6 +170,23 @@ module.exports = function (app, passport) {
             });
         });
     });
+    /*
+     * import csv module
+     */
+    app.get('/:lng/import/:type', userRole.isLoggedIn(), (req, res) => {
+        switch (req.params.type) {
+            case 'csv':
+                _CSV();
+                break;
+            default:
+
+        }
+
+        function _CSV() {
+            // import csv into the database
+            
+        }
+    })
     // Destroy
     app.get('/:lng/camps/:id/destroy', userRole.isAdmin(), (req, res) => {
         Camp.forge({

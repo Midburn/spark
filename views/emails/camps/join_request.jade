@@ -1,0 +1,15 @@
+doctype html(lang="he")
+head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    style(type='text/css').
+        .wrapper {
+          max-width: 320px
+        }
+body
+    .wrapper
+        h3 #{user.name} wants to join your camp
+        h4 reply will send confirmation to his email: #{user.email}
+        button.btn Approve
+        button.btn Decline
+        input(type="text", placeholder="Reason?")

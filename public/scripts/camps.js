@@ -103,7 +103,7 @@ function getCampsTemplate(data) {
     return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + enabled + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
 }
 
-function fetchCampsOnce() {
+var fetchCampsOnce = function() {
     if (!fetchedCampsOnce) {
         var data, // eslint-disable-line no-unused-vars
             tbody = $stats_table.find('tbody'); 
@@ -218,32 +218,7 @@ $('.reveal_manage_camp_btn').click(function() {
 $('.card--close').click(function() {
     closeCards();
 });
-/**
- * Component: Join a camp
- */
-var fetchOpenCampsOnce = false;
 
-function fetchOpenCamps(elm) {
-    if (!fetchOpenCampsOnce) {
-        $.ajax({
-            url: '/camps_open',
-            type: 'GET',
-            success: function(data) {
-                camps = [data.camps];
-                for (var i = 0; i < camps.length; i++) {
-                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
-                }
-            },
-            error: function(data) {
-                alert('woops! no camps found.');
-            }
-        });
-        fetchOpenCampsOnce = true;
-    }
-}
-$('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
-    fetchOpenCamps($(this));
-});
 /**
  * Component: View camp details
  */
@@ -397,6 +372,31 @@ $('#camp_create_save').click(function() {
 /**
  * Component: join a camp
  */
+var fetchOpenCampsOnce = false,
+    request = {};
+
+function fetchOpenCamps(elm) {
+   if (!fetchOpenCampsOnce) {
+       $.ajax({
+           url: '/camps_open',
+           type: 'GET',
+           success: function(data) {
+               camps = [data.camps];
+               for (var i = 0; i < camps.length; i++) {
+                   $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
+               }
+           },
+           error: function(data) {
+               alert('woops! no camps found.');
+           }
+       });
+       fetchOpenCampsOnce = true;
+   }
+}
+$('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
+   fetchOpenCamps($(this));
+});
+// click handler
 $('#join_camp_request_join_btn').click(function() {
     var join_camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id'),
         join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val(),
@@ -410,16 +410,20 @@ $('#join_camp_request_join_btn').click(function() {
     }
 
     function fetchSuccess(res) {
+        // Save details copy for the request
+        request.camp_name_en = join_camp_name_en
+        request.camp_manager_email = "nate@konimbo.co.il"
+        request.user_email = res.email
+        
         // Run modal with user details to approve request
-        var template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + [res.first_name, res.last_name].join(', ') + '</u></li><li> Email: <u>' + res.email + '</u></li></ul>';
+        template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + [res.first_name, res.last_name].join(', ') + '</u></li><li> Email: <u>' + res.email + '</u></li></ul>';
         $('#join_camp_request_modal .user_details').html(template);
         $('#join_camp_request_modal').modal('show');
     }
 
-    // Send request
-    // allow user 4 second to cancel
+    // Send request -- allow user 4 second to cancel
     $('#join_camp_send_request_btn').click(function() {
-        var request_data = {},
+        var request_data = request,
             _sendRequestBtn = $(this);
         $('#join_camp_close_btn').text('Cancel').click(function(e) {
             e.preventDefault();
@@ -439,6 +443,11 @@ $('#join_camp_request_join_btn').click(function() {
                     setTimeout(function() {
                         $('#join_camp_request_modal').modal('hide');
                     }, 4000);
+                },
+                error: function (jqXHR, exception) {
+                  if (jqXHR.status === 500) {
+                    alert('Error!\n\n---\n\ncouldn\'t send your request due to server problem.\ntry again later, thanks.')
+                  }
                 }
             });
         }

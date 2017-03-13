@@ -3,7 +3,11 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
 var CampDetails = require('../models/camp').CampDetails;
+var config = require('config');
 
+var mail = require('../libs/mail'),
+    mailConfig = config.get('mail');
+    
 module.exports = function(app, passport) {
     /**
      * API: (GET) get user by id
@@ -93,6 +97,7 @@ module.exports = function(app, passport) {
      */
     app.put('/camps/:id/edit', (req, res) => {
         Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+
             camp.save({
                 // camp_name_en: req.body.camp_name_en,
                 camp_name_he: req.body.camp_name_he,
@@ -352,10 +357,20 @@ module.exports = function(app, passport) {
         });
     });
     /**
-     * API: (POST) receive request and forward to mail
+     * API: (POST) camp join request
+     * listen for the request and forward it to camp manager email
      * request => /camps/join/request
      */
     app.post('/camps/join/request', (req, res) => {
+        mail.send(
+          req.body.camp_manager_email,
+          mailConfig.from,
+          'Spark: someone wants to join your camp!',
+          'emails/camps/join_request', {
+                user: {name: 'nate', email: req.body.user_email}
+        }).catch((err) => {
+          res.status(500).json({msg: err, error: true})
+        });
         res.status(200).json({error: false})
     });
 
