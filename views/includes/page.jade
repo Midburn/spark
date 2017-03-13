@@ -36,8 +36,9 @@ block wrapper
                                     img( src="/images/flags/en.gif" )
                                     |&nbsp;
                                     span=t('english')
-                    li
-                        a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
+                    if user != undefined
+                        li
+                            a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
                     li
                         a( href= '/#{language}/logout' )=t('logout')
     .main.container

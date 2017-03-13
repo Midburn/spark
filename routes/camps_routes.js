@@ -95,9 +95,6 @@ module.exports = function (app, passport) {
      */
     // Read
     app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
-            //  console.log ("edit start");
-            // res.send('checking output');
-        log.info("executing???");      
         Camp.forge({
             id: req.params.id
         }).fetch({
