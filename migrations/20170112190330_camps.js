@@ -7,7 +7,7 @@ exports.up = function (knex, Promise) {
         knex.schema.createTable(constants.CAMPS_TABLE_NAME, function (table) {
             table.timestamps();
 
-            // General information
+            // General kneinformation
 
             table.increments('id').primary();
 
