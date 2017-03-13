@@ -20,13 +20,27 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         });
-        res.render('pages/camps/index', {
-            user: req.user,
-            breadcrumbs: req.breadcrumbs()
-        });
-        log.info("message");
-    
-
+        if (req.user.hasRole('admin')) {
+            res.render('pages/camps/index-admin', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        } else if (req.user.hasRole('camp manager')) {
+            /**
+             * Add an API to get camp id by user id
+             * then redirect to camp profile page.
+             */
+        } else {
+            /**
+             * Add test if user is part of camp
+             * if so - redirect to camp profile (without edit option)
+             */
+            // User has no permissions
+            res.render('pages/camps/index-user', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        }
     });
 
     // new camp

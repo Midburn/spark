@@ -43,6 +43,42 @@ router.get('/create-admin', function (req, res) {
     res.redirect("./");
 });
 
+router.get('/create-camp-manager', function (req, res) {
+    var newUser = new User({
+        email: 'b',
+        first_name: 'Camp',
+        last_name: 'Manager',
+        gender: 'female',
+        validated: true,
+        roles: 'camp manager'
+    });
+    newUser.generateHash('b');
+
+    newUser.save().then(function (model) {
+        res.redirect("/");
+    });
+
+    res.redirect("./");
+});
+
+router.get('/create-simple-user', function (req, res) {
+    var newUser = new User({
+        email: 'u',
+        first_name: 'Just a',
+        last_name: 'User',
+        gender: 'male',
+        validated: true,
+        roles: ''
+    });
+    newUser.generateHash('u');
+
+    newUser.save().then(function (model) {
+        res.redirect("/");
+    });
+
+    res.redirect("./");
+});
+
 router.get('/view-debug/*', function (req, res) {
     const path = req.path.substr('/view-debug/'.length);
     if (path === '') {

@@ -30,6 +30,15 @@
             "stats": "נתוני מחנה",
             "members": "חברי מחנה",
             "docs": "מסמכים וטפסים"
+        },
+        "admin_index": {
+            "all_camps": "ניהול מחנות",
+            "all_members": "ניהול חברים",
+            "docs": "מסמכים שהועלו",
+            "new": "צור מחנה חדש",
+            "all_camps_table": "מחנות",
+            "all_members_table": "חברי מחנות",
+            "docs_table": "מסמכים וקבצים"
         },   
         "new": {
             "header_title": "יצירת מחנה חדש",
