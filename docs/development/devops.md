@@ -8,7 +8,7 @@ This procedure can be used to manually setup and deploy to a linux server.
 
 * tested on Ubuntu 16.04.1 LTS (Xenial) - but should work on any Linux variant with minor changes.
 
-```
+```shell
 sudo apt-get install -y jq nginx
 sudo mkdir -p /opt/spark/.nvm
 sudo chown -R $USER /opt/spark
@@ -23,7 +23,7 @@ Create a systemd service for the spark web-app
 
 **Note** the service will be able to start only after you do a deployment
 
-```
+```shell
 echo "#!/usr/bin/env bash" > /opt/spark/start.sh
 echo "export NVM_DIR=/opt/spark/.nvm" >> /opt/spark/start.sh
 echo "source /opt/spark/.nvm/nvm.sh" >> /opt/spark/start.sh
@@ -69,36 +69,23 @@ server {
 
 Restart nginx
 
-```
+```shell
 sudo service nginx restart
 ```
 
 ### Configuring the environment
 
-Replace "..." with the actual values
-
-```
-echo 'SLACK_API_TOKEN="..."' >> /opt/spark/.env
-echo 'SLACK_LOG_WEBHOOK="..."' >> /opt/spark/.env
-```
-
-Create an opsworks.js file too (it will be copied to the deployment directory)
-
-Fill it with relevant configurations
-
-```
-nano /opt/spark/opsworks.js
-```
+Create a .env file in /opt/spark/.env based on [/.env-example](/.env-example)
 
 For simple sqlite3 installation, you should create a file that will contain the database
 
-```
+```shell
 touch /opt/spark/dev.sqlite3
 ```
 
 Create the deploy script which will download and deploy from a package url
 
-```
+```shell
 nano /opt/spark/deploy.sh
 ```
 
@@ -125,7 +112,6 @@ popd
 
 echo "Copying configurations..."
 cp /opt/spark/.env /opt/spark/new/.env
-cp /opt/spark/opsworks.js /opt/spark/new/opsworks.js
 [ -f /opt/spark/dev.sqlite3 ] && cp /opt/spark/dev.sqlite3 /opt/spark/new/dev.sqlite3
 
 echo "Setting up the deployment directory..."
@@ -150,7 +136,7 @@ echo "DONE"
 
 Make it executable
 
-```
+```shell
 chmod +x /opt/spark/deploy.sh
 ```
 
@@ -158,13 +144,13 @@ chmod +x /opt/spark/deploy.sh
 
 Run:
 
-```
+```shell
 /opt/spark/deploy.sh <PACKAGE_URL>
 ```
 
 ### Checking server logs / debugging problems
 
-```
+```shell
 sudo service midburn-spark status
 sudo tail /var/log/midburn-spark.*
 ```
@@ -179,7 +165,7 @@ This will setup the server for simple smtp sending directly from the instance.
 
 To setup postfix for local only mail sending:
 
-```
+```shell
 sudo apt-get install mailutils
 ```
 
@@ -188,7 +174,7 @@ You will get a text UI for choosing options, select the following:
 * configuration type: internet site
 * system mail name: keep the default
 
-```
+```shell
 sudo nano /etc/postfix/main.cf
 ```
 
@@ -200,23 +186,21 @@ inet_interfaces = localhost
 
 Restart postfix
 
-```
+```shell
 sudo sevice postfix restart
 ```
 
 Test the mail sending (replace user@example.com with your email):
 
-```
+```shell
 echo "Hello world" | mail -s "Testing 123" user@example.com
 ```
-
-If you used the default [/opsworks.js](/opsworks.js) file - it is already configured to send mail from localhost, so no change is required.
 
 ##### local Mysql server
 
 This will setup a local mysql server (MariaDB)
 
-```
+```shell
 sudo apt-get install -y mariadb-server
 ```
 
@@ -228,7 +212,7 @@ read SPARK_DB_PASSWORD
 
 Create a spark user accessible from localhost only and the spark DB
 
-```
+```shell
 echo "CREATE USER 'spark'@'localhost' IDENTIFIED BY '${SPARK_DB_PASSWORD}'" | sudo mysql
 echo "CREATE DATABASE spark CHARACTER SET = 'utf8' COLLATE = 'utf8_general_ci';" | sudo mysql
 echo "GRANT ALL ON spark.* TO 'spark'@'localhost';" | sudo mysql
@@ -236,14 +220,14 @@ echo "GRANT ALL ON spark.* TO 'spark'@'localhost';" | sudo mysql
 
 You can test if it works
 
-```
+```shell
 mysql -h localhost -u spark -p spark
 ```
 
 Modify the spark configuration
 
-```
-nano /opt/spark/opsworks.js
+```shell
+nano /opt/spark/.env
 ```
 
 Remove the sqlite configuration and uncomment the mysql configuration.
@@ -251,20 +235,17 @@ Remove the sqlite configuration and uncomment the mysql configuration.
 It should look something like this:
 
 ```
-exports.db = {
-    "client"        : "mysql",
-    "debug"         : false,
-    "host"          : "localhost",
-    "database"      : "spark",
-    "user"          : "spark",
-    "password"      : "... the password ...",
-    "charset"       : "utf8",
-};
+SPARK_DB_CLIENT=mysql
+SPARK_DB_HOSTNAME=localhost
+SPARK_DB_DBNAME=spark
+SPARK_DB_USER=spark
+SPARK_DB_PASSWORD=YOUR_PASSWORD
+SPARK_DB_DEBUG=false
 ```
 
 Run migrations (assuming you have a deployment installed)
 
-```
+```shell
 cd /opt/spark/latest
 ./knex migrate:latest
 sudo service midburn-spark restart
@@ -276,14 +257,14 @@ We will use an ssh key limited for specific command, only for deployment. This a
 
 Generate the key and set it in authorized_keys limited to deploy command only:
 
-```
+```shell
 ssh-keygen -t rsa -b 4096 -C "spark-deployment" -f /opt/spark/spark_deployment.id_rsa
 echo "command="/opt/spark/deploy.sh $SSH_ORIGINAL_COMMAND" `cat /opt/spark/spark-deployment.id_rsa.pub`" >> ~/.ssh/authorized_keys
 ```
 
 Now, to deploy you can run something like this:
 
-```
+```shell
 ssh -i ~/spark-deployment.id_rsa ubuntu@server 'PACKAGE_URL'
 ```
 

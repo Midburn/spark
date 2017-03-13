@@ -8,14 +8,14 @@ To contribute to the project you should fork it - this can be done in the GitHub
 
 Then, you should be able to get a repository URL for your fork and clone it:
 
-```
-$ git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
+```shell
+git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
 
 To be able to sync with Midburn repository you should add it as a remote
 
-```
-$ git remote add midburn https://github.com/Midburn/Spark.git
+```shell
+git remote add midburn https://github.com/Midburn/Spark.git
 ```
 
 ### Pulling - updating with latest changes from Midburn repository
@@ -24,23 +24,23 @@ You should always keep your branches updated with latest code from Midburn.
 
 This can be done from any branch with git pull
 
-```
-$ git pull midburn master
+```shell
+git pull midburn master
 ```
 
 ### Branching - starting work on a new feature / bug-fix
 
 Before starting to work, it is recommended to start from an updated master branch
 
-```
-$ git checkout master
-$ git pull midburn master
+```shell
+git checkout master
+git pull midburn master
 ```
 
 Now you can create a new branch for your feature or bug-fix
 
-```
-$ git checkout -b <BRANCH_NAME>
+```shell
+git checkout -b <BRANCH_NAME>
 ```
 
 It is recommended that your `<BRANCH_NAME>` will start with your name and short description of the your changes. For example example: `nate_updating_readme_file`
@@ -48,10 +48,10 @@ It is recommended that your `<BRANCH_NAME>` will start with your name and short 
 after writing some awesome code on your new shiny branch, you should `commit` changes and `merge` with origin/master, to do that use:
 
 
-```
-$ git commit -am "<COMMIT_MSG>"
-$ git checkout master && git pull origin master
-$ git checkout <YOUR_BRANCH_NAME> && git push origin <YOUR_BRANCH_NAME>
+```shell
+git commit -am "<COMMIT_MSG>"
+git checkout master && git pull origin master
+git checkout <YOUR_BRANCH_NAME> && git push origin <YOUR_BRANCH_NAME>
 ```
 
 ### Opening a pull request - the first step to merge you changes

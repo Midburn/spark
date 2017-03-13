@@ -18,14 +18,14 @@ describe('Main routes', function () {
     it('greets in Hebrew', function testSlash(done) {
         request
             .get('/he/login')
-            .expect(/ברוכים הבאות/)
+            .expect(/כניסה למערכת/)
             .expect(200, done);
     });
 
     it('greets in English', function testSlash(done) {
         request
             .get('/en/login')
-            .expect(/Welcome to Spark/)
+            .expect(/Login/)
             .expect(200, done);
     });
 

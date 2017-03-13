@@ -4,7 +4,7 @@
         "btn_continue": "Continue",
         "dash": {
             "title": "Theme & Art Camps",
-            "desc": "Something short and leading about the collection below&mdash;its contents, the creator, etc. Make it short and sweet, but not too short so folks don&apos;t simply skip over it entirely.",
+            "desc": "Camp management dashboard, here you can manage your camp, members, documents and more...",
             "join_request": "Join a camp request",
             "join_request_desc": "The request to the camp manager will be sent with these details",
             "join_close": "Close",
@@ -23,6 +23,14 @@
                 "title": "Camp Program"
             }
         },
+        "breadcrumbs": {
+            "root": "Home",
+            "home": "Camps",
+            "new": "New Camp",
+            "stats": "Camp Statistics",
+            "members": "Camp Members",
+            "docs": "Documents and Forms"
+        },
         "new": {
             "header_title": "Create a camp",
             "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
@@ -30,6 +38,7 @@
             "btn_create": "Create a Camp",
             "basic_info": "Basic Information",
             "details": "Camp Details",
+            "files": "Files & Documents",
             "name_card_header": "Camp Name & Description",
             "name_he": "Camp name (Hebrew)",
             "name_en": "Camp name (English)",
@@ -124,16 +133,19 @@
             "yes": "yes",
             "no": "no",
             "publication": "Publication",
+            "publication_subtitle": "The details here will be showen in the web-site, if camp is published.",
             "name": "Name",
             "phone": "Phone",
             "email": "Email"
         },
         "edit": {
+            "view": "View Camp",
             "title": "Editing",
             "camp": "Camp",
             "since": "Since",
             "basic_info": "Basic Information",
             "details": "Basic Details",
+            "files": "Files & Documents",
             "name_and_desc": "Camp Name & Description",
             "name_en": "Name (English)",
             "name_he": "Name (Hebrew)",
@@ -174,7 +186,10 @@
             "location_area": "Area",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
-            "facebook_page_url": "Facebook Page Link"
+            "facebook_page_url": "Facebook Page Link",
+            "upload": "Files & Forms Upload",
+            "upload_header": "Upload Files",
+            "security_file": "Security Documentation"
         },
         "program": {
             "page_title": "Create new Program",
@@ -192,5 +207,16 @@
             "access": "Program Accessibility",
             "kids_friendly": "Kids Friendly",
             "adult_only": "Adult Only"
+        },
+        "docs": {
+            "title": "Documents and Forms",
+            "search": "Search Camp",
+            "doc_type": "Document type",
+            "doc_name": "Document name",
+            "upload_date": "Upload date",
+            "upload_data": "Upload data",
+            "doc_status": "Status",
+            "last_doc_status": "Last status by",
+            "camp_name_en": "Camp Name (English)"
         }
 }

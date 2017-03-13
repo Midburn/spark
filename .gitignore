@@ -53,10 +53,15 @@ jspm_packages
 # Git merges
 *.orig
 
-/dev.sqlite3
+/*.sqlite3
 
 *.pyc
 /*.tar.gz
 /public/scripts/camps_bundle.js
 /*.slack_url
 /.nvm
+/bower_components
+
+# dotenv file (containing all of our secrets!!)
+.env
+deployment.key

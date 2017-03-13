@@ -9,23 +9,24 @@ block content
                     span.label.label-info #{t('camps:camps.title')} # #{id}
                     span.label.label-primary #{t('camps:camps.style')}: #{camp.type}
                     h5 #{t('camps:camps.since')}: #{camp.created_at}
+                    h5 #{t('camps:camps.desc')}
                     .col-xs-12.col-sm-6
-                        p #{t('camps:camps.desc')} #{camp.camp_desc_en}
-                    .col-xs-12.col-sm-6
-                        #{camp.camp_desc_he}
+                        p #{camp.camp_desc_en}
+                    .text-right.col-xs-12.col-sm-6
+                        p #{camp.camp_desc_he}
                 .col-xs-12.col-sm-2
                     a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
                     ul.list-group.text-center
                         li.list-group-item
                             if camp.enabled
-                              span.no-flt.badge.bg__green=t('camps:camps.publised')
+                              span.no-flt.badge.bg__green=t('camps:camps.published')
                             else
                               span.no-flt.badge.bg__red=t('camps:camps.draft')
                         li.list-group-item
                             span=t('camps:camps.status')
                                 if camp.status == 'open'
                                     span.badge.bg__teal=t('camps:camps.status_open')
-                                if camp.status == 'closed'
+                                else if camp.status == 'closed'
                                     span.badge.bg__red=t('camps:camps.status_closed')
                                 else
                                     span.badge.bg__teal=t('camps:edit.inactive')
@@ -44,9 +45,10 @@ block content
                         li.list-group-item
                             span #{t('camps:camps.art')} #{details.support_art}
                                 span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
-            .row.card.card__shad
+            .row.card.card__shad.card__padding--even
                 .row.publication.col-md-12
                     h4=t('camps:camps.publication')
+                    p=t('camps:camps.publication_subtitle')
                     .col-xs-12.col-md-4
                         .contact-person.Btn.Btn__card(data-camp-contact-person-id='#{camp.contact_person_id}')
                             a.hidden(href='/users/#{camp.contact_person_id}')
@@ -63,28 +65,42 @@ block content
                                 span=t('camps:stats.facebook_page_url')
                 .row.management.col-md-12
                     h4=t('camps:camps.management_title')
-                    .col-xs-12.col-md-4
+                    .col-xs-12.col-sm-4
                         .contact-info
-                            button.Btn.Btn__card.fetch_user_info(data-user-id='#{camp.main_contact}')
+                            button.Btn.Btn__card.fetch_user_info(data-user-type='type--main', data-user-id='#{camp.main_contact}')
                                 span=t('camps:camps.main_contact')
-                                .info.hidden
-                                    h6 #{t('camps:camps.name')}: 
-                                        span.contact_person_name
-                                    h6 #{t('camps:camps.phone')}: 
-                                        span.contact_person_phone
-                                    h6 #{t('camps:camps.email')}: 
-                                        span.contact_person_email
-                                h6=t('camps:camps.more_info')
-                    .col-xs-12.col-md-4
+                            .info.type--main.hidden
+                                h6 #{t('camps:camps.name')}: 
+                                    span.contact_person_name
+                                h6 #{t('camps:camps.phone')}: 
+                                    span.contact_person_phone
+                                h6 #{t('camps:camps.email')}: 
+                                    span.contact_person_email
+                                a.details.hidden(href='/users/#{camp.main_contact}')=t('camps:camps.more_info')
+                    .col-xs-12.col-sm-4
                         .contact-info
-                            a.Btn.Btn__card(href='/users/#{camp.moop_contact}')
+                            button.Btn.Btn__card.fetch_user_info(data-user-type='type--moop', data-user-id='#{camp.moop_contact}')
                                 span=t('camps:camps.moop_contact')
-                                h6=t('camps:camps.more_info')
-                    .col-xs-12.col-md-4
+                            .info.type--moop.hidden
+                                h6 #{t('camps:camps.name')}: 
+                                    span.contact_person_name
+                                h6 #{t('camps:camps.phone')}: 
+                                    span.contact_person_phone
+                                h6 #{t('camps:camps.email')}: 
+                                    span.contact_person_email
+                                a.details.hidden(href='/users/#{camp.moop_contact}')=t('camps:camps.more_info')
+                    .col-xs-12.col-sm-4
                         .contact-info
-                            a.Btn.Btn__card(href='/users/#{camp.safety_contact}')
+                            button.Btn.Btn__card.fetch_user_info(data-user-type='type--safety', data-user-id='#{camp.safety_contact}')
                                 span=t('camps:camps.safety_contact')
-                                h6=t('camps:camps.more_info')
+                            .info.type--safety.hidden
+                                h6 #{t('camps:camps.name')}: 
+                                    span.contact_person_name
+                                h6 #{t('camps:camps.phone')}: 
+                                    span.contact_person_phone
+                                h6 #{t('camps:camps.email')}: 
+                                    span.contact_person_email
+                                a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
                 .row.documents.col-md-12.hidden
                     h4=t('camps:camps.docs')
                     .col-xs-12.col-md-4

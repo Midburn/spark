@@ -1,0 +1,32 @@
+extends layout
+block content
+    div(id="datatable-admin").row
+        .x_panel
+            .x_title
+                h2
+                    =" "+title.text
+                if rightPanelToolbox
+                    ul.nav.navbar-right.panel_toolbox
+                        li
+                            a.collapse-link
+                                i.fa.fa-chevron-up
+                        li.dropdown
+                            a.dropdown-toggle(role='button', aria-expanded='false', href='#', data-toggle='dropdown')
+                                i.fa.fa-wrench
+                            ul.dropdown-menu(role='menu')
+                        li
+                            a
+                                i.fa.fa-close
+                .clearfix
+                if title.small
+                    .alert.alert-success=title.small
+                h5
+                    a.btn.btn-success.add(href="#{title.name}/add")= "+ "+addTitle
+            .x_content
+                .table-responsive
+                    table.table.table-striped.table-bordered.dataTable(data-table-ajax=ajax, data-table-options=tableOptionsString)
+                        thead
+                            tr
+                                for column in columns
+                                    th(data-attr=column.attr)= column.title ? column.title : column.attr
+                                th(data-attr="actions")= "Actions"

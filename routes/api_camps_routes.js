@@ -3,23 +3,24 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
 var CampDetails = require('../models/camp').CampDetails;
+var config = require('config');
 
-module.exports = function (app, passport) {
+var mail = require('../libs/mail'),
+    mailConfig = config.get('mail');
+    
+module.exports = function(app, passport) {
     /**
      * API: (GET) get user by id
-     * request => /userss/:id
+     * request => /users/:id
      */
     app.get('/users/:id', (req, res) => {
-        User.forge({
-            user_id: req.params.id
-        }).fetch({
-            columns: '*'
-        }).then((user) => {
-            res.json({
-                name: user.get('name'),
-                email: user.get('email'),
-                cell_phone: user.get('cell_phone')
-            })
+        User.forge({user_id: req.params.id}).fetch({columns: '*'}).then((user) => {
+            if (user !== null) {
+                res.json({name: user.get('name'), email: user.get('email'), cell_phone: user.get('cell_phone')})
+            } else {
+                res.status(404).json({message: 'Not found'})
+            }
+
         }).catch((err) => {
             res.status(500).json({
                 error: true,
@@ -48,7 +49,8 @@ module.exports = function (app, passport) {
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
             type: req.body.camp_type,
-            created_at: Date()
+            created_at: Date(),
+            updated_at: Date()
         }).save().then((camp) => {
             res.json({
                 error: false,
@@ -75,7 +77,7 @@ module.exports = function (app, passport) {
                 res.status(500).json({
                     error: true,
                     data: {
-                        message: err.message
+                        message: e.message
                     }
                 });
             })
@@ -94,9 +96,8 @@ module.exports = function (app, passport) {
      * request => /camps/1/edit
      */
     app.put('/camps/:id/edit', (req, res) => {
-        Camp.forge({
-            id: req.params.id
-        }).fetch().then(function (camp) {
+        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+
             camp.save({
                 // camp_name_en: req.body.camp_name_en,
                 camp_name_he: req.body.camp_name_he,
@@ -110,7 +111,7 @@ module.exports = function (app, passport) {
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
-            }).then(function () {
+            }).then(function() {
                 // TODO: not working with this table. need-a-fix
                 CampDetails.forge({
                     camp_id: req.params.id,
@@ -125,12 +126,9 @@ module.exports = function (app, passport) {
                     camp_location_street_time: req.body.camp_location_street_time,
                     camp_location_area: req.body.camp_location_area
                 }).save().then(() => {
-                    res.json({
-                        error: false,
-                        status: 'Camp updated'
-                    });
+                    res.json({error: false, status: 'Camp updated'});
                 });
-            }).catch(function (err) {
+            }).catch(function(err) {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -138,7 +136,7 @@ module.exports = function (app, passport) {
                     }
                 });
             });
-        }).catch(function (err) {
+        }).catch(function(err) {
             res.status(500).json({
                 error: true,
                 data: {
@@ -150,17 +148,10 @@ module.exports = function (app, passport) {
     // PUBLISH
     app.put('/camps/:id/publish', (req, res) => {
         // If camp met all its requirements, can publish
-        Camp.forge({
-            id: req.params.id
-        }).fetch().then(function (camp) {
-            camp.save({
-                enabled: '1'
-            }).then(function () {
-                res.json({
-                    error: false,
-                    status: 'Publish'
-                });
-            }).catch(function (err) {
+        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+            camp.save({enabled: '1'}).then(function() {
+                res.json({error: false, status: 'Publish'});
+            }).catch(function(err) {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -168,7 +159,7 @@ module.exports = function (app, passport) {
                     }
                 });
             });
-        }).catch(function (err) {
+        }).catch(function(err) {
             res.status(500).json({
                 error: true,
                 data: {
@@ -179,17 +170,10 @@ module.exports = function (app, passport) {
     });
     // UNPUBLISH
     app.put('/camps/:id/unpublish', (req, res) => {
-        Camp.forge({
-            id: req.params.id
-        }).fetch().then(function (camp) {
-            camp.save({
-                enabled: '0'
-            }).then(function () {
-                res.json({
-                    error: false,
-                    status: 'Unpublish'
-                });
-            }).catch(function (err) {
+        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+            camp.save({enabled: '0'}).then(function() {
+                res.json({error: false, status: 'Unpublish'});
+            }).catch(function(err) {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -197,7 +181,7 @@ module.exports = function (app, passport) {
                     }
                 });
             });
-        }).catch(function (err) {
+        }).catch(function(err) {
             res.status(500).json({
                 error: true,
                 data: {
@@ -233,9 +217,7 @@ module.exports = function (app, passport) {
                     published_camps.push(fetched_camp);
                 }
             }
-            res.status(200).jsonp({
-                published_camps
-            })
+            res.status(200).jsonp({published_camps})
         }).catch((err) => {
             res.status(500).jsonp({
                 error: true,
@@ -259,19 +241,15 @@ module.exports = function (app, passport) {
         // } else {
         //   API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin.prod');
         // }
-        // 
+        //
         // res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
         // res.header('Access-Control-Allow-Methods', 'GET');
         // res.header('Access-Control-Allow-Headers', 'Content-Type');
-        User.forge({
-            user_id: req.params.id
-        }).fetch({
+        User.forge({user_id: req.params.id}).fetch({
             require: true,
             columns: ['first_name', 'last_name', 'email', 'cell_phone']
         }).then((user) => {
-            res.status(200).jsonp({
-                user: user.toJSON()
-            })
+            res.status(200).jsonp({user: user.toJSON()})
         }).catch((err) => {
             res.status(500).jsonp({
                 error: true,
@@ -288,9 +266,7 @@ module.exports = function (app, passport) {
      */
     app.get('/camps/:camp_name_en', (req, res) => {
         var req_camp_name_en = req.params.camp_name_en;
-        Camp.forge({
-            camp_name_en: req_camp_name_en
-        }).fetch().then((camp) => {
+        Camp.forge({camp_name_en: req_camp_name_en}).fetch().then((camp) => {
             if (camp === null) {
                 // camp name is available
                 res.status(204).end();
@@ -313,9 +289,7 @@ module.exports = function (app, passport) {
      */
     app.get('/users', (req, res) => {
         User.fetchAll().then((users) => {
-            res.status(200).json({
-                users: users.toJSON()
-            })
+            res.status(200).json({users: users.toJSON()})
         }).catch((err) => {
             res.status(500).json({
                 error: true,
@@ -332,9 +306,7 @@ module.exports = function (app, passport) {
      */
     app.get('/camps', (req, res) => {
         Camp.fetchAll().then((camp) => {
-            res.status(200).json({
-                camps: camp.toJSON()
-            })
+            res.status(200).json({camps: camp.toJSON()})
         }).catch((err) => {
             res.status(500).json({
                 error: true,
@@ -350,14 +322,9 @@ module.exports = function (app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({
-            status: 'open',
-            enabled: '1'
-        }).fetch().then((camp) => {
+        Camp.forge({status: 'open', enabled: '1'}).fetch().then((camp) => {
             if (camp !== null) {
-                res.status(200).json({
-                    camps: camp.toJSON()
-                })
+                res.status(200).json({camps: camp.toJSON()})
             } else {
                 res.status(404).send('Not found');
             }
@@ -378,18 +345,8 @@ module.exports = function (app, passport) {
         var camp_id = req.params.camp_id, // eslint-disable-line no-unused-vars
             user_id = req.params.id;
         // Send email to camp manager for a join request, with user details;
-        User.forge({
-            user_id: user_id
-        }).fetch({
-            require: true,
-            columns: '*'
-        }).then((user) => {
-            res.json({
-                first_name: user.get('first_name'),
-                last_name: user.get('last_name'),
-                email: user.get('email'),
-                cell_phone: user.get('cell_phone')
-            });
+        User.forge({user_id: user_id}).fetch({require: true, columns: '*'}).then((user) => {
+            res.json({first_name: user.get('first_name'), last_name: user.get('last_name'), email: user.get('email'), cell_phone: user.get('cell_phone')});
         }).catch((err) => {
             res.status(500).json({
                 error: true,
@@ -400,13 +357,21 @@ module.exports = function (app, passport) {
         });
     });
     /**
-     * API: (POST) receive request and forward to mail
+     * API: (POST) camp join request
+     * listen for the request and forward it to camp manager email
      * request => /camps/join/request
      */
     app.post('/camps/join/request', (req, res) => {
-        res.status(200).json({
-            error: false
-        })
+        mail.send(
+          req.body.camp_manager_email,
+          mailConfig.from,
+          'Spark: someone wants to join your camp!',
+          'emails/camps/join_request', {
+                user: {name: 'nate', email: req.body.user_email}
+        }).catch((err) => {
+          res.status(500).json({msg: err, error: true})
+        });
+        res.status(200).json({error: false})
     });
 
     /**
@@ -424,14 +389,8 @@ module.exports = function (app, passport) {
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', (req, res) => {
-        User.forge({
-            camp_id: req.params.id
-        }).fetch({
-            require: true
-        }).then((users) => {
-            res.status(200).json({
-                users: users.toJSON()
-            })
+        User.forge({camp_id: req.params.id}).fetch({require: true}).then((users) => {
+            res.status(200).json({users: users.toJSON()})
         }).catch((e) => {
             res.status(500).json({
                 error: true,

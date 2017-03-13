@@ -41,9 +41,9 @@ You can also download a package from slack (using ```npm run download```) and th
 
 To use it, [install vagrant](https://www.vagrantup.com/docs/installation/), then run the following from spark/vagrant directory:
 
-```
-spark$ cd vagrant
-spark/vagrant$ vagrant up
+```shell
+cd vagrant
+vagrant up
 ```
 
 Now, you can ssh into the instance, the deployed package is at /opt/spark/deployment
@@ -52,10 +52,10 @@ When you run node / npm - you will have correct version for the deployment.
 
 For example, to start the spark web-app:
 
-```
-spark/vagrant$ vagrant ssh
-ubuntu@ubuntu-xenial:~$ cd /opt/spark/deployment
-ubuntu@ubuntu-xenial:/opt/spark/deployment$ node server.js
+```shell
+vagrant ssh
+cd /opt/spark/deployment
+node server.js
 ```
 
 ## Automated deployment using Travis-CI

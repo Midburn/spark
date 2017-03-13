@@ -1,0 +1,29 @@
+FORMAT: 1A
+HOST: http://sparkstaging.midburn.org
+
+# Midburn Spark API
+
+Spark API description
+
+## Spark Users [/users/{user_id}]
+
+### User Details [GET]
+
++ Parameters
+    + user_id (number) - ID of the requested User
+    
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "Sparkly Spark",
+                "email": "sparkly@midburn.org",
+                "cell_phone": "0542000200"
+            }
+        ]
+        
++ Response 404 (application/json)
+
+        {
+            "message":"Not found"
+        }

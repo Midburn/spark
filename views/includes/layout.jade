@@ -17,14 +17,15 @@ head
 
     link( rel="stylesheet", href="/stylesheets/main.scss" )
     // Font-awesome
-    link(href='/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+    link(href='/bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+    script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
     include footer
     //- Scripts
-    script(src='/gentelella/vendors/jquery/dist/jquery.min.js' )
-    script(src="/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
+    script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
+    script(src="/bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
         crossorigin="anonymous" )
     script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
