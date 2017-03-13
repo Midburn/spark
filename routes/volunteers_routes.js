@@ -39,11 +39,30 @@ function __is_dep_vol_manager(user_id) {
 
 var get_volunteers = function(req, res) {
     if (__is_dep_vol_manager(1)) {
-
+        //var user_ids = [1]; //find user by name or email and by ticket.
+        Volunteer.query((qb) => {
+            if (req.query.deps !== undefined) {
+                qb.whereIn('department_id', req.query.deps);
+            }
+            if (req.query.roles !== undefined) {
+                qb.whereIn('role_id', req.query.roles);
+            }
+        }).fetchAll().then((vols) => {
+            if (res === null) {
+                res.json('[]')
+            }
+            res.json(vols.toJSON());
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
     } else {
         res.status(401).json({ message: "Not Authorized" });
     }
-
 }
 
 var get_department_volunteers = function(req, res) {
@@ -59,6 +78,7 @@ var put_volunteer = function(req, res) {
 }
 
 var get_volunteering_info = function(req, res) {
+    //TODO acquire current user id 
     Volunteer.get_by_user(1).then(function(deps) {
         res.json(deps.toJSON());
     }).catch((err) => {
