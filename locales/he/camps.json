@@ -38,6 +38,7 @@
             "btn_create": "צור מחנה",
             "basic_info": "פרטים בסיסיים",
             "details": "פרטי מחנה",
+            "files": "קבצים וטפסים",
             "name_card_header": "שם מחנה ותיאור",
             "name_he": "שם מחנה (עברית)",
             "name_en": "שם מחנה (אנגלית)",
@@ -144,6 +145,7 @@
             "since": "מאז",
             "basic_info": "פרטים",
             "details": "פרטים בסיסיים",
+            "files": "קבצים וטפסים",
             "name_and_desc": "שם מחנה ותיאור",
             "name_en": "שם (אנגלית)",
             "name_he": "שם (עברית)",
@@ -181,7 +183,10 @@
             "location_comments": "הערות",
             "location_street": "רחוב",
             "location_time": "שעה",
-            "location_area": "אזור"
+            "location_area": "אזור",
+            "upload": "העלאת מסמכים וקבצים",
+            "upload_header": "העלאת קבצים",
+            "security_file": "תיק בטיחות"
         },
         "program": {
             "page_title": "צור פעילות חדשה",
@@ -199,5 +204,16 @@
             "access": "תאימות",
             "kids_friendly": "מתאים לילדים",
             "adult_only": "למבוגרים בלבד"
+        },
+        "docs": {
+            "title": "מסמכים וטפסים",
+            "search": "חפש מחנה",
+            "doc_type": "סוג מסמך",
+            "doc_name": "שם מסמך",
+            "upload_date": "תאריך העלאה",
+            "upload_data": "תוכן העלאה",
+            "doc_status": "סטטוס",
+            "last_doc_status": "סטטוס אחרון ע״י",
+            "camp_name_en": "שם מחנה (אנגלית)"
         }
 }
