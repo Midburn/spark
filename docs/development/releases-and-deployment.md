@@ -23,8 +23,13 @@
 * notification is sent to slack #sparksystemlog with the release name - notifying you that it's ready for deployment
 
 ## Deploying to production
-* currently deployment is only possible via ssh, easiest way is using the following command (in Linux):
-  * `ssh -i spark_production_deployment.id_rsa ubuntu@54.171.158.83 RELEASE_TAG_NAME`
+* Assuming you user is authorized (see below how to authorize)
+  * just type in slack: `/deploy RELEASE_TAG_NAME`
+  * where RELEASE_NAME is a published github release tag name
+* To authorize a user, you will need to ssh to the server and edit the /opt/spark/.env file
+  * ssh -i spark.id_rsa ubuntu@spark.midburn.org
+  * `nano /opt/spark/.env`
+  * look for SLACK_DEPLOY_ALLOWED_USERS - it contains comma-separated list of slack user names allows to deploy
 
 ## See Also
 

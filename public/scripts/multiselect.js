@@ -1,13 +1,14 @@
-function MultiChoiceSelector(input, options) {
+function MultiChoiceSelector(input, options) { // eslint-disable-line no-unused-vars
 
-    if (input == undefined && input.type != "text" && !Array.isArray(options.options) && options.options.length <= 0)
+    if (input === undefined && input.type !== "text" && !Array.isArray(options.options) && options.options.length <= 0) {
         throw new Error("Invalid arguments");
+    }
 
     var _input = input;
     var _options = options.options;
     var _shouldAddOther = options.shouldAddOther || false;
-    var _currentValues = [];
-    var _cboxes = [];
+    var _currentValues = []; // eslint-disable-line no-unused-vars
+    var _cboxes = []; // eslint-disable-line no-unused-vars
     var _container;
     var _otherCb;
     var _otherInput;
@@ -17,17 +18,19 @@ function MultiChoiceSelector(input, options) {
     var _cb_unchecked_img = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNvyMY98AAADWSURBVEhLY0grKD/ePGHGf3rizJKqswzYJOiB4RY3TZje3NQ/VbN10kwNWmCQ2U0TZtRiWAySZACC1gmzxeu7p2tRFXdNkQCZXd83TQmrxSBLgexvMDGq4f7p37umzJdonjRLESaGYjHIdTA+tXF99zSdUYvBjFGLqY1HLR61eNRiquFRi0ctHrWYahi/xcDWIKhhBhOjGgaaWd85WQqnxeAm6JQpEq0Tp2tRE7f0zZDE2bx1cPeuFRIWVRISFqEZtnVxr8CwmN6YAdh1OYtNgqa4f8ZlAFpgjrgRZG2NAAAAAElFTkSuQmCC";
 
     function _appendTo(parent, children) {
-        children.forEach(function(child) {
+        children.forEach(function (child) {
             parent.appendChild(child);
         })
     }
 
     function _create(type, id, classList) {
         var el = document.createElement(type);
-        if (id)
+        if (id) {
             el.id = id;
-        if (classList)
+        }
+        if (classList) {
             el.classList = classList;
+        }
         return el;
     }
 
@@ -41,7 +44,7 @@ function MultiChoiceSelector(input, options) {
 
     function createCbsForOptions() {
         var cb;
-        _options.forEach(function(option) {
+        _options.forEach(function (option) {
             cb = _createCb(option, '', []);
             cb.addEventListener('click', cbClick.bind(this))
             _cboxes.push(cb);
@@ -55,7 +58,7 @@ function MultiChoiceSelector(input, options) {
     createOtherCbAndInput
 
     function addCbsToContainer() {
-        _cboxes.forEach(function(cbox) {
+        _cboxes.forEach(function (cbox) {
             var el = _create('div', '', ['multi-select-option']),
                 text = _create('span', '', ['multi-select-option-text']);
             text.innerHTML = cbox.dataset.value;
@@ -75,7 +78,7 @@ function MultiChoiceSelector(input, options) {
     }
 
     function cbClick(ev) {
-        if (ev.target.dataset.checked == "false") {
+        if (ev.target.dataset.checked === "false") {
             checkCb(ev.target);
         } else {
             uncheckCb(ev.target);
@@ -97,17 +100,19 @@ function MultiChoiceSelector(input, options) {
 
     function refreshInput() {
         var selectedOptions = [];
-        _cboxes.forEach(function(cbox) {
-            if (cbox.dataset.checked == "true")
+        _cboxes.forEach(function (cbox) {
+            if (cbox.dataset.checked === "true") {
                 selectedOptions.push(cbox.dataset.value);
+            }
         })
 
-        if (_shouldAddOther && _otherCb.dataset.checked == "true") {
+        if (_shouldAddOther && _otherCb.dataset.checked === "true") {
             selectedOptions.push(_otherInput.value);
         }
         _input.value = selectedOptions;
-        if (_cbFunc != null)
+        if (_cbFunc != null) {
             _cbFunc(selectedOptions);
+        }
     }
 
     function hideInput() {
@@ -118,8 +123,9 @@ function MultiChoiceSelector(input, options) {
         hideInput();
         createContainer();
         addCbsToContainer();
-        if (_shouldAddOther)
+        if (_shouldAddOther) {
             createOtherCbAndInput();
+        }
     }
 
     function init() {

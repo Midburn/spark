@@ -12,14 +12,14 @@ This is a step-by-step guide to getting you up and running with Spark so you can
 * Fork the project on GitHub (this can be done in the GitHub web interface)
 * clone your forked repo
 
-```
-$ git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
+```shell
+git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
 
 To be able to sync with Midburn repository you should add it as a remote:
 
-```
-$ git remote add midburn https://github.com/Midburn/Spark.git
+```shell
+git remote add midburn https://github.com/Midburn/Spark.git
 ```
 
 ### Installing Node
@@ -29,18 +29,26 @@ Optional - It is recommended to use [nvm](https://github.com/creationix/nvm#inst
 
 We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
 
-```
-$ cd spark
-spark$ nvm install
-spark$ nvm use
+```shell
+cd spark
+nvm install
+nvm use
 ```
 
 ### Installing Node modules
 
+```shell
+cd spark
+npm install
+npm install -g nodemon knex bower
 ```
-$ cd spark
-spark$ npm install
-spark$ npm install -g nodemon knex
+
+### Installing bower dependencies
+
+[Bower](https://bower.io/) provides web static files dependencies
+
+```shell
+bower install
 ```
 
 ### Setting up the database
@@ -51,17 +59,19 @@ The database file is located (by default) at spark/dev.sqlite3
 
 We use Knex to run and manage the migrations.
 
-```
-spark$ knex migrate:latest
+```shell
+knex migrate:latest
 ```
 
 See [/docs/database.md](/docs/development/database.md) for more details about our database setup.
 
 ## Light the spark
 
-Fire up the server after installation
+Fire up the server after installation, with `nodemon` to monitor changes and re-run the server:
 
-`spark$ nodemon`
+```shell
+nodemon server.js
+```
 
 and navigate to [http://localhost:3000]().
 

@@ -9,13 +9,16 @@ block content
                     span.label.label-info #{t('camps:edit.camp')} # #{camp.id}
                     h6 #{t('camps:edit.since')}: #{camp.created_at}
                 .col-xs-12.col-sm-4
-                    a.Btn.Btn__sm(href='/#{language}/camps/#{camp.id}') View camp
+                    a.Btn.Btn__sm(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             .controls.row
                 .col-xs-12    
                     //- Card switcher
-                    button.Btn.Btn__default.card-switcher--card1=t('camps:edit.basic_info')
-                    button.Btn.Btn__transparent.card-switcher--card2=t('camps:edit.details')
+                    button.Btn.Btn__default.card-switcher#1=t('camps:edit.basic_info')
+                    button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
+                    button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')
             .cards--wrapper.card__shad.row
+                script.
+                    $(document).ready(function() {$('.card-switcher--card1').trigger('click');});                
                 //- Card 1
                 .card.card-first
                     h4=t('camps:edit.name_and_desc')
@@ -50,7 +53,7 @@ block content
                                         input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_accept_families')=t('camps:edit.accept_families')
+                                        label(for='edit_camp_accept_families')=t('camps:camps.accept_families')
                                         input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
                                         script.
                                             // set checkbox status
@@ -63,7 +66,7 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_main_contact')=t('camps:edit.main_contact')
-                                        select.form-control(id='edit_camp_main_contact', name='main_contact')
+                                        select.form-control.form__input--important(id='edit_camp_main_contact', name='main_contact')
                                             option.selected(value='#{camp.main_contact}', selected) #{camp.main_contact}
                                 .col-md-4
                                     .col-xs-12
@@ -169,9 +172,19 @@ block content
                                     .col-xs-12
                                         label(for='edit_camp_location_area')=t('camps:edit.location_area')
                                         input.form-control(id='edit_camp_location_area', type='number', name='public_camp_location_area', value='#{details.camp_location_area}')
+                //- Card 3
+                .card.card-third.card-hide
+                    h4=t('camps:edit.upload_header')
+                    .camp-upload-file.panel
+                        .panel-body
+                            .names.col-md-6
+                                .col-xs-12
+                                    label(for='edit_camp_upload_security_file')=t('camps:edit.security_file')
+                                    input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
 
             .controls.row
                 .col-xs-12
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
                     button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
+

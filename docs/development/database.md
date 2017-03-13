@@ -4,7 +4,7 @@ The Spark project uses [Knex.js](http://knexjs.org/) to manage database connecti
 
 ### Database configuration
 
-In production, Knex uses the database configuration from the [opsworks.js](/opsworks.js) file.
+Knex uses the database configuration from the [.env](/.env-example) file.
 
 By default (local dev machine) it is configured to use Sqlite which doesn't require any special installation or setup.
 
@@ -12,14 +12,14 @@ By default (local dev machine) it is configured to use Sqlite which doesn't requ
 
 Make sure you have Knex installed:
 
-```
-$ npm install -g knex
+```shell
+npm install -g knex
 ```
 
 Migrate forward to latest migration
 
-```
-spark$ knex migrate:latest
+```shell
+knex migrate:latest
 ```
 
 See [Knex.js documentation](http://knexjs.org/#Migrations-CLI) for more options and details
@@ -28,8 +28,8 @@ See [Knex.js documentation](http://knexjs.org/#Migrations-CLI) for more options 
 
 Run migrate:make with a relevant migration name:
 
-```
-$ knex migrate:make <migration_name>
+```shell
+knex migrate:make <migration_name>
 ```
 
 Edit the created file and write your migration.
@@ -43,15 +43,15 @@ By default we use Sqlite for ease of use, but if you want to test the code with 
 ##### Mysql installation
 
 On Mac after installing, please add the following lines to your ~/.bash_profile
-```
-$ alias mysql=/usr/local/mysql/bin/mysql
-$ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
+```shell
+alias mysql=/usr/local/mysql/bin/mysql
+alias mysqladmin=/usr/local/mysql/bin/mysqladmin
 ```
 
 Also, On first install, you might get mysql password expired or other root password related issues.
 
 To change mysql default password - run the following commands
-```
+```shell
 mysql -u root -p
 ```
 Enter the default root password you got during mysql setup
@@ -62,22 +62,19 @@ SET PASSWORD = PASSWORD('xxxxxxxx');
 
 ##### Mysql configuration in Spark project
 
-Edit [opsworks.js](/opsworks.js) file and uncomment the relevant lines regarding mysql:
+Edit your .env file and set to use local mysql
 
 ```
-exports.db = {
-    "client"        : "mysql",
-    "debug"         : false,
-    "host"          : "localhost",
-    "database"      : "spark",
-    "username"      : "spark",
-    "password"      : "spark",
-    "charset"       : "UTF8_GENERAL_CI",
-};
+SPARK_DB_CLIENT=mysql
+SPARK_DB_HOSTNAME=localhost
+SPARK_DB_DBNAME=spark
+SPARK_DB_USER=spark
+SPARK_DB_PASSWORD=spark
+SPARK_DB_DEBUG=false
 ```
 
 Create the Spark database and user:
 
-```
-spark$ sudo mysql -u root < migrations/create_db.sql
+```shell
+sudo mysql -u root < migrations/create_db.sql
 ```

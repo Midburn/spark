@@ -1,3 +1,4 @@
 ol.breadcrumb
     each crumb in breadcrumbs !== undefined ? breadcrumbs : []
-        li: a(href="#{crumb.url}") #{crumb.name}
+        li
+            a(href="#{crumb.url}") #{t(crumb.name)}
