@@ -101,7 +101,7 @@ function getCampsTemplate(data) {
     return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + enabled + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
 }
 
-function fetchCampsOnce() {
+var fetchCampsOnce = function() {
     if (!fetchedCampsOnce) {
         var data, // eslint-disable-line no-unused-vars
             tbody = $stats_table.find('tbody');
@@ -126,7 +126,9 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
         });
     }
 }
-$stats_table.load(fetchCampsOnce());
+if ($('.camps').hasClass('stats')) {
+    fetchCampsOnce();
+}
 
 // Search camp
 $('#camps_stats_search_camp').keyup(function(input) {
