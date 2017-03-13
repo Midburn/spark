@@ -8,8 +8,7 @@ head
         }
 body
     .wrapper
-        h3 #{user.name} wants to join your camp
-        h4 reply will send confirmation to his email: #{user.email}
-        button.btn Approve
-        button.btn Decline
-        input(type="text", placeholder="Reason?")
+        | #{camp.name}
+        | #{user.name}
+        | #{user.email}
+        | link to camp management, requests panel
