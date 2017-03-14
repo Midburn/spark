@@ -382,12 +382,11 @@ $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
 });
 // click handler
 $('#join_camp_request_join_btn').click(function() {
-    var join_camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id'),
-        join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val(),
-        user_id = $('#join_camp_request_join_user_id').val();
-        
+    var camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id');
+    var join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val();
+
     if (join_camp_name_en !== undefined) {
-        $.get('/camps/join/' + join_camp_id + '/' + user_id, (res) => {
+        $.get('/camps/' + camp_id + '/join/0', (res) => {
             fetchSuccess(res);
         })
     } else {
@@ -397,49 +396,51 @@ $('#join_camp_request_join_btn').click(function() {
     function fetchSuccess(res) {
         // Save details copy for the request
         request.camp_name_en = join_camp_name_en
-        request.user_fullname = [res.first_name, res.last_name].join(', ')
-        request.user_email = res.email
+        request.user_email = res.camp_manager_email
 
         // Run modal with user details to approve request
         template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + request.user_fullname + '</u></li><li> Email: <u>' + request.user_email + '</u></li></ul>';
         $('#join_camp_request_modal .user_details').html(template);
         $('#join_camp_request_modal').modal('show');
-    }
-
-    // Send request -- allow user 4 second to cancel
-    $('#join_camp_send_request_btn').click(function() {
-        var request_data = request,
-            _sendRequestBtn = $(this);
-        $('#join_camp_close_btn').text('Cancel').click(function(e) {
+        
+        // Send request click listener
+        // users approve the details
+        // -- allow user 4 second to cancel
+        $('#join_camp_send_request_btn').click(function() {
+          var request_data = request,
+          _sendRequestBtn = $(this);
+          $('#join_camp_close_btn').text('Cancel').click(function(e) {
             e.preventDefault();
             clearTimeout(_srt);
             $(this).text('Close');
             _sendRequestBtn.removeClass('Btn__is-loading').text('Send Request');
-        });
-        _sendRequestBtn.addClass('Btn__is-loading').text('Sending');
-
-        function _sendRequest() {
+          });
+          _sendRequestBtn.addClass('Btn__is-loading').text('Sending');
+          
+          function _sendRequest() {
             $.ajax({
-                url: '/camps/join/request',
-                type: 'POST',
-                data: request_data,
-                success: function() {
-                    $('#join_camp_request_modal > div').html('<h4>Your request have sent. We will contact you soon.</h4>');
-                    setTimeout(function() {
-                        $('#join_camp_request_modal').modal('hide');
-                    }, 4000);
-                },
-                error: function (jqXHR, exception) {
-                  if (jqXHR.status === 500) {
-                    alert('Error!\n\n---\n\ncouldn\'t send your request due to server problem.\ntry again later, thanks.')
-                  }
+              url: '/camps/' + camp_id + '/join/1',
+              type: 'GET',
+              data: request_data,
+              success: function() {
+                $('#join_camp_request_modal > div').html('<h4>Your request have sent. We will contact you soon.</h4>');
+                setTimeout(function() {
+                  $('#join_camp_request_modal').modal('hide');
+                }, 4000);
+              },
+              error: function (jqXHR, exception) {
+                if (jqXHR.status === 500) {
+                  alert('Error!\n\n---\n\ncouldn\'t send your request due to server problem.\ntry again later, thanks.')
                 }
+              }
             });
-        }
-        var _srt = setTimeout(function() {
+          }
+          var _srt = setTimeout(function() {
             _sendRequest();
-        }, 4000);
-    });
+          }, 4000);
+        });
+    }
+
 })
 /*
  * Component: view camp details

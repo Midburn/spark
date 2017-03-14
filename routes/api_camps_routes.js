@@ -324,7 +324,7 @@ module.exports = function(app, passport) {
     app.get('/camps_open', (req, res) => {
         Camp.forge({status: 'open'}).fetch({
           require: true,
-          columns: ['camp_id', 'camp_name_en']
+          columns: ['id', 'camp_name_en']
         }).then((camp) => {
             if (camp !== null) {
               res.status(200).json({camps: camp.toJSON()})
@@ -345,15 +345,18 @@ module.exports = function(app, passport) {
      * params: camp_id
      * request => /camps/2/join
      */
-    app.get('/camps/:id/join', userRole.isLoggedIn(), (req, res) => {
+    app.get('/camps/:id/join/:deliver', userRole.isLoggedIn(), (req, res) => {
         var camp_id = req.params.id,
             user_id = req.user.attributes.user_id,
+            user_fullname = req.user.attributes.fullName,
             user_email = req.user.attributes.email,
-            users_camp_id = req.user.attributes.camp_id;
+            user_camp_id = req.user.attributes.camp_id;
+        
+        var is_user_approved = req.params.deliver;
         
         // User is camp free and doesn't have pending request
         // User details will be sent to camp manager for approval
-        if (users_camp_id === null || users_camp_id === 0 || users_camp_id !== -1) {
+        if (user_camp_id === null || user_camp_id === 0 || user_camp_id !== -1) {
           // Fetch camp manager email address
           var camp_manager_email;
 
@@ -365,7 +368,9 @@ module.exports = function(app, passport) {
               .then((user) => {
                 if (user.get('roles').indexOf('camp_manager') > -1) {
                   camp_manager_email = user.get('email')
-                  _deliverRequest()
+                  if (is_user_approved === '1') {
+                    _deliverRequest()
+                  }
                 } else {
                   console.log('Couldn\'t find camp manager');
                 }
@@ -385,8 +390,8 @@ module.exports = function(app, passport) {
               mailConfig.from,
               'Spark: someone wants to join your camp!',
               'emails/camps/join_request', {
-                camp: {name: req.body.camp_name_en},
-                user: {name: req.body.user_fullname, email: req.body.user_email}
+                camp: {id: camp_id},
+                user: {full_name: user_fullname, email: user_email}
             });
           }
           
