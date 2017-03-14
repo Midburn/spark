@@ -49,15 +49,15 @@ function doneTyping() {
             if (data.status === 204) {
                 input.removeClass('error');
                 status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                btn.removeClass('hidden').attr('href', '/' + lang + '/camps/new?c=' + val);
+                btn.removeClass('disabled btn').attr('href', '/' + lang + '/camps/new?c=' + val);
             } else {
                 input.addClass('error');
                 status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                btn.addClass('hidden').removeAttr('href');
+                btn.addClass('disabled btn').removeAttr('href');
             }
         });
     } else {
-        btn.addClass('hidden').removeAttr('href');
+        btn.addClass('disabled btn').removeAttr('href');
         status.removeClass('glyphicon-ok')
     }
 }
