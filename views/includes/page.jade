@@ -16,7 +16,9 @@ block wrapper
                     li( class="#{path[2] === 'camps' ? 'active' : undefined }" )
                         a( href="/#{language}/camps" )=t('camps:nav')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
-                        a( href="/#{language}/npo" )=t('npo')
+                        a( href="npo" )=t('npo')
+                    li( class="#{path[2] === 'volunteers' ? 'active' : undefined }" )
+                        a( href="/#{language}/volunteers" )=t('volunteers')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
@@ -36,8 +38,9 @@ block wrapper
                                     img( src="/images/flags/en.gif" )
                                     |&nbsp;
                                     span=t('english')
-                    li
-                        a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
+                    if user != undefined
+                        li
+                            a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
                     li
                         a( href= '/#{language}/logout' )=t('logout')
     .main.container

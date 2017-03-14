@@ -91,7 +91,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps'],
+        ns: ['common', 'camps', 'volunteers'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -164,6 +164,9 @@ require('./routes/api_camps_routes.js')(app, passport);
 
 // Camps
 require('./routes/camps_routes.js')(app, passport);
+
+// Volunteers
+require('./routes/volunteer_routes.js')(app, passport);
 
 // Mail
 var mail = require('./libs/mail');
