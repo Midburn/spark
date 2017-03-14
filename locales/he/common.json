@@ -64,6 +64,7 @@
     "bad_or_expired_token": "הקישור לאיפוס הסיסמה פג תוקף או לא תקין",
     "password_reset_succeeded": "החלפת סיסמה בוצעה בהצלחה",
     "password_changed_email_subject": "התראת אבטחה מ- Spark",
+    "volunteers": "מתנדבים",
     "facebook": {
         "login": "התחבר באמצעות פייסבוק"
     },

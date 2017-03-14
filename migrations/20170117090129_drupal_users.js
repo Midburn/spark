@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
             table.string('name', 60); // Unique user name.
             table.string('pass', 128); // User’s password (hashed)
             table.integer('status').unsigned(); // Whether the user is active(1) or blocked(0).
-        })
+        }) 
     ]);
 };
 
