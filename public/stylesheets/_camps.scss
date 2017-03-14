@@ -14,6 +14,7 @@ body[lang='he'] {
     
     .camps .checkbox {
         input[type=checkbox] {
+            margin-top: 8px;
             margin-right: -20px;
         }
         label {
@@ -40,8 +41,9 @@ body[lang="en"] {
                 line-height: 2em;
             }
             input[type=checkbox] {
-            margin-left: -20px;
-        }
+                margin-top: 8px;
+                margin-left: -20px;
+            }
         }
     }
 }
