@@ -5,6 +5,7 @@ var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
 var log = require('../libs/logger')(module);
+
 module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
@@ -42,7 +43,7 @@ module.exports = function (app, passport) {
     });
 
     // new camp
-    app.get('/:lng/camps/new', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
@@ -106,7 +107,7 @@ module.exports = function (app, passport) {
      * CRUD Routes
      */
     // Read
-    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id', (req, res) => {
         Camp.forge({
             id: req.params.id
         }).fetch({
@@ -136,7 +137,7 @@ module.exports = function (app, passport) {
         // console.log ("edit start");
         // res.send('checking output');
         // log.info("executing???");      
-        
+
         Camp.forge({
             id: req.params.id
         }).fetch({
@@ -160,7 +161,7 @@ module.exports = function (app, passport) {
                 res.render('pages/camps/stats', {
                     user: req.user
                 });
-            }).catch(function(err) {
+            }).catch(function (err) {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -184,7 +185,7 @@ module.exports = function (app, passport) {
 
         function _CSV() {
             // import csv into the database
-            
+
         }
     })
     // Destroy

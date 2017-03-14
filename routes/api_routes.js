@@ -10,8 +10,8 @@ module.exports = function (app, passport) {
    */
     app.get('/api/userlogin', (req, res, next) => {
         // console.log(req);
-        req.query.username = 'asaf@omc.co.il';
-        req.query.password = 'asiOMC769';
+        // req.query.username = 'asaf@omc.co.il';
+        // req.query.password = 'asiOMC769';
         request({
             url: 'https://profile-test.midburn.org/api/user/login',
             method: 'POST',

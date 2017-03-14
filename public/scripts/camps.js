@@ -381,7 +381,8 @@ function fetchOpenCamps(elm) {
            url: '/camps_open',
            type: 'GET',
            success: function(data) {
-               camps = [data.camps];
+               var camps = [data.camps];
+               console.log(camps);
                for (var i = 0; i < camps.length; i++) {
                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
                }
@@ -403,7 +404,7 @@ $('#join_camp_request_join_btn').click(function() {
         user_id = $('#join_camp_request_join_user_id').val();
         
     if (join_camp_name_en !== undefined) {
-        $.get('/camps/join/' + join_camp_id + '/' + user_id, (res) => {
+        $.get('/camps/' + join_camp_id + '/join' , (res) => {
             fetchSuccess(res);
         })
     } else {

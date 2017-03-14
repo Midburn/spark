@@ -65,6 +65,6 @@ module.exports = {
     
     CAMP_NOISE_LEVELS: ['quiet' ,'medium' ,'noisy' ,'very noisy'],
 
-    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected'];
+    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected'],
 
 };
