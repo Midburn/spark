@@ -16,6 +16,8 @@ block content
                     button.Btn.Btn__default.card-switcher--card1=t('camps:edit.basic_info')
                     button.Btn.Btn__transparent.card-switcher--card2=t('camps:edit.details')
             .cards--wrapper.card__shad.row
+                script.
+                    $(document).ready(function() {$('.card-switcher--card1').trigger('click');});                
                 //- Card 1
                 .card.card-first
                     h4=t('camps:edit.name_and_desc')
@@ -175,3 +177,4 @@ block content
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
                     button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
+
