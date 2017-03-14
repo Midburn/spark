@@ -20,6 +20,12 @@ body[lang='he'] {
         label {
             line-height: 2em;
         }
+        .checkbox-other {
+            display: inline-block;
+            margin-right: 10px;
+            width: 80%;
+            height: 100%;
+        }
     }
 }
 
@@ -44,6 +50,12 @@ body[lang="en"] {
                 margin-top: 8px;
                 margin-left: -20px;
             }
+            .checkbox-other {
+            width: 80%;
+            display: inline-block;
+            margin-left: 10px;
+            height: 100%;
+        }
         }
     }
 }

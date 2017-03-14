@@ -342,9 +342,12 @@ $('#camp_create_save').click(function() {
         $('.' + className + ':checked').each(function(i){
           val[i] = $(this).val();
         });
+        if(val.indexOf('other') > -1){
+            val.push($('#camp_type_other_text').val());
+        }
         return val.toString();
       }
-
+      
     function _campAppendData() {
         $.each(camp_data, function(label, data) {
             if (data) {
@@ -379,6 +382,15 @@ $('#camp_create_save').click(function() {
         });
     }
 });
+
+// display other text field if other selected
+$('#camp_type_other').click(function(){
+    if($('#camp_type_other').is(':checked')){
+        $('#camp_type_other_text').removeClass('hidden');
+    } else {
+        $('#camp_type_other_text').addClass('hidden');
+    }
+})
 /**
  * Component: join a camp
  */
