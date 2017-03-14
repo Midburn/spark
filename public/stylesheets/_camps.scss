@@ -11,6 +11,15 @@ body {
 
 body[lang='he'] {
     font-family: 'Rubik', sans-serif;
+    
+    .camps .checkbox {
+        input[type=checkbox] {
+            margin-right: -20px;
+        }
+        label {
+            line-height: 2em;
+        }
+    }
 }
 
 body[lang="he"] .dash-panel a:after {
@@ -25,6 +34,14 @@ body[lang="en"] {
 
         .dash-panel a:after {
             left: 4px;
+        }
+        .checkbox {
+            label {
+                line-height: 2em;
+            }
+            input[type=checkbox] {
+            margin-left: -20px;
+        }
         }
     }
 }

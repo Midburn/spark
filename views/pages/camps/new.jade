@@ -67,12 +67,12 @@ block content
                                     label(for='create_camp_type')=t('camps:new.type')
                                     //- input.form-control(id='create_camp_type', type="text", name="type")
                                     .checkbox
-                                        label(for="checkbox")
-                                            input(type="checkbox" name="camp_type_music" value="music").form-control
+                                        label(for="camp_type_music")
+                                            input(type="checkbox", id="camp_type_music", name="camp_type_music", value="music")
                                             | Music
                                     .checkbox
                                         label(for="checkbox")
-                                            input(type="checkbox" name="camp_type_food" value="food").form-control
+                                            input(type="checkbox" name="camp_type_food" value="food")
                                             | Food
                             .col-md-4
                                 .col-xs-12
