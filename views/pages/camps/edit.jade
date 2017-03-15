@@ -84,15 +84,28 @@ block content
                             .camp-modifiers
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}: #{camp.type || 'n/a'}
-                                        select.form-control(id='edit_camp_type', name='type')
-                                            option(selected) ---
-                                            option(value='food')=t('camps:edit.food')
-                                            option(value='drinking/bar')=t('camps:edit.drinking')
-                                            option(value='music')=t('camps:edit.music')
-                                            option(value='workshops')=t('camps:edit.workshops')
-                                            option(value='art-supporting')=t('camps:edit.art_supporting')
-                                            option(value='other')=t('camps:edit.other')
+                                        label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
+                                            .checkbox
+                                                label(for="edit_type_music")
+                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_music", name="edit_type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
+                                                    | #{t('camps:edit.music')}
+                                            .checkbox
+                                                label(for="edit_type_drinks")
+                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_drinks", name="edit_type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
+                                                    | #{t('camps:edit.drinking')}
+                                            .checkbox
+                                                label(for="edit_type_food")
+                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_food", name="edit_type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
+                                                    | #{t('camps:edit.food')}
+                                            .checkbox
+                                                label(for="edit_camp_type_other_text")
+                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_other", name="edit_type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
+                                                    | #{t('camps:edit.other')}
+                                                    if (camp.type.indexOf('other') > -1)
+                                                        //- auto-fill text field with user value.
+                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other", name="edit_type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                                    else
+                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="edit_type_other_text")
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || 'n/a'}
