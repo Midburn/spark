@@ -111,7 +111,7 @@ module.exports = function (app, passport) {
         Camp.forge({
             id: req.params.id
         }).fetch({
-            withRelated: ['details']
+            // withRelated: ['details']
         }).then((camp) => {
             User.forge({
                 user_id: camp.toJSON().main_contact
@@ -120,7 +120,8 @@ module.exports = function (app, passport) {
                     user: req.user,
                     id: req.params.id,
                     camp: camp.toJSON(),
-                    details: camp.related('details').toJSON()
+                    details: camp.toJSON(),
+                    // details: camp.related('details').toJSON()
                 });
             });
         }).catch((e) => {
@@ -141,12 +142,13 @@ module.exports = function (app, passport) {
         Camp.forge({
             id: req.params.id
         }).fetch({
-            withRelated: ['details']
+            // withRelated: ['details']
         }).then((camp) => {
             res.render('pages/camps/edit', {
                 user: req.user,
                 camp: camp.toJSON(),
-                details: camp.related('details').toJSON()
+                details: camp.toJSON(),
+                // details: camp.related('details').toJSON()
             })
         })
     });
