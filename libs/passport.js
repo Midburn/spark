@@ -6,6 +6,63 @@ var DrupalUser = require('../models/user').DrupalUser;
 var facebookConfig = require('config').get("facebook");
 var constants = require('../models/constants');
 
+
+
+var spark_drupal_gw_login = function (email, password, done) {
+
+    request({
+        url: 'https://profile-test.midburn.org/api/user/login',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        form: { 'username': email, 'password': password }
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(body);
+            var data = JSON.parse(body);
+            if (body.indexOf('token') > 0) {
+                // user logged in good
+                var userPromise = new User({
+                    email: email
+                }).fetch();
+                console.log(body);
+                userPromise.then(function (model) {
+                    if (model) {
+                        done(false, i18next.t('user_exists'));
+                    } else {
+                        var newUser = new User({
+                            email: email,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            gender: user.gender,
+                            validated: user.validated
+                        });
+                        if (password) {
+                            newUser.generateHash(password);
+                        }
+                        if (!user.validated) {
+                            newUser.generateValidation();
+                        }
+                        newUser.save().then(function (model) {
+                            done(newUser);
+                        });
+                    }
+                });
+
+                done(newUser);
+
+                // res.status(200).jsonp({ status: 'true', 'massage': 'user authorized', 'data': data });
+            }
+            else {
+                done(false, 'unknown');
+            }
+        }
+        else {
+            done(false, 'unknown');
+            // res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
+        }
+    });
+}
+
 /***
  * tries to login based on drupal users table
  * once user is successfully logged-in, an automatic sign-up flow is performed which creates a corresponding spark user
@@ -118,11 +175,11 @@ module.exports = function (passport) {
     // LOCAL SIGNUP ============================================================
     // =========================================================================
     passport.use('local-signup', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
+        // by default, local strategy uses username and password, we will override with email
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
         function (req, email, password, done) {
             signup(email, password, req.body, function (user, error) {
                 if (user) {
@@ -143,7 +200,8 @@ module.exports = function (passport) {
             passReqToCallback: true
         },
         function (req, email, password, done) {
-            login(email, password, function(user, error) {
+
+            login(email, password, function (user, error) {
                 if (user) {
                     done(null, user, null);
                 } else {
@@ -152,16 +210,16 @@ module.exports = function (passport) {
             });
         }));
 
-        // ==========
-        // Facebook login
-        // ==========
-        passport.use(new FacebookStrategy({
-            clientID: facebookConfig.app_id,
-            clientSecret: facebookConfig.app_secret,
-            callbackURL: facebookConfig.callbackBase + "/auth/facebook/callback",
-            enableProof: true,
-            profileFields: ['id', 'email', 'first_name', 'last_name']
-        },
+    // ==========
+    // Facebook login
+    // ==========
+    passport.use(new FacebookStrategy({
+        clientID: facebookConfig.app_id,
+        clientSecret: facebookConfig.app_secret,
+        callbackURL: facebookConfig.callbackBase + "/auth/facebook/callback",
+        enableProof: true,
+        profileFields: ['id', 'email', 'first_name', 'last_name']
+    },
         function (accessToken, refreshToken, profile, cb) {
             if (profile.emails === undefined) {
                 // TODO: redirect user to http://lvh.me:3000/auth/facebook/reauth
@@ -182,14 +240,14 @@ module.exports = function (passport) {
                     //    able to login through FacebookStrategy)
                     // 2. Save updated token and details
                     model.save({
-                            password: "",
-                            facebook_token: accessToken,
-                            facebook_id: profile.id,
-                            // I'm not quite sure about this.
-                            // If a user changes his Facebook email, should we change
-                            // it in our system? I think we should. Not convinced though.
-                            email: profile.emails[0].values
-                        })
+                        password: "",
+                        facebook_token: accessToken,
+                        facebook_id: profile.id,
+                        // I'm not quite sure about this.
+                        // If a user changes his Facebook email, should we change
+                        // it in our system? I think we should. Not convinced though.
+                        email: profile.emails[0].values
+                    })
                         .then(function (_model) {
                             return cb(null, model, null);
                         });
@@ -214,5 +272,5 @@ module.exports = function (passport) {
 };
 
 module.exports.sign_up = function (email, password, user, done) {
-  signup(email, password, user, done)
+    signup(email, password, user, done)
 };
