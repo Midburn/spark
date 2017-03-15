@@ -202,6 +202,9 @@
             "location_area": "אזור",
             "upload": "העלאת מסמכים וקבצים",
             "upload_header": "העלאת קבצים",
+            "contact_person_name": "שם איש קשר",
+            "contact_person_email": "אימייל איש קשר",
+            "contact_person_phone": "טלפון אישר קשר",
             "security_file": "תיק בטיחות"
         },
         "program": {

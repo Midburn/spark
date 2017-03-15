@@ -42,23 +42,37 @@ block content
                     .camp-publication.panel
                         .panel-body
                             .information
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
-                                        select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
-                                            option(selected) ---
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
-                                        input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='edit_camp_accept_families')=t('camps:camps.accept_families')
-                                        input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
-                                        script.
-                                            // set checkbox status
-                                            var checkbox = document.getElementById("edit_camp_accept_families");
-                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
+                                .row
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
+                                            select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
+                                                option(selected) ---
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
+                                            input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='edit_camp_accept_families')=t('camps:camps.accept_families')
+                                            input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
+                                            script.
+                                                // set checkbox status
+                                                var checkbox = document.getElementById("edit_camp_accept_families");
+                                                checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
+                                .row
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='edit_camp_contact_person_name')=t('camps:edit.contact_person_name')
+                                            input.form-control(id='edit_camp_contact_person_name', name='contact_person_name', value='#{camp.contact_person_name}')
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='edit_camp_contact_person_email')=t('camps:edit.contact_person_email')
+                                            input.form-control(id='edit_camp_contact_person_email', name='contact_person_email', value='#{camp.contact_person_email}')
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='edit_camp_contact_person_phone')=t('camps:edit.contact_person_phone')
+                                            input.form-control(id='edit_camp_contact_person_phone', name='contact_person_phone', value='#{camp.contact_person_phone}')
                     h4=t('camps:edit.contact_title')
                     .camp-leaders.panel
                         .panel-body
