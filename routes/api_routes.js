@@ -9,6 +9,7 @@ module.exports = function (app, passport) {
    * usage sample => http://localhost:3000/api/userlogin?username=Profile_Username&password=Profile_Password
    */
     app.get('/api/userlogin', (req, res, next) => {
+        
         request({
             url: 'https://profile-test.midburn.org/api/user/login',
             method: 'POST',
@@ -30,7 +31,9 @@ module.exports = function (app, passport) {
             }
         });
     });
+    app.get('/api/asi',(req,res,next)=> {
 
+    });
     /*
         /////  POST not tested yet :-( ////
         app.post('/api/userlogin', (req, res, next) => {

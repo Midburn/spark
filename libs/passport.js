@@ -6,10 +6,9 @@ var DrupalUser = require('../models/user').DrupalUser;
 var facebookConfig = require('config').get("facebook");
 var constants = require('../models/constants');
 
-
-
 var spark_drupal_gw_login = function (email, password, done) {
-
+    email = 'asaf@omc.co.il';
+    password = 'asiOMC769';
     request({
         url: 'https://profile-test.midburn.org/api/user/login',
         method: 'POST',
@@ -71,53 +70,81 @@ var spark_drupal_gw_login = function (email, password, done) {
  * @param done
  */
 var drupal_login = function (email, password, done) {
-    DrupalUser.forge({
-        name: email
-    }).fetch().then(function (drupalUser) {
-        if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status === 1) {
-            // valid drupal password
-            // drupal user status is 1
-            // can sign up a spark user with some defaults
-            // TODO: get these details from the old profiles system
-            signup(email, password, {
-                first_name: email,
-                last_name: "",
-                gender: constants.USER_GENDERS_DEFAULT,
-                validated: true
-            }, function (newUser, error) {
-                if (newUser) {
-                    done(newUser);
+
+    request({
+        url: 'https://profile-test.midburn.org/api/user/login',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        form: { 'username': email, 'password': password }
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(body);
+            var data = JSON.parse(body);
+            if (body.indexOf('token') > 0) {
+
+            }
+        }
+    });
+    // DrupalUser.forge({
+    //     name: email
+    // }).fetch().then(function (drupalUser) {
+    //     if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status === 1) {
+    //         // valid drupal password
+    //         // drupal user status is 1
+    //         // can sign up a spark user with some defaults
+    //         // TODO: get these details from the old profiles system
+    //         signup(email, password, {
+    //             first_name: email,
+    //             last_name: "",
+    //             gender: constants.USER_GENDERS_DEFAULT,
+    //             validated: true
+    //         }, function (newUser, error) {
+    //             if (newUser) {
+    //                 done(newUser);
+    //             } else {
+    //                 done(false, error);
+    //             }
+    //         });
+    //     } else {
+    //         done(false, i18next.t('invalid_user_password'));
+    //     }
+    // });
+);
+
+var login = function (email, password, done) {
+    // spark_drupal_gw_login(email,password,done);
+    drupal_login(email, password).then(function (drupal_user) {
+        if (drupal_user != null && drupal_user.authenticated) {
+            new User({
+                email: email
+            }).fetch().then(function (user) {
+                if (user === null) {
+                    done(false, i18next.t('user_not_validated', {
+                        email: email
+                    }));
+                    //     // no corresponding spark user is found
+                    //     // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
+                    //     // on next login - there will be a spark user, so drupal login will not be attempted again
+                    //     // drupal_login(email, password, done);
+                    // // } else if (!user.validPassword(password)) {
+                    // //     done(false, i18next.t('invalid_user_password'));
+                } else if (!user.attributes.validated) {
+                    done(false, i18next.t('user_not_validated', {
+                        email: email
+                    }));
+                } else if (!user.attributes.enabled) {
+                    done(false, i18next.t('user_disabled'));
                 } else {
-                    done(false, error);
+                    done(user);
                 }
             });
         } else {
-            done(false, i18next.t('invalid_user_password'));
-        }
-    });
-};
-
-var login = function (email, password, done) {
-    new User({
-        email: email
-    }).fetch().then(function (user) {
-        if (user === null) {
-            // no corresponding spark user is found
-            // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
-            // on next login - there will be a spark user, so drupal login will not be attempted again
-            drupal_login(email, password, done);
-        } else if (!user.validPassword(password)) {
-            done(false, i18next.t('invalid_user_password'));
-        } else if (!user.attributes.validated) {
             done(false, i18next.t('user_not_validated', {
                 email: email
             }));
-        } else if (!user.attributes.enabled) {
-            done(false, i18next.t('user_disabled'));
-        } else {
-            done(user);
         }
     });
+
 };
 
 var signup = function (email, password, user, done) {
