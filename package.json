@@ -75,7 +75,6 @@
     "react-dom": "^15.4.1",
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
-    "save": "^2.3.0",
     "serve-favicon": "~2.3.0",
     "sprintf-js": "1.0.3",
     "superagent": "^3.5.0",
