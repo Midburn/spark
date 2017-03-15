@@ -435,7 +435,7 @@ $('#join_camp_request_join_btn').click(function() {
         }  
         
         // Dialog with user & camp details
-        var details_template = 'Camp Name: <u>' + join_camp_name_en + '</u><br/>Your name: <u>' + user.full_name + '</u><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
+        var details_template = 'Camp name: <u>' + join_camp_name_en + '</u><br/>Your name: <u>' + user.full_name + '</u><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
         var modal = $('#join_camp_request_modal')
         modal.find('.user_details').html(details_template);
         modal.modal('show');

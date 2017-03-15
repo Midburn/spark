@@ -1,9 +1,13 @@
-// var config = require('config');
-
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
 var CampDetails = require('../models/camp').CampDetails;
+var config = require('config');
 
+const userRole = require('../libs/user_role');
+
+var mail = require('../libs/mail'),
+    mailConfig = config.get('mail');
+    
 module.exports = function(app, passport) {
     /**
      * API: (GET) get user by id
@@ -362,10 +366,10 @@ module.exports = function(app, passport) {
                   require: true,
                   columns: ['camp_id', 'email', 'roles']
                 })
-              .then((user) => {
+              .then((fetched_user) => {
                 // Validate user is a camp_manager
-                if (user.get('roles').indexOf('camp_manager') !== -1) {
-                  camp.manager_email = user.get('email')
+                if (fetched_user.get('roles').indexOf('camp_manager') !== -1) {
+                  camp.manager_email = fetched_user.get('email')
                   // Response
                   res.json({
                       data: {
@@ -461,4 +465,31 @@ module.exports = function(app, passport) {
             });
         });
     });
+    
+    /**
+    * API: (GET) return camp manager email
+    * query user with attribute: camp_id
+    * request => /camps/1/camp_manager
+    */
+   app.get('/camps/:id/manager', (req, res) => {
+     User.forge({camp_id: req.params.id})
+         .fetch({
+             require: true,
+             columns: ['email', 'roles']
+           })
+         .then((user) => {
+           if (user.get('roles').indexOf('camp_manager')) {
+             res.status(200).json({user: {email: user.get('email')}})
+           } else {
+             res.status(404).json({data: {message: 'Not found'}})
+           }
+         }).catch((e) => {
+             res.status(500).json({
+                 error: true,
+                 data: {
+                     message: e.message
+                 }
+             });
+         });
+   })
 }
