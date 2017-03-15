@@ -16,7 +16,7 @@ app.listen(modulePort, function () {
     console.log('module2 listening on port ' + modulePort)
     request.post({
         url: 'http://localhost:' + sparkPort + '/register',
-        form: { path: 'mod2', port: modulePort ,name: 'module two'}
+        form: { path: 'mod2', port: modulePort ,name: 'module two',ordering:2}
     },
         (err, httpResponse, body) => {
             if (err) {

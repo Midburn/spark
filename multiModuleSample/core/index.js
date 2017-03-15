@@ -8,6 +8,8 @@ var app = express();
 app.use('/static', express.static('static'));
 
 var services = [];
+var servicesArr=undefined;//sorted services array
+
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -17,20 +19,28 @@ app.post('/register', function (req, res) {
 	var entry={
 		port : req.body.port,
     	path : req.body.path,
-    	name : req.body.name
+    	name : req.body.name,
+        ordering: (req.body.ordering===undefined)? 100:req.body.ordering
 
 
 	}
     app.use('/'+entry.path, proxy('http://127.0.0.1:' + entry.port));
-    services.push(entry);
+    services[entry.path]=entry;
+    servicesArr=undefined;
     console.log('registered ' + entry.path + ' at /' + entry.path 
     	+ ' redirect to: ' + entry.port 
     	+ " under name:" +entry.name);
+
     res.send('registered');
 });
 
 app.get('/register', (req, res) => {
-    res.send(services);
+    if (servicesArr===undefined)
+    {servicesArr=Object.values(services);
+    servicesArr.sort(function (a,b) {return a.ordering-b.ordering});
+    }
+
+    res.send(servicesArr);
 })
 
 app.listen(3000, function () {
