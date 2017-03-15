@@ -358,7 +358,11 @@ $('#camp_create_save').click(function() {
  */
 var fetchOpenCampsOnce = false,
     request = {};
-
+/**
+ * Fetch camp list that are open to new members
+ * @param  {HTML} elm the select elm to append data
+ * @return {json}     list with camp name & id
+ */
 function fetchOpenCamps(elm) {
    if (!fetchOpenCampsOnce) {
        $.ajax({
@@ -380,13 +384,13 @@ function fetchOpenCamps(elm) {
 $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
    fetchOpenCamps($(this));
 });
-// click handler
+// join request listener, presents the request details (user & camp details)
 $('#join_camp_request_join_btn').click(function() {
     var camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id');
     var join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val();
 
     if (join_camp_name_en !== undefined) {
-        $.get('/camps/' + camp_id + '/join/0', (res) => {
+        $.get('/camps/' + camp_id + '/join', (res) => {
             fetchSuccess(res);
         })
     } else {
@@ -395,20 +399,26 @@ $('#join_camp_request_join_btn').click(function() {
 
     function fetchSuccess(res) {
         // Save details copy for the request
-        request.camp_name_en = join_camp_name_en
-        request.user_email = res.camp_manager_email
-
-        // Run modal with user details to approve request
-        template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + request.user_fullname + '</u></li><li> Email: <u>' + request.user_email + '</u></li></ul>';
-        $('#join_camp_request_modal .user_details').html(template);
-        $('#join_camp_request_modal').modal('show');
+        var user = res.data.user
+        var camp = res.data.camp
+        camp.name_en = join_camp_name_en
         
-        // Send request click listener
-        // users approve the details
-        // -- allow user 4 second to cancel
+        var request_data = {
+          user: user,
+          camp: camp
+        }  
+        
+        // Dialog with user & camp details
+        var details_template = 'Camp Name: <u>' + join_camp_name_en + '</u><br/>Your name: <u>' + user.full_name + '</u><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
+        var modal = $('#join_camp_request_modal')
+        modal.find('.user_details').html(details_template);
+        modal.modal('show');
+        
+        // Send request click listener after user is approve the details
+        // Action delayed with 4 second allow user to cancel the request
         $('#join_camp_send_request_btn').click(function() {
-          var request_data = request,
-          _sendRequestBtn = $(this);
+          var _sendRequestBtn = $(this);
+          
           $('#join_camp_close_btn').text('Cancel').click(function(e) {
             e.preventDefault();
             clearTimeout(_srt);
@@ -419,11 +429,11 @@ $('#join_camp_request_join_btn').click(function() {
           
           function _sendRequest() {
             $.ajax({
-              url: '/camps/' + camp_id + '/join/1',
-              type: 'GET',
+              url: '/camps/join/deliver',
+              type: 'POST',
               data: request_data,
               success: function() {
-                $('#join_camp_request_modal > div').html('<h4>Your request have sent. We will contact you soon.</h4>');
+                $('#join_camp_request_modal > div').html('<h4>Your request have sent, check request status.</h4>');
                 setTimeout(function() {
                   $('#join_camp_request_modal').modal('hide');
                 }, 4000);

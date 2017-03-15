@@ -345,32 +345,38 @@ module.exports = function(app, passport) {
      * params: camp_id
      * request => /camps/2/join
      */
-    app.get('/camps/:id/join/:deliver', userRole.isLoggedIn(), (req, res) => {
-        var camp_id = req.params.id,
-            user_id = req.user.attributes.user_id,
-            user_fullname = req.user.attributes.fullName,
-            user_email = req.user.attributes.email,
-            user_camp_id = req.user.attributes.camp_id;
-        
-        var is_user_approved = req.params.deliver;
-        
+    app.get('/camps/:id/join', userRole.isLoggedIn(), (req, res) => {
+        var user = {
+          id: req.user.attributes.user_id,
+          full_name: [req.user.attributes.first_name, req.user.attributes.first_name].join(', '),
+          email: req.user.attributes.email,
+          camp_id: req.user.attributes.camp_id
+        }
+        var camp = {
+          id: req.params.id,
+          manager_email: '' // later to be added
+        };
+                
         // User is camp free and doesn't have pending request
         // User details will be sent to camp manager for approval
-        if (user_camp_id === null || user_camp_id === 0 || user_camp_id !== -1) {
+        if ((user.camp_id === null || user.camp_id === 0) || user.camp_id !== -1) {
           // Fetch camp manager email address
-          var camp_manager_email;
-
-          User.forge({camp_id: req.params.id})
+          User.forge({camp_id: camp.id})
               .fetch({
                   require: true,
-                  columns: ['email', 'roles']
+                  columns: ['camp_id', 'email', 'roles']
                 })
               .then((user) => {
-                if (user.get('roles').indexOf('camp_manager') > -1) {
-                  camp_manager_email = user.get('email')
-                  if (is_user_approved === '1') {
-                    _deliverRequest()
-                  }
+                // Validate user is a camp_manager
+                if (user.get('roles').indexOf('camp_manager') !== -1) {
+                  camp.manager_email = user.get('email')
+                  // Response
+                  res.json({
+                      data: {
+                        user: user,
+                        camp: camp
+                      }
+                    });
                 } else {
                   console.log('Couldn\'t find camp manager');
                 }
@@ -382,26 +388,48 @@ module.exports = function(app, passport) {
                       }
                   });
               });
-          
-          function _deliverRequest() {
-            // Send email request to camp manager
-            mail.send(
-              camp_manager_email,
-              mailConfig.from,
-              'Spark: someone wants to join your camp!',
-              'emails/camps/join_request', {
-                camp: {id: camp_id},
-                user: {full_name: user_fullname, email: user_email}
-            });
-          }
-          
-          // Response
-          res.json({data: {message: 'Join request sent to camp manager.'}});
         } else {
           // User cannot join another camp
           res.status(404).json({data: {message: 'User can only join one camp!'}})
         }
     });
+    app.post('/camps/join/deliver', userRole.isLoggedIn(), (req, res) => {
+      var camp_manager_email = req.body['camp[manager_email]']
+      var user_id = req.user.attributes.user_id
+      
+      // Mark user with request-pending
+      User.forge({user_id: user_id})
+          .fetch()
+          .then((user) => {
+            user.save({camp_id: -1}).then(function () {
+              deliver()
+              res.status(200).end()
+          })
+          .catch((e) => {
+            res.status(500).json({
+              error: true,
+              data: {
+                message: e.message
+              }
+            })
+          })
+          })
+            
+      /**
+       * Deliver email request to camp manager
+       * notifiying a user wants to join his camp
+       * @return {boolean} should return true if mail delivered. FIXME: in mail.js
+       */
+      function deliver() {
+        // FIXME: this function should return success value (async) and indicates to user.
+        mail.send(
+          camp_manager_email,
+          mailConfig.from,
+          'Spark: someone wants to join your camp!',
+          'emails/camps/join_request', {}
+        )
+      }
+    })
 
     /**
      * API: (POST) create Program
