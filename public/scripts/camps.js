@@ -304,6 +304,7 @@ $('#camp_edit_unpublish').click(function() {
  * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function() {
+    var type = fetchAllCheckboxValues('create_camp_type')
     var camp_data = {
         camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+ new Date()),
         camp_name_en: $('#create_camp_name_en').val(),
@@ -314,7 +315,7 @@ $('#camp_create_save').click(function() {
         main_contact: $('#create_camp_main_contact option:selected').val(),
         moop_contact: $('#create_camp_moop_contact option:selected').val(),
         safety_contact: $('#create_camp_safety_contact option:selected').val(),
-        type: $('#create_camp_type option:selected').val(),
+        type: type,
         camp_status: $('#create_camp_status option:selected').val(),
         camp_activity_time: $('#create_camp_activity_time option:selected').val(),
         child_friendly: $('#create_camp_child_friendly:checked').length,
@@ -335,6 +336,18 @@ $('#camp_create_save').click(function() {
         _sendRequest();
     });
 
+    // Collect all checkbox values
+    function fetchAllCheckboxValues(className){
+        var val = [];
+        $('.' + className + ':checked').each(function(i){
+          val[i] = $(this).val();
+        });
+        if(val.indexOf('other') > -1){
+            val.push($('#camp_type_other_text').val());
+        }
+        return val.toString();
+      }
+      
     function _campAppendData() {
         $.each(camp_data, function(label, data) {
             if (data) {
@@ -369,6 +382,15 @@ $('#camp_create_save').click(function() {
         });
     }
 });
+
+// display other text field if other selected
+$('#camp_type_other').click(function(){
+    if($('#camp_type_other').is(':checked')){
+        $('#camp_type_other_text').removeClass('hidden');
+    } else {
+        $('#camp_type_other_text').addClass('hidden');
+    }
+})
 /**
  * Component: join a camp
  */
