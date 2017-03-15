@@ -76,7 +76,7 @@ const drupal_login = (email, password, done) => {
         .post('https://profile-test.midburn.org/api/user/login')
         .send({ 'username': email, 'password': password })
         .set('Accept', 'application/json')
-        .set('Content-Type': 'application/x-www-form-urlencoded')
+        .set('Content-Type', 'application/x-www-form-urlencoded')
         .then(((data) => (~data.indexOf('token')) ? JSON.parse(data) : null), (error) => console.error(error))
 
 
