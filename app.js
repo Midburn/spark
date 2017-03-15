@@ -91,7 +91,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps'],
+        ns: ['common', 'camps', 'volunteers'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -158,10 +158,15 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
 // API
+require('./routes/api_routes.js')(app, passport);
+
 require('./routes/api_camps_routes.js')(app, passport);
 
 // Camps
 require('./routes/camps_routes.js')(app, passport);
+
+// Volunteers
+require('./routes/volunteer_routes.js')(app, passport);
 
 // Mail
 var mail = require('./libs/mail');
