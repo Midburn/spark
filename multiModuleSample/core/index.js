@@ -5,7 +5,7 @@ var proxy = require('express-http-proxy');
 
 
 var app = express();
-app.use('/static', express.static('static'));
+app.use('/', express.static('static'));
 
 var services = [];
 var servicesArr=undefined;//sorted services array
