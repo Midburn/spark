@@ -326,6 +326,7 @@ $('#camp_create_save').click(function() {
         contact_person_name: $('#create_camp_contact_person_name').val(),
         contact_person_email: $('#create_camp_contact_person_email').val(),
         contact_person_phone: $('#create_camp_contact_person_phone').val(),
+        accept_families: $('#create_camp_accept_families:checked').length,
         main_contact: $('#create_camp_main_contact option:selected').val(),
         moop_contact: $('#create_camp_moop_contact option:selected').val(),
         safety_contact: $('#create_camp_safety_contact option:selected').val(),
