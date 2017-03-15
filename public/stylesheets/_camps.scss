@@ -183,6 +183,10 @@ section {
     }
 }
 
+a.btn.disabled {
+    pointer-events: auto;
+}
+
 .pos-r {
     position: relative;
 }
@@ -240,7 +244,10 @@ body[lang="en"] .dash-panel a:after {
         }
 
         input[name='camp_name_en'] {
-            padding-left: 40px;
+            padding-right: 40px;
+            padding-left: 12px;
+            direction: ltr;
+            text-align: left;
 
             &.error {
                 border-color: red;
@@ -250,8 +257,8 @@ body[lang="en"] .dash-panel a:after {
         span.indicator {
             position: absolute;
             top: auto;
-            right: auto;
-            left: 10px;
+            left: auto;
+            right: 10px;
             bottom: 4px;
 
             .glyphicon {
@@ -269,7 +276,7 @@ body[lang="en"] .dash-panel a:after {
     }
 
     input[name='camp_name_en'] {
-        padding-left: 40px;
+        padding-right: 40px;
 
         &.error {
             border-color: red;
@@ -486,4 +493,14 @@ input.checkbox {
 .form__input--important {
     background: #222;
     color: #ccc;
+}
+
+.camps.camp_admin_index input[name='camp_name_en']{
+    direction: ltr;
+    text-align: left;
+}
+
+.choose_name span.indicator span.glyphicon {
+    direction: ltr;
+    text-align: left;
 }
