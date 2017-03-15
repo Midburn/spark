@@ -77,7 +77,7 @@ const drupal_login = (email, password, done) => {
         .send({ 'username': email, 'password': password })
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .then(((data) => (~data.indexOf('token')) ? JSON.parse(data) : null), (error) => console.error(error))
+        .then((({body}) => body), (error) => console.error(error))
 
 
 
@@ -119,10 +119,10 @@ var login = function (email, password, done) {
                     // done(false, i18next.t('user_not_validated', {
                     //     email: email
                     // }));
-                    signup(email, 'you bet!', {
-                        first_name: _.get(user, 'user.field_profile_first.und.value', ''),
-                        last_name: _.get(user, 'user.field_profile_last.und.value', ''),
-                        cell_phone: _.get(user, 'user.field_profile_phone.und.value', 666),
+                    signup(email, password, {
+                        first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
+                        last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
+                        cell_phone: _.get(drupal_user, 'user.field_profile_phone.und.0.value', 666),
                         gender: constants.USER_GENDERS_DEFAULT,
                         validated: true
                     }, function (newUser, error) {
@@ -164,7 +164,8 @@ var signup = function (email, password, user, done) {
                 first_name: user.first_name,
                 last_name: user.last_name,
                 gender: user.gender,
-                validated: user.validated
+                validated: user.validated,
+                cell_phone: user.cell_phone
             });
             if (password) {
                 newUser.generateHash(password);
