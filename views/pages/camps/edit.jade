@@ -101,6 +101,7 @@ block content
                                             option(value='open')=t('camps:edit.open')
                                             option(value='closed')=t('camps:edit.closed')
                                             option(value='inactive')=t('camps:edit.inactive')
+                                        
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_enabled') #{t('camps:edit.publication')}:
@@ -126,12 +127,12 @@ block content
                                             option(value="night")=t('camps:new.camp_activity_time_night')
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
-                                        input.checkbox(id='edit_child_friendly', checked='#{camp.child_friendly}', type="checkbox", name='child_friendly')
+                                        label(for='edit_camp_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
+                                        input.checkbox(id='edit_camp_child_friendly', checked='#{camp.child_friendly}', type="checkbox", name='child_friendly')
                                         //- input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
                                         script.
                                             // set checkbox status
-                                            var checkbox = document.getElementById("edit_child_friendly");
+                                            var checkbox = document.getElementById("edit_camp_child_friendly");
                                             checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
 
                                 .col-md-4
@@ -157,7 +158,7 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_support_art')=t('camps:edit.support_art')
-                                        input.checkbox(id='edit_support_art', type="checkbox", name='public_support_art', value='#{details.support_art}')
+                                        input.checkbox(id='edit_support_art', checked='#{details.support_art}', type="checkbox", name='public_support_art', value='#{details.support_art}')
                                         script.
                                             // set checkbox status
                                             var checkbox = document.getElementById("edit_support_art");

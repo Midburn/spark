@@ -254,7 +254,7 @@ $('#camp_edit_save').click(function() {
             status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
             type: $('#edit_camp_type option:selected').attr('value') || $('label[for="edit_camp_type"]').attr('data-camp-type'),
             enabled: $('#edit_camp_enabled option:selected').val(),
-            camp_activity_time: $('#edit_camp_activity_time option:selected').text(),
+            camp_activity_time: $('#edit_camp_activity_time option:selected').val(),
             child_friendly: $('#edit_camp_child_friendly:checked').length,
             noise_level: $('#edit_camp_noise_level option:selected').val(),
             public_activity_area_sqm: $('#edit_public_activity_area_sqm').val(),
