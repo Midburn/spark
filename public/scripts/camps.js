@@ -202,32 +202,7 @@ $('.reveal_manage_camp_btn').click(function() {
 $('.card--close').click(function() {
     closeCards();
 });
-/**
- * Component: Join a camp
- */
-var fetchOpenCampsOnce = false;
 
-function fetchOpenCamps(elm) {
-    if (!fetchOpenCampsOnce) {
-        $.ajax({
-            url: '/camps_open',
-            type: 'GET',
-            success: function(data) {
-                camps = [data.camps];
-                for (var i = 0; i < camps.length; i++) {
-                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
-                }
-            },
-            error: function(data) {
-                alert('woops! no camps found.');
-            }
-        });
-        fetchOpenCampsOnce = true;
-    }
-}
-$('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
-    fetchOpenCamps($(this));
-});
 /**
  * Component: View camp details
  */
@@ -381,8 +356,8 @@ $('#camp_create_save').click(function() {
 /**
  * Component: join a camp
  */
-var fetchOpenCampsOnce = false,
-    request = {};
+var fetchOpenCampsOnce = false
+
 /**
  * Fetch camp list that are open to new members
  * @param  {HTML} elm the select elm to append data
