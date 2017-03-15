@@ -1,6 +1,5 @@
 {
   "name": "spark",
-
   "//version": [
     "the version number is available to the scripts in the npm_package_version environment variable",
     "this is part of the deployment proess, so it is important to update the version number",
