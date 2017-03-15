@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery UI Tabs - Content via Ajax</title>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- 	<script>
+
+		$( function() {
+			$( "#tabs" ).tabs({
+				beforeLoad: function( event, ui ) {
+					ui.jqXHR.fail(function() {
+						ui.panel.html(
+							"Couldn't load this tab. We'll try to fix this as soon as possible. " +
+							"If this wouldn't be a demo." );
+					});
+				}
+			});
+		} );
+
+	</script> -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("div#tabs").tabs();	
+			$("button#add-tab").click(function() {
+
+				var num_tabs = $("div#tabs ul li").length + 1;
+
+				$("div#tabs ul").append(
+					"<li><a href='../tab1'>#" + num_tabs + "</a></li>"
+					);
+				$("div#tabs").append(
+					"<div id='tab" + num_tabs + "'>#" + num_tabs + "</div>"
+					);
+				$("div#tabs").tabs("refresh");
+			});                    
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$.getJSON( "/register", function( data ) {
+				data.forEach( function(element, index) {
+					//console.log(JSON.stringify(element));
+					$("div#tabs ul").append(
+						"<li><a href='/" +element.path +"'>" + element.name + "</a></li>"
+						);
+					/*$("div#tabs").append(
+						"<div id='tab" + element.name + "'>#" + element.name + "</div>"
+						);*/
+				// statements
+			});
+				$("div#tabs").tabs("refresh");
+
+			})
+		})
+	</script>
+</head>
+<body>
+
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1">Preloaded</a></li>
+			<li><a href="../tab1">Tab 1</a></li>
+			<li><a href="../tab2">Tab 3 (slow)</a></li>
+			<li><a href="ajax/content4-broken.php">Tab 4 (broken)</a></li>
+		</ul>
+		<div id="tabs-1">
+			<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+		</div>
+	</div>
+	<button id='add-tab'>Add tab</button>
+
+
+</body>
+</html>
