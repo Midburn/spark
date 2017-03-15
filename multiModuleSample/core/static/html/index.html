@@ -1,137 +1,79 @@
-
-
-<html ng-app>
+<!doctype html>
+<html lang="en">
 <head>
-<!--   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="googlebot" content="noindex, nofollow">
- -->
-  <script type="text/javascript" src="http:////code.jquery.com/jquery-1.11.0.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="/css/result-light.css"> -->
-      <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery UI Tabs - Content via Ajax</title>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- 	<script>
 
-      <!-- tabs.css content -->
-  <style type="text/css">
-        #tab-list .close {
-        margin-left: 7px;
-    }
-  </style>
+		$( function() {
+			$( "#tabs" ).tabs({
+				beforeLoad: function( event, ui ) {
+					ui.jqXHR.fail(function() {
+						ui.panel.html(
+							"Couldn't load this tab. We'll try to fix this as soon as possible. " +
+							"If this wouldn't be a demo." );
+					});
+				}
+			});
+		} );
 
- <!-- script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js" / -->
-  <title>Tabs remove and reorder by Guruprasad_Rao</title>
+	</script> -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("div#tabs").tabs();	
+			$("button#add-tab").click(function() {
 
-  
-    
+				var num_tabs = $("div#tabs ul li").length + 1;
 
+				$("div#tabs ul").append(
+					"<li><a href='../tab1'>#" + num_tabs + "</a></li>"
+					);
+				$("div#tabs").append(
+					"<div id='tab" + num_tabs + "'>#" + num_tabs + "</div>"
+					);
+				$("div#tabs").tabs("refresh");
+			});                    
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$.getJSON( "/register", function( data ) {
+				data.forEach( function(element, index) {
+					//console.log(JSON.stringify(element));
+					$("div#tabs ul").append(
+						"<li><a href='/" +element.path +"'>" + element.name + "</a></li>"
+						);
+					/*$("div#tabs").append(
+						"<div id='tab" + element.name + "'>#" + element.name + "</div>"
+						);*/
+				// statements
+			});
+				$("div#tabs").tabs("refresh");
 
-
-
-<script type="text/javascript">//<![CDATA[
-$(window).load(//tabs.js code
-    function(){
-var button='<button class="close" type="button" title="Remove this page">×</button>';
-var tabID = 1;
-function resetTab(){
-    var tabs=$("#tab-list li:not(:first)");
-    var len=1
-    $(tabs).each(function(k,v){
-        len++;
-        $(this).find('a').html('Tab ' + len + button);
-    })
-    tabID--;
-}
-
-$(document).ready(function() {
-    $('#btn-add-tab').click(function() {
-        tabID++;
-        $('#tab-list').append($('<li><a href="#tab' + tabID + '" role="tab" data-toggle="tab">Tab ' + tabID + '<button class="close" type="button" title="Remove this page">×</button></a></li>'));
-        $('#tab-content').append($('<div class="tab-pane fade" id="tab' + tabID + '">Tab ' + tabID + ' content</div>'));
-    });
-    $('#tab-list').on('click', '.close', function() {
-        var tabID = $(this).parents('a').attr('href');
-        $(this).parents('li').remove();
-        $(tabID).remove();
-
-        //display first tab
-        var tabFirst = $('#tab-list a:first');
-        resetTab();
-        tabFirst.tab('show');
-    });
-
-    var list = document.getElementById("tab-list");
-
-    // roi's code
-
-    //$.getJSON( "tabs.json", function( data ) {
-        var items = [];
-        var data=[
-    {name: 'tabA', path : '/tab1'},
-    {name: 'tabB', path : '/tab2'},
-    {name: 'tabC', path : 'tabC content'},
-    {name: 'tabD', path : 'tabD content'}
-];
-        $.each( data, function( key, val ) {
-        //items.push( "<li id='" + key + "'>" + val + "</li>" );
-        //console.log('key: ' +JSON.stringify(key) +' val: '+JSON.stringify(val));
-                $('#tab-list').append($('<li><a href="#tab' + val.name + '"id="atab'+val.name +'" role="tab" data-toggle="tab">' + val.name + '<button class="close" type="button" title="Remove this page">×</button></a></li>'));
-                
-                //$('#tab-content').append($('<div class="tab-pane fade" id="tab' + val.name + '">' + val.content + '</div>'));
-                //$('#tab-content').append($('<iframe class="tab-pane fade" id="tab' + val.name + '" src="/'+val.content  +'">' + val.content  +'</iframe>'));
-                $('#tab-content').append($('<div class="tab-pane fade" id="tab' + val.name + '" >' + '<div id="' +val.name+'content" >placeholder </div> ' +'</div>'));
-                //$('#'+val.name+'content').append('<div ng-include="' +val.path+'"></div>');
-                //$('#tab')
-                //$('#'+val.name+'content').load(val.path);
-
-    //});
- 
-      //$( this ).addClass( "done" );
-
-    });
-    });
-
-});//]]> 
-
-</script>
-
-  
+			})
+		})
+	</script>
 </head>
-
 <body>
-  <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <p>
-                <button id="btn-add-tab" type="button" class="btn btn-primary pull-right">Add Tab</button>
-            </p>
-            <!-- Nav tabs -->
-            <ul id="tab-list" class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#tab1" role="tab" data-toggle="tab">Tab 1</a></li>
-            </ul>
 
-            <!-- Tab panes -->
-            <div id="tab-content" class="tab-content">
-                <div class="tab-pane fade in active" id="tab1">Tab 1 content</div>
-            </div>
-        </div>
-    </div>
-</div>
-<esi:include src="/tab1/index.html" />
-<esi:include src="/tab2/index.html" />
-
-  
-  <script>
-  // tell the embed parent frame the height of the content
-  if (window.parent && window.parent.parent){
-    window.parent.parent.postMessage(["resultsFrame", {
-      height: document.body.getBoundingClientRect().height,
-      slug: "cnycmLq0"
-    }], "*")
-  }
-</script>
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1">Preloaded</a></li>
+			<li><a href="../tab1">Tab 1</a></li>
+			<li><a href="../tab2">Tab 3 (slow)</a></li>
+			<li><a href="ajax/content4-broken.php">Tab 4 (broken)</a></li>
+		</ul>
+		<div id="tabs-1">
+			<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+		</div>
+	</div>
+	<button id='add-tab'>Add tab</button>
 
 
-
-
-
-</body></html>
+</body>
+</html>
