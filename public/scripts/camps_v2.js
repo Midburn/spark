@@ -125,6 +125,6 @@ var kidsFriendlyOptions = {
     };
 /*eslint-enable */
 
-if (input != null) {
-    var multiSelect = new MultiChoiceSelector(input, options); // eslint-disable-line no-unused-vars
-}
+// if (input != null) {
+//    var multiSelect = new MultiChoiceSelector(input, options); // eslint-disable-line no-unused-vars
+// }
