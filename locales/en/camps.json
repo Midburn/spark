@@ -91,6 +91,9 @@
             "close": "Close",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
+            "contact_person_name": "Contact Person Name",
+            "contact_person_email": "Contact Person Email",
+            "contact_person_phone": "Contact Person Phone",
             "facebook_page_url": "Facebook Page Link"
         },
         "join": {
