@@ -240,6 +240,7 @@ if ($('.camps').hasClass('camp_details')) {
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
+    var type = fetchAllCheckboxValues('edit_camp_type');
     var camp_id = $('#camp_edit_camp_id').val(),
         camp_data = {
             camp_name_he: $('#edit_camp_name_he').val(),
@@ -252,7 +253,7 @@ $('#camp_edit_save').click(function() {
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
             status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
-            type: $('#edit_camp_type option:selected').attr('value') || $('label[for="edit_camp_type"]').attr('data-camp-type'),
+            type: type,
             enabled: $('#edit_camp_enabled option:selected').val(),
             camp_activity_time: $('#edit_camp_activity_time option:selected').val(),
             child_friendly: $('#edit_camp_child_friendly:checked').length,
@@ -301,11 +302,20 @@ $('#camp_edit_unpublish').click(function() {
     }
 });
 
+// display other text field if other selected
+$('#edit_type_other').click(function(){
+    if($('#edit_type_other').is(':checked')){
+        $('#edit_type_other_text').removeClass('hidden');
+    } else {
+        $('#edit_type_other_text').addClass('hidden');
+    }
+})
+
 /**
  * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function() {
-    var type = fetchAllCheckboxValues('create_camp_type')
+    var type = fetchAllCheckboxValues('create_camp_type');
     var camp_data = {
         camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+ new Date()),
         camp_name_en: $('#create_camp_name_en').val(),
@@ -336,18 +346,6 @@ $('#camp_create_save').click(function() {
     $('#camp_create_save_modal_request').click(function() {
         _sendRequest();
     });
-
-    // Collect all checkbox values
-    function fetchAllCheckboxValues(className){
-        var val = [];
-        $('.' + className + ':checked').each(function(i){
-          val[i] = $(this).val();
-        });
-        if(val.indexOf('other') > -1){
-            val.push($('#camp_type_other_text').val());
-        }
-        return val.toString();
-      }
       
     function _campAppendData() {
         $.each(camp_data, function(label, data) {
@@ -392,6 +390,18 @@ $('#camp_type_other').click(function(){
         $('#camp_type_other_text').addClass('hidden');
     }
 })
+
+// Collect all checkbox values
+    function fetchAllCheckboxValues(className){
+        var val = [];
+        $('.' + className + ':checked').each(function(i){
+          val[i] = $(this).val();
+        });
+        if(val.indexOf('other') > -1){
+            val.push($('#'+ className + '_other_text').val());
+        }
+        return val.toString();
+      }
 /**
  * Component: join a camp
  */
