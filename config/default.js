@@ -34,20 +34,35 @@ exports.server = {
 };
 
 exports.mail = {
-    enabled: true,
-    from: "spark@example.com",
-    host: "smtp.mailtrap.io",
-    port: "2525",
-    transportMethod: "SMTP",
-    secureConnection: false
+    enabled: typeof(process.env.SPARK_MAILSERVER_ENABLE) === "undefined" ? true : (process.env.SPARK_MAILSERVER_ENABLE === "true"),
+    from: process.env.SPARK_MAILSERVER_FROM || "spark@localhost",
+    host: process.env.SPARK_MAILSERVER_HOST || "localhost",
+    port: process.env.SPARK_MAILSERVER_PORT || "25",
+    transportMethod: process.env.SPARK_MAILSERVER_METHOD || "SMTP", // default is SMTP. Accepts anything that nodemailer accepts
+    secureConnection: (process.env.SPARK_MAILSERVER_SECURE_CONNECTION === "true")
 };
 
-if (true) {
+if (process.env.SPARK_MAILSERVER_USER) {
     exports.mail.auth = {
-        user: '91e0015f5afde6',
-        pass: 'e60e0a6902a3df'
+        user: process.env.SPARK_MAILSERVER_USER,
+        pass: process.env.SPARK_MAILSERVER_PASSWORD
     }
 }
+
+// TEST WITH MAILTRAP
+// Comment the above code and Uncomment these lines:
+// exports.mail = {
+//     enabled: true,
+//     from: "spark@example.com",
+//     host: "smtp.mailtrap.io",
+//     port: "2525",
+//     transportMethod: "SMTP",
+//     secureConnection: false
+// };
+// exports.mail.auth = {
+//     user: '91e0015f5afde6',
+//     pass: 'e60e0a6902a3df'
+// }
 
 exports.i18n = {
     languages: ["he", "en"]

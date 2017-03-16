@@ -11,22 +11,6 @@ body {
 
 body[lang='he'] {
     font-family: 'Rubik', sans-serif;
-    
-    .camps .checkbox {
-        input[type=checkbox] {
-            margin-top: 8px;
-            margin-right: -20px;
-        }
-        label {
-            line-height: 2em;
-        }
-        .checkbox-other {
-            display: inline-block;
-            margin-right: 10px;
-            width: 80%;
-            height: 100%;
-        }
-    }
 }
 
 body[lang="he"] .dash-panel a:after {
@@ -41,21 +25,6 @@ body[lang="en"] {
 
         .dash-panel a:after {
             left: 4px;
-        }
-        .checkbox {
-            label {
-                line-height: 2em;
-            }
-            input[type=checkbox] {
-                margin-top: 8px;
-                margin-left: -20px;
-            }
-            .checkbox-other {
-            width: 80%;
-            display: inline-block;
-            margin-left: 10px;
-            height: 100%;
-        }
         }
     }
 }
@@ -214,10 +183,6 @@ section {
     }
 }
 
-a.btn.disabled {
-    pointer-events: auto;
-}
-
 .pos-r {
     position: relative;
 }
@@ -275,10 +240,7 @@ body[lang="en"] .dash-panel a:after {
         }
 
         input[name='camp_name_en'] {
-            padding-right: 40px;
-            padding-left: 12px;
-            direction: ltr;
-            text-align: left;
+            padding-left: 40px;
 
             &.error {
                 border-color: red;
@@ -288,8 +250,8 @@ body[lang="en"] .dash-panel a:after {
         span.indicator {
             position: absolute;
             top: auto;
-            left: auto;
-            right: 10px;
+            right: auto;
+            left: 10px;
             bottom: 4px;
 
             .glyphicon {
@@ -307,7 +269,7 @@ body[lang="en"] .dash-panel a:after {
     }
 
     input[name='camp_name_en'] {
-        padding-right: 40px;
+        padding-left: 40px;
 
         &.error {
             border-color: red;
@@ -524,14 +486,4 @@ input.checkbox {
 .form__input--important {
     background: #222;
     color: #ccc;
-}
-
-.camps.camp_admin_index input[name='camp_name_en']{
-    direction: ltr;
-    text-align: left;
-}
-
-.choose_name span.indicator span.glyphicon {
-    direction: ltr;
-    text-align: left;
 }
