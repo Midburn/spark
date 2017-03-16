@@ -55,7 +55,7 @@ module.exports = function (app, passport) {
                 errorMessage: i18next.t('invalid_user_password')
             });
         }
-
+        
         passport.authenticate('local-login', {
             failureFlash: true
         }, function (err, user, info) {

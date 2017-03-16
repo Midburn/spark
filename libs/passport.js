@@ -5,6 +5,63 @@ var User = require('../models/user').User;
 var DrupalUser = require('../models/user').DrupalUser;
 var facebookConfig = require('config').get("facebook");
 var constants = require('../models/constants');
+var request = require('superagent');
+var _ = require('lodash');
+var spark_drupal_gw_login = function (email, password, done) {
+    email = 'asaf@omc.co.il';
+    password = 'asiOMC769';
+    request({
+        url: 'https://profile-test.midburn.org/api/user/login',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        form: { 'username': email, 'password': password }
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(body);
+            var data = JSON.parse(body);
+            if (body.indexOf('token') > 0) {
+                // user logged in good
+                var userPromise = new User({
+                    email: email
+                }).fetch();
+                console.log(body);
+                userPromise.then(function (model) {
+                    if (model) {
+                        done(false, i18next.t('user_exists'));
+                    } else {
+                        var newUser = new User({
+                            email: email,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            gender: user.gender,
+                            validated: user.validated
+                        });
+                        if (password) {
+                            newUser.generateHash(password);
+                        }
+                        if (!user.validated) {
+                            newUser.generateValidation();
+                        }
+                        newUser.save().then(function (model) {
+                            done(newUser);
+                        });
+                    }
+                });
+
+                done(newUser);
+
+                // res.status(200).jsonp({ status: 'true', 'massage': 'user authorized', 'data': data });
+            }
+            else {
+                done(false, 'unknown');
+            }
+        }
+        else {
+            done(false, 'unknown');
+            // res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
+        }
+    });
+}
 
 /***
  * tries to login based on drupal users table
@@ -13,54 +70,85 @@ var constants = require('../models/constants');
  * @param password
  * @param done
  */
-var drupal_login = function (email, password, done) {
-    DrupalUser.forge({
-        name: email
-    }).fetch().then(function (drupalUser) {
-        if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status === 1) {
-            // valid drupal password
-            // drupal user status is 1
-            // can sign up a spark user with some defaults
-            // TODO: get these details from the old profiles system
-            signup(email, password, {
-                first_name: email,
-                last_name: "",
-                gender: constants.USER_GENDERS_DEFAULT,
-                validated: true
-            }, function (newUser, error) {
-                if (newUser) {
-                    done(newUser);
-                } else {
-                    done(false, error);
-                }
-            });
-        } else {
-            done(false, i18next.t('invalid_user_password'));
-        }
-    });
+const drupal_login = (email, password, done) => {
+
+    return request
+        .post('https://profile-test.midburn.org/api/user/login')
+        .send({ 'username': email, 'password': password })
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .then((({body}) => body), (error) => console.error(error))
+
+
+
+    // DrupalUser.forge({
+    //     name: email
+    // }).fetch().then(function (drupalUser) {
+    //     if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status === 1) {
+    //         // valid drupal password
+    //         // drupal user status is 1
+    //         // can sign up a spark user with some defaults
+    //         // TODO: get these details from the old profiles system
+    //         signup(email, password, {
+    //             first_name: email,
+    //             last_name: "",
+    //             gender: constants.USER_GENDERS_DEFAULT,
+    //             validated: true
+    //         }, function (newUser, error) {
+    //             if (newUser) {
+    //                 done(newUser);
+    //             } else {
+    //                 done(false, error);
+    //             }
+    //         });
+    //     } else {
+    //         done(false, i18next.t('invalid_user_password'));
+    //     }
+    // });
 };
 
 var login = function (email, password, done) {
-    new User({
-        email: email
-    }).fetch().then(function (user) {
-        if (user === null) {
-            // no corresponding spark user is found
-            // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
-            // on next login - there will be a spark user, so drupal login will not be attempted again
-            drupal_login(email, password, done);
-        } else if (!user.validPassword(password)) {
-            done(false, i18next.t('invalid_user_password'));
-        } else if (!user.attributes.validated) {
+    // spark_drupal_gw_login(email,password,done);
+    drupal_login(email, password).then(function (drupal_user) {
+        if (drupal_user != null) {
+            new User({
+                email: email
+            }).fetch().then(function (user) {
+                if (user === null) {
+
+                    // done(false, i18next.t('user_not_validated', {
+                    //     email: email
+                    // }));
+                    signup(email, password, {
+                        first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
+                        last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
+                        cell_phone: _.get(drupal_user, 'user.field_profile_phone.und.0.value', 666),
+                        gender: constants.USER_GENDERS_DEFAULT,
+                        validated: true
+                    }, function (newUser, error) {
+                        if (newUser) {
+                            done(newUser);
+                        } else {
+                            done(false, error);
+                        }
+                    });
+                } else if (!user.attributes.validated) {
+                    done(false, i18next.t('user_not_validated', {
+                        email: email
+                    }));
+                } else if (!user.attributes.enabled) {
+                    done(false, i18next.t('user_disabled'));
+                } else {
+                    done(user);
+                }
+            });
+        } else {
             done(false, i18next.t('user_not_validated', {
                 email: email
             }));
-        } else if (!user.attributes.enabled) {
-            done(false, i18next.t('user_disabled'));
-        } else {
-            done(user);
         }
     });
+
 };
 
 var signup = function (email, password, user, done) {
@@ -76,7 +164,8 @@ var signup = function (email, password, user, done) {
                 first_name: user.first_name,
                 last_name: user.last_name,
                 gender: user.gender,
-                validated: user.validated
+                validated: user.validated,
+                cell_phone: user.cell_phone
             });
             if (password) {
                 newUser.generateHash(password);
@@ -118,11 +207,11 @@ module.exports = function (passport) {
     // LOCAL SIGNUP ============================================================
     // =========================================================================
     passport.use('local-signup', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
+        // by default, local strategy uses username and password, we will override with email
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
         function (req, email, password, done) {
             signup(email, password, req.body, function (user, error) {
                 if (user) {
@@ -143,7 +232,8 @@ module.exports = function (passport) {
             passReqToCallback: true
         },
         function (req, email, password, done) {
-            login(email, password, function(user, error) {
+
+            login(email, password, function (user, error) {
                 if (user) {
                     done(null, user, null);
                 } else {
@@ -152,16 +242,16 @@ module.exports = function (passport) {
             });
         }));
 
-        // ==========
-        // Facebook login
-        // ==========
-        passport.use(new FacebookStrategy({
-            clientID: facebookConfig.app_id,
-            clientSecret: facebookConfig.app_secret,
-            callbackURL: facebookConfig.callbackBase + "/auth/facebook/callback",
-            enableProof: true,
-            profileFields: ['id', 'email', 'first_name', 'last_name']
-        },
+    // ==========
+    // Facebook login
+    // ==========
+    passport.use(new FacebookStrategy({
+        clientID: facebookConfig.app_id,
+        clientSecret: facebookConfig.app_secret,
+        callbackURL: facebookConfig.callbackBase + "/auth/facebook/callback",
+        enableProof: true,
+        profileFields: ['id', 'email', 'first_name', 'last_name']
+    },
         function (accessToken, refreshToken, profile, cb) {
             if (profile.emails === undefined) {
                 // TODO: redirect user to http://lvh.me:3000/auth/facebook/reauth
@@ -182,14 +272,14 @@ module.exports = function (passport) {
                     //    able to login through FacebookStrategy)
                     // 2. Save updated token and details
                     model.save({
-                            password: "",
-                            facebook_token: accessToken,
-                            facebook_id: profile.id,
-                            // I'm not quite sure about this.
-                            // If a user changes his Facebook email, should we change
-                            // it in our system? I think we should. Not convinced though.
-                            email: profile.emails[0].values
-                        })
+                        password: "",
+                        facebook_token: accessToken,
+                        facebook_id: profile.id,
+                        // I'm not quite sure about this.
+                        // If a user changes his Facebook email, should we change
+                        // it in our system? I think we should. Not convinced though.
+                        email: profile.emails[0].values
+                    })
                         .then(function (_model) {
                             return cb(null, model, null);
                         });
@@ -214,5 +304,5 @@ module.exports = function (passport) {
 };
 
 module.exports.sign_up = function (email, password, user, done) {
-  signup(email, password, user, done)
+    signup(email, password, user, done)
 };
