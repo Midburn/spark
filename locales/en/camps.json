@@ -77,6 +77,9 @@
             "close": "Close",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
+            "contact_person_name": "Contact Person Name",
+            "contact_person_email": "Contact Person Email",
+            "contact_person_phone": "Contact Person Phone",
             "facebook_page_url": "Facebook Page Link"
         },
         "join": {
@@ -184,7 +187,13 @@
             "location_area": "Area",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
-            "facebook_page_url": "Facebook Page Link"
+            "contact_person_name": "Contact Person Name",
+            "contact_person_email": "Contact Person Email",
+            "contact_person_phone": "Contact Person Phone",
+            "facebook_page_url": "Facebook Page Link",
+            "upload": "Files & Forms Upload",
+            "upload_header": "Upload Files",
+            "security_file": "Security Documentation"
         },
         "program": {
             "page_title": "Create new Program",

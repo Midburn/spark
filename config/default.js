@@ -49,6 +49,21 @@ if (process.env.SPARK_MAILSERVER_USER) {
     }
 }
 
+// TEST WITH MAILTRAP
+// Comment the above code and Uncomment these lines:
+// exports.mail = {
+//     enabled: true,
+//     from: "spark@example.com",
+//     host: "smtp.mailtrap.io",
+//     port: "2525",
+//     transportMethod: "SMTP",
+//     secureConnection: false
+// };
+// exports.mail.auth = {
+//     user: '91e0015f5afde6',
+//     pass: 'e60e0a6902a3df'
+// }
+
 exports.i18n = {
     languages: ["he", "en"]
 };

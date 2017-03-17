@@ -34,14 +34,32 @@ block content
                 .camp-publication.panel
                     .panel-body
                         .information
-                            .col-md-6
-                                .col-xs-12
-                                    label(for='create_camp_contact_person_id')=t('camps:new.contact_person_id')
-                                    select.form-control(id='create_camp_contact_person_id', name='contact_person_id')
-                            .col-md-6
-                                .col-xs-12
-                                    label(for='create_camp_facebook_page_url')=t('camps:new.facebook_page_url')
-                                    input.form-control(id='create_camp_facebook_page_url', name='facebook_page_url')
+                            .row
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_id')=t('camps:new.contact_person_id')
+                                        select.form-control(id='create_camp_contact_person_id', name='contact_person_id')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_facebook_page_url')=t('camps:new.facebook_page_url')
+                                        input.form-control(id='create_camp_facebook_page_url', name='facebook_page_url')
+                                .col-md-4
+                                        .col-xs-12
+                                            label(for='create_camp_accept_families')=t('camps:camps.accept_families')
+                                            input.checkbox(id='create_camp_accept_families', type='checkbox', name='accept_families')
+                            .row
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_name')=t('camps:new.contact_person_name')
+                                        input.form-control(id='create_camp_contact_person_name', name='contact_person_name')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_email')=t('camps:new.contact_person_email')
+                                        input.form-control(id='create_camp_contact_person_email', name='contact_person_email')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_phone')=t('camps:new.contact_person_phone')
+                                        input.form-control(id='create_camp_contact_person_phone', name='contact_person_phone')
                 h4=t('camps:new.contact_card_header')
                 .camp-leaders.panel
                     .panel-body
@@ -64,8 +82,24 @@ block content
                         .behaviour
                             .col-md-4
                                 .col-xs-12
-                                    label(for='create_camp_type')=t('camps:new.type')
-                                    input.form-control(id='create_camp_type', type="text", name="type")
+                                    p=t('camps:new.type')
+                                    .checkbox
+                                        label(for="camp_type_music")
+                                            input(type="checkbox", class='create_camp_type', id="camp_type_music", name="camp_type_music", value="music")
+                                            | #{t('camps:new.type_music')}
+                                    .checkbox
+                                        label(for="camp_type_drinks")
+                                            input(type="checkbox", class='create_camp_type', id="camp_type_drinks", name="camp_type_drinks", value="drinks")
+                                            | #{t('camps:new.type_drinks')}
+                                    .checkbox
+                                        label(for="camp_type_food")
+                                            input(type="checkbox", class='create_camp_type', id="camp_type_food", name="camp_type_food", value="food")
+                                            | #{t('camps:new.type_food')}
+                                    .checkbox
+                                        label(for="create_camp_type_other")
+                                            input(type="checkbox", class='create_camp_type', id="create_camp_type_other", name="camp_type_other", value="other")
+                                            | #{t('camps:new.type_other')}
+                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="myname")
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_status') #{t('camps:edit.status')}:
@@ -164,6 +198,14 @@ block content
                                 li.contact_person_id=t('camps:new.contact_person_id')
                                     span
                                 li.facebook_page_url=t('camps:new.facebook_page_url')
+                                    span
+                                li.accept_families=t('camps:camps.accept_families')
+                                    span
+                                li.contact_person_name=t('camps:new.contact_person_name')
+                                    span
+                                li.contact_person_email=t('camps:new.contact_person_email')
+                                    span
+                                li.contact_person_phone=t('camps:new.contact_person_phone')
                                     span
                                 li.main_contact=t('camps:new.main_contact')
                                     span

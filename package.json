@@ -12,7 +12,7 @@
   "scripts": {
     "start": "node server.js",
     "pretest": "npm run lint",
-    "test": "export SPARK_DB_FILENAME=\"${SPARK_DB_FILENAME:-test.sqlite3}\" && rm -f test.sqlite3 && knex migrate:latest && mocha \"tests/**/*test.js\" ",
+    "test": "export SPARK_DB_FILENAME=\"${SPARK_DB_FILENAME:-test.sqlite3}\" && rm -f test.sqlite3 && knex migrate:latest && mocha  \"routes/*test.js\" ",
 
     "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
 
@@ -68,11 +68,12 @@
     "i18next-localstorage-cache": "^0.3.0",
     "i18next-node-fs-backend": "^0.1.2",
     "jade": "^1.11.0",
-    "knex": "^0.11.7",
+    "knex": "^0.12.7",
+    "lodash": "^4.17.4",
     "module-id": "2.0.4",
     "morgan": "~1.7.0",
     "mysql": "^2.11.1",
-    "node-sass": "^3.13.0",
+    "node-sass": "^4.5.0",
     "passport": "^0.3.2",
     "passport-facebook": "2.1.1",
     "passport-local": "^1.0.0",
