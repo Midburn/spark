@@ -1,36 +1,27 @@
 {
   "name": "spark",
-
   "//version": [
     "the version number is available to the scripts in the npm_package_version environment variable",
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
   "version": "1.3.2",
-
   "private": true,
   "scripts": {
     "start": "node server.js",
     "pretest": "npm run lint",
     "test": "export SPARK_DB_FILENAME=\"${SPARK_DB_FILENAME:-test.sqlite3}\" && rm -f test.sqlite3 && knex migrate:latest && mocha  \"routes/*test.js\" ",
-
     "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
-
     "//log": "send a generic log notification to slack",
     "log": "curl -X POST -g $npm_config_webhook --data-urlencode 'payload={\"channel\": \"'\"#${npm_config_channel:-sparksystem-log}\"'\", \"username\": \"'\"${npm_config_username:-bot}\"'\", \"text\": \"'\"${npm_config_text}\"'\", \"icon_emoji\": \"'\"${npm_config_emoji:-ghost}\"'\"}'",
-
     "//build": "builds the deployment package",
     "build": "touch \"${npm_config_file}\" && tar --exclude=.github* --exclude=.idea* --exclude=.git* --exclude=*.sqlite3 --exclude=opsworks.js --exclude=*.tar.gz --exclude=vagrant --exclude=docs --exclude=.travis* --exclude=*.iml --exclude=.env --exclude=*.log -czf \"${npm_config_file}\" . && echo \"created build package: ${npm_config_file}\"",
-
     "//upload": "uploads the deployment package to slack and returns the package private url",
     "upload": "curl -F \"file=@${npm_config_file}\" -F \"filename=${npm_config_file}\" -F \"token=${npm_config_token}\" \"${npm_config_url:-https://slack.com/api/files.upload}\" | jq -r .file.url_private > \"${npm_config_file}.slack_url\"",
-
     "//download": "download a deployment package from private slack url",
     "download": "curl -H \"Authorization: Bearer ${npm_config_token}\" -g \"${npm_config_url}\" -o \"${npm_config_file}\"",
-
     "//deploy": "prepare the directory of an extracted deployment package",
     "deploy": "echo SPARK_DEPLOYMENT_TIME=\\\"$(date \"+%F %T\")\\\" >> .env",
-
     "//lint": "runs static analysis using eslint",
     "lint": "./node_modules/.bin/eslint ."
   },
@@ -101,6 +92,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "mocha": "^3.2.0",
+    "node-sass": "^3.13.1",
     "sqlite3": "^3.1.8",
     "supertest": "^2.0.1"
   }
