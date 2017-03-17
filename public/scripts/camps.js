@@ -370,7 +370,6 @@ function fetchOpenCamps(elm) {
            type: 'GET',
            success: function(data) {
                var camps = [data.camps];
-               console.log(camps);
                for (var i = 0; i < camps.length; i++) {
                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
                }
@@ -403,23 +402,23 @@ $('#join_camp_request_join_btn').click(function() {
         var user = res.data.user
         var camp = res.data.camp
         camp.name_en = join_camp_name_en
-        
+
         var request_data = {
           user: user,
           camp: camp
-        }  
-        
+        }
+
         // Dialog with user & camp details
         var details_template = 'Camp name: <u>' + join_camp_name_en + '</u><br/>Your name: <u>' + user.full_name + '</u><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
         var modal = $('#join_camp_request_modal')
         modal.find('.user_details').html(details_template);
         modal.modal('show');
-        
+
         // Send request click listener after user is approve the details
         // Action delayed with 4 second allow user to cancel the request
         $('#join_camp_send_request_btn').click(function() {
           var _sendRequestBtn = $(this);
-          
+
           $('#join_camp_close_btn').text('Cancel').click(function(e) {
             e.preventDefault();
             clearTimeout(_srt);
@@ -427,7 +426,7 @@ $('#join_camp_request_join_btn').click(function() {
             _sendRequestBtn.removeClass('Btn__is-loading').text('Send Request');
           });
           _sendRequestBtn.addClass('Btn__is-loading').text('Sending');
-          
+
           function _sendRequest() {
             $.ajax({
               url: '/camps/join/deliver',
@@ -496,4 +495,3 @@ if ($('.camp_details')) {
 /**
  * Component: create camp program
  */
- 
