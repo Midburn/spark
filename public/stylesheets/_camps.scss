@@ -205,6 +205,58 @@ body[lang="en"] .dash-panel a:after {
     left: 4px;
 }
 
+.card {
+    padding: 40px 40px 40px 120px;
+    margin-bottom: 2em;
+    background-color: $card-bg;
+    border-radius: 4px;
+
+    &__shad {
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    &__padding--even {
+        padding: 20px !important;
+    }
+
+    h2:after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 4px;
+        background: #6772e5;
+        margin: 15px 0;
+    }
+
+    input[name='camp_name_en'] {
+        padding-left: 40px;
+
+        &.error {
+            border-color: red;
+        }
+    }
+
+    span.indicator {
+        position: absolute;
+        top: auto;
+        right: auto;
+        left: 10px;
+        bottom: 4px;
+
+        .glyphicon {
+            font-size: 18px;
+        }
+
+        .glyphicon-remove {
+            color: red;
+        }
+
+        .glyphicon-ok {
+            color: green;
+        }
+    }
+}
+
 .camps {
     .controls {
         margin-bottom: 2em;
@@ -213,58 +265,6 @@ body[lang="en"] .dash-panel a:after {
     .panel {
         h3 {
             text-align: center;
-        }
-    }
-
-    .card {
-        padding: 40px 40px 40px 120px;
-        margin-bottom: 2em;
-        background-color: $card-bg;
-        border-radius: 4px;
-
-        &__shad {
-            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        &__padding--even {
-            padding: 20px !important;
-        }
-
-        h2:after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 4px;
-            background: #6772e5;
-            margin: 15px 0;
-        }
-
-        input[name='camp_name_en'] {
-            padding-left: 40px;
-
-            &.error {
-                border-color: red;
-            }
-        }
-
-        span.indicator {
-            position: absolute;
-            top: auto;
-            right: auto;
-            left: 10px;
-            bottom: 4px;
-
-            .glyphicon {
-                font-size: 18px;
-            }
-
-            .glyphicon-remove {
-                color: red;
-            }
-
-            .glyphicon-ok {
-                color: green;
-            }
         }
     }
 
