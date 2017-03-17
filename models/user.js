@@ -52,18 +52,6 @@ var User = bookshelf.Model.extend({
 
         isAdmin: function() {
             return this.hasRole(userRole.ADMIN);
-        },
-
-        isCampManager: function () {
-            return this.hasRole(userRole.CAMP_MANAGER);
-        },
-
-        isCampFree: function () {
-          return (Number(this.attributes.camp_id) === 0 || this.attributes.camp_id === null)
-        },
-
-        isCampJoinPending: function () {
-          return Number(this.attributes.camp_id) === -1
         }
     }
 });
