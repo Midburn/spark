@@ -77,9 +77,6 @@
             "close": "סגור",
             "website_publication": "פרסום באתר",
             "contact_person_id": "איש קשר",
-            "contact_person_name": "שם איש קשר",
-            "contact_person_email": "אימייל איש קשר",
-            "contact_person_phone": "טלפון אישר קשר",
             "facebook_page_url": "קישור לעמוד פייסבוק"
         },
         "join": {
@@ -184,13 +181,7 @@
             "location_comments": "הערות",
             "location_street": "רחוב",
             "location_time": "שעה",
-            "location_area": "אזור",
-            "upload": "העלאת מסמכים וקבצים",
-            "upload_header": "העלאת קבצים",
-            "contact_person_name": "שם איש קשר",
-            "contact_person_email": "אימייל איש קשר",
-            "contact_person_phone": "טלפון אישר קשר",
-            "security_file": "תיק בטיחות"
+            "location_area": "אזור"
         },
         "program": {
             "page_title": "צור פעילות חדשה",

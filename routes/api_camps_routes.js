@@ -7,7 +7,7 @@ const userRole = require('../libs/user_role');
 
 var mail = require('../libs/mail'),
     mailConfig = config.get('mail');
-    
+
 module.exports = function(app, passport) {
     /**
      * API: (GET) get user by id
@@ -45,23 +45,12 @@ module.exports = function(app, passport) {
             camp_desc_en: req.body.camp_desc_en,
             contact_person_id: req.body.contact_person_id,
             facebook_page_url: req.body.facebook_page_url,
-            contact_person_name: req.body.contact_person_name,
-            contact_person_email: req.body.contact_person_email,
-            contact_person_phone: req.body.contact_person_phone,
-            accept_families: req.body.accept_families,
-            main_contact: req.body.main_contact,
-            moop_contact: req.body.moop_contact,
-            safety_contact: req.body.safety_contact,
-            camp_activity_time: req.body.camp_activity_time,
-            child_friendly: req.body.child_friendly,
-            noise_level: req.body.noise_level,
-            public_activity_area_sqm: req.body.public_activity_area_sqm,
-            public_activity_area_desc: req.body.public_activity_area_desc,
-            support_art: req.body.support_art,
-            location_comments: req.body.location_comments,
-            camp_location_street: req.body.camp_location_street,
-            camp_location_street_time: req.body.camp_location_street_time,
-            camp_location_area: req.body.camp_location_area
+            main_contact: req.body.camp_main_contact,
+            moop_contact: req.body.camp_moop_contact,
+            safety_contact: req.body.camp_safety_contact,
+            type: req.body.camp_type,
+            created_at: Date(),
+            updated_at: Date()
         }).save().then((camp) => {
             res.json({
                 error: false,
@@ -118,9 +107,6 @@ module.exports = function(app, passport) {
                 contact_person_id: req.body.contact_person_id,
                 facebook_page_url: req.body.facebook_page_url,
                 accept_families: req.body.accept_families,
-                contact_person_name: req.body.contact_person_name,
-                contact_person_email: req.body.contact_person_email,
-                contact_person_phone: req.body.contact_person_phone,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact
@@ -335,9 +321,9 @@ module.exports = function(app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({ status: 'open' }).fetch({
-            require: true,
-            columns: ['id', 'camp_name_en']
+        Camp.forge({status: 'open'}).fetch({
+          require: true,
+          columns: ['id', 'camp_name_en']
         }).then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
@@ -353,7 +339,7 @@ module.exports = function(app, passport) {
             });
         });
     });
-    
+
     /**
      * API: (GET) camp join request
      * params: camp_id
@@ -370,10 +356,10 @@ module.exports = function(app, passport) {
           id: req.params.id,
           manager_email: '' // later to be added
         };
-                
-        // User is camp free and doesn't have pending request
+
+        // User is camp free and doesn't have pending join request
         // User details will be sent to camp manager for approval
-        if ((user.camp_id === null || user.camp_id === 0) || user.camp_id !== -1) {
+        if (req.user.isCampFree) {
           // Fetch camp manager email address
           User.forge({camp_id: camp.id})
               .fetch({
@@ -382,7 +368,7 @@ module.exports = function(app, passport) {
                 })
               .then((fetched_user) => {
                 // Validate user is a camp_manager
-                if (fetched_user.get('roles').indexOf('camp_manager') !== -1) {
+                if (fetched_user.isCampManager) {
                   camp.manager_email = fetched_user.get('email')
                   // Response
                   res.json({
@@ -392,7 +378,7 @@ module.exports = function(app, passport) {
                       }
                     });
                 } else {
-                  console.log('Couldn\'t find camp manager');
+                  res.status(404).json({ data: { message: 'Couldn\'t find camp manager' } })
                 }
               }).catch((e) => {
                   res.status(500).json({
@@ -402,55 +388,6 @@ module.exports = function(app, passport) {
                       }
                   });
               });
-
-//           var camp_id = req.params.id,
-//             user_id = req.user.attributes.user_id,
-//             user_email = req.user.attributes.email,
-//             users_camp_id = req.user.attributes.camp_id;
-
-//         // User is camp free and doesn't have pending request
-//         // User details will be sent to camp manager for approval
-
-        
-//         if (users_camp_id === null || users_camp_id === 0 || users_camp_id !== -1) {
-//             // Fetch camp manager email address
-//             var camp_manager_email;
-
-//             User.forge({ camp_id: req.params.id })
-//                 .fetch({
-//                     require: true,
-//                     columns: ['email', 'roles']
-//                 })
-//                 .then((user) => {
-//                     if (user.get('roles').indexOf('camp_manager') > -1) {
-//                         camp_manager_email = user.get('email')
-//                         _deliverRequest()
-//                     } else {
-//                         console.log('Couldn\'t find camp manager');
-//                     }
-//                 }).catch((e) => {
-//                     res.status(500).json({
-//                         error: true,
-//                         data: {
-//                             message: e.message
-//                         }
-//                     });
-//                 });
-
-//             function _deliverRequest() {
-//                 // Send email request to camp manager
-//                 mail.send(
-//                     camp_manager_email,
-//                     mailConfig.from,
-//                     'Spark: someone wants to join your camp!',
-//                     'emails/camps/join_request', {
-//                         camp: { name: req.body.camp_name_en },
-//                         user: { name: req.body.user_fullname, email: req.body.user_email }
-//                     });
-//             }
-
-//             // Response
-//             res.json({ data: { message: 'Join request sent to camp manager.' } });
         } else {
             // User cannot join another camp
             res.status(404).json({ data: { message: 'User can only join one camp!' } })
@@ -459,7 +396,7 @@ module.exports = function(app, passport) {
     app.post('/camps/join/deliver', userRole.isLoggedIn(), (req, res) => {
       var camp_manager_email = req.body['camp[manager_email]']
       var user_id = req.user.attributes.user_id
-      
+
       // Mark user with request-pending
       User.forge({user_id: user_id})
           .fetch()
@@ -477,7 +414,7 @@ module.exports = function(app, passport) {
             })
           })
           })
-            
+
       /**
        * Deliver email request to camp manager
        * notifiying a user wants to join his camp
@@ -493,7 +430,7 @@ module.exports = function(app, passport) {
         )
       }
     });
-    
+
     /**
      * API: (POST) receive request and forward to mail
      * request => /camps/join/request
@@ -528,7 +465,7 @@ module.exports = function(app, passport) {
             });
         });
     });
-    
+
     /**
     * API: (GET) return camp manager email
     * query user with attribute: camp_id

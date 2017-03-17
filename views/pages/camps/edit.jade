@@ -39,37 +39,23 @@ block content
                     .camp-publication.panel
                         .panel-body
                             .information
-                                .row
-                                    .col-md-4
-                                        .col-xs-12
-                                            label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
-                                            select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
-                                                option(selected) ---
-                                    .col-md-4
-                                        .col-xs-12
-                                            label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
-                                            input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
-                                    .col-md-4
-                                        .col-xs-12
-                                            label(for='edit_camp_accept_families')=t('camps:camps.accept_families')
-                                            input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
-                                            script.
-                                                // set checkbox status
-                                                var checkbox = document.getElementById("edit_camp_accept_families");
-                                                checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
-                                .row
-                                    .col-md-4
-                                        .col-xs-12
-                                            label(for='edit_camp_contact_person_name')=t('camps:edit.contact_person_name')
-                                            input.form-control(id='edit_camp_contact_person_name', name='contact_person_name', value='#{camp.contact_person_name}')
-                                    .col-md-4
-                                        .col-xs-12
-                                            label(for='edit_camp_contact_person_email')=t('camps:edit.contact_person_email')
-                                            input.form-control(id='edit_camp_contact_person_email', name='contact_person_email', value='#{camp.contact_person_email}')
-                                    .col-md-4
-                                        .col-xs-12
-                                            label(for='edit_camp_contact_person_phone')=t('camps:edit.contact_person_phone')
-                                            input.form-control(id='edit_camp_contact_person_phone', name='contact_person_phone', value='#{camp.contact_person_phone}')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
+                                        select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
+                                            option(selected) ---
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
+                                        input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='edit_camp_accept_families')=t('camps:camps.accept_families')
+                                        input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
+                                        script.
+                                            // set checkbox status
+                                            var checkbox = document.getElementById("edit_camp_accept_families");
+                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
                     h4=t('camps:edit.contact_title')
                     .camp-leaders.panel
                         .panel-body
@@ -95,28 +81,15 @@ block content
                             .camp-modifiers
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
-                                            .checkbox
-                                                label(for="edit_type_music")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_music", name="edit_type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
-                                                    | #{t('camps:edit.music')}
-                                            .checkbox
-                                                label(for="edit_type_drinks")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_drinks", name="edit_type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
-                                                    | #{t('camps:edit.drinking')}
-                                            .checkbox
-                                                label(for="edit_type_food")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_food", name="edit_type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
-                                                    | #{t('camps:edit.food')}
-                                            .checkbox
-                                                label(for="edit_camp_type_other_text")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_other", name="edit_type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
-                                                    | #{t('camps:edit.other')}
-                                                    if (camp.type.indexOf('other') > -1)
-                                                        //- auto-fill text field with user value.
-                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other", name="edit_type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
-                                                    else
-                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="edit_type_other_text")
+                                        label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}: #{camp.type || 'n/a'}
+                                        select.form-control(id='edit_camp_type', name='type')
+                                            option(selected) ---
+                                            option(value='food')=t('camps:edit.food')
+                                            option(value='drinking/bar')=t('camps:edit.drinking')
+                                            option(value='music')=t('camps:edit.music')
+                                            option(value='workshops')=t('camps:edit.workshops')
+                                            option(value='art-supporting')=t('camps:edit.art_supporting')
+                                            option(value='other')=t('camps:edit.other')
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || 'n/a'}
@@ -125,7 +98,6 @@ block content
                                             option(value='open')=t('camps:edit.open')
                                             option(value='closed')=t('camps:edit.closed')
                                             option(value='inactive')=t('camps:edit.inactive')
-                                        
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_enabled') #{t('camps:edit.publication')}:
@@ -151,14 +123,8 @@ block content
                                             option(value="night")=t('camps:new.camp_activity_time_night')
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
-                                        input.checkbox(id='edit_camp_child_friendly', checked='#{camp.child_friendly}', type="checkbox", name='child_friendly')
-                                        //- input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
-                                        script.
-                                            // set checkbox status
-                                            var checkbox = document.getElementById("edit_camp_child_friendly");
-                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
-
+                                        label(for='edit_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
+                                        input.checkbox(id='edit_child_friendly', type="checkbox", name='child_friendly')
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_noise_level') #{t('camps:edit.camp_noise_level')}: #{details.noise_level}
@@ -182,11 +148,7 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_support_art')=t('camps:edit.support_art')
-                                        input.checkbox(id='edit_support_art', checked='#{details.support_art}', type="checkbox", name='public_support_art', value='#{details.support_art}')
-                                        script.
-                                            // set checkbox status
-                                            var checkbox = document.getElementById("edit_support_art");
-                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
+                                        input.checkbox(id='edit_support_art', type="checkbox", name='public_support_art', value='#{details.support_art}')
                     h4=t('camps:edit.location_title')
                     .camp-details.panel
                         .panel-body

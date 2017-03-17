@@ -224,7 +224,6 @@ if ($('.camps').hasClass('camp_details')) {
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
-    var type = fetchAllCheckboxValues('edit_camp_type');
     var camp_id = $('#camp_edit_camp_id').val(),
         camp_data = {
             camp_name_he: $('#edit_camp_name_he').val(),
@@ -233,16 +232,13 @@ $('#camp_edit_save').click(function() {
             camp_desc_en: $('#edit_camp_desc_en').val(),
             contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value') || $('label[for="edit_camp_contact_person_id"]').attr('data-camp-contact-person-id'),
             facebook_page_url: $('#edit_camp_facebook_page_url').val(),
-            contact_person_name: $('#edit_camp_contact_person_name').val(),
-            contact_person_email: $('#edit_camp_contact_person_email').val(),
-            contact_person_phone: $('#edit_camp_contact_person_phone').val(),
             main_contact: $('#edit_camp_main_contact option:selected').val(),
             moop_contact: $('#edit_camp_moop_contact option:selected').val(),
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
             status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
-            type: type,
+            type: $('#edit_camp_type option:selected').attr('value') || $('label[for="edit_camp_type"]').attr('data-camp-type'),
             enabled: $('#edit_camp_enabled option:selected').val(),
-            camp_activity_time: $('#edit_camp_activity_time option:selected').val(),
+            camp_activity_time: $('#edit_camp_activity_time option:selected').text(),
             child_friendly: $('#edit_camp_child_friendly:checked').length,
             noise_level: $('#edit_camp_noise_level option:selected').val(),
             public_activity_area_sqm: $('#edit_camp_public_activity_area_sqm').val(),
@@ -288,20 +284,10 @@ $('#camp_edit_unpublish').click(function() {
     }
 });
 
-// display other text field if other selected
-$('#edit_type_other').click(function(){
-    if($('#edit_type_other').is(':checked')){
-        $('#edit_type_other_text').removeClass('hidden');
-    } else {
-        $('#edit_type_other_text').addClass('hidden');
-    }
-})
-
 /**
  * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function() {
-    var type = fetchAllCheckboxValues('create_camp_type');
     var camp_data = {
         camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+ new Date()),
         camp_name_en: $('#create_camp_name_en').val(),
@@ -309,10 +295,6 @@ $('#camp_create_save').click(function() {
         camp_desc_en: $('#create_camp_desc_en').val(),
         contact_person_id: $('#create_camp_contact_person_id option:selected').val(),
         facebook_page_url: $('#create_camp_facebook_page_url').val(),
-        contact_person_name: $('#create_camp_contact_person_name').val(),
-        contact_person_email: $('#create_camp_contact_person_email').val(),
-        contact_person_phone: $('#create_camp_contact_person_phone').val(),
-        accept_families: $('#create_camp_accept_families:checked').length,
         main_contact: $('#create_camp_main_contact option:selected').val(),
         moop_contact: $('#create_camp_moop_contact option:selected').val(),
         safety_contact: $('#create_camp_safety_contact option:selected').val(),
@@ -336,6 +318,7 @@ $('#camp_create_save').click(function() {
     $('#camp_create_save_modal_request').click(function() {
         _sendRequest();
     });
+
     function _campAppendData() {
         $.each(camp_data, function(label, data) {
             if (data) {
@@ -370,26 +353,6 @@ $('#camp_create_save').click(function() {
         });
     }
 });
-// display other text field if other selected
-$('#camp_type_other').click(function(){
-    if($('#camp_type_other').is(':checked')){
-        $('#camp_type_other_text').removeClass('hidden');
-    } else {
-        $('#camp_type_other_text').addClass('hidden');
-    }
-})
-
-// Collect all checkbox values
-    function fetchAllCheckboxValues(className){
-        var val = [];
-        $('.' + className + ':checked').each(function(i){
-          val[i] = $(this).val();
-        });
-        if(val.indexOf('other') > -1){
-            val.push($('#'+ className + '_other_text').val());
-        }
-        return val.toString();
-      }
 /**
  * Component: join a camp
  */
@@ -407,7 +370,6 @@ function fetchOpenCamps(elm) {
            type: 'GET',
            success: function(data) {
                var camps = [data.camps];
-               console.log(camps);
                for (var i = 0; i < camps.length; i++) {
                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
                }
@@ -440,23 +402,23 @@ $('#join_camp_request_join_btn').click(function() {
         var user = res.data.user
         var camp = res.data.camp
         camp.name_en = join_camp_name_en
-        
+
         var request_data = {
           user: user,
           camp: camp
-        }  
-        
+        }
+
         // Dialog with user & camp details
         var details_template = 'Camp name: <u>' + join_camp_name_en + '</u><br/>Your name: <u>' + user.full_name + '</u><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
         var modal = $('#join_camp_request_modal')
         modal.find('.user_details').html(details_template);
         modal.modal('show');
-        
+
         // Send request click listener after user is approve the details
         // Action delayed with 4 second allow user to cancel the request
         $('#join_camp_send_request_btn').click(function() {
           var _sendRequestBtn = $(this);
-          
+
           $('#join_camp_close_btn').text('Cancel').click(function(e) {
             e.preventDefault();
             clearTimeout(_srt);
@@ -464,7 +426,7 @@ $('#join_camp_request_join_btn').click(function() {
             _sendRequestBtn.removeClass('Btn__is-loading').text('Send Request');
           });
           _sendRequestBtn.addClass('Btn__is-loading').text('Sending');
-          
+
           function _sendRequest() {
             $.ajax({
               url: '/camps/join/deliver',
@@ -533,4 +495,3 @@ if ($('.camp_details')) {
 /**
  * Component: create camp program
  */
- 

@@ -12,7 +12,7 @@ userRole.isAdmin = function () {
     return userRole.is(userRole.ADMIN);
 };
 
-userRole.CAMP_MANAGER = 'camp manager';
+userRole.CAMP_MANAGER = 'camp_manager';
 userRole.isCampManager = function () {
     return userRole.is(userRole.CAMP_MANAGER);
 };
