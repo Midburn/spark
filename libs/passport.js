@@ -5,6 +5,8 @@ var User = require('../models/user').User;
 var DrupalUser = require('../models/user').DrupalUser;
 var facebookConfig = require('config').get("facebook");
 var constants = require('../models/constants');
+var request = require('superagent');
+var _ = require('lodash');
 
 /***
  * tries to login based on drupal users table
@@ -13,23 +15,47 @@ var constants = require('../models/constants');
  * @param password
  * @param done
  */
-var drupal_login = function (email, password, done) {
-    DrupalUser.forge({
-        name: email
-    }).fetch().then(function (drupalUser) {
-        if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status === 1) {
-            // valid drupal password
-            // drupal user status is 1
-            // can sign up a spark user with some defaults
-            // TODO: get these details from the old profiles system
-            signup(email, password, {
-                first_name: email,
-                last_name: "",
-                gender: constants.USER_GENDERS_DEFAULT,
-                validated: true
-            }, function (newUser, error) {
-                if (newUser) {
-                    done(newUser);
+const drupal_login = (email, password, done) => {
+
+    return request
+        .post('https://profile-test.midburn.org/api/user/login')
+        .send({ 'username': email, 'password': password })
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .then((({body}) => body), (error) => console.error(error))
+};
+
+var login = function (email, password, done) {
+    // spark_drupal_gw_login(email,password,done);
+    drupal_login(email, password).then(function (drupal_user) {
+        if (drupal_user != null) {
+            new User({
+                email: email
+            }).fetch().then(function (user) {
+                if (user === null) {
+
+                    // done(false, i18next.t('user_not_validated', {
+                    //     email: email
+                    // }));
+                    signup(email, password, {
+                        first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
+                        last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
+                        cell_phone: _.get(drupal_user, 'user.field_profile_phone.und.0.value', 666),
+                        gender: constants.USER_GENDERS_DEFAULT,
+                        validated: true
+                    }, function (newUser, error) {
+                        if (newUser) {
+                            done(newUser);
+                        } else {
+                            done(false, error);
+                        }
+                    });
+                } else if (!user.attributes.validated) {
+                    done(false, i18next.t('user_not_validated', {
+                        email: email
+                    }));
+                } else if (!user.attributes.enabled) {
+                    done(false, i18next.t('user_disabled'));
                 } else {
                     done(false, error);
                 }
@@ -67,6 +93,7 @@ var signup = function (email, password, user, done) {
     var userPromise = new User({
         email: email
     }).fetch();
+    
     userPromise.then(function (model) {
         if (model) {
             done(false, i18next.t('user_exists'));
