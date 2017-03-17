@@ -122,7 +122,19 @@ var get_volunteering_info = function(req, res) {
 }
 
 var delete_volunteer = function(req, res) {
-    not_implemented(req, res);
+    //validate ....
+    new Volunteer({ user_id: req.params.user_id, department_id: req.params.department_id })
+        .destroy()
+        .then(function(model) {
+            res.json('');
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
 }
 
 module.exports = function(app, passport) {
