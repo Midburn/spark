@@ -28,10 +28,6 @@ var npo_membership_statuses = [
 
 module.exports = {
 
-    // -- system constant --
-    // note: Future release will change the event_id
-    CURRENT_EVENT_ID: "MIDBURN2017",
-
     // -- table names --
     
     USERS_TABLE_NAME: "users",
@@ -39,7 +35,6 @@ module.exports = {
     NPO_MEMBERS_TABLE_NAME: "npo_members",
     CAMPS_TABLE_NAME: "camps",
     CAMP_DETAILS_TABLE_NAME: "camp_details",
-    CAMP_MEMBERS_TABLE_NAME: "camp_members",
     DRUPAL_USERS_TABLE_NAME: "drupal_users",
 
     VOL_DEPARTMENTS_TABLE_NAME: "vol_departments",
@@ -63,8 +58,6 @@ module.exports = {
     
     CAMP_ACTIVITY_TIMES: ['morning', 'noon' ,'evening' ,'night'],
     
-    CAMP_NOISE_LEVELS: ['quiet' ,'medium' ,'noisy' ,'very noisy'],
-
-    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected'],
+    CAMP_NOISE_LEVELS: ['quiet' ,'medium' ,'noisy' ,'very noisy']
 
 };

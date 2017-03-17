@@ -31,15 +31,6 @@
             "members": "Camp Members",
             "docs": "Documents and Forms"
         },
-        "admin_index": {
-            "all_camps": "Manage Camps",
-            "all_members": "Manage Members",
-            "docs": "Uploaded Documents",
-            "new": "Create a Camp",
-            "all_camps_table": "All Camps",
-            "all_members_table": "All Members",
-            "docs_table": "All Documents and Forms"
-        },
         "new": {
             "header_title": "Create a camp",
             "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
@@ -47,7 +38,6 @@
             "btn_create": "Create a Camp",
             "basic_info": "Basic Information",
             "details": "Camp Details",
-            "files": "Files & Documents",
             "name_card_header": "Camp Name & Description",
             "name_he": "Camp name (Hebrew)",
             "name_en": "Camp name (English)",
@@ -55,10 +45,6 @@
             "desc_en": "Camp description (English)",
             "contact_card_header": "Camp Contact Personnel",
             "type": "Camp type",
-            "type_music": "Music",
-            "type_food": "Food",
-            "type_drinks": "Driks",
-            "type_other": "Other",
             "main_contact": "Camp manager",
             "moop_contact": "Camp moop contact",
             "safety_contact": "Camp safety contact",
@@ -161,7 +147,6 @@
             "since": "Since",
             "basic_info": "Basic Information",
             "details": "Basic Details",
-            "files": "Files & Documents",
             "name_and_desc": "Camp Name & Description",
             "name_en": "Name (English)",
             "name_he": "Name (Hebrew)",
@@ -226,16 +211,5 @@
             "access": "Program Accessibility",
             "kids_friendly": "Kids Friendly",
             "adult_only": "Adult Only"
-        },
-        "docs": {
-            "title": "Documents and Forms",
-            "search": "Search Camp",
-            "doc_type": "Document type",
-            "doc_name": "Document name",
-            "upload_date": "Upload date",
-            "upload_data": "Upload data",
-            "doc_status": "Status",
-            "last_doc_status": "Last status by",
-            "camp_name_en": "Camp Name (English)"
         }
 }
