@@ -31,16 +31,36 @@ var drupal_login = function (email, password, done) {
                 if (newUser) {
                     done(newUser);
                 } else {
-                    done(user);
+                    done(false, error);
                 }
             });
         } else {
+            done(false, i18next.t('invalid_user_password'));
+        }
+    });
+};
+
+var login = function (email, password, done) {
+    new User({
+        email: email
+    }).fetch().then(function (user) {
+        if (user === null) {
+            // no corresponding spark user is found
+            // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
+            // on next login - there will be a spark user, so drupal login will not be attempted again
+            drupal_login(email, password, done);
+        } else if (!user.validPassword(password)) {
+            done(false, i18next.t('invalid_user_password'));
+        } else if (!user.attributes.validated) {
             done(false, i18next.t('user_not_validated', {
                 email: email
             }));
+        } else if (!user.attributes.enabled) {
+            done(false, i18next.t('user_disabled'));
+        } else {
+            done(user);
         }
     });
-
 };
 
 var signup = function (email, password, user, done) {
@@ -56,8 +76,7 @@ var signup = function (email, password, user, done) {
                 first_name: user.first_name,
                 last_name: user.last_name,
                 gender: user.gender,
-                validated: user.validated,
-                cell_phone: user.cell_phone
+                validated: user.validated
             });
             if (password) {
                 newUser.generateHash(password);
@@ -99,11 +118,11 @@ module.exports = function (passport) {
     // LOCAL SIGNUP ============================================================
     // =========================================================================
     passport.use('local-signup', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true // allows us to pass back the entire request to the callback
-    },
+            // by default, local strategy uses username and password, we will override with email
+            usernameField: 'email',
+            passwordField: 'password',
+            passReqToCallback: true // allows us to pass back the entire request to the callback
+        },
         function (req, email, password, done) {
             signup(email, password, req.body, function (user, error) {
                 if (user) {
@@ -124,8 +143,7 @@ module.exports = function (passport) {
             passReqToCallback: true
         },
         function (req, email, password, done) {
-
-            login(email, password, function (user, error) {
+            login(email, password, function(user, error) {
                 if (user) {
                     done(null, user, null);
                 } else {
@@ -134,16 +152,16 @@ module.exports = function (passport) {
             });
         }));
 
-    // ==========
-    // Facebook login
-    // ==========
-    passport.use(new FacebookStrategy({
-        clientID: facebookConfig.app_id,
-        clientSecret: facebookConfig.app_secret,
-        callbackURL: facebookConfig.callbackBase + "/auth/facebook/callback",
-        enableProof: true,
-        profileFields: ['id', 'email', 'first_name', 'last_name']
-    },
+        // ==========
+        // Facebook login
+        // ==========
+        passport.use(new FacebookStrategy({
+            clientID: facebookConfig.app_id,
+            clientSecret: facebookConfig.app_secret,
+            callbackURL: facebookConfig.callbackBase + "/auth/facebook/callback",
+            enableProof: true,
+            profileFields: ['id', 'email', 'first_name', 'last_name']
+        },
         function (accessToken, refreshToken, profile, cb) {
             if (profile.emails === undefined) {
                 // TODO: redirect user to http://lvh.me:3000/auth/facebook/reauth
@@ -164,14 +182,14 @@ module.exports = function (passport) {
                     //    able to login through FacebookStrategy)
                     // 2. Save updated token and details
                     model.save({
-                        password: "",
-                        facebook_token: accessToken,
-                        facebook_id: profile.id,
-                        // I'm not quite sure about this.
-                        // If a user changes his Facebook email, should we change
-                        // it in our system? I think we should. Not convinced though.
-                        email: profile.emails[0].values
-                    })
+                            password: "",
+                            facebook_token: accessToken,
+                            facebook_id: profile.id,
+                            // I'm not quite sure about this.
+                            // If a user changes his Facebook email, should we change
+                            // it in our system? I think we should. Not convinced though.
+                            email: profile.emails[0].values
+                        })
                         .then(function (_model) {
                             return cb(null, model, null);
                         });
@@ -196,5 +214,5 @@ module.exports = function (passport) {
 };
 
 module.exports.sign_up = function (email, password, user, done) {
-    signup(email, password, user, done)
+  signup(email, password, user, done)
 };
