@@ -5,7 +5,7 @@ var DrupalUser = require('../models/user').DrupalUser;
 var User = require('../models/user').User;
 var knex = require('../libs/db').knex;
 var constants = require('../models/constants');
-var _ = require('underscore');
+var _ = require('lodash');
 
 const ADMIN_USER_EMAIL = "admin_routes_test@localhost";
 const ADMIN_USER_PASSWORD = "123456";
@@ -73,7 +73,7 @@ var adminTableAjaxShouldContainAdminUser = function() {
     return request.get(givenUserAdminTableAjaxUrl()).expect(200).expect(function(res) {
         console.log(JSON.parse(res.text).data);
         _(JSON.parse(res.text).data)
-            .findWhere({
+            .find({
                 email: ADMIN_USER_EMAIL,
                 first_name: ADMIN_USER_FIRST_NAME
             })
