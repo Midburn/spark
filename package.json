@@ -24,7 +24,7 @@
     "deploy": "echo SPARK_DEPLOYMENT_TIME=\\\"$(date \"+%F %T\")\\\" >> .env",
     "//lint": "runs static analysis using eslint",
     "lint": "./node_modules/.bin/eslint .",
-    "install": "prebuild-install || node-gyp rebuild"
+    "postinstall": "prebuild-install"
   },
   "dependencies": {
     "async": "^2.1.4",
