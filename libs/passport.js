@@ -25,32 +25,6 @@ const drupal_login = (email, password, done) => {
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .then((({body}) => body), (error) => console.error(error))
 
-
-
-    // DrupalUser.forge({
-    //     name: email
-    // }).fetch().then(function (drupalUser) {
-    //     if (drupalUser && drupalUser.validPassword(password) && drupalUser.attributes.status === 1) {
-    //         // valid drupal password
-    //         // drupal user status is 1
-    //         // can sign up a spark user with some defaults
-    //         // TODO: get these details from the old profiles system
-    //         signup(email, password, {
-    //             first_name: email,
-    //             last_name: "",
-    //             gender: constants.USER_GENDERS_DEFAULT,
-    //             validated: true
-    //         }, function (newUser, error) {
-    //             if (newUser) {
-    //                 done(newUser);
-    //             } else {
-    //                 done(false, error);
-    //             }
-    //         });
-    //     } else {
-    //         done(false, i18next.t('invalid_user_password'));
-    //     }
-    // });
 };
 
 var login = function (email, password, done) {

@@ -31,14 +31,6 @@ exports.up = function (knex, Promise) {
             table.string('contact_person_phone', 14);
 
         }),
-        // knex.schema.table(constants.CAMP_DETAILS_TABLE_NAME, function (table) {
-        //     table.dropColumn('camp_id');
-        // }),
-        // knex.schema.alterTable(constants.CAMP_DETAILS_TABLE_NAME, function (table) {
-        //     // table.integer('camp_id').unsigned();
-        //     table.unique(['camp_id']);
-        //     table.foreign('camp_id').references(constants.CAMPS_TABLE_NAME + '.id');
-        // }),
         knex.schema.createTable(constants.CAMP_MEMBERS_TABLE_NAME, function (table) {
             table.integer('camp_id').unsigned();
             table.integer('user_id').unsigned();
