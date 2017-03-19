@@ -93,7 +93,6 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "mocha": "^3.2.0",
-    "node-sass": "^3.13.1",
     "supertest": "^2.0.1"
   }
 }
