@@ -7,6 +7,7 @@ var facebookConfig = require('config').get("facebook");
 var constants = require('../models/constants');
 var request = require('superagent');
 var _ = require('lodash');
+//
 var spark_drupal_gw_login = function (email, password, done) {
     email = 'asaf@omc.co.il';
     password = 'asiOMC769';
