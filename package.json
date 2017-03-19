@@ -23,8 +23,7 @@
     "//deploy": "prepare the directory of an extracted deployment package",
     "deploy": "echo SPARK_DEPLOYMENT_TIME=\\\"$(date \"+%F %T\")\\\" >> .env",
     "//lint": "runs static analysis using eslint",
-    "lint": "./node_modules/.bin/eslint .",
-    "postinstall": "prebuild-install"
+    "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
     "async": "^2.1.4",
@@ -71,7 +70,6 @@
     "passport-facebook": "2.1.1",
     "passport-local": "^1.0.0",
     "passport-remember-me": "^0.0.1",
-    "prebuild-install": "^2.1.1",
     "rand-token": "^0.2.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
