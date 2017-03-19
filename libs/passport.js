@@ -17,7 +17,6 @@ var _ = require('lodash');
  * @param done
  */
 const drupal_login = (email, password, done) => {
-
     return request
         .post('https://profile-test.midburn.org/api/user/login')
         .send({ 'username': email, 'password': password })
