@@ -4,8 +4,6 @@ const breadcrumbs = require('express-breadcrumbs');
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
-var log = require('../libs/logger')(module);
-
 module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());

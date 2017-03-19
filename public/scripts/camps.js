@@ -302,8 +302,8 @@ $('#camp_edit_unpublish').click(function() {
 });
 
 // display other text field if other selected
-$('#edit_type_other').click(function(){
-    if($('#edit_type_other').is(':checked')){
+$('#edit_type_other').click(function() {
+    if ($('#edit_type_other').is(':checked')) {
         $('#edit_type_other_text').removeClass('hidden');
     } else {
         $('#edit_type_other_text').addClass('hidden');
@@ -386,8 +386,8 @@ $('#camp_create_save').click(function() {
 });
 
 // display other text field if other selected
-$('#camp_type_other').click(function(){
-    if($('#camp_type_other').is(':checked')){
+$('#camp_type_other').click(function() {
+    if ($('#camp_type_other').is(':checked')) {
         $('#camp_type_other_text').removeClass('hidden');
     } else {
         $('#camp_type_other_text').addClass('hidden');
@@ -395,12 +395,12 @@ $('#camp_type_other').click(function(){
 })
 
 // Collect all checkbox values
-    function fetchAllCheckboxValues(className){
+    function fetchAllCheckboxValues(className) {
         var val = [];
-        $('.' + className + ':checked').each(function(i){
+        $('.' + className + ':checked').each(function(i) {
           val[i] = $(this).val();
         });
-        if(val.indexOf('other') > -1){
+        if (val.indexOf('other') > -1) {
             val.push($('#'+ className + '_other_text').val());
         }
         return val.toString();
