@@ -22,7 +22,6 @@ const drupal_login = (email, password, done) =>
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .then(({body}) => body, (error) => console.error(error));
 
-
 var login = function (email, password, done) {
   drupal_login(email, password).then(function (drupal_user) {
     if (drupal_user != null) {
