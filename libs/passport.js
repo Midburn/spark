@@ -8,61 +8,6 @@ var constants = require('../models/constants');
 var request = require('superagent');
 var _ = require('lodash');
 //
-var spark_drupal_gw_login = function (email, password, done) {
-    email = 'asaf@omc.co.il';
-    password = 'asiOMC769';
-    request({
-        url: 'https://profile-test.midburn.org/api/user/login',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        form: { 'username': email, 'password': password }
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            console.log(body);
-            var data = JSON.parse(body);
-            if (body.indexOf('token') > 0) {
-                // user logged in good
-                var userPromise = new User({
-                    email: email
-                }).fetch();
-                console.log(body);
-                userPromise.then(function (model) {
-                    if (model) {
-                        done(false, i18next.t('user_exists'));
-                    } else {
-                        var newUser = new User({
-                            email: email,
-                            first_name: user.first_name,
-                            last_name: user.last_name,
-                            gender: user.gender,
-                            validated: user.validated
-                        });
-                        if (password) {
-                            newUser.generateHash(password);
-                        }
-                        if (!user.validated) {
-                            newUser.generateValidation();
-                        }
-                        newUser.save().then(function (model) {
-                            done(newUser);
-                        });
-                    }
-                });
-
-                done(newUser);
-
-                // res.status(200).jsonp({ status: 'true', 'massage': 'user authorized', 'data': data });
-            }
-            else {
-                done(false, 'unknown');
-            }
-        }
-        else {
-            done(false, 'unknown');
-            // res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
-        }
-    });
-}
 
 /***
  * tries to login based on drupal users table
