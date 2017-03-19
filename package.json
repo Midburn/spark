@@ -61,6 +61,7 @@
     "i18next-node-fs-backend": "^0.1.2",
     "jade": "^1.11.0",
     "knex": "^0.11.7",
+    "lodash": "^4.17.4",
     "module-id": "2.0.4",
     "morgan": "~1.7.0",
     "mysql": "^2.11.1",
@@ -76,7 +77,6 @@
     "requirejs": "^2.3.2",
     "serve-favicon": "~2.3.0",
     "sprintf-js": "1.0.3",
-    "underscore": "^1.8.3",
     "webpack": "^1.14.0",
     "winston": "2.3.0"
   },
