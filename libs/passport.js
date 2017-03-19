@@ -15,7 +15,6 @@ var spark_drupal_gw_login = function (email, password, done) {
     form: { 'username': email, 'password': password }
   }, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      console.log(body)
       var data = JSON.parse(body)
       if (body.indexOf('token') > 0) {
                 // user logged in good
@@ -46,13 +45,13 @@ var spark_drupal_gw_login = function (email, password, done) {
           }
         })
         done(newUser)
-        res.status(200).jsonp({ status: 'true', 'massage': 'user authorized', 'data': data })
+        //res.status(200).jsonp({ status: 'true', 'massage': 'user authorized', 'data': data })
       } else {
         done(false, 'unknown')
       }
     } else {
       done(false, 'unknown')
-      res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' })
+      //res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' })
     }
   })
 }
