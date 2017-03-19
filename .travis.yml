@@ -3,10 +3,9 @@ node_js:
   - "7"
 cache:
   directories:
-    - node_modules
     - bower_components
 script:
-  - yarn add bower knex
+  - yarn add bower
   - ./node_modules/.bin/bower install
   - ./node_modules/.bin/knex migrate:latest
   - npm test
