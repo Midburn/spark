@@ -7,7 +7,7 @@ var knex = require('../libs/db').knex;
 var constants = require('../models/constants');
 var _ = require('lodash');
 
-const ADMIN_USER_EMAIL = "admin_routes_test@localhost";
+const ADMIN_USER_EMAIL = "omerpines@hotmail.com";
 const ADMIN_USER_PASSWORD = "123456";
 const ADMIN_USER_FIRST_NAME = "Admin routes";
 
@@ -129,6 +129,7 @@ var shouldChangeAdminUserLastNameTo = function(last_name) {
 
 describe('Admin routes', function() {
     it('should show some statistical data on admin homepage', function() {
+        this.timeout(5000);
         return givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
     });
 
