@@ -18,7 +18,8 @@ head
     link( rel="stylesheet", href="/stylesheets/main.scss" )
     // Font-awesome
     link(href='/bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
-    script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
+    // SweetAlert
+    link(rel='stylesheet', type='text/css', href='/bower_components/sweetalert/dist/sweetalert.css')
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
@@ -35,3 +36,4 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     script(src="/scripts/camps_v2.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
     script(src="/scripts/members.js")
+    script(src='/bower_components/sweetalert/dist/sweetalert.min.js')

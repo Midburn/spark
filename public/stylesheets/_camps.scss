@@ -11,22 +11,6 @@ body {
 
 body[lang='he'] {
     font-family: 'Rubik', sans-serif;
-    
-    .camps .checkbox {
-        input[type=checkbox] {
-            margin-top: 8px;
-            margin-right: -20px;
-        }
-        label {
-            line-height: 2em;
-        }
-        .checkbox-other {
-            display: inline-block;
-            margin-right: 10px;
-            width: 80%;
-            height: 100%;
-        }
-    }
 }
 
 body[lang="he"] .dash-panel a:after {
@@ -42,26 +26,7 @@ body[lang="en"] {
         .dash-panel a:after {
             left: 4px;
         }
-        .checkbox {
-            label {
-                line-height: 2em;
-            }
-            input[type=checkbox] {
-                margin-top: 8px;
-                margin-left: -20px;
-            }
-            .checkbox-other {
-            width: 80%;
-            display: inline-block;
-            margin-left: 10px;
-            height: 100%;
-        }
-        }
     }
-}
-
-section {
-    padding: 0 15px;
 }
 
 .Btn {
@@ -81,7 +46,7 @@ section {
     text-decoration: none;
     border: 0;
     transition: all 0.15s ease;
-    margin: 0 10px 10px;
+    margin: 0 10px 15px;
 
     &:focus,
     &:hover {
@@ -214,10 +179,6 @@ section {
     }
 }
 
-a.btn.disabled {
-    pointer-events: auto;
-}
-
 .pos-r {
     position: relative;
 }
@@ -240,6 +201,58 @@ body[lang="en"] .dash-panel a:after {
     left: 4px;
 }
 
+.card {
+    padding: 40px 40px 40px 120px;
+    margin-bottom: 2em;
+    background-color: $card-bg;
+    border-radius: 4px;
+
+    &__shad {
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    &__padding--even {
+        padding: 20px !important;
+    }
+
+    h2:after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 4px;
+        background: #6772e5;
+        margin: 15px 0;
+    }
+
+    input[name='camp_name_en'] {
+        padding-left: 40px;
+
+        &.error {
+            border-color: red;
+        }
+    }
+
+    span.indicator {
+        position: absolute;
+        top: auto;
+        right: auto;
+        left: 10px;
+        bottom: 4px;
+
+        .glyphicon {
+            font-size: 18px;
+        }
+
+        .glyphicon-remove {
+            color: red;
+        }
+
+        .glyphicon-ok {
+            color: green;
+        }
+    }
+}
+
 .camps {
     .controls {
         margin-bottom: 2em;
@@ -251,63 +264,8 @@ body[lang="en"] .dash-panel a:after {
         }
     }
 
-    .card {
-        padding: 40px 40px 40px 120px;
-        margin-bottom: 2em;
-        background-color: $card-bg;
-        border-radius: 4px;
-
-        &__shad {
-            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        &__padding--even {
-            padding: 20px !important;
-        }
-
-        h2:after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 4px;
-            background: #6772e5;
-            margin: 15px 0;
-        }
-
-        input[name='camp_name_en'] {
-            padding-right: 40px;
-            padding-left: 12px;
-            direction: ltr;
-            text-align: left;
-
-            &.error {
-                border-color: red;
-            }
-        }
-
-        span.indicator {
-            position: absolute;
-            top: auto;
-            left: auto;
-            right: 10px;
-            bottom: 4px;
-
-            .glyphicon {
-                font-size: 18px;
-            }
-
-            .glyphicon-remove {
-                color: red;
-            }
-
-            .glyphicon-ok {
-                color: green;
-            }
-        }
-    }
-
     input[name='camp_name_en'] {
-        padding-right: 40px;
+        padding-left: 40px;
 
         &.error {
             border-color: red;
@@ -512,10 +470,6 @@ textarea:focus {
     float: none !important;
 }
 
-div[class^=col-xs] {
-    padding: 0.5em;
-}
-
 input.checkbox {
     height: 20px;
     width: 20px;
@@ -524,14 +478,4 @@ input.checkbox {
 .form__input--important {
     background: #222;
     color: #ccc;
-}
-
-.camps.camp_admin_index input[name='camp_name_en']{
-    direction: ltr;
-    text-align: left;
-}
-
-.choose_name span.indicator span.glyphicon {
-    direction: ltr;
-    text-align: left;
 }

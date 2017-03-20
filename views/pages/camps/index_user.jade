@@ -1,0 +1,39 @@
+extends ../../includes/page
+block content
+    .camps.camp_index
+        section
+            .container
+                h1.jumbotron-heading=t('camps:dash.title')
+                p.lead.text-muted=t('camps:dash.desc')
+                div.block-center
+                .cards--wrapper(style="visibility: visible; min-height: 268px;")
+                    if user.isCampFree
+                        .join_camp.card
+                            h2=t('camps:join.header_title')
+                            h4=t('camps:join.camp_choosing_title')
+                            .col-sm-8.col-xs-12
+                                label=t('camps:new.name_en')
+                                input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
+                                select(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
+                            .col-sm-4.col-xs-12
+                                a.Btn.Btn__green.Btn__inline(id="join_camp_request_join_btn", role='button')=t('camps:join.request')
+                    else
+                      .join_camp_pending.card
+                          h2=t('camps:pending.header_title')
+                          h4=t('camps:pending.camp_choosing_title')
+                          | camp name
+                          
+        // Camp join request modal
+        .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')
+            .modal-dialog.card.card__padding--even.card__shad(role='document')
+                div
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        h4.modal-title=t('camps:dash.join_request')
+                    .modal-body
+                        p=t('camps:dash.join_request_desc')
+                        .user_details
+                    .modal-footer
+                        button.Btn.Btn__transparent(id='join_camp_close_btn', type='button', data-dismiss='modal')=t('camps:dash.join_close')
+                        button.Btn.Btn__green(id='join_camp_send_request_btn', type='button')=t('camps:dash.join_send')

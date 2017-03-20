@@ -84,22 +84,22 @@ block content
                                 .col-xs-12
                                     p=t('camps:new.type')
                                     .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="camp_type_music", name="camp_type_music", value="music")
                                         label(for="camp_type_music")
-                                            input(type="checkbox", class='create_camp_type', id="camp_type_music", name="camp_type_music", value="music")
                                             | #{t('camps:new.type_music')}
                                     .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="camp_type_drinks", name="camp_type_drinks", value="drinks")
                                         label(for="camp_type_drinks")
-                                            input(type="checkbox", class='create_camp_type', id="camp_type_drinks", name="camp_type_drinks", value="drinks")
                                             | #{t('camps:new.type_drinks')}
                                     .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="camp_type_food", name="camp_type_food", value="food")
                                         label(for="camp_type_food")
-                                            input(type="checkbox", class='create_camp_type', id="camp_type_food", name="camp_type_food", value="food")
                                             | #{t('camps:new.type_food')}
                                     .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="create_camp_type_other", name="camp_type_other", value="other")
                                         label(for="create_camp_type_other")
-                                            input(type="checkbox", class='create_camp_type', id="create_camp_type_other", name="camp_type_other", value="other")
                                             | #{t('camps:new.type_other')}
-                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="myname")
+                                        input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="myname")
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_status') #{t('camps:edit.status')}:

@@ -2,6 +2,7 @@
   "name": "spark",
   "private": true,
   "dependencies": {
-    "gentelella": "^1.4.0"
+    "gentelella": "^1.4.0",
+    "sweetalert": "^1.1.3"
   }
 }

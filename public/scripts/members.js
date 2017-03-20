@@ -10,7 +10,7 @@ app.controller("membersController", function($scope, $http) {
     $scope.changeOrderBy = function(orderByValue) {
         $scope.orderMembers = orderByValue;
     }
-    if (typeof camp_id !== 'undefined' && camp_id !== 'null') {
+    if (typeof camp_id !== 'undefined') {
         _getMembers();
     }
 });

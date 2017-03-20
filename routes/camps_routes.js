@@ -4,8 +4,6 @@ const breadcrumbs = require('express-breadcrumbs');
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
-var log = require('../libs/logger')(module);
-
 module.exports = function (app, passport) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
@@ -20,7 +18,7 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/camps'
         });
         if (req.user.hasRole('admin')) {
-            res.render('pages/camps/index-admin', {
+            res.render('pages/camps/index_admin', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
             });
@@ -35,7 +33,7 @@ module.exports = function (app, passport) {
              * if so - redirect to camp profile (without edit option)
              */
             // User has no permissions
-            res.render('pages/camps/index-user', {
+            res.render('pages/camps/index_user', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
             });
@@ -107,11 +105,11 @@ module.exports = function (app, passport) {
      * CRUD Routes
      */
     // Read
-    app.get('/:lng/camps/:id', (req, res) => {
+    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({
             id: req.params.id
         }).fetch({
-            // withRelated: ['details']
+            withRelated: ['details']
         }).then((camp) => {
             User.forge({
                 user_id: camp.toJSON().main_contact
@@ -120,8 +118,7 @@ module.exports = function (app, passport) {
                     user: req.user,
                     id: req.params.id,
                     camp: camp.toJSON(),
-                    details: camp.toJSON(),
-                    // details: camp.related('details').toJSON()
+                    details: camp.related('details').toJSON()
                 });
             });
         }).catch((e) => {
@@ -135,20 +132,15 @@ module.exports = function (app, passport) {
     });
     // Edit
     app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
-        // console.log ("edit start");
-        // res.send('checking output');
-        // log.info("executing???");      
-
         Camp.forge({
             id: req.params.id
         }).fetch({
-            // withRelated: ['details']
+            withRelated: ['details']
         }).then((camp) => {
             res.render('pages/camps/edit', {
                 user: req.user,
                 camp: camp.toJSON(),
-                details: camp.toJSON(),
-                // details: camp.related('details').toJSON()
+                details: camp.related('details').toJSON()
             })
         })
     });
@@ -173,23 +165,6 @@ module.exports = function (app, passport) {
             });
         });
     });
-    /*
-     * import csv module
-     */
-    app.get('/:lng/import/:type', userRole.isLoggedIn(), (req, res) => {
-        switch (req.params.type) {
-            case 'csv':
-                _CSV();
-                break;
-            default:
-
-        }
-
-        function _CSV() {
-            // import csv into the database
-
-        }
-    })
     // Destroy
     app.get('/:lng/camps/:id/destroy', userRole.isAdmin(), (req, res) => {
         Camp.forge({
