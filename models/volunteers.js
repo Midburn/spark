@@ -2,7 +2,7 @@ var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants.js');
 var User = require('./user').User;
 
-var Role = bookshelf.Model.extend({
+var VolunteerRole = bookshelf.Model.extend({
     tableName: constants.VOL_DEPARTMENT_ROLES_TABLE_NAME,
     volunteers: function() {
         return this.belongsToMany(Volunteer, 'id', 'role_id');
@@ -30,7 +30,7 @@ var Volunteer = bookshelf.Model.extend({
         return this.belongsTo(Department, 'department_id');
     },
     role: function() {
-        return this.belongsTo(Role, 'role_id', 'id');
+        return this.belongsTo(VolunteerRole, 'role_id', 'id');
     },
     type_in_shift: function() {
         return this.belongsTo(TypeInShift, 'type_in_shift_id');
@@ -72,7 +72,7 @@ var Schedule = bookshelf.Model.extend({
 
 module.exports = {
     Volunteer: Volunteer,
-    Role: Role,
+    VolunteerRole: VolunteerRole,
     Shift: Shift,
     Department: Department,
     Schedule: Schedule,

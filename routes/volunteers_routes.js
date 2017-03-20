@@ -93,10 +93,23 @@ var get_department_volunteers = function(req, res) {
 ///POST volunteer/department/department_id/volunteers
 var post_volunteers = function(req, res) {
     if (__is_dep_vol_manager(req.user.id) && req.body !== undefined) {
-        for (var index = 0; index < array.body.length; index++) {
+        for (var index = 0; index < req.body.length; index++) {
             var element = req.body[index];
             console.log('Will add ' + JSON.stringify(element));
             //TODO get user_ids.... add to vaolunteers table.
+            //https://profile-test.midburn.org/en/api/views/api_user_search?mail=1467
+            var user_id = index;
+            Volunteer.forge({ user_id: user_id, department_id: req.params.department_id, event_id: 0 }).save().then((vol) => {
+                console.log('adding ' + user_id + " to vol department " + department_id);
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                })
+            });
+            res.send(200);
         }
     } else {
         res.status(401).json({ message: "Not Authorized" });
@@ -126,7 +139,7 @@ var delete_volunteer = function(req, res) {
     new Volunteer({ user_id: req.params.user_id, department_id: req.params.department_id })
         .destroy()
         .then(function(model) {
-            res.json('');
+            res.status(200);
         }).catch((err) => {
             res.status(500).json({
                 error: true,
@@ -146,7 +159,7 @@ module.exports = function(app, passport) {
     app.get('/volunteers/volunteers', userRole.isLoggedIn(), get_volunteers);
     //user story 2
     app.get('/volunteer/department/:department_id/volunteers', userRole.isLoggedIn(), get_department_volunteers);
-    app.post('/volunteer/department/:department_id/volunteers', post_volunteers);
-    app.put('/volunteer/department/:department_id/volunteers/:user_id', put_volunteer);
-    app.delete('/volunteer/department/:department_id/volunteers/:user_id', delete_volunteer);
+    app.post('/volunteer/department/:department_id/volunteers', userRole.isLoggedIn(), post_volunteers);
+    app.put('/volunteer/department/:department_id/volunteers/:user_id', userRole.isLoggedIn(), put_volunteer);
+    app.delete('/volunteer/department/:department_id/volunteers/:user_id', userRole.isLoggedIn(), delete_volunteer);
 }
