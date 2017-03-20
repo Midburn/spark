@@ -24,7 +24,7 @@ const drupal_login = (email, password, done) =>
 
 var login = function (email, password, done) {
   //XXX: NASTY HACK FOR TESTS UNTIL WE HAVE A STAGING DRUPAL
-  if('admin_routes_test@localhost' === email && '123456' === password) {
+  if (email === 'admin_routes_test@localhost' && password === '123456') {
      new User({
         email: email
       }).fetch().then(function (user) { done(user); });
