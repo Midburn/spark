@@ -89,6 +89,6 @@ describe('Main routes', function () {
                 user.attributes.password.length.should.be.above(20);
                 user.attributes.email.should.equal(email);
             });
-        }).then(done);
+        }).then(done).catch(done);
     });
 });
