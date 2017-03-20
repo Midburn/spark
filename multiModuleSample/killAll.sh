@@ -1,0 +1,1 @@
+ps -A|grep 'node index.js'|grep -v grep|awk '{print $1}' |xargs kill
