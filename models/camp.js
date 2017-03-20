@@ -5,6 +5,9 @@ var Camp = bookshelf.Model.extend({
     tableName: constants.CAMPS_TABLE_NAME,
     details: function() {
       return this.hasOne(CampDetails)
+    },
+    members: function() {
+        return this.hasMany(CampMembers)
     }
 });
 
@@ -13,6 +16,14 @@ var CampDetails = bookshelf.Model.extend({
     camp: function() {
         return this.belongsTo(Camp);
     }
+});
+
+var CampMembers = bookshelf.Model.extend({
+    tableName: constants.CAMP_MEMBERS_TABLE_NAME,
+    camp: function() {
+        return this.belongsTo(Camp);
+    }
+
 });
 
 // Create the model and expose it

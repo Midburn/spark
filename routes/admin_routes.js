@@ -17,6 +17,7 @@ var serverConfig = config.get('server');
 var log = require('../libs/logger.js')(module);
 var datatableAdmin = require('../libs/admin').datatableAdmin;
 var adminRender = require('../libs/admin').adminRender;
+var sign_up = require('../libs/passport').sign_up;
 
 router.get('/', userRole.isAdmin(), function (req, res) {
     adminRender(req, res, 'admin/home.jade', {
@@ -39,9 +40,10 @@ datatableAdmin("users", router, {
         {title: "Id", attr: "user_id", type: "primary"},
         {title: "Email", attr: "email", type: "string"},
         {title: "First name", attr: "first_name", type: "string"},
-        {title: "Last name", attr: "last_name", type: "string"}
+        {title: "Last name", attr: "last_name", type: "string"},
+        {title: "Roles", attr: "roles", type: "string"}
     ],
-    selectColumns: ["user_id", "email", "first_name", "last_name"],
+    selectColumns: ["user_id", "email", "first_name", "last_name", "roles"],
     defaultOrder: [[ 1, "asc" ]],
     filter: function(qb, searchTerm) {
         qb
@@ -55,7 +57,7 @@ datatableAdmin("users", router, {
     },
     addTitle: "Add User",
     addCallback: function(body, done) {
-        passport.signup(body.email, "", body, function(user, error) {
+        sign_up(body.email, "spark", body, function(user, error) {
             if (user) {
                 done(true, "Great Success! 1 user added");
             } else {
@@ -77,14 +79,14 @@ datatableAdmin("users", router, {
 datatableAdmin("camps", router, {
     "model": Camp,
     "columns": [
-        {"attr": "id", type: "primary"},
-        {"attr": "camp_name_he", type: "string"},
-        {"attr": "camp_name_en", type: "string"},
-        {"attr": "camp_desc_he", type: "string"},
-        {"attr": "camp_desc_en", type: "string"},
-        {"attr": "type", type: "string"},
-        {"attr": "status", type: "string"},
-        {"attr": "enabled", type: "string"}
+        {title: "Id", attr: "id", type: "primary"},
+        {title: "Camp name (HE)", attr: "camp_name_he", type: "string"},
+        {title: "Camp name (EN)", attr: "camp_name_en", type: "string"},
+        {title: "Camp desc (HE)", attr: "camp_desc_he", type: "string"},
+        {title: "Camp desc (EN)", attr: "camp_desc_en", type: "string"},
+        {title: "Type", attr: "type", type: "string"},
+        {title: "Status", attr: "status", type: "string"},
+        {title: "Enabled", attr: "enabled", type: "string"}
     ],
     selectColumns: ["id", "camp_name_he", "camp_name_en", "camp_desc_he", "camp_desc_en", "type", "status", "enabled"],
     defaultOrder: [[ 1, "asc" ]],

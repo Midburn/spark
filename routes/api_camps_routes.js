@@ -1,8 +1,12 @@
-// var config = require('config');
-
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
 var CampDetails = require('../models/camp').CampDetails;
+var config = require('config');
+
+const userRole = require('../libs/user_role');
+
+var mail = require('../libs/mail'),
+    mailConfig = config.get('mail');
 
 module.exports = function(app, passport) {
     /**
@@ -45,7 +49,8 @@ module.exports = function(app, passport) {
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
             type: req.body.camp_type,
-            created_at: Date()
+            created_at: Date(),
+            updated_at: Date()
         }).save().then((camp) => {
             res.json({
                 error: false,
@@ -312,15 +317,18 @@ module.exports = function(app, passport) {
     });
 
     /**
-     * API: (GET) return enabled & open camps list
+     * API: (GET) return camps list which are open to new members
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({status: 'open', enabled: '1'}).fetch().then((camp) => {
+        Camp.forge({status: 'open'}).fetch({
+          require: true,
+          columns: ['id', 'camp_name_en']
+        }).then((camp) => {
             if (camp !== null) {
-                res.status(200).json({camps: camp.toJSON()})
+                res.status(200).json({ camps: camp.toJSON() })
             } else {
-                res.status(404).send('Not found');
+                res.status(404).json({ data: { message: 'Not found' } })
             }
         }).catch((err) => {
             res.status(500).json({
@@ -331,25 +339,98 @@ module.exports = function(app, passport) {
             });
         });
     });
+
     /**
-     * API: (GET) send camp join request
-     * request => /camps/join
+     * API: (GET) camp join request
+     * params: camp_id
+     * request => /camps/2/join
      */
-    app.get('/camps/join/:camp_id/:id', (req, res) => {
-        var camp_id = req.params.camp_id, // eslint-disable-line no-unused-vars
-            user_id = req.params.id;
-        // Send email to camp manager for a join request, with user details;
-        User.forge({user_id: user_id}).fetch({require: true, columns: '*'}).then((user) => {
-            res.json({first_name: user.get('first_name'), last_name: user.get('last_name'), email: user.get('email'), cell_phone: user.get('cell_phone')});
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
+    app.get('/camps/:id/join', userRole.isLoggedIn(), (req, res) => {
+        var user = {
+          id: req.user.attributes.user_id,
+          full_name: [req.user.attributes.first_name, req.user.attributes.first_name].join(', '),
+          email: req.user.attributes.email,
+          camp_id: req.user.attributes.camp_id
+        }
+        var camp = {
+          id: req.params.id,
+          manager_email: '' // later to be added
+        };
+
+        // User is camp free and doesn't have pending join request
+        // User details will be sent to camp manager for approval
+        if (req.user.isCampFree) {
+          // Fetch camp manager email address
+          User.forge({camp_id: camp.id})
+              .fetch({
+                  require: true,
+                  columns: ['camp_id', 'email', 'roles']
+                })
+              .then((fetched_user) => {
+                // Validate user is a camp_manager
+                if (fetched_user.isCampManager) {
+                  camp.manager_email = fetched_user.get('email')
+                  // Response
+                  res.json({
+                      data: {
+                        user: user,
+                        camp: camp
+                      }
+                    });
+                } else {
+                  res.status(404).json({ data: { message: 'Couldn\'t find camp manager' } })
                 }
-            });
-        });
+              }).catch((e) => {
+                  res.status(500).json({
+                      error: true,
+                      data: {
+                          message: e.message
+                      }
+                  });
+              });
+        } else {
+            // User cannot join another camp
+            res.status(404).json({ data: { message: 'User can only join one camp!' } })
+        }
     });
+    app.post('/camps/join/deliver', userRole.isLoggedIn(), (req, res) => {
+      var camp_manager_email = req.body['camp[manager_email]']
+      var user_id = req.user.attributes.user_id
+
+      // Mark user with request-pending
+      User.forge({user_id: user_id})
+          .fetch()
+          .then((user) => {
+            user.save({camp_id: -1}).then(function () {
+              deliver()
+              res.status(200).end()
+          })
+          .catch((e) => {
+            res.status(500).json({
+              error: true,
+              data: {
+                message: e.message
+              }
+            })
+          })
+          })
+
+      /**
+       * Deliver email request to camp manager
+       * notifiying a user wants to join his camp
+       * @return {boolean} should return true if mail delivered. FIXME: in mail.js
+       */
+      function deliver() {
+        // FIXME: this function should return success value (async) and indicates to user.
+        mail.send(
+          camp_manager_email,
+          mailConfig.from,
+          'Spark: someone wants to join your camp!',
+          'emails/camps/join_request', {}
+        )
+      }
+    });
+
     /**
      * API: (POST) receive request and forward to mail
      * request => /camps/join/request
@@ -384,4 +465,31 @@ module.exports = function(app, passport) {
             });
         });
     });
+
+    /**
+    * API: (GET) return camp manager email
+    * query user with attribute: camp_id
+    * request => /camps/1/camp_manager
+    */
+   app.get('/camps/:id/manager', (req, res) => {
+     User.forge({camp_id: req.params.id})
+         .fetch({
+             require: true,
+             columns: ['email', 'roles']
+           })
+         .then((user) => {
+           if (user.get('roles').indexOf('camp_manager')) {
+             res.status(200).json({user: {email: user.get('email')}})
+           } else {
+             res.status(404).json({data: {message: 'Not found'}})
+           }
+         }).catch((e) => {
+             res.status(500).json({
+                 error: true,
+                 data: {
+                     message: e.message
+                 }
+             });
+         });
+   })
 }
