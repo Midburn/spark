@@ -12,7 +12,7 @@ module.exports = function (app, passport) {
         console.log(req);
 
         request({
-            url: 'https://profile-test.midburn.org/api/user/login',
+            url: 'https://profile.midburn.org/api/user/login',
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             form: { 'username': req.query.username, 'password': req.query.password }
