@@ -149,6 +149,7 @@ module.exports = function (app, passport) {
             }).fetch().then((user) => {
                 res.render('pages/camps/camp', {
                     user: req.user,
+                    userLoggedIn: req.user.hasRole('logged in'),
                     id: req.params.id,
                     camp: camp.toJSON(),
                     details: camp.related('details').toJSON(),
