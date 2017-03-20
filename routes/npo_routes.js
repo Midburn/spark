@@ -62,7 +62,7 @@ router.get('/join', userRole.isLoggedIn(), function (req, res) {
     },
     {
         name: 'breadcrumbs.npo_join',
-        url: '/' + req.params.lng + '/npo'
+        url: '/' + req.params.lng + '/npo/join'
     }]);
     loadMember(req.user.id, function (member) {
         res.render('pages/npo_join', {

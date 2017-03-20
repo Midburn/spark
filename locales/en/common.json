@@ -63,7 +63,8 @@
     "breadcrumbs": {
         "home": "Home",
         "npo": "Midburn NPO",
-        "npo_join": "Join NPO"
+        "npo_join": "Join NPO",
+        "whoami": "Manage Profile"
     },
     "footer": {
         "scrolltop": "Back to top",
