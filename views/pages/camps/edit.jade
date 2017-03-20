@@ -13,8 +13,10 @@ block content
             .controls.row
                 .col-xs-12    
                     //- Card switcher
-                    button.Btn.Btn__default.card-switcher--card1=t('camps:edit.basic_info')
-                    button.Btn.Btn__transparent.card-switcher--card2=t('camps:edit.details')
+                    button.Btn.Btn__default.card-switcher#1=t('camps:edit.basic_info')
+                    button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
+                    button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.members')
+                    button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')
             .cards--wrapper.card__shad.row
                 //- Card 1
                 .card.card-first
@@ -42,9 +44,11 @@ block content
                                 .row
                                     .col-md-4
                                         .col-xs-12
-                                            label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
+                                            label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}
+                                            label(style='margin: 0 2px;') | Current: 
+                                                a(id="edit_camp_contact_person_id_current", data-user-id="#{camp.contact_person_id}")
                                             select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
-                                                option(selected) ---
+                                                option(selected) Click to change
                                     .col-md-4
                                         .col-xs-12
                                             label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
@@ -97,26 +101,23 @@ block content
                                     .col-xs-12
                                         label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
                                             .checkbox
+                                                input(type="checkbox", class='edit_camp_type', id="edit_type_music", name="edit_type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
                                                 label(for="edit_type_music")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_music", name="edit_type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
                                                     | #{t('camps:edit.music')}
                                             .checkbox
+                                                input(type="checkbox", class='edit_camp_type', id="edit_type_drinks", name="edit_type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
                                                 label(for="edit_type_drinks")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_drinks", name="edit_type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
                                                     | #{t('camps:edit.drinking')}
                                             .checkbox
+                                                input(type="checkbox", class='edit_camp_type', id="edit_type_food", name="edit_type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
                                                 label(for="edit_type_food")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_food", name="edit_type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
                                                     | #{t('camps:edit.food')}
                                             .checkbox
-                                                label(for="edit_camp_type_other_text")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_other", name="edit_type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
+                                                input(type="checkbox", class='edit_camp_type', id="edit_camp_type_other_checkbox", name="edit_type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
+                                                label(for="edit_camp_type_other_checkbox")
                                                     | #{t('camps:edit.other')}
-                                                    if (camp.type.indexOf('other') > -1)
-                                                        //- auto-fill text field with user value.
-                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other", name="edit_type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
-                                                    else
-                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="edit_type_other_text")
+                                                input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other", name="edit_type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                                      
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || 'n/a'}
@@ -143,8 +144,9 @@ block content
                             .camp-behavior
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_activity_time') #{t('camps:edit.camp_activity_time')} #{details.camp_activity_time}
+                                        label(for='edit_camp_activity_time') #{t('camps:edit.camp_activity_time')}: #{details.camp_activity_time}
                                         select.form-control(id='edit_camp_activity_time', name='camp_activity_time', autofocus)
+                                            option(selected) ---
                                             option(value="morning")=t('camps:new.camp_activity_time_morning')
                                             option(value="noon")=t('camps:new.camp_activity_time_noon')
                                             option(value="evening")=t('camps:new.camp_activity_time_evening')
@@ -163,6 +165,7 @@ block content
                                     .col-xs-12
                                         label(for='edit_noise_level') #{t('camps:edit.camp_noise_level')}: #{details.noise_level}
                                         select(id='edit_camp_noise_level', class="form-control", name="noise_level")
+                                            option(selected) ---
                                             option(value="quiet")=t('camps:new.camp_noise_level_quiet')
                                             option(value="medium")=t('camps:new.camp_noise_level_medium')
                                             option(value="noisy")=t('camps:new.camp_noise_level_noisy')
@@ -207,6 +210,24 @@ block content
                                     .col-xs-12
                                         label(for='edit_camp_location_area')=t('camps:edit.location_area')
                                         input.form-control(id='edit_camp_location_area', type='number', name='public_camp_location_area', value='#{details.camp_location_area}')
+                //- Card 3
+                .card.card-third.card-hide
+                    h4=t('camps:edit.upload_header')
+                    .camp-upload-file.panel
+                        .panel-body
+                            .names.col-md-6
+                                .col-xs-12
+                                    label(for='edit_camp_upload_security_file')=t('camps:edit.security_file')
+                                    input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
+                //- Card 4
+                .card.card-forth.card-hide
+                    h4=t('camps:edit.upload_header')
+                    .camp-members.panel
+                        .panel-body
+                            .names.col-md-6
+                                .col-xs-12
+                                    label(for='edit_camp_upload_security_file')=t('camps:edit.security_file')
+                                    input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
 
             .controls.row
                 .col-xs-12
