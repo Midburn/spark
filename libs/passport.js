@@ -66,29 +66,6 @@ var login = function (email, password, done) {
     });
 };
 
-var login = function (email, password, done) {
-    new User({
-        email: email
-    }).fetch().then(function (user) {
-        if (user === null) {
-            // no corresponding spark user is found
-            // try to get a drupal user - once drupal user is logged-in a corresponding spark user is created
-            // on next login - there will be a spark user, so drupal login will not be attempted again
-            drupal_login(email, password, done);
-        } else if (!user.validPassword(password)) {
-            done(false, i18next.t('invalid_user_password'));
-        } else if (!user.attributes.validated) {
-            done(false, i18next.t('user_not_validated', {
-                email: email
-            }));
-        } else if (!user.attributes.enabled) {
-            done(false, i18next.t('user_disabled'));
-        } else {
-            done(user);
-        }
-    });
-};
-
 var signup = function (email, password, user, done) {
     var userPromise = new User({
         email: email
