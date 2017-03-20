@@ -29,6 +29,7 @@ var npo_membership_statuses = [
 module.exports = {
 
     // -- system constant --
+    // merge test
     // note: Future release will change the event_id
     CURRENT_EVENT_ID: "MIDBURN2017",
 

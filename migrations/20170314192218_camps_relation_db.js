@@ -2,6 +2,7 @@ var constants = require('../models/constants.js');
 
 exports.up = function (knex, Promise) {
     return Promise.all([
+        // fix CAMPS_TABLE_NAME
         knex.schema.alterTable(constants.CAMPS_TABLE_NAME, function (table) {
             if (!knex.schema.hasColumn(constants.CAMPS_TABLE_NAME, 'event_id')) {
                 table.string('event_id', 15);
