@@ -29,10 +29,6 @@ body[lang="en"] {
     }
 }
 
-section {
-    padding: 0 15px;
-}
-
 .Btn {
     white-space: nowrap;
     display: inline-block;
@@ -50,7 +46,7 @@ section {
     text-decoration: none;
     border: 0;
     transition: all 0.15s ease;
-    margin: 0 10px 10px;
+    margin: 0 10px 15px;
 
     &:focus,
     &:hover {
@@ -472,10 +468,6 @@ textarea:focus {
 
 .no-flt {
     float: none !important;
-}
-
-div[class^=col-xs] {
-    padding: 0.5em;
 }
 
 input.checkbox {
