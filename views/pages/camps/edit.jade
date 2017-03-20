@@ -18,8 +18,6 @@ block content
                     button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.members')
                     button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')
             .cards--wrapper.card__shad.row
-                script.
-                    $(document).ready(function() {$('.card-switcher--card1').trigger('click');});                
                 //- Card 1
                 .card.card-first
                     h4=t('camps:edit.name_and_desc')
@@ -46,9 +44,11 @@ block content
                                 .row
                                     .col-md-4
                                         .col-xs-12
-                                            label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}: #{camp.contact_person_id}
+                                            label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}
+                                            label(style='margin: 0 2px;') | Current: 
+                                                a(id="edit_camp_contact_person_id_current", data-user-id="#{camp.contact_person_id}")
                                             select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
-                                                option(selected) ---
+                                                option(selected) Click to change
                                     .col-md-4
                                         .col-xs-12
                                             label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
@@ -101,26 +101,23 @@ block content
                                     .col-xs-12
                                         label(for='edit_camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
                                             .checkbox
+                                                input(type="checkbox", class='edit_camp_type', id="edit_type_music", name="edit_type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
                                                 label(for="edit_type_music")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_music", name="edit_type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
                                                     | #{t('camps:edit.music')}
                                             .checkbox
+                                                input(type="checkbox", class='edit_camp_type', id="edit_type_drinks", name="edit_type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
                                                 label(for="edit_type_drinks")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_drinks", name="edit_type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
                                                     | #{t('camps:edit.drinking')}
                                             .checkbox
+                                                input(type="checkbox", class='edit_camp_type', id="edit_type_food", name="edit_type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
                                                 label(for="edit_type_food")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_food", name="edit_type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
                                                     | #{t('camps:edit.food')}
                                             .checkbox
-                                                label(for="edit_camp_type_other_text")
-                                                    input(type="checkbox", class='edit_camp_type', id="edit_type_other", name="edit_type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
+                                                input(type="checkbox", class='edit_camp_type', id="edit_camp_type_other_checkbox", name="edit_type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
+                                                label(for="edit_camp_type_other_checkbox")
                                                     | #{t('camps:edit.other')}
-                                                    if (camp.type.indexOf('other') > -1)
-                                                        //- auto-fill text field with user value.
-                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other", name="edit_type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
-                                                    else
-                                                        input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="edit_type_other_text")
+                                                input(id='edit_camp_type_other_text', type="text", class="form-control checkbox-other", name="edit_type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                                      
                                 .col-md-4
                                     .col-xs-12
                                         label(for='edit_camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || 'n/a'}

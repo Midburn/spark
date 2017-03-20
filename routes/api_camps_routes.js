@@ -48,7 +48,7 @@ module.exports = function(app, passport) {
             main_contact: req.body.camp_main_contact,
             moop_contact: req.body.camp_moop_contact,
             safety_contact: req.body.camp_safety_contact,
-            type: req.body.camp_type,
+            type: req.body.type,
             created_at: Date(),
             updated_at: Date()
         }).save().then((camp) => {
@@ -454,7 +454,7 @@ module.exports = function(app, passport) {
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', (req, res) => {
-        User.forge({camp_id: req.params.id}).fetch({require: true}).then((users) => {
+        User.forge({enabled: 1, camp_id: req.params.id}).fetch({require: true}).then((users) => {
             res.status(200).json({users: users.toJSON()})
         }).catch((e) => {
             res.status(500).json({
