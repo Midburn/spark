@@ -1,0 +1,82 @@
+extends ../../includes/page
+block content
+    .camps.camp_admin_index
+        section.row
+            .container.col-md-12
+                h1=t('camps:dash.title')
+                p.lead.text-muted=t('camps:dash.desc')
+        .controls.row
+            .col-xs-12
+                div.block-center
+                    div.input-group
+                        a.Btn.Btn__default.card-switcher#1(href='javascript:;', role='button')=t('camps:admin_index.all_camps')
+                        a.Btn.Btn__transparent.card-switcher#2(href='javascript:;', role='button')=t('camps:admin_index.all_members')
+                        a.Btn.Btn__transparent.card-switcher#3(href='javascript:;', role='button')=t('camps:admin_index.docs')
+                        a.Btn.Btn__green.card-switcher#4(href='javascript:;', role='button')
+                            span.glyphicon.glyphicon-plus(aria-hidden="true")
+                            span=t('camps:admin_index.new')
+            
+        .cards--wrapper.card__shad.row
+            //- Card 1
+            .card.card-first.col-xs-12.card__shad.card__padding--even
+                h4=t('camps:admin_index.all_camps_table')
+                table.table.table-stats.table-striped.table-hover
+                    thead
+                        tr.headers
+                            th #
+                            th.camp_name_en=t('camps:stats.name_en')
+                            th.contact_person=t('camps:stats.contact_person')
+                            th.status=t('camps:stats.status')
+                            th.hidden-xs=t('camps:stats.last_update')
+                            th.hidden-xs=t('camps:stats.created_at')
+                            th.published=t('camps:stats.published')
+                            th.facebook_page_url=t('camps:stats.facebook_page_url')
+                            th.admin-edit=t('camps:stats.edit')
+                            th.admin-remove=t('camps:stats.remove')
+                    tbody
+
+            //- Card 2
+            .card.card-second.col-xs-12.card__shad.card__padding--even.card-hide
+                h4=t('camps:admin_index.all_members_table')
+                table.table.table-striped.table-hover
+                    thead
+                        tr.headers
+                            //- TODO - fix header names
+                            th #
+                            th.email=t('camps:members.email')
+                            th.name=t('camps:members.name')
+                            th.camp_name_en=t('camps:members.camp_name_en')
+                            th.status=t('camps:members.status')
+                            th.has_ticket=t('camps:members.has_ticket')
+                    tbody
+
+            //- Card 3
+            .card.card-third.col-xs-12.card__shad.card__padding--even.card-hide
+                h4=t('camps:admin_index.docs_table')
+                table.table.table-striped.table-hover
+                    thead
+                        tr.headers
+                            //- TODO - fix header names
+                            th #
+                            th.camp_name_en=t('camps:stats.name_en')
+                            th.contact_person=t('camps:stats.contact_person')
+                            th.status=t('camps:stats.status')
+                            th.hidden-xs=t('camps:stats.last_update')
+                            th.hidden-xs=t('camps:stats.created_at')
+                            th.published=t('camps:stats.published')
+                            th.facebook_page_url=t('camps:stats.facebook_page_url')
+                            th.admin-edit=t('camps:stats.edit')
+                            th.admin-remove=t('camps:stats.remove')
+                    tbody
+            //- Card 4
+            .choose_name.card.card-forth.col-xs-12.card__shad.card__padding--even.card-hide
+                h2=t('camps:new.header_title')
+                h4=t('camps:new.name_choosing_title')
+                .col-sm-8.col-xs-12
+                    .pos-r
+                        label=t('camps:new.name_en')
+                        input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
+                        span.indicator
+                            span.glyphicon
+                .col-sm-4.col-xs-12
+                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t('camps:btn_continue')
