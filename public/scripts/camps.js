@@ -108,7 +108,7 @@ $(function() {
  * getting camp list from API
  */
 var fetchedCampsOnce = false,
-    $stats_table = $('.camps.stats .table');
+    $stats_table = $('.camps.camp_admin_index .table');
 
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
