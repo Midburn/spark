@@ -26,7 +26,7 @@ $('#scroll_top').click(function() {
  */
 var interval = 800,
     typingTimer,
-    $input = $(".camps.camp_index input[name='camp_name_en']");
+    $input = $(".camps input[name='camp_name_en']");
 
 $input.keyup(function() {
     clearTimeout(typingTimer);
