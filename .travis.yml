@@ -3,7 +3,7 @@ node_js:
   - "7"
 cache:
   directories:
-    - node_modules
+    # - node_modules
     - bower_components
 script:
   - yarn add bower
