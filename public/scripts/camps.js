@@ -26,7 +26,7 @@ $('#scroll_top').click(function() {
  */
 var interval = 800,
     typingTimer,
-    $input = $(".camps.camp_admin_index input[name='camp_name_en']");
+    $input = $(".camps input[name='camp_name_en']");
 
 $input.keyup(function() {
     clearTimeout(typingTimer);
@@ -63,36 +63,52 @@ function doneTyping() {
 }
 
 function getUserTemplate(data) {
-    return "<option value='" + data.user_id + "'>" + data.name + "</option>"
+    return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
 }
 /**
  * getting user list from API
  */
 function fetchUsersOnce(elm) {
+    var camp_id = 6
+    elm = $(elm)
+    
     if (!elm.attr('fetched')) {
-        $.getJSON('/users', function(data) {
-            users = data.users;
-            for (var i = 0; i < users.length; i++) {
-                elm.append(getUserTemplate(users[i]));
-            }
-        });
+        $.getJSON('/camps/' + camp_id + '/members', function(data) {})
+        .success((data) => {
+          users = [data.users];
+          for (var i = 0; i < users.length; i++) {
+              elm.append(getUserTemplate(users[i]));
+          }
+        })
+        .error((data) => {
+          sweetAlert("Oops...", "No user available!", "error");
+        })
 
         elm.attr('fetched', true);
     }
 }
 $(function() {
-    var $inputs = '#edit_camp_contact_person_id, #create_camp_contact_person_id';
+    var user_inputs = '#edit_camp_contact_person_id, #create_camp_contact_person_id';
+    
     if ($('.camps').is('.camp_edit') || $('.camps').is('.camp_create')) {
-        fetchUsersOnce($($inputs));
+      fetchUsersOnce(user_inputs);
+    }
+    
+    if ($('.camps').is('.camp_edit')) {
+      var $current_contact_person = $('#edit_camp_contact_person_id_current')
+      var user_id = $current_contact_person.attr('data-user-id')
+      
+      $.getJSON('/users/' + user_id, function(data) {
+        $current_contact_person.attr('href', '/users/' + user_id)
+        $current_contact_person.text(data.email)
+      })
     }
 });
 /**
  * getting camp list from API
  */
 var fetchedCampsOnce = false,
-    // original stats table - might remain useful
-    // $stats_table = $('.camps.stats .table');
-    $stats_table = $('.camps.camp_admin_index .table-stats');
+    $stats_table = $('.camps.stats .table');
 
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
@@ -106,7 +122,7 @@ function getCampsTemplate(data) {
 var fetchCampsOnce = function() {
     if (!fetchedCampsOnce) {
         var data, // eslint-disable-line no-unused-vars
-            tbody = $stats_table.find('tbody'); 
+            tbody = $stats_table.find('tbody');
         tbody.html('');
         $.get('/camps', function(data) {
             camps = data.camps;
@@ -131,7 +147,6 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
     }
 }
 $stats_table.load(fetchCampsOnce());
-$('.camps.camp_admin_index .table-stats').load(fetchCampsOnce());
 
 // Search camp
 $('#camps_stats_search_camp').keyup(function(input) {
@@ -270,13 +285,12 @@ $('#camp_edit_save').click(function() {
             camp_location_area: $('#edit_camp_location_area').val(),
             accept_families: $('#edit_camp_accept_families:checked').length
         };
-    console.log(camp_data);
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
         type: 'PUT',
         data: camp_data,
         success: function(result) {
-            console.log(result);
+            sweetAlert("You good...", "Camp details updated! reload the page.", "success");
         }
     });
 });
@@ -306,8 +320,8 @@ $('#camp_edit_unpublish').click(function() {
 });
 
 // display other text field if other selected
-$('#edit_type_other').click(function(){
-    if($('#edit_type_other').is(':checked')){
+$('#edit_type_other').click(function() {
+    if ($('#edit_type_other').is(':checked')) {
         $('#edit_type_other_text').removeClass('hidden');
     } else {
         $('#edit_type_other_text').addClass('hidden');
@@ -353,7 +367,7 @@ $('#camp_create_save').click(function() {
     $('#camp_create_save_modal_request').click(function() {
         _sendRequest();
     });
-      
+
     function _campAppendData() {
         $.each(camp_data, function(label, data) {
             if (data) {
@@ -390,8 +404,8 @@ $('#camp_create_save').click(function() {
 });
 
 // display other text field if other selected
-$('#camp_type_other').click(function(){
-    if($('#camp_type_other').is(':checked')){
+$('#camp_type_other').click(function() {
+    if ($('#camp_type_other').is(':checked')) {
         $('#camp_type_other_text').removeClass('hidden');
     } else {
         $('#camp_type_other_text').addClass('hidden');
@@ -399,22 +413,26 @@ $('#camp_type_other').click(function(){
 })
 
 // Collect all checkbox values
-    function fetchAllCheckboxValues(className){
-        var val = [];
-        $('.' + className + ':checked').each(function(i){
-          val[i] = $(this).val();
-        });
-        if(val.indexOf('other') > -1){
-            val.push($('#'+ className + '_other_text').val());
-        }
-        return val.toString();
-      }
+function fetchAllCheckboxValues(className) {
+  var val = [];
+  $('.' + className + ':checked').each(function(i) {
+    val[i] = $(this).val();
+  });
+  if (val.indexOf('other') > -1) {
+      val.push($('#'+ className + '_other_text').val());
+  }
+  return val.toString();
+}
 /**
  * Component: join a camp
  */
-var fetchOpenCampsOnce = false,
-    request = {};
+var fetchOpenCampsOnce = false
 
+/**
+ * Fetch camp list that are open to new members
+ * @param  {HTML} elm the select elm to append data
+ * @return {json}     list with camp name & id
+ */
 function fetchOpenCamps(elm) {
    if (!fetchOpenCampsOnce) {
        $.ajax({
@@ -422,7 +440,6 @@ function fetchOpenCamps(elm) {
            type: 'GET',
            success: function(data) {
                var camps = [data.camps];
-               console.log(camps);
                for (var i = 0; i < camps.length; i++) {
                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
                }
@@ -437,13 +454,13 @@ function fetchOpenCamps(elm) {
 $('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
    fetchOpenCamps($(this));
 });
-// click handler
+// join request listener, presents the request details (user & camp details)
 $('#join_camp_request_join_btn').click(function() {
     var camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id');
     var join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val();
 
     if (join_camp_name_en !== undefined) {
-        $.get('/camps/' + camp_id + '/join/0', (res) => {
+        $.get('/camps/' + camp_id + '/join', (res) => {
             fetchSuccess(res);
         })
     } else {
@@ -452,20 +469,26 @@ $('#join_camp_request_join_btn').click(function() {
 
     function fetchSuccess(res) {
         // Save details copy for the request
-        request.camp_name_en = join_camp_name_en
-        request.user_email = res.camp_manager_email
+        var user = res.data.user
+        var camp = res.data.camp
+        camp.name_en = join_camp_name_en
 
-        // Run modal with user details to approve request
-        template = '<ul><li>Camp Name: <u>' + join_camp_name_en + '</u></li><li>Full Name: <u>' + request.user_fullname + '</u></li><li> Email: <u>' + request.user_email + '</u></li></ul>';
-        $('#join_camp_request_modal .user_details').html(template);
-        $('#join_camp_request_modal').modal('show');
-        
-        // Send request click listener
-        // users approve the details
-        // -- allow user 4 second to cancel
+        var request_data = {
+          user: user,
+          camp: camp
+        }
+
+        // Dialog with user & camp details
+        var details_template = 'Camp name: <u>' + join_camp_name_en + '</u><br/>Your name: <u>' + user.full_name + '</u><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
+        var modal = $('#join_camp_request_modal')
+        modal.find('.user_details').html(details_template);
+        modal.modal('show');
+
+        // Send request click listener after user is approve the details
+        // Action delayed with 4 second allow user to cancel the request
         $('#join_camp_send_request_btn').click(function() {
-          var request_data = request,
-          _sendRequestBtn = $(this);
+          var _sendRequestBtn = $(this);
+
           $('#join_camp_close_btn').text('Cancel').click(function(e) {
             e.preventDefault();
             clearTimeout(_srt);
@@ -473,14 +496,14 @@ $('#join_camp_request_join_btn').click(function() {
             _sendRequestBtn.removeClass('Btn__is-loading').text('Send Request');
           });
           _sendRequestBtn.addClass('Btn__is-loading').text('Sending');
-          
+
           function _sendRequest() {
             $.ajax({
-              url: '/camps/' + camp_id + '/join/1',
-              type: 'GET',
+              url: '/camps/join/deliver',
+              type: 'POST',
               data: request_data,
               success: function() {
-                $('#join_camp_request_modal > div').html('<h4>Your request have sent. We will contact you soon.</h4>');
+                $('#join_camp_request_modal > div').html('<h4>Your request have sent, check request status.</h4>');
                 setTimeout(function() {
                   $('#join_camp_request_modal').modal('hide');
                 }, 4000);

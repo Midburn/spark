@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const parse = require('csv-parse/lib/sync');
 const fs = require('fs');
-const _ = require('underscore');
+const _ = require('lodash');
 const knex = require('../libs/db').knex;
 const constants = require('../models/constants');
 
