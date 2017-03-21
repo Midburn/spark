@@ -3,7 +3,6 @@ const breadcrumbs = require('express-breadcrumbs');
 
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
-var CampMembers = require('../models/camp').CampMembers;
 
 module.exports = function (app, passport) {
     // Breadcrumbs

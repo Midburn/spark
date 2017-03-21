@@ -3,4 +3,4 @@
  * 
  * scripts/controllers folder for components logic
  */
-var app = angular.module("ngCamps", []);
+var app = angular.module("ngCamps", []); // eslint-disable-line
