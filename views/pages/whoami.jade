@@ -2,29 +2,29 @@ extends ../includes/page
 block content
     .camps.camp_details
         section
-            .heading.card.card__profile.card__shad.card__padding--even
+            .card.card__profile.card__shad.card__padding--even
                 .row
-                    header.col-xs-12.col-sm-6.anim__mov--in
-                        a(target='_blank', href='#')
-                            img.hoverZoomLink(src='http://lorempixel.com/150/150/people/')
-                        h3  #{user.fullName}
-                        h4  #{user.attributes.email}
+                    .header.col-xs-12.col-sm-5.anim__mov--in
+                        img.hoverZoomLink(src='http://lorempixel.com/150/150/people/')
+                        h3 #{user.fullName}
+                        h4 #{user.attributes.email}
                         if user.isAdmin
-                            span admin
-                    .profile-bio.col-xs-12.col-sm-6.anim__mov--in
+                            span.badge admin
+                    .profile-bio.col-xs-12.col-sm-7.anim__mov--in
                         ul.profile-social-links
                             li
-                                span Gender
-                                if user.attributes.gender === 'female'
-                                    | female icon
-                                else
-                                    | male icon
+                                span Gender: 
+                                    span.badge #{user.attributes.gender}
                             li
-                                span Camp
-                                a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
+                                span Camp:
+                                    span.badge
+                                        a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
                             li
-                                span Phone
-                                #{user.attributes.cell_phone}
+                                span Phone:
+                                    span.badge #{user.attributes.cell_phone}
                             li
-                                a(target='_blank', href='https://www.facebook.com/creativedonut')
-                                    i.fa.fa-facebook
+                                span Socials:
+                                    span.socials
+                                        a(target='_blank', href='https://www.facebook.com/creativedonut')
+                                            i.fa.fa-facebook
+                        a(href="edit_profile").Btn.Btn__sm Edit
