@@ -15,7 +15,6 @@ function main(argv) {
     let users_csv_data = fs.readFileSync(users_file);
     let camps_csv_data = fs.readFileSync(camps_file);
 
-
     // [{
     //      name: "", cell_phone: "", email: "", roles: ""
     // }...]
@@ -26,7 +25,6 @@ function main(argv) {
     //      status: "open" / null, facebook_page_url: "", accept_families: "FALSE" / "TRUE", email: ""
     // }...]
     let camps_data = parse(camps_csv_data, { columns: true });
-
 
     Promise.all(_(users_data).map(function (user) {
         let email = user.email.trim();
@@ -80,7 +78,7 @@ function main(argv) {
                             created_at: Date(),
                             updated_at: Date()
                         };
-                        if (camp.status != "closed" && camp.status != "open" && camp.status != "deleted" && camp.status != "inactive") {
+                        if (camp.status !== "closed" && camp.status !== "open" && camp.status !== "deleted" && camp.status !== "inactive") {
                             _camp_rec['status']='open';
                         }
                         return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
