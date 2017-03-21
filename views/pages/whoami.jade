@@ -18,7 +18,10 @@ block content
                             li
                                 span Camp:
                                     span.badge
-                                        a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
+                                        if user.attributes.camp_id !== -1
+                                            a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
+                                        else
+                                            #{t('camps:pending.status.wait')}
                             li
                                 span Phone:
                                     span.badge #{user.attributes.cell_phone}
