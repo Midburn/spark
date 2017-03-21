@@ -511,7 +511,7 @@ $('#join_camp_request_join_btn').click(function() {
               },
               error: function (jqXHR, exception) {
                 if (jqXHR.status === 500) {
-                  sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. try again later, thanks.', 'Error')
+                  sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. \n\nTry again later, thanks.', 'error')
                 }
               }
             });

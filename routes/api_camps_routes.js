@@ -407,6 +407,13 @@ module.exports = function (app, passport) {
         deliver()
         setPending()
         res.status(200).end()
+      }).catch((e) => {
+        res.status(500).json({
+          error: true,
+          data: {
+            message: e.message
+          }
+        })
       })
       
       /**
@@ -453,19 +460,10 @@ module.exports = function (app, passport) {
        var user_id = req.params.user_id
        
        // update relation model between user and camp
-       CampMembers.forge({camp_id: user_id}).fetch().then(function(camp) {
-           camp.save({status: 'user_canceled'}).then(function() {
-               deliver()
-               resetPending()
-               res.json({error: false, status: 'Request canceled by user, camp manager notified.'});
-           }).catch(function(err) {
-               res.status(500).json({
-                   error: true,
-                   data: {
-                       message: err.message
-                   }
-               });
-           });
+       new CampMembers({camp_id: user_id}).destroy().then(function(camp) {
+         deliver()
+         resetPending()
+         res.json({error: false, status: 'Request canceled by user, camp manager notified.'});
        }).catch(function(err) {
            res.status(500).json({
                error: true,
