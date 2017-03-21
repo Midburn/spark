@@ -3,10 +3,13 @@ var Department = volunteers_model.Department;
 var Role = volunteers_model.Role;
 var Volunteer = volunteers_model.Volunteer;
 const userRole = require('../libs/user_role');
+/*
+var request = require('superagent');
 
 var not_implemented = function(req, res) {
     res.status(501).json({ message: "Not Implemented" });
 };
+*/
 //GET /volunteer/departments
 var get_departments = function(req, res) {
     Department.fetchAll().then(function(deps) {
@@ -98,6 +101,13 @@ var post_volunteers = function(req, res) {
             console.log('Will add ' + JSON.stringify(element));
             //TODO get user_ids.... add to vaolunteers table.
             //https://profile-test.midburn.org/en/api/views/api_user_search?mail=1467
+            /*
+            request.get('https://profile-test.midburn.org/en/api/views/api_user_search')
+                .query({ mail: element.email })
+                .end((err, res) => {
+                    console.log(err);
+                });
+            */
             var user_id = index;
             Volunteer.forge({ user_id: user_id, department_id: req.params.department_id, event_id: 0 }).save().then((vol) => {
                 console.log('adding ' + user_id + " to vol department " + department_id);
@@ -114,11 +124,24 @@ var post_volunteers = function(req, res) {
     } else {
         res.status(401).json({ message: "Not Authorized" });
     }
-}
-
+};
+///POST volunteer/department/department_id/volunteers/user_id
 var put_volunteer = function(req, res) {
-    not_implemented(req, res);
-}
+    var new_data = { role_id: req.body.permission, type_in_shift_id: req.body.shift_type };
+    Volunteer.forge()
+        .where({ user_id: req.params.user_id, department_id: req.params.department_id, event_id: 0 })
+        .save(new_data, { method: 'update' })
+        .then((vol) => {
+            res.status(200).json(vol.toJSON());
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            })
+        });
+};
 
 var get_volunteering_info = function(req, res) {
     var user_id = req.user.id;
