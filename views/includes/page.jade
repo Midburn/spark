@@ -37,7 +37,8 @@ block wrapper
                                     |&nbsp;
                                     span=t('english')
                     li
-                        a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
+                        a(href='/#{language}/whoami', aria-label="#{user.attributes.first_name} #{user.attributes.last_name}")
+                            span.glyphicon.glyphicon-user(aria-hidden="true")
                     li
                         a( href= '/#{language}/logout' )=t('logout')
     .main.container
