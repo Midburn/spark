@@ -7,15 +7,7 @@ var knex = require('../libs/db').knex;
 var constants = require('../models/constants');
 var _ = require('lodash');
 
-<<<<<<< HEAD
-// const ADMIN_USER_EMAIL = "admin_routes_test@localhost";
-// const ADMIN_USER_PASSWORD = "123456";
-// const ADMIN_USER_FIRST_NAME = "Admin routes";
-
-const ADMIN_USER_EMAIL = "omer.pines@hotmail.com";
-=======
 const ADMIN_USER_EMAIL = "omerpines@hotmail.com";
->>>>>>> eea0c9deed2c37dd0c75f4bc206340c06d74b7ea
 const ADMIN_USER_PASSWORD = "123456";
 const ADMIN_USER_FIRST_NAME = "Omer Hatotach";
 
