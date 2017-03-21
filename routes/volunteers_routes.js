@@ -3,13 +3,7 @@ var Department = volunteers_model.Department;
 var Role = volunteers_model.Role;
 var Volunteer = volunteers_model.Volunteer;
 const userRole = require('../libs/user_role');
-/*
-var request = require('superagent');
 
-var not_implemented = function(req, res) {
-    res.status(501).json({ message: "Not Implemented" });
-};
-*/
 //GET /volunteer/departments
 var get_departments = function(req, res) {
     Department.fetchAll().then(function(deps) {
