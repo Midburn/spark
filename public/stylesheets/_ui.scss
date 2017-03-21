@@ -105,6 +105,12 @@ input.commit {
   animation: moveUp 350ms 350ms ease forwards;
 }
 
+.badge {
+  a {
+    color: #FFF
+  }
+}
+
 @media only screen and (min-width: 768px) {
   header {
     max-width: 200px;
