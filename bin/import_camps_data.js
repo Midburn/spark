@@ -41,6 +41,7 @@ function main(argv) {
                     cell_phone: user.cell_phone,
                     email: user.email,
                     roles: user.role,
+                    validated: true,
                     created_at: Date(),
                     updated_at: Date()
                 }).then(function() {
