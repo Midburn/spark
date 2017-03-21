@@ -445,7 +445,7 @@ function fetchOpenCamps(elm) {
                }
            },
            error: function(data) {
-               alert('woops! no camps found.');
+               sweetAlert("Oops...", "No camps available!", "error");
            }
        });
        fetchOpenCampsOnce = true;
@@ -479,7 +479,7 @@ $('#join_camp_request_join_btn').click(function() {
         }
 
         // Dialog with user & camp details
-        var details_template = 'Camp name: <u>' + join_camp_name_en + '</u><br/>Your name: <u>' + user.full_name + '</u><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
+        var details_template = 'Camp name: <span class="badge">' + join_camp_name_en + '</span><br/>Your name: <span class="badge">' + user.full_name + '</span><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
         var modal = $('#join_camp_request_modal')
         modal.find('.user_details').html(details_template);
         modal.modal('show');
@@ -499,7 +499,7 @@ $('#join_camp_request_join_btn').click(function() {
 
           function _sendRequest() {
             $.ajax({
-              url: '/camps/join/deliver',
+              url: '/camps/' + request_data.camp.id + '/join/deliver',
               type: 'POST',
               data: request_data,
               success: function() {
@@ -507,10 +507,11 @@ $('#join_camp_request_join_btn').click(function() {
                 setTimeout(function() {
                   $('#join_camp_request_modal').modal('hide');
                 }, 4000);
+                window.location.reload();
               },
               error: function (jqXHR, exception) {
                 if (jqXHR.status === 500) {
-                  alert('Error!\n\n---\n\ncouldn\'t send your request due to server problem.\ntry again later, thanks.')
+                  sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. try again later, thanks.', 'Error')
                 }
               }
             });

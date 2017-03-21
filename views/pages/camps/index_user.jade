@@ -18,10 +18,22 @@ block content
                             .col-sm-4.col-xs-12
                                 a.Btn.Btn__green.Btn__inline(id="join_camp_request_join_btn", role='button')=t('camps:join.request')
                     else
-                      .join_camp_pending.card
+                      .join_camp_pending.card(ng-app="ngCamps", ng-controller="joinPendingController")
+                          input.hidden(id='pending_request_user_id', type='hidden', value='#{user.id}')
                           h2=t('camps:pending.header_title')
-                          h4=t('camps:pending.camp_choosing_title')
-                          | camp name
+                          h4=t('camps:pending.subtitle')
+                          ul
+                            li
+                              span=t('camps:camps.title')
+                                  span.badge
+                                      a(ng-href="camps/{{camp.camp_id}}")
+                                        {{camp.camp_id}}
+                            li
+                              span=t('camps:stats.status')
+                                  span.badge
+                                      {{camp.status == 'pending' ? '#{t('camps:pending.status.wait')}':'#{t('camps:pending.status.user_cancel')}'}}
+                          a.Btn.Btn__sm(href='#', ng-click='cancelRequest()') Cancel request
+                          a.Btn.Btn__sm(ng-click='resendRequest') Resend request
                           
         // Camp join request modal
         .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')
