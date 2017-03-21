@@ -7,8 +7,7 @@ const userRole = require('../libs/user_role');
 
 var mail = require('../libs/mail'),
     mailConfig = config.get('mail');
-
-module.exports = function(app, passport) {
+module.exports = function (app, passport) {
     /**
      * API: (GET) get user by id
      * request => /users/:id
