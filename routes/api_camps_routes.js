@@ -395,7 +395,7 @@ module.exports = function (app, passport) {
       var camp_manager_email = req.body['camp[manager_email]']
       var user_id = req.user.attributes.user_id
       var camp_id = req.params.id
-
+      
       // create relation model between user and camp
       new CampMembers({
         camp_id: camp_id,
@@ -413,7 +413,7 @@ module.exports = function (app, passport) {
           }
         })
       })
-
+      
       /**
        * set user's camp_id -1 = pending join
        * @type {[type]}
@@ -456,7 +456,7 @@ module.exports = function (app, passport) {
      */
      app.post('/users/:user_id/join_cancel', userRole.isLoggedIn(), (req, res) => {
        var user_id = req.params.user_id
-
+       
        // update relation model between user and camp
        new CampMembers({camp_id: user_id}).destroy().then(function(camp) {
          deliver()
@@ -556,7 +556,7 @@ module.exports = function (app, passport) {
              });
          });
    })
-
+   
    /**
     * API: (GET) return camp members
     */
