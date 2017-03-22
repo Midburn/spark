@@ -323,7 +323,6 @@ module.exports = function (app, passport) {
           require: true,
           columns: ['id', 'camp_name_en']
         }).then((camp) => {
-            debugger;
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
