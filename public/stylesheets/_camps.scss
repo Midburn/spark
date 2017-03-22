@@ -205,7 +205,7 @@ body[lang="en"] .dash-panel a:after {
     padding: 40px 40px 40px 120px;
     margin-bottom: 2em;
     background-color: $card-bg;
-    border-radius: 4px;
+    border-radius: 2px;
 
     &__shad {
         box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
@@ -470,9 +470,16 @@ textarea:focus {
     float: none !important;
 }
 
+label + input.checkbox {
+  cursor: pointer;
+}
+
 input.checkbox {
+    display: inline-block;
     height: 20px;
     width: 20px;
+    margin: 1em;
+    vertical-align: middle;
 }
 
 .form__input--important {
