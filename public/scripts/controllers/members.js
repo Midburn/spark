@@ -1,5 +1,3 @@
-var app = angular.module("ngCamps", []);
-
 app.controller("membersController", function($scope, $http) {
     var camp_id = document.querySelector('#camp_members_camp_id').value;
     function _getMembers() {
