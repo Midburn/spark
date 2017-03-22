@@ -1,6 +1,6 @@
 extends ../../includes/page
 block content
-    .camps.camp_admin_index
+    .camps.camp_admin_index(ng-app="ngCamps")
         .container.col-md-12
             h1=t('camps:dash.title')
             p.lead.text-muted=t('camps:dash.desc')
@@ -19,7 +19,7 @@ block content
             //- Card 1
             .card.card-first.card__shad.card__padding--even.col-xs-12.table-responsive
                 h4=t('camps:admin_index.all_camps_table')
-                table.table.table-stats.table-striped.table-hover
+                table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers
                             th #
@@ -35,19 +35,32 @@ block content
                     tbody
 
             //- Card 2
-            .card.card-second.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
+            .card.card-second.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
                 h4=t('camps:admin_index.all_members_table')
                 table.table.table-striped.table-hover
-                    thead
-                        tr.headers
-                            //- TODO - fix header names
-                            th #
-                            th.email=t('camps:members.email')
-                            th.name=t('camps:members.name')
-                            th.camp_name_en=t('camps:members.camp_name_en')
-                            th.status=t('camps:members.status')
-                            th.has_ticket=t('camps:members.has_ticket')
-                    tbody
+                  thead
+                    tr
+                      th(ng-click='changeOrderBy("name")') Name
+                      if userIs('admin')
+                          th(ng-click='changeOrderBy("email")') Email
+                      th(ng-click='changeOrderBy("phone")') Phone
+                      if userIs('admin')
+                          th(ng-click='changeOrderBy("status")') Status
+                      if userIs('admin')
+                          th(ng-click='changeOrderBy("hasTicket")') Has Ticket
+                      th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
+                  tbody
+                    tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
+                      td {{member.name}}
+                      if userIs('admin')
+                          td {{member.email}}
+                      td {{member.phone}}
+                      if userIs('admin')
+                          td {{member.status}}
+                      if userIs('admin')
+                          td {{member.hasTicket ? 'yes':'no'}}
+                      td {{member.earlyArrival ? 'yes':'no'}}
+
 
             //- Card 3
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
