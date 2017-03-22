@@ -1,5 +1,6 @@
 {
-        "nav": "מחנה",
+        "nav": "המחנה שלי",
+        "nav_admin": "ניהול מחנות",
         "btn_save_camp": "שמור",
         "btn_continue": "המשך",
         "dash": {
