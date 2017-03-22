@@ -1,5 +1,6 @@
 const userRole = require('../libs/user_role');
 const breadcrumbs = require('express-breadcrumbs');
+// const constants = require('../models/constants.js');
 
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
@@ -103,9 +104,10 @@ module.exports = function (app, passport) {
     // Read
     app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({
-            id: req.params.id
+            id: req.params.id,
+            // event_id: constants.CURRENT_EVENT_ID,
         }).fetch({
-            withRelated: ['details']
+            // withRelated: ['details']
         }).then((camp) => {
             User.forge({
                 user_id: camp.toJSON().main_contact
@@ -114,7 +116,7 @@ module.exports = function (app, passport) {
                     user: req.user,
                     id: req.params.id,
                     camp: camp.toJSON(),
-                    details: camp.related('details').toJSON()
+                    details: camp.toJSON()
                 });
             });
         }).catch((e) => {
@@ -129,14 +131,15 @@ module.exports = function (app, passport) {
     // Edit
     app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({
-            id: req.params.id
+            id: req.params.id,
+            // event_id: constants.CURRENT_EVENT_ID,
         }).fetch({
-            withRelated: ['details']
+            // withRelated: ['details']
         }).then((camp) => {
             res.render('pages/camps/edit', {
                 user: req.user,
                 camp: camp.toJSON(),
-                details: camp.related('details').toJSON()
+                details: camp.toJSON()
             })
         })
     });
