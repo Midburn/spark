@@ -9,7 +9,7 @@ var _ = require('lodash');
 
 const ADMIN_USER_EMAIL = "omerpines@hotmail.com";
 const ADMIN_USER_PASSWORD = "123456";
-const ADMIN_USER_FIRST_NAME = "Admin routes";
+const ADMIN_USER_FIRST_NAME = "Omer Hatotach";
 
 var adminLoggedIn = false;
 
