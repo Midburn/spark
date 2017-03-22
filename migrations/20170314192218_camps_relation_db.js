@@ -2,6 +2,7 @@ var constants = require('../models/constants.js');
 
 exports.up = function (knex, Promise) {
     return Promise.all([
+<<<<<<< HEAD
         knex.schema.alterTable(constants.CAMPS_TABLE_NAME, function (table) {
 <<<<<<< HEAD
             // if (!knex.schema.hasColumn(constants.CAMPS_TABLE_NAME, 'event_id')) {
@@ -34,6 +35,8 @@ exports.up = function (knex, Promise) {
             table.string('contact_person_phone', 14);
 
         }),
+=======
+>>>>>>> a2696b15fcd92fb61d8c063319af464b77eaadba
         knex.schema.createTable(constants.CAMP_MEMBERS_TABLE_NAME, function (table) {
             table.integer('camp_id').unsigned();
             table.integer('user_id').unsigned();
@@ -61,4 +64,3 @@ exports.down = function (knex, Promise) {
         knex.schema.dropTable(constants.CAMP_MEMBERS_TABLE_NAME),
     ]);
 };
-
