@@ -103,6 +103,14 @@
             "camp_choosing_title": "The list below includes camp that are open for new members. Choose one to apply a join request.",
             "request": "Request to join"
         },
+        "pending": {
+          "header_title": "Pending join request",
+          "subtitle": "you are waiting for camp manager to approve your request:",
+          "status": {
+            "wait": "Waiting approval",
+            "user_cancel": "Request canceled"
+          }
+        },
         "manage": {
             "manage_a_camp": "Manage camps"
         },

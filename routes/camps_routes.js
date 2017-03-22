@@ -29,11 +29,7 @@ module.exports = function (app, passport) {
              * then redirect to camp profile page.
              */
         } else {
-            /**
-             * Add test if user is part of camp
-             * if so - redirect to camp profile (without edit option)
-             */
-            // User has no permissions
+            // Regular user
             res.render('pages/camps/index_user', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()

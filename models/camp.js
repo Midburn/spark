@@ -23,11 +23,11 @@ var CampMembers = bookshelf.Model.extend({
     camp: function() {
         return this.belongsTo(Camp);
     }
-
 });
 
 // Create the model and expose it
 module.exports = {
     Camp: Camp,
-    // CampDetails: CampDetails
+//    CampDetails: CampDetails,
+    CampMembers: CampMembers
 };
