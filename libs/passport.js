@@ -20,7 +20,7 @@ const drupal_login = (email, password, done) =>
     .send({ 'username': email, 'password': password })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/x-www-form-urlencoded')
-    .then((({body}) => body), (error) => null);
+    .then(({body}) => body, () => null);
 
 var login = function (email, password, done) {
   drupal_login(email, password, done).then(function (drupal_user) {
