@@ -1,6 +1,7 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
-var CampDetails = require('../models/camp').CampDetails;
+// var CampDetails = require('../models/camp').CampDetails;
+var constants = require('../models/constants.js');
 var CampMembers = require('../models/camp').CampMembers;
 var config = require('config');
 
@@ -30,27 +31,43 @@ module.exports = function (app, passport) {
             });
         });
     });
-    /**
+   /**
      * API: (POST) create camp
      * request => /camps/new
      */
     app.post('/camps/new', (req, res) => {
-        var camp_name_he = req.body.camp_name_he,
-            camp_name_en = req.body.camp_name_en;
 
         Camp.forge({
-            camp_name_he: camp_name_he,
-            camp_name_en: camp_name_en,
+            // for new fields!
+            created_at: Date(),
+            event_id: constants.CURRENT_EVENT_ID,
+            // for update or insert, need to merge with create to be the same call
+            updated_at: Date(),
+            camp_name_en: req.body.camp_name_en,
+            camp_name_he: req.body.camp_name_he,
             camp_desc_he: req.body.camp_desc_he,
             camp_desc_en: req.body.camp_desc_en,
+            status: req.body.status,
+            type: req.body.type,
             contact_person_id: req.body.contact_person_id,
             facebook_page_url: req.body.facebook_page_url,
-            main_contact: req.body.camp_main_contact,
-            moop_contact: req.body.camp_moop_contact,
-            safety_contact: req.body.camp_safety_contact,
-            type: req.body.type,
-            created_at: Date(),
-            updated_at: Date()
+            contact_person_name: req.body.contact_person_name,
+            contact_person_email: req.body.contact_person_email,
+            contact_person_phone: req.body.contact_person_phone,
+            accept_families: req.body.accept_families,
+            main_contact: req.body.main_contact,
+            moop_contact: req.body.moop_contact,
+            safety_contact: req.body.safety_contact,
+            camp_activity_time: req.body.camp_activity_time,
+            child_friendly: req.body.child_friendly,
+            noise_level: req.body.noise_level,
+            public_activity_area_sqm: req.body.public_activity_area_sqm,
+            public_activity_area_desc: req.body.public_activity_area_desc,
+            support_art: req.body.support_art,
+            location_comments: req.body.location_comments,
+            camp_location_street: req.body.camp_location_street,
+            camp_location_street_time: req.body.camp_location_street_time,
+            camp_location_area: req.body.camp_location_area
         }).save().then((camp) => {
             res.json({
                 error: false,
@@ -59,28 +76,6 @@ module.exports = function (app, passport) {
                     camp_id: camp.attributes.id
                 }
             });
-            CampDetails.forge({
-                camp_id: camp.attributes.id,
-                camp_activity_time: req.body.camp_hours,
-                child_friendly: req.body.camp_kids_friendly,
-                noise_level: req.body.noise_lvl,
-                public_activity_area_sqm: req.body.size_for_activity,
-                public_activity_area_desc: req.body.public_area_reason
-            }).save().then((campDetails) => {
-                res.status(200).json({
-                    error: false,
-                    data: {
-                        message: 'success'
-                    }
-                });
-            }).catch((e) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: e.message
-                    }
-                });
-            })
         }).catch((e) => {
             res.status(500).json({
                 error: true,
@@ -91,14 +86,17 @@ module.exports = function (app, passport) {
         });
     });
 
-    /**
+  /**
      * API: (PUT) edit camp
      * request => /camps/1/edit
      */
     app.put('/camps/:id/edit', (req, res) => {
-        Camp.forge({id: req.params.id}).fetch().then(function(camp) {
+        Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
             camp.save({
-                // camp_name_en: req.body.camp_name_en,
+                // for update or insert
+                updated_at: Date(),
+                event_id: constants.CURRENT_EVENT_ID,
+                camp_name_en: req.body.camp_name_en,
                 camp_name_he: req.body.camp_name_he,
                 camp_desc_he: req.body.camp_desc_he,
                 camp_desc_en: req.body.camp_desc_en,
@@ -107,27 +105,26 @@ module.exports = function (app, passport) {
                 contact_person_id: req.body.contact_person_id,
                 facebook_page_url: req.body.facebook_page_url,
                 accept_families: req.body.accept_families,
+                contact_person_name: req.body.contact_person_name,
+                contact_person_email: req.body.contact_person_email,
+                contact_person_phone: req.body.contact_person_phone,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
-                safety_contact: req.body.safety_contact
-            }).then(function() {
-                // TODO: not working with this table. need-a-fix
-                CampDetails.forge({
-                    camp_id: req.params.id,
-                    camp_activity_time: req.body.camp_activity_time,
-                    child_friendly: req.body.child_friendly,
-                    noise_level: req.body.noise_level,
-                    public_activity_area_sqm: req.body.public_activity_area_sqm,
-                    public_activity_area_desc: req.body.public_activity_area_desc,
-                    support_art: req.body.support_art,
-                    location_comments: req.body.location_comments,
-                    camp_location_street: req.body.camp_location_street,
-                    camp_location_street_time: req.body.camp_location_street_time,
-                    camp_location_area: req.body.camp_location_area
-                }).save().then(() => {
-                    res.json({error: false, status: 'Camp updated'});
-                });
-            }).catch(function(err) {
+                safety_contact: req.body.safety_contact,
+                camp_activity_time: req.body.camp_activity_time,
+                child_friendly: req.body.child_friendly,
+                noise_level: req.body.noise_level,
+                public_activity_area_sqm: req.body.public_activity_area_sqm,
+                public_activity_area_desc: req.body.public_activity_area_desc,
+                support_art: req.body.support_art,
+                location_comments: req.body.location_comments,
+                camp_location_street: req.body.camp_location_street,
+                camp_location_street_time: req.body.camp_location_street_time,
+                camp_location_area: req.body.camp_location_area
+            }).then(function () {
+                res.json({ error: false, status: 'Camp updated' });
+                // });
+            }).catch(function (err) {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -135,7 +132,7 @@ module.exports = function (app, passport) {
                     }
                 });
             });
-        }).catch(function(err) {
+        }).catch(function (err) {
             res.status(500).json({
                 error: true,
                 data: {
@@ -144,6 +141,7 @@ module.exports = function (app, passport) {
             });
         });
     });
+
     // PUBLISH
     app.put('/camps/:id/publish', (req, res) => {
         // If camp met all its requirements, can publish
