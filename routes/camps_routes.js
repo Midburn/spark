@@ -136,7 +136,6 @@ module.exports = function (app, passport) {
         }).fetch({
             // withRelated: ['details']
         }).then((camp) => {
-            console.log(camp);
             var camp_data = camp.toJSON();
             if (camp_data.type===null){
                 camp_data.type = '';
