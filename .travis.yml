@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - "7"
+addons:
+  sauce_connect:
+    username: "nateben"
+    access_key: "d33d8788-b7fa-4e3e-a173-9fbce5fae8bd"
 cache:
   directories:
     # - node_modules
@@ -15,7 +19,3 @@ after_success:
   - .travis/notify.sh "1"
 after_failure:
   - .travis/notify.sh "0"
-addons:
-  sauce_connect:
-    username: "nateben"
-    access_key: "d33d8788-b7fa-4e3e-a173-9fbce5fae8bd"
