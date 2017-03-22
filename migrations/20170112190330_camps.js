@@ -10,6 +10,7 @@ exports.up = function (knex, Promise) {
             // General information
 
             table.increments('id').primary();
+            table.string('event_id', 15).unique();
 
             table.string('camp_name_he', 50).unique();
             table.string('camp_name_en', 50).unique();

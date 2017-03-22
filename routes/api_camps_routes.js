@@ -514,7 +514,7 @@ module.exports = function (app, passport) {
      * query user with attribute: camp_id
      * request => /camps/1/members
      */
-    app.get('/camps/:id/members', (req, res) => {
+    app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
         User.forge({enabled: 1, camp_id: req.params.id}).fetch({require: true}).then((users) => {
             res.status(200).json({users: users.toJSON()})
         }).catch((e) => {

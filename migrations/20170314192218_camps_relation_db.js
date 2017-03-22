@@ -3,6 +3,7 @@ var constants = require('../models/constants.js');
 exports.up = function (knex, Promise) {
     return Promise.all([
         knex.schema.alterTable(constants.CAMPS_TABLE_NAME, function (table) {
+<<<<<<< HEAD
             // if (!knex.schema.hasColumn(constants.CAMPS_TABLE_NAME, 'event_id')) {
             table.string('event_id', 15);
             table.dropUnique('camp_name_he');
@@ -10,6 +11,8 @@ exports.up = function (knex, Promise) {
             table.unique(['event_id', 'camp_name_en']);
             table.unique(['event_id', 'camp_name_he']);
             // }
+=======
+>>>>>>> 70bff0b45ec9ae97cda4cf2f0dbad80c057e4310
 
             // Detailed info
             table.enu('camp_activity_time', constants.CAMP_ACTIVITY_TIMES);
