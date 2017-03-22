@@ -319,10 +319,11 @@ module.exports = function (app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({status: 'open'}).fetch({
+        Camp.forge({status: 'open', event_id: constants.CURRENT_EVENT_ID}).fetch({
           require: true,
           columns: ['id', 'camp_name_en']
         }).then((camp) => {
+            debugger;
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
