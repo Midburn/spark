@@ -1,10 +1,9 @@
 extends ../../includes/page
 block content
     .camps.camp_admin_index
-        section.row
-            .container.col-md-12
-                h1=t('camps:dash.title')
-                p.lead.text-muted=t('camps:dash.desc')
+        .container.col-md-12
+            h1=t('camps:dash.title')
+            p.lead.text-muted=t('camps:dash.desc')
         .controls.row
             .col-xs-12
                 div.block-center
@@ -16,9 +15,9 @@ block content
                             span.glyphicon.glyphicon-plus(aria-hidden="true")
                             span=t('camps:admin_index.new')
             
-        .cards--wrapper.card__shad.row
+        .cards--wrapper.card__shad
             //- Card 1
-            .card.card-first.col-xs-12.card__shad.card__padding--even
+            .card.card-first.card__shad.card__padding--even.col-xs-12.table-responsive
                 h4=t('camps:admin_index.all_camps_table')
                 table.table.table-stats.table-striped.table-hover
                     thead
@@ -36,7 +35,7 @@ block content
                     tbody
 
             //- Card 2
-            .card.card-second.col-xs-12.card__shad.card__padding--even.card-hide
+            .card.card-second.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 h4=t('camps:admin_index.all_members_table')
                 table.table.table-striped.table-hover
                     thead
@@ -51,7 +50,7 @@ block content
                     tbody
 
             //- Card 3
-            .card.card-third.col-xs-12.card__shad.card__padding--even.card-hide
+            .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 h4=t('camps:admin_index.docs_table')
                 table.table.table-striped.table-hover
                     thead
@@ -69,7 +68,7 @@ block content
                             th.admin-remove=t('camps:stats.remove')
                     tbody
             //- Card 4
-            .choose_name.card.card-forth.col-xs-12.card__shad.card__padding--even.card-hide
+            .choose_name.card.card-forth.card__shad.card__padding--even.card-hide.col-xs-12
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.name_choosing_title')
                 .col-sm-8.col-xs-12
