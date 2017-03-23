@@ -319,7 +319,7 @@ module.exports = function (app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({status: 'open'}).fetch({
+        Camp.forge({status: 'open', event_id: constants.CURRENT_EVENT_ID}).fetchAll({
           require: true,
           columns: ['id', 'camp_name_en']
         }).then((camp) => {
@@ -515,16 +515,19 @@ module.exports = function (app, passport) {
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
-        User.forge({enabled: 1, camp_id: req.params.id}).fetch({require: true}).then((users) => {
-            res.status(200).json({users: users.toJSON()})
-        }).catch((e) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: e.message
-                }
-            });
-        });
+      new CampMembers({
+          camp_id: req.params.id
+      }).fetch().then(function (member) {
+          if (member !== null) {
+            User.forge({user_id: member.attributes.user_id})
+                .fetch()
+                .then((user) => {
+                  res.status(200).json({users: user.toJSON()})
+                })
+          } else {
+              // not found
+          }
+      })
     });
 
     /**
