@@ -23,7 +23,7 @@ block content
                           th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
                       tbody
                         tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-                          td {{member.name}}
+                          td {{member.fullName}}
                           if userIs('admin')
                               td {{member.email}}
                           td {{member.phone}}

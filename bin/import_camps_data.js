@@ -70,6 +70,7 @@ function main(argv) {
                             camp_name_en: camp.camp_name_en,
                             camp_desc_he: camp.camp_desc_he,
                             camp_desc_en: camp.camp_desc_en,
+                            type: '',
                             status: camp.status,
                             enabled: camp.enabled,
                             facebook_page_url: camp.facebook_page_url,
