@@ -18,14 +18,6 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         });
-<<<<<<< Updated upstream
-        // TODO - add api call to test if user is part of camp 
-        // if user is member of camp : res.redirect => camp-profile-page
-        res.render('pages/camps/index_user', {
-            user: req.user,
-            breadcrumbs: req.breadcrumbs()
-        });
-=======
         if (req.user.hasRole('admin')) {
             res.render('pages/camps/index_admin', {
                 user: req.user,
@@ -36,7 +28,7 @@ module.exports = function (app, passport) {
              * Add an API to get camp id by user id
              * then redirect to camp profile page.
              */
-            
+
         } else {
             // Regular user
             res.render('pages/camps/index_user', {
@@ -44,7 +36,6 @@ module.exports = function (app, passport) {
                 breadcrumbs: req.breadcrumbs()
             });
         }
->>>>>>> Stashed changes
     });
 
     // new camp
@@ -107,25 +98,6 @@ module.exports = function (app, passport) {
             user: req.user,
             breadcrumbs: req.breadcrumbs()
         });
-    });
-    // camps admin management panel
-    app.get('/:lng/camps-admin', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs({
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
-        });
-        if (req.user.hasRole('admin')) {
-            res.render('pages/camps/index_admin', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        } else {
-            // user not admin
-            res.render('pages/camps/index_user', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        }
     });
     /**
      * CRUD Routes
