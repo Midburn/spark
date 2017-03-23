@@ -90,20 +90,10 @@ function fetchUsersOnce(elm) {
     }
 }
 $(function() {
-    var user_inputs = '#edit_camp_contact_person_id, #create_camp_contact_person_id';
+    var user_inputs = '#create_camp_contact_person_id';
 
-    if ($('.camps').is('.camp_edit') || $('.camps').is('.camp_create')) {
+    if ($('.camps').is('.camp_create')) {
       fetchUsersOnce(user_inputs);
-    }
-
-    if ($('.camps').is('.camp_edit')) {
-      var $current_contact_person = $('#edit_camp_contact_person_id_current')
-      var user_id = $current_contact_person.attr('data-user-id')
-
-      $.getJSON('/users/' + user_id, function(data) {
-        $current_contact_person.attr('href', '/users/' + user_id)
-        $current_contact_person.text(data.email)
-      })
     }
 });
 /**
@@ -264,7 +254,7 @@ $('#camp_edit_save').click(function() {
             camp_name_en: $('#edit_camp_name_en').val(),
             camp_desc_he: $('#edit_camp_desc_he').val(),
             camp_desc_en: $('#edit_camp_desc_en').val(),
-            contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value') || $('label[for="edit_camp_contact_person_id"]').attr('data-camp-contact-person-id'),
+            contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value'),
             facebook_page_url: $('#edit_camp_facebook_page_url').val(),
             contact_person_name: $('#edit_camp_contact_person_name').val(),
             contact_person_email: $('#edit_camp_contact_person_email').val(),
