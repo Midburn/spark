@@ -1,5 +1,6 @@
 {
-        "nav": "Camps",
+        "nav": "My Camp",
+        "nav_admin": "Manage Camps",
         "btn_save_camp": "Save",
         "btn_continue": "Continue",
         "dash": {
