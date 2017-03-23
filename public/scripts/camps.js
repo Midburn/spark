@@ -63,15 +63,17 @@ function doneTyping() {
 }
 
 function getUserTemplate(data) {
-    return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
+    if (data !== undefined) {
+      return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
+    }
 }
 /**
  * getting user list from API
  */
 function fetchUsersOnce(elm) {
-    var camp_id = 6
+    var camp_id = 5
     elm = $(elm)
-    
+
     if (!elm.attr('fetched')) {
         $.getJSON('/camps/' + camp_id + '/members', function(data) {})
         .success((data) => {
@@ -88,27 +90,17 @@ function fetchUsersOnce(elm) {
     }
 }
 $(function() {
-    var user_inputs = '#edit_camp_contact_person_id, #create_camp_contact_person_id';
-    
-    if ($('.camps').is('.camp_edit') || $('.camps').is('.camp_create')) {
+    var user_inputs = '#create_camp_contact_person_id';
+
+    if ($('.camps').is('.camp_create')) {
       fetchUsersOnce(user_inputs);
-    }
-    
-    if ($('.camps').is('.camp_edit')) {
-      var $current_contact_person = $('#edit_camp_contact_person_id_current')
-      var user_id = $current_contact_person.attr('data-user-id')
-      
-      $.getJSON('/users/' + user_id, function(data) {
-        $current_contact_person.attr('href', '/users/' + user_id)
-        $current_contact_person.text(data.email)
-      })
     }
 });
 /**
  * getting camp list from API
  */
 var fetchedCampsOnce = false,
-    $stats_table = $('.camps.camp_admin_index .table');
+    $stats_table = $('.camps.camp_admin_index #admin_camps');
 
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
@@ -262,7 +254,7 @@ $('#camp_edit_save').click(function() {
             camp_name_en: $('#edit_camp_name_en').val(),
             camp_desc_he: $('#edit_camp_desc_he').val(),
             camp_desc_en: $('#edit_camp_desc_en').val(),
-            contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value') || $('label[for="edit_camp_contact_person_id"]').attr('data-camp-contact-person-id'),
+            contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value'),
             facebook_page_url: $('#edit_camp_facebook_page_url').val(),
             contact_person_name: $('#edit_camp_contact_person_name').val(),
             contact_person_email: $('#edit_camp_contact_person_email').val(),
@@ -439,7 +431,7 @@ function fetchOpenCamps(elm) {
            url: '/camps_open',
            type: 'GET',
            success: function(data) {
-               var camps = [data.camps];
+               var camps = data.camps;
                for (var i = 0; i < camps.length; i++) {
                    $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
                }

@@ -1,5 +1,5 @@
 app.controller("membersController", function($scope, $http) {
-    var camp_id = document.querySelector('#camp_members_camp_id').value;
+    var camp_id = 6;
     function _getMembers() {
         $http.get('/camps/' + camp_id + '/members').then(function(res) {
             $scope.members = [res.data.users];
