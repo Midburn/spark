@@ -19,13 +19,8 @@ module.exports = function (app, passport) {
         },
             function (error, response, body) {
                 if (!error && response.statusCode === 200) {
-                    console.log(body);
-                    if (body.indexOf('token') > 0) {
-                        res.status(200).jsonp({ status: 'true', 'massage': 'user authorized' });
-                    }
-                    else {
-                        res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
-                    }
+                    console.log(body);                  
+                    res.status(200).jsonp({ status: 'true', 'massage': 'user authorized' });
                 }
                 else {
                     res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
