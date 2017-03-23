@@ -72,6 +72,7 @@ function main(argv) {
                             camp_desc_en: camp.camp_desc_en,
                             type: '',
                             status: camp.status,
+                            enabled: camp.enabled,
                             facebook_page_url: camp.facebook_page_url,
                             accept_families: camp.accept_families,
                             contact_person_name: camp.contact_person_name,
