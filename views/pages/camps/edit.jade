@@ -35,21 +35,19 @@ block content
                             .col-xs-12
                                 label(for='edit_camp_desc_he')=t('camps:edit.desc_he')
                                 textarea.form-control(id='edit_camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
-                h4=t('camps:edit.website_publication')
+                h4=t('camps:new.website_publication')
                 .camp-publication.panel
                     .panel-body
                         .information
                             .row
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:edit.contact_person_id')}
-                                        label(style='margin: 0 2px;') | Current: 
-                                            a(id="edit_camp_contact_person_id_current", data-user-id="#{camp.contact_person_id}")
+                                        label(for='edit_camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
                                         select.form-control(id='edit_camp_contact_person_id', name='contact_person_id')
                                             option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.email }}
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='edit_camp_facebook_page_url')=t('camps:edit.facebook_page_url')
+                                        label(for='edit_camp_facebook_page_url')=t('camps:new.facebook_page_url')
                                         input.form-control(id='edit_camp_facebook_page_url', name='facebook_page_url', value='#{camp.facebook_page_url}')
                                 .col-md-4
                                     .col-xs-12
