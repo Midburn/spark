@@ -39,7 +39,7 @@ module.exports = function (app, passport) {
       * request => /camps/new
       */
     app.post('/camps/new',
-        [userRole.isLoggedIn(), userRole.isAAllowNewCamp()],
+        [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
             Camp.forge({
                 // for new fields!
