@@ -20,7 +20,7 @@ const drupal_login = (email, password, done) =>
     .send({ 'username': email, 'password': password })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/x-www-form-urlencoded')
-    .then(({body}) => body);
+    .then(({body}) => body, () => null);
 
 var login = function (email, password, done) {
   drupal_login(email, password, done).then(function (drupal_user) {
@@ -42,10 +42,6 @@ var login = function (email, password, done) {
               done(false, error)
             }
           })
-        } else if (!user.attributes.validated) {
-          done(false, i18next.t('user_not_validated', {
-            email: email
-          }))
         } else if (!user.attributes.enabled) {
           done(false, i18next.t('user_disabled'))
         } else {
@@ -53,7 +49,7 @@ var login = function (email, password, done) {
         }
       })
     } else {
-      done(false, i18next.t('user_not_validated', {
+      done(false, i18next.t('invalid_user_password', {
         email: email
       }))
     }
