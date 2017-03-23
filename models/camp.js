@@ -5,15 +5,18 @@ var User = require('../models/camp').User;
 var Camp = bookshelf.Model.extend({
     tableName: constants.CAMPS_TABLE_NAME,
     members: function() {
-      return this.hasOne(CampMembers)
+      return this.hasMany(CampMembers)
     }
 });
 
 var CampMembers = bookshelf.Model.extend({
     tableName: constants.CAMP_MEMBERS_TABLE_NAME,
-    camp: function() {
-        return this.belongsTo(User, 'user_id')
-    }
+    users: function() {
+        return this.belongsTo(User, 'user_id');
+    },
+    camps: function() {
+        return this.belongsTo(Camp, 'camp_id','camp_id');
+    },
 });
 
 // Create the model and expose it
