@@ -39,10 +39,10 @@ var Volunteer = bookshelf.Model.extend({
         return this.belongsTo(User, 'user_id');
     }
 }, {
-    get_by_user: function(user_id_) {
+    get_by_user: function(user_id_, dep_id, event_id) {
         console.log('Looking for volunteer data for user ' + user_id_);
-        return new Volunteer().fetchAll({ user_id: user_id_ }).then(function(users) {
-            return users;
+        return new Volunteer().fetch({ user_id: user_id_, department_id: dep_id, event_id: event_id }).then(function(user) {
+            return user;
         });
     }
 });

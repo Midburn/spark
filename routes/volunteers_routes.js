@@ -31,13 +31,20 @@ var get_roles = function(req, res) {
     });
 }
 
-function __is_dep_vol_manager(user_id) {
-    return true;
+function __has_permissions(user_id, perm_level, next, err) {
+    return Volunteer.get_by_user(user_id).then((vol_data) => {
+        if (vol_data.get('role_id') <= perm_level) {
+            next();
+        } else {
+            err('No Permissions');
+        }
+    });
 };
 //GET /volunteer/volunteers
 var get_volunteers = function(req, res) {
-    if (__is_dep_vol_manager(req.user.id)) {
+    __has_permissions(req.user.id, 0, () => {
         //var user_ids = [1]; //find user by name or email and by ticket.
+
         Volunteer.query((qb) => {
             if (req.query.deps !== undefined) {
                 qb.whereIn('department_id', req.query.deps);
@@ -58,13 +65,14 @@ var get_volunteers = function(req, res) {
                 }
             });
         });
-    } else {
-        res.status(401).json({ message: "Not Authorized" });
-    }
+    }, (err) => {
+        res.status(401).json({ message: err });
+    });
 };
 //GET /volunteer/department/:department_id/volunteers
 var get_department_volunteers = function(req, res) {
-    if (__is_dep_vol_manager(req.user.id)) {
+    __has_permissions(req.user.id, 2, () => {
+
         Volunteer.query((qb) => {
             qb.whereIn('department_id', req.params.department_id);
             if (req.query.roles !== undefined) {
@@ -83,42 +91,46 @@ var get_department_volunteers = function(req, res) {
                 }
             });
         });
-    } else {
-        res.status(401).json({ message: "Not Authorized" });
-    }
+    }, (err) => {
+        res.status(401).json({ message: err });
+    });
 };
 ///POST volunteer/department/department_id/volunteers
 var post_volunteers = function(req, res) {
-    if (__is_dep_vol_manager(req.user.id) && req.body !== undefined) {
-        for (var index = 0; index < req.body.length; index++) {
-            var element = req.body[index];
-            console.log('Will add ' + JSON.stringify(element));
-            //TODO get user_ids.... add to vaolunteers table.
-            //https://profile-test.midburn.org/en/api/views/api_user_search?mail=1467
-            /*
-            request.get('https://profile-test.midburn.org/en/api/views/api_user_search')
-                .query({ mail: element.email })
-                .end((err, res) => {
-                    console.log(err);
+    __has_permissions(req.user.id, 2, () => {
+
+            for (var index = 0; index < req.body.length; index++) {
+                var element = req.body[index];
+                console.log('Will add ' + JSON.stringify(element));
+                //TODO get user_ids.... add to vaolunteers table.
+                //https://profile-test.midburn.org/en/api/views/api_user_search?mail=1467
+                /*
+                request.get('https://profile-test.midburn.org/en/api/views/api_user_search')
+                    .query({ mail: element.email })
+                    .end((err, res) => {
+                        console.log(err);
+                    });
+                */
+                var user_id = index;
+                Volunteer.forge({ user_id: user_id, department_id: req.params.department_id, event_id: 0 }).save().then((vol) => {
+                    console.log('adding ' + user_id + " to vol department " + department_id);
+                }).catch((err) => {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    })
                 });
-            */
-            var user_id = index;
-            Volunteer.forge({ user_id: user_id, department_id: req.params.department_id, event_id: 0 }).save().then((vol) => {
-                console.log('adding ' + user_id + " to vol department " + department_id);
-            }).catch((err) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
-                })
-            });
-            res.send(200);
+                res.send(200);
+            }
+        }, (err) => {
+            res.status(401).json({ message: err });
         }
-    } else {
-        res.status(401).json({ message: "Not Authorized" });
-    }
+
+    );
 };
+
 ///POST volunteer/department/department_id/volunteers/user_id
 var put_volunteer = function(req, res) {
     var new_data = { role_id: req.body.permission, type_in_shift_id: req.body.shift_type };
