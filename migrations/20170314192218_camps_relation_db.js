@@ -2,41 +2,6 @@ var constants = require('../models/constants.js');
 
 exports.up = function (knex, Promise) {
     return Promise.all([
-<<<<<<< HEAD
-        knex.schema.alterTable(constants.CAMPS_TABLE_NAME, function (table) {
-<<<<<<< HEAD
-            // if (!knex.schema.hasColumn(constants.CAMPS_TABLE_NAME, 'event_id')) {
-            table.string('event_id', 15);
-            table.dropUnique('camp_name_he');
-            table.dropUnique('camp_name_en');
-            table.unique(['event_id', 'camp_name_en']);
-            table.unique(['event_id', 'camp_name_he']);
-            // }
-=======
->>>>>>> 70bff0b45ec9ae97cda4cf2f0dbad80c057e4310
-
-            // Detailed info
-            table.enu('camp_activity_time', constants.CAMP_ACTIVITY_TIMES);
-            table.boolean('child_friendly');
-            table.enu('noise_level', constants.CAMP_NOISE_LEVELS);
-            table.integer('public_activity_area_sqm');
-            table.text('public_activity_area_desc', 'mediumtext');
-            table.boolean('support_art');
-
-            // Location
-            table.text('location_comments', 'mediumtext');
-            table.text('camp_location_street');
-            table.text('camp_location_street_time');
-            table.integer('camp_location_area');
-
-            // Contact person info on top id
-            table.string('contact_person_name', 100);
-            table.string('contact_person_email', 100);
-            table.string('contact_person_phone', 14);
-
-        }),
-=======
->>>>>>> a2696b15fcd92fb61d8c063319af464b77eaadba
         knex.schema.createTable(constants.CAMP_MEMBERS_TABLE_NAME, function (table) {
             table.integer('camp_id').unsigned();
             table.integer('user_id').unsigned();
