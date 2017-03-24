@@ -28,7 +28,6 @@ module.exports = function (app, passport) {
              * Add an API to get camp id by user id
              * then redirect to camp profile page.
              */
-
         } else {
             // Regular user
             res.render('pages/camps/index_user', {
@@ -138,7 +137,7 @@ module.exports = function (app, passport) {
             // withRelated: ['details']
         }).then((camp) => {
             var camp_data = camp.toJSON();
-            if (camp_data.type === null) {
+            if (camp_data.type===null) {
                 camp_data.type = '';
             }
             res.render('pages/camps/edit', {
