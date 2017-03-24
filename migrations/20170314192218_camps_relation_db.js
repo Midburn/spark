@@ -10,6 +10,8 @@ exports.up = function (knex, Promise) {
             table.foreign('camp_id').references(constants.CAMPS_TABLE_NAME + '.id');
             table.foreign('user_id').references(constants.USERS_TABLE_NAME + '.user_id');
             table.enu('status', constants.CAMP_MEMBER_STATUS);
+
+            // additional information
             table.text('addinfo_json', 'mediumtext');
         }),
 
