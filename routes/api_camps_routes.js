@@ -1,8 +1,7 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
-// var CampDetails = require('../models/camp').CampDetails;
+var CampMember = require('../models/camp_member').CampMember;
 var constants = require('../models/constants.js');
-var CampMembers = require('../models/camp').CampMembers;
 var config = require('config');
 
 const userRole = require('../libs/user_role');
@@ -329,10 +328,7 @@ module.exports = function (app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({ status: 'open', event_id: constants.CURRENT_EVENT_ID }).fetch({
-            require: true,
-            columns: ['id', 'camp_name_en']
-        }).then((camp) => {
+        Camp.where('status','=','open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
@@ -407,7 +403,7 @@ module.exports = function (app, passport) {
         var camp_id = req.params.id
 
         // create relation model between user and camp
-        new CampMembers({
+        new CampMember({
             camp_id: camp_id,
             user_id: user_id,
             status: 'pending'
@@ -468,7 +464,7 @@ module.exports = function (app, passport) {
         var user_id = req.params.user_id
 
         // update relation model between user and camp
-        new CampMembers({ camp_id: user_id }).destroy().then(function (camp) {
+        new CampMember({ camp_id: user_id }).destroy().then(function (camp) {
             deliver()
             resetPending()
             res.json({ error: false, status: 'Request canceled by user, camp manager notified.' });
@@ -520,21 +516,33 @@ module.exports = function (app, passport) {
     });
 
     /**
+     * API: (GET) return camp members without details
+     * request => /camps/1/members/count
+     */
+    app.get('/camps/:id/members/count', (req, res) => {
+      Camp.forge({id: req.params.id}).fetch({withRelated: ['members']}).then((camp) => {
+        res.status(200).json({ members: camp.related('members').toJSON() })
+      })
+    })
+
+    /**
      * API: (GET) return camp members, provide camp id
      * query user with attribute: camp_id
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
-        User.forge({ enabled: 1, camp_id: req.params.id }).fetch({ require: true }).then((users) => {
-            res.status(200).json({ users: users.toJSON() })
-        }).catch((e) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: e.message
-                }
-            });
-        });
+      CampMember.query(function (q) {
+              q
+                .where('camp_members.camp_id', req.params.id)
+                .innerJoin('users', function () {
+                    this.on('camp_members.user_id', '=', 'users.user_id')
+                        // .andOn('camp_members.status', '=', 'approved');
+                })
+          })
+          .fetchAll({ withRelated: ['user'] })
+          .then(function (user) {
+              res.status(200).json({ members: user.toJSON() })
+          });
     });
 
     /**
@@ -554,26 +562,6 @@ module.exports = function (app, passport) {
                 } else {
                     res.status(404).json({ data: { message: 'Not found' } })
                 }
-            }).catch((e) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: e.message
-                    }
-                });
-            });
-    })
-
-    /**
-     * API: (GET) return camp members
-     */
-    app.get('/users/:id/camp', (req, res) => {
-        CampMembers.forge({ user_id: req.params.id })
-            .fetch({
-                require: true
-            })
-            .then((camp_member) => {
-                res.status(200).json({ camp_member: camp_member.toJSON() })
             }).catch((e) => {
                 res.status(500).json({
                     error: true,

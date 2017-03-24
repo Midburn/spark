@@ -18,23 +18,12 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         });
-        if (req.user.hasRole('admin')) {
-            res.render('pages/camps/index_admin', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        } else if (req.user.hasRole('camp manager')) {
-            /**
-             * Add an API to get camp id by user id
-             * then redirect to camp profile page.
-             */
-        } else {
-            // Regular user
-            res.render('pages/camps/index_user', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        }
+        // TODO - add api call to test if user is part of camp 
+        // if user is member of camp : res.redirect => camp-profile-page
+        res.render('pages/camps/index_user', {
+            user: req.user,
+            breadcrumbs: req.breadcrumbs()
+        });
     });
 
     // new camp
@@ -47,10 +36,13 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.new',
             url: '/' + req.params.lng + '/camps/new/?c=' + req.query.c
         }]);
-        res.render('pages/camps/new', {
+        res.render('pages/camps/edit', {
             user: req.user,
             camp_name_en: req.query.c,
-            breadcrumbs: req.breadcrumbs()
+            breadcrumbs: req.breadcrumbs(),
+            isNew: true,
+            camp: {type: ''},
+            details: {}
         });
     });
     // camps statistics
@@ -98,6 +90,25 @@ module.exports = function (app, passport) {
             breadcrumbs: req.breadcrumbs()
         });
     });
+    // camps admin management panel
+    app.get('/:lng/camps-admin', userRole.isLoggedIn(), (req, res) => {
+        req.breadcrumbs({
+            name: 'camps:breadcrumbs.home',
+            url: '/' + req.params.lng + '/camps'
+        });
+        if (req.user.hasRole('admin')) {
+            res.render('pages/camps/index_admin', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        } else {
+            // user not admin
+            res.render('pages/camps/index_user', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        }
+    });
     /**
      * CRUD Routes
      */
@@ -143,7 +154,8 @@ module.exports = function (app, passport) {
             res.render('pages/camps/edit', {
                 user: req.user,
                 camp: camp_data,
-                details: camp_data
+                details: camp_data,
+                isNew: false
             })
         })
     });
