@@ -23,7 +23,7 @@ block content
             h4=t('camps:new.name_card_header')
             ul.list-group
                 li.list-group-item
-                    if camp.enabled
+                    if camp.web_published
                       span.no-flt.badge.bg__green=t('camps:camps.published')
                     else
                       span.no-flt.badge.bg__red(data-toggle="tooltip", data-placement="top", title="Not published")=t('camps:camps.draft')

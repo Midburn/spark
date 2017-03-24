@@ -146,7 +146,7 @@ module.exports = function (app, passport) {
     app.put('/camps/:id/publish', (req, res) => {
         // If camp met all its requirements, can publish
         Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-            camp.save({ enabled: '1' }).then(function () {
+            camp.save({ web_published: '1' }).then(function () {
                 res.json({ error: false, status: 'Publish' });
             }).catch(function (err) {
                 res.status(500).json({
@@ -168,7 +168,7 @@ module.exports = function (app, passport) {
     // UNPUBLISH
     app.put('/camps/:id/unpublish', (req, res) => {
         Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-            camp.save({ enabled: '0' }).then(function () {
+            camp.save({ web_published: '0' }).then(function () {
                 res.json({ error: false, status: 'Unpublish' });
             }).catch(function (err) {
                 res.status(500).json({
@@ -199,7 +199,7 @@ module.exports = function (app, passport) {
         Camp.fetchAll().then((camp) => {
             var published_camps = [];
             for (var i = 0; i < camp.models.length; i++) {
-                if (camp.models[i].attributes.enabled === '1' && camp.models[i].attributes.status !== 'inactive') {
+                if (camp.models[i].attributes.web_published === '1' && camp.models[i].attributes.status !== 'inactive') {
                     var fetched_camp = {
                         id: camp.models[i].attributes.id,
                         name_en: camp.models[i].attributes.camp_name_en,
@@ -545,6 +545,9 @@ module.exports = function (app, passport) {
             var _camp = camp.toJSON();
             // console.log(_camp);
             if (_camp.event_id === constants.CURRENT_EVENT_ID) {
+                if (action==='approve') {
+                    // need to approve the user
+                }
                 CampMembers.forge({
                     camp_id: camp_id,
                     user_id: req.user.attributes.user_id,

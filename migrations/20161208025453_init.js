@@ -31,6 +31,16 @@ exports.up = function (knex, Promise) {
             table.boolean('npo_member').defaultTo(false);
             table.string('facebook_id', 50);
             table.string('facebook_token', 255);
+
+            /**
+             * User Current Status - Defines the current status of profile
+             */ 
+            table.string('current_event_id',15);
+            table.timestamp('current_last_status');
+            table.enu('current_status',constants.USER_CURRENT_STATUS);
+
+            // additional information
+            table.text('addinfo_json', 'mediumtext');
         }),
 
     // Payments table

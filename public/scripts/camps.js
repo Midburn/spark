@@ -115,10 +115,10 @@ var fetchedCampsOnce = false,
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
         created_at = new Date(data.created_at).toDateString(),
-        enabled = data.enabled
+        web_published = data.web_published
             ? 'Yes'
             : 'No';
-    return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + enabled + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
+    return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + web_published + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
 }
 
 var fetchCampsOnce = function() {
@@ -274,7 +274,7 @@ $('#camp_edit_save').click(function() {
             safety_contact: $('#edit_camp_safety_contact option:selected').val(),
             status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
             type: type,
-            enabled: $('#edit_camp_enabled option:selected').val(),
+            web_published: $('#edit_camp_web_published option:selected').val(),
             camp_activity_time: $('#edit_camp_activity_time option:selected').val(),
             child_friendly: $('#edit_camp_child_friendly:checked').length,
             noise_level: $('#edit_camp_noise_level option:selected').val(),
