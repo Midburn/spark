@@ -5,7 +5,7 @@ exports.up = function (knex, Promise) {
         knex.schema.createTable(constants.CAMP_MEMBERS_TABLE_NAME, function (table) {
             table.integer('camp_id').unsigned();
             table.integer('user_id').unsigned();
-            table.unique(['user_id']);
+            table.unique(['camp_id', 'user_id']);
             table.index(['camp_id', 'user_id']);
             table.foreign('camp_id').references(constants.CAMPS_TABLE_NAME + '.id');
             table.foreign('user_id').references(constants.USERS_TABLE_NAME + '.user_id');
