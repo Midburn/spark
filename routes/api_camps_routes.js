@@ -1,101 +1,51 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
-// var CampDetails = require('../models/camp').CampDetails;
+var CampMember = require('../models/camp_member').CampMember;
 var constants = require('../models/constants.js');
-var CampMembers = require('../models/camp').CampMembers;
 var config = require('config');
 
 const userRole = require('../libs/user_role');
 
 var mail = require('../libs/mail'),
     mailConfig = config.get('mail');
+
 module.exports = function (app, passport) {
     /**
      * API: (GET) get user by id
      * request => /users/:id
      */
-    app.get('/users/:id', (req, res) => {
-        User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
-            if (user !== null) {
-                res.json({ name: user.get('name'), email: user.get('email'), cell_phone: user.get('cell_phone') })
-            } else {
-                res.status(404).json({ message: 'Not found' })
-            }
-
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
+    app.get('/users/:id',
+        [userRole.isLoggedIn(), userRole.isAllowToViewUser()],
+        (req, res) => {
+            User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
+                if (user !== null) {
+                    res.json({ name: user.get('name'), email: user.get('email'), cell_phone: user.get('cell_phone') })
+                } else {
+                    res.status(404).json({ message: 'Not found' })
                 }
+
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
         });
-    });
     /**
       * API: (POST) create camp
       * request => /camps/new
       */
-    app.post('/camps/new', (req, res) => {
-
-        Camp.forge({
-            // for new fields!
-            created_at: Date(),
-            event_id: constants.CURRENT_EVENT_ID,
-            // for update or insert, need to merge with create to be the same call
-            updated_at: Date(),
-            camp_name_en: req.body.camp_name_en,
-            camp_name_he: req.body.camp_name_he,
-            camp_desc_he: req.body.camp_desc_he,
-            camp_desc_en: req.body.camp_desc_en,
-            status: req.body.status,
-            type: req.body.type,
-            contact_person_id: req.body.contact_person_id,
-            facebook_page_url: req.body.facebook_page_url,
-            contact_person_name: req.body.contact_person_name,
-            contact_person_email: req.body.contact_person_email,
-            contact_person_phone: req.body.contact_person_phone,
-            accept_families: req.body.accept_families,
-            main_contact: req.body.main_contact,
-            moop_contact: req.body.moop_contact,
-            safety_contact: req.body.safety_contact,
-            camp_activity_time: req.body.camp_activity_time,
-            child_friendly: req.body.child_friendly,
-            noise_level: req.body.noise_level,
-            public_activity_area_sqm: req.body.public_activity_area_sqm,
-            public_activity_area_desc: req.body.public_activity_area_desc,
-            support_art: req.body.support_art,
-            location_comments: req.body.location_comments,
-            camp_location_street: req.body.camp_location_street,
-            camp_location_street_time: req.body.camp_location_street_time,
-            camp_location_area: req.body.camp_location_area
-        }).save().then((camp) => {
-            res.json({
-                error: false,
-                data: {
-                    message: 'camp created',
-                    camp_id: camp.attributes.id
-                }
-            });
-        }).catch((e) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: e.message
-                }
-            });
-        });
-    });
-
-    /**
-       * API: (PUT) edit camp
-       * request => /camps/1/edit
-       */
-    app.put('/camps/:id/edit', (req, res) => {
-        Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-            camp.save({
-                // for update or insert
-                updated_at: Date(),
+    app.post('/camps/new',
+        [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
+        (req, res) => {
+            Camp.forge({
+                // for new fields!
+                created_at: Date(),
                 event_id: constants.CURRENT_EVENT_ID,
+                // for update or insert, need to merge with create to be the same call
+                updated_at: Date(),
                 camp_name_en: req.body.camp_name_en,
                 camp_name_he: req.body.camp_name_he,
                 camp_desc_he: req.body.camp_desc_he,
@@ -104,10 +54,10 @@ module.exports = function (app, passport) {
                 type: req.body.type,
                 contact_person_id: req.body.contact_person_id,
                 facebook_page_url: req.body.facebook_page_url,
-                accept_families: req.body.accept_families,
                 contact_person_name: req.body.contact_person_name,
                 contact_person_email: req.body.contact_person_email,
                 contact_person_phone: req.body.contact_person_phone,
+                accept_families: req.body.accept_families,
                 main_contact: req.body.main_contact,
                 moop_contact: req.body.moop_contact,
                 safety_contact: req.body.safety_contact,
@@ -121,9 +71,72 @@ module.exports = function (app, passport) {
                 camp_location_street: req.body.camp_location_street,
                 camp_location_street_time: req.body.camp_location_street_time,
                 camp_location_area: req.body.camp_location_area
-            }).then(function () {
-                res.json({ error: false, status: 'Camp updated' });
-                // });
+            }).save().then((camp) => {
+                res.json({
+                    error: false,
+                    data: {
+                        message: 'camp created',
+                        camp_id: camp.attributes.id
+                    }
+                });
+            }).catch((e) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: e.message
+                    }
+                });
+            });
+        });
+
+    /**
+       * API: (PUT) edit camp
+       * request => /camps/1/edit
+       */
+    app.put('/camps/:id/edit',
+        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
+        (req, res) => {
+            Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
+                camp.save({
+                    // for update or insert
+                    updated_at: Date(),
+                    event_id: constants.CURRENT_EVENT_ID,
+                    camp_name_en: req.body.camp_name_en,
+                    camp_name_he: req.body.camp_name_he,
+                    camp_desc_he: req.body.camp_desc_he,
+                    camp_desc_en: req.body.camp_desc_en,
+                    status: req.body.status,
+                    type: req.body.type,
+                    contact_person_id: req.body.contact_person_id,
+                    facebook_page_url: req.body.facebook_page_url,
+                    accept_families: req.body.accept_families,
+                    contact_person_name: req.body.contact_person_name,
+                    contact_person_email: req.body.contact_person_email,
+                    contact_person_phone: req.body.contact_person_phone,
+                    main_contact: req.body.main_contact,
+                    moop_contact: req.body.moop_contact,
+                    safety_contact: req.body.safety_contact,
+                    camp_activity_time: req.body.camp_activity_time,
+                    child_friendly: req.body.child_friendly,
+                    noise_level: req.body.noise_level,
+                    public_activity_area_sqm: req.body.public_activity_area_sqm,
+                    public_activity_area_desc: req.body.public_activity_area_desc,
+                    support_art: req.body.support_art,
+                    location_comments: req.body.location_comments,
+                    camp_location_street: req.body.camp_location_street,
+                    camp_location_street_time: req.body.camp_location_street_time,
+                    camp_location_area: req.body.camp_location_area
+                }).then(function () {
+                    res.json({ error: false, status: 'Camp updated' });
+                    // });
+                }).catch(function (err) {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    });
+                });
             }).catch(function (err) {
                 res.status(500).json({
                     error: true,
@@ -132,22 +145,24 @@ module.exports = function (app, passport) {
                     }
                 });
             });
-        }).catch(function (err) {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
         });
-    });
 
     // PUBLISH
-    app.put('/camps/:id/publish', (req, res) => {
-        // If camp met all its requirements, can publish
-        Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-            camp.save({ web_published: '1' }).then(function () {
-                res.json({ error: false, status: 'Publish' });
+    app.put('/camps/:id/publish',
+        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
+        (req, res) => {
+            // If camp met all its requirements, can publish
+            Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
+                camp.save({ enabled: '1' }).then(function () {
+                    res.json({ error: false, status: 'Publish' });
+                }).catch(function (err) {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    });
+                });
             }).catch(function (err) {
                 res.status(500).json({
                     error: true,
@@ -156,20 +171,22 @@ module.exports = function (app, passport) {
                     }
                 });
             });
-        }).catch(function (err) {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
         });
-    });
     // UNPUBLISH
-    app.put('/camps/:id/unpublish', (req, res) => {
-        Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-            camp.save({ web_published: '0' }).then(function () {
-                res.json({ error: false, status: 'Unpublish' });
+    app.put('/camps/:id/unpublish',
+        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
+        (req, res) => {
+            Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
+                camp.save({ enabled: '0' }).then(function () {
+                    res.json({ error: false, status: 'Unpublish' });
+                }).catch(function (err) {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    });
+                });
             }).catch(function (err) {
                 res.status(500).json({
                     error: true,
@@ -178,15 +195,7 @@ module.exports = function (app, passport) {
                     }
                 });
             });
-        }).catch(function (err) {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
         });
-    });
 
     /**
      * API: (GET) return published camps with:
@@ -319,10 +328,7 @@ module.exports = function (app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', (req, res) => {
-        Camp.forge({ status: 'open', event_id: constants.CURRENT_EVENT_ID }).fetchAll({
-            require: true,
-            columns: ['id', 'camp_name_en']
-        }).then((camp) => {
+        Camp.where('status','=','open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
@@ -397,7 +403,7 @@ module.exports = function (app, passport) {
         var camp_id = req.params.id
 
         // create relation model between user and camp
-        new CampMembers({
+        new CampMember({
             camp_id: camp_id,
             user_id: user_id,
             status: 'pending'
@@ -458,7 +464,7 @@ module.exports = function (app, passport) {
         var user_id = req.params.user_id
 
         // update relation model between user and camp
-        new CampMembers({ camp_id: user_id }).destroy().then(function (camp) {
+        new CampMember({ camp_id: user_id }).destroy().then(function (camp) {
             deliver()
             resetPending()
             res.json({ error: false, status: 'Request canceled by user, camp manager notified.' });
@@ -510,108 +516,33 @@ module.exports = function (app, passport) {
     });
 
     /**
-     * API: (GET) camps member manager
-     *  :id - camp_id
-     *  :action - ?user_id=id 
-     *      list - list camp member
-     *      add - add user_id to camp 
-     *              if already in camp, do nothing.
-     *              if req.user is camp_manager on camp_id, will add him with status pending_mgr
-     *              if req.user is user_id, will add him with status pending
-     *      remove - remove user_id from camp
-     *              if req.user is camp_manager on camp_id, will remove user_id
-     *              if req.user.user_id = user_id, will remove him.
-     *      approve - approve user_id from camp
-     *              if not approve,
-     *                  if req.user is camp_manager on camp_id, and status=pending, approve.
-     *                  if req.user.user_id = user_id, and status=pending_mgr, approve.
-     *      reject - reject user_id from camp
-     *              if not approve,
-     *                  if req.user is camp_manager on camp_id, 
-     * 
+     * API: (GET) return camp members without details
+     * request => /camps/1/members/count
      */
-    app.get('/camps/:id/members/:action', userRole.isLoggedIn(), (req, res) => {
-        var action = req.params.action;
-        var camp_id = req.params.id;
-        // Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-        Camp.forge({ id: camp_id }).fetch(
-            {
-                withRelated: ['members'],
-            }
-        ).then((camp) => {
-            console.log(req.user);
-            // console.log(camp);
-            // debugger;
-            var _camp = camp.toJSON();
-            // console.log(_camp);
-            if (_camp.event_id === constants.CURRENT_EVENT_ID) {
-                if (action==='approve') {
-                    // need to approve the user
-                }
-                CampMembers.forge({
-                    camp_id: camp_id,
-                    user_id: req.user.attributes.user_id,
-                    status: 'confirmed'
-                }).save().then((member) => {
-                        res.status(200).json({ camp: _camp })
-                    // debugger;
-                    // console.log(member);
-                });
-                // camp is good for us lets get current members
-                // CampMembers.forge({ camp_id: camp_id }).fetchAll(
-                // ).then((members) => {
-                //     res.status(200).json({ members: members.toJSON() });
-                //     if (action === 'list') {
-                //         // CampMembers({ camp_id: camp_id })
+    app.get('/camps/:id/members/count', (req, res) => {
+      Camp.forge({id: req.params.id}).fetch({withRelated: ['members']}).then((camp) => {
+        res.status(200).json({ members: camp.related('members').toJSON() })
+      })
+    })
 
-                //     } else if (action === 'add') {
-                //         // if action=add then we will add new member
-                //         var user_id = req.query.user_id;
-                //     }
-
-                // });
-
-            } else {
-                res.status(404).json({
-                    data: { message: 'Camp Not available in current event ' + constants.CURRENT_EVENT_ID },
-                    logged: camp
-                })
-            }
-        });
-        // // var reference=req.params.reference;
-        // new CampMembers({
-        //     camp_id: req.params.id
-        // }).fetch().then(function (member) {
-        //     if (member !== null) {
-        //         User.forge({ user_id: member.attributes.user_id })
-        //             .fetch().then((user) => {
-        //                 res.status(200).json({ users: user.toJSON() })
-        //             })
-        //     } else {
-        //         // not found
-        //     }
-        // })
-
-        // res.status(200).json({ message: action+" "+reference});
-    });
     /**
      * API: (GET) return camp members, provide camp id
      * query user with attribute: camp_id
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
-        new CampMembers({
-            camp_id: req.params.id
-        }).fetch().then(function (member) {
-            if (member !== null) {
-                User.forge({ user_id: member.attributes.user_id })
-                    .fetch().then((user) => {
-                        res.status(200).json({ users: user.toJSON() })
-                    })
-            } else {
-                // not found
-            }
-        })
+      CampMember.query(function (q) {
+              q
+                .where('camp_members.camp_id', req.params.id)
+                .innerJoin('users', function () {
+                    this.on('camp_members.user_id', '=', 'users.user_id')
+                        // .andOn('camp_members.status', '=', 'approved');
+                })
+          })
+          .fetchAll({ withRelated: ['user'] })
+          .then(function (user) {
+              res.status(200).json({ members: user.toJSON() })
+          });
     });
 
     /**
@@ -631,26 +562,6 @@ module.exports = function (app, passport) {
                 } else {
                     res.status(404).json({ data: { message: 'Not found' } })
                 }
-            }).catch((e) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: e.message
-                    }
-                });
-            });
-    })
-
-    /**
-     * API: (GET) return camp members
-     */
-    app.get('/users/:id/camp', (req, res) => {
-        CampMembers.forge({ user_id: req.params.id })
-            .fetch({
-                require: true
-            })
-            .then((camp_member) => {
-                res.status(200).json({ camp_member: camp_member.toJSON() })
             }).catch((e) => {
                 res.status(500).json({
                     error: true,

@@ -48,10 +48,13 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.new',
             url: '/' + req.params.lng + '/camps/new/?c=' + req.query.c
         }]);
-        res.render('pages/camps/new', {
+        res.render('pages/camps/edit', {
             user: req.user,
             camp_name_en: req.query.c,
-            breadcrumbs: req.breadcrumbs()
+            breadcrumbs: req.breadcrumbs(),
+            isNew: true,
+            camp: {type: ''},
+            details: {}
         });
     });
     // camps statistics
@@ -138,13 +141,14 @@ module.exports = function (app, passport) {
             // withRelated: ['details']
         }).then((camp) => {
             var camp_data = camp.toJSON();
-            if (camp_data.type === null) {
+            if (camp_data.type===null) {
                 camp_data.type = '';
             }
             res.render('pages/camps/edit', {
                 user: req.user,
                 camp: camp_data,
-                details: camp_data
+                details: camp_data,
+                isNew: false
             })
         })
     });
