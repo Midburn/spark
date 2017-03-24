@@ -37,9 +37,11 @@ block content
             //- Card 2
             .card.card-second.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
                 h4=t('camps:admin_index.all_members_table')
+                    span.badge {{members.length}}
                 table.table.table-striped.table-hover
                   thead
                     tr
+                      th(ng-click='changeOrderBy("id")') #
                       th(ng-click='changeOrderBy("name")') Name
                       if userIs('admin')
                           th(ng-click='changeOrderBy("email")') Email
@@ -51,15 +53,16 @@ block content
                       th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
                   tbody
                     tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-                      td {{member.name}}
+                      td {{member.user.user_id}}
+                      td {{member.user.name}}
                       if userIs('admin')
-                          td {{member.email}}
-                      td {{member.phone}}
+                          td {{member.user.email}}
+                      td {{member.user.cell_phone}}
                       if userIs('admin')
-                          td {{member.status}}
+                          td {{member.user.status}}
                       if userIs('admin')
-                          td {{member.hasTicket ? 'yes':'no'}}
-                      td {{member.earlyArrival ? 'yes':'no'}}
+                          td {{member.user.hasTicket ? 'yes':'no'}}
+                      td {{member.user.earlyArrival ? 'yes':'no'}}
 
 
             //- Card 3
