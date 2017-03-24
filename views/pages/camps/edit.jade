@@ -18,7 +18,7 @@ block content
                 button.Btn.Btn__default.card-switcher#1=t('camps:edit.basic_info')
                 button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
                 //- TODO - test is user is camp manager of this camp
-                if(user.isCampManager)
+                if(!isNew && (user.isCampManager || user.isAdmin))
                     button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.members')
                     button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')
         .cards--wrapper.card__shad
@@ -104,22 +104,22 @@ block content
                                 .col-xs-12
                                     label(for='camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
                                         .checkbox
-                                            input(type="checkbox", class='edit_camp_type', id="type_music", name="edit_type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_music", name="type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
                                             label(for="edit_type_music")
                                                 | #{t('camps:edit.music')}
                                         .checkbox
-                                            input(type="checkbox", class='edit_camp_type', id="type_drinks", name="edit_type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_drinks", name="type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
                                             label(for="edit_type_drinks")
                                                 | #{t('camps:edit.drinking')}
                                         .checkbox
-                                            input(type="checkbox", class='edit_camp_type', id="type_food", name="edit_type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_food", name="type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
                                             label(for="edit_type_food")
                                                 | #{t('camps:edit.food')}
                                         .checkbox
-                                            input(type="checkbox", class='edit_camp_type', id="camp_type_other_checkbox", name="edit_type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
                                             label(for="edit_camp_type_other_checkbox")
                                                 | #{t('camps:edit.other')}
-                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="edit_type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
                                                   
                             .col-md-4
                                 .col-xs-12
