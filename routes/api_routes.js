@@ -1,16 +1,14 @@
-// var config = require('config');
 var request = require('request');
 
-module.exports = function (app, passport) {
+module.exports = function (app) {
     /**
    * API: (GET)   
    * request => /api/userlogin
    * params  => username, password
    * usage sample => http://localhost:3000/api/userlogin?username=Profile_Username&password=Profile_Password
    */
-    app.get('/api/userlogin', (req, res, next) => {
+    app.get('/api/userlogin', (req, res) => {
         console.log(req);
-
         request({
             url: 'https://profile.midburn.org/api/user/login',
             method: 'POST',
@@ -19,48 +17,25 @@ module.exports = function (app, passport) {
         },
             function (error, response, body) {
                 if (!error && response.statusCode === 200) {
-                    console.log(body);
-                    if (body.indexOf('token') > 0) {
-                        res.status(200).jsonp({ status: 'true', 'massage': 'user authorized' });
-                    }
-                    else {
-                        res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
-                    }
+
+                    var drupalUser = JSON.parse(body);
+                    console.log(drupalUser);
+
+                    res.status(200).jsonp({
+                        status: 'true',
+                        'massage': 'user authorized',
+                        'uid': drupalUser.user.uid,
+                        'username': drupalUser.user.name,
+                        'token': drupalUser.sessid,
+                        "firstname": drupalUser.user.field_profile_first.und[0].value,
+                        "lastname": drupalUser.user.field_profile_last.und[0].value,
+                        "phone": drupalUser.user.field_profile_phone.und[0].value
+                    });
                 }
                 else {
-                    res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
+                    res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!', 'error': JSON.parse(body) });
                 }
             });
     });
-
-/*
-    /////  POST not tested yet :-( ////
-    app.post('/api/userlogin', (req, res, next) => {
-        console.log(req);
-
-        request({
-            url: 'https://profile-test.midburn.org/api/user/login',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            form: { 'username': req.query.username, 'password': req.query.password }
-        },
-            function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    console.log(body);
-
-                    //need to implement more currect way to validate response.
-                    if (body.indexOf('token') > 0) {
-                        //you can return any needed data from the body.
-                        res.status(200).jsonp({ status: 'true', 'massage': 'user authorized' });
-                    }
-                    else {
-                        res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
-                    }
-                }
-                else {
-                    res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!!!' });
-                }
-            });
-    });*/
-
 };
+
