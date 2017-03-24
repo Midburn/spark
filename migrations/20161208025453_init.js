@@ -33,8 +33,8 @@ exports.up = function (knex, Promise) {
             table.string('facebook_token', 255);
 
             /**
-             * User Current Status - Defines the current status of profile
-             */ 
+              * User Current Status - Defines the current status of profile
+              */
             table.string('current_event_id',15);
             table.timestamp('current_last_status');
             table.enu('current_status',constants.USER_CURRENT_STATUS);

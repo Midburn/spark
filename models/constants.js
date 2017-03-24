@@ -52,7 +52,7 @@ module.exports = {
 
     USER_GENDERS: get_enum(user_genders),
     USER_GENDERS_DEFAULT: get_default_enum(user_genders),
-    
+
     /**
      * User Current Status:
      *      define the position of the profile. in which event user is,
@@ -61,7 +61,7 @@ module.exports = {
      */
     USER_CURRENT_STATUS: ['in event','out event'],
 
-    NPO_MEMBERSHIP_STATUSES: get_enum(npo_membership_statuses), 
+    NPO_MEMBERSHIP_STATUSES: get_enum(npo_membership_statuses),
     NPO_MEMBERSHIP_STATUSES_DEFAULT: get_default_enum(npo_membership_statuses),
 
     CAMP_TYPES: ['food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other'],

@@ -264,20 +264,6 @@ $('#camp_edit_save').click(function() {
             safety_contact: $('#camp_safety_contact option:selected').val(),
             status: $('#camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
             type: type,
-<<<<<<< HEAD
-            web_published: $('#edit_camp_web_published option:selected').val(),
-            camp_activity_time: $('#edit_camp_activity_time option:selected').val(),
-            child_friendly: $('#edit_camp_child_friendly:checked').length,
-            noise_level: $('#edit_camp_noise_level option:selected').val(),
-            public_activity_area_sqm: $('#edit_public_activity_area_sqm').val(),
-            public_activity_area_desc: $('#edit_public_activity_area_desc').val(),
-            support_art: $('#edit_support_art:checked').length,
-            location_comments: $('#edit_location_comments').val(),
-            camp_location_street: $('#edit_camp_location_street').val(),
-            camp_location_street_time: $('#edit_camp_location_street_time').val(),
-            camp_location_area: $('#edit_camp_location_area').val(),
-            accept_families: $('#edit_camp_accept_families:checked').length
-=======
             web_published: $('#camp_web_published option:selected').val(),
             camp_activity_time: $('#camp_activity_time option:selected').val(),
             child_friendly: $('#camp_child_friendly:checked').length,
@@ -290,7 +276,6 @@ $('#camp_edit_save').click(function() {
             camp_location_street_time: $('#camp_location_street_time').val(),
             camp_location_area: $('#camp_location_area').val(),
             accept_families: $('#camp_accept_families:checked').length
->>>>>>> d33575790862cdadb30f3498a37fb74a1418fb15
         };
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
