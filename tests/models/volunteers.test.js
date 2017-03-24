@@ -52,11 +52,11 @@ describe('Volunteer module db model', () => {
             });
         });
 
-        it('should contain mapping to its user info', () => {
-            return new Volunteer({ user_id: 1, department_id: 1, event_id: 0 }).fetch({ withRelated: ['user_info'] }).then((dep) => {
-                expect(dep.related('user_info')).not.to.be.undefined
-            });
-        });
+        // it('should contain mapping to its user info', () => {
+        //     return new Volunteer({ user_id: 1, department_id: 1, event_id: 0 }).fetch({ withRelated: ['user_info'] }).then((dep) => {
+        //         expect(dep.related('user_info')).not.to.be.undefined
+        //     });
+        // });
 
         it('should get vaolunteersby user id', () => {
             return Volunteer.get_by_user(1).then((vols) => {

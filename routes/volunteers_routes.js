@@ -3,7 +3,8 @@ var Department = volunteers_model.Department;
 var Role = volunteers_model.Role;
 var Volunteer = volunteers_model.Volunteer;
 const userRole = require('../libs/user_role');
-
+var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
+var _ = require('lodash');
 //GET /volunteer/departments
 var get_departments = function(req, res) {
     Department.fetchAll().then(function(deps) {
@@ -44,7 +45,7 @@ function __has_permissions(user_id, perm_level, next, err) {
 var get_volunteers = function(req, res) {
     __has_permissions(req.user.id, 0, () => {
         //var user_ids = [1]; //find user by name or email and by ticket.
-
+        /*
         Volunteer.query((qb) => {
             if (req.query.deps !== undefined) {
                 qb.whereIn('department_id', req.query.deps);
@@ -53,9 +54,10 @@ var get_volunteers = function(req, res) {
                 qb.whereIn('role_id', req.query.roles);
             }
         }).fetchAll().then((vols) => {
-            if (res === null) {
+            if (vols === null) {
                 res.json('[]')
             }
+            
             res.json(vols.toJSON());
         }).catch((err) => {
             res.status(500).json({
@@ -63,6 +65,44 @@ var get_volunteers = function(req, res) {
                 data: {
                     message: err.message
                 }
+            });
+        });
+        */
+        DrupalAccess.get_user_by_email(req.query.email).then((user) => {
+            Volunteer.query((qb) => {
+                qb.where('user_id', user.id);
+                if (req.query.deps !== undefined) {
+                    qb.whereIn('department_id', req.query.deps);
+                }
+                if (req.query.roles !== undefined) {
+                    qb.whereIn('role_id', req.query.roles);
+                }
+            }).fetchAll().then((vols) => {
+                if (vols === null) {
+                    res.json('[]')
+                }
+                var ret = _.map(vols.models, (x) => {
+                    return {
+                        user_id: user.id,
+                        email: user.email,
+                        permission: x.role_id,
+                        department_id: x.department_id,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        phone_number: user.phone_number,
+                        got_ticket: true,
+                        comment: "from Volunteers table"
+                    };
+                });
+
+                res.json(ret);
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
         });
     }, (err) => {
@@ -73,22 +113,39 @@ var get_volunteers = function(req, res) {
 var get_department_volunteers = function(req, res) {
     __has_permissions(req.user.id, 2, () => {
 
-        Volunteer.query((qb) => {
-            qb.whereIn('department_id', req.params.department_id);
-            if (req.query.roles !== undefined) {
-                qb.whereIn('role_id', req.query.roles);
-            }
-        }).fetchAll().then((vols) => {
-            if (res === null) {
-                res.json('[]')
-            }
-            res.json(vols.toJSON());
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
+        DrupalAccess.get_user_by_email(req.query.email).then((user) => {
+            Volunteer.query((qb) => {
+                qb.where('user_id', user.id);
+                qb.where('department_id', req.params.department_id);
+                if (req.query.roles !== undefined) {
+                    qb.whereIn('role_id', req.query.roles);
                 }
+            }).fetchAll().then((vols) => {
+                if (vols === null) {
+                    res.json('[]')
+                }
+                var ret = _.map(vols.models, (x) => {
+                    return {
+                        user_id: user.id,
+                        email: user.email,
+                        permission: x.role_id,
+                        department_id: x.department_id,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        phone_number: user.phone_number,
+                        got_ticket: true,
+                        comment: "from Volunteers table"
+                    };
+                });
+
+                res.json(ret);
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
         });
     }, (err) => {
@@ -151,8 +208,8 @@ var put_volunteer = function(req, res) {
 
 var get_volunteering_info = function(req, res) {
     var user_id = req.user.id;
-    Volunteer.get_by_user(user_id).then(function(deps) {
-        res.json(deps.toJSON());
+    Volunteer.get_by_user(user_id).then(function(vols) {
+        res.json(vols.toJSON());
     }).catch((err) => {
         res.status(500).json({
             error: true,
