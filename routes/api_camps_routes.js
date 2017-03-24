@@ -327,6 +327,27 @@ module.exports = function (app, passport) {
      * API: (GET) return camps list which are open to new members
      * request => /camps_open
      */
+    app.get('/camps_all', (req, res) => {
+        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
+            if (camp !== null) {
+                res.status(200).json({ camps: camp.toJSON() })
+            } else {
+                res.status(404).json({ data: { message: 'Not found' } })
+            }
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
+
+    /**
+     * API: (GET) return camps list which are open to new members
+     * request => /camps_open
+     */
     app.get('/camps_open', (req, res) => {
         Camp.where('status','=','open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
             if (camp !== null) {

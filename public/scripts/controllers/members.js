@@ -1,14 +1,17 @@
-app.controller("membersController", function($scope, $http) {
-    var camp_id = 167; // for admin: should retreive camp_id from camps select -- for camp_manager: his own camp_id;
-    function _getMembers() {
-        $http.get('/camps/' + camp_id + '/members').then(function(res) {
-            $scope.members = res.data.members;
-        });
+app.controller("membersController", ($scope, $http) => {
+    $http.get('/camps_all').then((res) => {
+        $scope.camps = res.data.camps;
+    });
+
+    $scope.getMembers = (camp_id) => {
+        if (typeof camp_id !== 'undefined') {
+            $http.get(`/camps/${camp_id}/members`).then((res) => {
+                $scope.members = res.data.members;
+                innerHeightChange()
+            });
+        }
     }
-    $scope.changeOrderBy = function(orderByValue) {
+    $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
-    }
-    if (typeof camp_id !== 'undefined') {
-        _getMembers();
     }
 });
