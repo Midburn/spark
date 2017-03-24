@@ -105,10 +105,10 @@ var fetchedCampsOnce = false,
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
         created_at = new Date(data.created_at).toDateString(),
-        enabled = data.enabled
+        web_published = data.web_published
             ? 'Yes'
             : 'No';
-    return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + enabled + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
+    return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + web_published + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
 }
 
 var fetchCampsOnce = function() {
@@ -247,35 +247,35 @@ if ($('.camps').hasClass('camp_details')) {
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
-    var type = fetchAllCheckboxValues('edit_camp_type');
+    var type = fetchAllCheckboxValues('camp_type');
     var camp_id = $('#camp_edit_camp_id').val(),
         camp_data = {
-            camp_name_he: $('#edit_camp_name_he').val(),
-            camp_name_en: $('#edit_camp_name_en').val(),
-            camp_desc_he: $('#edit_camp_desc_he').val(),
-            camp_desc_en: $('#edit_camp_desc_en').val(),
-            contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value'),
-            facebook_page_url: $('#edit_camp_facebook_page_url').val(),
-            contact_person_name: $('#edit_camp_contact_person_name').val(),
-            contact_person_email: $('#edit_camp_contact_person_email').val(),
-            contact_person_phone: $('#edit_camp_contact_person_phone').val(),
-            main_contact: $('#edit_camp_main_contact option:selected').val(),
-            moop_contact: $('#edit_camp_moop_contact option:selected').val(),
-            safety_contact: $('#edit_camp_safety_contact option:selected').val(),
-            status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
+            camp_name_he: $('#camp_name_he').val(),
+            camp_name_en: $('#camp_name_en').val(),
+            camp_desc_he: $('#camp_desc_he').val(),
+            camp_desc_en: $('#camp_desc_en').val(),
+            contact_person_id: $('#camp_contact_person_id option:selected').attr('value'),
+            facebook_page_url: $('#camp_facebook_page_url').val(),
+            contact_person_name: $('#camp_contact_person_name').val(),
+            contact_person_email: $('#camp_contact_person_email').val(),
+            contact_person_phone: $('#camp_contact_person_phone').val(),
+            main_contact: $('#camp_main_contact option:selected').val(),
+            moop_contact: $('#camp_moop_contact option:selected').val(),
+            safety_contact: $('#camp_safety_contact option:selected').val(),
+            status: $('#camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
             type: type,
-            enabled: $('#edit_camp_enabled option:selected').val(),
-            camp_activity_time: $('#edit_camp_activity_time option:selected').val(),
-            child_friendly: $('#edit_camp_child_friendly:checked').length,
-            noise_level: $('#edit_camp_noise_level option:selected').val(),
-            public_activity_area_sqm: $('#edit_public_activity_area_sqm').val(),
-            public_activity_area_desc: $('#edit_public_activity_area_desc').val(),
-            support_art: $('#edit_support_art:checked').length,
-            location_comments: $('#edit_location_comments').val(),
-            camp_location_street: $('#edit_camp_location_street').val(),
-            camp_location_street_time: $('#edit_camp_location_street_time').val(),
-            camp_location_area: $('#edit_camp_location_area').val(),
-            accept_families: $('#edit_camp_accept_families:checked').length
+            web_published: $('#camp_web_published option:selected').val(),
+            camp_activity_time: $('#camp_activity_time option:selected').val(),
+            child_friendly: $('#camp_child_friendly:checked').length,
+            noise_level: $('#camp_noise_level option:selected').val(),
+            public_activity_area_sqm: $('#public_activity_area_sqm').val(),
+            public_activity_area_desc: $('#public_activity_area_desc').val(),
+            support_art: $('#support_art:checked').length,
+            location_comments: $('#location_comments').val(),
+            camp_location_street: $('#camp_location_street').val(),
+            camp_location_street_time: $('#camp_location_street_time').val(),
+            camp_location_area: $('#camp_location_area').val(),
+            accept_families: $('#camp_accept_families:checked').length
         };
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
@@ -324,33 +324,33 @@ $('#edit_type_other').click(function() {
  * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function() {
-    var type = fetchAllCheckboxValues('create_camp_type');
+    var type = fetchAllCheckboxValues('camp_type');
     var camp_data = {
-        camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+ new Date()),
-        camp_name_en: $('#create_camp_name_en').val(),
-        camp_desc_he: $('#create_camp_desc_he').val(),
-        camp_desc_en: $('#create_camp_desc_en').val(),
-        contact_person_id: $('#create_camp_contact_person_id option:selected').val(),
-        facebook_page_url: $('#create_camp_facebook_page_url').val(),
-        contact_person_name: $('#create_camp_contact_person_name').val(),
-        contact_person_email: $('#create_camp_contact_person_email').val(),
-        contact_person_phone: $('#create_camp_contact_person_phone').val(),
-        accept_families: $('#create_camp_accept_families:checked').length,
-        main_contact: $('#create_camp_main_contact option:selected').val(),
-        moop_contact: $('#create_camp_moop_contact option:selected').val(),
-        safety_contact: $('#create_camp_safety_contact option:selected').val(),
+        camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
+        camp_name_en: $('#camp_name_en').val(),
+        camp_desc_he: $('#camp_desc_he').val(),
+        camp_desc_en: $('#camp_desc_en').val(),
+        contact_person_id: $('#camp_contact_person_id option:selected').val(),
+        facebook_page_url: $('#camp_facebook_page_url').val(),
+        contact_person_name: $('#camp_contact_person_name').val(),
+        contact_person_email: $('#camp_contact_person_email').val(),
+        contact_person_phone: $('#camp_contact_person_phone').val(),
+        accept_families: $('#camp_accept_families:checked').length,
+        main_contact: $('#camp_main_contact option:selected').val(),
+        moop_contact: $('#camp_moop_contact option:selected').val(),
+        safety_contact: $('#camp_safety_contact option:selected').val(),
         type: type,
-        camp_status: $('#create_camp_status option:selected').val(),
-        camp_activity_time: $('#create_camp_activity_time option:selected').val(),
-        child_friendly: $('#create_camp_child_friendly:checked').length,
-        noise_level: $('#create_camp_noise_level option:selected').val(),
-        public_activity_area_sqm: $('#create_camp_public_activity_area_sqm').val(),
-        public_activity_area_desc: $('#create_camp_public_area_desc').val(),
-        support_art: $('#create_support_art:checked').length,
-        location_comments: $('#create_location_comments').val(),
-        camp_location_street: $('#create_camp_location_street').val(),
-        camp_location_street_time: $('#create_camp_location_street_time').val(),
-        camp_location_area: $('#create_camp_location_area').val()
+        camp_status: $('#camp_status option:selected').val(),
+        camp_activity_time: $('#camp_activity_time option:selected').val(),
+        child_friendly: $('#camp_child_friendly:checked').length,
+        noise_level: $('#camp_noise_level option:selected').val(),
+        public_activity_area_sqm: $('#camp_public_activity_area_sqm').val(),
+        public_activity_area_desc: $('#camp_public_area_desc').val(),
+        support_art: $('#support_art:checked').length,
+        location_comments: $('#location_comments').val(),
+        camp_location_street: $('#camp_location_street').val(),
+        camp_location_street_time: $('#camp_location_street_time').val(),
+        camp_location_area: $('#camp_location_area').val()
     };
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
