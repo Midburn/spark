@@ -509,8 +509,6 @@ module.exports = function (app, passport) {
         //TODO
     });
 
-
-
     /**
      * API: (GET) camps member manager
      *  :id - camp_id
