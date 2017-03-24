@@ -126,9 +126,8 @@ block content
                                     
                             .col-md-4
                                 .col-xs-12
-                                    label(for='edit_camp_enabled') #{t('camps:edit.publication')}:
-                                    
-                                    if camp.enabled == '1'
+                                    label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
+                                    if camp.web_published == '1'
                                         span.badge.bg__green=t('camps:edit.public')
                                         button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
                                     else

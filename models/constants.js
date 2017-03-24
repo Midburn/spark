@@ -54,6 +54,14 @@ module.exports = {
     USER_GENDERS: get_enum(user_genders), 
     USER_GENDERS_DEFAULT: get_default_enum(user_genders),
     
+    /**
+     * User Current Status:
+     *      define the position of the profile. in which event user is,
+     *      and if they are in the event and out the event.
+     *      use the addedinfo_json status change log, to see upon any change.
+     */
+    USER_CURRENT_STATUS: ['in event','out event'],
+
     NPO_MEMBERSHIP_STATUSES: get_enum(npo_membership_statuses), 
     NPO_MEMBERSHIP_STATUSES_DEFAULT: get_default_enum(npo_membership_statuses),
     
@@ -65,6 +73,15 @@ module.exports = {
     
     CAMP_NOISE_LEVELS: ['quiet' ,'medium' ,'noisy' ,'very noisy'],
 
-    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected'],
+    /**
+     * Camp Member Status:
+     *      pending - a camp member requested to join camp, waiting for camp manager to approve.
+     *      mgr_pending - a camp manager request to add member, waiting for member to approve.
+     *      approved - a member is approved as a member
+     *      rejected - a member rejected from camp. reject reason will be on addedinfo_json.last_rejected_reason
+     *      approved_mgr - a member is approved as a member, and has manager rights to camp.
+     *      supplier - member is supplier, for the supplier notification later.
+     */
+    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected','approved_mgr','supplier'],
 
 };
