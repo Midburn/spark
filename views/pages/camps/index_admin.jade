@@ -37,12 +37,17 @@ block content
             //- Card 2
             .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
                 h4=t('camps:admin_index.all_members_table')
-                    span.badge {{members.length}}
-                    span {{camp.camp_name_en}}
-                .col-xs-12.col-md-3
-                    select(ng-init="camp = camps[0]", ng-change="getMembers(camp.id)", ng-model="camp", ng-options="camp as camp.id for camp in camps track by camp.id | orderBy:'camp.id'")
-                .col-xs-12.col-md-9
-                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:members.search')}")
+                .controls.row
+                    .col-xs-12.col-md-3
+                        ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
+                            ui-select-match(placeholder='Choose or search a camp') {{$select.selected.camp_name_en}}
+                            ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
+                                small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
+                        //- select(ng-init="camp = camps[0]", ng-change="getMembers(camp.id)", ng-model="camp", ng-options="camp as camp.camp_name_en for camp in camps track by camp.id | orderBy:'camp.id'")
+                        //-     option(value="") Select camp
+                    .col-xs-12.col-md-9
+                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:members.search')}")
                 include partials/members_table
                 
             //- Card 3
