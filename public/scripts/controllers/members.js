@@ -7,7 +7,7 @@ app.controller("membersController", ($scope, $http) => {
         if (typeof camp_id !== 'undefined') {
             $http.get(`/camps/${camp_id}/members`).then((res) => {
                 $scope.members = res.data.members;
-                setTimeout(() =>{
+                setTimeout(() => {
                   innerHeightChange()
                 }, 500)
             });
