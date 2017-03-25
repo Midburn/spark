@@ -29,8 +29,8 @@ module.exports = {
                 'CustomerLastName'  : customerLastName
             }).then(function (body) {
                 const {
-                    PrivateSaleToken
-                    PublicSaleToken
+                    PrivateSaleToken,
+                    PublicSaleToken,
                     URL
                 } = body;
 
@@ -43,7 +43,7 @@ module.exports = {
                 }).save().then(function (model) {
                     res.redirect(URL);
                 });
-            }, function(error) {
+            }, function() {
                 log.error('iCredit ERROR');
             });
     }
