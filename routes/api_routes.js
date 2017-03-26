@@ -23,7 +23,7 @@ module.exports = function (app) {
 
                     res.status(200).jsonp({
                         status: 'true',
-                        'massage': 'user authorized',
+                        'message': 'user authorized',
                         'uid': drupalUser.user.uid,
                         'username': drupalUser.user.name,
                         'token': drupalUser.sessid,
@@ -33,7 +33,7 @@ module.exports = function (app) {
                     });
                 }
                 else {
-                    res.status(401).jsonp({ status: 'false', 'massage': 'Not authorized!', 'error': JSON.parse(body) });
+                    res.status(401).jsonp({ status: 'false', 'message': 'Not authorized!', 'error': JSON.parse(body) });
                 }
             });
     });
