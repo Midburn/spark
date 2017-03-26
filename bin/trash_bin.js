@@ -1,3 +1,4 @@
+/**
      * API: (GET) camps member manager
      *  :id - camp_id
      *  :action - ?user_id=id 
@@ -18,67 +19,67 @@
      *                  if req.user is camp_manager on camp_id, 
      * 
      */
-    app.get('/camps/:id/members/:action', userRole.isLoggedIn(), (req, res) => {
-        var action = req.params.action;
-        var camp_id = req.params.id;
-        // Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-        Camp.forge({ id: camp_id }).fetch(
-            {
-                withRelated: ['members'],
+app.get('/camps/:id/members/:action', userRole.isLoggedIn(), (req, res) => {
+    var action = req.params.action;
+    var camp_id = req.params.id;
+    // Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
+    Camp.forge({ id: camp_id }).fetch(
+        {
+            withRelated: ['members'],
+        }
+    ).then((camp) => {
+        console.log(req.user);
+        // console.log(camp);
+        // debugger;
+        var _camp = camp.toJSON();
+        // console.log(_camp);
+        if (_camp.event_id === constants.CURRENT_EVENT_ID) {
+            if (action === 'approve') {
+                // need to approve the user
             }
-        ).then((camp) => {
-            console.log(req.user);
-            // console.log(camp);
-            // debugger;
-            var _camp = camp.toJSON();
-            // console.log(_camp);
-            if (_camp.event_id === constants.CURRENT_EVENT_ID) {
-                if (action==='approve') {
-                    // need to approve the user
-                }
-                CampMembers.forge({
-                    camp_id: camp_id,
-                    user_id: req.user.attributes.user_id,
-                    status: 'confirmed'
-                }).save().then((member) => {
-                        res.status(200).json({ camp: _camp })
-                    // debugger;
-                    // console.log(member);
-                });
-                // camp is good for us lets get current members
-                // CampMembers.forge({ camp_id: camp_id }).fetchAll(
-                // ).then((members) => {
-                //     res.status(200).json({ members: members.toJSON() });
-                //     if (action === 'list') {
-                //         // CampMembers({ camp_id: camp_id })
+            CampMembers.forge({
+                camp_id: camp_id,
+                user_id: req.user.attributes.user_id,
+                status: 'confirmed'
+            }).save().then((member) => {
+                res.status(200).json({ camp: _camp })
+                // debugger;
+                // console.log(member);
+            });
+            // camp is good for us lets get current members
+            // CampMembers.forge({ camp_id: camp_id }).fetchAll(
+            // ).then((members) => {
+            //     res.status(200).json({ members: members.toJSON() });
+            //     if (action === 'list') {
+            //         // CampMembers({ camp_id: camp_id })
 
-                //     } else if (action === 'add') {
-                //         // if action=add then we will add new member
-                //         var user_id = req.query.user_id;
-                //     }
+            //     } else if (action === 'add') {
+            //         // if action=add then we will add new member
+            //         var user_id = req.query.user_id;
+            //     }
 
-                // });
+            // });
 
-            } else {
-                res.status(404).json({
-                    data: { message: 'Camp Not available in current event ' + constants.CURRENT_EVENT_ID },
-                    logged: camp
-                })
-            }
-        });
-        // // var reference=req.params.reference;
-        // new CampMembers({
-        //     camp_id: req.params.id
-        // }).fetch().then(function (member) {
-        //     if (member !== null) {
-        //         User.forge({ user_id: member.attributes.user_id })
-        //             .fetch().then((user) => {
-        //                 res.status(200).json({ users: user.toJSON() })
-        //             })
-        //     } else {
-        //         // not found
-        //     }
-        // })
-
-        // res.status(200).json({ message: action+" "+reference});
+        } else {
+            res.status(404).json({
+                data: { message: 'Camp Not available in current event ' + constants.CURRENT_EVENT_ID },
+                logged: camp
+            })
+        }
     });
+    // // var reference=req.params.reference;
+    // new CampMembers({
+    //     camp_id: req.params.id
+    // }).fetch().then(function (member) {
+    //     if (member !== null) {
+    //         User.forge({ user_id: member.attributes.user_id })
+    //             .fetch().then((user) => {
+    //                 res.status(200).json({ users: user.toJSON() })
+    //             })
+    //     } else {
+    //         // not found
+    //     }
+    // })
+
+    // res.status(200).json({ message: action+" "+reference});
+});
