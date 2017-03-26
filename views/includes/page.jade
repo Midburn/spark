@@ -17,6 +17,9 @@ block wrapper
                         a( href="/#{language}/camps" )=t('camps:nav')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
                         a( href="/#{language}/npo" )=t('npo')
+                    if(user.isAdmin) 
+                        li( class="#{path[2] === 'camps-admin' ? 'active' : undefined }" )
+                            a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
@@ -37,7 +40,8 @@ block wrapper
                                     |&nbsp;
                                     span=t('english')
                     li
-                        a(href='/#{language}/whoami') #{user.attributes.first_name} #{user.attributes.last_name}
+                        a(href='/#{language}/whoami', aria-label="#{user.attributes.first_name} #{user.attributes.last_name}")
+                            span.glyphicon.glyphicon-user(aria-hidden="true")
                     li
                         a( href= '/#{language}/logout' )=t('logout')
     .main.container

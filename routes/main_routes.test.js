@@ -60,19 +60,21 @@ describe('Main routes', function () {
     });
 
     it('logs-in a drupal user', function loginDrupalUser(done) {
-        var email = 'main_routes_test@localhost';
-        var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
-        var clear_password = 'paK4AMUTopVYneHoxCni';
+        var email = 'omerpines@hotmail.com';
+        // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
+        var clear_password = '123456';
         Promise.all([
             knex(User.prototype.tableName).where('email', email).del(),
             knex(DrupalUser.prototype.tableName).where('name', email).del()
-        ]).then(function () {
-            return DrupalUser.forge({
-                name: email,
-                pass: hashed_password,
-                status: 1
-            }).save();
-        }).then(function () {
+        ])
+        // .then(function () {
+        //     return DrupalUser.forge({
+        //         name: email,
+        //         pass: hashed_password,
+        //         status: 1
+        //     }).save();
+        // })
+        .then(function () {
             return request
                 .post('/he/login')
                 .send({

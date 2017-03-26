@@ -1,5 +1,6 @@
 {
-        "nav": "Camps",
+        "nav": "My Camp",
+        "nav_admin": "Manage Camps",
         "btn_save_camp": "Save",
         "btn_continue": "Continue",
         "dash": {
@@ -59,7 +60,7 @@
             "type": "Camp type",
             "type_music": "Music",
             "type_food": "Food",
-            "type_drinks": "Driks",
+            "type_drinks": "Drinks",
             "type_other": "Other",
             "main_contact": "Camp manager",
             "moop_contact": "Camp moop contact",
@@ -104,6 +105,14 @@
             "name_en": "Camp name (English)",
             "camp_choosing_title": "The list below includes camp that are open for new members. Choose one to apply a join request.",
             "request": "Request to join"
+        },
+        "pending": {
+          "header_title": "Pending join request",
+          "subtitle": "you are waiting for camp manager to approve your request:",
+          "status": {
+            "wait": "Waiting approval",
+            "user_cancel": "Request canceled"
+          }
         },
         "manage": {
             "manage_a_camp": "Manage camps"
@@ -168,7 +177,7 @@
             "since": "Since",
             "basic_info": "Basic Information",
             "details": "Basic Details",
-            "members": "Members update",
+            "members": "Members update",            
             "files": "Files & Documents",
             "name_and_desc": "Camp Name & Description",
             "name_en": "Name (English)",

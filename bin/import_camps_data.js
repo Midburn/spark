@@ -18,73 +18,99 @@ function main(argv) {
     // [{
     //      name: "", cell_phone: "", email: "", roles: ""
     // }...]
-    let users_data = parse(users_csv_data, {columns: true});
+    let users_data = parse(users_csv_data, { columns: true });
 
     // [{
     //      camp_name_he: "", camp_name_en: "", camp_desc_he: "", camp_desc_en: "",
     //      status: "open" / null, facebook_page_url: "", accept_families: "FALSE" / "TRUE", email: ""
     // }...]
-    let camps_data = parse(camps_csv_data, {columns: true});
+    let camps_data = parse(camps_csv_data, { columns: true });
 
-    Promise.all(_(users_data).map(function(user) {
+    Promise.all(_(users_data).map(function (user) {
         let email = user.email.trim();
         if (!email) throw new Error();
-        return knex(constants.USERS_TABLE_NAME).where({email: email}).count("*").then(function(res) {
+        return knex(constants.USERS_TABLE_NAME).where({ email: email }).count("*").then(function (res) {
             if (res[0]["count(*)"] > 0) {
-                console.log("user already exists for email "+email+" - skipping inserting this user");
+                console.log("user already exists for email " + email + " - skipping inserting this user");
                 return true;
             } else {
                 return knex(constants.USERS_TABLE_NAME).insert({
                     name: user.name,
                     cell_phone: user.cell_phone,
                     email: user.email,
-                    roles: user.roles
-                }).then(function() {
-                    console.log("inserted user: "+email);
-                }).catch(function(err) {
-                    console.log("error inserting user: "+email);
+                    roles: user.role,
+                    validated: true,
+                    created_at: Date(),
+                    updated_at: Date()
+                }).then(function () {
+                    console.log("inserted user: " + email);
+                }).catch(function (err) {
+                    console.log("error inserting user: " + email);
                     console.log(err);
-                    process.exit();
+                    // process.exit();
                 });
             }
         });
-    })).then(function() {
+    })).then(function () {
         return Promise.all(_(camps_data).map(function (camp) {
             let email = camp.email.trim();
-            return knex(constants.USERS_TABLE_NAME).where({email: email}).then(function(users) {
+            return knex(constants.USERS_TABLE_NAME).where({ email: email }).then(function (users) {
                 if (users.length > 1) throw new Error();
                 let user = (users.length === 1) ? users[0] : null;
                 let user_id = user ? user["user_id"] : null;
                 let camp_name_en = camp.camp_name_en;
-                return knex(constants.CAMPS_TABLE_NAME).where({camp_name_en: camp_name_en}).count("*").then(function(res) {
+                let event_id = camp.event_id;
+                return knex(constants.CAMPS_TABLE_NAME).where({ camp_name_en: camp_name_en, event_id: event_id }).count("*").then(function (res) {
                     if (res[0]["count(*)"] > 0) {
-                        console.log("camp already exists for english camp name: "+camp_name_en+" - skipping inserting this camp");
+                        console.log("camp already exists for english camp name: " + camp_name_en + " - skipping inserting this camp");
                     } else {
-                        return knex(constants.CAMPS_TABLE_NAME).insert({
+                        var _camp_rec = {
+                            event_id: event_id,
                             camp_name_he: camp.camp_name_he,
                             camp_name_en: camp.camp_name_en,
                             camp_desc_he: camp.camp_desc_he,
                             camp_desc_en: camp.camp_desc_en,
+                            type: '',
                             status: camp.status,
+                            web_published: camp.web_published,
+                            camp_activity_time: '',
                             facebook_page_url: camp.facebook_page_url,
-                            accept_families: camp.accept_families
-                        }).then(function() {
-                            console.log("inserted camp: "+camp_name_en);
+                            accept_families: camp.accept_families,
+                            contact_person_name: camp.contact_person_name,
+                            contact_person_email: camp.contact_parson_email,
+                            created_at: Date(),
+                            updated_at: Date()
+                        };
+                        if (camp.status !== "closed" && camp.status !== "open" && camp.status !== "deleted" && camp.status !== "inactive") {
+                            _camp_rec['status']='open';
+                        }
+                        return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
+                            console.log("inserted camp: " + camp_name_en);
                         });
                     }
-                }).then(function() {
-                    return knex(constants.CAMPS_TABLE_NAME).where({camp_name_en: camp_name_en}).then(function(camps) {
+                }).then(function () {
+                    return knex(constants.CAMPS_TABLE_NAME).where({ camp_name_en: camp_name_en, event_id: event_id }).then(function (camps) {
                         if (camps.length !== 1) throw new Error();
                         let camp = camps[0];
                         let camp_id = camp.id;
-                        return knex(constants.CAMPS_TABLE_NAME).where({camp_name_en: camp_name_en}).update({
+                        return knex(constants.CAMPS_TABLE_NAME).where({ camp_name_en: camp_name_en }).update({
                             main_contact: user_id,
-                            contact_person_id: user_id
-                        }).then(function(res) {
-                            return knex(constants.USERS_TABLE_NAME).where({user_id: user_id}).update({
+                            contact_person_id: user_id,
+                        }).then(function (res) {
+                            return knex(constants.USERS_TABLE_NAME).where({ user_id: user_id }).update({
                                 camp_id: camp_id
-                            }).then(function() {
-                                console.log("updated camp/users relations for camp "+camp_name_en);
+                            }).then(function () {
+                                if (!user) {
+                                    return false;
+                                }
+                                console.log(" updating " + camp_id + "(" + camp_name_en + ") to " + user_id + "(" + user["name"] + ")");
+                                return knex(constants.CAMP_MEMBERS_TABLE_NAME).insert({
+                                    camp_id: camp_id,
+                                    user_id: user_id,
+                                    status: 'approved'
+                                }).then(function () {
+                                    console.log("updated camp/users relations for camp " + camp_name_en);
+                                });
                             });
                         });
                     });
@@ -104,6 +130,7 @@ function main(argv) {
 
 if (process.argv.length < 4) {
     help();
+    process.exit();
 } else {
     main(process.argv);
 }
