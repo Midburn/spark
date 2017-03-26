@@ -1,94 +1,101 @@
 input.nocommit {
-  background: white;
-  color: blue;
-  border: 1px blue solid;
-  border-radius: 5px;
-  padding: 5px;
+    background: white;
+    color: blue;
+    border: 1px blue solid;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 input.commit {
-  background: blue;
-  color: white;
-  border-radius: 5px;
-  padding: 5px;
+    background: blue;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .card__profile {
-  background: #FFB300;
-  overflow: hidden;
-  .header {
-    padding: 40px 20px 30px 20px;
-    h1 {
-      color: #FF5722;
+    background: #FFB300;
+    overflow: hidden;
+
+    .header {
+        padding: 40px 20px 30px;
+
+        h1 {
+            color: #FF5722;
+        }
+
+        img {
+            width: 150px;
+            max-width: 100%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+            -webkit-transition: -webkit-box-shadow 0.3s ease;
+            transition: box-shadow 0.3s ease;
+            -webkit-box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.06);
+        }
     }
-    img {
-      width: 150px;
-      max-width: 100%;
-      -webkit-border-radius: 50%;
-      border-radius: 50%;
-      -webkit-transition: -webkit-box-shadow 0.3s ease;
-      transition: box-shadow 0.3s ease;
-      -webkit-box-shadow: 0px 0px 0px 8px rgba(0, 0, 0, 0.06);
-      box-shadow: 0px 0px 0px 8px rgba(0, 0, 0, 0.06);
+
+    .profile-bio {
+        color: #333333;
     }
-  }
-  .profile-bio {
-    color: #333333;
-  }
 }
 
 .profile-social-links {
-  padding: 20px;
-  li {
-    list-style: none;
-    padding: 0.5em;
-  }
-}
+    padding: 20px;
 
+    li {
+        list-style: none;
+        padding: 0.5em;
+    }
+}
 @-webkit-keyframes moveUp {
     0% {
         background: #FFB300;
         top: 100%;
     }
+
     50% {
         top: 40%;
     }
+
     100% {
         top: 50%;
         background: #E0E0E0;
     }
 }
-
 @keyframes moveUp {
     0% {
         background: #FFB300;
         top: 100%;
     }
+
     50% {
         top: 40%;
     }
+
     100% {
         top: 50%;
         background: #E0E0E0;
     }
 }
-
 @-webkit-keyframes moveIn {
     0% {
         margin-top: 50px;
         opacity: 0;
     }
+
     100% {
         opacity: 1;
         margin-top: -20px;
     }
 }
-
 @keyframes moveIn {
     0% {
         margin-top: 50px;
         opacity: 0;
     }
+
     100% {
         opacity: 1;
         margin-top: -20px;
@@ -96,23 +103,41 @@ input.commit {
 }
 
 .anim__mov--in {
-  -webkit-animation: moveIn 350ms 350ms ease forwards;
-  animation: moveIn 350ms 350ms ease forwards;
+    -webkit-animation: moveIn 350ms 350ms ease forwards;
+    animation: moveIn 350ms 350ms ease forwards;
 }
 
 .anim__mov--up {
-  -webkit-animation: moveUp 350ms 350ms ease forwards;
-  animation: moveUp 350ms 350ms ease forwards;
+    -webkit-animation: moveUp 350ms 350ms ease forwards;
+    animation: moveUp 350ms 350ms ease forwards;
 }
 
 .badge {
-  a {
-    color: #FFF
-  }
+    a {
+        color: #FFF;
+    }
+}
+@media only screen and (min-width: 768px) {
+    header {
+        max-width: 200px;
+    }
 }
 
-@media only screen and (min-width: 768px) {
-  header {
-    max-width: 200px;
-  }
+.controls {
+    select {
+        min-width: 160px;
+        padding: 5px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0,0,0,.15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
 }
