@@ -1,41 +1,51 @@
-var request = require('request');
-
+const request = require('superagent');
+const _ = require('lodash');
+const userDetailsFromDrupal = (data) => {
+    return {
+        uid       : _.get(data, 'uid', -1),
+        name      : _.get(data, 'name', ''),
+        firstname : _.get(data, 'field_profile_first.und.0.value', ''),
+        lastname  : _.get(data, 'field_profile_last.und.0.value', ''),
+        phone     : _.get(data, 'field_profile_phone.und.0.value', -1),
+    }
+};
 module.exports = function (app) {
     /**
-   * API: (GET)   
+   * API: (GET)
    * request => /api/userlogin
    * params  => username, password
    * usage sample => http://localhost:3000/api/userlogin?username=Profile_Username&password=Profile_Password
    */
     app.get('/api/userlogin', (req, res) => {
-        console.log(req);
-        request({
-            url: 'https://profile.midburn.org/api/user/login',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            form: { 'username': req.query.username, 'password': req.query.password }
-        },
-            function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-
-                    var drupalUser = JSON.parse(body);
-                    console.log(drupalUser);
-
-                    res.status(200).jsonp({
-                        status: 'true',
-                        'message': 'user authorized',
-                        'uid': drupalUser.user.uid,
-                        'username': drupalUser.user.name,
-                        'token': drupalUser.sessid,
-                        "firstname": drupalUser.user.field_profile_first.und[0].value,
-                        "lastname": drupalUser.user.field_profile_last.und[0].value,
-                        "phone": drupalUser.user.field_profile_phone.und[0].value
-                    });
-                }
-                else {
-                    res.status(401).jsonp({ status: 'false', 'message': 'Not authorized!', 'error': JSON.parse(body) });
-                }
-            });
+        const { username, password } = _.get(req, 'query', {username: '', password: ''});
+        request
+            .post('https://profile.midburn.org/api/user/login')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .set('Accept', 'application/json')
+            .send({ username, password })
+            .then(
+                ({body}) => {
+                    const { user, sessid } = body;
+                    const { uid, name, firstname, lastname, phone } = userDetailsFromDrupal(user);
+                    res.status(200)
+                        .jsonp({
+                            status    : 'true',
+                            massage   : 'user authorized',
+                            uid       : uid,
+                            username  : name,
+                            token     : sessid,
+                            firstname : firstname,
+                            lastname  : lastname,
+                            phone     : phone,
+                        })
+                },
+                (error) => res.status(401)
+                    .jsonp({
+                        status: 'false',
+                        massage: 'Not authorized!',
+                        error
+                    })
+            );
     });
 };
 
