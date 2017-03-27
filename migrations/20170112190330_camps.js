@@ -18,12 +18,12 @@ exports.up = function (knex, Promise) {
             table.text('camp_desc_en', 'mediumtext');
 
             // Modifiers
-            table.enu('type', constants.CAMP_TYPES);
+            table.string('type', 100); // comma delimited of constants.CAMP_TYPES
             table.enu('status', constants.CAMP_STATUSES);
-            table.boolean('enabled').defaultTo(false);
-            
+            table.boolean('web_published').defaultTo(false);
+
             // Detailed info
-            table.enu('camp_activity_time', constants.CAMP_ACTIVITY_TIMES);
+            table.string('camp_activity_time',100); // comma delimited constants.CAMP_ACTIVITY_TIMES);
             table.boolean('child_friendly');
             table.enu('noise_level', constants.CAMP_NOISE_LEVELS);
             table.integer('public_activity_area_sqm');
@@ -49,7 +49,8 @@ exports.up = function (knex, Promise) {
 
         // Add users camp_id field
         knex.schema.table(constants.USERS_TABLE_NAME, function (table) {
-            table.integer('camp_id').unsigned();
+            table.integer('camp_id');
+            table.foreign('camp_id').references('id').inTable(constants.CAMPS_TABLE_NAME);
         })
     ]);
 };

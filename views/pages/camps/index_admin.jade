@@ -17,7 +17,7 @@ block content
             
         .cards--wrapper.card__shad
             //- Card 1
-            .card.card-first.card__shad.card__padding--even.col-xs-12.table-responsive
+            .card.card-first.card__padding--even.col-xs-12.table-responsive
                 h4=t('camps:admin_index.all_camps_table')
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
@@ -35,35 +35,23 @@ block content
                     tbody
 
             //- Card 2
-            .card.card-second.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
+            .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
                 h4=t('camps:admin_index.all_members_table')
-                table.table.table-striped.table-hover
-                  thead
-                    tr
-                      th(ng-click='changeOrderBy("name")') Name
-                      if userIs('admin')
-                          th(ng-click='changeOrderBy("email")') Email
-                      th(ng-click='changeOrderBy("phone")') Phone
-                      if userIs('admin')
-                          th(ng-click='changeOrderBy("status")') Status
-                      if userIs('admin')
-                          th(ng-click='changeOrderBy("hasTicket")') Has Ticket
-                      th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
-                  tbody
-                    tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-                      td {{member.name}}
-                      if userIs('admin')
-                          td {{member.email}}
-                      td {{member.phone}}
-                      if userIs('admin')
-                          td {{member.status}}
-                      if userIs('admin')
-                          td {{member.hasTicket ? 'yes':'no'}}
-                      td {{member.earlyArrival ? 'yes':'no'}}
-
-
+                .controls.row
+                    .col-xs-12.col-md-3
+                        ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
+                            ui-select-match(placeholder='Choose or search a camp') {{$select.selected.camp_name_en}}
+                            ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
+                                small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
+                        //- select(ng-init="camp = camps[0]", ng-change="getMembers(camp.id)", ng-model="camp", ng-options="camp as camp.camp_name_en for camp in camps track by camp.id | orderBy:'camp.id'")
+                        //-     option(value="") Select camp
+                    .col-xs-12.col-md-9
+                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:members.search')}")
+                include partials/members_table
+                
             //- Card 3
-            .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
+            .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive
                 h4=t('camps:admin_index.docs_table')
                 table.table.table-striped.table-hover
                     thead
@@ -81,7 +69,7 @@ block content
                             th.admin-remove=t('camps:stats.remove')
                     tbody
             //- Card 4
-            .choose_name.card.card-forth.card__shad.card__padding--even.card-hide.col-xs-12
+            .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.name_choosing_title')
                 .col-sm-8.col-xs-12
