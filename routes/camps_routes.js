@@ -45,7 +45,7 @@ module.exports = function (app, passport) {
                 });
             }
         });
-    }
+    });
     // if (req.user.hasRole('admin')) {
     //     res.render('pages/camps/index_admin', {
     //         user: req.user,
