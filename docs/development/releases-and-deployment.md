@@ -24,12 +24,18 @@
 
 ## Deploying to production
 * Assuming you user is authorized (see below how to authorize)
-  * just type in slack: `/deploy RELEASE_TAG_NAME`
+  * Type in slack: `/spark-deploy RELEASE_TAG_NAME`
   * where RELEASE_NAME is a published github release tag name
 * To authorize a user, you will need to ssh to the server and edit the /opt/spark/.env file
-  * ssh -i spark.id_rsa ubuntu@spark.midburn.org
+  * `ssh -i spark.id_rsa ubuntu@spark.midburn.org`
   * `nano /opt/spark/.env`
-  * look for SLACK_DEPLOY_ALLOWED_USERS - it contains comma-separated list of slack user names allows to deploy
+  * Look for `SLACK_DEPLOY_ALLOWED_USERS` - it contains comma-separated list of slack user names allows to deploy
+  * Exit using `ctrl - o`
+  * Restart the spark-slack service for the change in .env file to take effect, using the following command 
+    * `sudo systemctl restart midburn-spark-slack.service`
+  * You can browse the log files to see if there's any problem:
+    * `tail /var/log/syslog`
+    * `tail /var/log/spark-deploy.log`
 
 ## See Also
 

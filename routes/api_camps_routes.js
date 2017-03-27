@@ -208,7 +208,7 @@ module.exports = function (app, passport) {
         Camp.fetchAll().then((camp) => {
             var published_camps = [];
             for (var i = 0; i < camp.models.length; i++) {
-                if (camp.models[i].attributes.enabled === '1' && camp.models[i].attributes.status !== 'inactive') {
+                if (camp.models[i].attributes.web_published === '1' && camp.models[i].attributes.status !== 'inactive') {
                     var fetched_camp = {
                         id: camp.models[i].attributes.id,
                         name_en: camp.models[i].attributes.camp_name_en,

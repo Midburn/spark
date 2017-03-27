@@ -19,14 +19,34 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.join_camp',
             url: '/' + req.params.lng + '/camps'
         }]);
-        // TODO - add api call to test if user is part of camp 
-        // if user is member of camp : res.redirect => camp-profile-page
-        res.render('pages/camps/index_user', {
-            user: req.user,
-            breadcrumbs: req.breadcrumbs()
+        req.user.myCamps((camps) => {
+            var is_manager = false;
+            var first_camp;
+            if (req.user.hasRole('camp_manager')) {
+                for (var i in camps) {
+                    if (camps[i].main_contact === req.user.attributes.user_id && camps[i].member_status === 'approved') {
+                        first_camp = camps[i];
+                        is_manager = true;
+                        break;
+                    }
+                }
+            }
+            if (camps.length === 0 || !is_manager) {
+                // no camp found
+                res.render('pages/camps/index_user', {
+                    user: req.user,
+                    breadcrumbs: req.breadcrumbs()
+                });
+            } else {
+                res.render('pages/camps/camp', {
+                    user: req.user,
+                    id: first_camp.id,
+                    camp: first_camp,
+                    details: first_camp,
+                });
+            }
         });
     });
-
     // new camp
     app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
@@ -130,9 +150,9 @@ module.exports = function (app, passport) {
             });
         }
     });
-    /**
-     * CRUD Routes
-     */
+/**
+ * CRUD Routes
+ */
     // Read
     app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
@@ -195,7 +215,7 @@ module.exports = function (app, passport) {
             // withRelated: ['details']
         }).then((camp) => {
             var camp_data = camp.toJSON();
-            if (camp_data.type===null) {
+            if (camp_data.type === null) {
                 camp_data.type = '';
             }
             res.render('pages/camps/edit', {
