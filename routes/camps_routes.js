@@ -18,32 +18,34 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.home',
             url: '/' + req.params.lng + '/camps'
         });
-        var is_manager = false;
-        var first_camp;
-        if (req.user.hasRole('camp_manager')) {
-            for (var i in camps) {
-                if (camps[i].main_contact === req.user.attributes.user_id && camps[i].member_status === 'approved') {
-                    first_camp = camps[i];
-                    is_manager = true;
-                    break;
+        req.user.myCamps((camps) => {
+            var is_manager = false;
+            var first_camp;
+            if (req.user.hasRole('camp_manager')) {
+                for (var i in camps) {
+                    if (camps[i].main_contact === req.user.attributes.user_id && camps[i].member_status === 'approved') {
+                        first_camp = camps[i];
+                        is_manager = true;
+                        break;
+                    }
                 }
             }
-        }
-        if (camps.length === 0 || !is_manager) {
-            // no camp found
-            res.render('pages/camps/index_user', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        } else {
-            res.render('pages/camps/camp', {
-                user: req.user,
-                id: first_camp.id,
-                camp: first_camp,
-                details: first_camp,
-            });
-        }
-    });
+            if (camps.length === 0 || !is_manager) {
+                // no camp found
+                res.render('pages/camps/index_user', {
+                    user: req.user,
+                    breadcrumbs: req.breadcrumbs()
+                });
+            } else {
+                res.render('pages/camps/camp', {
+                    user: req.user,
+                    id: first_camp.id,
+                    camp: first_camp,
+                    details: first_camp,
+                });
+            }
+        });
+    }
     // if (req.user.hasRole('admin')) {
     //     res.render('pages/camps/index_admin', {
     //         user: req.user,
@@ -62,23 +64,23 @@ module.exports = function (app, passport) {
 
     // new camp
     app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
-        req.breadcrumbs([{
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
-        },
-        {
-            name: 'camps:breadcrumbs.new',
-            url: '/' + req.params.lng + '/camps/new/?c=' + req.query.c
-        }]);
-        res.render('pages/camps/edit', {
-            user: req.user,
-            camp_name_en: req.query.c,
-            breadcrumbs: req.breadcrumbs(),
-            isNew: true,
-            camp: { type: '' },
-            details: {}
+            req.breadcrumbs([{
+                name: 'camps:breadcrumbs.home',
+                url: '/' + req.params.lng + '/camps'
+            },
+            {
+                name: 'camps:breadcrumbs.new',
+                url: '/' + req.params.lng + '/camps/new/?c=' + req.query.c
+            }]);
+            res.render('pages/camps/edit', {
+                user: req.user,
+                camp_name_en: req.query.c,
+                breadcrumbs: req.breadcrumbs(),
+                isNew: true,
+                camp: { type: '' },
+                details: {}
+            });
         });
-    });
     // camps statistics
     app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
