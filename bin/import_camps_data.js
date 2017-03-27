@@ -38,7 +38,7 @@ function main(argv) {
                 var first_name=(_name.length > 0) ? _name[0] : '';
                 var last_name=(_name.length > 1) ? _name.slice(1,_name.length-1).join(" ") : '';
                 return knex(constants.USERS_TABLE_NAME).insert({
-                    name: _name,
+                    name: user.name,
                     first_name: first_name,
                     last_name: last_name,
                     cell_phone: user.cell_phone,
