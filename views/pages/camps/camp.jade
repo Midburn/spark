@@ -18,44 +18,9 @@ block content
                         p #{camp.camp_desc_en}
                     .text-right.col-xs-12.col-sm-6
                         p #{camp.camp_desc_he}
-                .col-xs-12.col-sm-2
+            if userIs('camp_manager')
+                .controls
                     a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
-                    ul.list-group.text-center
-                        li.list-group-item
-                            if camp.enabled
-                                span.no-flt.badge.bg__green=t('camps:camps.published')
-                            else
-                                span.no-flt.badge.bg__red=t('camps:camps.draft')
-                        li.list-group-item
-                            span=t('camps:camps.status')
-                                if camp.status == 'open'
-                                    span.badge.bg__teal=t('camps:camps.status_open')
-                                else if camp.status == 'closed'
-                                    span.badge.bg__red=t('camps:camps.status_closed')
-                                else
-                                    span.badge.bg__teal=t('camps:edit.inactive')
-                        li.list-group-item
-                            span=t('camps:camps.accept_families')
-                                span.badge #{camp.accept_families}
-                        li.list-group-item
-                            span=t('camps:camps.time_active')
-                                span.badge #{details.camp_activity_time}
-                        li.list-group-item
-                            span #{t('camps:camps.child_friendly')} #{details.child_friendly}
-                                span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
-                        li.list-group-item
-                            span #{t('camps:new.camp_noise_level')} #{details.noise_level}
-                                span.badge #{details.noise_level}
-                        li.list-group-item
-                            span #{t('camps:camps.art')} #{details.support_art}
-                                span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
-            .row.card.card__shad.card__padding--even
-                .row.publication.col-md-12
-                    p #{camp.camp_desc_en}
-                    p.text-right #{camp.camp_desc_he}
-        if userIs('camp_manager')
-            .controls
-                a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
         .card.card__shad.card__padding--even
             h4=t('camps:new.name_card_header')
             ul.list-group
