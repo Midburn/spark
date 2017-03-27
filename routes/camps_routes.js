@@ -162,7 +162,6 @@ module.exports = function (app, passport) {
                     userLoggedIn: req.user.hasRole('logged in'),
                     id: req.params.id,
                     camp: camp.toJSON(),
-                    details: camp.related('details').toJSON(),
                     breadcrumbs: req.breadcrumbs(),
                     details: camp.toJSON()
                 });
@@ -206,8 +205,6 @@ module.exports = function (app, passport) {
             }
             res.render('pages/camps/edit', {
                 user: req.user,
-                camp: camp.toJSON(),
-                details: camp.related('details').toJSON(),
                 breadcrumbs: req.breadcrumbs(),
                 camp: camp_data,
                 details: camp_data,
