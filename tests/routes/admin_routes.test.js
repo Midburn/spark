@@ -71,7 +71,6 @@ var givenUserAdminTableAjaxUrl = function() {
 
 var adminTableAjaxShouldContainAdminUser = function() {
     return request.get(givenUserAdminTableAjaxUrl()).expect(200).expect(function(res) {
-        console.log(JSON.parse(res.text).data);
         _(JSON.parse(res.text).data)
             .find({
                 email: ADMIN_USER_EMAIL,
@@ -113,7 +112,6 @@ var givenAdminUserLastNameIs = function(last_name) {
 var shouldChangeAdminUserLastNameTo = function(last_name) {
     return givenAdminUserEditPageUrl()
         .then(function(admin_user_edit_page_url) {
-            console.log(admin_user_edit_page_url);
             return request.post(admin_user_edit_page_url).send({
                 last_name: last_name
             }).expect(200);

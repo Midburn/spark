@@ -208,7 +208,7 @@ module.exports = function (app, passport) {
         Camp.fetchAll().then((camp) => {
             var published_camps = [];
             for (var i = 0; i < camp.models.length; i++) {
-                if (camp.models[i].attributes.enabled === '1' && camp.models[i].attributes.status !== 'inactive') {
+                if (camp.models[i].attributes.web_published === '1' && camp.models[i].attributes.status !== 'inactive') {
                     var fetched_camp = {
                         id: camp.models[i].attributes.id,
                         name_en: camp.models[i].attributes.camp_name_en,
@@ -327,7 +327,28 @@ module.exports = function (app, passport) {
      * API: (GET) return camps list which are open to new members
      * request => /camps_open
      */
-    app.get('/camps_open', (req, res) => {
+    app.get('/camps_all', userRole.isAdmin(), (req, res) => {
+        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
+            if (camp !== null) {
+                res.status(200).json({ camps: camp.toJSON() })
+            } else {
+                res.status(404).json({ data: { message: 'Not found' } })
+            }
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
+
+    /**
+     * API: (GET) return camps list which are open to new members
+     * request => /camps_open
+     */
+    app.get('/camps_open', userRole.isLoggedIn(), (req, res) => {
         Camp.where('status','=','open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
@@ -519,15 +540,14 @@ module.exports = function (app, passport) {
      * API: (GET) return camp members without details
      * request => /camps/1/members/count
      */
-    app.get('/camps/:id/members/count', (req, res) => {
+    app.get('/camps/:id/members/count', userRole.isLoggedIn(), (req, res) => {
       Camp.forge({id: req.params.id}).fetch({withRelated: ['members']}).then((camp) => {
         res.status(200).json({ members: camp.related('members').toJSON() })
       })
     })
 
     /**
-     * API: (GET) return camp members, provide camp id
-     * query user with attribute: camp_id
+     * API: (GET) return camp members with details
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
@@ -550,7 +570,7 @@ module.exports = function (app, passport) {
     * query user with attribute: camp_id
     * request => /camps/1/camp_manager
     */
-    app.get('/camps/:id/manager', (req, res) => {
+    app.get('/camps/:id/manager', userRole.isLoggedIn(), (req, res) => {
         User.forge({ camp_id: req.params.id })
             .fetch({
                 require: true,
