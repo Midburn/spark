@@ -1,5 +1,4 @@
 const userRole = require('../libs/user_role');
-const breadcrumbs = require('express-breadcrumbs');
 // const constants = require('../models/constants.js');
 
 var Camp = require('../models/camp').Camp;
