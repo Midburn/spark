@@ -220,7 +220,6 @@ block content
                     span.badge {{members.length}}
                 .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", autofocus)
-                .members {{ members }}
                 .row
                     .col-xs-12
                         table.table.table-striped.table-hover
@@ -238,16 +237,16 @@ block content
                                 th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-                                td {{member.user_id}}
-                                td {{ member.user.name }}
-                                if userIs('admin')
-                                    td {{member.user.email}}
-                                td {{member.user.cell_phone}}
-                                if userIs('admin')
-                                    td {{member.user.status}}
-                                if userIs('admin')
-                                    td {{member.user.hasTicket ? 'yes':'no'}}
-                                td {{member.user.earlyArrival ? 'yes':'no'}}
+                                    td {{member.user_id}}
+                                    td {{ member.user.name }}
+                                    if userIs('admin')
+                                        td {{member.user.email}}
+                                    td {{member.user.cell_phone}}
+                                    if userIs('admin')
+                                        td {{member.user.status}}
+                                    if userIs('admin')
+                                        td {{member.user.hasTicket ? 'yes':'no'}}
+                                    td {{member.user.earlyArrival ? 'yes':'no'}}
             //- Card 4
             .card.card-forth.card-hide
                 h4=t('camps:edit.upload_header')
