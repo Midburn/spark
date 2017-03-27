@@ -24,7 +24,7 @@
 
 ## Deploying to production
 * Assuming you user is authorized (see below how to authorize)
-  * just type in slack: `/deploy RELEASE_TAG_NAME`
+  * just type in slack: `/spark-deploy RELEASE_TAG_NAME`
   * where RELEASE_NAME is a published github release tag name
 * To authorize a user, you will need to ssh to the server and edit the /opt/spark/.env file
   * ssh -i spark.id_rsa ubuntu@spark.midburn.org
