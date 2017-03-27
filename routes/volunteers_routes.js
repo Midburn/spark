@@ -5,6 +5,12 @@ var Volunteer = volunteers_model.Volunteer;
 const userRole = require('../libs/user_role');
 var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
 var _ = require('lodash');
+var logger = require('../libs/logger');
+
+//roles ... consider moving to some other file.
+const VOLUNTEER_MANAGER = 0;
+const VOLUNTEER_DEPT_MANAGER = 2;
+
 //GET /volunteer/departments
 var get_departments = function(req, res) {
     Department.fetchAll().then(function(deps) {
@@ -43,31 +49,7 @@ function __has_permissions(user_id, perm_level, next, err) {
 };
 //GET /volunteer/volunteers
 var get_volunteers = function(req, res) {
-    __has_permissions(req.user.id, 0, () => {
-        //var user_ids = [1]; //find user by name or email and by ticket.
-        /*
-        Volunteer.query((qb) => {
-            if (req.query.deps !== undefined) {
-                qb.whereIn('department_id', req.query.deps);
-            }
-            if (req.query.roles !== undefined) {
-                qb.whereIn('role_id', req.query.roles);
-            }
-        }).fetchAll().then((vols) => {
-            if (vols === null) {
-                res.json('[]')
-            }
-            
-            res.json(vols.toJSON());
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
-        });
-        */
+    __has_permissions(req.user.id, VOLUNTEER_MANAGER, () => {
         DrupalAccess.get_user_by_email(req.query.email).then((user) => {
             Volunteer.query((qb) => {
                 qb.where('user_id', user.id);
@@ -78,15 +60,12 @@ var get_volunteers = function(req, res) {
                     qb.whereIn('role_id', req.query.roles);
                 }
             }).fetchAll().then((vols) => {
-                if (vols === null) {
-                    res.json('[]')
-                }
-                var ret = _.map(vols.models, (x) => {
+                var ret = _.map(vols.models, (vol_entry) => {
                     return {
                         user_id: user.id,
                         email: user.email,
-                        permission: x.role_id,
-                        department_id: x.department_id,
+                        permission: vol_entry.role_id,
+                        department_id: vol_entry.department_id,
                         first_name: user.first_name,
                         last_name: user.last_name,
                         phone_number: user.phone_number,
@@ -94,7 +73,6 @@ var get_volunteers = function(req, res) {
                         comment: "from Volunteers table"
                     };
                 });
-
                 res.json(ret);
             }).catch((err) => {
                 res.status(500).json({
@@ -111,7 +89,7 @@ var get_volunteers = function(req, res) {
 };
 //GET /volunteer/department/:department_id/volunteers
 var get_department_volunteers = function(req, res) {
-    __has_permissions(req.user.id, 2, () => {
+    __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER, () => {
 
         DrupalAccess.get_user_by_email(req.query.email).then((user) => {
             Volunteer.query((qb) => {
@@ -121,15 +99,13 @@ var get_department_volunteers = function(req, res) {
                     qb.whereIn('role_id', req.query.roles);
                 }
             }).fetchAll().then((vols) => {
-                if (vols === null) {
-                    res.json('[]')
-                }
-                var ret = _.map(vols.models, (x) => {
+
+                var ret = _.map(vols.models, (vol_entry) => {
                     return {
                         user_id: user.id,
                         email: user.email,
-                        permission: x.role_id,
-                        department_id: x.department_id,
+                        permission: vol_entry.role_id,
+                        department_id: vol_entry.department_id,
                         first_name: user.first_name,
                         last_name: user.last_name,
                         phone_number: user.phone_number,
@@ -154,23 +130,13 @@ var get_department_volunteers = function(req, res) {
 };
 ///POST volunteer/department/department_id/volunteers
 var post_volunteers = function(req, res) {
-    __has_permissions(req.user.id, 2, () => {
+    __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER, () => {
 
             for (var index = 0; index < req.body.length; index++) {
-                var element = req.body[index];
-                console.log('Will add ' + JSON.stringify(element));
                 //TODO get user_ids.... add to vaolunteers table.
-                //https://profile-test.midburn.org/en/api/views/api_user_search?mail=1467
-                /*
-                request.get('https://profile-test.midburn.org/en/api/views/api_user_search')
-                    .query({ mail: element.email })
-                    .end((err, res) => {
-                        console.log(err);
-                    });
-                */
                 var user_id = index;
                 Volunteer.forge({ user_id: user_id, department_id: req.params.department_id, event_id: 0 }).save().then((vol) => {
-                    console.log('adding ' + user_id + " to vol department " + department_id);
+                    logger.debug('adding ' + user_id + " to vol department " + department_id);
                 }).catch((err) => {
                     res.status(500).json({
                         error: true,

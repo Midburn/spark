@@ -1,5 +1,5 @@
 var DrupalAccess = {
-
+    //This is a temporary stub as long as we dont have connection to Drupal.
     get_user_info: function(user_id) {
         return new Promise((resolve, reject) => {
             //access drupal to get data...
