@@ -26,13 +26,15 @@
         },
         "breadcrumbs": {
             "root": "Home",
-            "home": "Camps",
+            "manage": "Manage Camps",
             "new": "New Camp",
             "stats": "Camp Statistics",
             "members": "Camp Members",
             "docs": "Documents and Forms",
             "edit": "Edit Camp",
-            "camp_stat": "Camp Profile"
+            "camp_stat": "Camp Profile",
+            "my_camp": "My Camp",
+            "join_camp": "Join a Camp"
         },
         "admin_index": {
             "all_camps": "Manage Camps",

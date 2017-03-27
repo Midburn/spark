@@ -17,7 +17,7 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.home',
+            name: 'camps:breadcrumbs.join_camp',
             url: '/' + req.params.lng + '/camps'
         }]);
         // TODO - add api call to test if user is part of camp 
@@ -35,8 +35,8 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/camps-admin'
         },
         {
             name: 'camps:breadcrumbs.new',
@@ -58,8 +58,8 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/camps-admin'
         },
         {
             name: 'camps:breadcrumbs.stats',
@@ -77,8 +77,8 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/camps-admin'
         },
         {
             name: 'camps:breadcrumbs.members',
@@ -96,8 +96,8 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/camps-admin'
         },
         {
             name: 'camps:breadcrumbs.docs',
@@ -110,10 +110,14 @@ module.exports = function (app, passport) {
     });
     // camps admin management panel
     app.get('/:lng/camps-admin', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs({
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
-        });
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/camps-admin'
+        }]);
         if (req.user.hasRole('admin')) {
             res.render('pages/camps/index_admin', {
                 user: req.user,
@@ -137,15 +141,11 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.home',
+            name: 'camps:breadcrumbs.my_camp',
             url: '/' + req.params.lng + '/camps'
         },
         {
-            name: 'camps:breadcrumbs.stats',
-            url: '/' + req.params.lng + '/camps-stats'
-        },
-        {
-            name: 'camps:breadcrumbs.camp_stat', //TODO
+            name: 'camps:breadcrumbs.camp_stat',
             url: '/' + req.params.lng + '/camps/' + req.params.id
         }]);
         Camp.forge({
@@ -182,12 +182,8 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.home',
-            url: '/' + req.params.lng + '/camps'
-        },
-        {
-            name: 'camps:breadcrumbs.stats',
-            url: '/' + req.params.lng + '/camps-stats'
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/camps-admin'
         },
         {
             name: 'camps:breadcrumbs.edit',
