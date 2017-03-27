@@ -86,9 +86,9 @@ datatableAdmin("camps", router, {
         {title: "Camp desc (EN)", attr: "camp_desc_en", type: "string"},
         {title: "Type", attr: "type", type: "string"},
         {title: "Status", attr: "status", type: "string"},
-        {title: "Enabled", attr: "enabled", type: "string"}
+        {title: "Published", attr: "web_published", type: "string"}
     ],
-    selectColumns: ["id", "camp_name_he", "camp_name_en", "camp_desc_he", "camp_desc_en", "type", "status", "enabled"],
+    selectColumns: ["id", "camp_name_he", "camp_name_en", "camp_desc_he", "camp_desc_en", "type", "status", "web_published"],
     defaultOrder: [[ 1, "asc" ]],
     filter: function(qb, searchTerm) {
         qb

@@ -3,6 +3,8 @@
   "private": true,
   "dependencies": {
     "gentelella": "^1.4.0",
-    "sweetalert": "^1.1.3"
+    "sweetalert": "^1.1.3",
+    "angular-ui-select": "^0.19.6",
+    "angular": "1.4.8"
   }
 }

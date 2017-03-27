@@ -8,29 +8,22 @@ exports.up = function (knex, Promise) {
             table.timestamps();
 
             // General information
-
             table.increments('id').primary();
-            table.string('event_id', 15).unique();
-
-            table.string('camp_name_he', 50).unique();
-            table.string('camp_name_en', 50).unique();
+            table.string('event_id', 15);
+            table.string('camp_name_he', 50);
+            table.string('camp_name_en', 50);
+            table.unique(['event_id', 'camp_name_en']);
+            table.unique(['event_id', 'camp_name_he']);
             table.text('camp_desc_he', 'mediumtext');
             table.text('camp_desc_en', 'mediumtext');
 
             // Modifiers
-            table.enu('type', constants.CAMP_TYPES);
+            table.string('type', 100); // comma delimited of constants.CAMP_TYPES
             table.enu('status', constants.CAMP_STATUSES);
-            table.boolean('enabled').defaultTo(false);
+            table.boolean('web_published').defaultTo(false);
 
-            // Users relations
-            table.integer('main_contact').unsigned();
-            table.integer('moop_contact').unsigned();
-            table.integer('safety_contact').unsigned();
-        }),
-
-        // Camp Details table
-        knex.schema.createTable(constants.CAMP_DETAILS_TABLE_NAME, function (table) {
-            table.enu('camp_activity_time', constants.CAMP_ACTIVITY_TIMES);
+            // Detailed info
+            table.string('camp_activity_time',100); // comma delimited constants.CAMP_ACTIVITY_TIMES);
             table.boolean('child_friendly');
             table.enu('noise_level', constants.CAMP_NOISE_LEVELS);
             table.integer('public_activity_area_sqm');
@@ -42,12 +35,22 @@ exports.up = function (knex, Promise) {
             table.text('camp_location_street');
             table.text('camp_location_street_time');
             table.integer('camp_location_area');
-            table.integer('camp_id').unsigned();
+
+            // Users relations
+            table.integer('main_contact').unsigned();
+            table.integer('moop_contact').unsigned();
+            table.integer('safety_contact').unsigned();
+
+            // Contact person info on top id
+            table.string('contact_person_name', 100);
+            table.string('contact_person_email', 100);
+            table.string('contact_person_phone', 14);
         }),
 
         // Add users camp_id field
         knex.schema.table(constants.USERS_TABLE_NAME, function (table) {
-            table.integer('camp_id').unsigned();
+            table.integer('camp_id');
+            table.foreign('camp_id').references('id').inTable(constants.CAMPS_TABLE_NAME);
         })
     ]);
 };

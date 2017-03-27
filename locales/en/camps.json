@@ -1,5 +1,6 @@
 {
-        "nav": "Camps",
+        "nav": "My Camp",
+        "nav_admin": "Manage Camps",
         "btn_save_camp": "Save",
         "btn_continue": "Continue",
         "dash": {
@@ -134,7 +135,8 @@
           "email": "Member email",
           "camp_name_en": "Assigned Camp (English)",
           "status": "Member Status",
-          "has_ticket": "Has Ticket"
+          "has_ticket": "Has Ticket",
+          "search": "Search Camp Member"
         },
         "camps": {
             "title": "Camp",
@@ -174,7 +176,7 @@
             "since": "Since",
             "basic_info": "Basic Information",
             "details": "Basic Details",
-            "members": "Members update",            
+            "members": "Members update",
             "files": "Files & Documents",
             "name_and_desc": "Camp Name & Description",
             "name_en": "Name (English)",

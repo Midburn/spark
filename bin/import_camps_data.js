@@ -34,8 +34,13 @@ function main(argv) {
                 console.log("user already exists for email " + email + " - skipping inserting this user");
                 return true;
             } else {
+                var _name=user.first_name.split(" ");
+                var first_name=(_name.length > 0) ? _name[0] : '';
+                var last_name=(_name.length > 1) ? _name.slice(1,_name.length-1).join(" ") : '';
                 return knex(constants.USERS_TABLE_NAME).insert({
                     name: user.name,
+                    first_name: first_name,
+                    last_name: last_name,
                     cell_phone: user.cell_phone,
                     email: user.email,
                     roles: user.role,
@@ -70,7 +75,10 @@ function main(argv) {
                             camp_name_en: camp.camp_name_en,
                             camp_desc_he: camp.camp_desc_he,
                             camp_desc_en: camp.camp_desc_en,
+                            type: '',
                             status: camp.status,
+                            web_published: camp.web_published,
+                            camp_activity_time: '',
                             facebook_page_url: camp.facebook_page_url,
                             accept_families: camp.accept_families,
                             contact_person_name: camp.contact_person_name,

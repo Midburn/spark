@@ -63,15 +63,17 @@ function doneTyping() {
 }
 
 function getUserTemplate(data) {
-    return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
+    if (data !== undefined) {
+      return "<option value='" + data.user_id + "'>" + data.fullName + "</option>"
+    }
 }
 /**
  * getting user list from API
  */
 function fetchUsersOnce(elm) {
-    var camp_id = 6
+    var camp_id = 5
     elm = $(elm)
-    
+
     if (!elm.attr('fetched')) {
         $.getJSON('/camps/' + camp_id + '/members', function(data) {})
         .success((data) => {
@@ -88,35 +90,25 @@ function fetchUsersOnce(elm) {
     }
 }
 $(function() {
-    var user_inputs = '#edit_camp_contact_person_id, #create_camp_contact_person_id';
-    
-    if ($('.camps').is('.camp_edit') || $('.camps').is('.camp_create')) {
+    var user_inputs = '#create_camp_contact_person_id';
+
+    if ($('.camps').is('.camp_create')) {
       fetchUsersOnce(user_inputs);
-    }
-    
-    if ($('.camps').is('.camp_edit')) {
-      var $current_contact_person = $('#edit_camp_contact_person_id_current')
-      var user_id = $current_contact_person.attr('data-user-id')
-      
-      $.getJSON('/users/' + user_id, function(data) {
-        $current_contact_person.attr('href', '/users/' + user_id)
-        $current_contact_person.text(data.email)
-      })
     }
 });
 /**
  * getting camp list from API
  */
 var fetchedCampsOnce = false,
-    $stats_table = $('.camps.camp_admin_index .table');
+    $stats_table = $('.camps.camp_admin_index #admin_camps');
 
 function getCampsTemplate(data) {
     var last_update = new Date(data.updated_at).toDateString(),
         created_at = new Date(data.created_at).toDateString(),
-        enabled = data.enabled
+        web_published = data.web_published
             ? 'Yes'
             : 'No';
-    return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + enabled + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
+    return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + web_published + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
 }
 
 var fetchCampsOnce = function() {
@@ -255,35 +247,35 @@ if ($('.camps').hasClass('camp_details')) {
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
-    var type = fetchAllCheckboxValues('edit_camp_type');
+    var type = fetchAllCheckboxValues('camp_type');
     var camp_id = $('#camp_edit_camp_id').val(),
         camp_data = {
-            camp_name_he: $('#edit_camp_name_he').val(),
-            camp_name_en: $('#edit_camp_name_en').val(),
-            camp_desc_he: $('#edit_camp_desc_he').val(),
-            camp_desc_en: $('#edit_camp_desc_en').val(),
-            contact_person_id: $('#edit_camp_contact_person_id option:selected').attr('value') || $('label[for="edit_camp_contact_person_id"]').attr('data-camp-contact-person-id'),
-            facebook_page_url: $('#edit_camp_facebook_page_url').val(),
-            contact_person_name: $('#edit_camp_contact_person_name').val(),
-            contact_person_email: $('#edit_camp_contact_person_email').val(),
-            contact_person_phone: $('#edit_camp_contact_person_phone').val(),
-            main_contact: $('#edit_camp_main_contact option:selected').val(),
-            moop_contact: $('#edit_camp_moop_contact option:selected').val(),
-            safety_contact: $('#edit_camp_safety_contact option:selected').val(),
-            status: $('#edit_camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
+            camp_name_he: $('#camp_name_he').val(),
+            camp_name_en: $('#camp_name_en').val(),
+            camp_desc_he: $('#camp_desc_he').val(),
+            camp_desc_en: $('#camp_desc_en').val(),
+            contact_person_id: $('#camp_contact_person_id option:selected').attr('value'),
+            facebook_page_url: $('#camp_facebook_page_url').val(),
+            contact_person_name: $('#camp_contact_person_name').val(),
+            contact_person_email: $('#camp_contact_person_email').val(),
+            contact_person_phone: $('#camp_contact_person_phone').val(),
+            main_contact: $('#camp_main_contact option:selected').val(),
+            moop_contact: $('#camp_moop_contact option:selected').val(),
+            safety_contact: $('#camp_safety_contact option:selected').val(),
+            status: $('#camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
             type: type,
-            enabled: $('#edit_camp_enabled option:selected').val(),
-            camp_activity_time: $('#edit_camp_activity_time option:selected').val(),
-            child_friendly: $('#edit_camp_child_friendly:checked').length,
-            noise_level: $('#edit_camp_noise_level option:selected').val(),
-            public_activity_area_sqm: $('#edit_public_activity_area_sqm').val(),
-            public_activity_area_desc: $('#edit_public_activity_area_desc').val(),
-            support_art: $('#edit_support_art:checked').length,
-            location_comments: $('#edit_location_comments').val(),
-            camp_location_street: $('#edit_camp_location_street').val(),
-            camp_location_street_time: $('#edit_camp_location_street_time').val(),
-            camp_location_area: $('#edit_camp_location_area').val(),
-            accept_families: $('#edit_camp_accept_families:checked').length
+            web_published: $('#camp_web_published option:selected').val(),
+            camp_activity_time: $('#camp_activity_time option:selected').val(),
+            child_friendly: $('#camp_child_friendly:checked').length,
+            noise_level: $('#camp_noise_level option:selected').val(),
+            public_activity_area_sqm: $('#public_activity_area_sqm').val(),
+            public_activity_area_desc: $('#public_activity_area_desc').val(),
+            support_art: $('#support_art:checked').length,
+            location_comments: $('#location_comments').val(),
+            camp_location_street: $('#camp_location_street').val(),
+            camp_location_street_time: $('#camp_location_street_time').val(),
+            camp_location_area: $('#camp_location_area').val(),
+            accept_families: $('#camp_accept_families:checked').length
         };
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
@@ -332,33 +324,33 @@ $('#edit_type_other').click(function() {
  * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function() {
-    var type = fetchAllCheckboxValues('create_camp_type');
+    var type = fetchAllCheckboxValues('camp_type');
     var camp_data = {
-        camp_name_he: $('#create_camp_name_he').val() || 'camp' + (+ new Date()),
-        camp_name_en: $('#create_camp_name_en').val(),
-        camp_desc_he: $('#create_camp_desc_he').val(),
-        camp_desc_en: $('#create_camp_desc_en').val(),
-        contact_person_id: $('#create_camp_contact_person_id option:selected').val(),
-        facebook_page_url: $('#create_camp_facebook_page_url').val(),
-        contact_person_name: $('#create_camp_contact_person_name').val(),
-        contact_person_email: $('#create_camp_contact_person_email').val(),
-        contact_person_phone: $('#create_camp_contact_person_phone').val(),
-        accept_families: $('#create_camp_accept_families:checked').length,
-        main_contact: $('#create_camp_main_contact option:selected').val(),
-        moop_contact: $('#create_camp_moop_contact option:selected').val(),
-        safety_contact: $('#create_camp_safety_contact option:selected').val(),
+        camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
+        camp_name_en: $('#camp_name_en').val(),
+        camp_desc_he: $('#camp_desc_he').val(),
+        camp_desc_en: $('#camp_desc_en').val(),
+        contact_person_id: $('#camp_contact_person_id option:selected').val(),
+        facebook_page_url: $('#camp_facebook_page_url').val(),
+        contact_person_name: $('#camp_contact_person_name').val(),
+        contact_person_email: $('#camp_contact_person_email').val(),
+        contact_person_phone: $('#camp_contact_person_phone').val(),
+        accept_families: $('#camp_accept_families:checked').length,
+        main_contact: $('#camp_main_contact option:selected').val(),
+        moop_contact: $('#camp_moop_contact option:selected').val(),
+        safety_contact: $('#camp_safety_contact option:selected').val(),
         type: type,
-        camp_status: $('#create_camp_status option:selected').val(),
-        camp_activity_time: $('#create_camp_activity_time option:selected').val(),
-        child_friendly: $('#create_camp_child_friendly:checked').length,
-        noise_level: $('#create_camp_noise_level option:selected').val(),
-        public_activity_area_sqm: $('#create_camp_public_activity_area_sqm').val(),
-        public_activity_area_desc: $('#create_camp_public_area_desc').val(),
-        support_art: $('#create_support_art:checked').length,
-        location_comments: $('#create_location_comments').val(),
-        camp_location_street: $('#create_camp_location_street').val(),
-        camp_location_street_time: $('#create_camp_location_street_time').val(),
-        camp_location_area: $('#create_camp_location_area').val()
+        camp_status: $('#camp_status option:selected').val(),
+        camp_activity_time: $('#camp_activity_time option:selected').val(),
+        child_friendly: $('#camp_child_friendly:checked').length,
+        noise_level: $('#camp_noise_level option:selected').val(),
+        public_activity_area_sqm: $('#camp_public_activity_area_sqm').val(),
+        public_activity_area_desc: $('#camp_public_area_desc').val(),
+        support_art: $('#support_art:checked').length,
+        location_comments: $('#location_comments').val(),
+        camp_location_street: $('#camp_location_street').val(),
+        camp_location_street_time: $('#camp_location_street_time').val(),
+        camp_location_area: $('#camp_location_area').val()
     };
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
@@ -423,106 +415,6 @@ function fetchAllCheckboxValues(className) {
   }
   return val.toString();
 }
-/**
- * Component: join a camp
- */
-var fetchOpenCampsOnce = false
-
-/**
- * Fetch camp list that are open to new members
- * @param  {HTML} elm the select elm to append data
- * @return {json}     list with camp name & id
- */
-function fetchOpenCamps(elm) {
-   if (!fetchOpenCampsOnce) {
-       $.ajax({
-           url: '/camps_open',
-           type: 'GET',
-           success: function(data) {
-               var camps = [data.camps];
-               for (var i = 0; i < camps.length; i++) {
-                   $('<option>').appendTo(elm).attr('camp_id', camps[i].id).text(camps[i].camp_name_en);
-               }
-           },
-           error: function(data) {
-               sweetAlert("Oops...", "No camps available!", "error");
-           }
-       });
-       fetchOpenCampsOnce = true;
-   }
-}
-$('.camp_index .join_camp select[name="camp_name_en"]').focus(function() {
-   fetchOpenCamps($(this));
-});
-// join request listener, presents the request details (user & camp details)
-$('#join_camp_request_join_btn').click(function() {
-    var camp_id = $('.join_camp select[name="camp_name_en"] option:selected').attr('camp_id');
-    var join_camp_name_en = $('.join_camp select[name="camp_name_en"] option:selected').val();
-
-    if (join_camp_name_en !== undefined) {
-        $.get('/camps/' + camp_id + '/join', (res) => {
-            fetchSuccess(res);
-        })
-    } else {
-        alert('Choose a camp to request a join.')
-    }
-
-    function fetchSuccess(res) {
-        // Save details copy for the request
-        var user = res.data.user
-        var camp = res.data.camp
-        camp.name_en = join_camp_name_en
-
-        var request_data = {
-          user: user,
-          camp: camp
-        }
-
-        // Dialog with user & camp details
-        var details_template = 'Camp name: <span class="badge">' + join_camp_name_en + '</span><br/>Your name: <span class="badge">' + user.full_name + '</span><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
-        var modal = $('#join_camp_request_modal')
-        modal.find('.user_details').html(details_template);
-        modal.modal('show');
-
-        // Send request click listener after user is approve the details
-        // Action delayed with 4 second allow user to cancel the request
-        $('#join_camp_send_request_btn').click(function() {
-          var _sendRequestBtn = $(this);
-
-          $('#join_camp_close_btn').text('Cancel').click(function(e) {
-            e.preventDefault();
-            clearTimeout(_srt);
-            $(this).text('Close');
-            _sendRequestBtn.removeClass('Btn__is-loading').text('Send Request');
-          });
-          _sendRequestBtn.addClass('Btn__is-loading').text('Sending');
-
-          function _sendRequest() {
-            $.ajax({
-              url: '/camps/' + request_data.camp.id + '/join/deliver',
-              type: 'POST',
-              data: request_data,
-              success: function() {
-                $('#join_camp_request_modal > div').html('<h4>Your request have sent, check request status.</h4>');
-                setTimeout(function() {
-                  $('#join_camp_request_modal').modal('hide');
-                }, 4000);
-                window.location.reload();
-              },
-              error: function (jqXHR, exception) {
-                if (jqXHR.status === 500) {
-                  sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. \n\nTry again later, thanks.', 'error')
-                }
-              }
-            });
-          }
-          var _srt = setTimeout(function() {
-            _sendRequest();
-          }, 4000);
-        });
-    }
-
-})
 /*
  * Component: view camp details
  */

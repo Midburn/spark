@@ -1,14 +1,19 @@
-app.controller("membersController", function($scope, $http) {
-    var camp_id = document.querySelector('#camp_members_camp_id').value;
-    function _getMembers() {
-        $http.get('/camps/' + camp_id + '/members').then(function(res) {
-            $scope.members = [res.data.users];
-        });
+app.controller("membersController", ($scope, $http) => {
+    $http.get('/camps_all').then((res) => {
+        $scope.camps = res.data.camps;
+    });
+
+    $scope.getMembers = (camp_id) => {
+        if (typeof camp_id !== 'undefined') {
+            $http.get(`/camps/${camp_id}/members`).then((res) => {
+                $scope.members = res.data.members;
+                setTimeout(() => {
+                  innerHeightChange()
+                }, 500)
+            });
+        }
     }
-    $scope.changeOrderBy = function(orderByValue) {
+    $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
-    }
-    if (typeof camp_id !== 'undefined') {
-        _getMembers();
     }
 });
