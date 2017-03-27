@@ -87,18 +87,18 @@ var signup = function (email, password, user, done) {
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
-    // =========================================================================
-    // passport session setup ==================================================
-    // =========================================================================
-    // required for persistent login sessions
-    // passport needs ability to serialize and deserialize users out of session
+  // =========================================================================
+  // passport session setup ==================================================
+  // =========================================================================
+  // required for persistent login sessions
+  // passport needs ability to serialize and deserialize users out of session
 
-    // used to serialize the user for the session
+  // used to serialize the user for the session
   passport.serializeUser(function (user, done) {
     done(null, user.id)
   })
 
-    // used to deserialize the user
+  // used to deserialize the user
   passport.deserializeUser(function (id, done) {
     new User({
       user_id: id
@@ -107,47 +107,47 @@ module.exports = function (passport) {
     })
   })
 
-    // =========================================================================
-    // LOCAL SIGNUP ============================================================
-    // =========================================================================
+  // =========================================================================
+  // LOCAL SIGNUP ============================================================
+  // =========================================================================
   passport.use('local-signup', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
+    // by default, local strategy uses username and password, we will override with email
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
-        function (req, email, password, done) {
-          signup(email, password, req.body, function (user, error) {
-            if (user) {
-              done(null, user, null)
-            } else {
-              done(null, false, req.flash('error', error))
-            }
-          })
-        }))
+    function (req, email, password, done) {
+      signup(email, password, req.body, function (user, error) {
+        if (user) {
+          done(null, user, null)
+        } else {
+          done(null, false, req.flash('error', error))
+        }
+      })
+    }))
 
-    // =========================================================================
-    // LOCAL LOGIN =============================================================
-    // =========================================================================
+  // =========================================================================
+  // LOCAL LOGIN =============================================================
+  // =========================================================================
   passport.use('local-login', new LocalStrategy(
     {
       usernameField: 'email',
       passwordField: 'password',
       passReqToCallback: true
     },
-        function (req, email, password, done) {
-          login(email, password, function (user, error) {
-            if (user) {
-              done(null, user, null)
-            } else {
-              done(null, false, req.flash('error', error))
-            }
-          })
-        }))
+    function (req, email, password, done) {
+      login(email, password, function (user, error) {
+        if (user) {
+          done(null, user, null)
+        } else {
+          done(null, false, req.flash('error', error))
+        }
+      })
+    }))
 
-    // ==========
-    // Facebook login
-    // ==========
+  // ==========
+  // Facebook login
+  // ==========
   passport.use(new FacebookStrategy({
     clientID: facebookConfig.app_id,
     clientSecret: facebookConfig.app_secret,
@@ -155,55 +155,55 @@ module.exports = function (passport) {
     enableProof: true,
     profileFields: ['id', 'email', 'first_name', 'last_name']
   },
-        function (accessToken, refreshToken, profile, cb) {
-          if (profile.emails === undefined) {
-                // TODO: redirect user to http://lvh.me:3000/auth/facebook/reauth
-            console.log("User didn't agree to send us his email. ")
-            return cb(null, false)
-          }
+    function (accessToken, refreshToken, profile, cb) {
+      if (profile.emails === undefined) {
+        // TODO: redirect user to http://lvh.me:3000/auth/facebook/reauth
+        console.log("User didn't agree to send us his email. ")
+        return cb(null, false)
+      }
 
-          User.query({
-            where: {
-              facebook_id: profile.id
-            },
-            orWhere: {
-              email: profile.emails[0].value
-            }
-          }).fetch().then(function (model) {
-            if (model) {
-                    // 1. Clear the user's password (the user will now only be
-                    //    able to login through FacebookStrategy)
-                    // 2. Save updated token and details
-              model.save({
-                password: '',
-                facebook_token: accessToken,
-                facebook_id: profile.id,
-                        // I'm not quite sure about this.
-                        // If a user changes his Facebook email, should we change
-                        // it in our system? I think we should. Not convinced though.
-                email: profile.emails[0].values
-              })
-                        .then(function (_model) {
-                          return cb(null, model, null)
-                        })
-            } else {
-              var newUser = new User({
-                facebook_id: profile.id,
-                facebook_token: accessToken,
-                email: profile.emails[0].value,
-                first_name: profile.name.givenName,
-                last_name: profile.name.familyName,
-                gender: profile.gender,
-                validated: true
-              })
+      User.query({
+        where: {
+          facebook_id: profile.id
+        },
+        orWhere: {
+          email: profile.emails[0].value
+        }
+      }).fetch().then(function (model) {
+        if (model) {
+          // 1. Clear the user's password (the user will now only be
+          //    able to login through FacebookStrategy)
+          // 2. Save updated token and details
+          model.save({
+            password: '',
+            facebook_token: accessToken,
+            facebook_id: profile.id,
+            // I'm not quite sure about this.
+            // If a user changes his Facebook email, should we change
+            // it in our system? I think we should. Not convinced though.
+            email: profile.emails[0].values
+          })
+            .then(function (_model) {
+              return cb(null, model, null)
+            })
+        } else {
+          var newUser = new User({
+            facebook_id: profile.id,
+            facebook_token: accessToken,
+            email: profile.emails[0].value,
+            first_name: profile.name.givenName,
+            last_name: profile.name.familyName,
+            gender: profile.gender,
+            validated: true
+          })
 
-              newUser.save().then(function (model) {
-                return cb(null, newUser, null)
-              })
-            }
+          newUser.save().then(function (model) {
+            return cb(null, newUser, null)
           })
         }
-    ))
+      })
+    }
+  ))
 }
 
 module.exports.sign_up = function (email, password, user, done) {
