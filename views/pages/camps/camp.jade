@@ -14,11 +14,13 @@ block content
                 .clearfix
                 .desc
                     h5 #{t('camps:camps.desc')}
-                    p #{camp.camp_desc_en}
-                    p.text-right #{camp.camp_desc_he}
-        if userIs('camp_manager')
-            .controls
-                a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
+                    .col-xs-12.col-sm-6
+                        p #{camp.camp_desc_en}
+                    .text-right.col-xs-12.col-sm-6
+                        p #{camp.camp_desc_he}
+            if userIs('camp_manager')
+                .controls
+                    a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
         .card.card__shad.card__padding--even
             h4=t('camps:new.name_card_header')
             ul.list-group
