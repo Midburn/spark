@@ -23,9 +23,7 @@ const drupal_login = (email, password, done) =>
     .then(({body}) => body, () => null);
 
 var login = function (email, password, done) {
-  var _email = 'omerpines@hotmail.com';
-  var _password = '123456';
-  drupal_login(_email, _password, done).then(function (drupal_user) {
+  drupal_login(email, password, done).then(function (drupal_user) {
     if (drupal_user != null) {
       new User({
         email: email
