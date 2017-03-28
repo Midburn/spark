@@ -33,19 +33,41 @@ var loadMember = function (user_id, next) {
 };
 
 router.get('/', userRole.isLoggedIn(), function (req, res) {
+    req.breadcrumbs([{
+        name: 'breadcrumbs.home',
+        url: '/' + req.params.lng + '/home'
+    },
+    {
+        name: 'breadcrumbs.npo',
+        url: '/' + req.params.lng + '/npo'
+    }]);
     loadMember(req.user.id, function (member) {
         res.render('pages/npo', {
             user: req.user,
             npoMember: member,
+            breadcrumbs: req.breadcrumbs(),
             currentYear: new Date().getFullYear()
         });
     });
 });
 
 router.get('/join', userRole.isLoggedIn(), function (req, res) {
+    req.breadcrumbs([{
+        name: 'breadcrumbs.home',
+        url: '/' + req.params.lng + '/home'
+    },
+    {
+        name: 'breadcrumbs.npo',
+        url: '/' + req.params.lng + '/npo'
+    },
+    {
+        name: 'breadcrumbs.npo_join',
+        url: '/' + req.params.lng + '/npo/join'
+    }]);
     loadMember(req.user.id, function (member) {
         res.render('pages/npo_join', {
             user: req.user,
+            breadcrumbs: req.breadcrumbs(),
             npoMember: member
         });
     });
