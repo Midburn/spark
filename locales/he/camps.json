@@ -227,7 +227,9 @@
             "contact_person_name": "שם איש קשר",
             "contact_person_email": "אימייל איש קשר",
             "contact_person_phone": "טלפון אישר קשר",
-            "security_file": "תיק בטיחות"
+            "security_file": "תיק בטיחות",
+            "members_header": "נהל חברי מחנה",
+            "search_member": "מצא חבר מחנה"
         },
         "program": {
             "page_title": "צור פעילות חדשה",

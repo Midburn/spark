@@ -19,8 +19,8 @@ block content
                 button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
                 //- TODO - test is user is camp manager of this camp
                 if(!isNew && (user.isCampManager || user.isAdmin))
-                    button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.members')
-                    button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')
+                    button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.members')
+                    button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.upload')
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
@@ -231,18 +231,40 @@ block content
                                 .col-xs-12
                                     label(for='camp_location_area')=t('camps:edit.location_area')
                                     input.form-control(id='camp_location_area', type='number', name='public_camp_location_area', value=(isNew ? '' : '#{details.camp_location_area}'))
-            //- Card 3
-            .card.card-third.card-hide
-                h4=t('camps:edit.upload_header')
-                .camp-upload-file.panel
-                    .panel-body
-                        .names.col-md-6
-                            .col-xs-12
-                                label(for='edit_camp_upload_security_file')=t('camps:edit.security_file')
-                                input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
+            //- Card 3 - Manage Members
+            .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
+                h4=t('camps:admin_index.all_members_table')
+                    span.badge {{members.length}}
+                .form-inline
+                    input.form-control(id='camps_members_add_member', type="text", placeholder="temp - add a member")
+                    button.Btn.Btn__sm(ng-click="addMember()") + Add Member
+                .form-group
+                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
+                    
+                .row
+                    .col-xs-12
+                        table.table.table-striped.table-hover
+                            thead
+                                tr
+                                th(ng-click='changeOrderBy("id")') #
+                                th(ng-click='changeOrderBy("name")') Name
+                                th(ng-click='changeOrderBy("email")') Email
+                                th(ng-click='changeOrderBy("phone")') Phone
+                                th(ng-click='changeOrderBy("status")') Status
+                                th(ng-click='changeOrderBy("hasTicket")') Has Ticket
+                                th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
+                            tbody
+                                tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
+                                    td {{member.user_id}}
+                                    td {{member.user.name}}
+                                    td {{member.user.email}}
+                                    td {{member.user.cell_phone}}
+                                    td {{member.status}}
+                                    td {{member.user.hasTicket ? 'yes':'no'}}
+                                    td {{member.user.earlyArrival ? 'yes':'no'}}
             //- Card 4
             .card.card-forth.card-hide
-                //- h4=t('camps:edit.upload_header')
+                h4=t('camps:edit.upload_header')
                 .camp-members.panel
                     .panel-body
                         .names.col-md-6

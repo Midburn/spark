@@ -230,7 +230,9 @@
             "facebook_page_url": "Facebook Page Link",
             "upload": "Files & Forms Upload",
             "upload_header": "Upload Files",
-            "security_file": "Security Documentation"
+            "security_file": "Security Documentation",
+            "members_header": "Manage Camp Members",
+            "search_member": "Find members"
         },
         "program": {
             "page_title": "Create new Program",
