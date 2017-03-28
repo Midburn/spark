@@ -19,19 +19,8 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.join_camp',
             url: '/' + req.params.lng + '/camps'
         }]);
-        req.user.myCamps((camps) => {
-            var is_manager = false;
-            var first_camp;
-            if (req.user.hasRole('camp_manager')) {
-                for (var i in camps) {
-                    if (camps[i].main_contact === req.user.attributes.user_id && camps[i].member_status === 'approved') {
-                        first_camp = camps[i];
-                        is_manager = true;
-                        break;
-                    }
-                }
-            }
-            if (camps.length === 0 || !is_manager) {
+        req.user.getUserCamps((camps) => {
+            if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
                 // no camp found
                 res.render('pages/camps/index_user', {
                     user: req.user,
