@@ -27,11 +27,12 @@ module.exports = function (app, passport) {
                     breadcrumbs: req.breadcrumbs()
                 });
             } else {
+                camp=req.user.attributes.camp;
                 res.render('pages/camps/camp', {
                     user: req.user,
-                    id: first_camp.id,
-                    camp: first_camp,
-                    details: first_camp,
+                    id: req.user.id,
+                    camp: camp,
+                    details: camp,
                 });
             }
         });

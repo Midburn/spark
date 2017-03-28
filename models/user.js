@@ -38,6 +38,10 @@ var User = bookshelf.Model.extend({
     },
     /**
      * get this.user_id camps he is in for the CURRENT_EVENT_ID, executing function done.
+     * updates:
+     *  user.attributes.camp - for the first camp user is involved
+     *  user.attribute.is_manager - for the camp if has manager flag.
+     *  user.attributes.camps - array of all camps user is involved.
      */
     getUserCamps: function (done) {
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
@@ -72,9 +76,11 @@ var User = bookshelf.Model.extend({
     validPassword: function (password) {
         return bcrypt.compareSync(password, this.attributes.password);
     },
-
+    __hasRole: function (role, roles) {
+        return (roles && roles.split(',').indexOf(role) > -1);
+    },
     hasRole: function (role) {
-        return (this.attributes.roles && this.attributes.roles.split(',').indexOf(role) > -1);
+        return this.__hasRole(role, this.attributes.roles);
     },
 
     virtuals: {
@@ -87,7 +93,7 @@ var User = bookshelf.Model.extend({
         },
 
         isCampManager: function () {
-            return this.attributes.camp_manager===true;
+            return this.attributes.camp_manager === true;
         },
 
         isCampFree: function () {
