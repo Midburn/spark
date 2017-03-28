@@ -30,7 +30,7 @@ module.exports = function (app) {
                     res.status(200)
                         .jsonp({
                             status    : 'true',
-                            massage   : 'user authorized',
+                            message   : 'user authorized',
                             uid       : uid,
                             username  : name,
                             token     : sessid,
@@ -42,7 +42,7 @@ module.exports = function (app) {
                 (error) => res.status(401)
                     .jsonp({
                         status: 'false',
-                        massage: 'Not authorized!',
+                        message: 'Not authorized!',
                         error
                     })
             );
