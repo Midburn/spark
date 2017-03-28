@@ -34,7 +34,7 @@ block content
                                   span.badge
                                       {{camp.status == 'pending' ? '#{t('camps:pending.status.wait')}':'#{t('camps:pending.status.user_cancel')}'}}
                           a.Btn.Btn__sm(href='#', ng-click='cancelRequest()') Cancel request
-                          a.Btn.Btn__sm(ng-click='resendRequest') Resend request
+                          //- a.Btn.Btn__sm(href='#', ng-click='resendRequest()') Resend request
                           
         // Camp join request modal
         .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')
