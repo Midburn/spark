@@ -90,8 +90,8 @@ function fetchUsersOnce(elm) {
     }
 }
 $(function() {
+    // debugger;
     var user_inputs = '#create_camp_contact_person_id';
-
     if ($('.camps').is('.camp_create')) {
       fetchUsersOnce(user_inputs);
     }
