@@ -21,6 +21,7 @@ app.controller("campEditController", function($scope, $http, $filter) {
             // update table with new data
             _getMembers();
         }).catch(function (err) {
+            console.log(err);
             // TODO handle errors
         });
     }

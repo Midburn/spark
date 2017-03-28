@@ -1,3 +1,4 @@
+/*eslint-disable */
 function Camps() {
 
     var _usersList = [];

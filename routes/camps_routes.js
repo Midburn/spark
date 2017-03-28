@@ -18,7 +18,7 @@ module.exports = function (app, passport) {
         {
             name: 'camps:breadcrumbs.join_camp',
             url: '/' + req.params.lng + '/camps'
-        });
+        }]);
         req.user.getUserCamps((camps) => {
             if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
                 // no camp found
