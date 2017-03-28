@@ -41,8 +41,6 @@ var Camp = bookshelf.Model.extend({
             return this.attributes.users;
         }
     }
-
-
 });
 
 var CampMember = bookshelf.Model.extend({
