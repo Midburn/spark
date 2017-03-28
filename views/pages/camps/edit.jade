@@ -71,8 +71,8 @@ block content
                             .row
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || 'n/a'}
-                                        select.form-control(id='edit_camp_status', name='status')
+                                        label(for='camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || ''}
+                                        select.form-control(id='camp_status', name='status')
                                             option(selected) ---
                                             option(value='open')=t('camps:edit.open')
                                             option(value='closed')=t('camps:edit.closed')
@@ -125,40 +125,52 @@ block content
                                     label(for='camp_activity_time', data-camp-status='#{camp.status}') #{t('camps:edit.camp_activity_time')}
                                         .checkbox
                                             input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=(camp.type.indexOf('morning') > -1 ? "checked" : undefined))
-                                            label(for="status_morning")
+                                            label(for="activity_time_morning")
                                                 | #{t('camps:new.camp_activity_time_morning')}
                                         .checkbox
                                             input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=(camp.type.indexOf('drinks') > -1 ? "noon" : undefined))
-                                            label(for="status_noon")
+                                            label(for="activity_time_noon")
                                                 | #{t('camps:new.camp_activity_time_noon')}
                                         .checkbox
                                             input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=(camp.type.indexOf('evening') > -1 ? "checked" : undefined))
-                                            label(for="status_evening")
+                                            label(for="camp_activity_time_evening")
                                                 | #{t('camps:new.camp_activity_time_evening')}
                                         .checkbox
                                             input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=(camp.type.indexOf('night') > -1 ? "checked" : undefined))
-                                            label(for="status_night")
+                                            label(for="camp_activity_time_night")
                                                 | #{t('camps:new.camp_activity_time_night')}
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
                                         .checkbox
                                             input(type="checkbox", class='camp_type', id="type_music", name="type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
-                                            label(for="edit_type_music")
+                                            label(for="type_music")
                                                 | #{t('camps:edit.music')}
                                         .checkbox
                                             input(type="checkbox", class='camp_type', id="type_drinks", name="type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
-                                            label(for="edit_type_drinks")
+                                            label(for="type_drinks")
                                                 | #{t('camps:edit.drinking')}
                                         .checkbox
+                                            input(type="checkbox", class='camp_type', id="type_workshop", name="type_workshop", value="workshop", checked=(camp.type.indexOf('workshop') > -1 ? "checked" : undefined))
+                                            label(for="type_workshop")
+                                                | #{t('camps:edit.workshop')}
+                                        .checkbox
+                                            input(type="checkbox", class='camp_type', id="type_art", name="type_art", value="art", checked=(camp.type.indexOf('art') > -1 ? "checked" : undefined))
+                                            label(for="type_art")
+                                                | #{t('camps:edit.art')}
+                                        .checkbox
+                                            input(type="checkbox", class='camp_type', id="type_lecture", name="type_lecture", value="lecture", checked=(camp.type.indexOf('lecture') > -1 ? "checked" : undefined))
+                                            label(for="type_lecture")
+                                                | #{t('camps:edit.lecture')}
+                                        .checkbox
                                             input(type="checkbox", class='camp_type', id="type_food", name="type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
-                                            label(for="edit_type_food")
+                                            label(for="type_food")
                                                 | #{t('camps:edit.food')}
                                         .checkbox
                                             input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
-                                            label(for="edit_camp_type_other_checkbox")
+                                            label(for="camp_type_other_checkbox")
                                                 | #{t('camps:edit.other')}
-                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
