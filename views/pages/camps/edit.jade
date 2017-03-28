@@ -27,20 +27,20 @@ block content
                 h4=t('camps:edit.name_and_desc')
                 .camp-info.panel
                     .panel-body
-                        .names.col-md-6
+                        .details-he.col-md-6
+                            .col-xs-12
+                                label(for='camp_name_he')=t('camps:edit.name_he')
+                                input.form-control(id='camp_name_he', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
+                            .col-xs-12
+                                label(for='camp_desc_he')=t('camps:edit.desc_he')
+                                textarea.form-control(id='camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
+                        .details-en.col-md-6
                             .col-xs-12
                                 label(for='camp_name_en')=t('camps:edit.name_en')
                                 input.form-control(id='camp_name_en', name='camp_name_en', value=(isNew ? '#{camp_name_en}' : '#{camp.camp_name_en}'), readonly, autofocus)
                             .col-xs-12
-                                label(for='camp_name_he')=t('camps:edit.name_he')
-                                input.form-control(id='camp_name_he', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
-                        .descriptions.col-md-6
-                            .col-xs-12
                                 label(for='camp_desc_en')=t('camps:edit.desc_en')
                                 textarea.form-control(id='camp_desc_en', name='camp_desc_en') #{camp.camp_desc_en}
-                            .col-xs-12
-                                label(for='camp_desc_he')=t('camps:edit.desc_he')
-                                textarea.form-control(id='camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
                 h4=t('camps:new.website_publication')
                 .camp-publication.panel
                     .panel-body
@@ -148,13 +148,23 @@ block content
                         .camp-behavior
                             .col-md-4
                                 .col-xs-12
-                                    label(for='camp_activity_time') #{t('camps:edit.camp_activity_time')}: #{details.camp_activity_time}
-                                    select.form-control(id='camp_activity_time', name='camp_activity_time', autofocus)
-                                        option(selected) ---
-                                        option(value="morning")=t('camps:new.camp_activity_time_morning')
-                                        option(value="noon")=t('camps:new.camp_activity_time_noon')
-                                        option(value="evening")=t('camps:new.camp_activity_time_evening')
-                                        option(value="night")=t('camps:new.camp_activity_time_night')
+                                    label(for='camp_activity_time', data-camp-status='#{camp.status}') #{t('camps:edit.camp_activity_time')}
+                                            .checkbox
+                                                input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=(camp.type.indexOf('morning') > -1 ? "checked" : undefined))
+                                                label(for="status_morning")
+                                                    | #{t('camps:new.camp_activity_time_morning')}
+                                            .checkbox
+                                                input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=(camp.type.indexOf('drinks') > -1 ? "noon" : undefined))
+                                                label(for="status_noon")
+                                                    | #{t('camps:new.camp_activity_time_noon')}
+                                            .checkbox
+                                                input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=(camp.type.indexOf('evening') > -1 ? "checked" : undefined))
+                                                label(for="status_evening")
+                                                    | #{t('camps:new.camp_activity_time_evening')}
+                                            .checkbox
+                                                input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=(camp.type.indexOf('night') > -1 ? "checked" : undefined))
+                                                label(for="status_night")
+                                                    | #{t('camps:new.camp_activity_time_night')}
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
