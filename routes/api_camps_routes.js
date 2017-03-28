@@ -488,7 +488,7 @@ module.exports = function (app, passport) {
        * notifiying a user wants to join his camp
        * @return {boolean} should return true if mail delivered. FIXME: in mail.js
        */
-      var deliver = mail.send(
+      mail.send(
           recipient,
           mailConfig.from,
           subject,
