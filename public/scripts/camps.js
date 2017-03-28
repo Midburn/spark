@@ -90,8 +90,8 @@ function fetchUsersOnce(elm) {
     }
 }
 $(function() {
+    // debugger;
     var user_inputs = '#create_camp_contact_person_id';
-
     if ($('.camps').is('.camp_create')) {
       fetchUsersOnce(user_inputs);
     }
@@ -138,7 +138,7 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
         });
     }
 }
-$stats_table.load(fetchCampsOnce());
+// $stats_table.load(fetchCampsOnce());
 
 // Search camp
 $('#camps_stats_search_camp').keyup(function(input) {

@@ -231,25 +231,19 @@ block content
                                 tr
                                 th(ng-click='changeOrderBy("id")') #
                                 th(ng-click='changeOrderBy("name")') Name
-                                if userIs('admin')
-                                    th(ng-click='changeOrderBy("email")') Email
+                                th(ng-click='changeOrderBy("email")') Email
                                 th(ng-click='changeOrderBy("phone")') Phone
-                                if userIs('admin')
-                                    th(ng-click='changeOrderBy("status")') Status
-                                if userIs('admin')
-                                    th(ng-click='changeOrderBy("hasTicket")') Has Ticket
+                                th(ng-click='changeOrderBy("status")') Status
+                                th(ng-click='changeOrderBy("hasTicket")') Has Ticket
                                 th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
                                     td {{member.user_id}}
-                                    td {{ member.user.name }}
-                                    if userIs('admin')
-                                        td {{member.user.email}}
+                                    td {{member.user.name}}
+                                    td {{member.user.email}}
                                     td {{member.user.cell_phone}}
-                                    if userIs('admin')
-                                        td {{member.user.status}}
-                                    if userIs('admin')
-                                        td {{member.user.hasTicket ? 'yes':'no'}}
+                                    td {{member.status}}
+                                    td {{member.user.hasTicket ? 'yes':'no'}}
                                     td {{member.user.earlyArrival ? 'yes':'no'}}
             //- Card 4
             .card.card-forth.card-hide
