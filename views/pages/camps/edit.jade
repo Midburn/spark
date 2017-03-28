@@ -48,22 +48,13 @@ block content
                             .row
                                 .col-md-4
                                     .col-xs-12
-                                        //- TODO - fix for if(isNew)
                                         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
                                         select.form-control(id='camp_contact_person_id', name='contact_person_id')
                                             option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
-                                .col-md-4
+                                .col-md-8
                                     .col-xs-12
                                         label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
                                         input.form-control(id='camp_facebook_page_url', name='facebook_page_url', value=(isNew ? '' : '#{camp.facebook_page_url}'))
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='camp_accept_families')=t('camps:camps.accept_families')
-                                        input.checkbox(id='camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
-                                        script.
-                                            // set checkbox status
-                                            var checkbox = document.getElementById("camp_accept_families");
-                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
                             .row
                                 .col-md-4
                                     .col-xs-12
@@ -86,7 +77,14 @@ block content
                                             option(value='open')=t('camps:edit.open')
                                             option(value='closed')=t('camps:edit.closed')
                                             option(value='inactive')=t('camps:edit.inactive')
-
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='camp_accept_families')=t('camps:camps.accept_families')
+                                        input.checkbox(id='camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
+                                        script.
+                                            // set checkbox status
+                                            var checkbox = document.getElementById("camp_accept_families");
+                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
                             if(!isNew)    
                                 .col-md-4
                                     .col-xs-12
