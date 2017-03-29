@@ -36,7 +36,7 @@ app.controller("campEditController", function($scope, $http, $filter) {
             confirmButtonText: "Yes",
             closeOnConfirm: false
             },
-            function(){
+            function() {
                 var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
                 $http.get(request_str).then((res) => {
                     sweetAlert(action_type + "!", user_name + "has been " + action_type, "success");
