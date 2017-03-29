@@ -27,7 +27,9 @@ var server = http.createServer(app);
  */
 
 server.listen(port, function () {
-    log.info('Listening on port ' + port + " (http://localhost:" + port + ")");
+    const url = "http://localhost:" + port + "/";
+    log.info('Listening on port ' + port + " (" + url + ")");
+    log.info('(Developers? Check out ' + url + 'dev)');
 });
 server.on('error', onError);
 server.on('listening', onListening);
