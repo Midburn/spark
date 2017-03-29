@@ -418,115 +418,84 @@ module.exports = function (app, passport) {
             res.status(404).json({ data: { message: 'User can only join one camp!' } })
         }
     });
+    /**
+     * Deliver join request email to camp manager
+     * @type {[type]}
+     */
     app.post('/camps/:id/join/deliver', userRole.isLoggedIn(), (req, res) => {
         var camp_manager_email = req.body['camp[manager_email]']
         var user_id = req.user.attributes.user_id
         var camp_id = req.params.id
-
-        // create relation model between user and camp
-        new CampMember({
-            camp_id: camp_id,
-            user_id: user_id,
-            status: 'pending'
-        }).save().then((camp_member) => {
-            deliver()
-            setPending()
-            res.status(200).end()
-        }).catch((e) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: e.message
-                }
-            })
-        })
-
-        /**
-         * set user's camp_id -1 = pending join
-         * @type {[type]}
-         */
-        function setPending() {
-            User.forge({ user_id: user_id })
-                .fetch()
-                .then((user) => {
-                    user.save({ camp_id: -1 }).then(function () { })
-                        .catch((e) => {
-                            res.status(500).json({
-                                error: true,
-                                data: {
-                                    message: e.message
-                                }
-                            })
-                        })
+        
+        CampMember.forge({user_id: user_id}).fetch().then((join_details) => {
+          join_details.save({camp_id: camp_id, status: 'pending'}).then(() => {
+            User.forge({ user_id: user_id }).fetch().then((user) => {
+                user.save({camp_id: -1}).then(() => {
+                  emailDeliver(camp_manager_email, 'Spark: someone wants to join your camp!', 'emails/camps/join_request') // notify camp manager
+                  res.status(200).json({ details: join_details.toJSON() })
                 })
-        }
-
-        /**
-         * Deliver email request to camp manager
-         * notifiying a user wants to join his camp
-         * @return {boolean} should return true if mail delivered. FIXME: in mail.js
-         */
-        function deliver() {
-            // FIXME: this function should return success value (async) and indicates to user.
-            var deliver = mail.send(
-                camp_manager_email,
-                mailConfig.from,
-                'Spark: someone wants to join your camp!',
-                'emails/camps/join_request', {}
-            )
-            console.log(deliver);
-        }
+            })
+          })
+        })
     });
 
     /**
      * User request to cancel camp-join pending
      */
-    app.post('/users/:user_id/join_cancel', userRole.isLoggedIn(), (req, res) => {
+    app.get('/users/:user_id/join_cancel', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.params.user_id
+        var camp_id
+        var camp_manager_email
 
         // update relation model between user and camp
-        new CampMember({ camp_id: user_id }).destroy().then(function (camp) {
-            deliver()
-            resetPending()
-            res.json({ error: false, status: 'Request canceled by user, camp manager notified.' });
-        }).catch(function (err) {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
-        });
+        CampMember.forge({user_id: req.params.user_id}).fetch().then((camp_member) => {  
+          camp_id = camp_member.attributes.camp_id
 
-        /**
-         * reset user's camp_id
-         */
-        function resetPending() {
-            User.forge({ user_id: user_id })
-                .fetch()
-                .then((user) => {
-                    user.save({ camp_id: 0 }).then(() => { })
-                        .catch((e) => {
-                            res.status(500).json({
-                                error: true,
-                                data: {
-                                    message: e.message
-                                }
-                            })
+          // fetch camp manager email,
+          User.forge({camp_id: camp_id})
+              .fetch({require: true, columns: ['email', 'roles']})
+              .then((user) => {
+                  if (user.attributes.roles.indexOf('camp_manager') > -1) {
+                    camp_manager_email = user.attributes.email
+                  }
+                  res.status(200).json({ details: camp_member.toJSON() })
+                  // update camp_members request
+                  camp_member.save({camp_id: 0, status: 'user_canceled'}).then(() => {
+                    // reset user's camp_id 
+                    User.forge({user_id: user_id}).fetch().then((user) => {
+                        user.save({camp_id: 0}).then(() => {
+                          // notify camp manager
+                          if (camp_manager_email !== 'undefined' || camp_manager_email !== '') {
+                            emailDeliver(camp_manager_email, 'Spark: someone canceled his join request.', 'emails/camps/join_cancel')
+                          }
+                          res.status(200).json({ details: camp_member.toJSON() })
                         })
-                })
-        }
-
-        function deliver() {
-            mail.send(
-                camp_manager_email,
-                mailConfig.from,
-                'Spark: cancel join request!',
-                'emails/camps/join_request', {}
-            )
-        }
+                    })
+                  })
+              })
+        })
+    });
+    
+    app.get('/users/:user_id/join_details', userRole.isLoggedIn(), (req, res) => {
+      CampMember.forge({user_id: req.params.user_id}).fetch().then((join_details) => {
+        res.status(200).json({ details: join_details.toJSON() })
+      })
     });
 
+    var emailDeliver = (recipient, subject, template) => {
+      /**
+       * Deliver email request to camp manager
+       * notifiying a user wants to join his camp
+       * @return {boolean} should return true if mail delivered. FIXME: in mail.js
+       */
+      mail.send(
+          recipient,
+          mailConfig.from,
+          subject,
+          template, {}
+      )
+    }
+    
     /**
      * API: (POST) create Program
      * request => /camps/program
@@ -571,24 +540,24 @@ module.exports = function (app, passport) {
     * request => /camps/1/camp_manager
     */
     app.get('/camps/:id/manager', userRole.isLoggedIn(), (req, res) => {
-        User.forge({ camp_id: req.params.id })
-            .fetch({
-                require: true,
-                columns: ['email', 'roles']
-            })
-            .then((user) => {
-                if (user.get('roles').indexOf('camp_manager')) {
-                    res.status(200).json({ user: { email: user.get('email') } })
-                } else {
-                    res.status(404).json({ data: { message: 'Not found' } })
-                }
-            }).catch((e) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: e.message
-                    }
-                });
-            });
+      User.forge({ camp_id: req.params.id })
+          .fetch({
+              require: true,
+              columns: ['email', 'roles']
+          })
+          .then((user) => {
+              if (user.get('roles').indexOf('camp_manager')) {
+                  res.status(200).json({ user: { email: user.get('email') } })
+              } else {
+                  res.status(404).json({ data: { message: 'Not found' } })
+              }
+          }).catch((e) => {
+              res.status(500).json({
+                  error: true,
+                  data: {
+                      message: e.message
+                  }
+              });
+          });
     })
 }

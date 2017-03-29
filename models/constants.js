@@ -81,6 +81,6 @@ module.exports = {
      *      approved_mgr - a member is approved as a member, and has manager rights to camp.
      *      supplier - member is supplier, for the supplier notification later.
      */
-    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected','approved_mgr','supplier'],
+    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected','approved_mgr','supplier','deleted'],
 
 };

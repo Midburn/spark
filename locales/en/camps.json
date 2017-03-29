@@ -26,11 +26,15 @@
         },
         "breadcrumbs": {
             "root": "Home",
-            "home": "Camps",
+            "manage": "Manage Camps",
             "new": "New Camp",
             "stats": "Camp Statistics",
             "members": "Camp Members",
-            "docs": "Documents and Forms"
+            "docs": "Documents and Forms",
+            "edit": "Edit Camp",
+            "camp_stat": "Camp Profile",
+            "my_camp": "My Camp",
+            "join_camp": "Join a Camp"
         },
         "admin_index": {
             "all_camps": "Manage Camps",
@@ -224,7 +228,9 @@
             "facebook_page_url": "Facebook Page Link",
             "upload": "Files & Forms Upload",
             "upload_header": "Upload Files",
-            "security_file": "Security Documentation"
+            "security_file": "Security Documentation",
+            "members_header": "Manage Camp Members",
+            "search_member": "Find members"
         },
         "program": {
             "page_title": "Create new Program",
