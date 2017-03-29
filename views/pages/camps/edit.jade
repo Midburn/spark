@@ -30,17 +30,17 @@ block content
                         .details-he.col-md-6
                             .col-xs-12
                                 label(for='camp_name_he')=t('camps:edit.name_he')
-                                input.form-control(id='camp_name_he', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
+                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
                             .col-xs-12
                                 label(for='camp_desc_he')=t('camps:edit.desc_he')
-                                textarea.form-control(id='camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
+                                textarea.form-control(id='camp_desc_he', dir='rtl', name='camp_desc_he') #{camp.camp_desc_he}
                         .details-en.col-md-6
                             .col-xs-12
                                 label(for='camp_name_en')=t('camps:edit.name_en')
-                                input.form-control(id='camp_name_en', name='camp_name_en', value=(isNew ? '#{camp_name_en}' : '#{camp.camp_name_en}'), readonly, autofocus)
+                                input.form-control(id='camp_name_en', dir='ltr', name='camp_name_en', value=(isNew ? '#{camp_name_en}' : '#{camp.camp_name_en}'), readonly, autofocus)
                             .col-xs-12
                                 label(for='camp_desc_en')=t('camps:edit.desc_en')
-                                textarea.form-control(id='camp_desc_en', name='camp_desc_en') #{camp.camp_desc_en}
+                                textarea.form-control(id='camp_desc_en', dir='ltr', name='camp_desc_en') #{camp.camp_desc_en}
                 h4=t('camps:new.website_publication')
                 .camp-publication.panel
                     .panel-body
@@ -50,7 +50,7 @@ block content
                                     .col-xs-12
                                         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
                                         select.form-control(id='camp_contact_person_id', name='contact_person_id')
-                                            option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
+                                            option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}"){{member.user.fullName}}  ({{ member.user.email }})
                                 .col-md-8
                                     .col-xs-12
                                         label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
@@ -85,16 +85,16 @@ block content
                                             // set checkbox status
                                             var checkbox = document.getElementById("camp_accept_families");
                                             checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
-                            if(!isNew)    
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
-                                        
-                                        if camp.web_published == '1'
-                                            span.badge.bg__green=t('camps:edit.public')
-                                            button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
-                                        else
-                                            span.badge.bg__red=t('camps:edit.invisible')
+                                if(!isNew)    
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
+                                            
+                                            if camp.web_published == '1'
+                                                span.badge.bg__green=t('camps:edit.public')
+                                                button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
+                                            else
+                                                span.badge.bg__red=t('camps:edit.invisible')
                 h4=t('camps:edit.contact_title')
                 .camp-leaders.panel
                     .panel-body
@@ -103,17 +103,17 @@ block content
                                 .col-xs-12
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
                                     select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}"){{ member.fullName}} ({{ member.email }})
+                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}"){{ member.user.fullName}} ({{ member.user.email }})
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_moop_contact')=t('camps:edit.moop_contact')
                                     select.form-control(id='camp_moop_contact', name='moop_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
+                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.user.fullName}} ({{ member.user.email }})
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_safety_contact')=t('camps:edit.safety_contact')
                                     select.form-control(id='camp_safety_contact', name='safety_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
+                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.user.fullName}} ({{ member.user.email }})
             //- Card 2
             .card.card-second.card-hide
                 h4=t('camps:edit.behavior_title')
@@ -260,7 +260,7 @@ block content
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
                                     td {{member.user_id}}
-                                    td {{member.user.name}}
+                                    td {{member.user.fullName}}
                                     td {{member.user.email}}
                                     td {{member.user.cell_phone}}
                                     td {{member.status}}
