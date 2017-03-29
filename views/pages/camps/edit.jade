@@ -236,12 +236,10 @@ block content
                                 th(ng-click='changeOrderBy("status")') Status
                                 th(ng-click='changeOrderBy("hasTicket")') Has Ticket
                                 th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
-                                if(user.isCampJoinPending)
-                                    th Reject User
-                                    th Approve User
-                                    th Approve As Manager
-                                else
-                                    th Remove User
+                                th Reject User
+                                th Approve User
+                                th Approve As Manager
+                                th Remove User
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
                                     td {{member.user_id}}
@@ -264,7 +262,10 @@ block content
                                             a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "manager")')
                                                 span(class='glyphicon glyphicon-king')
                                                 span(class='sr-only' aria-hidden='true') Approve user as manager
-                                    else
+                                    if(user.isCampFree)
+                                        td
+                                        td
+                                        td
                                         td 
                                             a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "remove")')
                                                 span(class='glyphicon glyphicon-remove')
