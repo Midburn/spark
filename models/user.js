@@ -83,7 +83,15 @@ var User = bookshelf.Model.extend({
         return this.__hasRole(role, this.attributes.roles);
     },
     isManagerOfCamp: function(camp_id) {
+<<<<<<< HEAD
         return parseInt(this.attributes.camp.id)===parseInt(camp_id);
+=======
+      let isCampManager = false
+      if (parseInt(this.attributes.camp_id) === parseInt(camp_id) && this.isCampManager) {
+        isCampManager = true
+      }
+      return isCampManager;
+>>>>>>> 0bcb8ba4a74f9d8c47b78d842918331c89acf847
     },
     virtuals: {
         fullName: function () {
