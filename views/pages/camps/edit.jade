@@ -253,20 +253,20 @@ block content
                                     td {{member.user.earlyArrival ? 'yes':'no'}}
                                     if(user.isCampJoinPending)
                                         td 
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "reject")')
+                                            a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "reject")')
                                                 span(class='glyphicon glyphicon-remove')
                                                 span(class='sr-only' aria-hidden='true') Reject user
                                         td
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "approve")')
+                                            a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "approve")')
                                                 span(class='glyphicon glyphicon-ok')
                                                 span(class='sr-only' aria-hidden='true') Approve user
                                         td
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "manager")')
+                                            a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "manager")')
                                                 span(class='glyphicon glyphicon-king')
                                                 span(class='sr-only' aria-hidden='true') Approve user as manager
                                     else
                                         td 
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "remove")')
+                                            a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "remove")')
                                                 span(class='glyphicon glyphicon-remove')
                                                 span(class='sr-only' aria-hidden='true') Remove user
             //- Card 4
