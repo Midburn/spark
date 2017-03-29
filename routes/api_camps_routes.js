@@ -237,25 +237,41 @@ module.exports = function (app, passport) {
     /**
      * approve user request
      */
-    app.get('/camps/:camp_id/members/:user_id/approve', userRole.isLoggedIn(), (req, res) => {
-        var user_id=req.params.user_id;
-        var camp_ud=req.params.camp_id;
-
-        Camp.forge({ id: req.params.camp_id }).fetch().then((camp) => {
-            camp.getCampUsers((users) => {
-                if (camp.isCampManager(req.user.attributes.user_id)) {
-                    var user = camp.isUserInCamp(req.params.user_id);
-                    if (user && user.member_status === 'pending') {
-                        CampMember.forge({
-                            camp_id: camp.attributes.id,
-                            user_id: user_id,
-                            status: 'approved'
-                        }).save(null).then((camp_member) => {
-                            emailDeliver(user.email, 'Spark: you have been approved!', 'emails/camps/member_approved') // notify camp manager
-                            res.status(200).end()
-                        })
-                    }
-                }
+    app.get('/camps/:camp_id/members/:user_id/:action', userRole.isLoggedIn(), (req, res) => {
+        var user_id = req.params.user_id;
+        var camp_ud = req.params.camp_id;
+        var action = req.params.action;
+        var actions = ['approved', 'remove', 'revive'];
+        if (actions.indexOf(action)) {
+            Camp.forge({ id: req.params.camp_id }).fetch().then((camp) => {
+                camp.getCampUsers((users) => {
+                    if (camp.isCampManager(req.user.attributes.user_id)) {
+                        var user = camp.isUserInCamp(req.params.user_id);
+                        var new_status;
+                        if (user && action === "approved" && user.member_status === 'pending') {
+                            new_status = 'approved';
+                        } else if (user && action === "remove") {
+                            new_status = 'deleted';
+                        } else if (user && action === "revive") {
+                            new_status = 'pending';
+                        }
+                        if (new_status) {
+                            CampMember.forge({
+                                camp_id: camp.attributes.id,
+                                user_id: user_id,
+                                status: new_status
+                            }).save(null).then((camp_member) => {
+                                if (action === "approved") {
+                                    emailDeliver(user.email, 'Spark: you have been approved!', 'emails/camps/member_approved'); // notify the user
+                                }
+                                res.status(200).end();
+                            });
+                        } else {
+                            res.status(404).end();
+                        }
+                    } else
+                        res.status(404).end();
+                });
             }).catch((e) => {
                 res.status(500).json({
                     error: true,
@@ -264,7 +280,8 @@ module.exports = function (app, passport) {
                     }
                 })
             });
-        });
+        } else
+            res.status(404).end();
     })
 
 
@@ -580,18 +597,30 @@ module.exports = function (app, passport) {
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
-        CampMember.query(function (q) {
-            q
-                .where('camp_members.camp_id', req.params.id)
-                .innerJoin('users', function () {
-                    this.on('camp_members.user_id', '=', 'users.user_id')
-                    // .andOn('camp_members.status', '=', 'approved');
-                })
-        })
-            .fetchAll({ withRelated: ['user'] })
-            .then(function (user) {
-                res.status(200).json({ members: user.toJSON() })
+        Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+            camp.getCampUsers((members) => {
+                res.status(200).json({ members: members });
             });
+        }).catch((e) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: 'Failed to fetch camp ' + camp.id
+                }
+            });
+        });
+        // CampMember.query(function (q) {
+        //     q
+        //         .where('camp_members.camp_id', '=', req.params.id, 'AND', 'camp_members.status', '!=', 'deleted')
+        //         .innerJoin('users', function () {
+        //             this.on('camp_members.user_id', '=', 'users.user_id')
+        //             // .andOn('camp_members.status', '=', 'approved');
+        //         })
+        // })
+        //     .fetchAll({ withRelated: ['user'] })
+        //     .then(function (user) {
+        //         res.status(200).json({ members: user.toJSON() })
+        //     });
     });
 
     /**
@@ -621,3 +650,5 @@ module.exports = function (app, passport) {
             });
     })
 }
+
+
