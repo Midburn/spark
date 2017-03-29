@@ -39,8 +39,15 @@ block content
                                 label(for='camp_name_en')=t('camps:edit.name_en')
                                 input.form-control(id='camp_name_en', name='camp_name_en', value=(isNew ? '#{camp_name_en}' : '#{camp.camp_name_en}'), readonly, autofocus)
                             .col-xs-12
+                                label(for='camp_name_he')=t('camps:edit.name_he')
+                                input.form-control(id='camp_name_he', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
+                        .descriptions.col-md-6
+                            .col-xs-12
                                 label(for='camp_desc_en')=t('camps:edit.desc_en')
                                 textarea.form-control(id='camp_desc_en', name='camp_desc_en') #{camp.camp_desc_en}
+                            .col-xs-12
+                                label(for='camp_desc_he')=t('camps:edit.desc_he')
+                                textarea.form-control(id='camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
                 h4=t('camps:new.website_publication')
                 .camp-publication.panel
                     .panel-body
@@ -48,6 +55,7 @@ block content
                             .row
                                 .col-md-4
                                     .col-xs-12
+                                        //- TODO - fix for if(isNew)
                                         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
                                         select.form-control(id='camp_contact_person_id', name='contact_person_id')
                                             option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
@@ -55,6 +63,14 @@ block content
                                     .col-xs-12
                                         label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
                                         input.form-control(id='camp_facebook_page_url', name='facebook_page_url', value=(isNew ? '' : '#{camp.facebook_page_url}'))
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='camp_accept_families')=t('camps:camps.accept_families')
+                                        input.checkbox(id='camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
+                                        script.
+                                            // set checkbox status
+                                            var checkbox = document.getElementById("camp_accept_families");
+                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
                             .row
                                 .col-md-4
                                     .col-xs-12
@@ -103,12 +119,12 @@ block content
                                 .col-xs-12
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
                                     select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}"){{ member.fullName}} ({{ member.email }})
+                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.email }}
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_moop_contact')=t('camps:edit.moop_contact')
                                     select.form-control(id='camp_moop_contact', name='moop_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
+                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.email }}
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_safety_contact')=t('camps:edit.safety_contact')
@@ -180,6 +196,8 @@ block content
                                         // set checkbox status
                                         var checkbox = document.getElementById("camp_child_friendly");
                                         checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
+
+                            .col-md-4
                                 .col-xs-12
                                     label(for='noise_level') #{t('camps:edit.camp_noise_level')}: #{details.noise_level}
                                     select(id='camp_noise_level', class="form-control", name="noise_level")
