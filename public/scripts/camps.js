@@ -140,7 +140,7 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
         });
     }
 }
-// $stats_table.load(fetchCampsOnce());
+$stats_table.load(fetchCampsOnce());
 
 // Search camp
 $('#camps_stats_search_camp').keyup(function(input) {
@@ -250,34 +250,34 @@ if ($('.camps').hasClass('camp_details')) {
  */
 $('#camp_edit_save').click(function() {
     var type = fetchAllCheckboxValues('camp_type');
+    var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var camp_id = $('#camp_edit_camp_id').val(),
         camp_data = {
-            camp_name_he: $('#camp_name_he').val(),
+            camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
             camp_name_en: $('#camp_name_en').val(),
-            camp_desc_he: $('#camp_desc_he').val(),
-            camp_desc_en: $('#camp_desc_en').val(),
-            contact_person_id: $('#camp_contact_person_id option:selected').attr('value'),
-            facebook_page_url: $('#camp_facebook_page_url').val(),
-            contact_person_name: $('#camp_contact_person_name').val(),
-            contact_person_email: $('#camp_contact_person_email').val(),
-            contact_person_phone: $('#camp_contact_person_phone').val(),
-            main_contact: $('#camp_main_contact option:selected').val(),
-            moop_contact: $('#camp_moop_contact option:selected').val(),
-            safety_contact: $('#camp_safety_contact option:selected').val(),
-            status: $('#camp_status option:selected').attr('value') || $('label[for="edit_camp_status"]').attr('data-camp-status'),
-            type: type,
-            web_published: $('#camp_web_published option:selected').val(),
-            camp_activity_time: $('#camp_activity_time option:selected').val(),
+            camp_desc_he: $('#camp_desc_he').val() || '',
+            camp_desc_en: $('#camp_desc_en').val() || '',
+            contact_person_id: $('#camp_contact_person_id option:selected').val() || '',
+            facebook_page_url: $('#camp_facebook_page_url').val() || '',
+            contact_person_name: $('#camp_contact_person_name').val() || '',
+            contact_person_email: $('#camp_contact_person_email').val() || '',
+            contact_person_phone: $('#camp_contact_person_phone').val() || '',
+            accept_families: $('#camp_accept_families:checked').length,
+            main_contact: $('#camp_main_contact option:selected').val() || '',
+            moop_contact: $('#camp_moop_contact option:selected').val() || '',
+            safety_contact: $('#camp_safety_contact option:selected').val() || '',
+            type: type || '',
+            camp_status: $('#camp_status option:selected').val() || '',
+            camp_activity_time: activity_time || '',
             child_friendly: $('#camp_child_friendly:checked').length,
-            noise_level: $('#camp_noise_level option:selected').val(),
-            public_activity_area_sqm: $('#public_activity_area_sqm').val(),
-            public_activity_area_desc: $('#public_activity_area_desc').val(),
+            noise_level: $('#camp_noise_level option:selected').val() || '',
+            public_activity_area_sqm: $('#camp_public_activity_area_sqm').val() || '',
+            public_activity_area_desc: $('#camp_public_area_desc').val() || '',
             support_art: $('#support_art:checked').length,
-            location_comments: $('#location_comments').val(),
-            camp_location_street: $('#camp_location_street').val(),
-            camp_location_street_time: $('#camp_location_street_time').val(),
-            camp_location_area: $('#camp_location_area').val(),
-            accept_families: $('#camp_accept_families:checked').length
+            location_comments: $('#location_comments').val() || '',
+            camp_location_street: $('#camp_location_street').val() || '',
+            camp_location_street_time: $('#camp_location_street_time').val() || '',
+            camp_location_area: $('#camp_location_area').val() || ''
         };
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
@@ -327,32 +327,33 @@ $('#edit_type_other').click(function() {
  */
 $('#camp_create_save').click(function() {
     var type = fetchAllCheckboxValues('camp_type');
+    var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var camp_data = {
         camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
         camp_name_en: $('#camp_name_en').val(),
-        camp_desc_he: $('#camp_desc_he').val(),
-        camp_desc_en: $('#camp_desc_en').val(),
-        contact_person_id: $('#camp_contact_person_id option:selected').val(),
-        facebook_page_url: $('#camp_facebook_page_url').val(),
-        contact_person_name: $('#camp_contact_person_name').val(),
-        contact_person_email: $('#camp_contact_person_email').val(),
-        contact_person_phone: $('#camp_contact_person_phone').val(),
+        camp_desc_he: $('#camp_desc_he').val() || '',
+        camp_desc_en: $('#camp_desc_en').val() || '',
+        contact_person_id: $('#camp_contact_person_id option:selected').val() || '',
+        facebook_page_url: $('#camp_facebook_page_url').val() || '',
+        contact_person_name: $('#camp_contact_person_name').val() || '',
+        contact_person_email: $('#camp_contact_person_email').val() || '',
+        contact_person_phone: $('#camp_contact_person_phone').val() || '',
         accept_families: $('#camp_accept_families:checked').length,
-        main_contact: $('#camp_main_contact option:selected').val(),
-        moop_contact: $('#camp_moop_contact option:selected').val(),
-        safety_contact: $('#camp_safety_contact option:selected').val(),
-        type: type,
-        camp_status: $('#camp_status option:selected').val(),
-        camp_activity_time: $('#camp_activity_time option:selected').val(),
+        main_contact: $('#camp_main_contact option:selected').val() || '',
+        moop_contact: $('#camp_moop_contact option:selected').val() || '',
+        safety_contact: $('#camp_safety_contact option:selected').val() || '',
+        type: type || '',
+        camp_status: $('#camp_status option:selected').val() || '',
+        camp_activity_time: activity_time || '',
         child_friendly: $('#camp_child_friendly:checked').length,
-        noise_level: $('#camp_noise_level option:selected').val(),
-        public_activity_area_sqm: $('#camp_public_activity_area_sqm').val(),
-        public_activity_area_desc: $('#camp_public_area_desc').val(),
+        noise_level: $('#camp_noise_level option:selected').val() || '',
+        public_activity_area_sqm: $('#camp_public_activity_area_sqm').val() || '',
+        public_activity_area_desc: $('#camp_public_area_desc').val() || '',
         support_art: $('#support_art:checked').length,
-        location_comments: $('#location_comments').val(),
-        camp_location_street: $('#camp_location_street').val(),
-        camp_location_street_time: $('#camp_location_street_time').val(),
-        camp_location_area: $('#camp_location_area').val()
+        location_comments: $('#location_comments').val() || '',
+        camp_location_street: $('#camp_location_street').val() || '',
+        camp_location_street_time: $('#camp_location_street_time').val() || '',
+        camp_location_area: $('#camp_location_area').val() || ''
     };
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
@@ -398,8 +399,8 @@ $('#camp_create_save').click(function() {
 });
 
 // display other text field if other selected
-$('#camp_type_other').click(function() {
-    if ($('#camp_type_other').is(':checked')) {
+$('#camp_type_other_checkbox').click(function() {
+    if ($('#camp_type_other_checkbox').is(':checked')) {
         $('#camp_type_other_text').removeClass('hidden');
     } else {
         $('#camp_type_other_text').addClass('hidden');
@@ -411,10 +412,10 @@ function fetchAllCheckboxValues(className) {
   var val = [];
   $('.' + className + ':checked').each(function(i) {
     val[i] = $(this).val();
+    if (val[i] === 'other') {
+        val[i] += '=' + $('#'+ className + '_other_text').val()
+    }
   });
-  if (val.indexOf('other') > -1) {
-      val.push($('#'+ className + '_other_text').val());
-  }
   return val.toString();
 }
 /*

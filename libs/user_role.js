@@ -43,7 +43,7 @@ userRole.isAllowNewCamp = function () {
 const ALLOW_EDIT_CAMP_DATE = new Date(2017, 5, 1); //TODO: puth this in settings file - what is the date needs to be?
 userRole.isAllowEditCamp = function () {
     return (req, res, next) => {
-        if (req.user && (req.user.isAdmin || req.user.isCampManager && (req.params.id === req.user.campId) && (ALLOW_EDIT_CAMP_DATE.getTime() - (new Date().getTime())) > 0)) {
+        if (req.user && (req.user.isAdmin || req.user.isCampManager &&/** (req.params.id === req.user.campId) &&**/ (ALLOW_EDIT_CAMP_DATE.getTime() - (new Date().getTime())) > 0)) {
             next();
         }
         else {
