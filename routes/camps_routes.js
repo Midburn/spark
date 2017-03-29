@@ -5,7 +5,7 @@ var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
 
 module.exports = function (app, passport) {
-    
+
     // ==============
     // Camps Routing
     // ==============
@@ -27,7 +27,7 @@ module.exports = function (app, passport) {
                     breadcrumbs: req.breadcrumbs()
                 });
             } else {
-                camp=req.user.attributes.camp;
+                camp = req.user.attributes.camp;
                 res.render('pages/camps/camp', {
                     user: req.user,
                     id: req.user.id,
@@ -51,12 +51,13 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.new',
             url: '/' + req.params.lng + '/camps/new/?c=' + req.query.c
         }]);
+
         res.render('pages/camps/edit', {
             user: req.user,
             camp_name_en: req.query.c,
             breadcrumbs: req.breadcrumbs(),
             isNew: true,
-            camp: {type: ''},
+            camp: { type: '' },
             details: {}
         });
     });
@@ -140,9 +141,9 @@ module.exports = function (app, passport) {
             });
         }
     });
-/**
- * CRUD Routes
- */
+    /**
+     * CRUD Routes
+     */
     // Read
     app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
@@ -204,17 +205,29 @@ module.exports = function (app, passport) {
         }).fetch({
             // withRelated: ['details']
         }).then((camp) => {
-            var camp_data = camp.toJSON();
-            if (camp_data.type === null) {
-                camp_data.type = '';
-            }
-            res.render('pages/camps/edit', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs(),
-                camp: camp_data,
-                details: camp_data,
-                isNew: false
-            })
+            req.user.getUserCamps((camps) => {
+                if (req.user.isManagerOfCamp(req.params.id)) {
+                    var camp_data = camp.toJSON();
+                    if (camp_data.type === null) {
+                        camp_data.type = '';
+                    }
+                    res.render('pages/camps/edit', {
+                        user: req.user,
+                        breadcrumbs: req.breadcrumbs(),
+                        camp: camp_data,
+                        details: camp_data,
+                        isNew: false
+                    });
+                } else {
+                    // todo: send to error page
+                    res.status(404).json({
+                        error: true,
+                        data: {
+                            message: 'failed to edit camp'
+                        }
+                    });
+                }
+            });
         })
     });
     // Delete, make camp inactive
