@@ -240,7 +240,7 @@ module.exports = function (app, passport) {
     app.get('/camps/:camp_id/members/:user_id/approve', userRole.isLoggedIn(), (req, res) => {
         var user_id=req.params.user_id;
         var camp_ud=req.params.camp_id;
-        
+
         Camp.forge({ id: req.params.camp_id }).fetch().then((camp) => {
             camp.getCampUsers((users) => {
                 if (camp.isCampManager(req.user.attributes.user_id)) {
@@ -254,11 +254,8 @@ module.exports = function (app, passport) {
                             emailDeliver(user.email, 'Spark: you have been approved!', 'emails/camps/member_approved') // notify camp manager
                             res.status(200).end()
                         })
-
                     }
                 }
-                // res.status(200).jsonp({ users: users, camp: camp });
-
             }).catch((e) => {
                 res.status(500).json({
                     error: true,
