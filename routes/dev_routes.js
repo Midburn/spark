@@ -21,10 +21,10 @@ router.get('/create-admin', function (req, res) {
     newUser.generateHash('a');
 
     newUser.save().then(function (model) {
-        res.redirect("/");
+        res.send('User a, password a successfully written. Go to / and login');
+    }).catch(function () {
+        res.status(500).send("Error creating dev user, check logs");
     });
-
-    res.redirect("./");
 });
 
 router.get('/view-debug/*', function (req, res) {
