@@ -140,7 +140,7 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
         });
     }
 }
-// $stats_table.load(fetchCampsOnce());
+$stats_table.load(fetchCampsOnce());
 
 // Search camp
 $('#camps_stats_search_camp').keyup(function(input) {
