@@ -206,7 +206,7 @@ module.exports = function (app, passport) {
             // withRelated: ['details']
         }).then((camp) => {
             req.user.getUserCamps((camps) => {
-                if (req.user.isManagerOfCamp(req.params.id)) {
+                if (req.user.isManagerOfCamp(req.params.id) || userRole.isAdmin()) {
                     var camp_data = camp.toJSON();
                     if (camp_data.type === null) {
                         camp_data.type = '';
