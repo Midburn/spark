@@ -253,12 +253,10 @@ block content
                                 th(ng-click='changeOrderBy("status")') Status
                                 th(ng-click='changeOrderBy("hasTicket")') Has Ticket
                                 th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
-                                if(user.isCampJoinPending)
-                                    th Reject User
-                                    th Approve User
-                                    th Approve As Manager
-                                else
-                                    th Remove User
+                                th Reject User
+                                th Approve User
+                                th Approve As Manager
+                                th Remove User
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
                                     td {{member.user_id}}
@@ -268,24 +266,22 @@ block content
                                     td {{member.status}}
                                     td {{member.user.hasTicket ? 'yes':'no'}}
                                     td {{member.user.earlyArrival ? 'yes':'no'}}
-                                    if(user.isCampJoinPending)
-                                        td 
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "reject")')
-                                                span(class='glyphicon glyphicon-remove')
-                                                span(class='sr-only' aria-hidden='true') Reject user
-                                        td
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "approve")')
-                                                span(class='glyphicon glyphicon-ok')
-                                                span(class='sr-only' aria-hidden='true') Approve user
-                                        td
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "manager")')
-                                                span(class='glyphicon glyphicon-king')
-                                                span(class='sr-only' aria-hidden='true') Approve user as manager
-                                    else
-                                        td 
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "remove")')
-                                                span(class='glyphicon glyphicon-remove')
-                                                span(class='sr-only' aria-hidden='true') Remove user
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "reject")', ng-if="member.user.isCampJoinPending")
+                                            span(class='glyphicon glyphicon-remove')
+                                            span(class='sr-only' aria-hidden='true') Reject user
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "approve")', ng-if="member.user.isCampJoinPending")
+                                            span(class='glyphicon glyphicon-ok')
+                                            span(class='sr-only' aria-hidden='true') Approve user
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "manager")', ng-if="member.user.isCampJoinPending")
+                                            span(class='glyphicon glyphicon-king')
+                                            span(class='sr-only' aria-hidden='true') Approve user as manager
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "remove")', ng-if="!member.user.isCampFree")
+                                            span(class='glyphicon glyphicon-remove')
+                                            span(class='sr-only' aria-hidden='true') Remove user
             //- Card 4
             .card.card-forth.card-hide
                 h4=t('camps:edit.upload_header')
