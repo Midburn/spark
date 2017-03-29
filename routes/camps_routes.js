@@ -27,7 +27,7 @@ module.exports = function (app, passport) {
                     breadcrumbs: req.breadcrumbs()
                 });
             } else {
-                camp = req.user.attributes.camp;
+                camp=req.user.attributes.camp;
                 res.render('pages/camps/camp', {
                     user: req.user,
                     id: req.user.id,
