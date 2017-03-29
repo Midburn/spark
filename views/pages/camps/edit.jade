@@ -262,7 +262,7 @@ block content
                                             span(class='glyphicon glyphicon-king')
                                             span(class='sr-only' aria-hidden='true') Approve user as manager
                                     td
-                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "remove")', ng-if="member.user.isCampFree")
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "remove")', ng-if="!member.user.isCampFree")
                                             span(class='glyphicon glyphicon-remove')
                                             span(class='sr-only' aria-hidden='true') Remove user
             //- Card 4
