@@ -33,6 +33,21 @@ var Camp = bookshelf.Model.extend({
                 done(users);
             });
     },
+    isCampManager: function (user_id) {
+        user_id=parseInt(user_id);
+        for (var i in this.attributes.managers) {
+            if (this.attributes.managers[i].user_id===user_id)
+             return this.attributes.managers[i];
+        }
+    },
+    isUserInCamp: function (user_id) {
+        user_id=parseInt(user_id);
+        for (var i in this.attributes.users) {
+            if (this.attributes.users[i].user_id===user_id) {
+                return this.attributes.users[i];
+            }
+        }
+    },
     virtuals: {
         managers: function () {
             return this.attributes.managers;
