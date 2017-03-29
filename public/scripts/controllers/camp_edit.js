@@ -25,4 +25,30 @@ app.controller("campEditController", function($scope, $http, $filter) {
             // TODO handle errors
         });
     }
+    $scope.updateUser = (user_name, user_id, action_type) => {
+        var camp_id = document.getElementById('meta__camp_id').value;
+        sweetAlert({
+            title: "Are you sure?",
+            text: "Are you sure you would like to " + action_type + " " + user_name + "?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: false
+            },
+            function() {
+                var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
+                $http.get(request_str).then((res) => {
+                    sweetAlert(action_type + "!", user_name + "has been " + action_type, "success");
+                    // TODO - check if table update is needed
+                    setTimeout(() => {
+                        innerHeightChange()
+                    }, 500)
+                }).catch((err) => {
+                    console.log(err.message);
+                     sweetAlert("Error!", "Something went wrong, please try again later", "error");
+                })
+                
+            });
+    }
 });
