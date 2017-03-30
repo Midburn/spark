@@ -322,8 +322,10 @@ module.exports = function (app, passport) {
         var actions = ['approved', 'remove', 'revive'];
         if (actions.indexOf(action)) {
             __camps_update_status(camp_id, user_id, action, req.user.id, res);
-        } else
+        } else {
             res.status(404).end();
+        }
+            
     })
 
     /**
