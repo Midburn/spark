@@ -24,21 +24,21 @@ var Camp = bookshelf.Model.extend({
             .then((users) => {
                 let managers = [];
                 for (let i in users) {
-                    users[i].isManager=false;
+                    users[i].isManager = false;
                     let _status = users[i].member_status;
-                    users[i].can_delete=(['rejected'].indexOf(_status)>-1)?true:false;
-                    users[i].can_approve=(['pending'].indexOf(_status)>-1)?true:false;
-                    users[i].can_reject=(['pending','approved'].indexOf(_status)>-1)?true:false;
-                    
+                    users[i].can_delete = ['rejected'].indexOf(_status) > -1;
+                    users[i].can_approve = ['pending'].indexOf(_status) > -1;
+                    users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1;
+
                     if (!users[i].name && (users[i].first_name || users[i].last_name)) {
-                        users[i].name=users[i].first_name+' '+users[i].last_name;
+                        users[i].name = users[i].first_name + ' ' + users[i].last_name;
                     }
                     if (!users[i].name) {
-                        users[i].name=users[i].email;
+                        users[i].name = users[i].email;
                     }
 
                     if ((_this.attributes.main_contact === users[i].user_id && users[i].member_status === 'approved') || (users[i].member_status === 'approved_mgr')) {
-                        users[i].isManager=true;
+                        users[i].isManager = true;
                         managers.push(users[i]);
                     }
                 }
@@ -48,16 +48,17 @@ var Camp = bookshelf.Model.extend({
             });
     },
     isCampManager: function (user_id) {
-        user_id=parseInt(user_id);
+        user_id = parseInt(user_id);
         for (var i in this.attributes.managers) {
-            if (this.attributes.managers[i].user_id===user_id)
-             return this.attributes.managers[i];
+            if (this.attributes.managers[i].user_id === user_id) {
+                return this.attributes.managers[i];
+            }
         }
     },
     isUserInCamp: function (user_id) {
-        user_id=parseInt(user_id);
+        user_id = parseInt(user_id);
         for (var i in this.attributes.users) {
-            if (this.attributes.users[i].user_id===user_id) {
+            if (this.attributes.users[i].user_id === user_id) {
                 return this.attributes.users[i];
             }
         }

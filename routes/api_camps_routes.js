@@ -256,14 +256,14 @@ module.exports = function (app, passport) {
         });
     });
 
-    __camps_update_status = function (camp_id, user_id, action, camp_mgr_id,res) {
-        console.log(action+" from camp "+camp_id+" of user "+user_id+" / mgr id: "+camp_mgr_id);
+    __camps_update_status = function (camp_id, user_id, action, camp_mgr_id, res) {
+        console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
         Camp.forge({ id: camp_id }).fetch().then((camp) => {
             camp.getCampUsers((users) => {
                 if (camp.isCampManager(camp_mgr_id)) {
                     var user = camp.isUserInCamp(user_id);
                     var new_status;
-                    var save_method = {require:false};
+                    var save_method = { require: false };
                     if (user && action === "approved" && user.member_status === 'pending') {
                         new_status = 'approved';
                     } else if (user && action === "remove") {
@@ -277,19 +277,19 @@ module.exports = function (app, passport) {
                         } else if (user.member_status === 'approved') {
                             new_status = null;
                         }
-                        
-                    } 
+
+                    }
                     if (new_status) {
                         CampMember.forge({
                             camp_id: camp.attributes.id,
                             user_id: user_id,
                             // status: new_status
-                        }).save({status: new_status},save_method).then((camp_member) => {
+                        }).save({ status: new_status }, save_method).then((camp_member) => {
                             if (action === "approved") {
                                 emailDeliver(user.email, 'Spark: you have been approved!', 'emails/camps/member_approved'); // notify the user
                             }
                             if (action === "request_mgr") {
-                                User.forge({user_id: user_id}).fetch().then((user)=>{
+                                User.forge({ user_id: user_id }).fetch().then((user) => {
                                     emailDeliver(user.attributes.email, 'Spark: Your camp manager requested to add you!', 'emails/camps/join_request');
                                 });
                                 // emailDeliver(user.email, 'Spark: you have been approved!', 'emails/camps/member_approved'); // notify the user
@@ -299,8 +299,9 @@ module.exports = function (app, passport) {
                     } else {
                         res.status(404).end();
                     }
-                } else
+                } else {
                     res.status(404).end();
+                }
             });
         }).catch((e) => {
             res.status(500).json({
@@ -324,7 +325,6 @@ module.exports = function (app, passport) {
         } else
             res.status(404).end();
     })
-
 
     /**
      * API: (GET) return camp's contact person with:
@@ -646,7 +646,6 @@ module.exports = function (app, passport) {
     app.post('/camps/:id/members/add', userRole.isLoggedIn(), (req, res) => {
         var user_email = req.body.user_email
         var camp_id = req.params.id
-        var user_id = 0
         var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
         if (!filter.test(user_email)) {
             res.status(404).end();
@@ -657,12 +656,12 @@ module.exports = function (app, passport) {
                 User.forge({ email: user_email }).fetch().then((user) => {
                     if (user !== null) {
                         console.log(user);
-                        __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id,res);
+                        __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id, res);
                     } else {
                         User.forge().save({
                             email: user_email
                         }).then((user) => {
-                            __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id,res);
+                            __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id, res);
                         });
 
                     }
@@ -737,5 +736,3 @@ module.exports = function (app, passport) {
             });
     })
 }
-
-
