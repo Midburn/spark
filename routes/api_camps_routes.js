@@ -34,6 +34,28 @@ module.exports = function (app, passport) {
             });
         });
     /**
+     * API: (GET) get user by email
+     * request => /users/:email
+     */
+    app.get('/users/:email',
+        [userRole.isLoggedIn()],
+        (req, res) => {
+            User.forge({ email: req.params.email }).fetch().then((user) => {
+                if (user !== null) {
+                    res.status(200).end()
+                } else {
+                    res.status(404).end()
+                }
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+        });
+    /**
       * API: (POST) create camp
       * request => /camps/new
       */
@@ -559,6 +581,52 @@ module.exports = function (app, passport) {
                 res.status(200).json({ members: user.toJSON() })
             });
     });
+
+    /**
+    * API: (POST) camp manager send member join request
+    * request => /camps/1/members/add
+    */
+    app.post('/camps/:id/members/add', userRole.isLoggedIn(), (req, res) => {
+      var user_email = req.body.user_email
+      var camp_id = req.params.id
+      var user_id = 0
+      
+      // check if user exist in spark?
+      User.forge({ email: user_email }).fetch().then((user) => {
+          if (user !== null) {
+            // user exist
+            if (user.isCampFree && user.isCampManager) {
+              // user is camp free & not a camp manager
+              // update camp_members with join request
+              CampMember.forge({ user_id: user_id }).fetch().then((join_details) => {
+                  join_details.save({ camp_id: camp_id, status: 'pending' }).then(() => {
+                      User.forge({ user_id: user_id }).fetch().then((user) => {
+                          // notify camp manager
+                          emailDeliver(camp_manager_email, 'Spark: wants you to join his camp!', 'emails/camps/join_request')
+                          res.status(200).json({ details: join_details.toJSON() })
+                      })
+                  })
+              })
+            } else {
+              // can't add this user, is camp manager or has camp
+              res.status(401).end()
+            }
+          } else {
+            // create new user, based on users_email
+            User.forge().save({
+              email: user_email
+            }).then((user) => {
+                // update camp_members with join request
+                CampMember.forge().save({ user_id: user.attributes.user_id, camp_id: camp_id, status: 'pending' }).then((camp_member) => {
+                      console.log(camp_member);
+                      // notify user
+                      emailDeliver(user_email, 'Spark: consider login with your new spark account!', 'emails/camps/join_request')
+                      res.status(200).json({ user: user.toJSON() })
+                })
+            })
+          }
+      })
+    })
 
     /**
     * API: (GET) return camp manager email
