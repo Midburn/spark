@@ -10,7 +10,7 @@ module.exports = function(app) {
      * request => /api/v1/camps/published
      */
     app.get('/api/v1/camps/published', (req, res, next) => {
-        res.header('Access-Control-Allow-Origin', 'http://192.168.1.108:8080');
+        res.header('Access-Control-Allow-Origin', 'https://midburn-camps.firebaseapp.com/');
         res.header('Access-Control-Allow-Methods', 'GET');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
         Camp.query((q) => {
@@ -44,11 +44,3 @@ module.exports = function(app) {
         });
     });
 }
-// Allow this address to http-request to this endpoint.
-// var API_PUBLISHED_CAMPS_ALLOW_ORIGIN;
-// if (app.get('env') === 'development') {
-//    API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin.dev');
-// } else {
-//   API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin.prod');
-// }
-//
