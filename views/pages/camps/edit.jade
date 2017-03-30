@@ -58,7 +58,7 @@ block content
                                         //- TODO - fix for if(isNew)
                                         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
                                         select.form-control(id='camp_contact_person_id', name='contact_person_id')
-                                            option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
+                                            option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.name }} ({{ member.email }})
                                 .col-md-8
                                     .col-xs-12
                                         label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')

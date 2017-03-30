@@ -24,6 +24,12 @@ var Camp = bookshelf.Model.extend({
             .then((users) => {
                 var managers = [];
                 for (var i in users) {
+                    if (!users[i].name && (users[i].first_name || users[i].last_name)) {
+                        users[i].name=users[i].first_name+' '+users[i].last_name;
+                    }
+                    if (!users[i].name) {
+                        users[i].name=users[i].email;
+                    }
                     if ((_this.attributes.main_contact === users[i].user_id && users[i].member_status === 'approved') || (users[i].member_status === 'approved_mgr')) {
                         managers.push(users[i]);
                     }
