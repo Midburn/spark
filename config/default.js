@@ -95,3 +95,8 @@ exports.recaptcha = {
     sitekey: process.env.SPARK_RECAPTCHA_SITEKEY || "6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj",
     secretkey: process.env.SPARK_RECAPTCHA_SECRETKEY || "6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF"
 };
+
+exports.api_tokens = {
+  // Using test token if no token is defined
+  token: process.env.SPARK_SECRET_TOKEN || "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91"
+};
