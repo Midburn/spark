@@ -171,7 +171,7 @@ module.exports = function (app, passport) {
 
     // PUBLISH
     app.put('/camps/:id/publish',
-        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
+        [userRole.isAdmin()], // userRole.isAllowEditCamp() is work-in-progress
         (req, res) => {
             // If camp met all its requirements, can publish
             Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
@@ -196,7 +196,7 @@ module.exports = function (app, passport) {
         });
     // UNPUBLISH
     app.put('/camps/:id/unpublish',
-        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
+        [userRole.isAdmin()], // userRole.isAllowEditCamp() is work-in-progress
         (req, res) => {
             Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
                 camp.save({ web_published: '0' }).then(function () {
@@ -524,7 +524,6 @@ module.exports = function (app, passport) {
                 .where('camp_members.camp_id', req.params.id)
                 .innerJoin('users', function () {
                     this.on('camp_members.user_id', '=', 'users.user_id')
-                    // .andOn('camp_members.status', '=', 'approved');
                 })
         })
             .fetchAll({ withRelated: ['user'] })

@@ -307,7 +307,8 @@ block content
                 else
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
-                    button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
+                    if camp.web_published != '1'
+                        button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
 
         // Camp create request modal
         .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
