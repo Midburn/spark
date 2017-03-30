@@ -27,13 +27,6 @@ block content
                 h4=t('camps:edit.name_and_desc')
                 .camp-info.panel
                     .panel-body
-                        .details-he.col-md-6
-                            .col-xs-12
-                                label(for='camp_name_he')=t('camps:edit.name_he')
-                                input.form-control(id='camp_name_he', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
-                            .col-xs-12
-                                label(for='camp_desc_he')=t('camps:edit.desc_he')
-                                textarea.form-control(id='camp_desc_he', name='camp_desc_he') #{camp.camp_desc_he}
                         .details-en.col-md-6
                             .col-xs-12
                                 label(for='camp_name_en')=t('camps:edit.name_en')
@@ -58,19 +51,12 @@ block content
                                         //- TODO - fix for if(isNew)
                                         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
                                         select.form-control(id='camp_contact_person_id', name='contact_person_id')
-                                            option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
+                                            option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.contact_person_id}", value="{{member.user.user_id}}") {{ member.user.fullName}} ({{ member.user.email }})
                                 .col-md-8
                                     .col-xs-12
                                         label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
                                         input.form-control(id='camp_facebook_page_url', name='facebook_page_url', value=(isNew ? '' : '#{camp.facebook_page_url}'))
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='camp_accept_families')=t('camps:camps.accept_families')
-                                        input.checkbox(id='camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
-                                        script.
-                                            // set checkbox status
-                                            var checkbox = document.getElementById("camp_accept_families");
-                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
+
                             .row
                                 .col-md-4
                                     .col-xs-12
@@ -87,12 +73,9 @@ block content
                             .row
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}: #{camp.status || ''}
+                                        label(for='camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}
                                         select.form-control(id='camp_status', name='status')
-                                            option(selected) ---
-                                            option(value='open')=t('camps:edit.open')
-                                            option(value='closed')=t('camps:edit.closed')
-                                            option(value='inactive')=t('camps:edit.inactive')
+                                            option(ng-repeat="option in status_options", ng-selected="option == #{camp.status}", value="{{option}}") {{ option }}
                                 .col-md-4
                                     .col-xs-12
                                         label(for='camp_accept_families')=t('camps:camps.accept_families')
@@ -119,17 +102,17 @@ block content
                                 .col-xs-12
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
                                     select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.email }}
+                                        option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.main_contact}", value="{{member.user.user_id}}") {{ member.user.fullName }} ({{ member.user.email }})
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_moop_contact')=t('camps:edit.moop_contact')
                                     select.form-control(id='camp_moop_contact', name='moop_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.email }}
+                                        option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.moop_contact}", value="{{member.user.user_id}}") {{ member.user.fullName }} ({{ member.user.email }})
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_safety_contact')=t('camps:edit.safety_contact')
                                     select.form-control(id='camp_safety_contact', name='safety_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.fullName}} ({{ member.email }})
+                                        option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.safety_contact}", value="{{member.user.user_id}}") {{ member.user.fullName }} ({{ member.user.email }})
             //- Card 2
             .card.card-second.card-hide
                 h4=t('camps:edit.behavior_title')
@@ -189,9 +172,8 @@ block content
                                             input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
                             .col-md-4
                                 .col-xs-12
-                                    label(for='camp_child_friendly') #{t('camps:edit.camp_child_friendly')} #{details.child_friendly}
+                                    label(for='camp_child_friendly') #{t('camps:edit.camp_child_friendly')}
                                     input.checkbox(id='camp_child_friendly', checked='#{camp.child_friendly}', type="checkbox", name='child_friendly')
-                                    //- input.checkbox(id='edit_camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
                                     script.
                                         // set checkbox status
                                         var checkbox = document.getElementById("camp_child_friendly");
@@ -199,13 +181,16 @@ block content
 
                             .col-md-4
                                 .col-xs-12
-                                    label(for='noise_level') #{t('camps:edit.camp_noise_level')}: #{details.noise_level}
+                                    script.
+                                        var noise_level = {
+                                          "quiet": "#{t('camps:new.camp_noise_level_quiet')}",
+                                          "medium": "#{t('camps:new.camp_noise_level_medium')}",
+                                          "noisy": "#{t('camps:new.camp_noise_level_noisy')}",
+                                          "very noisy": "#{t('camps:new.camp_noise_level_very_noisy')}"
+                                        }
+                                    label(for='noise_level') #{t('camps:edit.camp_noise_level')}: #{camp.noise_level}
                                     select(id='camp_noise_level', class="form-control", name="noise_level")
-                                        option(selected) ---
-                                        option(value="quiet")=t('camps:new.camp_noise_level_quiet')
-                                        option(value="medium")=t('camps:new.camp_noise_level_medium')
-                                        option(value="noisy")=t('camps:new.camp_noise_level_noisy')
-                                        option(value="very noisy")=t('camps:new.camp_noise_level_very_noisy')
+                                        option(ng-repeat="option in noise_level_options", ng-selected="option == #{camp.noise_level}", value="{{option}}") {{ option }}
                 
                 //------- Lilach requested to hide section -------------//
                 //- h4=t('camps:edit.public_area_title')
