@@ -114,7 +114,9 @@
           "status": {
             "wait": "ממתין לאישור",
             "user_cancel": "בקשה בוטלה"
-          }
+          },
+          "cancel_request": "בטל בקשה",
+          "approve_request": "אשר בקשה"
         },
         "manage": {
             "manage_a_camp": "נהל מחנות"

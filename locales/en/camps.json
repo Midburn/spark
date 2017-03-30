@@ -114,7 +114,9 @@
           "status": {
             "wait": "Waiting approval",
             "user_cancel": "Request canceled"
-          }
+          },
+          "cancel_request": "Cancel Request",
+          "approve_request": "Approve Request"
         },
         "manage": {
             "manage_a_camp": "Manage camps"

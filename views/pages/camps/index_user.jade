@@ -39,7 +39,9 @@ block content
                               span=t('camps:stats.status')
                                   span.badge
                                       {{camp.status == 'pending' ? '#{t('camps:pending.status.wait')}':'#{t('camps:pending.status.user_cancel')}'}}
-                          a.Btn.Btn__sm(href='#', ng-click='cancelRequest()') Cancel request
+                          if(camp.status == 'pending_mgr')
+                              a.Btn.Btn__sm(href='#', ng-click='approveRequest()')=t('camps:pending.approve_request')
+                          a.Btn.Btn__sm(href='#', ng-click='cancelRequest()')=t('camps:pending.cancel_request')
                           //- a.Btn.Btn__sm(href='#', ng-click='resendRequest()') Resend request
                           
         // Camp join request modal
