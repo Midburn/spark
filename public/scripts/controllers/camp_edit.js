@@ -1,8 +1,10 @@
 app.controller("campEditController", function($scope, $http, $filter) {
     var camp_id = document.querySelector('#meta__camp_id').value;
+    $scope.status_options = ['open', 'closed', 'inactive']
+    $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy']
+    
     function _getMembers() {
-        $http.get('/camps/' + camp_id + '/members').then(function(res) {
-            console.log(res.data.members);
+        $http.get(`/camps/${camp_id}/members`).then(function(res) {
             $scope.members = res.data.members;
         });
     }
