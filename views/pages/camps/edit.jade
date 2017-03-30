@@ -246,7 +246,7 @@ block content
                 h4=t('camps:admin_index.all_members_table')
                     span.badge {{members.length}}
                 .form-inline
-                    input.form-control(id='camps_members_add_member', type="text", placeholder="temp - add a member")
+                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="temp - add a member")
                     button.Btn.Btn__sm(ng-click="addMember()") + Add Member
                 .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
