@@ -69,6 +69,7 @@ var User = bookshelf.Model.extend({
                 _this_user.attributes.camps = camps;
                 _this_user.attributes.camp = first_camp;
                 _this_user.attributes.camp_manager = is_manager;
+                _this_user.__initUser = true;
                 done(camps);
             });
     },
@@ -82,12 +83,14 @@ var User = bookshelf.Model.extend({
     hasRole: function (role) {
         return this.__hasRole(role, this.attributes.roles);
     },
-    isManagerOfCamp: function(camp_id) {
-      let isCampManager = false
-      if (parseInt(this.attributes.camp_id) === parseInt(camp_id) && this.isCampManager) {
-        isCampManager = true
-      }
-      return isCampManager;
+    isManagerOfCamp: function (camp_id) {
+        let isCampManager = false
+        //   if (parseInt(this.attributes.camp_id) === parseInt(camp_id) && this.isCampManager) {
+        //     isCampManager = true
+        //   }
+        if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager)
+            isCampManager = true;
+        return isCampManager;
     },
     virtuals: {
         fullName: function () {

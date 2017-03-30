@@ -22,15 +22,23 @@ var Camp = bookshelf.Model.extend({
             .innerJoin(_camps_members, _users + '.user_id', _camps_members + '.user_id')
             .where({ 'camp_members.camp_id': this.attributes.id })
             .then((users) => {
-                var managers = [];
-                for (var i in users) {
+                let managers = [];
+                for (let i in users) {
+                    users[i].isManager=false;
+                    let _status = users[i].member_status;
+                    users[i].can_delete=(['rejected'].indexOf(_status)>-1)?true:false;
+                    users[i].can_approve=(['pending'].indexOf(_status)>-1)?true:false;
+                    users[i].can_reject=(['pending','approved'].indexOf(_status)>-1)?true:false;
+                    
                     if (!users[i].name && (users[i].first_name || users[i].last_name)) {
                         users[i].name=users[i].first_name+' '+users[i].last_name;
                     }
                     if (!users[i].name) {
                         users[i].name=users[i].email;
                     }
+
                     if ((_this.attributes.main_contact === users[i].user_id && users[i].member_status === 'approved') || (users[i].member_status === 'approved_mgr')) {
+                        users[i].isManager=true;
                         managers.push(users[i]);
                     }
                 }

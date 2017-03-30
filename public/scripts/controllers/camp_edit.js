@@ -49,6 +49,7 @@ app.controller("campEditController", function($scope, $http, $filter) {
                     setTimeout(() => {
                         innerHeightChange()
                     }, 500)
+                    _getMembers();
                 }).catch((err) => {
                     console.log(err.message);
                      sweetAlert("Error!", "Something went wrong, please try again later", "error");
