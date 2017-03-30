@@ -44,8 +44,6 @@ block content
                             ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
                                 small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
                                 span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
-                        //- select(ng-init="camp = camps[0]", ng-change="getMembers(camp.id)", ng-model="camp", ng-options="camp as camp.camp_name_en for camp in camps track by camp.id | orderBy:'camp.id'")
-                        //-     option(value="") Select camp
                     .col-xs-12.col-md-9
                         input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:members.search')}")
                 include partials/members_table
