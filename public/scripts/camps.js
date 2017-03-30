@@ -246,6 +246,9 @@ if ($('.camps').hasClass('camp_details')) {
 }
 
 function extractCampData() {
+    var activity_time = fetchAllCheckboxValues('camp_activity_time');
+    var type = fetchAllCheckboxValues('camp_type');
+
     return {
         camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
         camp_name_en: $('#camp_name_en').val(),
@@ -280,8 +283,6 @@ function extractCampData() {
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
-    var type = fetchAllCheckboxValues('camp_type');
-    var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var camp_id = $('#camp_edit_camp_id').val();
     var camp_data = extractCampData();
 
@@ -332,8 +333,6 @@ $('#edit_type_other').click(function() {
  * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function() {
-    var type = fetchAllCheckboxValues('camp_type');
-    var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var camp_data = extractCampData();
     
     // show modal & present details in modal
