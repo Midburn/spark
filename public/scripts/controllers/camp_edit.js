@@ -13,16 +13,21 @@ app.controller("campEditController", function($scope, $http, $filter) {
         _getMembers();
     }
     $scope.addMember = function() {
-        var camp_id = document.querySelector('#meta__camp_id').value;
-        var new_user_email = document.getElementById('camps_members_add_member').value;
-        console.log('request to add ' + new_user_email + ' has been sent');
-        $http.get('/camps/' + camp_id + '/members/' + new_user_email).then(function(res) {
-            // TODO - show user that user member has been added
+        let camp_id = document.querySelector('#meta__camp_id').value;
+        let new_user_email = $scope.camps_members_add_member
+
+        let data = {
+          user_email: new_user_email,
+          camp_id: camp_id
+        }
+        
+        $http.post(`/camps/${camp_id}/members/add`, data).then(function(res) {
+            console.log(res);
             // update table with new data
             _getMembers();
         }).catch(function (err) {
+          // TODO handle errors
             console.log(err);
-            // TODO handle errors
         });
     }
     $scope.updateUser = (user_name, user_id, action_type) => {
