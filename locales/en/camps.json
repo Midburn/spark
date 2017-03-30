@@ -137,10 +137,18 @@
           "title": "Members Boards",
           "name": "Member name",
           "email": "Member email",
+          "phone": "Member Phone",
           "camp_name_en": "Assigned Camp (English)",
           "status": "Member Status",
           "has_ticket": "Has Ticket",
-          "search": "Search Camp Member"
+          "search": "Search Camp Member",
+          "add_member": "Add Member",
+          "early_arrival": "Early Arrival",
+          "reject": "Reject Member",
+          "approve": "Approve Member",
+          "approve_as_manager": "Approve as Manager",
+          "remove": "Remove Member",
+          "choose_camp": "Choose or search a camp"
         },
         "camps": {
             "title": "Camp",

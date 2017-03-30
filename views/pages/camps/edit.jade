@@ -247,7 +247,7 @@ block content
                     span.badge {{members.length}}
                 .form-inline
                     input.form-control(ng-model='camps_members_add_member', type="text", placeholder="temp - add a member")
-                    button.Btn.Btn__sm(ng-click="addMember()") + Add Member
+                    button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
                 .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
                     
@@ -257,18 +257,18 @@ block content
                             thead
                                 tr
                                 th(ng-click='changeOrderBy("id")') #
-                                th(ng-click='changeOrderBy("name")') Name
-                                th(ng-click='changeOrderBy("email")') Email
-                                th(ng-click='changeOrderBy("phone")') Phone
-                                th(ng-click='changeOrderBy("status")') Status
-                                th(ng-click='changeOrderBy("hasTicket")') Has Ticket
-                                th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
+                                th(ng-click='changeOrderBy("name")')=t('camps:members.name')
+                                th(ng-click='changeOrderBy("email")')=t('camps:members.email')
+                                th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
+                                th(ng-click='changeOrderBy("status")')=t('camps:members.status')
+                                th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.has_ticket')
+                                th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
                                 if(user.isCampJoinPending)
-                                    th Reject User
-                                    th Approve User
-                                    th Approve As Manager
+                                    th=t('camps:members.reject')
+                                    th=t('camps:members.approve')
+                                    th=t('camps:members.approve_as_manager')
                                 else
-                                    th Remove User
+                                    th=t('camps:members.remove')
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
                                     td {{member.user_id}}
