@@ -171,7 +171,8 @@
             "publication_subtitle": "The details here will be showen in the web-site, if camp is published.",
             "name": "Name",
             "phone": "Phone",
-            "email": "Email"
+            "email": "Email",
+            "facebook_page_url_link": "Camp Facebook Page"
         },
         "edit": {
             "view": "View Camp",
