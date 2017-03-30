@@ -140,7 +140,7 @@ function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
         });
     }
 }
-// $stats_table.load(fetchCampsOnce());
+$stats_table.load(fetchCampsOnce());
 
 // Search camp
 $('#camps_stats_search_camp').keyup(function(input) {
@@ -267,7 +267,7 @@ $('#camp_edit_save').click(function() {
             moop_contact: $('#camp_moop_contact option:selected').val() || '',
             safety_contact: $('#camp_safety_contact option:selected').val() || '',
             type: type || '',
-            camp_status: $('#camp_status option:selected').val() || '',
+            status: $('#camp_status option:selected').val() || '',
             camp_activity_time: activity_time || '',
             child_friendly: $('#camp_child_friendly:checked').length,
             noise_level: $('#camp_noise_level option:selected').val() || '',
@@ -343,7 +343,7 @@ $('#camp_create_save').click(function() {
         moop_contact: $('#camp_moop_contact option:selected').val() || '',
         safety_contact: $('#camp_safety_contact option:selected').val() || '',
         type: type || '',
-        camp_status: $('#camp_status option:selected').val() || '',
+        status: $('#camp_status option:selected').val() || '',
         camp_activity_time: activity_time || '',
         child_friendly: $('#camp_child_friendly:checked').length,
         noise_level: $('#camp_noise_level option:selected').val() || '',
