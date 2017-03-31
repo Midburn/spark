@@ -1,5 +1,6 @@
 extends ../../includes/page
 block content
+    input.hidden.meta(id='meta__lang', value='#{language}')
     .camps.camp_index(ng-app="ngCamps", ng-controller="campJoinController")
         section
             .container
