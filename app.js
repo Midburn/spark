@@ -165,6 +165,8 @@ require('./routes/api_camps_routes.js')(app, passport);
 // Camps
 require('./routes/camps_routes.js')(app, passport);
 
+require('./routes/api/v1/camps.js')(app) // CAMPS PUBLIC API
+
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
