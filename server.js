@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+require('dotenv').config()
 var app = require('./app');
 var debug = require('debug')('spark:server');
 var http = require('http');
@@ -26,7 +26,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port, function () {
+server.listen(port, function() {
     log.info('Listening on port ' + port + " (http://localhost:" + port + ")");
 });
 server.on('error', onError);

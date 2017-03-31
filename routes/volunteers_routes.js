@@ -50,7 +50,7 @@ function __has_permissions(user_id, perm_level, next, err) {
 //GET /volunteer/volunteers
 var get_volunteers = function(req, res) {
     __has_permissions(req.user.id, VOLUNTEER_MANAGER, () => {
-        DrupalAccess.get_user_by_email(req.query.email).then((user) => {
+        DrupalAccess.get_user_by_email(null, null, null, req.query.uid).then((user) => {
             Volunteer.query((qb) => {
                 qb.where('user_id', user.id);
                 if (req.query.deps !== undefined) {
