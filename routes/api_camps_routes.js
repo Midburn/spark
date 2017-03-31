@@ -171,11 +171,11 @@ module.exports = function (app, passport) {
 
     // PUBLISH
     app.put('/camps/:id/publish',
-        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
+        [userRole.isAdmin()], // userRole.isAllowEditCamp() is work-in-progress
         (req, res) => {
             // If camp met all its requirements, can publish
             Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-                camp.save({ enabled: '1' }).then(function () {
+                camp.save({ web_published: '1' }).then(function () {
                     res.json({ error: false, status: 'Publish' });
                 }).catch(function (err) {
                     res.status(500).json({
@@ -196,10 +196,10 @@ module.exports = function (app, passport) {
         });
     // UNPUBLISH
     app.put('/camps/:id/unpublish',
-        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
+        [userRole.isAdmin()], // userRole.isAllowEditCamp() is work-in-progress
         (req, res) => {
             Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-                camp.save({ enabled: '0' }).then(function () {
+                camp.save({ web_published: '0' }).then(function () {
                     res.json({ error: false, status: 'Unpublish' });
                 }).catch(function (err) {
                     res.status(500).json({
@@ -218,68 +218,20 @@ module.exports = function (app, passport) {
                 });
             });
         });
-
-    /**
-     * API: (GET) return published camps with:
-     * camp_name_en, camp_name_he, camp_desc_en, camp_desc_he, status,
-     * accept_families, contact_person_full_name, phone, email, facebook_page
-     * request => /camps_published
-     * method: JSONP
-     */
-    app.get('/camps_published', (req, res, next) => {
-        Camp.fetchAll().then((camp) => {
-            var published_camps = [];
-            for (var i = 0; i < camp.models.length; i++) {
-                if (camp.models[i].attributes.web_published === '1' && camp.models[i].attributes.status !== 'inactive') {
-                    var fetched_camp = {
-                        id: camp.models[i].attributes.id,
-                        name_en: camp.models[i].attributes.camp_name_en,
-                        name_he: camp.models[i].attributes.camp_name_he,
-                        desc_en: camp.models[i].attributes.camp_desc_en,
-                        desc_he: camp.models[i].attributes.camp_desc_he,
-                        contact_person_id: camp.models[i].attributes.contact_person_id,
-                        facebook_page_url: camp.models[i].attributes.facebook_page_url,
-                        status: camp.models[i].attributes.status,
-                        accept_families: camp.models[i].attributes.accept_families
-                    };
-                    published_camps.push(fetched_camp);
-                }
-            }
-            res.status(200).jsonp({ published_camps })
-        }).catch((err) => {
-            res.status(500).jsonp({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
-        });
-    });
+        
     /**
      * API: (GET) return camp's contact person with:
      * name_en, name_he, email, phone
      * request => /camps_contact_person/:id
-     * method: JSONP
      */
     app.get('/camps_contact_person/:id', (req, res, next) => {
-        // Allow this address to http-request to this endpoint.
-        // var API_PUBLISHED_CAMPS_ALLOW_ORIGIN;
-        // if (app.get('env') === 'development') {
-        //    API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin.dev');
-        // } else {
-        //   API_PUBLISHED_CAMPS_ALLOW_ORIGIN = config.get('published_camps_origin.prod');
-        // }
-        //
-        // res.header('Access-Control-Allow-Origin', API_PUBLISHED_CAMPS_ALLOW_ORIGIN);
-        // res.header('Access-Control-Allow-Methods', 'GET');
-        // res.header('Access-Control-Allow-Headers', 'Content-Type');
         User.forge({ user_id: req.params.id }).fetch({
             require: true,
             columns: ['first_name', 'last_name', 'email', 'cell_phone']
         }).then((user) => {
-            res.status(200).jsonp({ user: user.toJSON() })
+            res.status(200).json({ user: user.toJSON() })
         }).catch((err) => {
-            res.status(500).jsonp({
+            res.status(500).json({
                 error: true,
                 data: {
                     message: err.message
@@ -396,8 +348,7 @@ module.exports = function (app, passport) {
         var user = {
             id: req.user.attributes.user_id,
             full_name: [req.user.attributes.first_name, req.user.attributes.first_name].join(', '),
-            email: req.user.attributes.email,
-            // camp_id: req.user.attributes.camp_id
+            email: req.user.attributes.email
         }
         var camp = {
             id: req.params.id,
@@ -573,7 +524,6 @@ module.exports = function (app, passport) {
                 .where('camp_members.camp_id', req.params.id)
                 .innerJoin('users', function () {
                     this.on('camp_members.user_id', '=', 'users.user_id')
-                    // .andOn('camp_members.status', '=', 'approved');
                 })
         })
             .fetchAll({ withRelated: ['user'] })
