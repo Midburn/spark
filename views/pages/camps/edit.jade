@@ -27,7 +27,6 @@ block content
                 h4=t('camps:edit.name_and_desc')
                 .camp-info.panel
                     .panel-body
-<<<<<<< HEAD
                         .details-he.col-md-6
                             .col-xs-12
                                 label(for='camp_name_he')=t('camps:edit.name_he')
@@ -35,8 +34,6 @@ block content
                             .col-xs-12
                                 label(for='camp_desc_he')=t('camps:edit.desc_he')
                                 textarea.form-control(id='camp_desc_he', dir='rtl', name='camp_desc_he') #{camp.camp_desc_he}
-=======
->>>>>>> 13404c00e21e342718f6af8c03b7aa76364de4b9
                         .details-en.col-md-6
                             .col-xs-12
                                 label(for='camp_name_en')=t('camps:edit.name_en')
@@ -54,11 +51,7 @@ block content
                                         //- TODO - fix for if(isNew)
                                         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
                                         select.form-control(id='camp_contact_person_id', name='contact_person_id')
-<<<<<<< HEAD
-                                            option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{member.user.fullName}}  ({{ member.user.email }})
-=======
                                             option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.contact_person_id}", value="{{member.user.user_id}}") {{ member.user.fullName}} ({{ member.user.email }})
->>>>>>> 13404c00e21e342718f6af8c03b7aa76364de4b9
                                 .col-md-8
                                     .col-xs-12
                                         label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
@@ -109,29 +102,17 @@ block content
                                 .col-xs-12
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
                                     select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
-<<<<<<< HEAD
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.user.fullName}} ({{ member.user.email }})
-=======
                                         option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.main_contact}", value="{{member.user.user_id}}") {{ member.user.fullName }} ({{ member.user.email }})
->>>>>>> 13404c00e21e342718f6af8c03b7aa76364de4b9
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_moop_contact')=t('camps:edit.moop_contact')
                                     select.form-control(id='camp_moop_contact', name='moop_contact')
-<<<<<<< HEAD
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.user.fullName}} ({{ member.user.email }})
-=======
                                         option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.moop_contact}", value="{{member.user.user_id}}") {{ member.user.fullName }} ({{ member.user.email }})
->>>>>>> 13404c00e21e342718f6af8c03b7aa76364de4b9
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_safety_contact')=t('camps:edit.safety_contact')
                                     select.form-control(id='camp_safety_contact', name='safety_contact')
-<<<<<<< HEAD
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.user.fullName}} ({{ member.user.email }})
-=======
                                         option(ng-repeat="member in members", ng-selected="member.user.user_id == #{camp.safety_contact}", value="{{member.user.user_id}}") {{ member.user.fullName }} ({{ member.user.email }})
->>>>>>> 13404c00e21e342718f6af8c03b7aa76364de4b9
             //- Card 2
             .card.card-second.card-hide
                 h4=t('camps:edit.behavior_title')
@@ -274,12 +255,10 @@ block content
                                 th(ng-click='changeOrderBy("status")')=t('camps:members.status')
                                 th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.has_ticket')
                                 th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
-                                if(user.isCampJoinPending)
-                                    th=t('camps:members.reject')
-                                    th=t('camps:members.approve')
-                                    th=t('camps:members.approve_as_manager')
-                                else
-                                    th=t('camps:members.remove')
+                                th=t('camps:members.reject')
+                                th=t('camps:members.approve')
+                                th=t('camps:members.approve_as_manager')
+                                th=t('camps:members.remove')
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
                                     td {{member.user_id}}
@@ -289,24 +268,22 @@ block content
                                     td {{member.status}}
                                     td {{member.user.hasTicket ? 'yes':'no'}}
                                     td {{member.user.earlyArrival ? 'yes':'no'}}
-                                    if(user.isCampJoinPending)
-                                        td 
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "reject")')
-                                                span(class='glyphicon glyphicon-remove')
-                                                span(class='sr-only' aria-hidden='true') Reject user
-                                        td
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "approve")')
-                                                span(class='glyphicon glyphicon-ok')
-                                                span(class='sr-only' aria-hidden='true') Approve user
-                                        td
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "manager")')
-                                                span(class='glyphicon glyphicon-king')
-                                                span(class='sr-only' aria-hidden='true') Approve user as manager
-                                    else
-                                        td 
-                                            a(ng-click='updateUser(member.user.name, member.user_id, "remove")')
-                                                span(class='glyphicon glyphicon-remove')
-                                                span(class='sr-only' aria-hidden='true') Remove user
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "reject")', ng-if="member.user.isCampJoinPending")
+                                            span(class='glyphicon glyphicon-remove')
+                                            span(class='sr-only' aria-hidden='true') Reject user
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "approve")', ng-if="member.user.isCampJoinPending")
+                                            span(class='glyphicon glyphicon-ok')
+                                            span(class='sr-only' aria-hidden='true') Approve user
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "manager")', ng-if="member.user.isCampJoinPending")
+                                            span(class='glyphicon glyphicon-king')
+                                            span(class='sr-only' aria-hidden='true') Approve user as manager
+                                    td
+                                        a.cursor-p(ng-click='updateUser(member.user.name, member.user_id, "remove")', ng-if="!member.user.isCampFree")
+                                            span(class='glyphicon glyphicon-remove')
+                                            span(class='sr-only' aria-hidden='true') Remove user
             //- Card 4
             .card.card-forth.card-hide
                 h4=t('camps:edit.upload_header')
