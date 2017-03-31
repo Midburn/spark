@@ -20,7 +20,7 @@ app.controller("campJoinController", function($scope, $http) {
                 fetchSuccess(res.data)
             });
         } else {
-            if(lang === 'he') {
+            if (lang === 'he') {
                 sweetAlert("אויש...", "אנא בחר במחנה?", "error");
             } else {
                 sweetAlert("Oops...", "Choose a camp, yeah?", "error");
@@ -71,7 +71,7 @@ app.controller("campJoinController", function($scope, $http) {
                         },
                         error: function(jqXHR, exception) {
                             if (jqXHR.status === 500) {
-                                if(lang === 'he') {
+                                if (lang === 'he') {
                                     sweetAlert("אופס!", "לא הצלחנו לשמלוח את הבקשה. נסה שוב מאוחר יותר", "error");
                                 } else {
                                     sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. \n\nTry again later, thanks.', 'error')

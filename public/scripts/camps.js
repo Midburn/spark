@@ -84,7 +84,7 @@ function fetchUsersOnce(elm) {
           }
         })
         .error((data) => {
-            if(lang === 'he') {
+            if (lang === 'he') {
                 sweetAlert("אופס...", "אין משתמשים פעילים!", "error");
             } else {
                 sweetAlert("Oops...", "No user available!", "error");
@@ -290,7 +290,7 @@ $('#camp_edit_save').click(function() {
         type: 'PUT',
         data: camp_data,
         success: function(result) {
-            if(lang ==='he') {
+            if (lang ==='he') {
                 sweetAlert("כל הכבוד", "המחנה עודכן, על מנת לראות את השינויים יש לרענן את העמוד", "success");
             } else {
                 sweetAlert("You good...", "Camp details updated! reload the page.", "success");

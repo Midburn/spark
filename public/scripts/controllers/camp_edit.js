@@ -36,7 +36,7 @@ app.controller("campEditController", function($scope, $http, $filter) {
         var camp_id = document.getElementById('meta__camp_id').value;
         var lang = document.getElementById('meta__lang').value;
 
-        if(lang === 'he') {
+        if (lang === 'he') {
             updateUserHE(camp_id);
         } else {
             sweetAlert({
