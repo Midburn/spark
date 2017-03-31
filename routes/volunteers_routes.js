@@ -5,7 +5,7 @@ var Volunteer = volunteers_model.Volunteer;
 const userRole = require('../libs/user_role');
 var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
 var _ = require('lodash');
-var logger = require('../libs/logger');
+var log = require('../libs/logger')(module);
 
 //roles ... consider moving to some other file.
 const VOLUNTEER_MANAGER = 0;
@@ -38,13 +38,15 @@ var get_roles = function(req, res) {
     });
 }
 
-function __has_permissions(user_id, perm_level, next, err) {
-    return Volunteer.get_by_user(user_id).then((vol_data) => {
-        if (vol_data.get('role_id') <= perm_level) {
-            next();
-        } else {
-            err('No Permissions');
-        }
+function __has_permissions(user_id, perm_level) {
+    return new Promise((resolve, reject) => {
+        Volunteer.get_by_user(user_id).then((vol_data) => {
+            if (vol_data.get('role_id') <= perm_level) {
+                resolve();
+            } else {
+                reject({ error: 'Not sufficient permission level' });
+            }
+        });
     });
 };
 //GET /volunteer/volunteers
@@ -130,31 +132,37 @@ var get_department_volunteers = function(req, res) {
 };
 ///POST volunteer/department/department_id/volunteers
 var post_volunteers = function(req, res) {
-    __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER, () => {
-
-            for (var index = 0; index < req.body.length; index++) {
-                //TODO get user_ids.... add to vaolunteers table.
-                var user_id = index;
-                Volunteer.forge({ user_id: user_id, department_id: req.params.department_id, event_id: 0 }).save().then((vol) => {
-                    logger.debug('adding ' + user_id + " to vol department " + department_id);
-                }).catch((err) => {
-                    res.status(500).json({
-                        error: true,
-                        data: {
-                            message: err.message
-                        }
-                    })
-                });
-                res.send(200);
-            }
-        }, (err) => {
-            res.status(401).json({ message: err });
-        }
-
-    );
+    __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER)
+        .then(() => {
+            var mail_addresses = req.body.map(vol_add => vol_add.email);
+            var result = [];
+            DrupalAccess.get_user_by_email(mail_addresses).then(users_data => {
+                Promise.all((mail_addresses.map((mail_addr) => {
+                    var data_to_save = users_data.find((udata) => udata.mail === mail_addr)
+                    if (data_to_save.user_data === undefined) {
+                        result.push({ mail: mail_addr, status: 'NotFound' })
+                    } else {
+                        return Volunteer.forge({
+                            user_id: data_to_save.user_data.uid,
+                            department_id: req.params.department_id,
+                            event_id: 0
+                        }).save().then((save_result) => {
+                            log.info('Saved ' + JSON.stringify(save_result));
+                            result.push({ mail: mail_addr, status: 'OK' });
+                        }).catch((err) => {
+                            result.push({ mail: mail_addr, status: 'AlreadyExists' });
+                            log.info('Failed Adding user' + mail_addr + ' to department ' + req.params.department_id + ' ' + err);
+                        });
+                    }
+                }))).then(save_statuses => {
+                    res.status(200).json(result)
+                }).catch(err => { res.status(500).json({ message: err }) });
+            });
+        })
+        .catch(err => res.status(403).json(err));
 };
 
-///POST volunteer/department/department_id/volunteers/user_id
+///PUT volunteer/department/department_id/volunteers/user_id
 var put_volunteer = function(req, res) {
     var new_data = { role_id: req.body.permission, type_in_shift_id: req.body.shift_type };
     Volunteer.forge()

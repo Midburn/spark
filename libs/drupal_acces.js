@@ -1,17 +1,30 @@
 var request = require('superagent');
-var logger = require('../libs/logger');
+var logger = require('../libs/logger')(module);
 
 var DRUPAL_PROFILE_API_URL = process.env.DRUPAL_PROFILE_API_URL;
 var DRUPAL_PROFILE_API_USER = process.env.DRUPAL_PROFILE_API_USER;
 var DRUPAL_PROFILE_API_PASSWORD = process.env.DRUPAL_PROFILE_API_PASSWORD;
 
-var _parse_user = function(res_body) {
+
+function _parse_uid(uid_string) {
+    var re = /<a.*>(\d+)<\/a>/g;
+    m = re.exec(uid_string);
+    re.lastIndex = 0;
+    if (m.length === 2) {
+        return m[1];
+    } else {
+        return undefined;
+    }
+}
+
+function _parse_user(res_body) {
     if (res_body.length === 0) {
         return undefined
     }
     return {
         last_name: res_body[0]['Last name'],
-        first_name: res_body[0]['First name']
+        first_name: res_body[0]['First name'],
+        uid: _parse_uid(res_body[0]['Uid'])
     };
 }
 
@@ -32,24 +45,16 @@ var login = function() {
 };
 
 
-var search_multiple_emails = function(login_data, emails) {
-    var tasks = mails.map((mail) => {
-
+var search_multiple_emails = function(login_data, email_arr) {
+    var tasks = email_arr.map((mail) => {
         return search(login_data, mail);
     });
-
     return Promise.all(tasks);
 }
 
 var search = function(login_data, email, first_name, last_name, uid) {
     return new Promise((resolve, reject) => {
         var qs = {};
-        if (first_name) {
-            qs.field_profile_first_value = first_name
-        }
-        if (last_name) {
-            qs.field_profile_last_value = last_name
-        }
         if (email) {
             qs.mail = email
         }
@@ -61,9 +66,10 @@ var search = function(login_data, email, first_name, last_name, uid) {
             //.accept('application/json')
             .query(qs)
             .then((res) => {
-                resolve({ res: _parse_user(res.body), query: qs });
+                user_response = { mail: qs.mail, uid: qs.uid, user_data: _parse_user(res.body) };
+                resolve(user_response);
             }).catch((err) => {
-                console.error(err);
+                reject(err);
             });
     });
 };
@@ -83,7 +89,7 @@ var DrupalAccess = {
     },
     get_user_by_email: function(email_arr) {
         return login().then(login_data =>
-            search_multiple_emails(login_data, mails)
+            search_multiple_emails(login_data, email_arr)
         ).catch(err =>
             logger.error(err)
         );
