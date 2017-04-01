@@ -219,7 +219,6 @@ module.exports = function (app, passport) {
                         isNew: false
                     });
                 } else {
-                    // todo: send to error page
                     res.status(404).json({
                         error: true,
                         data: {

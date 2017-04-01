@@ -15,10 +15,10 @@ app.controller("campEditController", function($scope, $http, $filter) {
         _getMembers();
     }
     $scope.addMember = function() {
-        let camp_id = document.querySelector('#meta__camp_id').value;
-        let new_user_email = $scope.camps_members_add_member
+        var camp_id = document.querySelector('#meta__camp_id').value;
+        var new_user_email = $scope.camps_members_add_member
 
-        let data = {
+        var data = {
           user_email: new_user_email,
           camp_id: camp_id
         }
@@ -56,6 +56,7 @@ app.controller("campEditController", function($scope, $http, $filter) {
                     setTimeout(() => {
                         innerHeightChange()
                     }, 500)
+                    _getMembers();
                 }).catch((err) => {
                     console.log(err.message);
                     sweetAlert("Error!", "Something went wrong, please try again later", "error");
