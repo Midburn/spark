@@ -36,7 +36,7 @@ function main(argv) {
             } else {
                 var _name=user.first_name.split(" ");
                 var first_name=(_name.length > 0) ? _name[0] : '';
-                var last_name=(_name.length > 1) ? _name.slice(1,_name.length-1).join(" ") : '';
+                var last_name=(_name.length > 1) ? _name.slice(1,_name.length).join(" ") : '';
                 return knex(constants.USERS_TABLE_NAME).insert({
                     name: user.name,
                     first_name: first_name,
@@ -44,7 +44,7 @@ function main(argv) {
                     cell_phone: user.cell_phone,
                     email: user.email,
                     roles: user.role,
-                    validated: true,
+                    validated: false,
                     created_at: Date(),
                     updated_at: Date()
                 }).then(function () {
