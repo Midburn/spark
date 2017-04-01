@@ -28,7 +28,7 @@ app.get('/camps/:id/members/:action', userRole.isLoggedIn(), (req, res) => {
             withRelated: ['members'],
         }
     ).then((camp) => {
-        console.log(req.user);
+        // console.log(req.user);
         // console.log(camp);
         // debugger;
         var _camp = camp.toJSON();

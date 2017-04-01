@@ -20,10 +20,12 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/camps'
         }]);
         req.user.getUserCamps((camps) => {
+            console.log(camps);
             if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
                 // no camp found
                 res.render('pages/camps/index_user', {
                     user: req.user,
+                    // camp: camp,
                     breadcrumbs: req.breadcrumbs()
                 });
             } else {
@@ -208,9 +210,8 @@ module.exports = function (app, passport) {
             req.user.getUserCamps((camps) => {
                 if (req.user.isManagerOfCamp(req.params.id) || userRole.isAdmin()) {
                     var camp_data = camp.toJSON();
-                    if (camp_data.type === null) {
-                        camp_data.type = '';
-                    }
+                    camp_data.type=(camp_data.type===null)?'':camp_data.type;
+                    console.log(camp);
                     res.render('pages/camps/edit', {
                         user: req.user,
                         breadcrumbs: req.breadcrumbs(),

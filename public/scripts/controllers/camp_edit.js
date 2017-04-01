@@ -5,7 +5,20 @@ app.controller("campEditController", function($scope, $http, $filter) {
     
     function _getMembers() {
         $http.get(`/camps/${camp_id}/members`).then(function(res) {
-            $scope.members = res.data.members;
+                var members=res.data.members;
+                var _members = [];
+                var approved_members = [];
+                for (var i in members) {
+                    if (['approved','pending','pending_mgr','appeoved_mgr'].indexOf(members[i].member_status)>-1) {
+                        _members.push(members[i]);
+                    }
+                    if (['approved','approved_mgr'].indexOf(members[i].member_status)>-1) {
+                        approved_members.push(members[i]);
+                    }
+                }
+            // console.log(_members);
+            $scope.members = _members;
+            $scope.approved_members = approved_members;
         });
     }
     $scope.changeOrderBy = function(orderByValue) {
