@@ -5,6 +5,8 @@ var i18nConfig = config.get('i18n');
 var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
 var recaptchaConfig = config.get('recaptcha');
+const breadcrumbs = require('express-breadcrumbs');
+
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
 var ticket_routes = require('./ticket_routes');
@@ -15,6 +17,8 @@ var async = require('async');
 var crypto = require('crypto');
 
 module.exports = function (app, passport) {
+    // Breadcrumbs
+    app.use(breadcrumbs.init());
 
     userRole.failureHandler = function (req, res, role) {
         if (req.url !== '/') {
@@ -41,8 +45,13 @@ module.exports = function (app, passport) {
     });
 
     app.get('/:lng/home', userRole.isLoggedIn(), function (req, res) {
+        req.breadcrumbs({
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        });
         res.render('pages/home', {
-            user: req.user
+            user: req.user,
+            breadcrumbs: req.breadcrumbs()
         });
     });
 
@@ -188,8 +197,17 @@ module.exports = function (app, passport) {
      * Who-am-i show user's details
      */
      app.get('/:lng/whoami', (req,res) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'breadcrumbs.whoami',
+            url: '/' + req.params.lng + '/whoami'
+        }]);
        res.render('pages/whoami', {
-           user: req.user
+           user: req.user,
+           breadcrumbs: req.breadcrumbs()
        });
      });
 

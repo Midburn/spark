@@ -28,7 +28,7 @@ app.get('/camps/:id/members/:action', userRole.isLoggedIn(), (req, res) => {
             withRelated: ['members'],
         }
     ).then((camp) => {
-        console.log(req.user);
+        // console.log(req.user);
         // console.log(camp);
         // debugger;
         var _camp = camp.toJSON();
@@ -83,3 +83,51 @@ app.get('/camps/:id/members/:action', userRole.isLoggedIn(), (req, res) => {
 
     // res.status(200).json({ message: action+" "+reference});
 });
+        // // check if req.user has any camp.
+        // // check if req.user approved camp
+        // // req.user.can_join_camp(req)
+        // req.user.getUserCamps((camps) => {
+        //     var upd_status = 'pending';
+        //     if (camps.length > 0) {
+        //         console.log(camps);
+        //         // already have camp, lets check which camp
+        //         if (camps[0].id == req.params.id) {
+        //             if (camps[0].camp_status == "pending_mgr") {
+        //                 upd_status = 'approved';
+        //             } else if (camps[0].camp_status === "approved" || camps[0].camp_status === "pending") {
+        //                 upd_status = '';
+        //             }
+        //         } else {
+        //             upd_status = '';
+        //             res.status(404).json({
+        //                 error: true,
+        //                 data: {
+        //                     message: 'already applied for different camp  ' + camps[0].id
+        //                 }
+        //             });
+        //         }
+        //     }
+        //     if (upd_status!='') {
+        //         // CampMember.forge({camp_id : req.params.id})
+        //     }
+        // });
+
+        // });
+
+        // CampMember.forge({
+        //     camp_id: camp_id,
+        //     user_id: user_id,
+        //     status: 'pending'
+        // }).save(null, { method: 'insert' }).then((camp_member) => {
+        //     deliver()
+        //     setPending()
+        //     res.status(200).end()
+        // }).catch((e) => {
+        //     res.status(500).json({
+        //         error: true,
+        //         data: {
+        //             message: e.message
+        //         }
+        //     })
+        // })
+

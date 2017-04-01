@@ -1,3 +1,4 @@
+/*eslint-disable */
 function Camps() {
 
     var _usersList = [];
@@ -67,7 +68,8 @@ function Camps() {
     }
 }
 
-var camps_model = new Camps(); // eslint-disable-line no-unused-vars
+// var camps_model = new Camps(); // eslint-disable-line no-unused-vars
+// removed by asi, at the moment we are not using it.
 
 function onChangeCallback(res) {
     console.log("multi select callback: " + res);

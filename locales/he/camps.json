@@ -26,12 +26,16 @@
         },
         "breadcrumbs": {
             "root": "דף בית",
-            "home": "מחנות נושא",
+            "manage": "נהל מחנות נושא",
             "new": "מחנה חדש",
             "stats": "נתוני מחנה",
             "members": "חברי מחנה",
-            "docs": "מסמכים וטפסים"
-        },
+            "docs": "מסמכים וטפסים",
+            "edit": "עריכת מחנה",
+            "camp_stat": "פרופיל מחנה",
+            "my_camp": "המחנה שלי",
+            "join_camp": "הצטרף למחנה"
+        },   
         "admin_index": {
             "all_camps": "ניהול מחנות",
             "all_members": "ניהול חברים",
@@ -100,7 +104,7 @@
         "join": {
             "join_a_camp": "הצטרף למחנה",
             "header_title": "הצטרף למחנה",
-            "camp_choosing_title": "הרשימה מטה מכילה מחנות פתוחים להצטרפות חברים חדשים. נא לבחור מהרשימה.",
+            "camp_choosing_title": "בבקשה לבחור את המחנה שלך. מנהל המחנה צריך לאשר את הבקשה גדי לוודא שייכות למחנה.",
             "request": "שלח בקשת הצטרפות",
             "name_en": "שם המחנה (אנגלית)"
         },
@@ -110,7 +114,9 @@
           "status": {
             "wait": "ממתין לאישור",
             "user_cancel": "בקשה בוטלה"
-          }
+          },
+          "cancel_request": "בטל בקשה",
+          "approve_request": "אשר בקשה"
         },
         "manage": {
             "manage_a_camp": "נהל מחנות"
@@ -133,10 +139,18 @@
           "title": "משתתפים במחנה",
           "name": "שם משתמש",
           "email": "כתובת אימייל",
+          "phone": "מספר טלפון",
           "camp_name_en": "מחנה משוייך (אנגלית)",
           "status": "סטאטוס שיוך",
           "has_ticket": "יש כרטיס",
-          "search": "חפש חבר במחנה"
+          "search": "חפש חבר במחנה",
+          "add_member": "הוספת משתמש",
+          "early_arrival": "הגעה מוקדמת",
+          "reject": "דחה משתמש",
+          "approve": "אשר משתמש",
+          "approve_as_manager": "אשר משתמש כמנהל",
+          "remove": "הסר משתמש",
+          "choose_camp": "בחר או חפש מחנה"
         },
         "camps": {
             "title": "מחנה",
@@ -167,7 +181,8 @@
             "publication_subtitle": "הפרטים הרשומים מטה יופיעו באתר במידה והמחנה מפורסם.",
             "name": "שם",
             "phone": "טלפון",
-            "email": "אימייל"
+            "email": "אימייל",
+            "facebook_page_url_link": "עמוד הפייסבוק של המחנה"
         },
         "edit": {
             "view": "צפה במחנה",
@@ -188,14 +203,16 @@
             "moop_contact": "איש קשר מופ",
             "safety_contact": "איש קשר בטיחות",
             "behavior_title": "התנהגות",
-            "type": "סוג",
+            "type": "גיפט המחנה",
             "food": "אוכל",
             "drinking": "שתיה/בר",
             "music": "מוסיקה",
-            "workshops": "סדנא",
+            "workshop": "סדנא",
+            "art": "אמנות",
+            "lecture": "הרצאה",
             "art_supporting": "תמיכה באמנות",
             "other": "אחר",
-            "status": "סטטוס",
+            "status": "האם המחנה פתוח למצטרפים חדשים?",
             "open": "פתוח",
             "closed": "סגור",
             "inactive": "לא פעיל",
@@ -211,7 +228,7 @@
             "public_activity_area_sqm": "שטח ציבורי (מ״ר)",
             "public_activity_area_desc": "תיאור שטח ציבורי",
             "support_art": "תמיכה באמנות",
-            "location_title": "מיקום מחנה",
+            "location_title": "מיקום מחנה - כאן תוכלי לראות את מיקומך בעיר לאחר שניצור את המפה",
             "location_comments": "הערות",
             "location_street": "רחוב",
             "location_time": "שעה",
@@ -221,7 +238,9 @@
             "contact_person_name": "שם איש קשר",
             "contact_person_email": "אימייל איש קשר",
             "contact_person_phone": "טלפון אישר קשר",
-            "security_file": "תיק בטיחות"
+            "security_file": "תיק בטיחות",
+            "members_header": "נהל חברי מחנה",
+            "search_member": "מצא חבר מחנה"
         },
         "program": {
             "page_title": "צור פעילות חדשה",
