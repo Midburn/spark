@@ -16,7 +16,7 @@ app.controller("campEditController", function($scope, $http, $filter) {
                         approved_members.push(members[i]);
                     }
                 }
-            console.log(_members);
+            // console.log(_members);
             $scope.members = _members;
             $scope.approved_members = approved_members;
         });
