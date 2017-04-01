@@ -71,6 +71,7 @@ function getUserTemplate(data) {
  * getting user list from API
  */
 function fetchUsersOnce(elm) {
+    var lang = document.getElementById('meta__lang').value;
     var camp_id = 5
     elm = $(elm)
 
@@ -83,7 +84,11 @@ function fetchUsersOnce(elm) {
           }
         })
         .error((data) => {
-          sweetAlert("Oops...", "No user available!", "error");
+            if (lang === 'he') {
+                sweetAlert("אופס...", "אין משתמשים פעילים!", "error");
+            } else {
+                sweetAlert("Oops...", "No user available!", "error");
+            }
         })
 
         elm.attr('fetched', true);
@@ -249,6 +254,7 @@ if ($('.camps').hasClass('camp_details')) {
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
+    var lang = document.getElementById('meta__lang').value;
     var type = fetchAllCheckboxValues('camp_type');
     var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var camp_id = $('#camp_edit_camp_id').val(),
@@ -267,7 +273,7 @@ $('#camp_edit_save').click(function() {
             moop_contact: $('#camp_moop_contact option:selected').val() || '',
             safety_contact: $('#camp_safety_contact option:selected').val() || '',
             type: type || '',
-            camp_status: $('#camp_status option:selected').val() || '',
+            status: $('#camp_status option:selected').val() || '',
             camp_activity_time: activity_time || '',
             child_friendly: $('#camp_child_friendly:checked').length,
             noise_level: $('#camp_noise_level option:selected').val() || '',
@@ -284,7 +290,11 @@ $('#camp_edit_save').click(function() {
         type: 'PUT',
         data: camp_data,
         success: function(result) {
-            sweetAlert("You good...", "Camp details updated! reload the page.", "success");
+            if (lang ==='he') {
+                sweetAlert("כל הכבוד", "המחנה עודכן, על מנת לראות את השינויים יש לרענן את העמוד", "success");
+            } else {
+                sweetAlert("You good...", "Camp details updated! reload the page.", "success");
+            }
         }
     });
 });
@@ -343,7 +353,7 @@ $('#camp_create_save').click(function() {
         moop_contact: $('#camp_moop_contact option:selected').val() || '',
         safety_contact: $('#camp_safety_contact option:selected').val() || '',
         type: type || '',
-        camp_status: $('#camp_status option:selected').val() || '',
+        status: $('#camp_status option:selected').val() || '',
         camp_activity_time: activity_time || '',
         child_friendly: $('#camp_child_friendly:checked').length,
         noise_level: $('#camp_noise_level option:selected').val() || '',

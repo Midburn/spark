@@ -40,10 +40,16 @@ block content
                 .controls.row
                     .col-xs-12.col-md-3
                         ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
-                            ui-select-match(placeholder='Choose or search a camp') {{$select.selected.camp_name_en}}
-                            ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
-                                small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
-                                span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
+                            if(language === 'en')
+                                ui-select-match(placeholder="#{t('camps:members.choose_camp')}") {{$select.selected.camp_name_en}}
+                                ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
+                                    small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                    span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
+                            else
+                                ui-select-match(dir='rtl', placeholder="#{t('camps:members.choose_camp')}") {{$select.selected.camp_name_he}}
+                                ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
+                                    small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                    span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
                     .col-xs-12.col-md-9
                         input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:members.search')}")
                 include partials/members_table
