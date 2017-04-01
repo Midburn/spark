@@ -114,7 +114,9 @@
           "status": {
             "wait": "ממתין לאישור",
             "user_cancel": "בקשה בוטלה"
-          }
+          },
+          "cancel_request": "בטל בקשה",
+          "approve_request": "אשר בקשה"
         },
         "manage": {
             "manage_a_camp": "נהל מחנות"
@@ -137,10 +139,18 @@
           "title": "משתתפים במחנה",
           "name": "שם משתמש",
           "email": "כתובת אימייל",
+          "phone": "מספר טלפון",
           "camp_name_en": "מחנה משוייך (אנגלית)",
           "status": "סטאטוס שיוך",
           "has_ticket": "יש כרטיס",
-          "search": "חפש חבר במחנה"
+          "search": "חפש חבר במחנה",
+          "add_member": "הוספת משתמש",
+          "early_arrival": "הגעה מוקדמת",
+          "reject": "דחה משתמש",
+          "approve": "אשר משתמש",
+          "approve_as_manager": "אשר משתמש כמנהל",
+          "remove": "הסר משתמש",
+          "choose_camp": "בחר או חפש מחנה"
         },
         "camps": {
             "title": "מחנה",
@@ -171,7 +181,8 @@
             "publication_subtitle": "הפרטים הרשומים מטה יופיעו באתר במידה והמחנה מפורסם.",
             "name": "שם",
             "phone": "טלפון",
-            "email": "אימייל"
+            "email": "אימייל",
+            "facebook_page_url_link": "עמוד הפייסבוק של המחנה"
         },
         "edit": {
             "view": "צפה במחנה",
