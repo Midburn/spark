@@ -49,6 +49,20 @@ function __has_permissions(user_id, perm_level) {
         });
     });
 };
+
+function __merge_volunteer_info(vol_data_model, user_info) {
+    return {
+        permission: vol_data_model.get('role_id'),
+        departmnet_id: vol_data_model.get('department_id'),
+        user_id: vol_data_model.get('user_id'),
+        first_name: user_info ? user_info.first_name : undefined,
+        last_name: user_info ? user_info.last_name : undefined,
+        email: user_info ? user_info.email : undefined,
+        phone_number: user_info ? user_info.phone : undefined,
+        got_ticket: false, //TBD
+        comment: "from Volunteers table"
+    };
+}
 //GET /volunteer/volunteers
 var get_volunteers = function(req, res) {
     __has_permissions(req.user.id, VOLUNTEER_MANAGER, () => {
@@ -95,39 +109,26 @@ var get_department_volunteers = function(req, res) {
         .then(() => {
             //find all voluntters
             Volunteer.fetchAll({ department_id: req.params.department_id, event_id: 0 })
-                .then((vol_data) => {
-                    log.debug('Found ' + vol_data.lengh + ' in dept. ' + req.params.department_id);
-                    var user_ids = vol_data.models.map(vol_data => vol_data.get('user_id'));
+                .then((vol_data_col) => {
+                    log.debug('Found ' + vol_data_col.lengh + ' in dept. ' + req.params.department_id);
+                    var user_ids = vol_data_col.models.map(vol_data => vol_data.get('user_id'));
                     DrupalAccess.get_user_info(user_ids)
-                        .then(user_data => {
-                            var result = vol_data.models.map((vol_data_model) => {
-                                var user_info = user_data.find(x => x.uid === vol_data_model.get('user_id'));
-                                //here should be 
-                                return {
-                                    permission: vol_data_model.get('role_id'),
-                                    departmnet_id: vol_data_model.get('department_id'),
-                                    user_id: vol_data_model.get('user_id'),
-                                    first_name: user_info ? user_info.first_name : undefined,
-                                    last_name: user_info ? user_info.last_name : undefined,
-                                    email: user_info ? user_info.email : undefined,
-                                    phone_number: user_info ? user_info.phone : undefined,
-                                    got_ticket: false, //TBD
-                                    comment: "from Volunteers table"
-                                };
+                        .then(user_data_col => {
+                            var result = vol_data_col.models.map((vol_data_model) => {
+                                var user_data = user_data_col.find(x => x.uid === vol_data_model.get('user_id'));
+                                __merge_volunteer_info(vol_data_model, user_data);
                             });
                             res.status(200).json(result);
                         })
                 })
-                .catch((err) => {
-                    req.status(200).json([]);
-                });
+                .catch((err) => res.status(500).json({ message: err }));
         })
-        .catch(err => res.status(403).json(err));
+        .catch(err => res.status(403).json({ message: err }));
 
 };
 ///POST volunteer/department/department_id/volunteers
 var post_volunteers = function(req, res) {
-    __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER)
+    return __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER)
         .then(() => {
             var mail_addresses = req.body.map(vol_add => vol_add.email);
             var result = [];

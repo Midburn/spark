@@ -1,0 +1,11 @@
+version: '2'
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+      - '5858:5858'
+    restart: always
+    volumes:
+      - .:/home/spark/spark-web-app
+    command: [ ./scripts/run_migrations_and_start.sh, run,debug ]

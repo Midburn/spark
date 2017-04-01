@@ -1,0 +1,25 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - '3306:3306'
+    restart: always
+    volumes: 
+      - ./sql/config:/etc/mysql/mysql.conf.d/
+      - ~/mysql/data:/var/lib/mysql/    
+    env_file:
+      ./staging.env
+      
+  app:
+    image: artyomka/spark:0.0.5
+    ports:
+      - '3000:3000'
+    restart: always
+    depends_on:
+      - db
+    links:
+      - db
+    env_file:
+      ./staging.env
