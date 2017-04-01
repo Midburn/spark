@@ -327,7 +327,6 @@ module.exports = function (app, passport) {
         } else {
             res.status(404).end();
         }
-
     })
 
     /**
@@ -631,16 +630,6 @@ module.exports = function (app, passport) {
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({ id: req.params.id }).fetch().then((camp) => {
             camp.getCampUsers((members) => {
-                // let _members = [];
-                // for (let i in members) {
-                //     if (['approved','pending','pending_mgr','appeoved_mgr'].indexOf(members[i].member_status)>-1) {
-                //         _members.push(members[i]);
-                //     }
-                //     if (['approved','approved_mgr'].indexOf(members[i].member_status)>-1) {
-                //         app_member.push(members[i]);
-                //     }
-
-                // }
                 res.status(200).json({ members: members });
             });
         }).catch((e) => {
