@@ -59,8 +59,11 @@ var User = bookshelf.Model.extend({
                     if (!first_camp && member_type_array.indexOf(camps[i].member_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
-                        camps[i].member_status === 'approved_mgr') {
+                    if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
+                        && camps[i].member_status === 'approved')
+                        || (camps[i].member_status === 'approved_mgr')) {
+                    // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
+                        // camps[i].member_status === 'approved_mgr') {
                         first_camp = camps[i];
                         is_manager = true;
                         break;

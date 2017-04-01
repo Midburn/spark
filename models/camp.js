@@ -3,6 +3,10 @@ var constants = require('./constants.js');
 var User = require('../models/user').User;
 const knex = require('../libs/db').knex;
 
+function __hasRole (role, roles) {
+    return (roles && roles.split(',').indexOf(role) > -1);
+}
+
 var Camp = bookshelf.Model.extend({
     tableName: constants.CAMPS_TABLE_NAME,
     idAttribute: 'id',
@@ -14,6 +18,9 @@ var Camp = bookshelf.Model.extend({
      * to check if camp has manager check attributes.managers.length>0
      */
     getCampUsers: function (done) {
+        // function __hasRole(role, roles) {
+        //     return (roles && roles.split(',').indexOf(role) > -1);
+        // }
         var _this = this;
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         var _users = constants.USERS_TABLE_NAME;
@@ -36,8 +43,9 @@ var Camp = bookshelf.Model.extend({
                     if (!users[i].name) {
                         users[i].name = users[i].email;
                     }
-
-                    if ((_this.attributes.main_contact === users[i].user_id && users[i].member_status === 'approved') || (users[i].member_status === 'approved_mgr')) {
+                    if (((_this.attributes.main_contact === users[i].user_id || __hasRole('camp_manager', users[i].roles))
+                        && users[i].member_status === 'approved')
+                        || (users[i].member_status === 'approved_mgr')) {
                         users[i].isManager = true;
                         managers.push(users[i]);
                     }
