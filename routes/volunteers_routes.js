@@ -116,7 +116,7 @@ var get_department_volunteers = function(req, res) {
                         .then(user_data_col => {
                             var result = vol_data_col.models.map((vol_data_model) => {
                                 var user_data = user_data_col.find(x => x.uid === vol_data_model.get('user_id'));
-                                __merge_volunteer_info(vol_data_model, user_data);
+                                return __merge_volunteer_info(vol_data_model, user_data);
                             });
                             res.status(200).json(result);
                         })
