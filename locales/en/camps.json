@@ -114,7 +114,9 @@
           "status": {
             "wait": "Waiting approval",
             "user_cancel": "Request canceled"
-          }
+          },
+          "cancel_request": "Cancel Request",
+          "approve_request": "Approve Request"
         },
         "manage": {
             "manage_a_camp": "Manage camps"
@@ -137,10 +139,18 @@
           "title": "Members Boards",
           "name": "Member name",
           "email": "Member email",
+          "phone": "Member Phone",
           "camp_name_en": "Assigned Camp (English)",
           "status": "Member Status",
           "has_ticket": "Has Ticket",
-          "search": "Search Camp Member"
+          "search": "Search Camp Member",
+          "add_member": "Add Member",
+          "early_arrival": "Early Arrival",
+          "reject": "Reject Member",
+          "approve": "Approve Member",
+          "approve_as_manager": "Approve as Manager",
+          "remove": "Remove Member",
+          "choose_camp": "Choose or search a camp"
         },
         "camps": {
             "title": "Camp",
@@ -171,7 +181,8 @@
             "publication_subtitle": "The details here will be showen in the web-site, if camp is published.",
             "name": "Name",
             "phone": "Phone",
-            "email": "Email"
+            "email": "Email",
+            "facebook_page_url_link": "Camp Facebook Page"
         },
         "edit": {
             "view": "View Camp",
