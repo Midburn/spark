@@ -2,7 +2,7 @@ var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants.js');
 //var User = require('./user').User;
 var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
-
+var log = require('../libs/logger')(module);
 var VolunteerRole = bookshelf.Model.extend({
     tableName: constants.VOL_DEPARTMENT_ROLES_TABLE_NAME,
     volunteers: function() {
@@ -41,7 +41,7 @@ var Volunteer = bookshelf.Model.extend({
     }
 }, {
     get_by_user: function(user_id_, dep_id, event_id) {
-        console.log('Looking for volunteer data for user ' + user_id_);
+        log.debug('Looking for volunteer data for user ' + user_id_);
         return new Volunteer().fetch({ user_id: user_id_, department_id: dep_id, event_id: event_id }).then(function(vol) {
             return vol;
         });

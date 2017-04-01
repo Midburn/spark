@@ -5,7 +5,6 @@ var DRUPAL_PROFILE_API_URL = process.env.DRUPAL_PROFILE_API_URL;
 var DRUPAL_PROFILE_API_USER = process.env.DRUPAL_PROFILE_API_USER;
 var DRUPAL_PROFILE_API_PASSWORD = process.env.DRUPAL_PROFILE_API_PASSWORD;
 
-
 function _parse_fron_anchor_tag(uid_string) {
     var re = /<a.*>(.+)<\/a>/g;
     m = re.exec(uid_string);
@@ -46,14 +45,12 @@ var login = function() {
     });
 };
 
-
 var search_multiple_uids = function(login_data, uid_arr) {
     var tasks = uid_arr.map((uid) => {
         return search(login_data, null, uid);
     });
     return Promise.all(tasks);
 }
-
 
 var search_multiple_emails = function(login_data, email_arr) {
     var tasks = email_arr.map((mail) => {
