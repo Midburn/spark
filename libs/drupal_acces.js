@@ -6,8 +6,8 @@ var DRUPAL_PROFILE_API_USER = process.env.DRUPAL_PROFILE_API_USER;
 var DRUPAL_PROFILE_API_PASSWORD = process.env.DRUPAL_PROFILE_API_PASSWORD;
 
 
-function _parse_uid(uid_string) {
-    var re = /<a.*>(\d+)<\/a>/g;
+function _parse_fron_anchor_tag(uid_string) {
+    var re = /<a.*>(.+)<\/a>/g;
     m = re.exec(uid_string);
     re.lastIndex = 0;
     if (m.length === 2) {
@@ -24,7 +24,9 @@ function _parse_user(res_body) {
     return {
         last_name: res_body[0]['Last name'],
         first_name: res_body[0]['First name'],
-        uid: _parse_uid(res_body[0]['Uid'])
+        uid: _parse_fron_anchor_tag(res_body[0]['Uid']),
+        email: _parse_fron_anchor_tag(res_body[0]['E-mail']),
+        phone: res_body[0]['Phone number'],
     };
 }
 
@@ -45,6 +47,14 @@ var login = function() {
 };
 
 
+var search_multiple_uids = function(login_data, uid_arr) {
+    var tasks = uid_arr.map((uid) => {
+        return search(login_data, null, uid);
+    });
+    return Promise.all(tasks);
+}
+
+
 var search_multiple_emails = function(login_data, email_arr) {
     var tasks = email_arr.map((mail) => {
         return search(login_data, mail);
@@ -52,7 +62,7 @@ var search_multiple_emails = function(login_data, email_arr) {
     return Promise.all(tasks);
 }
 
-var search = function(login_data, email, first_name, last_name, uid) {
+var search = function(login_data, email, uid) {
     return new Promise((resolve, reject) => {
         var qs = {};
         if (email) {
@@ -66,7 +76,8 @@ var search = function(login_data, email, first_name, last_name, uid) {
             //.accept('application/json')
             .query(qs)
             .then((res) => {
-                user_response = { mail: qs.mail, uid: qs.uid, user_data: _parse_user(res.body) };
+                var user_data_ = _parse_user(res.body)
+                user_response = { mail: qs.mail, uid: qs.uid, user_data: user_data_ };
                 resolve(user_response);
             }).catch((err) => {
                 reject(err);
@@ -76,16 +87,12 @@ var search = function(login_data, email, first_name, last_name, uid) {
 
 var DrupalAccess = {
     //This is a temporary stub as long as we dont have connection to Drupal.
-    get_user_info: function(user_id) {
-        return new Promise((resolve, reject) => {
-            //access drupal to get data...
-            //GET https://<env(DRUPAL_PROFILE_API)>/api/views/api_user_search?uid=1467
-            var user_data = {
-                id: user_id,
-                email: 'name@domain.com'
-            }
-            resolve(user_data);
-        });
+    get_user_info: function(uid_arr) {
+        return login().then(login_data =>
+            search_multiple_uids(login_data, uid_arr)
+        ).catch(err =>
+            logger.error(err)
+        );
     },
     get_user_by_email: function(email_arr) {
         return login().then(login_data =>

@@ -91,44 +91,39 @@ var get_volunteers = function(req, res) {
 };
 //GET /volunteer/department/:department_id/volunteers
 var get_department_volunteers = function(req, res) {
-    __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER, () => {
-
-        DrupalAccess.get_user_by_email(req.query.email).then((user) => {
-            Volunteer.query((qb) => {
-                qb.where('user_id', user.id);
-                qb.where('department_id', req.params.department_id);
-                if (req.query.roles !== undefined) {
-                    qb.whereIn('role_id', req.query.roles);
-                }
-            }).fetchAll().then((vols) => {
-
-                var ret = _.map(vols.models, (vol_entry) => {
-                    return {
-                        user_id: user.id,
-                        email: user.email,
-                        permission: vol_entry.role_id,
-                        department_id: vol_entry.department_id,
-                        first_name: user.first_name,
-                        last_name: user.last_name,
-                        phone_number: user.phone_number,
-                        got_ticket: true,
-                        comment: "from Volunteers table"
-                    };
+    return __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER)
+        .then(() => {
+            //find all voluntters
+            Volunteer.fetchAll({ department_id: req.params.department_id, event_id: 0 })
+                .then((vol_data) => {
+                    log.debug('Found ' + vol_data.lengh + ' in dept. ' + req.params.department_id);
+                    var user_ids = vol_data.models.map(vol_data => vol_data.get('user_id'));
+                    DrupalAccess.get_user_info(user_ids)
+                        .then(user_data => {
+                            var result = vol_data.models.map((vol_data_model) => {
+                                var user_info = user_data.find(x => x.uid === vol_data_model.get('user_id'));
+                                //here should be 
+                                return {
+                                    permission: vol_data_model.get('role_id'),
+                                    departmnet_id: vol_data_model.get('department_id'),
+                                    user_id: vol_data_model.get('user_id'),
+                                    first_name: user_info ? user_info.first_name : undefined,
+                                    last_name: user_info ? user_info.last_name : undefined,
+                                    email: user_info ? user_info.email : undefined,
+                                    phone_number: user_info ? user_info.phone : undefined,
+                                    got_ticket: false, //TBD
+                                    comment: "from Volunteers table"
+                                };
+                            });
+                            res.status(200).json(result);
+                        })
+                })
+                .catch((err) => {
+                    req.status(200).json([]);
                 });
+        })
+        .catch(err => res.status(403).json(err));
 
-                res.json(ret);
-            }).catch((err) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
-                });
-            });
-        });
-    }, (err) => {
-        res.status(401).json({ message: err });
-    });
 };
 ///POST volunteer/department/department_id/volunteers
 var post_volunteers = function(req, res) {
@@ -142,9 +137,11 @@ var post_volunteers = function(req, res) {
                     if (data_to_save.user_data === undefined) {
                         result.push({ mail: mail_addr, status: 'NotFound' })
                     } else {
+                        vol_data = req.body.find(x => x.email === mail_addr);
                         return Volunteer.forge({
                             user_id: data_to_save.user_data.uid,
                             department_id: req.params.department_id,
+                            role_id: vol_data.permission,
                             event_id: 0
                         }).save().then((save_result) => {
                             log.info('Saved ' + JSON.stringify(save_result));
