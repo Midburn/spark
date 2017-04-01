@@ -123,19 +123,19 @@ block content
                                 .col-xs-12
                                     label(for='camp_activity_time', data-camp-status='#{camp.status}') #{t('camps:edit.camp_activity_time')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=(camp.type.indexOf('morning') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=(camp.camp_activity_time.indexOf('morning') > -1 ? "checked" : undefined))
                                             label(for="activity_time_morning")
                                                 | #{t('camps:new.camp_activity_time_morning')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=(camp.type.indexOf('drinks') > -1 ? "noon" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=(camp.camp_activity_time.indexOf('drinks') > -1 ? "noon" : undefined))
                                             label(for="activity_time_noon")
                                                 | #{t('camps:new.camp_activity_time_noon')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=(camp.type.indexOf('evening') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=(camp.camp_activity_time.indexOf('evening') > -1 ? "checked" : undefined))
                                             label(for="camp_activity_time_evening")
                                                 | #{t('camps:new.camp_activity_time_evening')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=(camp.type.indexOf('night') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=(camp.camp_activity_time.indexOf('night') > -1 ? "checked" : undefined))
                                             label(for="camp_activity_time_night")
                                                 | #{t('camps:new.camp_activity_time_night')}
                             .col-md-4
