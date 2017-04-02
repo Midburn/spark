@@ -71,8 +71,10 @@ block content
                                 span.badge.contact_person_email
                     .col-xs-12.col-md-6
                         span=t('camps:stats.facebook_page_url')
-                        .facebook-info
-                            a(href='#{camp.facebook_page_url}', target='_blank') #{camp.facebook_page_url}
+                        .facebook-info.Btn
+                            a(href='#{camp.facebook_page_url}', target='_blank')
+                                i(class="fa fa-facebook-official") 
+                                | &nbsp; #{t('camps:camps.facebook_page_url_link')}
             .management.row
                 .col-xs-12
                     h4=t('camps:camps.management_title')
