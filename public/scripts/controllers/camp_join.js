@@ -3,6 +3,8 @@ app.controller("campJoinController", function ($scope, $http) {
      * Fetch camp list that are open to new members and within the current event
      * @return {json}     list with camp name & id
      */
+    var lang = document.getElementById('meta__lang').value;
+
     function _getOpenCamps() {
         $http.get('/camps_open').then(function (res) {
             $scope.camps = res.data.camps;
@@ -18,7 +20,11 @@ app.controller("campJoinController", function ($scope, $http) {
                 fetchSuccess(res.data)
             });
         } else {
-            sweetAlert("Oops...", "Choose a camp, yeah?", "error");
+            if (lang === 'he') {
+                sweetAlert("אויש...", "אנא בחר במחנה?", "error");
+            } else {
+                sweetAlert("Oops...", "Choose a camp, yeah?", "error");
+            }
         }
 
         function fetchSuccess(res) {
@@ -65,7 +71,11 @@ app.controller("campJoinController", function ($scope, $http) {
                         },
                         error: function (jqXHR, exception) {
                             if (jqXHR.status === 500) {
-                                sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. \n\nTry again later, thanks.', 'error')
+                                if (lang === 'he') {
+                                    sweetAlert("אופס!", "לא הצלחנו לשמלוח את הבקשה. נסה שוב מאוחר יותר", "error");
+                                } else {
+                                    sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. \n\nTry again later, thanks.', 'error')
+                                }
                             }
                         }
                     });

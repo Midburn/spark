@@ -20,7 +20,6 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/camps'
         }]);
         req.user.getUserCamps((camps) => {
-            // console.log(camps);
             if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
                 camp = req.user.attributes.camp;
                 res.render('pages/camps/index_user', {
