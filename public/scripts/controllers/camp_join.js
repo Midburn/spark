@@ -1,20 +1,20 @@
-app.controller("campJoinController", function($scope, $http) {
+app.controller("campJoinController", function ($scope, $http) {
     /**
      * Fetch camp list that are open to new members and within the current event
      * @return {json}     list with camp name & id
      */
     function _getOpenCamps() {
-        $http.get('/camps_open').then(function(res) {
+        $http.get('/camps_open').then(function (res) {
             $scope.camps = res.data.camps;
         });
     }
 
-    $scope.joinRequest = function() {
+    $scope.joinRequest = function () {
         camp_id = document.querySelector('#join_camp_request_camp_id option:checked').value
         camp_name_en = document.querySelector('#join_camp_request_camp_id option:checked').text
 
         if (camp_id !== undefined) {
-            $http.get('/camps/' + camp_id + '/join').then(function(res) {
+            $http.get('/camps/' + camp_id + '/join').then(function (res) {
                 fetchSuccess(res.data)
             });
         } else {
@@ -40,10 +40,10 @@ app.controller("campJoinController", function($scope, $http) {
 
             // Send request click listener after user is approve the details
             // Action delayed with 4 second allow user to cancel the request
-            $('#join_camp_send_request_btn').click(function() {
+            $('#join_camp_send_request_btn').click(function () {
                 var _sendRequestBtn = $(this);
 
-                $('#join_camp_close_btn').text('Cancel').click(function(e) {
+                $('#join_camp_close_btn').text('Cancel').click(function (e) {
                     e.preventDefault();
                     clearTimeout(_srt);
                     $(this).text('Close');
@@ -56,43 +56,48 @@ app.controller("campJoinController", function($scope, $http) {
                         url: '/camps/' + request_data.camp.id + '/join/deliver',
                         type: 'POST',
                         data: request_data,
-                        success: function() {
+                        success: function () {
                             $('#join_camp_request_modal > div').html('<h4>Your request have sent, check request status.</h4>');
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 $('#join_camp_request_modal').modal('hide');
                             }, 4000);
                             window.location.reload();
                         },
-                        error: function(jqXHR, exception) {
+                        error: function (jqXHR, exception) {
                             if (jqXHR.status === 500) {
                                 sweetAlert('Opps!', 'Couldn\'t send your request due to server problem. \n\nTry again later, thanks.', 'error')
                             }
                         }
                     });
                 }
-                var _srt = setTimeout(function() {
+                var _srt = setTimeout(function () {
                     _sendRequest();
                 }, 4000);
             });
         }
     }
-    
+
     _getOpenCamps()
 });
 
 /**
  * Component: user camp-join pending request details and cancel
  */
-app.controller("joinPendingController", function($scope, $http) {
+app.controller("joinPendingController", function ($scope, $http) {
     var user_id = document.querySelector('#pending_request_user_id').value;
-    
-    $http.get('/users/' + user_id + '/join_details').then(function(res) {
-      $scope.camp = res.data.details;
+
+    $http.get('/users/' + user_id + '/join_details').then(function (res) {
+        $scope.camp = res.data.details;
     });
-    
+    $scope.approveRequest = function () {
+        $http.get('/users/' + $scope.camp.camp_id + '/join_approve').then(function (res) {
+            window.location.reload()
+        });
+    }
+
     $scope.cancelRequest = function () {
-      $http.get('/users/' + user_id + '/join_cancel').then(function(res) {
-        window.location.reload()
-      });
+        $http.get('/users/' + user_id + '/join_cancel').then(function (res) {
+            window.location.reload()
+        });
     }
 });
