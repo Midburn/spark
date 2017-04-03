@@ -269,16 +269,16 @@ block content
                                     td
                                         a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
                                             span(class='glyphicon glyphicon-remove')
-                                            span(class='sr-only' aria-hidden='true') Reject user
+                                            span(class='sr-only' aria-hidden='false') Reject user
                                         a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")
                                             span(class='glyphicon glyphicon-ok')
-                                            span(class='sr-only' aria-hidden='true') Approve user
+                                            span(class='sr-only' aria-hidden='false') Approve user
                                         a.cursor-p(ng-click='updateUser(member.name, member.user_id, "manager")', ng-if="member.can_approve_mgr")
                                             span(class='glyphicon glyphicon-king')
-                                            span(class='sr-only' aria-hidden='true') Approve user as manager
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_delete")
+                                            span(class='sr-only' aria-hidden='false') Approve user as manager
+                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove")
                                             span(class='glyphicon glyphicon-remove')
-                                            span(class='sr-only' aria-hidden='true') Remove user
+                                            span(class='sr-only' aria-hidden='false') Remove user
             //- Card 4
             .card.card-forth.card-hide
                 h4=t('camps:edit.upload_header')
