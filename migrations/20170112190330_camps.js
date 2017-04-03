@@ -1,10 +1,10 @@
 var constants = require('../models/constants.js');
 
-exports.up = function (knex, Promise) {
+exports.up = function(knex, Promise) {
     return Promise.all([
 
         // Camps table
-        knex.schema.createTable(constants.CAMPS_TABLE_NAME, function (table) {
+        knex.schema.createTable(constants.CAMPS_TABLE_NAME, function(table) {
             table.timestamps();
 
             // General information
@@ -23,7 +23,7 @@ exports.up = function (knex, Promise) {
             table.boolean('web_published').defaultTo(false);
 
             // Detailed info
-            table.string('camp_activity_time',100); // comma delimited constants.CAMP_ACTIVITY_TIMES);
+            table.string('camp_activity_time', 100); // comma delimited constants.CAMP_ACTIVITY_TIMES);
             table.boolean('child_friendly');
             table.enu('noise_level', constants.CAMP_NOISE_LEVELS);
             table.integer('public_activity_area_sqm');
@@ -45,14 +45,8 @@ exports.up = function (knex, Promise) {
             table.string('contact_person_name', 100);
             table.string('contact_person_email', 100);
             table.string('contact_person_phone', 14);
-        }),
-
-        // Add users camp_id field
-        knex.schema.table(constants.USERS_TABLE_NAME, function (table) {
-            table.integer('camp_id');
-            table.foreign('camp_id').references('id').inTable(constants.CAMPS_TABLE_NAME);
         })
     ]);
 };
 
-exports.down = function (knex, Promise) {};
+exports.down = function(knex, Promise) {};
