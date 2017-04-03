@@ -237,7 +237,7 @@ $('.card--close').click(function() {
  * Component: View camp details
  */
 function _fetchCampContactPersonDetails() {
-    debugger;
+    // debugger;
     // $.get('/camps_contact_person/' + contact_person_id, function(res) {
     //     $('span.contact_person_name').text([res.user.first_name, res.user.last_name].join(' '));
     //     $('span.contact_person_phone').text(res.user.cell_phone);
