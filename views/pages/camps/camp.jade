@@ -9,7 +9,8 @@ block content
                 h5 #{t('camps:camps.style')}
                 each type in camp.type.split(',')
                     span.label.label-primary #{type}
-            h5 #{t('camps:camps.since')}: #{camp.created_at}
+            h5 
+            //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
             .desc.row
                 h5 #{t('camps:camps.desc')}
