@@ -15,43 +15,13 @@ block content
             .desc.row
                 h5 #{t('camps:camps.desc')}
                 .col-xs-12.col-sm-6
-                    p #{camp.camp_desc_en}
+                    p.well #{camp.camp_desc_en}
                 .text-right.col-xs-12.col-sm-6
-                    p #{camp.camp_desc_he}
+                    p.well #{camp.camp_desc_he}
         if userIs('camp_manager')
             .controls
                 a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
         .card.card__shad
-            h4=t('camps:new.name_card_header')
-            ul.list-group
-                li.list-group-item
-                    if camp.web_published
-                      span.no-flt.badge.bg__green=t('camps:camps.published')
-                    else
-                      span.no-flt.badge.bg__red(data-toggle="tooltip", data-placement="top", title="Not published")=t('camps:camps.draft')
-                li.list-group-item
-                    span=t('camps:camps.status')
-                        if camp.status == 'open'
-                            span.badge.bg__teal=t('camps:camps.status_open')
-                        else if camp.status == 'closed'
-                            span.badge.bg__red=t('camps:camps.status_closed')
-                        else
-                            span.badge.bg__teal=t('camps:edit.inactive')
-                li.list-group-item
-                    span=t('camps:camps.accept_families')
-                        span.badge #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
-                li.list-group-item
-                    span=t('camps:camps.time_active')
-                        span.badge #{details.camp_activity_time}
-                li.list-group-item
-                    span #{t('camps:camps.child_friendly')}
-                        span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
-                li.list-group-item
-                    span #{t('camps:new.camp_noise_level')}
-                        span.badge #{details.noise_level}
-                li.list-group-item
-                    span #{t('camps:camps.art')}
-                        span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
             .publication.row
                 .col-xs-12
                     h4=t('camps:camps.publication')
@@ -115,6 +85,40 @@ block content
                             h6 #{t('camps:camps.email')}: 
                                 span.contact_person_email
                             a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
+            .modifications.row
+                .col-xs-12
+                    h4=t('camps:new.details')
+                    ul.list-group.col-xs-6
+                        li.list-group-item
+                            span=t('camps:edit.publication')
+                            if camp.web_published
+                              span.badge.bg__green=t('camps:camps.yes')
+                            else
+                              span.badge.bg__red=t('camps:camps.no')
+                        li.list-group-item
+                            span=t('camps:camps.status')
+                            if camp.status == 'open'
+                                span.badge.bg__teal=t('camps:camps.status_open')
+                            else if camp.status == 'closed'
+                                span.badge.bg__red=t('camps:camps.status_closed')
+                            else
+                                span.badge.bg__teal=t('camps:edit.inactive')
+                        li.list-group-item
+                            span=t('camps:camps.accept_families')
+                            span.badge #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
+                    ul.list-group.col-xs-6
+                        li.list-group-item
+                            span=t('camps:camps.time_active')
+                            span.badge #{details.camp_activity_time}
+                        li.list-group-item
+                            span #{t('camps:camps.child_friendly')}
+                            span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
+                        li.list-group-item
+                            span #{t('camps:new.camp_noise_level')}
+                            span.badge #{details.noise_level}
+                        li.list-group-item
+                            span #{t('camps:camps.art')}
+                            span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
             .documents.hidden
                 h4=t('camps:camps.docs')
                 .col-xs-12.col-md-4
