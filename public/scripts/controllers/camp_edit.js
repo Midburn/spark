@@ -47,9 +47,9 @@ app.controller("campEditController", function ($scope, $http, $filter) {
     $scope.updateUser = (user_name, user_id, action_type) => {
         var camp_id = document.getElementById('meta__camp_id').value;
         var lang = document.getElementById('meta__lang').value;
-
+        var tpl;
         if (lang === "he") {
-            var tpl = {
+            tpl = {
                 alert_title: "האם את/ה בטוח?",
                 alert_text: "האם את/ה בטוח שתרצה לבצע " + action_type + " את משתמש " + user_name + "?",
                 alert_success_1: action_type + "!",
@@ -57,7 +57,7 @@ app.controller("campEditController", function ($scope, $http, $filter) {
                 alert_success_3: " בהצלחה",
             };
         } else {
-            var tpl = {
+            tpl = {
                 alert_title: "Are you sure?",
                 alert_text: "Are you sure you would like to " + action_type + " " + user_name + "?",
                 alert_success_1: action_type + "!",
