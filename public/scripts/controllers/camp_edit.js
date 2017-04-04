@@ -1,6 +1,6 @@
 app.controller("campEditController", function ($scope, $http, $filter) {
     var camp_id = document.querySelector('#meta__camp_id').value;
-    $scope.status_options = ['open', 'closed', 'inactive']
+    $scope.status_options = ['open', 'closed']
     $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy']
 
     function _getMembers() {

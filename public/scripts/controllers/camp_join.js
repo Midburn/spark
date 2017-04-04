@@ -39,9 +39,12 @@ app.controller("campJoinController", function ($scope, $http) {
             }
 
             // Dialog with user & camp details
-            var details_template = 'Camp name: <span class="badge">' + camp_name_en + '</span><br/>Your name: <span class="badge">' + user.full_name + '</span><br/><br/><strong>Make sure they are currect before sending the request. if they arn\'t, please go to you\'r profile and edit.</strong>';
+            var details_template = {
+              'he': 'שם מחנה: <span class="badge">' + camp_name_en + '</span><br/>השם שלך: <span class="badge">' + user.full_name + '</span>',
+              'en': 'Camp name: <span class="badge">' + camp_name_en + '</span><br/>Your name: <span class="badge">' + user.full_name + '</span>'
+            }
             var modal = $('#join_camp_request_modal')
-            modal.find('.user_details').html(details_template);
+            modal.find('.user_details').html(details_template[lang || 'en']);
             modal.modal('show');
 
             // Send request click listener after user is approve the details

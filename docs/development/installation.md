@@ -73,14 +73,14 @@ Fire up the server after installation, with `nodemon` to monitor changes and re-
 nodemon server.js
 ```
 
-and navigate to [http://localhost:3000]().
+and navigate to [http://localhost:3000](http://localhost:3000).
 
 **Note** nodemon should take care of refreshing the server when you make changes.
 
 ### Creating an admin account
 
 After lighting the spark, if this is the first time or if you have recreated the DB
-browse to the development console at [http://localhost:3000/dev]() and select **Create admin user**.
+browse to the development console at [http://localhost:3000/dev](http://localhost:3000/dev) and select **Create admin user**.
 
 This will create a user: **a**, password: **a**
 
