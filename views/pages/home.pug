@@ -1,0 +1,3 @@
+extends ../includes/page
+block content
+    h1=t('welcome_home', {user: user.attributes.first_name, context: user.attributes.gender})
