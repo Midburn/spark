@@ -1,8 +1,0 @@
-html
-body
-    div(style="display: flex; flex-direction: column; ")
-        span View
-        input#page(type="text")
-        span Parameters ():
-        textarea#params(rows="10")
-        button(onclick="location.href = '/dev/view-debug/' + document.querySelector('#page').value + '/?params=' + document.querySelector('#params').value")="Submit"
