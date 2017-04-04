@@ -141,3 +141,23 @@ input.commit {
         box-shadow: 0 6px 12px rgba(0,0,0,.175);
     }
 }
+
+body[lang="he"] .card {
+  &__actions {
+    float: left;
+    .dropdown-menu {
+      right: auto;
+      left: 0;
+    }
+  }
+}
+
+body[lang="en"] .card {
+  &__actions {
+    float: right;
+    .dropdown-menu {
+      right: 0;
+      left: auto;
+    }
+  }
+}
