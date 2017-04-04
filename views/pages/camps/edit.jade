@@ -255,7 +255,7 @@ block content
                                 th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
                                 th(ng-click='changeOrderBy("status")')=t('camps:members.status')
                                 th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.has_ticket')
-                                th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
+                                //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
                                 th() Actions
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
@@ -265,7 +265,7 @@ block content
                                     td {{member.cell_phone}}
                                     td {{member.member_status}}
                                     td {{member.hasTicket ? 'yes':'no'}}
-                                    td {{member.earlyArrival ? 'yes':'no'}}
+                                    //- td {{member.earlyArrival ? 'yes':'no'}}
                                     td
                                         a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
                                             span(class='glyphicon glyphicon-remove')
