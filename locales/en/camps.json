@@ -143,7 +143,7 @@
           "phone": "Member Phone",
           "camp_name_en": "Assigned Camp (English)",
           "status": "Member Status",
-          "has_ticket": "Has Ticket",
+          "ticket_count": "Ticket Count",
           "search": "Search Camp Member",
           "add_member": "Add Member",
           "early_arrival": "Early Arrival",

@@ -2,25 +2,35 @@ extends ../../includes/page
 block content
     .camps.camp_details
         .heading.card.card__shad
-            span.label.label-info #{t('camps:camps.title')} # #{id}
-            h2 #{camp.camp_name_he}
-            h4 #{camp.camp_name_en}
-            .style
-                h5 #{t('camps:camps.style')}
-                each type in camp.type.split(',')
-                    span.label.label-primary #{type}
-            h5 
-            //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
+            .card__actions
+                .dropdown
+                    button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                        span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
+                    ul.dropdown-menu(aria-labelledby="camp_card_menu")
+                      li
+                        if userIs('camp_manager')
+                          a(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
+            .card__details
+                span.label.label-info #{t('camps:camps.title')} # #{id}
+                h2
+                  if language == 'en'
+                    | #{camp.camp_name_en}
+                  else
+                    | #{camp.camp_name_he}  
+                .style
+                    h5 #{t('camps:camps.style')}
+                    each type in camp.type.split(',')
+                        span.label.label-primary #{type}
+                h5 
+                //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
             .desc.row
-                h5 #{t('camps:camps.desc')}
+                .col-xs-12
+                    h5 #{t('camps:camps.desc')}
                 .col-xs-12.col-sm-6
                     p.well #{camp.camp_desc_en}
                 .text-right.col-xs-12.col-sm-6
                     p.well #{camp.camp_desc_he}
-        if userIs('camp_manager')
-            .controls
-                a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
         .card.card__shad
             .publication.row
                 .col-xs-12

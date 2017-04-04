@@ -5,6 +5,13 @@ block content
     input.hidden.meta(id='meta__camp_id', value='#{camp.id}')
     .camps.camp_edit(ng-app="ngCamps", ng-controller="campEditController")
         .heading.card.card__shad
+            .card__actions
+                .dropdown
+                    button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                        span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
+                    ul.dropdown-menu(aria-labelledby="camp_card_menu")
+                      li
+                        a(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             if(isNew)
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
@@ -12,7 +19,6 @@ block content
                 span.label.label-info #{t('camps:edit.camp')} # #{camp.id}
                 h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
                 h6 #{t('camps:edit.since')}: #{camp.created_at}
-                a.Btn.Btn__sm(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
         .controls.row
             .col-xs-12    
                 //- Card switcher
@@ -239,7 +245,7 @@ block content
                 h4=t('camps:admin_index.all_members_table')
                     span.badge {{members.length}}
                 .form-inline
-                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="temp - add a member")
+                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder=(language == 'en' ? 'Add new member' : 'הוסף חבר חדש'))
                     button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
                 .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
@@ -254,7 +260,7 @@ block content
                                 th(ng-click='changeOrderBy("email")')=t('camps:members.email')
                                 th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
                                 th(ng-click='changeOrderBy("status")')=t('camps:members.status')
-                                th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.has_ticket')
+                                th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.ticket_count')
                                 //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
                                 th() Actions
                             tbody
@@ -264,7 +270,7 @@ block content
                                     td {{member.email}}
                                     td {{member.cell_phone}}
                                     td {{member.member_status}}
-                                    td {{member.hasTicket ? 'yes':'no'}}
+                                    td {{member.hasTicket}}
                                     //- td {{member.earlyArrival ? 'yes':'no'}}
                                     td
                                         a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
