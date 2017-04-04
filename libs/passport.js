@@ -16,7 +16,8 @@ var _ = require('lodash')
  */
 const drupal_login = (email, password, done) =>
   request
-    .post('https://profile-test.midburn.org/api/user/login')
+    // .post('https://profile-test.midburn.org/api/user/login')
+    .post('https://profile.midburn.org/api/user/login')
     .send({ 'username': email, 'password': password })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -25,6 +26,8 @@ const drupal_login = (email, password, done) =>
 var login = function (email, password, done) {
   drupal_login(email, password, done).then(function (drupal_user) {
     if (drupal_user != null) {
+      // parse ticket information
+      // console.log(drupal_user);
       new User({
         email: email
       }).fetch().then(function (user) {
@@ -35,7 +38,7 @@ var login = function (email, password, done) {
           gender: constants.USER_GENDERS_DEFAULT,
           validated: true
         };
-        // console.log(user);
+        console.log('user '+email+' authenticated succesfully.');
         if (user === null) {
           signup(email, password, drupal_details, function (newUser, error) {
             if (newUser) {
@@ -55,6 +58,7 @@ var login = function (email, password, done) {
         }
       })
     } else {
+      console.log('user ' +email+' failed to authenticate.');
       done(false, i18next.t('invalid_user_password', {
         email: email
       }))

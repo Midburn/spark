@@ -54,7 +54,7 @@ var User = bookshelf.Model.extend({
             .then((camps) => {
                 var first_camp;
                 var is_manager = false;
-                var member_type_array = ['approved', 'pending', 'mgr_pending', 'approved_mgr', 'supplier'];
+                var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
                 for (var i in camps) {
                     if (!first_camp && member_type_array.indexOf(camps[i].member_status) > -1) {
                         first_camp = camps[i];

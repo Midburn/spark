@@ -110,7 +110,7 @@
         },
         "pending": {
           "header_title": "בקשת הצטרפות למחנה",
-          "subtitle": "בקשת ההצטרות למחנה כפי שנשלחה על ידיך:",
+          "subtitle": "בקשת ההצטרפות למחנה כפי שנשלחה על ידיך:",
           "status": {
             "wait": "ממתין לאישור",
             "user_cancel": "בקשה בוטלה"
@@ -200,7 +200,7 @@
             "desc_he": "תיאור (עברית)",
             "contact_title": "אנשי קשר",
             "main_contact": "מנהל מחנה",
-            "moop_contact": "איש קשר מופ",
+            "moop_contact": "אחראי חשל\"ש",
             "safety_contact": "איש קשר בטיחות",
             "behavior_title": "התנהגות",
             "type": "גיפט המחנה",
