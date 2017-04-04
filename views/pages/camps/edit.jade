@@ -256,7 +256,7 @@ block content
                                 th(ng-click='changeOrderBy("status")')=t('camps:members.status')
                                 th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.has_ticket')
                                 //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
-                                th() Actions
+                                th()=Actions
                             tbody
                                 tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
                                     td {{member.user_id}}
@@ -269,7 +269,7 @@ block content
                                     td
                                         a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
                                             span(class='glyphicon glyphicon-remove')
-                                            span(class='sr-only' aria-hidden='false') Reject user
+                                            span(class='sr-only' aria-hidden='false')=Reject user
                                         a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")
                                             span(class='glyphicon glyphicon-ok')
                                             span(class='sr-only' aria-hidden='false') Approve user
