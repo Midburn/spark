@@ -57,6 +57,12 @@
     "bad_or_expired_token": "Password reset link is expired or broken",
     "password_reset_succeeded": "Password reset completed successfully",
     "password_changed_email_subject": "Spark Security Alert",
+    "status_pending": "Waiting for camp manager approval",
+    "status_approved": "Approved",
+    "status_rejected": "Camp manager did not approve request",
+    "status_pending_mgr": "Waiting for member acceptance",
+    "status_approved_mgr": "Approved as Manager",
+    "status_supplier": "Supplier",
     "facebook": {
         "login": "Login with Facebook"
     },
@@ -76,10 +82,7 @@
         "open_source": "Open Source",
         "want_to_help": "Want to help us code?",
         "toc": "Terms of Use and Privacy Policy",
-        "toc_link": "http://midburn.org/en/en-terms-and-privacy/",
-        "links": {
-
-        }
+        "toc_link": "http://midburn.org/en/en-terms-and-privacy/"
     },
     "whoami": {
       "gender": "Gender",

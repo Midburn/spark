@@ -17,22 +17,46 @@ block content
             
         .cards--wrapper.card__shad
             //- Card 1
-            .card.card-first.card__padding--even.col-xs-12.table-responsive
+            .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageCampsController")
                 h4=t('camps:admin_index.all_camps_table')
+                .controls.row
+                  .col-xs-12.col-md-9
+                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t('camps:stats.search')}")
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers
-                            th #
-                            th.camp_name_en=t('camps:stats.name_en')
-                            th.contact_person=t('camps:stats.contact_person')
-                            th.status=t('camps:stats.status')
-                            th.hidden-xs=t('camps:stats.last_update')
-                            th.hidden-xs=t('camps:stats.created_at')
-                            th.published=t('camps:stats.published')
+                            th(ng-click='changeOrderBy("id")') #
+                            th.camp_name_en(ng-click='changeOrderBy("name")')=t('camps:stats.name_en')
+                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t('camps:stats.contact_person')
+                            th.status(ng-click='changeOrderBy("status")')=t('camps:stats.status')
+                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t('camps:stats.last_update')
+                            th.hidden-xs(ng-click='changeOrderBy("created_at")')=t('camps:stats.created_at')
+                            th.published(ng-click='changeOrderBy("published")')=t('camps:stats.published')
                             th.facebook_page_url=t('camps:stats.facebook_page_url')
                             th.admin-edit=t('camps:stats.edit')
                             th.admin-remove=t('camps:stats.remove')
                     tbody
+                        tr(ng-repeat="camp in camps | filter: searchCamp | orderBy: orderCamps")
+                            td {{ camp.id }}
+                            td 
+                                a(ng-href=`/${language}/camps/{{camp.id}}`) 
+                                    {{ camp.camp_name_en }}
+                            td {{ camp.contact_person_name }}
+                            td {{ camp.status }}
+                            td {{ camp.updated_at.split('GMT')[0] }}
+                            td {{ camp.created_at.split('GMT')[0] }}
+                            td {{ camp.web_public }}
+                            td
+                                a(ng-href='{{ camp.facebook_page_url }}', target='_blank')
+                                    i(class='fa fa-facebook-official')
+                            td
+                                a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
+                                    span(class='glyphicon glyphicon-pencil')
+                                    span(class='sr-only' aria-hidden='true') Edit Camp
+                            td
+                                button.Btn(ng-click='removeCamp(camp.id)')
+                                    span(class='glyphicon glyphicon-trash')
+                                    span(class='sr-only' aria-hidden='true') Remove Camp
 
             //- Card 2
             .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
