@@ -34,12 +34,10 @@ block content
                             li
                               span=t('camps:camps.title')
                                   span.badge
-                                      a(ng-href="camps/{{camp.camp_id}}")
-                                        {{camp.camp_id}} {{camp.camp_name_he}}
+                                      a(ng-href="camps/{{camp.camp_id}}") {{camp.camp_id}} {{camp.camp_name_he}}
                             li
                               span=t('camps:stats.status')
-                                  span.badge
-                                      {{camp.status}}
+                                    span.badge {{camp.member_status}}
                           a.Btn.Btn__sm(href='#', ng-click='approveRequest()' ng-if="camp.status=='pending_mgr'")=t('camps:pending.approve_request')
                           a.Btn.Btn__sm(href='#', ng-click='cancelRequest()')=t('camps:pending.cancel_request')
                           //- a.Btn.Btn__sm(href='#', ng-click='resendRequest()') Resend request

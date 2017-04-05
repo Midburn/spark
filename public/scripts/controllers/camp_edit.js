@@ -36,7 +36,6 @@ app.controller("campEditController", function ($scope, $http, $filter) {
         }
 
         $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
-            console.log(res);
             // update table with new data
             _getMembers();
         }).catch(function (err) {

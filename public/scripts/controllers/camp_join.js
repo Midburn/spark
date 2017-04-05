@@ -102,6 +102,7 @@ app.controller("joinPendingController", function ($scope, $http) {
     $http.get('/users/' + user_id + '/join_details').then(function (res) {
         $scope.camp = res.data.details;
     });
+    
     $scope.approveRequest = function () {
         $http.get('/users/' + $scope.camp.camp_id + '/join_approve').then(function (res) {
             window.location.reload()
@@ -109,7 +110,7 @@ app.controller("joinPendingController", function ($scope, $http) {
     }
 
     $scope.cancelRequest = function () {
-        $http.get('/users/' + user_id + '/join_cancel').then(function (res) {
+        $http.get('/users/' + $scope.camp.camp_id + '/join_cancel').then(function (res) {
             window.location.reload()
         });
     }

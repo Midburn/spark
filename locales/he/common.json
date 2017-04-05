@@ -64,6 +64,12 @@
     "bad_or_expired_token": "הקישור לאיפוס הסיסמה פג תוקף או לא תקין",
     "password_reset_succeeded": "החלפת סיסמה בוצעה בהצלחה",
     "password_changed_email_subject": "התראת אבטחה מ- Spark",
+    "status_pending": "ממתין לאישור מנהלת המחנה",
+    "status_approved": "חברת מחנה מאושרת",
+    "status_rejected": "נדחה על ידי מנהלת המחנה",
+    "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
+    "status_approved_mgr": "חברת מחנה מאושרת",
+    "status_supplier": "מאושר כספק",
     "facebook": {
         "login": "התחבר באמצעות פייסבוק"
     },
@@ -84,9 +90,7 @@
         "want_to_help": "רוצה לעזור לנו לקודד?",
         "toc": "תנאי השימוש באתר ומדיניות פרטיות",
         "toc_link": "http://midburn.org/he-terms-and-privacy/",
-        "links": {
-
-        }
+        "links": {}
     },
     "whoami": {
       "gender": "מין",
