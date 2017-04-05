@@ -109,7 +109,7 @@ app.controller("joinPendingController", function ($scope, $http) {
     }
 
     $scope.cancelRequest = function () {
-        $http.get('/users/' + user_id + '/join_cancel').then(function (res) {
+        $http.get(`/users/${user_id}/join_cancel`).then(function (res) {
             window.location.reload()
         });
     }

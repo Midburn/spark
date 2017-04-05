@@ -161,3 +161,7 @@ body[lang="en"] .card {
     }
   }
 }
+
+a[ng-click] {
+  cursor: pointer;
+}
