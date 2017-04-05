@@ -1,3 +1,6 @@
+// var i18next = require('i18next');
+// var config = require('config');
+// var i18nConfig = config.get('i18n');
 var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants.js');
 var User = require('../models/user').User;
@@ -33,9 +36,10 @@ var Camp = bookshelf.Model.extend({
                 for (let i in users) {
                     users[i].isManager = false;
                     let _status = users[i].member_status;
+                    // users[i].member_status_i18n=i18next.t('status_'+_status)+"*a";
                     users[i].can_remove = ['rejected','pending_mgr',].indexOf(_status) > -1;
                     users[i].can_approve = ['pending','rejected'].indexOf(_status) > -1 && users[i].validated;
-                    users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1;
+                    users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id;
 
                     if (!users[i].name && (users[i].first_name || users[i].last_name)) {
                         users[i].name = users[i].first_name + ' ' + users[i].last_name;

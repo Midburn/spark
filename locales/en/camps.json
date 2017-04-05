@@ -144,6 +144,7 @@
           "camp_name_en": "Assigned Camp (English)",
           "status": "Member Status",
           "has_ticket": "Has Ticket",
+          "actions": "Actions",
           "search": "Search Camp Member",
           "add_member": "Add Member",
           "early_arrival": "Early Arrival",
@@ -151,7 +152,13 @@
           "approve": "Approve Member",
           "approve_as_manager": "Approve as Manager",
           "remove": "Remove Member",
-          "choose_camp": "Choose or search a camp"
+          "choose_camp": "Choose or search a camp",
+          "status_pending": "Waiting for camp manager approval",
+          "status_approved": "Approved",
+          "status_rejected": "Camp manager did not approve request",
+          "status_pending_mgr": "Waiting for member acceptance",
+          "status_approved_mgr": "Approved as Manager",
+          "status_supplier": "Supplier"
         },
         "camps": {
             "title": "Camp",

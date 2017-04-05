@@ -58,7 +58,7 @@ function Camps() {
     }
 
     function init() {
-        fetchData();
+        // fetchData();
     }
 
     init();
