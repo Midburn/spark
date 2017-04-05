@@ -53,7 +53,7 @@ var User = bookshelf.Model.extend({
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
-            .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID })
+            .where({user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID})
             .then((camps) => {
                 var first_camp;
                 var is_manager = false;
@@ -68,7 +68,7 @@ var User = bookshelf.Model.extend({
                     if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr')) {
-                    // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
+                        // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
                         // camps[i].member_status === 'approved_mgr') {
                         first_camp = camps[i];
                         is_manager = true;
@@ -93,7 +93,7 @@ var User = bookshelf.Model.extend({
         return this.__hasRole(role, this.attributes.roles);
     },
     isManagerOfCamp: function (camp_id) {
-        let isCampManager = false
+        let isCampManager = false;
         if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager) {
             isCampManager = true;
         }
@@ -127,7 +127,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function (password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], { 'input': password + "\n" });
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password + "\n"});
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }

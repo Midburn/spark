@@ -1,6 +1,6 @@
 var express = require('express');
 var ticketRouter = express.Router({mergeParams: true});
-var ticketModel = require('../models/tickets')
+var ticketModel = require('../models/tickets');
 ticketRouter.get('/', (req, res) => {
   ticketModel(req).state().then(state => {
     res.render('pages/tickets/index.jade', state);
