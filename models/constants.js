@@ -75,12 +75,12 @@ module.exports = {
     /**
      * Camp Member Status:
      *      pending - a camp member requested to join camp, waiting for camp manager to approve.
-     *      mgr_pending - a camp manager request to add member, waiting for member to approve.
+     *      pending_mgr - a camp manager request to add member, waiting for member to approve.
      *      approved - a member is approved as a member
      *      rejected - a member rejected from camp. reject reason will be on addedinfo_json.last_rejected_reason
      *      approved_mgr - a member is approved as a member, and has manager rights to camp.
      *      supplier - member is supplier, for the supplier notification later.
      */
-    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected','approved_mgr','supplier','deleted'],
+    CAMP_MEMBER_STATUS: ['approved','pending','pending_mgr','rejected','approved_mgr','supplier','deleted'],
 
 };

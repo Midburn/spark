@@ -2,32 +2,35 @@ extends ../includes/page
 block content
     .camps.camp_details
         section
-            .card.card__profile.card__shad.card__padding--even
+            .card.card__profile.card__shad
                 .row
-                    .header.col-xs-12.col-sm-5.anim__mov--in
+                    .header.col-xs-12.col-sm-5
                         img.hoverZoomLink(src='http://lorempixel.com/150/150/people/')
                         h3 #{user.fullName}
                         h4 #{user.attributes.email}
-                        if user.isAdmin
-                            span.badge admin
-                    .profile-bio.col-xs-12.col-sm-7.anim__mov--in
-                        ul.profile-social-links
-                            li
-                                span Gender: 
-                                    span.badge #{user.attributes.gender}
-                            li
-                                span Camp:
-                                    span.badge
-                                        if user.attributes.camp_id !== -1
-                                            a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
-                                        else
-                                            #{t('camps:pending.status.wait')}
-                            li
-                                span Phone:
-                                    span.badge #{user.attributes.cell_phone}
-                            li
-                                span Socials:
-                                    span.socials
-                                        a(target='_blank', href='https://www.facebook.com/creativedonut')
-                                            i.fa.fa-facebook
+                        span.label.label-info
+                          if user.isAdmin
+                            | Admin
+                          if user.isCampManager
+                            | Camp Manager
+                    .col-xs-12.col-sm-7
+                        ul.list-group
+                            li.list-group-item
+                                span=t('whoami.gender') 
+                                span.badge #{user.attributes.gender}
+                            li.list-group-item
+                                span=t('whoami.camp')
+                                span.badge
+                                    if user.attributes.camp_id !== -1
+                                        a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
+                                    else
+                                        #{t('camps:pending.status.wait')}
+                            li.list-group-item
+                                span=t('whoami.phone')
+                                span.badge #{user.attributes.cell_phone}
+                            li.list-group-item
+                                span=t('whoami.socials')
+                                span.badge
+                                    a(target='_blank', href='https://www.facebook.com/creativedonut')
+                                        i.fa.fa-facebook
                         a(href="edit_profile").Btn.Btn__sm Edit
