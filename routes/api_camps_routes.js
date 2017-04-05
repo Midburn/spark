@@ -1,6 +1,5 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
-var CampMember = require('../models/camp_member').CampMember;
 var constants = require('../models/constants.js');
 var config = require('config');
 const knex = require('../libs/db').knex;
@@ -521,7 +520,6 @@ module.exports = function (app, passport) {
             id: req.params.id,
             manager_email: '' // later to be added
         };
-
         // User is camp free and doesn't have pending join request
         // User details will be sent to camp manager for approval
         req.user.getUserCamps((camps) => {
@@ -561,6 +559,7 @@ module.exports = function (app, passport) {
             }
         });
     });
+    
     /**
      * Deliver join request email to camp manager
      * @type {[type]}
@@ -579,39 +578,8 @@ module.exports = function (app, passport) {
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
         __camps_update_status(camp_id, user_id, 'join_cancel', user_id, res);
-
-        // var user_id = req.params.user_id;
-        // var camp_id = req.params.id;
-
-
-        // var camp_manager_email
-        // // update relation model between user and camp
-        // CampMember.forge({ user_id: req.params.user_id }).fetch().then((camp_member) => {
-        //     camp_id = camp_member.attributes.camp_id
-        //     // fetch camp manager email,
-        //     User.forge({ camp_id: camp_id })
-        //         .fetch({ require: true, columns: ['email', 'roles'] })
-        //         .then((user) => {
-        //             if (user.attributes.roles.indexOf('camp_manager') > -1) {
-        //                 camp_manager_email = user.attributes.email
-        //             }
-        //             res.status(200).json({ details: camp_member.toJSON() })
-        //             // update camp_members request
-        //             camp_member.save({ camp_id: 0, status: 'user_canceled' }).then(() => {
-        //                 // reset user's camp_id 
-        //                 User.forge({ user_id: user_id }).fetch().then((user) => {
-        //                     user.save({ camp_id: 0 }).then(() => {
-        //                         // notify camp manager
-        //                         if (camp_manager_email !== 'undefined' || camp_manager_email !== '') {
-        //                             emailDeliver(camp_manager_email, 'Spark: someone canceled his join request.', 'emails/camps/join_cancel')
-        //                         }
-        //                         res.status(200).json({ details: camp_member.toJSON() })
-        //                     })
-        //                 })
-        //             })
-        //         })
-        // })
     });
+
     /**
      * User request to cancel camp-join pending
      */
