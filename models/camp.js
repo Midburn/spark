@@ -33,8 +33,8 @@ var Camp = bookshelf.Model.extend({
                 for (let i in users) {
                     users[i].isManager = false;
                     let _status = users[i].member_status;
-                    users[i].can_delete = ['rejected'].indexOf(_status) > -1;
-                    users[i].can_approve = ['pending'].indexOf(_status) > -1;
+                    users[i].can_remove = ['rejected','pending_mgr',].indexOf(_status) > -1;
+                    users[i].can_approve = ['pending','rejected'].indexOf(_status) > -1 && users[i].validated;
                     users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1;
 
                     if (!users[i].name && (users[i].first_name || users[i].last_name)) {
@@ -83,7 +83,7 @@ var Camp = bookshelf.Model.extend({
 
 var CampMember = bookshelf.Model.extend({
     tableName: constants.CAMP_MEMBERS_TABLE_NAME,
-    idAttribute: 'user_id',
+    idAttribute: 'user_id,camp_id',
     users: function () {
         return this.hasMany(User, 'user_id')
     },

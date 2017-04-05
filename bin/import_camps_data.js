@@ -69,6 +69,7 @@ function main(argv) {
                     if (res[0]["count(*)"] > 0) {
                         console.log("camp already exists for english camp name: " + camp_name_en + " - skipping inserting this camp");
                     } else {
+                        var web_published=(camp.web_published.toLowerCase()==='true');
                         var _camp_rec = {
                             event_id: event_id,
                             camp_name_he: camp.camp_name_he,
@@ -77,7 +78,7 @@ function main(argv) {
                             camp_desc_en: camp.camp_desc_en,
                             type: '',
                             status: camp.status,
-                            web_published: camp.web_published,
+                            web_published: web_published,
                             camp_activity_time: '',
                             facebook_page_url: camp.facebook_page_url,
                             accept_families: camp.accept_families,

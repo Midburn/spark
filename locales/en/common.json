@@ -80,5 +80,11 @@
         "links": {
 
         }
+    },
+    "whoami": {
+      "gender": "Gender",
+      "camp": "Camp",
+      "phone": "Phone",
+      "socials": "Socials"
     }
 }
