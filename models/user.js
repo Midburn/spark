@@ -1,3 +1,6 @@
+// var i18next = require('i18next');
+// var config = require('config');
+// var i18nConfig = config.get('i18n');
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
@@ -56,8 +59,11 @@ var User = bookshelf.Model.extend({
                 var is_manager = false;
                 var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
                 for (var i in camps) {
-                    if (!first_camp && member_type_array.indexOf(camps[i].member_status) > -1) {
-                        first_camp = camps[i];
+                    let _status = camps[i].member_status;
+                    // camps[i].member_status_i18n=i18next.t('status_'+_status,{lng:'he'})+"*b";
+                    // camps[i].member_status_i18n=i18next.t('status_'+_status);
+                    if (!first_camp && member_type_array.indexOf(_status) > -1) {
+                      first_camp = camps[i];
                     }
                     if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
