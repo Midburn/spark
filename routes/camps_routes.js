@@ -207,7 +207,7 @@ module.exports = function (app, passport) {
             // withRelated: ['details']
         }).then((camp) => {
             req.user.getUserCamps((camps) => {
-                if (req.user.isManagerOfCamp(req.params.id) || userRole.isAdmin()) {
+                if (req.user.isManagerOfCamp(req.params.id) || req.user.isAdmin) {
                     var camp_data = camp.toJSON();
                     camp_data.type=(camp_data.type===null)?'':camp_data.type;
                     console.log(camp);
@@ -219,7 +219,7 @@ module.exports = function (app, passport) {
                         isNew: false
                     });
                 } else {
-                    res.status(404).json({
+                    res.status(500).json({
                         error: true,
                         data: {
                             message: 'failed to edit camp'
