@@ -1,10 +1,6 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
-<<<<<<< HEAD
 const constants = require('../models/constants.js');
-=======
-var constants = require('../models/constants.js');
->>>>>>> 9a611084f93acaf756cec572102d169a8db78f4e
 var config = require('config');
 const knex = require('../libs/db').knex;
 
@@ -416,6 +412,7 @@ module.exports = (app, passport) => {
      * request => /camps
      */
     app.get('/camps', (req, res) => {
+        var req;
         Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
@@ -576,7 +573,7 @@ module.exports = (app, passport) => {
                             }
                         });
                     }
-                });
+                },req.t);
             });
         } else {
             res.status(404).json({
@@ -627,9 +624,14 @@ module.exports = (app, passport) => {
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+            var t=req.t;
             camp.getCampUsers((members) => {
-                res.status(200).json({ members: members });
-            });
+                if (camp.isCampManager(req.user.id,req.t) || req.user.isAdmin) {
+                    res.status(200).json({ members: members });
+                } else {
+                    res.status(500).json({ error: true, data: { message: 'Permission denied' } });
+                }
+            },req.t);
         }).catch((e) => {
             res.status(500).json({
                 error: true,
@@ -653,7 +655,7 @@ module.exports = (app, passport) => {
             return;
         }
         req.user.getUserCamps((camps) => {
-            if (req.user.isManagerOfCamp(req.params.id) || userRole.isAdmin()) {
+            if (req.user.isManagerOfCamp(req.params.id) || req.user.isAdmin) {
                 User.forge({ email: user_email }).fetch().then((user) => {
                     if (user !== null) {
                         __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id, res);

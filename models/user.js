@@ -1,10 +1,3 @@
-// var i18next = require('i18next');
-// var config = require('config');
-// var i18nConfig = config.get('i18n');
-<<<<<<< HEAD
-// var app = require('app');
-=======
->>>>>>> 9a611084f93acaf756cec572102d169a8db78f4e
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
@@ -50,7 +43,7 @@ var User = bookshelf.Model.extend({
      *  user.attribute.is_manager - for the camp if has manager flag.
      *  user.attributes.camps - array of all camps user is involved.
      */
-    getUserCamps: function (done) {
+    getUserCamps: function (done, t) {
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         var _camps = constants.CAMPS_TABLE_NAME;
         var _this_user = this;
@@ -65,8 +58,9 @@ var User = bookshelf.Model.extend({
                 // i18next.init({lng:'he'});
                 for (var i in camps) {
                     let _status = camps[i].member_status;
-                    // camps[i].member_status_i18n=i18next.t('status_'+_status,{lng:'he'})+"*b";
-                    // camps[i].member_status_i18n=i18next.t('status_'+_status);
+                    if (t !== undefined) { // translate function
+                        camps[i].member_status_i18n = t('camps:members.status_' + _status);
+                    }
                     if (!first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
@@ -132,7 +126,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function (password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password + "\n"});
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], { 'input': password + "\n" });
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }

@@ -119,13 +119,13 @@ block content
                     ul.list-group.col-xs-6
                         li.list-group-item
                             span=t('camps:camps.time_active')
-                            span.badge #{details.camp_activity_time}
+                            span.badge #{details.camp_activity_time_i18n}
                         li.list-group-item
                             span #{t('camps:camps.child_friendly')}
                             span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
                         li.list-group-item
                             span #{t('camps:new.camp_noise_level')}
-                            span.badge #{details.noise_level}
+                            span.badge #{details.noise_level_i18n}
                         li.list-group-item
                             span #{t('camps:camps.art')}
                             span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}

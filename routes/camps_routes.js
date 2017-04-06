@@ -36,7 +36,7 @@ module.exports = function (app, passport) {
                     details: camp,
                 });
             }
-        });
+        },req.t);
     });
     // new camp
     app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
@@ -161,10 +161,12 @@ module.exports = function (app, passport) {
         }]);
         Camp.forge({
             id: req.params.id,
+            event_id: constants.CURRENT_EVENT_ID,
             __prototype: constants.prototype_camps.THEME_CAMP.id,
         }).fetch({
             // withRelated: ['details']
         }).then((camp) => {
+            camp.init_t(req.t);
             User.forge({
                 user_id: camp.toJSON().main_contact
             }).fetch().then((user) => {

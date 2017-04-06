@@ -37,7 +37,7 @@ block content
                                   a(ng-href="camps/{{camp.camp_id}}")=(`{{camp.camp_id}} {{camp.camp_name_he}}`)
                             li.list-group-item
                               span=t('camps:stats.status')
-                              span.badge.badge-info=(`{{camp.member_status}}`)
+                              span.badge.badge-info=(`{{camp.member_status_i18n}}`)
                           .controls.col-xs-12
                               a.Btn.Btn__sm(ng-click='approveRequest()' ng-if="camp.status=='pending_mgr'")=t('camps:pending.approve_request')
                               a.Btn.Btn__sm(ng-click='cancelRequest()')=t('camps:pending.cancel_request')

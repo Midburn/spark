@@ -192,7 +192,8 @@
             "name": "שם",
             "phone": "טלפון",
             "email": "אימייל",
-            "facebook_page_url_link": "עמוד הפייסבוק של המחנה"
+            "facebook_page_url_link": "עמוד הפייסבוק של המחנה",
+            "no_camp_assigned": "ללא מחנה"
         },
         "edit": {
             "view": "צפה במחנה",

@@ -192,7 +192,8 @@
             "name": "Name",
             "phone": "Phone",
             "email": "Email",
-            "facebook_page_url_link": "Camp Facebook Page"
+            "facebook_page_url_link": "Camp Facebook Page",
+            "no_camp_assigned": "No Camp"
         },
         "edit": {
             "view": "View Camp",
