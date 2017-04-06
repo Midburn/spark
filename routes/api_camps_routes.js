@@ -1,6 +1,6 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
-var constants = require('../models/constants.js');
+const constants = require('../models/constants.js');
 var config = require('config');
 const knex = require('../libs/db').knex;
 
@@ -65,6 +65,7 @@ module.exports = function (app, passport) {
             Camp.forge({
                 // for new fields!
                 created_at: Date(),
+                __prototype: constants.prototype_camps.THEME_CAMP.id,
                 event_id: constants.CURRENT_EVENT_ID,
                 // for update or insert, need to merge with create to be the same call
                 updated_at: Date(),
@@ -123,6 +124,7 @@ module.exports = function (app, passport) {
                     // for update or insert
                     updated_at: Date(),
                     event_id: constants.CURRENT_EVENT_ID,
+                    __prototype: constants.prototype_camps.THEME_CAMP.id,
                     camp_name_en: req.body.camp_name_en,
                     camp_name_he: req.body.camp_name_he,
                     camp_desc_he: req.body.camp_desc_he,
@@ -447,7 +449,7 @@ module.exports = function (app, passport) {
      * request => /camps
      */
     app.get('/camps', (req, res) => {
-        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
+        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
@@ -468,7 +470,7 @@ module.exports = function (app, passport) {
      * request => /camps_open
      */
     app.get('/camps_all', userRole.isAdmin(), (req, res) => {
-        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
+        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
@@ -489,7 +491,7 @@ module.exports = function (app, passport) {
      * request => /camps_open
      */
     app.get('/camps_open', userRole.isLoggedIn(), (req, res) => {
-        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID).fetchAll().then((camp) => {
+        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
@@ -525,7 +527,7 @@ module.exports = function (app, passport) {
         req.user.getUserCamps((camps) => {
             if (req.user.isCampFree) {
                 // Fetch camp manager email address
-                Camp.forge({ id: req.params.id, event_id: constants.CURRENT_EVENT_ID }).fetch({
+                Camp.forge({ id: req.params.id, event_id: constants.CURRENT_EVENT_ID, __prototype: constants.prototype_camps.THEME_CAMP.id }).fetch({
                 }).then((camp) => {
                     camp.getCampUsers((users) => {
                         if (camp.managers.length > 0) {
@@ -559,7 +561,7 @@ module.exports = function (app, passport) {
             }
         });
     });
-    
+
     /**
      * Deliver join request email to camp manager
      * @type {[type]}

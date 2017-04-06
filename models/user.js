@@ -54,7 +54,7 @@ var User = bookshelf.Model.extend({
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
-            .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID })
+            .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID, __prototype: constants.prototype_camps.THEME_CAMP.id })
             .then((camps) => {
                 var first_camp;
                 var is_manager = false;

@@ -1,5 +1,5 @@
 const userRole = require('../libs/user_role');
-// const constants = require('../models/constants.js');
+const constants = require('../models/constants.js');
 
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
@@ -161,7 +161,7 @@ module.exports = function (app, passport) {
         }]);
         Camp.forge({
             id: req.params.id,
-            // event_id: constants.CURRENT_EVENT_ID,
+            __prototype: constants.prototype_camps.THEME_CAMP.id,
         }).fetch({
             // withRelated: ['details']
         }).then((camp) => {
