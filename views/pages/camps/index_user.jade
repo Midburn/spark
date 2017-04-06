@@ -1,7 +1,7 @@
 extends ../../includes/page
 block content
     input.hidden.meta(id='meta__lang', value='#{language}')
-    .camps.camp_index(ng-app="ngCamps", ng-controller="campJoinController")
+    .camps.camp_index(ng-app="ngCamps")
         section
             .container
                 h1.jumbotron-heading=t('camps:dash.title')
@@ -9,7 +9,7 @@ block content
                 div.block-center
                 .cards--wrapper(style="visibility: visible; min-height: 268px;")
                     if user.isCampFree
-                        .join_camp.card
+                        .join_camp.card(ng-controller="campJoinController")
                             h2=t('camps:join.header_title')
                             h4=t('camps:join.camp_choosing_title')
                             .col-sm-8.col-xs-12
@@ -30,17 +30,18 @@ block content
                           input.hidden(id='pending_request_user_id', type='hidden', value='#{user.id}')
                           h2=t('camps:pending.header_title')
                           h4=t('camps:pending.subtitle')
-                          ul
-                            li
+                          ul.list-group.col-md-4
+                            li.list-group-item
                               span=t('camps:camps.title')
-                                  span.badge
-                                      a(ng-href="camps/{{camp.camp_id}}") {{camp.camp_id}} {{camp.camp_name_he}}
-                            li
+                              span.badge.badge-info
+                                  a(ng-href="camps/{{camp.camp_id}}")=(`{{camp.camp_id}} {{camp.camp_name_he}}`)
+                            li.list-group-item
                               span=t('camps:stats.status')
-                                    span.badge {{camp.member_status}}
-                          a.Btn.Btn__sm(href='#', ng-click='approveRequest()' ng-if="camp.status=='pending_mgr'")=t('camps:pending.approve_request')
-                          a.Btn.Btn__sm(href='#', ng-click='cancelRequest()')=t('camps:pending.cancel_request')
-                          //- a.Btn.Btn__sm(href='#', ng-click='resendRequest()') Resend request
+                              span.badge.badge-info=(`{{camp.member_status}}`)
+                          .controls.col-xs-12
+                              a.Btn.Btn__sm(ng-click='approveRequest()' ng-if="camp.status=='pending_mgr'")=t('camps:pending.approve_request')
+                              a.Btn.Btn__sm(ng-click='cancelRequest()')=t('camps:pending.cancel_request')
+                              //- a.Btn.Btn__sm(ng-click='resendRequest()') Resend request
                           
         // Camp join request modal
         .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')

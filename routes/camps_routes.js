@@ -228,48 +228,7 @@ module.exports = function (app, passport) {
             });
         })
     });
-    // Delete, make camp inactive
-    app.get('/:lng/camps/:id/remove', userRole.isLoggedIn(), (req, res) => {
-        Camp.forge({
-            id: req.params.id
-        }).fetch().then((camp) => {
-            camp.save({
-                status: 'inactive'
-            }).then(() => {
-                res.render('pages/camps/stats', {
-                    user: req.user
-                });
-            }).catch(function (err) {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
-                });
-            });
-        });
-    });
-    // Destroy
-    app.get('/:lng/camps/:id/destroy', userRole.isAdmin(), (req, res) => {
-        Camp.forge({
-            id: req.params.id
-        }).fetch().then((camp) => {
-            camp.destroy().then(() => {
-                res.render('pages/camps/stats', {
-                    user: req.user
-                });
-            }).catch(function (err) {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
-                });
-            });
-        });
-    });
-    // Test Route for New Camp Program
-    // new Program
+    // Program
     app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-new_program');
         res.render('pages/camps/program', {

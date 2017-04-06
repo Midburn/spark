@@ -36,7 +36,7 @@
             "camp_stat": "פרופיל מחנה",
             "my_camp": "המחנה שלי",
             "join_camp": "הצטרף למחנה"
-        },   
+        },
         "admin_index": {
             "all_camps": "ניהול מחנות",
             "all_members": "ניהול חברים",
@@ -146,6 +146,7 @@
           "has_ticket": "יש כרטיס",
           "actions": "פעולות",
           "ticket_count": "מספר כרטיסים",
+          "actions": "פעולות",
           "search": "חפש חבר במחנה",
           "add_member": "הוספת משתמש",
           "early_arrival": "הגעה מוקדמת",

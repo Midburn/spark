@@ -26,7 +26,6 @@ head
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
-    include footer
     //- Scripts
     script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
     script(src="/bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
@@ -34,16 +33,15 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
         crossorigin="anonymous" )
     script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
     script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
-    script(src="/scripts/camps.js")
-    script(src="/scripts/multiselect.js")
-    script(src="/scripts/camps_v2.js")
     script(src='/bower_components/sweetalert/dist/sweetalert.min.js')
     //- angular dependencies
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js")
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js')
     script(src="/bower_components/angular-ui-select/dist/select.min.js")
+    script(src="/scripts/camps.js")
+    script(src="/scripts/cards.js")
     script(src="/scripts/ng_app.js")
-    script(src="/scripts/controllers/members.js")
+    script(src="/scripts/controllers/camp_manage.js")
     script(src="/scripts/controllers/camp_edit.js")
     script(src="/scripts/controllers/camp_join.js")

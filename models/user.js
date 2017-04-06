@@ -1,7 +1,10 @@
 // var i18next = require('i18next');
 // var config = require('config');
 // var i18nConfig = config.get('i18n');
+<<<<<<< HEAD
 // var app = require('app');
+=======
+>>>>>>> 9a611084f93acaf756cec572102d169a8db78f4e
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
@@ -62,8 +65,6 @@ var User = bookshelf.Model.extend({
                 // i18next.init({lng:'he'});
                 for (var i in camps) {
                     let _status = camps[i].member_status;
-                    // console.log(i18next);
-                    // console.log(i18nConfig);
                     // camps[i].member_status_i18n=i18next.t('status_'+_status,{lng:'he'})+"*b";
                     // camps[i].member_status_i18n=i18next.t('status_'+_status);
                     if (!first_camp && member_type_array.indexOf(_status) > -1) {
@@ -72,7 +73,7 @@ var User = bookshelf.Model.extend({
                     if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr')) {
-                    // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
+                        // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
                         // camps[i].member_status === 'approved_mgr') {
                         first_camp = camps[i];
                         is_manager = true;
@@ -97,7 +98,7 @@ var User = bookshelf.Model.extend({
         return this.__hasRole(role, this.attributes.roles);
     },
     isManagerOfCamp: function (camp_id) {
-        let isCampManager = false
+        let isCampManager = false;
         if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager) {
             isCampManager = true;
         }
@@ -131,7 +132,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function (password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], { 'input': password + "\n" });
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password + "\n"});
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }

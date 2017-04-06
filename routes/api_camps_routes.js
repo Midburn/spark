@@ -1,6 +1,10 @@
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
+<<<<<<< HEAD
 const constants = require('../models/constants.js');
+=======
+var constants = require('../models/constants.js');
+>>>>>>> 9a611084f93acaf756cec572102d169a8db78f4e
 var config = require('config');
 const knex = require('../libs/db').knex;
 
@@ -9,7 +13,7 @@ const userRole = require('../libs/user_role');
 var mail = require('../libs/mail'),
     mailConfig = config.get('mail');
 
-module.exports = function (app, passport) {
+module.exports = (app, passport) => {
     /**
      * API: (GET) get user by id
      * request => /users/:id
@@ -119,7 +123,7 @@ module.exports = function (app, passport) {
     app.put('/camps/:id/edit',
         [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
         (req, res) => {
-            Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
+            Camp.forge({ id: req.params.id }).fetch().then((camp) => {
                 camp.save({
                     // for update or insert
                     updated_at: Date(),
@@ -150,10 +154,10 @@ module.exports = function (app, passport) {
                     camp_location_street: req.body.camp_location_street,
                     camp_location_street_time: req.body.camp_location_street_time,
                     camp_location_area: req.body.camp_location_area
-                }).then(function () {
+                }).then(() => {
                     res.json({ error: false, status: 'Camp updated' });
                     // });
-                }).catch(function (err) {
+                }).catch((err) => {
                     res.status(500).json({
                         error: true,
                         data: {
@@ -161,7 +165,7 @@ module.exports = function (app, passport) {
                         }
                     });
                 });
-            }).catch(function (err) {
+            }).catch((err) => {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -176,10 +180,10 @@ module.exports = function (app, passport) {
         [userRole.isAdmin()], // userRole.isAllowEditCamp() is work-in-progress
         (req, res) => {
             // If camp met all its requirements, can publish
-            Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-                camp.save({ web_published: '1' }).then(function () {
+            Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+                camp.save({ web_published: '1' }).then(() => {
                     res.json({ error: false, status: 'Publish' });
-                }).catch(function (err) {
+                }).catch((err) => {
                     res.status(500).json({
                         error: true,
                         data: {
@@ -187,7 +191,7 @@ module.exports = function (app, passport) {
                         }
                     });
                 });
-            }).catch(function (err) {
+            }).catch((err) => {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -200,10 +204,10 @@ module.exports = function (app, passport) {
     app.put('/camps/:id/unpublish',
         [userRole.isAdmin()], // userRole.isAllowEditCamp() is work-in-progress
         (req, res) => {
-            Camp.forge({ id: req.params.id }).fetch().then(function (camp) {
-                camp.save({ web_published: '0' }).then(function () {
+            Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+                camp.save({ web_published: '0' }).then(() => {
                     res.json({ error: false, status: 'Unpublish' });
-                }).catch(function (err) {
+                }).catch((err) => {
                     res.status(500).json({
                         error: true,
                         data: {
@@ -211,7 +215,7 @@ module.exports = function (app, passport) {
                         }
                     });
                 });
-            }).catch(function (err) {
+            }).catch((err) => {
                 res.status(500).json({
                     error: true,
                     data: {
@@ -221,44 +225,7 @@ module.exports = function (app, passport) {
             });
         });
 
-    /**
-     * API: (GET) return published camps with:
-     * camp_name_en, camp_name_he, camp_desc_en, camp_desc_he, status,
-     * accept_families, contact_person_full_name, phone, email, facebook_page
-     * request => /camps_published
-     * method: JSONP
-     */
-    app.get('/camps_published', (req, res, next) => {
-        Camp.fetchAll().then((camp) => {
-            var published_camps = [];
-            for (var i = 0; i < camp.models.length; i++) {
-                if (camp.models[i].attributes.web_published === '1' && camp.models[i].attributes.status !== 'inactive') {
-                    var fetched_camp = {
-                        id: camp.models[i].attributes.id,
-                        name_en: camp.models[i].attributes.camp_name_en,
-                        name_he: camp.models[i].attributes.camp_name_he,
-                        desc_en: camp.models[i].attributes.camp_desc_en,
-                        desc_he: camp.models[i].attributes.camp_desc_he,
-                        contact_person_id: camp.models[i].attributes.contact_person_id,
-                        facebook_page_url: camp.models[i].attributes.facebook_page_url,
-                        status: camp.models[i].attributes.status,
-                        accept_families: camp.models[i].attributes.accept_families
-                    };
-                    published_camps.push(fetched_camp);
-                }
-            }
-            res.status(200).jsonp({ published_camps })
-        }).catch((err) => {
-            res.status(500).jsonp({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
-        });
-    });
-
-    __camps_update_status = function (camp_id, user_id, action, camp_mgr_id, res) {
+    __camps_update_status = (camp_id, user_id, action, camp_mgr_id, res) => {
         console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
         Camp.forge({ id: camp_id }).fetch().then((camp) => {
             camp.getCampUsers((users) => {
@@ -341,7 +308,7 @@ module.exports = function (app, passport) {
                     } else {
                         query = 'UPDATE ' + constants.CAMP_MEMBERS_TABLE_NAME + ' SET status="' + data.status + '" WHERE camp_id=' + data.camp_id + ' AND user_id=' + data.user_id + ';';
                     }
-                    var _after_update = function () {
+                    var _after_update = () => {
                         console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
                         if (mail_delivery.template !== '') {
                             if (mail_delivery.to_mail !== '') {
@@ -408,7 +375,7 @@ module.exports = function (app, passport) {
      * API: (GET) return indication if camp exist, provide camp_name_en
      * request => /camps/<camp_name_en>
      */
-    app.get('/camps/:camp_name_en', (req, res) => {
+    app.get('/camps/:camp_name_en', userRole.isLoggedIn(), (req, res) => {
         var req_camp_name_en = req.params.camp_name_en;
         Camp.forge({ camp_name_en: req_camp_name_en }).fetch().then((camp) => {
             if (camp === null) {
@@ -567,14 +534,13 @@ module.exports = function (app, passport) {
      * @type {[type]}
      */
     app.all('/camps/:id/join/deliver', userRole.isLoggedIn(), (req, res) => {
-        // var camp_manager_email = req.body['camp[manager_email]'];
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
         __camps_update_status(camp_id, user_id, 'join', user_id, res);
     });
 
     /**
-     * User request to cancel camp-join pending
+     * User request to cancel camp-join request
      */
     app.get('/users/:id/join_cancel', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.user.attributes.user_id;
@@ -591,7 +557,7 @@ module.exports = function (app, passport) {
         __camps_update_status(camp_id, user_id, 'join_mgr', user_id, res);
     });
 
-    app.get('/users/:user_id/join_details', (req, res) => {
+    app.get('/users/:user_id/join_details', userRole.isLoggedIn(), (req, res) => {
         if (req.user.isAdmin || req.user.attributes.user_id === parseInt(req.params.user_id)) {
             User.forge({ user_id: req.params.user_id }).fetch().then((user) => {
                 user.getUserCamps((camps) => {
@@ -733,4 +699,22 @@ module.exports = function (app, passport) {
                 });
             });
     })
+
+    // Delete, make camp inactive
+    app.post('/camps/:id/remove', userRole.isAdmin(), (req, res) => {
+        Camp.forge({ id: req.params.id })
+            .fetch().then((camp) => {
+                camp.save({ status: 'inactive' }).then(() => {
+                    res.status(200).end()
+                }).catch((err) => {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    });
+                });
+            });
+    })
+
 }
