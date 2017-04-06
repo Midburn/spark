@@ -1,4 +1,4 @@
-let innerHeightChange = () => {
+var innerHeightChange = () => {
     var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
     $('.camps .cards--wrapper').css({
         'visibility': 'visible',
@@ -6,7 +6,7 @@ let innerHeightChange = () => {
     });
 }
 
-let closeCards = (currentButton) => {
+var closeCards = (currentButton) => {
     $('.card').addClass('card-hide');
 }
 

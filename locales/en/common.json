@@ -58,11 +58,6 @@
     "password_reset_succeeded": "Password reset completed successfully",
     "password_changed_email_subject": "Spark Security Alert",
     "status_pending": "Waiting for camp manager approval",
-    "status_approved": "Approved",
-    "status_rejected": "Camp manager did not approve request",
-    "status_pending_mgr": "Waiting for member acceptance",
-    "status_approved_mgr": "Approved as Manager",
-    "status_supplier": "Supplier",
     "facebook": {
         "login": "Login with Facebook"
     },

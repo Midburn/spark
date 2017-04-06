@@ -3,7 +3,7 @@ app.controller("campEditController", ($scope, $http, $filter) => {
     $scope.status_options = ['open', 'closed']
     $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy']
 
-    let _getMembers = () => {
+    var _getMembers = () => {
         $http.get(`/camps/${camp_id}/members`).then((res) => {
             var members = res.data.members;
             var _members = [];
@@ -35,7 +35,7 @@ app.controller("campEditController", ($scope, $http, $filter) => {
             camp_id: camp_id
         }
 
-        $http.post(`/camps/${camp_id}/members/add`, data).then((res) => {
+        $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
             // update table with new data
             _getMembers();
         }).catch((err) => {

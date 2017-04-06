@@ -143,6 +143,8 @@
           "phone": "מספר טלפון",
           "camp_name_en": "מחנה משוייך (אנגלית)",
           "status": "סטאטוס שיוך",
+          "has_ticket": "יש כרטיס",
+          "actions": "פעולות",
           "ticket_count": "מספר כרטיסים",
           "actions": "פעולות",
           "search": "חפש חבר במחנה",
@@ -190,7 +192,8 @@
             "name": "שם",
             "phone": "טלפון",
             "email": "אימייל",
-            "facebook_page_url_link": "עמוד הפייסבוק של המחנה"
+            "facebook_page_url_link": "עמוד הפייסבוק של המחנה",
+            "no_camp_assigned": "ללא מחנה"
         },
         "edit": {
             "view": "צפה במחנה",
