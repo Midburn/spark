@@ -207,13 +207,13 @@ body[lang="en"] .dash-panel a:after {
     background-color: $card-bg;
     border-radius: 2px;
     position: relative;
-    
+
     .desc{
       p {
         overflow-wrap:break-word;
       }
     }
-    
+
     &__shad {
         box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
     }
@@ -355,31 +355,6 @@ body[lang="en"] {
     animation-fill-mode: both;
     animation-timing-function: ease-in-out;
     animation-delay: 2s;
-}
-
-div#ajax_indicator {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 10px;
-    width: 0;
-    display: block;
-    z-index: 90192301;
-    background-color: #ff7058;
-    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
-    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
-    -webkit-transition: width 0.6s ease;
-    -o-transition: width 0.6s ease;
-    transition: width 0.6s ease;
-    background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
-    background-image: -o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
-    background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
-    -webkit-background-size: 40px 40px;
-    background-size: 40px 40px;
-}
-
-div#ajax_indicator.done {
-    width: 100%;
 }
 
 .camps {

@@ -1,3 +1,6 @@
+// var i18next = require('i18next');
+// var config = require('config');
+// var i18nConfig = config.get('i18n');
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
@@ -50,19 +53,22 @@ var User = bookshelf.Model.extend({
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
-            .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID })
+            .where({user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID})
             .then((camps) => {
                 var first_camp;
                 var is_manager = false;
                 var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
                 for (var i in camps) {
-                    if (!first_camp && member_type_array.indexOf(camps[i].member_status) > -1) {
-                        first_camp = camps[i];
+                    let _status = camps[i].member_status;
+                    // camps[i].member_status_i18n=i18next.t('status_'+_status,{lng:'he'})+"*b";
+                    // camps[i].member_status_i18n=i18next.t('status_'+_status);
+                    if (!first_camp && member_type_array.indexOf(_status) > -1) {
+                      first_camp = camps[i];
                     }
                     if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr')) {
-                    // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
+                        // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
                         // camps[i].member_status === 'approved_mgr') {
                         first_camp = camps[i];
                         is_manager = true;
@@ -87,7 +93,7 @@ var User = bookshelf.Model.extend({
         return this.__hasRole(role, this.attributes.roles);
     },
     isManagerOfCamp: function (camp_id) {
-        let isCampManager = false
+        let isCampManager = false;
         if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager) {
             isCampManager = true;
         }
@@ -121,7 +127,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function (password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], { 'input': password + "\n" });
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password + "\n"});
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }

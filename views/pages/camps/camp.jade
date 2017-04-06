@@ -28,9 +28,9 @@ block content
                 .col-xs-12
                     h5 #{t('camps:camps.desc')}
                 .col-xs-12.col-sm-6
-                    p.well #{camp.camp_desc_en}
+                    p.well(lang='en', style='direction:ltr;') #{camp.camp_desc_en}
                 .text-right.col-xs-12.col-sm-6
-                    p.well #{camp.camp_desc_he}
+                    p.well(lang='he', style='direction:rtl;') #{camp.camp_desc_he}
         .card.card__shad
             .publication.row
                 .col-xs-12
