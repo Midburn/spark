@@ -92,7 +92,6 @@ module.exports = {
 
     CAMP_TYPES: ['food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other'],
 
-
     /**
      * Camp Member Status:
      *      pending - a camp member requested to join camp, waiting for camp manager to approve.

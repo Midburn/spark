@@ -412,7 +412,6 @@ module.exports = (app, passport) => {
      * request => /camps
      */
     app.get('/camps', (req, res) => {
-        var req;
         Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
@@ -624,7 +623,6 @@ module.exports = (app, passport) => {
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({ id: req.params.id }).fetch().then((camp) => {
-            var t=req.t;
             camp.getCampUsers((members) => {
                 if (camp.isCampManager(req.user.id,req.t) || req.user.isAdmin) {
                     res.status(200).json({ members: members });
