@@ -78,7 +78,7 @@ var Camp = bookshelf.Model.extend({
         }
     },
     t_array: function (key, value_str, t) {
-        if (value_str !== undefined) {
+        if (value_str !== undefined && value_str && value_str !== '') {
             var values = value_str.split(',');
             for (let i in values) {
                 let t_value = t(key + '_' + values[i]);
@@ -87,6 +87,8 @@ var Camp = bookshelf.Model.extend({
                 }
             }
             return values.join(', ');
+        } else {
+            return '';
         }
     },
     init_t: function (t) {
