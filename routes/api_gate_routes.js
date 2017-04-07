@@ -1,11 +1,11 @@
 var User = require('../models/user').User;
-var Camp = require('../models/camp').Camp;
-const constants = require('../models/constants.js');
+// var Camp = require('../models/camp').Camp;
+// const constants = require('../models/constants.js');
 var config = require('config');
-const knex = require('../libs/db').knex;
+// const knex = require('../libs/db').knex;
 const userRole = require('../libs/user_role');
-var mail = require('../libs/mail'),
-    mailConfig = config.get('mail');
+// var mail = require('../libs/mail'),
+    // mailConfig = config.get('mail');
 
 module.exports = (app, passport) => {
     /**
