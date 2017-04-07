@@ -48,7 +48,7 @@ function __has_permissions(user_id, perm_level) {
 function __merge_volunteer_info(vol_data_model, user_info) {
     return {
         role_id: vol_data_model.get('role_id'),
-        departmnet_id: vol_data_model.get('department_id'),
+        department_id: vol_data_model.get('department_id'),
         user_id: vol_data_model.get('user_id'),
         first_name: user_info ? user_info.first_name : undefined,
         last_name: user_info ? user_info.last_name : undefined,
