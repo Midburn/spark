@@ -71,6 +71,7 @@ function getUserTemplate(data) {
  * getting user list from API
  */
 function fetchUsersOnce(elm) {
+    var lang = document.getElementById('meta__lang').value;
     var camp_id = 5
     elm = $(elm)
 
@@ -83,172 +84,29 @@ function fetchUsersOnce(elm) {
           }
         })
         .error((data) => {
-          sweetAlert("Oops...", "No user available!", "error");
+            if (lang === 'he') {
+                sweetAlert("אופס...", "אין משתמשים פעילים!", "error");
+            } else {
+                sweetAlert("Oops...", "No user available!", "error");
+            }
         })
 
         elm.attr('fetched', true);
     }
 }
 $(function() {
-    // debugger;
     var user_inputs = '#create_camp_contact_person_id';
     if ($('.camps').is('.camp_create')) {
       fetchUsersOnce(user_inputs);
     }
 });
-/**
- * getting camp list from API
- */
-var fetchedCampsOnce = false,
-    $stats_table = $('.camps.camp_admin_index #admin_camps');
 
-function getCampsTemplate(data) {
-    var last_update = new Date(data.updated_at).toDateString(),
-        created_at = new Date(data.created_at).toDateString(),
-        web_published = data.web_published
-            ? 'Yes'
-            : 'No';
-    return "<tr><td>" + data.id + "</td><td><a href='camps/" + data.id + "'>" + data.camp_name_en + "</a></td><td>" + data.contact_person + "</td><td>" + data.status + "</td><td class='hidden-xs'>" + last_update + "</td><td class='hidden-xs'>" + created_at + "</td><td class=''>" + web_published + "</td><td class=''><a href='" + data.facebook_page_url + "' target='_blank'><i class='fa fa-facebook-official'></i></a></td><td><a href='camps/" + data.id + "/edit'><span class='glyphicon glyphicon-pencil'></span><span class='sr-only' aria-hidden='true'>Edit Camp</span></a></td><td><a onclick='_removeCamp(" + data.id + ")'><span class='glyphicon glyphicon-trash'></span><span class='sr-only' aria-hidden='true'>Remove Camp</span></a></td></tr>";
-}
-
-/*eslint-disable */
-var fetchCampsOnce = function() {
-    if (!fetchedCampsOnce) {
-        var data, // eslint-disable-line no-unused-vars
-            tbody = $stats_table.find('tbody');
-        tbody.html('');
-        $.get('/camps', function(data) {
-            camps = data.camps;
-            for (var i = 0; i < camps.length; i++) {
-                tbody.append(getCampsTemplate(camps[i]));
-            }
-            data = camps;
-            // fix card height after data is appended to table
-            innerHeightChange();
-        });
-
-        fetchedCampsOnce = true;
-    }
-}
-/*eslint-enable */
-
-function _removeCamp(camp_id) { // eslint-disable-line no-unused-vars
-    var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');
-    if (agree_remove) {
-        $.get("camps/" + camp_id + "/remove", function(res) {
-            window.location.reload();
-        });
-    }
-}
-$stats_table.load(fetchCampsOnce());
-
-// Search camp
-$('#camps_stats_search_camp').keyup(function(input) {
-    $('.camps.stats table').find('tr:not(.headers)').hide();
-    var camp_name_en = input.target.value;
-    $('.camps.stats table').find('td:contains("' + camp_name_en + '")').parent().show();
-
-});
-// TODO: fix inner height for dynamic width size changing
-function innerHeightChange() {
-    var card_height = $('.cards--wrapper .card').not('.card-hide').outerHeight();
-    $('.camps .cards--wrapper').css({
-        'visibility': 'visible',
-        'min-height': card_height + 'px'
-    });
-}
-
-function closeCards(currentButton) {
-    $('.card').addClass('card-hide');
-}
-
-// Camp details card transition
-$('.card-switcher').click(function() {
-    // hide all cards
-    $('.card-first').addClass('card-hide');
-    $('.card-second').addClass('card-hide');
-    $('.card-third').addClass('card-hide');
-    $('.card-forth').addClass('card-hide');
-    $('.card-switcher').removeClass('Btn__default');
-    $('.card-switcher').removeClass('Btn__transparent');
-    // find clicked card and show it
-    switch ($(this).attr('id')) {
-        // show card 1
-        case '1':
-            $('.card-first').removeClass('card-hide');
-            $('#1').addClass('Btn__default');
-            break;
-        case '2':
-            $('.card-second').removeClass('card-hide');
-            $('#2').addClass('Btn__default');
-            break;
-        case '3':
-            $('.card-third').removeClass('card-hide');
-            $('#3').addClass('Btn__default');
-            break;
-        case '4':
-            $('.card-forth').removeClass('card-hide');
-            $('#4').addClass('Btn__default');
-            break;
-    }
-    innerHeightChange();
-});
-
-$('.reveal_create_camp_btn').click(function() {
-    if (!($('.choose_name').hasClass('card-hide'))) {
-        $('.choose_name').toggleClass('card-hide');
-        return;
-    } else {
-        closeCards();
-        $('.choose_name').removeClass('card-hide');
-    }
-    innerHeightChange();
-});
-$('.reveal_join_camp_btn').click(function() {
-    if (!($('.card-second').hasClass('card-hide'))) {
-        $('.card-second').toggleClass('card-hide');
-        return;
-    } else {
-        closeCards();
-        $('.card-second').removeClass('card-hide');
-    }
-    innerHeightChange();
-});
-$('.reveal_manage_camp_btn').click(function() {
-    if (!($('.card-third').hasClass('card-hide'))) {
-        $('.card-third').toggleClass('card-hide');
-        return;
-    } else {
-        closeCards();
-        $('.card-third').removeClass('card-hide');
-    }
-    innerHeightChange();
-});
-$('.card--close').click(function() {
-    closeCards();
-});
-
-/**
- * Component: View camp details
- */
-function _fetchCampContactPersonDetails() {
-    $.get('/camps_contact_person/' + contact_person_id, function(res) {
-        $('span.contact_person_name').text([res.user.first_name, res.user.last_name].join(' '));
-        $('span.contact_person_phone').text(res.user.cell_phone);
-        $('span.contact_person_email').text(res.user.email);
-    });
-}
-if ($('.camps').hasClass('camp_details')) {
-    var contact_person_id = $('.contact-person').attr('data-camp-contact-person-id');
-    if (contact_person_id !== "null") {
-        _fetchCampContactPersonDetails();
-    }
-}
 /**
  * Component: Editing camp
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function() {
+    var lang = document.getElementById('meta__lang').value;
     var type = fetchAllCheckboxValues('camp_type');
     var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var camp_id = $('#camp_edit_camp_id').val(),
@@ -284,7 +142,11 @@ $('#camp_edit_save').click(function() {
         type: 'PUT',
         data: camp_data,
         success: function(result) {
-            sweetAlert("You good...", "Camp details updated! reload the page.", "success");
+            if (lang ==='he') {
+                sweetAlert("כל הכבוד", "המחנה עודכן, על מנת לראות את השינויים יש לרענן את העמוד", "success");
+            } else {
+                sweetAlert("You good...", "Camp details updated! reload the page.", "success");
+            }
         }
     });
 });
@@ -445,24 +307,3 @@ if ($('.camp_details')) {
         _fetchUserData(user_id);
     })
 }
-
-/**
- * Component: camp members
- */
-
-// TODO
-
-/**
- * Component: camp document & forms
- */
-
-// TODO
-
-/**
- * Component: create camp program
- */
-
- // Auto-Open current card
-$(document).ready(function () {
-    innerHeightChange();
-});

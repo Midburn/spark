@@ -2,15 +2,15 @@ table.table.table-striped.table-hover
   thead
     tr
       th(ng-click='changeOrderBy("id")') #
-      th(ng-click='changeOrderBy("name")') Name
+      th(ng-click='changeOrderBy("name")')=t('camps:members.name')
       if userIs('admin')
-          th(ng-click='changeOrderBy("email")') Email
-      th(ng-click='changeOrderBy("phone")') Phone
+          th(ng-click='changeOrderBy("email")')=t('camps:members.email')
+      th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
       if userIs('admin')
-          th(ng-click='changeOrderBy("status")') Status
+          th(ng-click='changeOrderBy("status")')=t('camps:members.status')
       if userIs('admin')
-          th(ng-click='changeOrderBy("hasTicket")') Has Ticket
-      th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
+          th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.ticket_count')
+      th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
   tbody
     tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
       td {{member.user.user_id}}
@@ -22,5 +22,5 @@ table.table.table-striped.table-hover
           td
               span.label(ng-class="member.status === 'approved' ? 'label-success':'label-default'") {{member.status}}
       if userIs('admin')
-          td {{member.user.hasTicket ? 'yes':'no'}}
+          td {{member.user.hasTicket}}
       td {{member.user.earlyArrival ? 'yes':'no'}}

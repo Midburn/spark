@@ -43,24 +43,32 @@ var User = bookshelf.Model.extend({
      *  user.attribute.is_manager - for the camp if has manager flag.
      *  user.attributes.camps - array of all camps user is involved.
      */
-    getUserCamps: function (done) {
+    getUserCamps: function (done, t) {
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         var _camps = constants.CAMPS_TABLE_NAME;
         var _this_user = this;
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
-            .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID })
+            .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID, __prototype: constants.prototype_camps.THEME_CAMP.id })
             .then((camps) => {
                 var first_camp;
                 var is_manager = false;
-                var member_type_array = ['approved', 'pending', 'mgr_pending', 'approved_mgr', 'supplier'];
+                var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
+                // i18next.init({lng:'he'});
                 for (var i in camps) {
-                    if (!first_camp && member_type_array.indexOf(camps[i].member_status) > -1) {
+                    let _status = camps[i].member_status;
+                    if (t !== undefined) { // translate function
+                        camps[i].member_status_i18n = t('camps:members.status_' + _status);
+                    }
+                    if (!first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
-                        camps[i].member_status === 'approved_mgr') {
+                    if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
+                        && camps[i].member_status === 'approved')
+                        || (camps[i].member_status === 'approved_mgr')) {
+                        // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
+                        // camps[i].member_status === 'approved_mgr') {
                         first_camp = camps[i];
                         is_manager = true;
                         break;
@@ -69,6 +77,7 @@ var User = bookshelf.Model.extend({
                 _this_user.attributes.camps = camps;
                 _this_user.attributes.camp = first_camp;
                 _this_user.attributes.camp_manager = is_manager;
+                _this_user.__initUser = true;
                 done(camps);
             });
     },
@@ -82,12 +91,12 @@ var User = bookshelf.Model.extend({
     hasRole: function (role) {
         return this.__hasRole(role, this.attributes.roles);
     },
-    isManagerOfCamp: function(camp_id) {
-      let isCampManager = false
-      if (parseInt(this.attributes.camp_id) === parseInt(camp_id) && this.isCampManager) {
-        isCampManager = true
-      }
-      return isCampManager;
+    isManagerOfCamp: function (camp_id) {
+        let isCampManager = false;
+        if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager) {
+            isCampManager = true;
+        }
+        return isCampManager;
     },
     virtuals: {
         fullName: function () {

@@ -16,32 +16,40 @@ var _ = require('lodash')
  */
 const drupal_login = (email, password, done) =>
   request
-    .post('https://profile-test.midburn.org/api/user/login')
+    // .post('https://profile-test.midburn.org/api/user/login')
+    .post('https://profile.midburn.org/api/user/login')
     .send({ 'username': email, 'password': password })
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/x-www-form-urlencoded')
-    .then(({body}) => body, () => null);
+    .then(({ body }) => body, () => null);
 
 var login = function (email, password, done) {
   drupal_login(email, password, done).then(function (drupal_user) {
     if (drupal_user != null) {
+      // parse ticket information
       new User({
         email: email
       }).fetch().then(function (user) {
+        var drupal_details = {
+          first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
+          last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
+          cell_phone: _.get(drupal_user, 'user.field_profile_phone.und.0.value', 666),
+          gender: constants.USER_GENDERS_DEFAULT,
+          validated: true
+        };
+        console.log('user '+email+' authenticated succesfully.');
         if (user === null) {
-          signup(email, password, {
-            first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
-            last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
-            cell_phone: _.get(drupal_user, 'user.field_profile_phone.und.0.value', 666),
-            gender: constants.USER_GENDERS_DEFAULT,
-            validated: true
-          }, function (newUser, error) {
+          signup(email, password, drupal_details, function (newUser, error) {
             if (newUser) {
               done(newUser)
             } else {
               done(false, error)
             }
           })
+        } else if (!user.attributes.validated) {
+          user.save(drupal_details).then((user) => {
+            done(user);
+          });
         } else if (!user.attributes.enabled) {
           done(false, i18next.t('user_disabled'))
         } else {
@@ -49,6 +57,7 @@ var login = function (email, password, done) {
         }
       })
     } else {
+      console.log('user ' +email+' failed to authenticate.');
       done(false, i18next.t('invalid_user_password', {
         email: email
       }))

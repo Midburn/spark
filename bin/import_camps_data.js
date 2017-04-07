@@ -34,9 +34,9 @@ function main(argv) {
                 console.log("user already exists for email " + email + " - skipping inserting this user");
                 return true;
             } else {
-                var _name=user.first_name.split(" ");
-                var first_name=(_name.length > 0) ? _name[0] : '';
-                var last_name=(_name.length > 1) ? _name.slice(1,_name.length-1).join(" ") : '';
+                var _name = user.first_name.split(" ");
+                var first_name = (_name.length > 0) ? _name[0] : '';
+                var last_name = (_name.length > 1) ? _name.slice(1, _name.length).join(" ") : '';
                 return knex(constants.USERS_TABLE_NAME).insert({
                     name: user.name,
                     first_name: first_name,
@@ -44,7 +44,7 @@ function main(argv) {
                     cell_phone: user.cell_phone,
                     email: user.email,
                     roles: user.role,
-                    validated: true,
+                    validated: false,
                     created_at: Date(),
                     updated_at: Date()
                 }).then(function () {
@@ -69,15 +69,17 @@ function main(argv) {
                     if (res[0]["count(*)"] > 0) {
                         console.log("camp already exists for english camp name: " + camp_name_en + " - skipping inserting this camp");
                     } else {
+                        var web_published = (camp.web_published.toLowerCase() === 'true');
                         var _camp_rec = {
+                            __prototype: constants.prototype_camps.THEME_CAMP.id,
                             event_id: event_id,
                             camp_name_he: camp.camp_name_he,
                             camp_name_en: camp.camp_name_en,
                             camp_desc_he: camp.camp_desc_he,
                             camp_desc_en: camp.camp_desc_en,
                             type: '',
-                            status: camp.status,
-                            web_published: camp.web_published,
+                            status: camp.status.toLowerCase(),
+                            web_published: web_published,
                             camp_activity_time: '',
                             facebook_page_url: camp.facebook_page_url,
                             accept_families: camp.accept_families,
@@ -87,14 +89,14 @@ function main(argv) {
                             updated_at: Date()
                         };
                         if (camp.status !== "closed" && camp.status !== "open" && camp.status !== "deleted" && camp.status !== "inactive") {
-                            _camp_rec['status']='open';
+                            _camp_rec['status'] = 'closed';
                         }
                         return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
                             console.log("inserted camp: " + camp_name_en);
                         });
                     }
                 }).then(function () {
-                    return knex(constants.CAMPS_TABLE_NAME).where({ camp_name_en: camp_name_en, event_id: event_id }).then(function (camps) {
+                    return knex(constants.CAMPS_TABLE_NAME).where({ __prototype: constants.prototype_camps.THEME_CAMP.id, camp_name_en: camp_name_en, event_id: event_id }).then(function (camps) {
                         if (camps.length !== 1) throw new Error();
                         let camp = camps[0];
                         let camp_id = camp.id;

@@ -2,55 +2,36 @@ extends ../../includes/page
 block content
     .camps.camp_details
         .heading.card.card__shad
-            span.label.label-info #{t('camps:camps.title')} # #{id}
-            h2 #{camp.camp_name_he}
-            h4 #{camp.camp_name_en}
-            .style
-                h5 #{t('camps:camps.style')}
-                each type in camp.type.split(',')
-                    span.label.label-primary #{type}
-            h5 #{t('camps:camps.since')}: #{camp.created_at}
+            .card__actions
+                .dropdown
+                    button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                        span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
+                    ul.dropdown-menu(aria-labelledby="camp_card_menu")
+                      li
+                        if userIs('camp_manager')
+                          a(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
+            .card__details
+                span.label.label-info #{t('camps:camps.title')} # #{id}
+                h2
+                  if language == 'en'
+                    | #{camp.camp_name_en}
+                  else
+                    | #{camp.camp_name_he}  
+                .style
+                    h5 #{t('camps:camps.style')}
+                    each type in camp.type.split(',')
+                        span.label.label-primary #{type}
+                h5 
+                //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
             .desc.row
-                h5 #{t('camps:camps.desc')}
+                .col-xs-12
+                    h5 #{t('camps:camps.desc')}
                 .col-xs-12.col-sm-6
-                    p #{camp.camp_desc_en}
+                    p.well(lang='en', style='direction:ltr;') #{camp.camp_desc_en}
                 .text-right.col-xs-12.col-sm-6
-                    p #{camp.camp_desc_he}
-        if userIs('camp_manager')
-            .controls
-                a.Btn.Btn__sm(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
+                    p.well(lang='he', style='direction:rtl;') #{camp.camp_desc_he}
         .card.card__shad
-            h4=t('camps:new.name_card_header')
-            ul.list-group
-                li.list-group-item
-                    if camp.web_published
-                      span.no-flt.badge.bg__green=t('camps:camps.published')
-                    else
-                      span.no-flt.badge.bg__red(data-toggle="tooltip", data-placement="top", title="Not published")=t('camps:camps.draft')
-                li.list-group-item
-                    span=t('camps:camps.status')
-                        if camp.status == 'open'
-                            span.badge.bg__teal=t('camps:camps.status_open')
-                        else if camp.status == 'closed'
-                            span.badge.bg__red=t('camps:camps.status_closed')
-                        else
-                            span.badge.bg__teal=t('camps:edit.inactive')
-                li.list-group-item
-                    span=t('camps:camps.accept_families')
-                        span.badge #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
-                li.list-group-item
-                    span=t('camps:camps.time_active')
-                        span.badge #{details.camp_activity_time}
-                li.list-group-item
-                    span #{t('camps:camps.child_friendly')}
-                        span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
-                li.list-group-item
-                    span #{t('camps:new.camp_noise_level')}
-                        span.badge #{details.noise_level}
-                li.list-group-item
-                    span #{t('camps:camps.art')}
-                        span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
             .publication.row
                 .col-xs-12
                     h4=t('camps:camps.publication')
@@ -62,17 +43,19 @@ block content
                             ul.list-group
                               li.list-group-item
                                 span #{t('camps:camps.name')}: 
-                                span.badge.contact_person_name
+                                span.badge.contact_person_name #{camp.contact_person_name}
                               li.list-group-item
                                 span #{t('camps:camps.phone')}: 
-                                span.badge.contact_person_phone
+                                span.badge.contact_person_phone #{camp.contact_person_phone}
                               li.list-group-item
                                 span #{t('camps:camps.email')}: 
-                                span.badge.contact_person_email
+                                span.badge.contact_person_email #{camp.contact_person_email}
                     .col-xs-12.col-md-6
                         span=t('camps:stats.facebook_page_url')
-                        .facebook-info
-                            a(href='#{camp.facebook_page_url}', target='_blank') #{camp.facebook_page_url}
+                        .facebook-info.Btn
+                            a(href='#{camp.facebook_page_url}', target='_blank')
+                                i(class="fa fa-facebook-official") 
+                                | &nbsp; #{t('camps:camps.facebook_page_url_link')}
             .management.row
                 .col-xs-12
                     h4=t('camps:camps.management_title')
@@ -112,6 +95,40 @@ block content
                             h6 #{t('camps:camps.email')}: 
                                 span.contact_person_email
                             a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
+            .modifications.row
+                .col-xs-12
+                    h4=t('camps:new.details')
+                    ul.list-group.col-xs-6
+                        li.list-group-item
+                            span=t('camps:edit.publication')
+                            if camp.web_published
+                              span.badge.bg__green=t('camps:camps.yes')
+                            else
+                              span.badge.bg__red=t('camps:camps.no')
+                        li.list-group-item
+                            span=t('camps:camps.status')
+                            if camp.status == 'open'
+                                span.badge.bg__teal=t('camps:camps.status_open')
+                            else if camp.status == 'closed'
+                                span.badge.bg__red=t('camps:camps.status_closed')
+                            else
+                                span.badge.bg__teal=t('camps:edit.inactive')
+                        li.list-group-item
+                            span=t('camps:camps.accept_families')
+                            span.badge #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
+                    ul.list-group.col-xs-6
+                        li.list-group-item
+                            span=t('camps:camps.time_active')
+                            span.badge #{details.camp_activity_time_i18n}
+                        li.list-group-item
+                            span #{t('camps:camps.child_friendly')}
+                            span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
+                        li.list-group-item
+                            span #{t('camps:new.camp_noise_level')}
+                            span.badge #{details.noise_level_i18n}
+                        li.list-group-item
+                            span #{t('camps:camps.art')}
+                            span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
             .documents.hidden
                 h4=t('camps:camps.docs')
                 .col-xs-12.col-md-4
