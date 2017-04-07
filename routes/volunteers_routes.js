@@ -82,7 +82,7 @@ function __get_voluneer_info(department_id_arr, event_id) {
                     .then(user_data_col => {
                         var result = vol_data_col.models.map((vol_data_model) => {
                             var user_data = user_data_col.find(x => x.uid === vol_data_model.get('user_id'));
-                            return __merge_volunteer_info(vol_data_model, user_data);
+                            return __merge_volunteer_info(vol_data_model, user_data.user_data);
                         });
                         resolve(result);
                     });
@@ -122,9 +122,9 @@ var post_volunteers = function(req, res) {
             var result = [];
             DrupalAccess.get_user_by_email(mail_addresses).then(users_data => {
                 Promise.all((mail_addresses.map((mail_addr) => {
-                    var data_to_save = users_data.find((udata) => udata.mail === mail_addr)
+                    var data_to_save = users_data.find((udata) => udata.email === mail_addr)
                     if (data_to_save.user_data === undefined) {
-                        result.push({ mail: mail_addr, status: 'NotFound' })
+                        result.push({ email: mail_addr, status: 'NotFound' })
                     } else {
                         vol_data = req.body.find(x => x.email === mail_addr);
                         return Volunteer.forge({
@@ -134,9 +134,9 @@ var post_volunteers = function(req, res) {
                             event_id: CURRENT_EVENT
                         }).save().then((save_result) => {
                             log.info('Saved ' + JSON.stringify(save_result));
-                            result.push({ mail: mail_addr, status: 'OK' });
+                            result.push({ email: mail_addr, status: 'OK' });
                         }).catch((err) => {
-                            result.push({ mail: mail_addr, status: 'AlreadyExists' });
+                            result.push({ email: mail_addr, status: 'AlreadyExists' });
                             log.info('Failed Adding user' + mail_addr + ' to department ' + req.params.department_id + ' ' + err);
                         });
                     }
@@ -150,10 +150,15 @@ var post_volunteers = function(req, res) {
 
 ///PUT volunteer/department/department_id/volunteers/user_id
 var put_volunteer = function(req, res) {
-    var new_data = { role_id: req.body.permission, type_in_shift_id: req.body.shift_type };
-    Volunteer.forge()
+    var new_data = {
+        role_id: req.body.permission,
+        type_in_shift_id: req.body.shift_type,
+        comment: req.body.comment,
+        is_production: req.body.is_production
+    };
+    Volunteer
         .where({ user_id: req.params.user_id, department_id: req.params.department_id, event_id: CURRENT_EVENT })
-        .save(new_data, { method: 'update' })
+        .save(new_data, { method: 'update', patch: true })
         .then((vol) => {
             res.status(200).json(vol.toJSON());
         }).catch((err) => {

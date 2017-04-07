@@ -74,7 +74,7 @@ var search = function(login_data, email, uid) {
             .query(qs)
             .then((res) => {
                 var user_data_ = _parse_user(res.body)
-                user_response = { mail: qs.mail, uid: qs.uid, user_data: user_data_ };
+                user_response = { email: qs.mail, uid: qs.uid, user_data: user_data_ };
                 resolve(user_response);
             }).catch((err) => {
                 reject(err);
