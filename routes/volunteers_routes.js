@@ -123,7 +123,7 @@ var post_volunteers = function(req, res) {
                         return Volunteer.forge({
                             user_id: data_to_save.user_data.uid,
                             department_id: req.params.department_id,
-                            role_id: vol_data.role_id,
+                            role_id: req.params.role_id,
                             event_id: CURRENT_EVENT
                         }).save().then((save_result) => {
                             log.info('Saved ' + JSON.stringify(save_result));
