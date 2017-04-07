@@ -1,9 +1,12 @@
+// var i18next = require('i18next');
+// var config = require('config');
+// var i18nConfig = config.get('i18n');
 var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants.js');
 var User = require('../models/user').User;
 const knex = require('../libs/db').knex;
 
-function __hasRole (role, roles) {
+function __hasRole(role, roles) {
     return (roles && roles.split(',').indexOf(role) > -1);
 }
 
@@ -17,7 +20,7 @@ var Camp = bookshelf.Model.extend({
      * get this camp users. the result is on attributes.users or attributes.managers
      * to check if camp has manager check attributes.managers.length>0
      */
-    getCampUsers: function (done) {
+    getCampUsers: function (done, t) {
         // function __hasRole(role, roles) {
         //     return (roles && roles.split(',').indexOf(role) > -1);
         // }
@@ -33,9 +36,12 @@ var Camp = bookshelf.Model.extend({
                 for (let i in users) {
                     users[i].isManager = false;
                     let _status = users[i].member_status;
-                    users[i].can_remove = ['rejected','pending_mgr',].indexOf(_status) > -1;
-                    users[i].can_approve = ['pending','rejected'].indexOf(_status) > -1 && users[i].validated;
-                    users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1;
+                    if (t !== undefined) { // translate function
+                        users[i].member_status_i18n = t('camps:members.status_' + _status);
+                    }
+                    users[i].can_remove = ['rejected', 'pending_mgr',].indexOf(_status) > -1;
+                    users[i].can_approve = ['pending', 'rejected'].indexOf(_status) > -1 && users[i].validated;
+                    users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id;
 
                     if (!users[i].name && (users[i].first_name || users[i].last_name)) {
                         users[i].name = users[i].first_name + ' ' + users[i].last_name;
@@ -69,6 +75,24 @@ var Camp = bookshelf.Model.extend({
             if (this.attributes.users[i].user_id === user_id) {
                 return this.attributes.users[i];
             }
+        }
+    },
+    t_array: function (key, value_str, t) {
+        if (value_str !== undefined) {
+            var values = value_str.split(',');
+            for (let i in values) {
+                let t_value = t(key + '_' + values[i]);
+                if (t_value !== '') {
+                    values[i] = t_value;
+                }
+            }
+            return values.join(', ');
+        }
+    },
+    init_t: function (t) {
+        if (t !== undefined) {
+            this.attributes.camp_activity_time_i18n = this.t_array('camps:new.camp_activity_time', this.attributes.camp_activity_time, t);
+            this.attributes.noise_level_i18n = this.t_array('camps:new.camp_noise_level', this.attributes.noise_level, t);
         }
     },
     virtuals: {

@@ -9,7 +9,7 @@ table.table.table-striped.table-hover
       if userIs('admin')
           th(ng-click='changeOrderBy("status")')=t('camps:members.status')
       if userIs('admin')
-          th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.has_ticket')
+          th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.ticket_count')
       th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
   tbody
     tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
@@ -22,5 +22,5 @@ table.table.table-striped.table-hover
           td
               span.label(ng-class="member.status === 'approved' ? 'label-success':'label-default'") {{member.status}}
       if userIs('admin')
-          td {{member.user.hasTicket ? 'yes':'no'}}
+          td {{member.user.hasTicket}}
       td {{member.user.earlyArrival ? 'yes':'no'}}

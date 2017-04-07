@@ -28,7 +28,7 @@ module.exports = function(app) {
                 "accept_families",
                 "support_art"
             ])
-            .where({'event_id': constants.CURRENT_EVENT_ID, web_published: '1'})
+            .where({'event_id': constants.CURRENT_EVENT_ID, web_published: '1', '__prototype':constants.prototype_camps.THEME_CAMP.id})
         }).fetchAll().then((camps) => {
             res.status(200).json({
                 quantity: camps.length,

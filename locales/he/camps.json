@@ -36,7 +36,7 @@
             "camp_stat": "פרופיל מחנה",
             "my_camp": "המחנה שלי",
             "join_camp": "הצטרף למחנה"
-        },   
+        },
         "admin_index": {
             "all_camps": "ניהול מחנות",
             "all_members": "ניהול חברים",
@@ -105,7 +105,7 @@
         "join": {
             "join_a_camp": "הצטרף למחנה",
             "header_title": "הצטרף למחנה",
-            "camp_choosing_title": "בבקשה לבחור את המחנה שלך. מנהל המחנה צריך לאשר את הבקשה גדי לוודא שייכות למחנה.",
+            "camp_choosing_title": "בבקשה לבחור את המחנה שלך. מנהל המחנה צריך לאשר את הבקשה כדי לוודא שייכות למחנה.",
             "request": "שלח בקשת הצטרפות",
             "name_en": "שם המחנה (אנגלית)"
         },
@@ -143,7 +143,10 @@
           "phone": "מספר טלפון",
           "camp_name_en": "מחנה משוייך (אנגלית)",
           "status": "סטאטוס שיוך",
+          "has_ticket": "יש כרטיס",
+          "actions": "פעולות",
           "ticket_count": "מספר כרטיסים",
+          "actions": "פעולות",
           "search": "חפש חבר במחנה",
           "add_member": "הוספת משתמש",
           "early_arrival": "הגעה מוקדמת",
@@ -151,7 +154,13 @@
           "approve": "אשר משתמש",
           "approve_as_manager": "אשר משתמש כמנהל",
           "remove": "הסר משתמש",
-          "choose_camp": "בחר או חפש מחנה"
+          "choose_camp": "בחר או חפש מחנה",
+          "status_pending": "ממתין לאישור מנהלת המחנה",
+          "status_approved": "חברת מחנה מאושרת",
+          "status_rejected": "נדחה על ידי מנהלת המחנה",
+          "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
+          "status_approved_mgr": "חברת מחנה מאושרת",
+          "status_supplier": "מאושר כספק"
         },
         "camps": {
             "title": "מחנה",
@@ -183,7 +192,8 @@
             "name": "שם",
             "phone": "טלפון",
             "email": "אימייל",
-            "facebook_page_url_link": "עמוד הפייסבוק של המחנה"
+            "facebook_page_url_link": "עמוד הפייסבוק של המחנה",
+            "no_camp_assigned": "ללא מחנה"
         },
         "edit": {
             "view": "צפה במחנה",
