@@ -47,7 +47,7 @@ function __has_permissions(user_id, perm_level) {
 
 function __merge_volunteer_info(vol_data_model, user_info) {
     return {
-        permission: vol_data_model.get('role_id'),
+        role_id: vol_data_model.get('role_id'),
         departmnet_id: vol_data_model.get('department_id'),
         user_id: vol_data_model.get('user_id'),
         first_name: user_info ? user_info.first_name : undefined,
@@ -123,7 +123,7 @@ var post_volunteers = function(req, res) {
                         return Volunteer.forge({
                             user_id: data_to_save.user_data.uid,
                             department_id: req.params.department_id,
-                            role_id: vol_data.permission,
+                            role_id: vol_data.role_id,
                             event_id: CURRENT_EVENT
                         }).save().then((save_result) => {
                             log.info('Saved ' + JSON.stringify(save_result));
@@ -144,7 +144,7 @@ var post_volunteers = function(req, res) {
 ///PUT volunteer/department/department_id/volunteers/user_id
 var put_volunteer = function(req, res) {
     var new_data = {
-        role_id: req.body.permission,
+        role_id: req.body.role_id,
         type_in_shift_id: req.body.shift_type,
         comment: req.body.comment,
         is_production: req.body.is_production
