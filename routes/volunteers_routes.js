@@ -116,7 +116,7 @@ var post_volunteers = function (req, res) {
             DrupalAccess.get_user_by_email(mail_addresses).then(users_data => {
                 Promise.all((mail_addresses.map((mail_addr) => {
                     var data_to_save = users_data ? users_data.find((udata) => udata.email === mail_addr) : undefined;
-                    if (data_to_save.user_data === undefined) {
+                    if (data_to_save === undefined || data_to_save.user_data === undefined) {
                         result.push({ email: mail_addr, status: 'NotFound' })
                     } else {
                         vol_data = req.body.find(x => x.email === mail_addr);
