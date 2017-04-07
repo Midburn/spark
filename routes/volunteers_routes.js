@@ -39,16 +39,9 @@ var get_roles = function(req, res) {
 
 function __has_permissions(user_id, perm_level) {
     return new Promise((resolve, reject) => {
+        //TODO - check if loggedin user has permissions...
         resolve();
-        /*
-        Volunteer.get_by_user(user_id, 1, 0).then((vol_data) => {
-            if (vol_data && vol_data.get('role_id') <= perm_level) {
-                resolve();
-            } else {
-                reject({ error: 'Not sufficient permission level' });
-            }
-        });
-        */
+
     });
 };
 
@@ -61,8 +54,8 @@ function __merge_volunteer_info(vol_data_model, user_info) {
         last_name: user_info ? user_info.last_name : undefined,
         email: user_info ? user_info.email : undefined,
         phone_number: user_info ? user_info.phone : undefined,
-        got_ticket: false, //TBD
-        comment: "from Volunteers table"
+        got_ticket: user_info.has_ticket, //TBD
+        comment: vol_data_model.get('comment')
     };
 }
 
@@ -122,7 +115,7 @@ var post_volunteers = function(req, res) {
             var result = [];
             DrupalAccess.get_user_by_email(mail_addresses).then(users_data => {
                 Promise.all((mail_addresses.map((mail_addr) => {
-                    var data_to_save = users_data.find((udata) => udata.email === mail_addr)
+                    var data_to_save = users_data ? users_data.find((udata) => udata.email === mail_addr) : undefined;
                     if (data_to_save.user_data === undefined) {
                         result.push({ email: mail_addr, status: 'NotFound' })
                     } else {

@@ -20,12 +20,14 @@ function _parse_user(res_body) {
     if (res_body.length === 0) {
         return undefined
     }
+    has_ticket_ = res_body[0]['PHP'] !== "";
     return {
         last_name: res_body[0]['Last name'],
         first_name: res_body[0]['First name'],
         uid: _parse_fron_anchor_tag(res_body[0]['Uid']),
         email: _parse_fron_anchor_tag(res_body[0]['E-mail']),
         phone: res_body[0]['Phone number'],
+        has_ticket: has_ticket_
     };
 }
 
