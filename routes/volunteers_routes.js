@@ -39,30 +39,23 @@ var get_roles = function (req, res) {
 
 function __has_permissions(user_id, perm_level) {
     return new Promise((resolve, reject) => {
+        //TODO - check if loggedin user has permissions...
         resolve();
-        /*
-        Volunteer.get_by_user(user_id, 1, 0).then((vol_data) => {
-            if (vol_data && vol_data.get('role_id') <= perm_level) {
-                resolve();
-            } else {
-                reject({ error: 'Not sufficient permission level' });
-            }
-        });
-        */
+
     });
 };
 
 function __merge_volunteer_info(vol_data_model, user_info) {
     return {
-        permission: vol_data_model.get('role_id'),
-        departmnet_id: vol_data_model.get('department_id'),
+        role_id: vol_data_model.get('role_id'),
+        department_id: vol_data_model.get('department_id'),
         user_id: vol_data_model.get('user_id'),
         first_name: user_info ? user_info.first_name : undefined,
         last_name: user_info ? user_info.last_name : undefined,
         email: user_info ? user_info.email : undefined,
         phone_number: user_info ? user_info.phone : undefined,
-        got_ticket: false, //TBD
-        comment: "from Volunteers table"
+        got_ticket: user_info.has_ticket, //TBD
+        comment: vol_data_model.get('comment')
     };
 }
 
@@ -121,34 +114,28 @@ var post_volunteers = function (req, res) {
             var mail_addresses = req.body.map(vol_add => vol_add.email);
             var result = [];
             DrupalAccess.get_user_by_email(mail_addresses).then(users_data => {
-
-                if (users_data) {
-                    Promise.all((mail_addresses.map((mail_addr) => {
-                        var data_to_save = users_data.find((udata) => udata.email === mail_addr)
-                        if (data_to_save.user_data === undefined) {
-                            result.push({ email: mail_addr, status: 'NotFound' })
-                        } else {
-                            vol_data = req.body.find(x => x.email === mail_addr);
-                            return Volunteer.forge({
-                                user_id: data_to_save.user_data.uid,
-                                department_id: req.params.department_id,
-                                role_id: vol_data.permission,
-                                event_id: CURRENT_EVENT
-                            }).save().then((save_result) => {
-                                log.info('Saved ' + JSON.stringify(save_result));
-                                result.push({ email: mail_addr, status: 'OK' });
-                            }).catch((err) => {
-                                result.push({ email: mail_addr, status: 'AlreadyExists' });
-                                log.info('Failed Adding user' + mail_addr + ' to department ' + req.params.department_id + ' ' + err);
-                            });
-                        }
-                    }))).then(save_statuses => {
-                        res.status(200).json(result)
-                    }).catch(err => { res.status(500).json({ message: err }) });
-                }
-                else {
-                    res.status(500).json({ message: "Error getting users_data!" })
-                }
+                Promise.all((mail_addresses.map((mail_addr) => {
+                    var data_to_save = users_data ? users_data.find((udata) => udata.email === mail_addr) : undefined;
+                    if (data_to_save.user_data === undefined) {
+                        result.push({ email: mail_addr, status: 'NotFound' })
+                    } else {
+                        vol_data = req.body.find(x => x.email === mail_addr);
+                        return Volunteer.forge({
+                            user_id: data_to_save.user_data.uid,
+                            department_id: req.params.department_id,
+                            role_id: req.params.role_id,
+                            event_id: CURRENT_EVENT
+                        }).save().then((save_result) => {
+                            log.info('Saved ' + JSON.stringify(save_result));
+                            result.push({ email: mail_addr, status: 'OK' });
+                        }).catch((err) => {
+                            result.push({ email: mail_addr, status: 'AlreadyExists' });
+                            log.info('Failed Adding user' + mail_addr + ' to department ' + req.params.department_id + ' ' + err);
+                        });
+                    }
+                }))).then(save_statuses => {
+                    res.status(200).json(result)
+                }).catch(err => { res.status(500).json({ message: err }) });
             });
         })
         .catch(err => res.status(403).json(err));
@@ -157,7 +144,7 @@ var post_volunteers = function (req, res) {
 ///PUT volunteer/department/department_id/volunteers/user_id
 var put_volunteer = function (req, res) {
     var new_data = {
-        role_id: req.body.permission,
+        role_id: req.body.role_id,
         type_in_shift_id: req.body.shift_type,
         comment: req.body.comment,
         is_production: req.body.is_production
@@ -215,8 +202,8 @@ module.exports = function (app, passport) {
     app.get('/volunteers/roles', /* userRole.isLoggedIn(), */ get_roles);
     app.get('/volunteers/volunteers', /* userRole.isLoggedIn(), */ get_volunteers);
     //user story 2
-    app.get('/volunteers/department/:department_id/volunteers', /* userRole.isLoggedIn(), */ get_department_volunteers);
-    app.post('/volunteers/department/:department_id/volunteers', /*userRole.isLoggedIn(), */ post_volunteers);
-    app.put('/volunteers/department/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(), */ put_volunteer);
-    app.delete('/volunteer/department/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(),*/ delete_volunteer);
+    app.get('/volunteers/departments/:department_id/volunteers', /* userRole.isLoggedIn(), */ get_department_volunteers);
+    app.post('/volunteers/departments/:department_id/volunteers', /*userRole.isLoggedIn(), */ post_volunteers);
+    app.put('/volunteers/departments/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(), */ put_volunteer);
+    app.delete('/volunteers/departments/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(),*/ delete_volunteer);
 }
