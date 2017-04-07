@@ -209,8 +209,8 @@ module.exports = function(app, passport) {
     app.get('/volunteers/roles', /* userRole.isLoggedIn(), */ get_roles);
     app.get('/volunteers/volunteers', /* userRole.isLoggedIn(), */ get_volunteers);
     //user story 2
-    app.get('/volunteers/department/:department_id/volunteers', /* userRole.isLoggedIn(), */ get_department_volunteers);
-    app.post('/volunteers/department/:department_id/volunteers', /*userRole.isLoggedIn(), */ post_volunteers);
-    app.put('/volunteers/department/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(), */ put_volunteer);
-    app.delete('/volunteer/department/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(),*/ delete_volunteer);
+    app.get('/volunteers/departments/:department_id/volunteers', /* userRole.isLoggedIn(), */ get_department_volunteers);
+    app.post('/volunteers/departments/:department_id/volunteers', /*userRole.isLoggedIn(), */ post_volunteers);
+    app.put('/volunteers/departments/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(), */ put_volunteer);
+    app.delete('/volunteers/departments/:department_id/volunteers/:user_id', /*userRole.isLoggedIn(),*/ delete_volunteer);
 }
