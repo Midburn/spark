@@ -103,7 +103,7 @@ var get_volunteers = function(req, res) {
 };
 //GET /volunteer/department/:department_id/volunteers
 var get_department_volunteers = function(req, res) {
-    return __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER)
+    return __has_permissions(1, VOLUNTEER_DEPT_MANAGER)
         .then(() => {
             //find all voluntters
             return __get_voluneer_info([req.params.department_id], CURRENT_EVENT)
@@ -116,7 +116,7 @@ var get_department_volunteers = function(req, res) {
 };
 ///POST volunteer/department/department_id/volunteers
 var post_volunteers = function(req, res) {
-    return __has_permissions(req.user.id, VOLUNTEER_DEPT_MANAGER)
+    return __has_permissions(1, VOLUNTEER_DEPT_MANAGER)
         .then(() => {
             var mail_addresses = req.body.map(vol_add => vol_add.email);
             var result = [];
