@@ -1,10 +1,10 @@
 # IntelliJ IDEA files
+.idea
 .idea/dataSources.local.xml
-.idea/workspace.xml
 .idea/dictionaries/*
 .idea/tasks.xml
-/.idea/runConfigurations/
-/.idea
+.idea/runConfigurations/
+*.iml
 
 # Visual Studio Code
 .vscode/
@@ -53,15 +53,27 @@ jspm_packages
 # Git merges
 *.orig
 
-/*.sqlite3
+# Development databases
+*.sqlite3
 
+# NVM folder
+.nvm
+
+# Slack
+*.slack_url
+
+# Python
 *.pyc
-/*.tar.gz
-/public/scripts/camps_bundle.js
-/*.slack_url
-/.nvm
-/bower_components
+
+# Archive files
+*.tar.gz
+
+# Bower
+bower_components
 
 # dotenv file (containing all of our secrets!!)
 .env
 deployment.key
+
+# Theme camps
+public/scripts/camps_bundle.js

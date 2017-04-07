@@ -28,9 +28,9 @@ block content
                 .col-xs-12
                     h5 #{t('camps:camps.desc')}
                 .col-xs-12.col-sm-6
-                    p.well #{camp.camp_desc_en}
+                    p.well(lang='en', style='direction:ltr;') #{camp.camp_desc_en}
                 .text-right.col-xs-12.col-sm-6
-                    p.well #{camp.camp_desc_he}
+                    p.well(lang='he', style='direction:rtl;') #{camp.camp_desc_he}
         .card.card__shad
             .publication.row
                 .col-xs-12
@@ -119,13 +119,13 @@ block content
                     ul.list-group.col-xs-6
                         li.list-group-item
                             span=t('camps:camps.time_active')
-                            span.badge #{details.camp_activity_time}
+                            span.badge #{details.camp_activity_time_i18n}
                         li.list-group-item
                             span #{t('camps:camps.child_friendly')}
                             span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
                         li.list-group-item
                             span #{t('camps:new.camp_noise_level')}
-                            span.badge #{details.noise_level}
+                            span.badge #{details.noise_level_i18n}
                         li.list-group-item
                             span #{t('camps:camps.art')}
                             span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}

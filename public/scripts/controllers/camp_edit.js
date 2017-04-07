@@ -1,10 +1,10 @@
-app.controller("campEditController", function ($scope, $http, $filter) {
+app.controller("campEditController", ($scope, $http, $filter) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
     $scope.status_options = ['open', 'closed']
     $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy']
 
-    function _getMembers() {
-        $http.get(`/camps/${camp_id}/members`).then(function (res) {
+    var _getMembers = () => {
+        $http.get(`/camps/${camp_id}/members`).then((res) => {
             var members = res.data.members;
             var _members = [];
             var approved_members = [];
@@ -20,13 +20,13 @@ app.controller("campEditController", function ($scope, $http, $filter) {
             $scope.approved_members = approved_members;
         });
     }
-    $scope.changeOrderBy = function (orderByValue) {
+    $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
     }
     if (typeof camp_id !== 'undefined') {
         _getMembers();
     }
-    $scope.addMember = function () {
+    $scope.addMember = () => {
         var camp_id = document.querySelector('#meta__camp_id').value;
         var new_user_email = $scope.camps_members_add_member
 
@@ -36,12 +36,10 @@ app.controller("campEditController", function ($scope, $http, $filter) {
         }
 
         $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
-            console.log(res);
             // update table with new data
             _getMembers();
-        }).catch(function (err) {
-            // TODO handle errors
-            console.log(err);
+        }).catch((err) => {
+            sweetAlert("Error!", "Something went wrong, please try again later " + err, "error");
         });
     }
     $scope.updateUser = (user_name, user_id, action_type) => {
@@ -75,7 +73,7 @@ app.controller("campEditController", function ($scope, $http, $filter) {
             confirmButtonText: "Yes",
             closeOnConfirm: false
         },
-            function () {
+            () => {
                 var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
                 $http.get(request_str).then((res) => {
                     sweetAlert(tpl.alert_success_1, tpl.alert_success_1, "success");
@@ -85,8 +83,7 @@ app.controller("campEditController", function ($scope, $http, $filter) {
                     }, 500)
                     _getMembers();
                 }).catch((err) => {
-                    console.log(err.message);
-                    sweetAlert("Error!", "Something went wrong, please try again later", "error");
+                    sweetAlert("Error!", "Something went wrong, please try again later " + err, "error");
                 })
             });
     }

@@ -21,10 +21,10 @@ block content
                             li.list-group-item
                                 span=t('whoami.camp')
                                 span.badge
-                                    if user.attributes.camp_id !== -1
-                                        a(href='/:lng/camps/#{user.attributes.camp_id}') #{user.attributes.camp_id}
-                                    else
-                                        #{t('camps:pending.status.wait')}
+                                    if user.isCampFree
+                                        #{t('camps:camps.no_camp_assigned')}
+                                    else     
+                                        a(href='/:lng/camps/#{camp.id}') #{camp.id} #{camp.camp_name_he}
                             li.list-group-item
                                 span=t('whoami.phone')
                                 span.badge #{user.attributes.cell_phone}
