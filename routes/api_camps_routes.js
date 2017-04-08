@@ -116,7 +116,7 @@ module.exports = (app, passport) => {
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
             Camp.forge(__camps_create_camp_obj(req, true)).save().then((camp) => {
-                __camps_update_status(camp.attributes.id, camp.attributes.main_contact, 'approve_new_mgr', camp.attributes.main_contact, res);
+                __camps_update_status(camp.attributes.id, camp.attributes.main_contact, 'approve_new_mgr', req.user, res);
             }).catch((e) => {
                 res.status(500).json({
                     error: true,
@@ -206,8 +206,15 @@ module.exports = (app, passport) => {
             });
         });
 
-    __camps_update_status = (camp_id, user_id, action, camp_mgr_id, res) => {
-        camp_mgr_id = parseInt(camp_mgr_id);
+    __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
+        var isAdmin = false;
+        var camp_mgr_id;
+        if (camp_mgr instanceof User) {
+            camp_mgr_id = camp_mgr.id;
+            isAdmin = camp_mgr.isAdmin;
+        } else {
+            camp_mgr_id = parseInt(camp_mgr);
+        }
         console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
         Camp.forge({ id: camp_id }).fetch().then((camp) => {
             camp.getCampUsers((users) => {
@@ -221,13 +228,13 @@ module.exports = (app, passport) => {
                 var user = camp.isUserInCamp(user_id);
 
                 // camp manager commands
-                if (action === 'approve_new_mgr' && camp_mgr_id === camp.attributes.main_contact) {
+                if (action === 'approve_new_mgr' && (camp_mgr_id === camp.attributes.main_contact || isAdmin)) {
                     new_status = 'approved';
                     if (!user) {
                         save_method.require = false;
                         save_method.method = 'insert';
                     }
-                } else if (camp.isCampManager(camp_mgr_id)) {
+                } else if (camp.isCampManager(camp_mgr_id) || isAdmin) {
                     if (user && action === "approve" && user.can_approve) {
                         mail_delivery.to_mail = user.email;
                         mail_delivery.subject = 'Spark: you have been approved!';
@@ -304,7 +311,7 @@ module.exports = (app, passport) => {
                                 emailDeliver(mail_delivery.to_mail, mail_delivery.subject, mail_delivery.template, { user: user }); // notify the user
                             } else {
                                 User.forge({ user_id: user_id }).fetch().then((user) => {
-                                    emailDeliver(user.email, mail_delivery.subject, mail_delivery.template, { user: user }); // notify the user
+                                    emailDeliver(user.attributes.email, mail_delivery.subject, mail_delivery.template, { user: user }); // notify the user
                                 });
                             }
                         }
@@ -339,7 +346,7 @@ module.exports = (app, passport) => {
         var action = req.params.action;
         var actions = ['approve', 'remove', 'revive', 'reject'];
         if (actions.indexOf(action) > -1) {
-            __camps_update_status(camp_id, user_id, action, req.user.id, res);
+            __camps_update_status(camp_id, user_id, action, req.user, res);
         } else {
             res.status(404).json({ error: true, data: { message: "illegal command (" + action + ")" } });
         }
@@ -663,21 +670,28 @@ module.exports = (app, passport) => {
         var camp_id = req.params.id
         var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
         if (!filter.test(user_email)) {
-            res.status(404).end();
+            res.status(500).json({ error: true, data: { message: 'Bad email entered!' } });
             return;
         }
         req.user.getUserCamps((camps) => {
-            if (req.user.isManagerOfCamp(req.params.id) || req.user.isAdmin) {
+            if (req.user.isManagerOfCamp(camp_id) || req.user.isAdmin) {
                 User.forge({ email: user_email }).fetch().then((user) => {
                     if (user !== null) {
-                        __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id, res);
+                        // check that user is only at one camp!
+                        user.getUserCamps((camps) => {
+                            if (camps.length === 0 || user.isUserInCamp(camp_id)) {
+                                __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
+                            } else {
+                                res.status(500).json({ error: true, data: { message: 'Already applied to different camp!' } });
+                            }
+                        });
                     } else {
                         User.forge().save({
                             updated_at: Date(),
                             created_at: Date(),
                             email: user_email
                         }).then((user) => {
-                            __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id, res);
+                            __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                         });
 
                     }

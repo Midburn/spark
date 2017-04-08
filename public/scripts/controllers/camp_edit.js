@@ -100,8 +100,9 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
             // update table with new data
             $scope.getMembers();
+            $scope.camps_members_add_member='';
         }).catch((err) => {
-            sweetAlert("Error!", "Something went wrong, please try again later " + err, "error");
+            sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
         });
     }
     $scope.updateUser = (user_name, user_id, action_type) => {
