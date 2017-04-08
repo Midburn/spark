@@ -244,7 +244,7 @@ module.exports = (app, passport) => {
                         new_status = 'pending';
                     } else if (action === "request_mgr") {
                         new_status = 'pending_mgr';
-                        mail_delivery.to_mail = user.email;
+                        mail_delivery.to_mail = '';
                         mail_delivery.subject = 'Spark: you have been requested to join camp';
                         mail_delivery.template = 'emails/camps/member_request';
                         if (!user) {
@@ -301,10 +301,10 @@ module.exports = (app, passport) => {
                         console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
                         if (mail_delivery.template !== '') {
                             if (mail_delivery.to_mail !== '') {
-                                emailDeliver(mail_delivery.to_mail, mail_delivery.subject, mail_delivery.template); // notify the user
+                                emailDeliver(mail_delivery.to_mail, mail_delivery.subject, mail_delivery.template, { user: user }); // notify the user
                             } else {
                                 User.forge({ user_id: user_id }).fetch().then((user) => {
-                                    emailDeliver(user.email, mail_delivery.subject, mail_delivery.template); // notify the user
+                                    emailDeliver(user.email, mail_delivery.subject, mail_delivery.template, { user: user }); // notify the user
                                 });
                             }
                         }
@@ -597,7 +597,7 @@ module.exports = (app, passport) => {
         }
     });
 
-    var emailDeliver = (recipient, subject, template) => {
+    var emailDeliver = (recipient, subject, template, props) => {
         /**
          * Deliver email request to camp manager
          * notifiying a user wants to join his camp
@@ -608,7 +608,7 @@ module.exports = (app, passport) => {
             recipient,
             mailConfig.from,
             subject,
-            template, {}
+            template, props
         )
     }
 
