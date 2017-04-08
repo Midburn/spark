@@ -27,6 +27,7 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
 
 app.controller("membersController", ($scope, $http) => {
     $http.get('/camps_all').then((res) => {
+        console.log(res.data);
         $scope.camps = res.data.camps;
     });
 
