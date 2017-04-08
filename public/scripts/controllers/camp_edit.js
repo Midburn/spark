@@ -64,33 +64,13 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
 
 app.controller("campEditController", ($scope, $http, $filter) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
-    $scope.status_options = ['open', 'closed']
-    $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy']
-
-<<<<<<< HEAD
+    $scope.status_options = ['open', 'closed'];
+    $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy'];
     $scope.getMembers = () => {
         angular_getMembers($http, $scope, camp_id);
         setTimeout(() => {
-            innerHeightChange()
+            innerHeightChange();
         }, 500)
-=======
-    var _getMembers = () => {
-        $http.get(`/camps/${camp_id}/members`).then((res) => {
-            var members = res.data.members;
-            var _members = [];
-            var approved_members = [];
-            for (var i in members) {
-                if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(members[i].member_status) > -1) {
-                    _members.push(members[i]);
-                }
-                if (['approved', 'approved_mgr'].indexOf(members[i].member_status) > -1) {
-                    approved_members.push(members[i]);
-                }
-            }
-            $scope.members = _members;
-            $scope.approved_members = approved_members;
-        });
->>>>>>> a7e07e8ae41651749ad76ba265c28606b01466a8
     }
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
