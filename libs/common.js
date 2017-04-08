@@ -1,5 +1,3 @@
-
-
 var functions = {
     __hasRole: function (role, roles) {
         return (roles && roles.split(',').indexOf(role) > -1);
