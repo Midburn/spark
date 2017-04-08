@@ -1,3 +1,4 @@
+const common = require('../libs/common').common;
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
 const constants = require('../models/constants.js');
@@ -80,9 +81,10 @@ module.exports = (app, passport) => {
             }
         }
         var __update_prop = function (propName) {
-            data[propName] = req.body[propName];
+            if (req.body[propName] !== undefined)
+                data[propName] = req.body[propName];
         }
-        if (isNew) {      
+        if (isNew) {
             data.created_at = Date();
         }
         if (isNew || req.user.isAdmin) {
@@ -102,7 +104,7 @@ module.exports = (app, passport) => {
             __update_prop('camp_location_street_time');
             __update_prop('camp_location_area');
         }
-        console.log(data);
+        // console.log(data);
         return data;
     }
     /**
@@ -113,13 +115,7 @@ module.exports = (app, passport) => {
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
             Camp.forge(__camps_create_camp_obj(req, true)).save().then((camp) => {
-                res.json({
-                    error: false,
-                    data: {
-                        message: 'camp created',
-                        camp_id: camp.attributes.id
-                    }
-                });
+                __camps_update_status(camp.attributes.id, camp.attributes.main_contact, 'approve_new_mgr', camp.attributes.main_contact, res);
             }).catch((e) => {
                 res.status(500).json({
                     error: true,
@@ -210,6 +206,7 @@ module.exports = (app, passport) => {
         });
 
     __camps_update_status = (camp_id, user_id, action, camp_mgr_id, res) => {
+        camp_mgr_id=parseInt(camp_mgr_id);
         console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
         Camp.forge({ id: camp_id }).fetch().then((camp) => {
             camp.getCampUsers((users) => {
@@ -223,7 +220,13 @@ module.exports = (app, passport) => {
                 var user = camp.isUserInCamp(user_id);
 
                 // camp manager commands
-                if (camp.isCampManager(camp_mgr_id)) {
+                if (action === 'approve_new_mgr' && camp_mgr_id === camp.attributes.main_contact) {
+                    new_status = 'approved';
+                    if (!user) {
+                        save_method.require = false;
+                        save_method.method = 'insert';
+                    }
+                } else if (camp.isCampManager(camp_mgr_id)) {
                     if (user && action === "approve" && user.can_approve) {
                         mail_delivery.to_mail = user.email;
                         mail_delivery.subject = 'Spark: you have been approved!';
@@ -304,7 +307,13 @@ module.exports = (app, passport) => {
                                 });
                             }
                         }
-                        res.status(200).json({ data: { member: data } });
+                        var res_data = { data: { member: data } };
+                        if (action === 'approve_new_mgr') {
+                            res_data.data.message = 'camp created';
+                            res_data.data.camp_id = camp_id;
+                        }
+                        res.status(200).json(res_data);
+
                     }
                     knex.raw(query).then(_after_update);
                 } else {
@@ -380,20 +389,34 @@ module.exports = (app, passport) => {
     });
 
     /**
-     * API: (GET) return active user list
+     * API: (GET) return active user list.
+     *  if req.user.isAdmin - return all users
+     *  if req.user.isCampManager - return all users from all camps
+     *  else return req.user
      * request => /users
      */
-    app.get('/users', userRole.isAdmin(), (req, res) => {
-        User.fetchAll().then((users) => {
-            res.status(200).json({ users: users.toJSON() })
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
+    app.get('/users', (req, res) => {
+        if (req.user.isAdmin) {
+            User.where('validated', '=', '1').fetchAll().then((users) => {
+                // User.forge({ validated: true }).fetchAll().then((users) => {
+                // console.log(users);
+                var _users = users.toJSON();
+                for (var i in _users) {
+                    common.__updateUserRec(_users[i]);
+                    // console.log(_users[i]);
                 }
+                res.status(200).json({ users: _users })
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
-        });
+        } else {
+            res.status(200).json({ users: [req.user.toJSON()] })
+        }
     });
 
     /**
@@ -649,6 +672,8 @@ module.exports = (app, passport) => {
                         __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id, res);
                     } else {
                         User.forge().save({
+                            updated_at: Date(),
+                            created_at: Date(),
                             email: user_email
                         }).then((user) => {
                             __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user.id, res);

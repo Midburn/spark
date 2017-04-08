@@ -1,3 +1,4 @@
+const common = require('../libs/common').common;
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
@@ -55,7 +56,6 @@ var User = bookshelf.Model.extend({
                 var first_camp;
                 var is_manager = false;
                 var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
-                // i18next.init({lng:'he'});
                 for (var i in camps) {
                     let _status = camps[i].member_status;
                     if (t !== undefined) { // translate function
@@ -64,11 +64,9 @@ var User = bookshelf.Model.extend({
                     if (!first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
+                    if (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr')) {
-                        // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
-                        // camps[i].member_status === 'approved_mgr') {
                         first_camp = camps[i];
                         is_manager = true;
                         break;
@@ -85,11 +83,8 @@ var User = bookshelf.Model.extend({
     validPassword: function (password) {
         return bcrypt.compareSync(password, this.attributes.password);
     },
-    __hasRole: function (role, roles) {
-        return (roles && roles.split(',').indexOf(role) > -1);
-    },
     hasRole: function (role) {
-        return this.__hasRole(role, this.attributes.roles);
+        return common.__hasRole(role, this.attributes.roles);
     },
     isManagerOfCamp: function (camp_id) {
         let isCampManager = false;
