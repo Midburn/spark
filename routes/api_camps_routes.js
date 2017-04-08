@@ -53,6 +53,58 @@ module.exports = (app, passport) => {
                 });
             });
         });
+
+    var __camps_create_camp_obj = function (req, isNew) {
+        var data = {
+            __prototype: constants.prototype_camps.THEME_CAMP.id,
+            event_id: constants.CURRENT_EVENT_ID,
+            // for update or insert, need to merge with create to be the same call
+            updated_at: Date(),
+            camp_desc_he: req.body.camp_desc_he,
+            camp_desc_en: req.body.camp_desc_en,
+            status: req.body.status,
+            type: req.body.type,
+            facebook_page_url: req.body.facebook_page_url,
+            contact_person_name: req.body.contact_person_name,
+            contact_person_email: req.body.contact_person_email,
+            contact_person_phone: req.body.contact_person_phone,
+            accept_families: req.body.accept_families,
+            camp_activity_time: req.body.camp_activity_time,
+            child_friendly: req.body.child_friendly,
+            noise_level: req.body.noise_level,
+            support_art: req.body.support_art,
+        }
+        var __update_prop_foreign = function (propName) {
+            if (parseInt(req.body[propName]) > 0) {
+                data[propName] = req.body[propName];
+            }
+        }
+        var __update_prop = function (propName) {
+            data[propName] = req.body[propName];
+        }
+        if (isNew) {      
+            data.created_at = Date();
+        }
+        if (isNew || req.user.isAdmin) {
+            __update_prop('camp_name_en');
+            __update_prop('camp_name_he');
+        }
+        __update_prop_foreign('main_contact_person_id');
+        __update_prop_foreign('main_contact');
+        __update_prop_foreign('moop_contact');
+        __update_prop_foreign('safety_contact');
+
+        if (req.user.isAdmin) {
+            __update_prop('public_activity_area_sqm');
+            __update_prop('public_activity_area_desc');
+            __update_prop('location_comments');
+            __update_prop('camp_location_street');
+            __update_prop('camp_location_street_time');
+            __update_prop('camp_location_area');
+        }
+        console.log(data);
+        return data;
+    }
     /**
       * API: (POST) create camp
       * request => /camps/new
@@ -60,39 +112,7 @@ module.exports = (app, passport) => {
     app.post('/camps/new',
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
-            Camp.forge({
-                // for new fields!
-                created_at: Date(),
-                __prototype: constants.prototype_camps.THEME_CAMP.id,
-                event_id: constants.CURRENT_EVENT_ID,
-                // for update or insert, need to merge with create to be the same call
-                updated_at: Date(),
-                camp_name_en: req.body.camp_name_en,
-                camp_name_he: req.body.camp_name_he,
-                camp_desc_he: req.body.camp_desc_he,
-                camp_desc_en: req.body.camp_desc_en,
-                status: req.body.status,
-                type: req.body.type,
-                contact_person_id: req.body.contact_person_id,
-                facebook_page_url: req.body.facebook_page_url,
-                contact_person_name: req.body.contact_person_name,
-                contact_person_email: req.body.contact_person_email,
-                contact_person_phone: req.body.contact_person_phone,
-                accept_families: req.body.accept_families,
-                main_contact: req.body.main_contact,
-                moop_contact: req.body.moop_contact,
-                safety_contact: req.body.safety_contact,
-                camp_activity_time: req.body.camp_activity_time,
-                child_friendly: req.body.child_friendly,
-                noise_level: req.body.noise_level,
-                public_activity_area_sqm: req.body.public_activity_area_sqm,
-                public_activity_area_desc: req.body.public_activity_area_desc,
-                support_art: req.body.support_art,
-                location_comments: req.body.location_comments,
-                camp_location_street: req.body.camp_location_street,
-                camp_location_street_time: req.body.camp_location_street_time,
-                camp_location_area: req.body.camp_location_area
-            }).save().then((camp) => {
+            Camp.forge(__camps_create_camp_obj(req, true)).save().then((camp) => {
                 res.json({
                     error: false,
                     data: {
@@ -118,37 +138,7 @@ module.exports = (app, passport) => {
         [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
         (req, res) => {
             Camp.forge({ id: req.params.id }).fetch().then((camp) => {
-                camp.save({
-                    // for update or insert
-                    updated_at: Date(),
-                    event_id: constants.CURRENT_EVENT_ID,
-                    __prototype: constants.prototype_camps.THEME_CAMP.id,
-                    camp_name_en: req.body.camp_name_en,
-                    camp_name_he: req.body.camp_name_he,
-                    camp_desc_he: req.body.camp_desc_he,
-                    camp_desc_en: req.body.camp_desc_en,
-                    status: req.body.status,
-                    type: req.body.type,
-                    contact_person_id: req.body.contact_person_id,
-                    facebook_page_url: req.body.facebook_page_url,
-                    accept_families: req.body.accept_families,
-                    contact_person_name: req.body.contact_person_name,
-                    contact_person_email: req.body.contact_person_email,
-                    contact_person_phone: req.body.contact_person_phone,
-                    main_contact: req.body.main_contact,
-                    moop_contact: req.body.moop_contact,
-                    safety_contact: req.body.safety_contact,
-                    camp_activity_time: req.body.camp_activity_time,
-                    child_friendly: req.body.child_friendly,
-                    noise_level: req.body.noise_level,
-                    public_activity_area_sqm: req.body.public_activity_area_sqm,
-                    public_activity_area_desc: req.body.public_activity_area_desc,
-                    support_art: req.body.support_art,
-                    location_comments: req.body.location_comments,
-                    camp_location_street: req.body.camp_location_street,
-                    camp_location_street_time: req.body.camp_location_street_time,
-                    camp_location_area: req.body.camp_location_area
-                }).then(() => {
+                camp.save(__camps_create_camp_obj(req, false)).then(() => {
                     res.json({ error: false, status: 'Camp updated' });
                     // });
                 }).catch((err) => {
@@ -571,7 +561,7 @@ module.exports = (app, passport) => {
                             }
                         });
                     }
-                },req.t);
+                }, req.t);
             });
         } else {
             res.status(404).json({
@@ -589,7 +579,7 @@ module.exports = (app, passport) => {
          * notifiying a user wants to join his camp
          * @return {boolean} should return true if mail delivered. FIXME: in mail.js
          */
-        console.log('Trying to send mail to '+recipient+' from '+mailConfig.from+': '+subject+', template '+template);
+        console.log('Trying to send mail to ' + recipient + ' from ' + mailConfig.from + ': ' + subject + ', template ' + template);
         mail.send(
             recipient,
             mailConfig.from,
@@ -624,12 +614,12 @@ module.exports = (app, passport) => {
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({ id: req.params.id }).fetch().then((camp) => {
             camp.getCampUsers((members) => {
-                if (camp.isCampManager(req.user.id,req.t) || req.user.isAdmin) {
+                if (camp.isCampManager(req.user.id, req.t) || req.user.isAdmin) {
                     res.status(200).json({ members: members });
                 } else {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });
                 }
-            },req.t);
+            }, req.t);
         }).catch((e) => {
             res.status(500).json({
                 error: true,
