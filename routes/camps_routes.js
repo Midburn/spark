@@ -58,7 +58,7 @@ module.exports = function (app, passport) {
             camp_name_en: req.query.c,
             breadcrumbs: req.breadcrumbs(),
             isNew: true,
-            camp: { type: '' },
+            camp: { type: '', id: 'new' },
             details: {}
         });
     });

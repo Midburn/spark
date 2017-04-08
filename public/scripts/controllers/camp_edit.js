@@ -1,19 +1,26 @@
 var angular_getMembers = function ($http, $scope, camp_id) {
-    $http.get(`/camps/${camp_id}/members`).then((res) => {
-        var members = res.data.members;
-        var _members = [];
-        var approved_members = [];
-        for (var i in members) {
-            if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(members[i].member_status) > -1) {
-                _members.push(members[i]);
+    if (camp_id === 'new') {
+        $http.get('/users').then((res) => {
+            $scope.members = [];
+            $scope.approved_members = res.data.users;
+        });
+    } else {
+        $http.get(`/camps/${camp_id}/members`).then((res) => {
+            var members = res.data.members;
+            var _members = [];
+            var approved_members = [];
+            for (var i in members) {
+                if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(members[i].member_status) > -1) {
+                    _members.push(members[i]);
+                }
+                if (['approved', 'approved_mgr'].indexOf(members[i].member_status) > -1) {
+                    approved_members.push(members[i]);
+                }
             }
-            if (['approved', 'approved_mgr'].indexOf(members[i].member_status) > -1) {
-                approved_members.push(members[i]);
-            }
-        }
-        $scope.members = _members;
-        $scope.approved_members = approved_members;
-    });
+            $scope.members = _members;
+            $scope.approved_members = approved_members;
+        });
+    }
 }
 var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     var camp_id = user_rec.camp_id;
@@ -76,7 +83,7 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         $scope.orderMembers = orderByValue;
     }
     if (typeof camp_id !== 'undefined') {
-        $scope.current_camp_id=camp_id;
+        $scope.current_camp_id = camp_id;
         $scope.getMembers();
     }
     $scope.lang = document.getElementById('meta__lang').value;
@@ -93,8 +100,9 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
             // update table with new data
             $scope.getMembers();
+            $scope.camps_members_add_member='';
         }).catch((err) => {
-            sweetAlert("Error!", "Something went wrong, please try again later " + err, "error");
+            sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
         });
     }
     $scope.updateUser = (user_name, user_id, action_type) => {
