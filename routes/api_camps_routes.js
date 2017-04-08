@@ -81,8 +81,9 @@ module.exports = (app, passport) => {
             }
         }
         var __update_prop = function (propName) {
-            if (req.body[propName] !== undefined)
+            if (req.body[propName] !== undefined) {
                 data[propName] = req.body[propName];
+            }
         }
         if (isNew) {
             data.created_at = Date();
@@ -206,7 +207,7 @@ module.exports = (app, passport) => {
         });
 
     __camps_update_status = (camp_id, user_id, action, camp_mgr_id, res) => {
-        camp_mgr_id=parseInt(camp_mgr_id);
+        camp_mgr_id = parseInt(camp_mgr_id);
         console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
         Camp.forge({ id: camp_id }).fetch().then((camp) => {
             camp.getCampUsers((users) => {
