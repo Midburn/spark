@@ -252,43 +252,7 @@ block content
                     
                 .row
                     .col-xs-12
-<<<<<<< HEAD
                     include partials/members_table
-=======
-                        table.table.table-striped.table-hover
-                            thead
-                                tr
-                                th(ng-click='changeOrderBy("id")') #
-                                th(ng-click='changeOrderBy("name")')=t('camps:members.name')
-                                th(ng-click='changeOrderBy("email")')=t('camps:members.email')
-                                th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
-                                th(ng-click='changeOrderBy("status")')=t('camps:members.status')
-                                th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.ticket_count')
-                                //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
-                                th()=t('camps:members.actions')
-                            tbody
-                                tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-                                    td {{member.user_id}}
-                                    td {{member.name}}
-                                    td {{member.email}}
-                                    td {{member.cell_phone}}
-                                    td {{member.member_status_i18n}}
-                                    td {{member.hasTicket}}
-                                    //- td {{member.earlyArrival ? 'yes':'no'}}
-                                    td
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
-                                            span(class='glyphicon glyphicon-remove')
-                                            span(class='sr-only' aria-hidden='false') Reject user
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")
-                                            span(class='glyphicon glyphicon-ok')
-                                            span(class='sr-only' aria-hidden='false') Approve user
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "manager")', ng-if="member.can_approve_mgr")
-                                            span(class='glyphicon glyphicon-king')
-                                            span(class='sr-only' aria-hidden='false') Approve user as manager
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove")
-                                            span(class='glyphicon glyphicon-remove')
-                                            span(class='sr-only' aria-hidden='false') Remove user
->>>>>>> a7e07e8ae41651749ad76ba265c28606b01466a8
             //- Card 4
             .card.card-forth.card-hide
                 h4=t('camps:edit.upload_header')

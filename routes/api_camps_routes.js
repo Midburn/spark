@@ -252,6 +252,7 @@ module.exports = (app, passport) => {
                         new_status = 'pending';
                     } else if (action === "request_mgr") {
                         new_status = 'pending_mgr';
+                        mail_delivery.to_mail = user.email;
                         mail_delivery.subject = 'Spark: you have been requested to join camp';
                         mail_delivery.template = 'emails/camps/member_request';
                         if (!user) {
@@ -590,6 +591,7 @@ module.exports = (app, passport) => {
          * notifiying a user wants to join his camp
          * @return {boolean} should return true if mail delivered. FIXME: in mail.js
          */
+        console.log('Trying to send mail to '+recipient+' from '+mailConfig.from+': '+subject+', template '+template);
         mail.send(
             recipient,
             mailConfig.from,
