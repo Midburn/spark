@@ -17,10 +17,10 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                     approved_members.push(members[i]);
                 }
             }
-        }
-        $scope.members = _members;
-        $scope.approved_members = approved_members;
-    });
+            $scope.members = _members;
+            $scope.approved_members = approved_members;
+        });
+    }
 }
 var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     var camp_id = user_rec.camp_id;
