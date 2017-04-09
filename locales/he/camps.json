@@ -8,6 +8,7 @@
             "desc": "תפריט ניהול מחנה, ניתן לערוך את פרטי המחנה, החברים בו ועוד..",
             "join_request": "בקשה להצטרף למחנה",
             "join_request_desc": "הבקשה להצטרפות תשלח עם הפרטים האלו",
+            "join_request_note": "יש לוודא שהפרטים הרשומים כאן אכן נכונים. במידה ולא, ניתן לגשת לדף הפרופיל ולערוך אותם.",
             "join_close": "סגור",
             "join_send": "שלח בקשה",
             "arrow": "←",
@@ -35,7 +36,7 @@
             "camp_stat": "פרופיל מחנה",
             "my_camp": "המחנה שלי",
             "join_camp": "הצטרף למחנה"
-        },   
+        },
         "admin_index": {
             "all_camps": "ניהול מחנות",
             "all_members": "ניהול חברים",
@@ -104,13 +105,13 @@
         "join": {
             "join_a_camp": "הצטרף למחנה",
             "header_title": "הצטרף למחנה",
-            "camp_choosing_title": "בבקשה לבחור את המחנה שלך. מנהל המחנה צריך לאשר את הבקשה גדי לוודא שייכות למחנה.",
+            "camp_choosing_title": "בבקשה לבחור את המחנה שלך. מנהל המחנה צריך לאשר את הבקשה כדי לוודא שייכות למחנה.",
             "request": "שלח בקשת הצטרפות",
             "name_en": "שם המחנה (אנגלית)"
         },
         "pending": {
           "header_title": "בקשת הצטרפות למחנה",
-          "subtitle": "בקשת ההצטרות למחנה כפי שנשלחה על ידיך:",
+          "subtitle": "בקשת ההצטרפות למחנה כפי שנשלחה על ידיך:",
           "status": {
             "wait": "ממתין לאישור",
             "user_cancel": "בקשה בוטלה"
@@ -143,6 +144,9 @@
           "camp_name_en": "מחנה משוייך (אנגלית)",
           "status": "סטאטוס שיוך",
           "has_ticket": "יש כרטיס",
+          "actions": "פעולות",
+          "ticket_count": "מספר כרטיסים",
+          "actions": "פעולות",
           "search": "חפש חבר במחנה",
           "add_member": "הוספת משתמש",
           "early_arrival": "הגעה מוקדמת",
@@ -150,7 +154,13 @@
           "approve": "אשר משתמש",
           "approve_as_manager": "אשר משתמש כמנהל",
           "remove": "הסר משתמש",
-          "choose_camp": "בחר או חפש מחנה"
+          "choose_camp": "בחר או חפש מחנה",
+          "status_pending": "ממתין לאישור מנהלת המחנה",
+          "status_approved": "חברת מחנה מאושרת",
+          "status_rejected": "נדחה על ידי מנהלת המחנה",
+          "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
+          "status_approved_mgr": "חברת מחנה מאושרת",
+          "status_supplier": "מאושר כספק"
         },
         "camps": {
             "title": "מחנה",
@@ -182,7 +192,8 @@
             "name": "שם",
             "phone": "טלפון",
             "email": "אימייל",
-            "facebook_page_url_link": "עמוד הפייסבוק של המחנה"
+            "facebook_page_url_link": "עמוד הפייסבוק של המחנה",
+            "no_camp_assigned": "ללא מחנה"
         },
         "edit": {
             "view": "צפה במחנה",
@@ -200,7 +211,7 @@
             "desc_he": "תיאור (עברית)",
             "contact_title": "אנשי קשר",
             "main_contact": "מנהל מחנה",
-            "moop_contact": "איש קשר מופ",
+            "moop_contact": "אחראי חשל\"ש",
             "safety_contact": "איש קשר בטיחות",
             "behavior_title": "התנהגות",
             "type": "גיפט המחנה",
@@ -216,7 +227,7 @@
             "open": "פתוח",
             "closed": "סגור",
             "inactive": "לא פעיל",
-            "publication": "פומביות",
+            "publication": "מופיע באתר מידברן?",
             "public": "מחנה פומבי",
             "publish": "פרסם",
             "unpublish": "הסרה מפרסום",

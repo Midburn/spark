@@ -26,6 +26,17 @@ var npo_membership_statuses = [
     {id: 'applied_for_membership'}
 ];
 
+var prototype_camps = {
+    THEME_CAMP : {
+        id : 'theme_camp',
+        name : 'Theme Camps'
+    },
+    ART_EXHIBIT : {
+        id : 'art_exhibit',
+        name : 'Art Exhibit',
+    },
+};
+
 module.exports = {
 
     // -- system constant --
@@ -33,13 +44,15 @@ module.exports = {
     CURRENT_EVENT_ID: "MIDBURN2017",
 
     // -- table names --
-
+    EVENTS_TABLE_NAME: "events",
     USERS_TABLE_NAME: "users",
     PAYMENTS_TABLE_NAME: "payments",
     NPO_MEMBERS_TABLE_NAME: "npo_members",
     CAMPS_TABLE_NAME: "camps",
     CAMP_MEMBERS_TABLE_NAME: "camp_members",
     DRUPAL_USERS_TABLE_NAME: "drupal_users",
+
+    prototype_camps: prototype_camps,
 
     VOL_DEPARTMENTS_TABLE_NAME: "vol_departments",
     VOLUNTEERS_TABLE_NAME: "volunteers",
@@ -64,7 +77,12 @@ module.exports = {
     NPO_MEMBERSHIP_STATUSES: get_enum(npo_membership_statuses),
     NPO_MEMBERSHIP_STATUSES_DEFAULT: get_default_enum(npo_membership_statuses),
 
-    CAMP_TYPES: ['food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other'],
+    /**
+     * The prototype describes the camp types. 
+     *    camps - regular camps
+     *    art_exhibit - art_exhibit
+     */
+    CAMP_PROTOTYPE: [prototype_camps.THEME_CAMP.id,prototype_camps.ART_EXHIBIT.id],
 
     CAMP_STATUSES: ['deleted', 'open', 'closed', 'inactive'],
 
@@ -72,15 +90,17 @@ module.exports = {
 
     CAMP_NOISE_LEVELS: ['quiet' ,'medium' ,'noisy' ,'very noisy'],
 
+    CAMP_TYPES: ['food', 'drinking/bar', 'music', 'workshops', 'art-supporting', 'other'],
+
     /**
      * Camp Member Status:
      *      pending - a camp member requested to join camp, waiting for camp manager to approve.
-     *      mgr_pending - a camp manager request to add member, waiting for member to approve.
+     *      pending_mgr - a camp manager request to add member, waiting for member to approve.
      *      approved - a member is approved as a member
      *      rejected - a member rejected from camp. reject reason will be on addedinfo_json.last_rejected_reason
      *      approved_mgr - a member is approved as a member, and has manager rights to camp.
      *      supplier - member is supplier, for the supplier notification later.
      */
-    CAMP_MEMBER_STATUS: ['approved','pending','mgr_pending','rejected','approved_mgr','supplier','deleted'],
+    CAMP_MEMBER_STATUS: ['approved','pending','pending_mgr','rejected','approved_mgr','supplier','deleted'],
 
 };

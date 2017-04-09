@@ -83,9 +83,12 @@
         "open_source": "קוד פתוח",
         "want_to_help": "רוצה לעזור לנו לקודד?",
         "toc": "תנאי השימוש באתר ומדיניות פרטיות",
-        "toc_link": "http://midburn.org/he-terms-and-privacy/",
-        "links": {
-
-        }
+        "toc_link": "http://midburn.org/he-terms-and-privacy/"
+    },
+    "whoami": {
+      "gender": "מין",
+      "camp": "מחנה",
+      "phone": "טלפון",
+      "socials": "רשתות חברתיות"
     }
 }

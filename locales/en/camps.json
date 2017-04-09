@@ -8,6 +8,7 @@
             "desc": "Camp management dashboard, here you can manage your camp, members, documents and more...",
             "join_request": "Join a camp request",
             "join_request_desc": "The request to the camp manager will be sent with these details",
+            "join_request_note": "Make sure they are currect before sending the request. if they arn't, please go to you'r profile and edit.",
             "join_close": "Close",
             "join_send": "Send Request",
             "arrow": "→",
@@ -143,6 +144,9 @@
           "camp_name_en": "Assigned Camp (English)",
           "status": "Member Status",
           "has_ticket": "Has Ticket",
+          "actions": "Actions",
+          "ticket_count": "Ticket Count",
+          "actions": "Actions",
           "search": "Search Camp Member",
           "add_member": "Add Member",
           "early_arrival": "Early Arrival",
@@ -150,7 +154,13 @@
           "approve": "Approve Member",
           "approve_as_manager": "Approve as Manager",
           "remove": "Remove Member",
-          "choose_camp": "Choose or search a camp"
+          "choose_camp": "Choose or search a camp",
+          "status_pending": "Waiting for camp manager approval",
+          "status_approved": "Approved",
+          "status_rejected": "Camp manager did not approve request",
+          "status_pending_mgr": "Waiting for member acceptance",
+          "status_approved_mgr": "Approved as Manager",
+          "status_supplier": "Supplier"
         },
         "camps": {
             "title": "Camp",
@@ -182,7 +192,8 @@
             "name": "Name",
             "phone": "Phone",
             "email": "Email",
-            "facebook_page_url_link": "Camp Facebook Page"
+            "facebook_page_url_link": "Camp Facebook Page",
+            "no_camp_assigned": "No Camp"
         },
         "edit": {
             "view": "View Camp",
@@ -216,7 +227,7 @@
             "open": "Open",
             "closed": "Closed",
             "inactive": "Inactive",
-            "publication": "Publication",
+            "publication": "Available in Midburn.org?",
             "public": "Camp is public",
             "publish": "Publish",
             "unpublish": "Unpublish",

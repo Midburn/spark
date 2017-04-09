@@ -5,6 +5,13 @@ block content
     input.hidden.meta(id='meta__camp_id', value='#{camp.id}')
     .camps.camp_edit(ng-app="ngCamps", ng-controller="campEditController")
         .heading.card.card__shad
+            .card__actions
+                .dropdown
+                    button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                        span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
+                    ul.dropdown-menu(aria-labelledby="camp_card_menu")
+                      li
+                        a(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             if(isNew)
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
@@ -12,7 +19,6 @@ block content
                 span.label.label-info #{t('camps:edit.camp')} # #{camp.id}
                 h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
                 h6 #{t('camps:edit.since')}: #{camp.created_at}
-                a.Btn.Btn__sm(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
         .controls.row
             .col-xs-12    
                 //- Card switcher
@@ -47,12 +53,12 @@ block content
                     .panel-body
                         .information
                             .row
-                                .col-md-4
-                                    .col-xs-12
-                                        //- TODO - fix for if(isNew)
-                                        label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
-                                        select.form-control(id='camp_contact_person_id', name='contact_person_id')
-                                            option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.name }} ({{ member.email }})
+                                //- .col-md-4
+                                //-     .col-xs-12
+                                //-         //- TODO - fix for if(isNew)
+                                //-         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
+                                //-         select.form-control(id='camp_contact_person_id', name='contact_person_id')
+                                //-             option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.name }} ({{ member.email }})
                                 .col-md-8
                                     .col-xs-12
                                         label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
@@ -91,10 +97,10 @@ block content
                                             label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
                                             
                                             if camp.web_published == '1'
-                                                span.badge.bg__green=t('camps:edit.public')
+                                                span.badge.bg__green=t('camps:camps.yes')
                                                 button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
                                             else
-                                                span.badge.bg__red=t('camps:edit.invisible')
+                                                span.badge.bg__red=t('camps:camps.no')
                 h4=t('camps:edit.contact_title')
                 .camp-leaders.panel
                     .panel-body
@@ -103,17 +109,17 @@ block content
                                 .col-xs-12
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
                                     select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_moop_contact')=t('camps:edit.moop_contact')
                                     select.form-control(id='camp_moop_contact', name='moop_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_safety_contact')=t('camps:edit.safety_contact')
                                     select.form-control(id='camp_safety_contact', name='safety_contact')
-                                        option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
             //- Card 2
             .card.card-second.card-hide
                 h4=t('camps:edit.behavior_title')
@@ -124,50 +130,50 @@ block content
                                 .col-xs-12
                                     label(for='camp_activity_time', data-camp-status='#{camp.status}') #{t('camps:edit.camp_activity_time')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=(camp.camp_activity_time.indexOf('morning') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('morning') > -1 ? "checked" : undefined) : undefined)
                                             label(for="activity_time_morning")
                                                 | #{t('camps:new.camp_activity_time_morning')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=(camp.camp_activity_time.indexOf('drinks') > -1 ? "noon" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('drinks') > -1 ? "noon" : undefined) : undefined)
                                             label(for="activity_time_noon")
                                                 | #{t('camps:new.camp_activity_time_noon')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=(camp.camp_activity_time.indexOf('evening') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('evening') > -1 ? "checked" : undefined) : undefined)
                                             label(for="camp_activity_time_evening")
                                                 | #{t('camps:new.camp_activity_time_evening')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=(camp.camp_activity_time.indexOf('night') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('night') > -1 ? "checked" : undefined) : undefined)
                                             label(for="camp_activity_time_night")
                                                 | #{t('camps:new.camp_activity_time_night')}
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_music", name="type_music", value="music", checked=(camp.type.indexOf('music') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_music", name="type_music", value="music", checked=camp.type ? (camp.type.indexOf('music') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_music")
                                                 | #{t('camps:edit.music')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_drinks", name="type_drinks", value="drinks", checked=(camp.type.indexOf('drinks') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_drinks", name="type_drinks", value="drinks", checked=camp.type ? (camp.type.indexOf('drinks') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_drinks")
                                                 | #{t('camps:edit.drinking')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_workshop", name="type_workshop", value="workshop", checked=(camp.type.indexOf('workshop') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_workshop", name="type_workshop", value="workshop", checked=camp.type ? (camp.type.indexOf('workshop') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_workshop")
                                                 | #{t('camps:edit.workshop')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_art", name="type_art", value="art", checked=(camp.type.indexOf('art') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_art", name="type_art", value="art", checked=camp.type ? (camp.type.indexOf('art') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_art")
                                                 | #{t('camps:edit.art')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_lecture", name="type_lecture", value="lecture", checked=(camp.type.indexOf('lecture') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_lecture", name="type_lecture", value="lecture", checked=camp.type ? (camp.type.indexOf('lecture') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_lecture")
                                                 | #{t('camps:edit.lecture')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_food", name="type_food", value="food", checked=(camp.type.indexOf('food') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="type_food", name="type_food", value="food", checked=camp.type ? (camp.type.indexOf('food') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_food")
                                                 | #{t('camps:edit.food')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=(camp.type.indexOf('other') > -1 ? "checked" : undefined))
+                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type ? (camp.type.indexOf('other') > -1 ? "checked" : undefined) : undefined)
                                             label(for="camp_type_other_checkbox")
                                                 | #{t('camps:edit.other')}
                                             input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
@@ -225,60 +231,28 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_location_street')=t('camps:edit.location_street')
-                                    input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : '#{details.camp_location_street}'))
+                                    input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : '#{details.camp_location_street}'), readonly)
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_location_street_time')=t('camps:edit.location_time')
-                                    input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : '#{details.camp_location_street_time}'))
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_location_area')=t('camps:edit.location_area')
-                                    input.form-control(id='camp_location_area', type='number', name='public_camp_location_area', value=(isNew ? '' : '#{details.camp_location_area}'))
+                                    input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : '#{details.camp_location_street_time}'), readonly)
+                            //- .col-md-4
+                            //-     .col-xs-12
+                            //-         label(for='camp_location_area')=t('camps:edit.location_area')
+                            //-         input.form-control(id='camp_location_area', type='number', name='public_camp_location_area', value=(isNew ? '' : '#{details.camp_location_area}'))
             //- Card 3 - Manage Members
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 h4=t('camps:admin_index.all_members_table')
                     span.badge {{members.length}}
                 .form-inline
-                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="temp - add a member")
+                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder=(language == 'en' ? 'Add new member' : 'הוסף חבר חדש'))
                     button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
                 .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
                     
                 .row
                     .col-xs-12
-                        table.table.table-striped.table-hover
-                            thead
-                                tr
-                                th(ng-click='changeOrderBy("id")') #
-                                th(ng-click='changeOrderBy("name")')=t('camps:members.name')
-                                th(ng-click='changeOrderBy("email")')=t('camps:members.email')
-                                th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
-                                th(ng-click='changeOrderBy("status")')=t('camps:members.status')
-                                th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.has_ticket')
-                                th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
-                                th() Actions
-                            tbody
-                                tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-                                    td {{member.user_id}}
-                                    td {{member.name}}
-                                    td {{member.email}}
-                                    td {{member.cell_phone}}
-                                    td {{member.member_status}}
-                                    td {{member.hasTicket ? 'yes':'no'}}
-                                    td {{member.earlyArrival ? 'yes':'no'}}
-                                    td
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
-                                            span(class='glyphicon glyphicon-remove')
-                                            span(class='sr-only' aria-hidden='true') Reject user
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")
-                                            span(class='glyphicon glyphicon-ok')
-                                            span(class='sr-only' aria-hidden='true') Approve user
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "manager")', ng-if="member.can_approve_mgr")
-                                            span(class='glyphicon glyphicon-king')
-                                            span(class='sr-only' aria-hidden='true') Approve user as manager
-                                        a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_delete")
-                                            span(class='glyphicon glyphicon-remove')
-                                            span(class='sr-only' aria-hidden='true') Remove user
+                    include partials/members_table
             //- Card 4
             .card.card-forth.card-hide
                 h4=t('camps:edit.upload_header')
