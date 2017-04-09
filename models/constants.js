@@ -33,8 +33,8 @@ var prototype_camps = {
     },
     ART_EXHIBIT : {
         id : 'art_exhibit',
-        name : 'Art Exhibit',
-    },
+        name : 'Art Exhibit'
+    }
 };
 
 module.exports = {
@@ -78,7 +78,7 @@ module.exports = {
     NPO_MEMBERSHIP_STATUSES_DEFAULT: get_default_enum(npo_membership_statuses),
 
     /**
-     * The prototype describes the camp types. 
+     * The prototype describes the camp types.
      *    camps - regular camps
      *    art_exhibit - art_exhibit
      */

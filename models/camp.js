@@ -37,7 +37,7 @@ var Camp = bookshelf.Model.extend({
                     users[i].can_remove = ['rejected', 'pending_mgr',].indexOf(_status) > -1;
                     users[i].can_approve = ['pending', 'rejected'].indexOf(_status) > -1 && users[i].validated;
                     users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id;
-                    
+
                     if (((_this.attributes.main_contact === users[i].user_id || common.__hasRole('camp_manager', users[i].roles))
                         && users[i].member_status === 'approved')
                         || (users[i].member_status === 'approved_mgr')) {
@@ -111,5 +111,5 @@ var CampMember = bookshelf.Model.extend({
 // Create the model and expose it
 module.exports = {
     Camp: Camp,
-    CampMember: CampMember,
+    CampMember: CampMember
 };
