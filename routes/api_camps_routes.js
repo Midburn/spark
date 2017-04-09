@@ -60,7 +60,7 @@ module.exports = (app, passport) => {
             __prototype: constants.prototype_camps.THEME_CAMP.id,
             event_id: constants.CURRENT_EVENT_ID,
             // for update or insert, need to merge with create to be the same call
-            updated_at: Date(),
+            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             camp_desc_he: req.body.camp_desc_he,
             camp_desc_en: req.body.camp_desc_en,
             status: req.body.status,
@@ -86,7 +86,7 @@ module.exports = (app, passport) => {
             }
         }
         if (isNew) {
-            data.created_at = Date();
+            data.created_at =(new Date()).toISOString().substring(0, 19).replace('T', ' ');
         }
         if (isNew || req.user.isAdmin) {
             __update_prop('camp_name_en');
@@ -498,7 +498,7 @@ module.exports = (app, passport) => {
     app.get('/camps/:id/join', userRole.isLoggedIn(), (req, res) => {
         var user = {
             id: req.user.attributes.user_id,
-            full_name: [req.user.attributes.first_name, req.user.attributes.first_name].join(', '),
+            full_name: [req.user.attributes.first_name, req.user.attributes.last_name].join(', '),
             email: req.user.attributes.email
         }
         var camp = {
@@ -519,7 +519,8 @@ module.exports = (app, passport) => {
                                 data: {
                                     user: user,
                                     camp: {
-                                        id: camp.attributes.managers[0].user_id,
+                                        id: camp.attributes.id,
+                                        manager_id: camp.attributes.managers[0].user_id,
                                         manager_email: camp.attributes.managers[0].email
                                     }
                                 }
@@ -687,8 +688,8 @@ module.exports = (app, passport) => {
                         });
                     } else {
                         User.forge().save({
-                            updated_at: Date(),
-                            created_at: Date(),
+                            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                            created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                             email: user_email
                         }).then((user) => {
                             __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);

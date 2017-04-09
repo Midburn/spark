@@ -66,24 +66,10 @@ var Camp = bookshelf.Model.extend({
             }
         }
     },
-    t_array: function (key, value_str, t) {
-        if (value_str !== undefined && value_str && value_str !== '') {
-            var values = value_str.split(',');
-            for (let i in values) {
-                let t_value = t(key + '_' + values[i]);
-                if (t_value !== '') {
-                    values[i] = t_value;
-                }
-            }
-            return values.join(', ');
-        } else {
-            return '';
-        }
-    },
     init_t: function (t) {
         if (t !== undefined) {
-            this.attributes.camp_activity_time_i18n = this.t_array('camps:new.camp_activity_time', this.attributes.camp_activity_time, t);
-            this.attributes.noise_level_i18n = this.t_array('camps:new.camp_noise_level', this.attributes.noise_level, t);
+            this.attributes.camp_activity_time_i18n = common.t_array('camps:new.camp_activity_time', this.attributes.camp_activity_time, t);
+            this.attributes.noise_level_i18n = common.t_array('camps:new.camp_noise_level', this.attributes.noise_level, t);
         }
     },
     virtuals: {

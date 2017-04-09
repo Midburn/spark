@@ -10,6 +10,20 @@ var functions = {
             user.name = user.email;
         }
     },
+    t_array: function (key, value_str, t) {
+        if (value_str !== undefined && value_str && value_str !== '') {
+            var values = value_str.split(',');
+            for (let i in values) {
+                let t_value = t(key + '_' + values[i]);
+                if (t_value !== '') {
+                    values[i] = t_value;
+                }
+            }
+            return values.join(', ');
+        } else {
+            return '';
+        }
+    },    
 }
 
 // Create the model and expose it
