@@ -74,6 +74,7 @@ var givenUserAdminTableAjaxUrl = function() {
 
 var adminTableAjaxShouldContainAdminUser = function() {
     return request.get(givenUserAdminTableAjaxUrl()).expect(200).expect(function(res) {
+        console.log(res.text);
         _(JSON.parse(res.text).data)
             .find({
                 email: ADMIN_USER_EMAIL,
