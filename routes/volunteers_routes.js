@@ -2,7 +2,6 @@ var volunteers_model = require('../models/volunteers');
 var Department = volunteers_model.Department;
 var Role = volunteers_model.VolunteerRole;
 var Volunteer = volunteers_model.Volunteer;
-//const userRole = require('../libs/user_role');
 var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
 var log = require('../libs/logger')(module);
 var _ = require('lodash');
@@ -120,18 +119,18 @@ var post_volunteers = function(req, res) {
                     if (data_to_save === undefined || data_to_save.user_data === undefined) {
                         result.push({ email: mail_addr, status: 'NotFound' })
                     } else {
-                        vol_data = req.body.find(x => x.email === mail_addr);
+                        var department_id = _.get(req, 'params.department_id');
                         return Volunteer.forge({
                             user_id: data_to_save.user_data.uid,
-                            department_id: req.params.department_id,
-                            role_id: req.params.role_id,
+                            department_id,
+                            role_id: _.get(req, 'params.role_id'),
                             event_id: CURRENT_EVENT
                         }).save().then((save_result) => {
                             log.info('Saved ' + JSON.stringify(save_result));
                             result.push({ email: mail_addr, status: 'OK' });
                         }).catch((err) => {
                             result.push({ email: mail_addr, status: 'AlreadyExists' });
-                            log.info('Failed Adding user' + mail_addr + ' to department ' + req.params.department_id + ' ' + err);
+                            log.info('Failed Adding user' + mail_addr + ' to department ' + department_id + ' ' + err);
                         });
                     }
                 }))).then(save_statuses => {
