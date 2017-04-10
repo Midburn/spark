@@ -18,7 +18,9 @@ var givenAdminUserIsRegistered = function() {
         email: ADMIN_USER_EMAIL
     }).fetch().then(function(user) {
         if (user) {
-            return Promise.resolve(user);
+            console.log('user already exists...!'+user.attributes.roles);
+            return user.save({roles:'admin'});
+            // return Promise.resolve(user);
         } else {
             var newUser = new User({
                 email: ADMIN_USER_EMAIL,
@@ -29,6 +31,7 @@ var givenAdminUserIsRegistered = function() {
                 roles: 'admin'
             });
             newUser.generateHash(ADMIN_USER_PASSWORD);
+            console.log('creating new user');
             return newUser.save();
         }
     });
