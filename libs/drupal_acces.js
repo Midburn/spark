@@ -5,7 +5,7 @@ var DRUPAL_PROFILE_API_URL = process.env.DRUPAL_PROFILE_API_URL;
 var DRUPAL_PROFILE_API_USER = process.env.DRUPAL_PROFILE_API_USER;
 var DRUPAL_PROFILE_API_PASSWORD = process.env.DRUPAL_PROFILE_API_PASSWORD;
 
-function _parse_fron_anchor_tag(uid_string) {
+function parseFromAnchorTag(uid_string) {
     var re = /<a.*>(.+)<\/a>/g;
     m = re.exec(uid_string);
     re.lastIndex = 0;
@@ -16,7 +16,7 @@ function _parse_fron_anchor_tag(uid_string) {
     }
 }
 
-function parse_user(res_body) {
+function parseUser(res_body) {
     if (res_body.length === 0) {
         return undefined
     }
@@ -25,13 +25,13 @@ function parse_user(res_body) {
         last_name: res_body[0]['Last name'],
         first_name: res_body[0]['First name'],
         uid: res_body[0]['uid'],
-        email: _parse_fron_anchor_tag(res_body[0]['E-mail']),
+        email: parseFromAnchorTag(res_body[0]['E-mail']),
         phone: res_body[0]['Phone number'],
         has_ticket: res_body[0]['PHP'] !== ""
     };
 }
 
-var login = function(forceLogin) {
+var login = (function() {
     let request_agent = false;
     return function(forceLogin) {
         return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ var login = function(forceLogin) {
             }
         });
     };
-};
+})();
 
 var search_multiple_uids = function(login_data, uid_arr) {
     var tasks = uid_arr.map((uid) => {
@@ -83,7 +83,7 @@ var search = function(login_data, email, uid, is_retry) {
             //.accept('application/json')
             .query(qs)
             .then((res) => {
-                var user_data_ = parse_user(res.body)
+                var user_data_ = parseUser(res.body)
                 user_response = { email: qs.mail, uid: qs.uid, user_data: user_data_ };
                 resolve(user_response);
             }).catch((err) => {

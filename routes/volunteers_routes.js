@@ -184,7 +184,7 @@ var get_volunteering_info = function(req, res) {
 
 var delete_volunteer = function(req, res) {
     //validate ....
-    new Volunteer({ user_id: req.params.user_id, department_id: req.params.department_id })
+    new Volunteer({ user_id: req.params.user_id, department_id: req.params.department_id, event_id: CURRENT_EVENT })
         .destroy()
         .then(function(model) {
             res.status(200);
