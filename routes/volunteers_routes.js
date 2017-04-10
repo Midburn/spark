@@ -5,14 +5,15 @@ var Volunteer = volunteers_model.Volunteer;
 //const userRole = require('../libs/user_role');
 var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
 var log = require('../libs/logger')(module);
+var _ = require('lodash');
 
 //roles ... consider moving to some other file.
 const VOLUNTEER_MANAGER = 0;
 const VOLUNTEER_DEPT_MANAGER = 2;
 const CURRENT_EVENT = 0;
 //GET /volunteer/departments
-var get_departments = function (req, res) {
-    Department.fetchAll().then(function (deps) {
+var get_departments = function(req, res) {
+    Department.fetchAll().then(function(deps) {
         res.json(deps.toJSON());
     }).catch((err) => {
         res.status(500).json({
@@ -23,9 +24,9 @@ var get_departments = function (req, res) {
         });
     });
 };
-//GET /volunteer/volunteers
-var get_roles = function (req, res) {
-    Role.fetchAll().then(function (deps) {
+//GET /volunteer/roles
+var get_roles = function(req, res) {
+    Role.fetchAll().then(function(deps) {
         res.json(deps.toJSON());
     }).catch((err) => {
         res.status(500).json({
@@ -37,7 +38,7 @@ var get_roles = function (req, res) {
     });
 }
 
-function __has_permissions(user_id, perm_level) {
+function has_permissions(user_id, perm_level) {
     return new Promise((resolve, reject) => {
         //TODO - check if loggedin user has permissions...
         resolve();
@@ -45,28 +46,28 @@ function __has_permissions(user_id, perm_level) {
     });
 };
 
-function __merge_volunteer_info(vol_data_model, user_info) {
+function merge_volunteer_info(vol_data_model, user_info) {
     return {
         role_id: vol_data_model.get('role_id'),
         department_id: vol_data_model.get('department_id'),
         user_id: vol_data_model.get('user_id'),
-        first_name: user_info ? user_info.first_name : undefined,
-        last_name: user_info ? user_info.last_name : undefined,
-        email: user_info ? user_info.email : undefined,
-        phone_number: user_info ? user_info.phone : undefined,
-        got_ticket: user_info.has_ticket, //TBD
+        first_name: _.get(user_info, 'first_name'),
+        last_name: _.get(user_info, 'last_name'),
+        email: _.get(user_info, 'email'),
+        phone_number: _.get(user_info, 'phone'),
+        got_ticket: _.get(user_info, 'has_ticket'),
         comment: vol_data_model.get('comment')
     };
 }
 
-function __get_voluneer_info(department_id_arr, event_id) {
+function get_voluneer_info(department_id_arr, event_id) {
     return new Promise((resolve, reject) => {
         Volunteer.query((qb) => {
-            qb.where('event_id', event_id);
-            if (department_id_arr !== undefined) {
-                qb.whereIn('department_id', department_id_arr);
-            }
-        })
+                qb.where('event_id', event_id);
+                if (department_id_arr !== undefined) {
+                    qb.whereIn('department_id', department_id_arr);
+                }
+            })
             .fetchAll()
             .then((vol_data_col) => {
                 log.debug('Found ' + vol_data_col.lengh + ' in dept. ' + department_id_arr);
@@ -75,7 +76,7 @@ function __get_voluneer_info(department_id_arr, event_id) {
                     .then(user_data_col => {
                         var result = vol_data_col.models.map((vol_data_model) => {
                             var user_data = user_data_col.find(x => x.uid === vol_data_model.get('user_id'));
-                            return __merge_volunteer_info(vol_data_model, user_data.user_data);
+                            return merge_volunteer_info(vol_data_model, user_data.user_data);
                         });
                         resolve(result);
                     });
@@ -84,10 +85,10 @@ function __get_voluneer_info(department_id_arr, event_id) {
 }
 
 //GET /volunteer/volunteers
-var get_volunteers = function (req, res) {
-    __has_permissions(1, VOLUNTEER_MANAGER)
+var get_volunteers = function(req, res) {
+    has_permissions(1, VOLUNTEER_MANAGER)
         .then(() => {
-            return __get_voluneer_info(req.query.department_id, CURRENT_EVENT);
+            return get_voluneer_info(req.query.department_id, CURRENT_EVENT);
         })
         .then((vol_info_col) => {
             res.status(200).json(vol_info_col);
@@ -95,11 +96,11 @@ var get_volunteers = function (req, res) {
         .cat
 };
 //GET /volunteer/department/:department_id/volunteers
-var get_department_volunteers = function (req, res) {
-    return __has_permissions(1, VOLUNTEER_DEPT_MANAGER)
+var get_department_volunteers = function(req, res) {
+    return has_permissions(1, VOLUNTEER_DEPT_MANAGER)
         .then(() => {
             //find all voluntters
-            return __get_voluneer_info([req.params.department_id], CURRENT_EVENT)
+            return get_voluneer_info([req.params.department_id], CURRENT_EVENT)
         })
         .then((vol_info_col) => {
             res.status(200).json(vol_info_col);
@@ -108,8 +109,8 @@ var get_department_volunteers = function (req, res) {
 
 };
 ///POST volunteer/department/department_id/volunteers
-var post_volunteers = function (req, res) {
-    return __has_permissions(1, VOLUNTEER_DEPT_MANAGER)
+var post_volunteers = function(req, res) {
+    return has_permissions(1, VOLUNTEER_DEPT_MANAGER)
         .then(() => {
             var mail_addresses = req.body.map(vol_add => vol_add.email);
             var result = [];
@@ -142,15 +143,19 @@ var post_volunteers = function (req, res) {
 };
 
 ///PUT volunteer/department/department_id/volunteers/user_id
-var put_volunteer = function (req, res) {
+var put_volunteer = function(req, res) {
     var new_data = {
-        role_id: req.body.role_id,
-        type_in_shift_id: req.body.shift_type,
-        comment: req.body.comment,
-        is_production: req.body.is_production
+        role_id: _.get(req, 'body.role_id'),
+        type_in_shift_id: _.get(req, 'body.shift_type'),
+        comment: _.get(req, 'body.comment'),
+        is_production: _.get(req, 'body.is_production')
     };
     Volunteer
-        .where({ user_id: req.params.user_id, department_id: req.params.department_id, event_id: CURRENT_EVENT })
+        .where({
+            user_id: _.get(req, 'params.user_id'),
+            department_id: _.get(req, 'params.department_id'),
+            event_id: CURRENT_EVENT
+        })
         .save(new_data, { method: 'update', patch: true })
         .then((vol) => {
             res.status(200).json(vol.toJSON());
@@ -164,9 +169,9 @@ var put_volunteer = function (req, res) {
         });
 };
 
-var get_volunteering_info = function (req, res) {
-    var user_id = req.user.id;
-    Volunteer.get_by_user(user_id).then(function (vols) {
+var get_volunteering_info = function(req, res) {
+    var user_id = _.get(req, 'user.id');
+    Volunteer.get_by_user(user_id).then(function(vols) {
         res.json(vols.toJSON());
     }).catch((err) => {
         res.status(500).json({
@@ -178,11 +183,11 @@ var get_volunteering_info = function (req, res) {
     });
 }
 
-var delete_volunteer = function (req, res) {
+var delete_volunteer = function(req, res) {
     //validate ....
     new Volunteer({ user_id: req.params.user_id, department_id: req.params.department_id })
         .destroy()
-        .then(function (model) {
+        .then(function(model) {
             res.status(200);
         }).catch((err) => {
             res.status(500).json({
@@ -194,7 +199,7 @@ var delete_volunteer = function (req, res) {
         });
 }
 
-module.exports = function (app, passport) {
+module.exports = function(app, passport) {
 
     //user story 1
     app.get('/volunteers/info', /*userRole.isLoggedIn(),*/ get_volunteering_info);

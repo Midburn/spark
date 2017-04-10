@@ -158,16 +158,16 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
 // API
-require('./routes/api_routes.js')(app, passport);
+require('./routes/api_routes')(app, passport);
 
-require('./routes/api_camps_routes.js')(app, passport);
+require('./routes/api_camps_routes')(app, passport);
 
 // Camps
-require('./routes/camps_routes.js')(app, passport);
+require('./routes/camps_routes')(app, passport);
 
-require('./routes/api/v1/camps.js')(app) // CAMPS PUBLIC API
+require('./routes/api/v1/camps')(app) // CAMPS PUBLIC API
 
-require('./routes/volunteers_routes.js')(app, passport);
+require('./routes/volunteers_routes')(app, passport);
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
