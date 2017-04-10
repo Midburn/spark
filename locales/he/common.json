@@ -54,7 +54,7 @@
     "welcome_home": "ברוכים הבאות הביתה, {{user}}!",
     "welcome_home_female": "ברוכה הבאה הביתה, {{user}}!",
     "welcome_home_male": "ברוך הבא הביתה, {{user}}!",
-    "welcome_spark": "ברוכים הבאות ל- Spark!",
+    "welcome_spark": "מידברן ספארק",
     "reset_password_email_subject": "שחזור סיסמה עבור Spark",
     "back_to_login": "חזרה למסך כניסה",
     "reset_password_email_sent": "מייל עם הנחיות נוספות נשלח לכתובת שסיפקת",
@@ -67,6 +67,12 @@
     "facebook": {
         "login": "התחבר באמצעות פייסבוק"
     },
+    "breadcrumbs": {
+        "home": "עמוד ראשי",
+        "npo": "עמותת מידברן",
+        "npo_join": "הצטרפות לעמותה",
+        "whoami": "עריכת פרופיל"
+    },
     "footer": {
         "scrolltop": "חזור למעלה",
         "visit_homepage": "בקרו באתר מידברן",
@@ -74,14 +80,15 @@
         "report_error": "דווחו על תקלה",
         "ask_question": "רוצה לשאול שאלה?",
         "help_translate": "עזרו לנו לתרגם",
-        "spark": "Spark הינו פרוייקט",
         "open_source": "קוד פתוח",
-        "project": "של מידברן-טק.",
         "want_to_help": "רוצה לעזור לנו לקודד?",
         "toc": "תנאי השימוש באתר ומדיניות פרטיות",
-        "toc_link": "http://midburn.org/he-terms-and-privacy/",
-        "links": {
-
-        }
+        "toc_link": "http://midburn.org/he-terms-and-privacy/"
+    },
+    "whoami": {
+      "gender": "מין",
+      "camp": "מחנה",
+      "phone": "טלפון",
+      "socials": "רשתות חברתיות"
     }
 }

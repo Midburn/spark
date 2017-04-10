@@ -1,0 +1,110 @@
+extends ../../includes/page
+block content
+    .camps.camp_admin_index(ng-app="ngCamps")
+        .container.col-md-12
+            h1=t('camps:dash.title')
+            p.lead.text-muted=t('camps:dash.desc')
+        .controls.row
+            .col-xs-12
+                div.block-center
+                    div.input-group
+                        a.Btn.Btn__default.card-switcher#1(href='javascript:;', role='button')=t('camps:admin_index.all_camps')
+                        a.Btn.Btn__transparent.card-switcher#2(href='javascript:;', role='button')=t('camps:admin_index.all_members')
+                        a.Btn.Btn__transparent.card-switcher#3(href='javascript:;', role='button')=t('camps:admin_index.docs')
+                        a.Btn.Btn__green.card-switcher#4(href='javascript:;', role='button')
+                            span.glyphicon.glyphicon-plus(aria-hidden="true")
+                            span=t('camps:admin_index.new')
+            
+        .cards--wrapper.card__shad
+            //- Card 1
+            .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageCampsController")
+                h4=t('camps:admin_index.all_camps_table')
+                .controls.row
+                  .col-xs-12.col-md-9
+                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t('camps:stats.search')}")
+                table.table.table-stats.table-striped.table-hover#admin_camps
+                    thead
+                        tr.headers
+                            th(ng-click='changeOrderBy("id")') #
+                            th.camp_name_en(ng-click='changeOrderBy("name")')=t('camps:stats.name_en')
+                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t('camps:stats.contact_person')
+                            th.status(ng-click='changeOrderBy("status")')=t('camps:stats.status')
+                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t('camps:stats.last_update')
+                            th.hidden-xs(ng-click='changeOrderBy("created_at")')=t('camps:stats.created_at')
+                            th.published(ng-click='changeOrderBy("published")')=t('camps:stats.published')
+                            th.facebook_page_url=t('camps:stats.facebook_page_url')
+                            th.admin-edit=t('camps:stats.edit')
+                            th.admin-remove=t('camps:stats.remove')
+                    tbody
+                        tr(ng-repeat="camp in camps | filter: searchCamp | orderBy: orderCamps")
+                            td {{ camp.id }}
+                            td 
+                                a(ng-href=`/${language}/camps/{{camp.id}}`) 
+                                    {{ camp.camp_name_en }}
+                            td {{ camp.contact_person_name }}
+                            td {{ camp.status }}
+                            td {{ camp.updated_at.split('GMT')[0] }}
+                            td {{ camp.created_at.split('GMT')[0] }}
+                            td {{ camp.web_public }}
+                            td
+                                a(ng-href='{{ camp.facebook_page_url }}', target='_blank')
+                                    i(class='fa fa-facebook-official')
+                            td
+                                a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
+                                    span(class='glyphicon glyphicon-pencil')
+                                    span(class='sr-only' aria-hidden='true') Edit Camp
+                            td
+                                button.Btn(ng-click='removeCamp(camp.id)')
+                                    span(class='glyphicon glyphicon-trash')
+                                    span(class='sr-only' aria-hidden='true') Remove Camp
+
+            //- Card 2
+            .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
+                h4=t('camps:admin_index.all_members_table')
+                .controls.row
+                    .col-xs-12.col-md-3
+                        ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
+                            if(language === 'en')
+                                ui-select-match(placeholder="#{t('camps:members.choose_camp')}") {{$select.selected.camp_name_en}}
+                                ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
+                                    small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                    span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
+                            else
+                                ui-select-match(dir='rtl', placeholder="#{t('camps:members.choose_camp')}") {{$select.selected.camp_name_he}}
+                                ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
+                                    small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                    span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
+                    .col-xs-12.col-md-9
+                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:members.search')}")
+                include partials/members_table
+                
+            //- Card 3
+            .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive
+                h4=t('camps:admin_index.docs_table')
+                table.table.table-striped.table-hover
+                    thead
+                        tr.headers
+                            //- TODO - fix header names
+                            th #
+                            th.camp_name_en=t('camps:stats.name_en')
+                            th.contact_person=t('camps:stats.contact_person')
+                            th.status=t('camps:stats.status')
+                            th.hidden-xs=t('camps:stats.last_update')
+                            th.hidden-xs=t('camps:stats.created_at')
+                            th.published=t('camps:stats.published')
+                            th.facebook_page_url=t('camps:stats.facebook_page_url')
+                            th.admin-edit=t('camps:stats.edit')
+                            th.admin-remove=t('camps:stats.remove')
+                    tbody
+            //- Card 4
+            .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
+                h2=t('camps:new.header_title')
+                h4=t('camps:new.name_choosing_title')
+                .col-sm-8.col-xs-12
+                    .pos-r
+                        label=t('camps:new.name_en')
+                        input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
+                        span.indicator
+                            span.glyphicon
+                .col-sm-4.col-xs-12
+                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t('camps:btn_continue')

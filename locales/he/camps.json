@@ -1,12 +1,14 @@
 {
-        "nav": "מחנה",
+        "nav": "המחנה שלי",
+        "nav_admin": "ניהול מחנות",
         "btn_save_camp": "שמור",
         "btn_continue": "המשך",
         "dash": {
             "title": "מחנות נושא ואמנות",
-            "desc": "לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק.",
+            "desc": "תפריט ניהול מחנה, ניתן לערוך את פרטי המחנה, החברים בו ועוד..",
             "join_request": "בקשה להצטרף למחנה",
             "join_request_desc": "הבקשה להצטרפות תשלח עם הפרטים האלו",
+            "join_request_note": "יש לוודא שהפרטים הרשומים כאן אכן נכונים. במידה ולא, ניתן לגשת לדף הפרופיל ולערוך אותם.",
             "join_close": "סגור",
             "join_send": "שלח בקשה",
             "arrow": "←",
@@ -23,6 +25,27 @@
                 "title": "תוכניה"
             }
         },
+        "breadcrumbs": {
+            "root": "דף בית",
+            "manage": "נהל מחנות נושא",
+            "new": "מחנה חדש",
+            "stats": "נתוני מחנה",
+            "members": "חברי מחנה",
+            "docs": "מסמכים וטפסים",
+            "edit": "עריכת מחנה",
+            "camp_stat": "פרופיל מחנה",
+            "my_camp": "המחנה שלי",
+            "join_camp": "הצטרף למחנה"
+        },
+        "admin_index": {
+            "all_camps": "ניהול מחנות",
+            "all_members": "ניהול חברים",
+            "docs": "מסמכים שהועלו",
+            "new": "צור מחנה חדש",
+            "all_camps_table": "מחנות",
+            "all_members_table": "חברי מחנות",
+            "docs_table": "מסמכים וקבצים"
+        },
         "new": {
             "header_title": "יצירת מחנה חדש",
             "name_choosing_title": "בחר שם למחנה, השם חייב להיות ייחודי ולכן המערכת תוודא את הבחירה שלך. היעזר בסבלנות.",
@@ -30,6 +53,7 @@
             "btn_create": "צור מחנה",
             "basic_info": "פרטים בסיסיים",
             "details": "פרטי מחנה",
+            "files": "קבצים וטפסים",
             "name_card_header": "שם מחנה ותיאור",
             "name_he": "שם מחנה (עברית)",
             "name_en": "שם מחנה (אנגלית)",
@@ -37,6 +61,10 @@
             "desc_en": "תיאור מחנה (אנגלית)",
             "contact_card_header": "אנשי קשר למחנה",
             "type": "סוג מחנה",
+            "type_music": "מוסיקה",
+            "type_food": "אוכל",
+            "type_drinks": "שתיה",
+            "type_other": "אחר",
             "main_contact": "מנהל מחנה",
             "moop_contact": "איש קשר חשל\"ש",
             "safety_contact": "אחראי בטיחות",
@@ -67,16 +95,29 @@
             "create_camp_request_text": "הבקשה שלך תשלח עם הפרטים הבאים",
             "send_request": "שלח בקשה",
             "close": "סגור",
-            "website_publication": "אתרים",
+            "website_publication": "פרסום באתר",
             "contact_person_id": "איש קשר",
+            "contact_person_name": "שם איש קשר",
+            "contact_person_email": "אימייל איש קשר",
+            "contact_person_phone": "טלפון אישר קשר",
             "facebook_page_url": "קישור לעמוד פייסבוק"
         },
         "join": {
             "join_a_camp": "הצטרף למחנה",
             "header_title": "הצטרף למחנה",
-            "camp_choosing_title": "הרשימה מטה מכילה מחנות פתוחים להצתרפות חברים חדשים. נא לבחור מהרשימה.",
+            "camp_choosing_title": "בבקשה לבחור את המחנה שלך. מנהל המחנה צריך לאשר את הבקשה כדי לוודא שייכות למחנה.",
             "request": "שלח בקשת הצטרפות",
             "name_en": "שם המחנה (אנגלית)"
+        },
+        "pending": {
+          "header_title": "בקשת הצטרפות למחנה",
+          "subtitle": "בקשת ההצטרפות למחנה כפי שנשלחה על ידיך:",
+          "status": {
+            "wait": "ממתין לאישור",
+            "user_cancel": "בקשה בוטלה"
+          },
+          "cancel_request": "בטל בקשה",
+          "approve_request": "אשר בקשה"
         },
         "manage": {
             "manage_a_camp": "נהל מחנות"
@@ -96,7 +137,30 @@
             "search": "חפש מחנה"
         },
         "members": {
-          "title": "משתתפים במחנה"
+          "title": "משתתפים במחנה",
+          "name": "שם משתמש",
+          "email": "כתובת אימייל",
+          "phone": "מספר טלפון",
+          "camp_name_en": "מחנה משוייך (אנגלית)",
+          "status": "סטאטוס שיוך",
+          "has_ticket": "יש כרטיס",
+          "actions": "פעולות",
+          "ticket_count": "מספר כרטיסים",
+          "actions": "פעולות",
+          "search": "חפש חבר במחנה",
+          "add_member": "הוספת משתמש",
+          "early_arrival": "הגעה מוקדמת",
+          "reject": "דחה משתמש",
+          "approve": "אשר משתמש",
+          "approve_as_manager": "אשר משתמש כמנהל",
+          "remove": "הסר משתמש",
+          "choose_camp": "בחר או חפש מחנה",
+          "status_pending": "ממתין לאישור מנהלת המחנה",
+          "status_approved": "חברת מחנה מאושרת",
+          "status_rejected": "נדחה על ידי מנהלת המחנה",
+          "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
+          "status_approved_mgr": "חברת מחנה מאושרת",
+          "status_supplier": "מאושר כספק"
         },
         "camps": {
             "title": "מחנה",
@@ -123,17 +187,23 @@
             "time_active": "זמן פעילות",
             "yes": "כן",
             "no": "לא",
-            "publication": "אתרים",
+            "publication": "פרסום באתר",
+            "publication_subtitle": "הפרטים הרשומים מטה יופיעו באתר במידה והמחנה מפורסם.",
             "name": "שם",
             "phone": "טלפון",
-            "email": "אימייל"
+            "email": "אימייל",
+            "facebook_page_url_link": "עמוד הפייסבוק של המחנה",
+            "no_camp_assigned": "ללא מחנה"
         },
         "edit": {
+            "view": "צפה במחנה",
             "title": "עורך",
             "camp": "מחנה",
             "since": "מאז",
             "basic_info": "פרטים",
             "details": "פרטים בסיסיים",
+            "members": "עריכת חברים",
+            "files": "קבצים וטפסים",
             "name_and_desc": "שם מחנה ותיאור",
             "name_en": "שם (אנגלית)",
             "name_he": "שם (עברית)",
@@ -141,21 +211,23 @@
             "desc_he": "תיאור (עברית)",
             "contact_title": "אנשי קשר",
             "main_contact": "מנהל מחנה",
-            "moop_contact": "איש קשר מופ",
+            "moop_contact": "אחראי חשל\"ש",
             "safety_contact": "איש קשר בטיחות",
             "behavior_title": "התנהגות",
-            "type": "סוג",
+            "type": "גיפט המחנה",
             "food": "אוכל",
             "drinking": "שתיה/בר",
             "music": "מוסיקה",
-            "workshops": "סדנא",
+            "workshop": "סדנא",
+            "art": "אמנות",
+            "lecture": "הרצאה",
             "art_supporting": "תמיכה באמנות",
             "other": "אחר",
-            "status": "סטטוס",
+            "status": "האם המחנה פתוח למצטרפים חדשים?",
             "open": "פתוח",
             "closed": "סגור",
             "inactive": "לא פעיל",
-            "publication": "פומביות",
+            "publication": "מופיע באתר מידברן?",
             "public": "מחנה פומבי",
             "publish": "פרסם",
             "unpublish": "הסרה מפרסום",
@@ -167,11 +239,19 @@
             "public_activity_area_sqm": "שטח ציבורי (מ״ר)",
             "public_activity_area_desc": "תיאור שטח ציבורי",
             "support_art": "תמיכה באמנות",
-            "location_title": "מיקום מחנה",
+            "location_title": "מיקום מחנה - כאן תוכלי לראות את מיקומך בעיר לאחר שניצור את המפה",
             "location_comments": "הערות",
             "location_street": "רחוב",
             "location_time": "שעה",
-            "location_area": "אזור"
+            "location_area": "אזור",
+            "upload": "העלאת מסמכים וקבצים",
+            "upload_header": "העלאת קבצים",
+            "contact_person_name": "שם איש קשר",
+            "contact_person_email": "אימייל איש קשר",
+            "contact_person_phone": "טלפון אישר קשר",
+            "security_file": "תיק בטיחות",
+            "members_header": "נהל חברי מחנה",
+            "search_member": "מצא חבר מחנה"
         },
         "program": {
             "page_title": "צור פעילות חדשה",
@@ -189,5 +269,16 @@
             "access": "תאימות",
             "kids_friendly": "מתאים לילדים",
             "adult_only": "למבוגרים בלבד"
+        },
+        "docs": {
+            "title": "מסמכים וטפסים",
+            "search": "חפש מחנה",
+            "doc_type": "סוג מסמך",
+            "doc_name": "שם מסמך",
+            "upload_date": "תאריך העלאה",
+            "upload_data": "תוכן העלאה",
+            "doc_status": "סטטוס",
+            "last_doc_status": "סטטוס אחרון ע״י",
+            "camp_name_en": "שם מחנה (אנגלית)"
         }
 }

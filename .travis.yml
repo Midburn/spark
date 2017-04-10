@@ -1,12 +1,14 @@
 language: node_js
+node_js:
+  - "7"
 cache:
   directories:
-    - node_modules
+    # - node_modules
     - bower_components
 script:
-  - npm install -g knex bower
-  - bower install
-  - knex migrate:latest
+  - yarn add bower
+  - ./node_modules/.bin/bower install
+  - ./node_modules/.bin/knex migrate:latest
   - npm test
   - .travis/deploy.sh
 after_success:

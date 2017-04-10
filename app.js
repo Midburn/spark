@@ -172,9 +172,16 @@ modules.addRoutes(app, passport);
 // NP
 app.use('/:lng/npo', require('./routes/npo_routes'));
 
+// API
+require('./routes/api_routes.js')(app, passport);
+
+require('./routes/api_camps_routes.js')(app, passport);
+
 // Camps
 require('./routes/api_camps_routes.js')(app, passport);
 require('./routes/camps_routes.js')(app, passport);
+
+require('./routes/api/v1/camps.js')(app) // CAMPS PUBLIC API
 
 // modules
 require('./routes/main_routes.js')(app, passport);

@@ -18,14 +18,14 @@ describe('Main routes', function () {
     it('greets in Hebrew', function testSlash(done) {
         request
             .get('/he/login')
-            .expect(/ברוכים הבאות/)
+            .expect(/כניסה למערכת/)
             .expect(200, done);
     });
 
     it('greets in English', function testSlash(done) {
         request
             .get('/en/login')
-            .expect(/Welcome to Spark/)
+            .expect(/Login/)
             .expect(200, done);
     });
 
@@ -43,4 +43,38 @@ describe('Main routes', function () {
             .expect(302, done);
     });
 
+    it('logs-in a drupal user', function loginDrupalUser(done) {
+        var email = 'omerpines@hotmail.com';
+        // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
+        var clear_password = '123456';
+        Promise.all([
+            knex(User.prototype.tableName).where('email', email).del(),
+            knex(DrupalUser.prototype.tableName).where('name', email).del()
+        ])
+        // .then(function () {
+        //     return DrupalUser.forge({
+        //         name: email,
+        //         pass: hashed_password,
+        //         status: 1
+        //     }).save();
+        // })
+        .then(function () {
+            return request
+                .post('/he/login')
+                .send({
+                    email: email,
+                    password: clear_password
+                })
+                .expect(302)
+                .expect('Location', 'home');
+        }).then(function () {
+            // spark user should be updated with email and password
+            return User.forge({
+                email: email
+            }).fetch().then(function (user) {
+                user.attributes.password.length.should.be.above(20);
+                user.attributes.email.should.equal(email);
+            });
+        }).then(done);
+    });
 });

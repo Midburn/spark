@@ -16,7 +16,10 @@ block wrapper
                     li( class="#{path[2] === 'camps' ? 'active' : undefined }" )
                         a( href="/#{language}/camps" )=t('camps:nav')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
-                        a( href="npo" )=t('npo')
+                        a( href="/#{language}/npo" )=t('npo')
+                    if(user.isAdmin) 
+                        li( class="#{path[2] === 'camps-admin' ? 'active' : undefined }" )
+                            a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
@@ -27,21 +30,24 @@ block wrapper
                             span.caret
                         ul.dropdown-menu
                             li
-                                a( href="/he#{req.url.substr(3)}" )
+                                a( href="/he#{req.originalUrl.substr(3)}" )
                                     img( src="/images/flags/he.gif" )
                                     |&nbsp;
                                     span=t('hebrew')
                             li
-                                a( href="/en#{req.url.substr(3)}" )
+                                a( href="/en#{req.originalUrl.substr(3)}" )
                                     img( src="/images/flags/en.gif" )
                                     |&nbsp;
                                     span=t('english')
                     li
-                        //TODO replace 'a' tag with something else
-                        a #{user.attributes.first_name} #{user.attributes.last_name}
+                        a(href='/#{language}/whoami', aria-label="#{user.attributes.first_name} #{user.attributes.last_name}")
+                            span.glyphicon.glyphicon-user(aria-hidden="true")
                     li
                         a( href= '/#{language}/logout' )=t('logout')
-    .container
+    .main.container
         #ajax_indicator.hide
-        include crumbs
+        if (breadcrumbs !== undefined)
+            include crumbs
+
         block content
+    include footer

@@ -12,14 +12,14 @@ This is a step-by-step guide to getting you up and running with Spark so you can
 * Fork the project on GitHub (this can be done in the GitHub web interface)
 * clone your forked repo
 
-```
-$ git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
+```shell
+git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
 
 To be able to sync with Midburn repository you should add it as a remote:
 
-```
-$ git remote add midburn https://github.com/Midburn/Spark.git
+```shell
+git remote add midburn https://github.com/Midburn/Spark.git
 ```
 
 ### Installing Node
@@ -29,26 +29,26 @@ Optional - It is recommended to use [nvm](https://github.com/creationix/nvm#inst
 
 We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
 
-```
-$ cd spark
-spark$ nvm install
-spark$ nvm use
+```shell
+cd spark
+nvm install
+nvm use
 ```
 
 ### Installing Node modules
 
-```
-$ cd spark
-spark$ npm install
-spark$ npm install -g nodemon knex bower
+```shell
+cd spark
+npm install
+npm install -g nodemon knex bower
 ```
 
 ### Installing bower dependencies
 
 [Bower](https://bower.io/) provides web static files dependencies
 
-```
-spark$ bower install
+```shell
+bower install
 ```
 
 ### Setting up the database
@@ -59,26 +59,28 @@ The database file is located (by default) at spark/dev.sqlite3
 
 We use Knex to run and manage the migrations.
 
-```
-spark$ knex migrate:latest
+```shell
+knex migrate:latest
 ```
 
 See [/docs/database.md](/docs/development/database.md) for more details about our database setup.
 
 ## Light the spark
 
-Fire up the server after installation
+Fire up the server after installation, with `nodemon` to monitor changes and re-run the server:
 
-`spark$ nodemon`
+```shell
+nodemon server.js
+```
 
-and navigate to [http://localhost:3000]().
+and navigate to [http://localhost:3000](http://localhost:3000).
 
 **Note** nodemon should take care of refreshing the server when you make changes.
 
 ### Creating an admin account
 
 After lighting the spark, if this is the first time or if you have recreated the DB
-browse to the development console at [http://localhost:3000/dev]() and select **Create admin user**.
+browse to the development console at [http://localhost:3000/dev](http://localhost:3000/dev) and select **Create admin user**.
 
 This will create a user: **a**, password: **a**
 

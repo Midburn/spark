@@ -1,16 +1,16 @@
 extends ../../includes/page
 block content
-    .camps.camp_create.row
-        .heading.card.card__shad.row
+    .camps.camp_create
+        .heading.card.card__shad
             .col-md-12
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
         .controls.row
             .col-xs-12
                 //- Card switcher
-                button.Btn.Btn__default.card-switcher--card1=t('camps:new.basic_info')
-                button.Btn.Btn__transparent.card-switcher--card2=t('camps:new.details')
-        .cards--wrapper.card__shad.row
+                button.Btn.Btn__default.card-switcher#1=t('camps:new.basic_info')
+                button.Btn.Btn__transparent.card-switcher#2=t('camps:new.details')
+        .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
                 h4=t('camps:new.name_card_header')
@@ -34,14 +34,32 @@ block content
                 .camp-publication.panel
                     .panel-body
                         .information
-                            .col-md-6
-                                .col-xs-12
-                                    label(for='create_camp_contact_person_id')=t('camps:new.contact_person_id')
-                                    select.form-control(id='create_camp_contact_person_id', name='contact_person_id')
-                            .col-md-6
-                                .col-xs-12
-                                    label(for='create_camp_facebook_page_url')=t('camps:new.facebook_page_url')
-                                    input.form-control(id='create_camp_facebook_page_url', name='facebook_page_url')
+                            .row
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_id')=t('camps:new.contact_person_id')
+                                        select.form-control(id='create_camp_contact_person_id', name='contact_person_id')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_facebook_page_url')=t('camps:new.facebook_page_url')
+                                        input.form-control(id='create_camp_facebook_page_url', name='facebook_page_url')
+                                .col-md-4
+                                        .col-xs-12
+                                            label(for='create_camp_accept_families')=t('camps:camps.accept_families')
+                                            input.checkbox(id='create_camp_accept_families', type='checkbox', name='accept_families')
+                            .row
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_name')=t('camps:new.contact_person_name')
+                                        input.form-control(id='create_camp_contact_person_name', name='contact_person_name')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_email')=t('camps:new.contact_person_email')
+                                        input.form-control(id='create_camp_contact_person_email', name='contact_person_email')
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='create_camp_contact_person_phone')=t('camps:new.contact_person_phone')
+                                        input.form-control(id='create_camp_contact_person_phone', name='contact_person_phone')
                 h4=t('camps:new.contact_card_header')
                 .camp-leaders.panel
                     .panel-body
@@ -64,8 +82,23 @@ block content
                         .behaviour
                             .col-md-4
                                 .col-xs-12
-                                    label(for='create_camp_type')=t('camps:new.type')
-                                    input.form-control(id='create_camp_type', type="text", name="type")
+                                    .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="camp_type_music", name="camp_type_music", value="music")
+                                        label(for="camp_type_music")
+                                            | #{t('camps:new.type_music')}
+                                    .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="camp_type_drinks", name="camp_type_drinks", value="drinks")
+                                        label(for="camp_type_drinks")
+                                            | #{t('camps:new.type_drinks')}
+                                    .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="camp_type_food", name="camp_type_food", value="food")
+                                        label(for="camp_type_food")
+                                            | #{t('camps:new.type_food')}
+                                    .checkbox
+                                        input(type="checkbox", class='create_camp_type', id="create_camp_type_other", name="camp_type_other", value="other")
+                                        label(for="create_camp_type_other")
+                                            | #{t('camps:new.type_other')}
+                                        input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="myname")
                             .col-md-4
                                 .col-xs-12
                                     label(for='create_camp_status') #{t('camps:edit.status')}:
@@ -139,7 +172,8 @@ block content
 
         .controls.row
             .col-xs-12
-                button(type="submit", id='camp_create_save', class="Btn Btn__default")=t('camps:btn_save_camp')
+                a.Btn.Btn__default.card-switcher#2(href='#')=t('camps:btn_continue')
+                button(type="submit", id='camp_create_save', class="Btn Btn__green")=t('camps:btn_save_camp')
 
         // Camp create request modal
         .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
@@ -164,6 +198,14 @@ block content
                                 li.contact_person_id=t('camps:new.contact_person_id')
                                     span
                                 li.facebook_page_url=t('camps:new.facebook_page_url')
+                                    span
+                                li.accept_families=t('camps:camps.accept_families')
+                                    span
+                                li.contact_person_name=t('camps:new.contact_person_name')
+                                    span
+                                li.contact_person_email=t('camps:new.contact_person_email')
+                                    span
+                                li.contact_person_phone=t('camps:new.contact_person_phone')
                                     span
                                 li.main_contact=t('camps:new.main_contact')
                                     span

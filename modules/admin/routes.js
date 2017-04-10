@@ -21,8 +21,16 @@ module.exports = function(app, passport) {
     app.get('/admin', userRole.isAdmin(), function (req, res) {
         adminRender(req, res, 'admin/home.jade', {
             tiles: [
-                {top: {icon: "user", title: "Total Users"}, count: {text: "250", green: false}, bottom: {title: "Users admin", href: "/admin/users"}},
-                {top: {icon: "sitemap", title: "Total Camps"}, count: {text: "5", green: false}, bottom: {title: "Camps admin", href: "/admin/camps"}}
+                {
+                    top: {icon: "user", title: "Total Users"},
+                    count: {text: "250", green: false},
+                    bottom: {title: "Users admin", href: "/admin/users"}
+                },
+                {
+                    top: {icon: "sitemap", title: "Total Camps"},
+                    count: {text: "5", green: false},
+                    bottom: {title: "Camps admin", href: "/admin/camps"}
+                }
                 // {top: {icon: "user", title: "Total Users"}, count: {text: "2500", green: false}, bottom: {small: "4%", sort: "", color: "green", title: "From last week"}},
                 // {top: {icon: "clock-o", title: "Average Time"}, count: {text: "123.50", green: false}, bottom: {small: "3%", sort: "asc", color: "green", title: "From last week"}},
                 // {top: {icon: "user", title: "Total Males"}, count: {text: "2,500", green: true}, bottom: {small: "34%", sort: "asc", color: "green", title: "From last week"}},
@@ -43,10 +51,11 @@ module.exports = function(app, passport) {
             {title: "Id", attr: "user_id", type: "primary"},
             {title: "Email", attr: "email", type: "string"},
             {title: "First name", attr: "first_name", type: "string"},
-            {title: "Last name", attr: "last_name", type: "string"}
+            {title: "Last name", attr: "last_name", type: "string"},
+            {title: "Roles", attr: "roles", type: "string"}
         ],
-        selectColumns: ["user_id", "email", "first_name", "last_name"],
-        defaultOrder: [[ 1, "asc" ]],
+        selectColumns: ["user_id", "email", "first_name", "last_name", "roles"],
+        defaultOrder: [[1, "asc"]],
         addTitle: "Add User",
         editTitle: "Edit User",
         editKey: "user_id",
@@ -72,43 +81,43 @@ module.exports = function(app, passport) {
     datatableAdmin("camps", app, {
         "model": Camp,
         "columns": [
-            {"attr": "id", type: "primary"},
-            {"attr": "camp_name_he", type: "string"},
-            {"attr": "camp_name_en", type: "string"},
-            {"attr": "camp_desc_he", type: "string"},
-            {"attr": "camp_desc_en", type: "string"},
-            {"attr": "type", type: "string"},
-            {"attr": "status", type: "string"},
-            {"attr": "enabled", type: "string"}
+            {title: "Id", attr: "id", type: "primary"},
+            {title: "Camp name (HE)", attr: "camp_name_he", type: "string"},
+            {title: "Camp name (EN)", attr: "camp_name_en", type: "string"},
+            {title: "Camp desc (HE)", attr: "camp_desc_he", type: "string"},
+            {title: "Camp desc (EN)", attr: "camp_desc_en", type: "string"},
+            {title: "Type", attr: "type", type: "string"},
+            {title: "Status", attr: "status", type: "string"},
+            {title: "Published", attr: "web_published", type: "string"}
         ],
-        selectColumns: ["id", "camp_name_he", "camp_name_en", "camp_desc_he", "camp_desc_en", "type", "status", "enabled"],
-        defaultOrder: [[ 1, "asc" ]],
-        filter: function(qb, searchTerm) {
+        selectColumns: ["id", "camp_name_he", "camp_name_en", "camp_desc_he", "camp_desc_en", "type", "status", "web_published"],
+        defaultOrder: [[1, "asc"]],
+        filter: function (qb, searchTerm) {
             qb
-                .where('camp_name_he', 'LIKE', '%'+searchTerm+'%')
-                .orWhere('camp_name_en', 'LIKE', '%'+searchTerm+'%')
-                .orWhere('camp_desc_he', 'LIKE', '%'+searchTerm+'%')
-                .orWhere('camp_desc_en', 'LIKE', '%'+searchTerm+'%')
+                .where('camp_name_he', 'LIKE', '%' + searchTerm + '%')
+                .orWhere('camp_name_en', 'LIKE', '%' + searchTerm + '%')
+                .orWhere('camp_desc_he', 'LIKE', '%' + searchTerm + '%')
+                .orWhere('camp_desc_en', 'LIKE', '%' + searchTerm + '%')
             ;
             if (!isNaN(searchTerm)) {
                 qb.orWhere('id', '=', searchTerm)
             }
         },
         addTitle: "Add Camp",
-        addCallback: function(body, done) {
-            Camp.forge().save(body).then(function() {
+        addCallback: function (body, done) {
+            Camp.forge().save(body).then(function () {
                 done(true, "Great success! 1 camp added");
-            }).catch(function(e) {
-                done(false, "unexpected error: "+e);
+            }).catch(function (e) {
+                done(false, "unexpected error: " + e);
             });
         },
         editTitle: "Edit Camp",
         editKey: "id",
-        editCallback: function(camp_id, body, done) {
-            Camp.forge({camp_id:camp_id}).save(body).then(function() {
-                done(true, "Great success! updated camp id "+camp_id);
-            }).catch(function(e) {
-                done(false, "unexpected error: "+e);
+        editCallback: function (camp_id, body, done) {
+            Camp.forge({camp_id: camp_id}).save(body).then(function () {
+                done(true, "Great success! updated camp id " + camp_id);
+            }).catch(function (e) {
+                done(false, "unexpected error: " + e);
             });
         }
     });

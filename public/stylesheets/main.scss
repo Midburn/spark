@@ -3,7 +3,6 @@
 @import './footer';
 
 body {
-    padding-top: 70px;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -13,8 +12,8 @@ span {
     margin: 0 2px;
 }
 
-body > .container {
-    padding: 20px 15px 0;
+.main {
+    padding-top: 90px;
 }
 
 .midburn_logo {
@@ -52,23 +51,6 @@ li.dropdown > ul > li > a > span {
     }
 }
 
-.main {
-    display: flex;
-    flex: 1;
-    padding: 10px;
-    background: red;
-    justify-content: center;
-    align-items: flex-start;
-
-    .card {
-        max-width: 540px;
-        min-width: 200px;
-        padding: 40px;
-        border-radius: 5px;
-        background: white;
-    }
-}
-
 .fb-login {
     background: #3b5998;
     border-color: #29487d;
@@ -78,10 +60,11 @@ li.dropdown > ul > li > a > span {
     }
 
     span {
-        margin-right: 8px;
+        margin-right: 12px;
+        vertical-align: middle;
 
         &:before {
-            font-size: 20px;
+            font-size: 22px;
         }
     }
 }

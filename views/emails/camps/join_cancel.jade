@@ -1,0 +1,58 @@
+doctype html(lang="he")
+head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(href='https://fonts.googleapis.com/css?family=Slabo+27px|Varela+Round', rel='stylesheet')
+    style(type='text/css').
+        body {
+            font-family: 'Varela Round', sans-serif;
+            background: #eee;
+        }
+
+        .wrapper {
+            max-width: 320px;
+            margin: 0 auto;
+            padding: 2em 0;
+        }
+
+        .card {
+            padding: 35px 20px 45px;
+            background-color: #FFF;
+            border-radius: 4px;
+            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .card__text--center {
+            text-align: center;
+        }
+
+        .btn {
+            margin: 2em;
+            color: red;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid red;
+            border-radius: 50px;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: red;
+            color: #FFF;
+        }
+
+        p, a {
+            margin-bottom: 40px;
+        }
+
+body
+    .wrapper
+        .card.card__text--center
+            span Midburn Spark
+            h1 Camp join canceled!
+            p.subtitle
+                strong Someone,
+                span has canceled the join request.
+            p
+                You can visit pending join requests dashboard in 
+                a(href='//spark.midburn.org/') Spark

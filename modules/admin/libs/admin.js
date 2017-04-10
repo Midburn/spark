@@ -61,6 +61,7 @@ var datatableAdmin = function(name, router, opts) {
     var _renderTablePage = function(req, res, msg) {
         adminRender(req, res, 'admin/datatable.jade', {
             title: {
+                name: name,
                 text: TABLE_PAGE_TITLE_TEMPLATE.replace('{name}', name),
                 small: msg
             },

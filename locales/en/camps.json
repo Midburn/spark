@@ -1,12 +1,14 @@
 {
-        "nav": "Camps",
+        "nav": "My Camp",
+        "nav_admin": "Manage Camps",
         "btn_save_camp": "Save",
         "btn_continue": "Continue",
         "dash": {
             "title": "Theme & Art Camps",
-            "desc": "Something short and leading about the collection below&mdash;its contents, the creator, etc. Make it short and sweet, but not too short so folks don&apos;t simply skip over it entirely.",
+            "desc": "Camp management dashboard, here you can manage your camp, members, documents and more...",
             "join_request": "Join a camp request",
             "join_request_desc": "The request to the camp manager will be sent with these details",
+            "join_request_note": "Make sure they are currect before sending the request. if they arn't, please go to you'r profile and edit.",
             "join_close": "Close",
             "join_send": "Send Request",
             "arrow": "→",
@@ -23,6 +25,27 @@
                 "title": "Camp Program"
             }
         },
+        "breadcrumbs": {
+            "root": "Home",
+            "manage": "Manage Camps",
+            "new": "New Camp",
+            "stats": "Camp Statistics",
+            "members": "Camp Members",
+            "docs": "Documents and Forms",
+            "edit": "Edit Camp",
+            "camp_stat": "Camp Profile",
+            "my_camp": "My Camp",
+            "join_camp": "Join a Camp"
+        },
+        "admin_index": {
+            "all_camps": "Manage Camps",
+            "all_members": "Manage Members",
+            "docs": "Uploaded Documents",
+            "new": "Create a Camp",
+            "all_camps_table": "All Camps",
+            "all_members_table": "All Members",
+            "docs_table": "All Documents and Forms"
+        },
         "new": {
             "header_title": "Create a camp",
             "name_choosing_title": "Pick a name, camp name must be unique though when choosing the system will validate your pick. be patient.",
@@ -30,6 +53,7 @@
             "btn_create": "Create a Camp",
             "basic_info": "Basic Information",
             "details": "Camp Details",
+            "files": "Files & Documents",
             "name_card_header": "Camp Name & Description",
             "name_he": "Camp name (Hebrew)",
             "name_en": "Camp name (English)",
@@ -37,6 +61,10 @@
             "desc_en": "Camp description (English)",
             "contact_card_header": "Camp Contact Personnel",
             "type": "Camp type",
+            "type_music": "Music",
+            "type_food": "Food",
+            "type_drinks": "Drinks",
+            "type_other": "Other",
             "main_contact": "Camp manager",
             "moop_contact": "Camp moop contact",
             "safety_contact": "Camp safety contact",
@@ -69,14 +97,27 @@
             "close": "Close",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
+            "contact_person_name": "Contact Person Name",
+            "contact_person_email": "Contact Person Email",
+            "contact_person_phone": "Contact Person Phone",
             "facebook_page_url": "Facebook Page Link"
         },
         "join": {
             "join_a_camp": "Join a camp",
             "header_title": "Join a camp",
             "name_en": "Camp name (English)",
-            "camp_choosing_title": "The list below includes camp that are open for new members. Choose one to apply a join request.",
+            "camp_choosing_title": "Choose your camp from the list below. THe camp manager will be notified and must approve your request.",
             "request": "Request to join"
+        },
+        "pending": {
+          "header_title": "Pending join request",
+          "subtitle": "you are waiting for camp manager to approve your request:",
+          "status": {
+            "wait": "Waiting approval",
+            "user_cancel": "Request canceled"
+          },
+          "cancel_request": "Cancel Request",
+          "approve_request": "Approve Request"
         },
         "manage": {
             "manage_a_camp": "Manage camps"
@@ -96,7 +137,30 @@
             "search": "Search Camp"
         },
         "members": {
-          "title": "Members Boards"
+          "title": "Members Boards",
+          "name": "Member name",
+          "email": "Member email",
+          "phone": "Member Phone",
+          "camp_name_en": "Assigned Camp (English)",
+          "status": "Member Status",
+          "has_ticket": "Has Ticket",
+          "actions": "Actions",
+          "ticket_count": "Ticket Count",
+          "actions": "Actions",
+          "search": "Search Camp Member",
+          "add_member": "Add Member",
+          "early_arrival": "Early Arrival",
+          "reject": "Reject Member",
+          "approve": "Approve Member",
+          "approve_as_manager": "Approve as Manager",
+          "remove": "Remove Member",
+          "choose_camp": "Choose or search a camp",
+          "status_pending": "Waiting for camp manager approval",
+          "status_approved": "Approved",
+          "status_rejected": "Camp manager did not approve request",
+          "status_pending_mgr": "Waiting for member acceptance",
+          "status_approved_mgr": "Approved as Manager",
+          "status_supplier": "Supplier"
         },
         "camps": {
             "title": "Camp",
@@ -124,16 +188,22 @@
             "yes": "yes",
             "no": "no",
             "publication": "Publication",
+            "publication_subtitle": "The details here will be showen in the web-site, if camp is published.",
             "name": "Name",
             "phone": "Phone",
-            "email": "Email"
+            "email": "Email",
+            "facebook_page_url_link": "Camp Facebook Page",
+            "no_camp_assigned": "No Camp"
         },
         "edit": {
+            "view": "View Camp",
             "title": "Editing",
             "camp": "Camp",
             "since": "Since",
             "basic_info": "Basic Information",
             "details": "Basic Details",
+            "members": "Members update",
+            "files": "Files & Documents",
             "name_and_desc": "Camp Name & Description",
             "name_en": "Name (English)",
             "name_he": "Name (Hebrew)",
@@ -144,18 +214,20 @@
             "moop_contact": "Moop Contact",
             "safety_contact": "Safety Contact",
             "behavior_title": "Behavior",
-            "type": "Type",
+            "type": "Camp Gift",
             "food": "Food",
             "drinking": "Drinking/Bar",
             "music": "Music",
-            "workshops": "Workshops",
+            "workshop": "Workshop",
+            "art": "Art",
+            "lecture": "Lecture",
             "art_supporting": "Art-Supporting",
             "other": "Other",
-            "status": "Status",
+            "status": "Is the camp open for new members?",
             "open": "Open",
             "closed": "Closed",
             "inactive": "Inactive",
-            "publication": "Publication",
+            "publication": "Available in Midburn.org?",
             "public": "Camp is public",
             "publish": "Publish",
             "unpublish": "Unpublish",
@@ -167,14 +239,22 @@
             "public_activity_area_sqm": "Public area (sqm)",
             "public_activity_area_desc": "Public area description",
             "support_art": "Support art",
-            "location_title": "Camp Location",
+            "location_title": "Camp Location - Here you may view your location within the city once the city map is formed",
             "location_comments": "Comments",
             "location_street": "Street",
             "location_time": "Time",
             "location_area": "Area",
             "website_publication": "Website Publication",
             "contact_person_id": "Contact Person",
-            "facebook_page_url": "Facebook Page Link"
+            "contact_person_name": "Contact Person Name",
+            "contact_person_email": "Contact Person Email",
+            "contact_person_phone": "Contact Person Phone",
+            "facebook_page_url": "Facebook Page Link",
+            "upload": "Files & Forms Upload",
+            "upload_header": "Upload Files",
+            "security_file": "Security Documentation",
+            "members_header": "Manage Camp Members",
+            "search_member": "Find members"
         },
         "program": {
             "page_title": "Create new Program",
@@ -192,5 +272,16 @@
             "access": "Program Accessibility",
             "kids_friendly": "Kids Friendly",
             "adult_only": "Adult Only"
+        },
+        "docs": {
+            "title": "Documents and Forms",
+            "search": "Search Camp",
+            "doc_type": "Document type",
+            "doc_name": "Document name",
+            "upload_date": "Upload date",
+            "upload_data": "Upload data",
+            "doc_status": "Status",
+            "last_doc_status": "Last status by",
+            "camp_name_en": "Camp Name (English)"
         }
 }

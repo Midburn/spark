@@ -13,16 +13,22 @@ block content
                       thead
                         tr
                           th(ng-click='changeOrderBy("name")') Name
-                          th(ng-click='changeOrderBy("email")') Email
+                          if userIs('admin')
+                              th(ng-click='changeOrderBy("email")') Email
                           th(ng-click='changeOrderBy("phone")') Phone
-                          th(ng-click='changeOrderBy("status")') Status
-                          th(ng-click='changeOrderBy("hasTicket")') Has Ticket
+                          if userIs('admin')
+                              th(ng-click='changeOrderBy("status")') Status
+                          if userIs('admin')
+                              th(ng-click='changeOrderBy("hasTicket")') Has Ticket
                           th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
                       tbody
                         tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-                          td {{member.name}}
-                          td {{member.email}}
+                          td {{member.fullName}}
+                          if userIs('admin')
+                              td {{member.email}}
                           td {{member.phone}}
-                          td {{member.status}}
-                          td {{member.hasTicket ? 'yes':'no'}}
+                          if userIs('admin')
+                              td {{member.status}}
+                          if userIs('admin')
+                              td {{member.hasTicket ? 'yes':'no'}}
                           td {{member.earlyArrival ? 'yes':'no'}}
