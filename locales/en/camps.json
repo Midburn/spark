@@ -44,6 +44,7 @@
             "new": "Create a Camp",
             "all_camps_table": "All Camps",
             "all_members_table": "All Members",
+            "total_camp_tickets": "Total Camp tickets",
             "docs_table": "All Documents and Forms"
         },
         "new": {
