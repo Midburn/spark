@@ -72,10 +72,10 @@ var Schedule = bookshelf.Model.extend({
 });
 
 module.exports = {
-    Volunteer: Volunteer,
-    VolunteerRole: VolunteerRole,
-    Shift: Shift,
-    Department: Department,
-    Schedule: Schedule,
-    TypeInShift: TypeInShift
+    Volunteer,
+    VolunteerRole,
+    Shift,
+    Department,
+    Schedule,
+    TypeInShift
 }
