@@ -61,7 +61,7 @@ var Camp = bookshelf.Model.extend({
     isUserInCamp: function (user_id) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.users) {
-            if (this.attributes.users[i].user_id === user_id && this.attributes.users[i].member_status != 'deleted') {
+            if (this.attributes.users[i].user_id === user_id && this.attributes.users[i].member_status !== 'deleted') {
                 return this.attributes.users[i];
             }
         }

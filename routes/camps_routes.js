@@ -1,9 +1,7 @@
 const userRole = require('../libs/user_role');
 const constants = require('../models/constants.js');
-
 var Camp = require('../models/camp').Camp;
-var User = require('../models/user').User;
-
+// var User = require('../models/user').User;
 var __render_camp = function (camp, req, res) {
     var camp_id;
     if (['int', 'string'].indexOf(typeof camp) > -1) {
@@ -19,7 +17,7 @@ var __render_camp = function (camp, req, res) {
         camp.getCampUsers((users) => {
             camp.init_t(req.t);
             // if user is camp_member, we can show all 
-            let _user = camp.isUserCampMember(req.user.id);
+            // let _user = camp.isUserCampMember(req.user.id);
             let data = {
                 user: req.user, //
                 userLoggedIn: req.user.hasRole('logged in'), //
@@ -46,9 +44,7 @@ var __render_camp = function (camp, req, res) {
     });
 }
 
-
 module.exports = function (app, passport) {
-
     // ==============
     // Camps Routing
     // ==============

@@ -12,7 +12,7 @@ var functions = {
     },
     t_array: function (key, value_str, t, sep) {
         if (typeof sep !== 'string') {
-            var sep = '_';
+            sep = '_';
         }
         if (value_str !== undefined && value_str && value_str !== '') {
             var values = value_str.split(',');
@@ -29,7 +29,7 @@ var functions = {
     },
     linkify: function (inputText) {
         var replacedText, replacePattern1, replacePattern2, replacePattern3;
-
+        /*eslint-disable */
         //URLs starting with http://, https://, or ftp://
         replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
         replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
@@ -41,7 +41,7 @@ var functions = {
         //Change email addresses to mailto:: links.
         replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
         replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
-
+        /*eslint-enable */ 
         return replacedText;
     }
 }
