@@ -10,7 +10,7 @@ module.exports = function(app) {
      * request => /api/v1/camps/published
      */
     app.get('/api/v1/camps/published', (req, res, next) => {
-        res.header('Access-Control-Allow-Origin', 'https://midburn-camps.firebaseapp.com/');
+        res.header('Access-Control-Allow-Origin', 'https://midburn-camps.firebaseapp.com');
         res.header('Access-Control-Allow-Methods', 'GET');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
         Camp.query((q) => {
@@ -28,7 +28,7 @@ module.exports = function(app) {
                 "accept_families",
                 "support_art"
             ])
-            .where({'event_id': constants.CURRENT_EVENT_ID, web_published: '1'})
+            .where({'event_id': constants.CURRENT_EVENT_ID, web_published: '1', '__prototype':constants.prototype_camps.THEME_CAMP.id})
         }).fetchAll().then((camps) => {
             res.status(200).json({
                 quantity: camps.length,

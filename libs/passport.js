@@ -27,7 +27,6 @@ var login = function (email, password, done) {
   drupal_login(email, password, done).then(function (drupal_user) {
     if (drupal_user != null) {
       // parse ticket information
-      // console.log(drupal_user);
       new User({
         email: email
       }).fetch().then(function (user) {

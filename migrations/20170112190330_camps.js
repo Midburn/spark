@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
             // General information
             table.increments('id').primary();
             table.string('event_id', 15);
+            table.enu('__prototype', constants.CAMP_PROTOTYPE);
             table.string('camp_name_he', 50);
             table.string('camp_name_en', 50);
             table.unique(['event_id', 'camp_name_en']);
@@ -30,11 +31,12 @@ exports.up = function(knex, Promise) {
             table.text('public_activity_area_desc', 'mediumtext');
             table.boolean('support_art');
 
-            // Location
+            // Location and camp data
             table.text('location_comments', 'mediumtext');
             table.text('camp_location_street');
             table.text('camp_location_street_time');
-            table.integer('camp_location_area');
+            table.text('camp_location_area');
+            table.text('addinfo_json', 'mediumtext');
 
             // Users relations
             table.integer('main_contact').unsigned();

@@ -3,8 +3,15 @@ var constants = require('../models/constants.js');
 exports.up = function (knex, Promise) {
     return Promise.all([
 
-    // User table
-    knex.schema.createTable(constants.USERS_TABLE_NAME, function (table) {
+        // events table
+        knex.schema.createTable(constants.EVENTS_TABLE_NAME, function (table) {
+            table.string('event_id',15).primary();
+            table.integer('ext_id_event_id');
+            table.text('addinfo_json', 'mediumtext');
+        }),
+
+        // User table
+        knex.schema.createTable(constants.USERS_TABLE_NAME, function (table) {
             // Basic ID + security fields
             table.timestamps();
             table.increments('user_id').primary();
@@ -35,16 +42,17 @@ exports.up = function (knex, Promise) {
             /**
               * User Current Status - Defines the current status of profile
               */
-            table.string('current_event_id',15);
+            table.string('current_event_id', 15);
             table.timestamp('current_last_status');
-            table.enu('current_status',constants.USER_CURRENT_STATUS);
+            table.enu('current_status', constants.USER_CURRENT_STATUS);
+            table.integer('current_event_id_ticket_count').unsigned();
 
             // additional information
             table.text('addinfo_json', 'mediumtext');
         }),
 
-    // Payments table
-    knex.schema.createTable(constants.PAYMENTS_TABLE_NAME, function (table) {
+        // Payments table
+        knex.schema.createTable(constants.PAYMENTS_TABLE_NAME, function (table) {
             table.timestamps();
             table.increments('payment_id').primary();
             table.string('private_sale_token', 40);
@@ -54,8 +62,8 @@ exports.up = function (knex, Promise) {
             table.boolean('payed').defaultTo(false);
         }),
 
-    // NPO table
-    knex.schema.createTable(constants.NPO_MEMBERS_TABLE_NAME, function (table) {
+        // NPO table
+        knex.schema.createTable(constants.NPO_MEMBERS_TABLE_NAME, function (table) {
             table.timestamps();
             table.integer('user_id').unsigned().primary();
             table.enu('membership_status', constants.NPO_MEMBERSHIP_STATUSES).defaultTo(constants.NPO_MEMBERSHIP_STATUSES_DEFAULT);
@@ -66,7 +74,7 @@ exports.up = function (knex, Promise) {
             table.text('form_future_p', 'LONGTEXT');
             table.text('form_why_join', 'LONGTEXT');
         })
-        ]);
+    ]);
 };
 
-exports.down = function (knex, Promise) {};
+exports.down = function (knex, Promise) { };

@@ -1,5 +1,5 @@
 const userRole = require('../libs/user_role');
-// const constants = require('../models/constants.js');
+const constants = require('../models/constants.js');
 
 var Camp = require('../models/camp').Camp;
 var User = require('../models/user').User;
@@ -36,7 +36,7 @@ module.exports = function (app, passport) {
                     details: camp,
                 });
             }
-        });
+        },req.t);
     });
     // new camp
     app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
@@ -58,7 +58,7 @@ module.exports = function (app, passport) {
             camp_name_en: req.query.c,
             breadcrumbs: req.breadcrumbs(),
             isNew: true,
-            camp: { type: '' },
+            camp: { type: '', id: 'new' },
             details: {}
         });
     });
@@ -161,10 +161,12 @@ module.exports = function (app, passport) {
         }]);
         Camp.forge({
             id: req.params.id,
-            // event_id: constants.CURRENT_EVENT_ID,
+            event_id: constants.CURRENT_EVENT_ID,
+            __prototype: constants.prototype_camps.THEME_CAMP.id,
         }).fetch({
             // withRelated: ['details']
         }).then((camp) => {
+            camp.init_t(req.t);
             User.forge({
                 user_id: camp.toJSON().main_contact
             }).fetch().then((user) => {
@@ -210,7 +212,6 @@ module.exports = function (app, passport) {
                 if (req.user.isManagerOfCamp(req.params.id) || req.user.isAdmin) {
                     var camp_data = camp.toJSON();
                     camp_data.type=(camp_data.type===null)?'':camp_data.type;
-                    console.log(camp);
                     res.render('pages/camps/edit', {
                         user: req.user,
                         breadcrumbs: req.breadcrumbs(),
