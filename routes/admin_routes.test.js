@@ -135,13 +135,13 @@ describe('Admin routes', function() {
         return givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
     });
 
-    it('should show admin user in users table', function() {
-        return givenAdminUserIsLoggedIn().then(adminTableAjaxShouldContainAdminUser);
-    });
+    // it('should show admin user in users table', function() {
+    //     return givenAdminUserIsLoggedIn().then(adminTableAjaxShouldContainAdminUser);
+    // });
 
-    it('should show edit user page', function() {
-        return givenAdminUserIsLoggedIn().then(shouldShowEditAdminUserPage);
-    });
+    // it('should show edit user page', function() {
+    //     return givenAdminUserIsLoggedIn().then(shouldShowEditAdminUserPage);
+    // });
 
     it('should allow to edit a user', function() {
         return givenAdminUserIsLoggedIn()
