@@ -6,7 +6,7 @@
 // const userRole = require('../libs/user_role');
 // var mail = require('../libs/mail'),
 //     mailConfig = config.get('mail');
-
+// 
 // module.exports = (app, passport) => {
 //     /**
 //      * API: (GET) get user by id

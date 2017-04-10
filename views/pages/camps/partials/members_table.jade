@@ -16,7 +16,7 @@ table.table.table-striped.table-hover
             td {{member.email}}
             td {{member.cell_phone}}
             td {{member.member_status_i18n}}
-            td {{member.hasTicket}}
+            td {{member.current_event_id_ticket_count}}
             //- td {{member.earlyArrival ? 'yes':'no'}}
             td
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
@@ -31,3 +31,9 @@ table.table.table-striped.table-hover
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove")
                     span(class='glyphicon glyphicon-remove')
                     span(class='sr-only' aria-hidden='false') Remove user
+.col-xs-6
+    h4=t('camps:admin_index.all_members_table')
+        span.badge {{all_approved_members}}
+.col-xs-6
+    h4=t('camps:admin_index.total_camp_tickets')
+        span.badge {{total_camp_tickets}}
