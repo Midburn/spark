@@ -11,8 +11,8 @@ const VOLUNTEER_MANAGER = 0;
 const VOLUNTEER_DEPT_MANAGER = 2;
 const CURRENT_EVENT = 0;
 //GET /volunteer/departments
-var get_departments = function(req, res) {
-    Department.fetchAll().then(function(deps) {
+var get_departments = function (req, res) {
+    Department.fetchAll().then(function (deps) {
         res.json(deps.toJSON());
     }).catch((err) => {
         res.status(500).json({
@@ -24,8 +24,8 @@ var get_departments = function(req, res) {
     });
 };
 //GET /volunteer/volunteers
-var get_roles = function(req, res) {
-    Role.fetchAll().then(function(deps) {
+var get_roles = function (req, res) {
+    Role.fetchAll().then(function (deps) {
         res.json(deps.toJSON());
     }).catch((err) => {
         res.status(500).json({
@@ -62,11 +62,11 @@ function __merge_volunteer_info(vol_data_model, user_info) {
 function __get_voluneer_info(department_id_arr, event_id) {
     return new Promise((resolve, reject) => {
         Volunteer.query((qb) => {
-                qb.where('event_id', event_id);
-                if (department_id_arr !== undefined) {
-                    qb.whereIn('department_id', department_id_arr);
-                }
-            })
+            qb.where('event_id', event_id);
+            if (department_id_arr !== undefined) {
+                qb.whereIn('department_id', department_id_arr);
+            }
+        })
             .fetchAll()
             .then((vol_data_col) => {
                 log.debug('Found ' + vol_data_col.lengh + ' in dept. ' + department_id_arr);
@@ -84,7 +84,7 @@ function __get_voluneer_info(department_id_arr, event_id) {
 }
 
 //GET /volunteer/volunteers
-var get_volunteers = function(req, res) {
+var get_volunteers = function (req, res) {
     __has_permissions(1, VOLUNTEER_MANAGER)
         .then(() => {
             return __get_voluneer_info(req.query.department_id, CURRENT_EVENT);
@@ -95,7 +95,7 @@ var get_volunteers = function(req, res) {
         .cat
 };
 //GET /volunteer/department/:department_id/volunteers
-var get_department_volunteers = function(req, res) {
+var get_department_volunteers = function (req, res) {
     return __has_permissions(1, VOLUNTEER_DEPT_MANAGER)
         .then(() => {
             //find all voluntters
@@ -108,7 +108,7 @@ var get_department_volunteers = function(req, res) {
 
 };
 ///POST volunteer/department/department_id/volunteers
-var post_volunteers = function(req, res) {
+var post_volunteers = function (req, res) {
     return __has_permissions(1, VOLUNTEER_DEPT_MANAGER)
         .then(() => {
             var mail_addresses = req.body.map(vol_add => vol_add.email);
@@ -116,7 +116,7 @@ var post_volunteers = function(req, res) {
             DrupalAccess.get_user_by_email(mail_addresses).then(users_data => {
                 Promise.all((mail_addresses.map((mail_addr) => {
                     var data_to_save = users_data ? users_data.find((udata) => udata.email === mail_addr) : undefined;
-                    if (data_to_save.user_data === undefined) {
+                    if (data_to_save === undefined || data_to_save.user_data === undefined) {
                         result.push({ email: mail_addr, status: 'NotFound' })
                     } else {
                         vol_data = req.body.find(x => x.email === mail_addr);
@@ -142,7 +142,7 @@ var post_volunteers = function(req, res) {
 };
 
 ///PUT volunteer/department/department_id/volunteers/user_id
-var put_volunteer = function(req, res) {
+var put_volunteer = function (req, res) {
     var new_data = {
         role_id: req.body.role_id,
         type_in_shift_id: req.body.shift_type,
@@ -164,9 +164,9 @@ var put_volunteer = function(req, res) {
         });
 };
 
-var get_volunteering_info = function(req, res) {
+var get_volunteering_info = function (req, res) {
     var user_id = req.user.id;
-    Volunteer.get_by_user(user_id).then(function(vols) {
+    Volunteer.get_by_user(user_id).then(function (vols) {
         res.json(vols.toJSON());
     }).catch((err) => {
         res.status(500).json({
@@ -178,11 +178,11 @@ var get_volunteering_info = function(req, res) {
     });
 }
 
-var delete_volunteer = function(req, res) {
+var delete_volunteer = function (req, res) {
     //validate ....
     new Volunteer({ user_id: req.params.user_id, department_id: req.params.department_id })
         .destroy()
-        .then(function(model) {
+        .then(function (model) {
             res.status(200);
         }).catch((err) => {
             res.status(500).json({
@@ -194,7 +194,7 @@ var delete_volunteer = function(req, res) {
         });
 }
 
-module.exports = function(app, passport) {
+module.exports = function (app, passport) {
 
     //user story 1
     app.get('/volunteers/info', /*userRole.isLoggedIn(),*/ get_volunteering_info);
