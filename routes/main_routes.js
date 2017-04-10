@@ -64,8 +64,6 @@ module.exports = function (app, passport) {
 
     app.use('/:language/tickets/', ticket_routes);
 
-};
-
     var _renderSignupError = function (res, req, error) {
         return res.render('pages/signup', {
             errorMessageResource: error,
