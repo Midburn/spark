@@ -308,10 +308,10 @@ module.exports = (app, passport) => {
                         console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
                         if (mail_delivery.template !== '') {
                             if (mail_delivery.to_mail !== '') {
-                                emailDeliver(mail_delivery.to_mail, mail_delivery.subject, mail_delivery.template, { user: user }); // notify the user
+                                emailDeliver(mail_delivery.to_mail, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp, camp_manger: camp_manager }); // notify the user
                             } else {
                                 User.forge({ user_id: user_id }).fetch().then((user) => {
-                                    emailDeliver(user.attributes.email, mail_delivery.subject, mail_delivery.template, { user: user }); // notify the user
+                                    emailDeliver(user.attributes.email, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp, camp_manager: camp_manager }); // notify the user
                                 });
                             }
                         }
