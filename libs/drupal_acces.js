@@ -1,3 +1,4 @@
+require('dotenv').config()
 var request = require('superagent');
 var logger = require('../libs/logger')(module);
 
