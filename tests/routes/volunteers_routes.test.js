@@ -3,7 +3,7 @@ const should = require('chai').should();
 const request = require('supertest')(app);
 
 
-describe('Tests are fine', function() {
+describe('Tests are fine', function () {
     it('responds to / with redirect to hebrew', function testSlash(done) {
         request
             .get('/')
@@ -12,13 +12,13 @@ describe('Tests are fine', function() {
     });
 });
 
-describe('Getters all respond', function() {
+describe('Getters all respond', function () {
     it('returns roles', function getRoles(done) {
         request
             .get('/volunteers/roles/')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -41,7 +41,7 @@ describe('Getters all respond', function() {
             .get('/volunteers/departments/')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -63,25 +63,50 @@ describe('Getters all respond', function() {
             });
     });
 
-    it.skip('returns volunteers', function(done) {
+    it('returns volunteers', function (done) {
         request
-        get('/volunteers/volunteers')
-            .expect(200, done);
+            .get('/volunteers/volunteers')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    console.log(err);
+                    done(err);
+                }
+                res.should.be.json;
+
+                console.log(`VOLYNTEERS BODY:\n${JSON.stringify(res.body)}`);
+
+                res.body.should.be.a('array');
+                res.body.length.should.be.greaterThan(0);
+
+
+                const volunteer = res.body[0];
+                volunteer.should.have.property('department_id');
+                volunteer.should.have.property('user_id'); //TODO should not be null
+                volunteer.should.have.property('first_name');
+                volunteer.should.have.property('last_name');
+                volunteer.should.have.property('email');
+                volunteer.should.have.property('phone_number');
+                //TODO FAILS volunteer.should.have.property('is_production');
+                volunteer.should.have.property('role_id');
+                done();
+            });
     });
 
-    it.skip('returns volunteers of department 1', function(done) {
+    it.skip('returns volunteers of department 1', function (done) {
         request
             .get('/volunteers/departments/1/volunteers')
             .expect(200, done);
     });
 
-    it.skip('reuturns volunteers of all departments', function(done) {
+    it.skip('reuturns volunteers of all departments', function (done) {
         //Iterate over all departments and see they are returning zero or more volunteers and the count is equal
         done();
     });
 });
 
-describe.skip('Volunteers addition', function() {
+describe.skip('Volunteers addition', function () {
     //ading one
     //add and get
     //collision returns error and does not change existing
@@ -92,7 +117,7 @@ describe.skip('Volunteers addition', function() {
 });
 
 
-describe.skip('Volunteers editing', function() {
+describe.skip('Volunteers editing', function () {
     //editing one
     //edit and get
     //edit non existing
@@ -103,7 +128,7 @@ describe.skip('Volunteers editing', function() {
 });
 
 
-describe('Volunteers deletion', function() {
+describe('Volunteers deletion', function () {
     //deleting one
     //get and delete and get
     //delete non existing
