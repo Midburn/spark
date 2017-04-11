@@ -20,19 +20,23 @@ table.table.table-striped.table-hover
             //- td {{member.earlyArrival ? 'yes':'no'}}
             td
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
-                    span(class='glyphicon glyphicon-remove')
-                    span(class='sr-only' aria-hidden='false') Reject user
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove')
+                        =t('camps:members.reject')
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")
-                    span(class='glyphicon glyphicon-ok')
-                    span(class='sr-only' aria-hidden='false') Approve user
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "manager")', ng-if="member.can_approve_mgr")
-                    span(class='glyphicon glyphicon-king')
-                    span(class='sr-only' aria-hidden='false') Approve user as manager
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-ok')
+                        =t('camps:members.approve')
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve_mgr")', ng-if="member.can_approve_mgr")
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-king')
+                        =t('camps:members.approve_mgr')
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove")
-                    span(class='glyphicon glyphicon-remove')
-                    span(class='sr-only' aria-hidden='false') Remove user
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove')
+                        =t('camps:members.remove')
 .col-xs-6
-    h4=t('camps:admin_index.all_members_table')
+    h4=t('camps:admin_index.total_approved_members')
         span.badge {{all_approved_members}}
 .col-xs-6
     h4=t('camps:admin_index.total_camp_tickets')
