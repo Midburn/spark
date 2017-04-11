@@ -1,13 +1,13 @@
 // This is magically used in code such as user.attributes.password.length.should.be.above(20);
 var should = require('chai').should(); // eslint-disable-line no-unused-vars
 
-var app = require('../app.js');
+var app = require('../../app');
 var request = require('supertest')(app);
-var DrupalUser = require('../models/user').DrupalUser;
-var User = require('../models/user').User;
-var knex = require('../libs/db').knex;
+var DrupalUser = require('../../models/user').DrupalUser;
+var User = require('../../models/user').User;
+var knex = require('../../libs/db').knex;
 
-describe('Main routes', function () {
+describe('Main routes', function() {
     it('responds to / with redirect to hebrew', function testSlash(done) {
         request
             .get('/')
@@ -64,33 +64,33 @@ describe('Main routes', function () {
         // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
         var clear_password = '123456';
         Promise.all([
-            knex(User.prototype.tableName).where('email', email).del(),
-            knex(DrupalUser.prototype.tableName).where('name', email).del()
-        ])
-        // .then(function () {
-        //     return DrupalUser.forge({
-        //         name: email,
-        //         pass: hashed_password,
-        //         status: 1
-        //     }).save();
-        // })
-        .then(function () {
-            return request
-                .post('/he/login')
-                .send({
-                    email: email,
-                    password: clear_password
-                })
-                .expect(302)
-                .expect('Location', 'home');
-        }).then(function () {
-            // spark user should be updated with email and password
-            return User.forge({
-                email: email
-            }).fetch().then(function (user) {
-                user.attributes.password.length.should.be.above(20);
-                user.attributes.email.should.equal(email);
-            });
-        }).then(done);
+                knex(User.prototype.tableName).where('email', email).del(),
+                knex(DrupalUser.prototype.tableName).where('name', email).del()
+            ])
+            // .then(function () {
+            //     return DrupalUser.forge({
+            //         name: email,
+            //         pass: hashed_password,
+            //         status: 1
+            //     }).save();
+            // })
+            .then(function() {
+                return request
+                    .post('/he/login')
+                    .send({
+                        email: email,
+                        password: clear_password
+                    })
+                    .expect(302)
+                    .expect('Location', 'home');
+            }).then(function() {
+                // spark user should be updated with email and password
+                return User.forge({
+                    email: email
+                }).fetch().then(function(user) {
+                    user.attributes.password.length.should.be.above(20);
+                    user.attributes.email.should.equal(email);
+                });
+            }).then(done);
     });
 });
