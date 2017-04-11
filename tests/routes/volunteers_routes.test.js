@@ -3,7 +3,7 @@ const should = require('chai').should();
 const request = require('supertest')(app);
 
 
-describe('Tests are fine', function () {
+describe('Tests are fine', function() {
     it('responds to / with redirect to hebrew', function testSlash(done) {
         request
             .get('/')
@@ -12,13 +12,14 @@ describe('Tests are fine', function () {
     });
 });
 
-describe('Getters all respond', function () {
+describe('Getters all respond', function() {
+    this.timeout(2500);
     it('returns roles', function getRoles(done) {
         request
             .get('/volunteers/roles/')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -41,7 +42,7 @@ describe('Getters all respond', function () {
             .get('/volunteers/departments/')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -63,12 +64,12 @@ describe('Getters all respond', function () {
             });
     });
 
-    it('returns volunteers', function (done) {
+    it('returns volunteers', function(done) {
         request
             .get('/volunteers/volunteers')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -94,19 +95,19 @@ describe('Getters all respond', function () {
             });
     });
 
-    it.skip('returns volunteers of department 1', function (done) {
+    it.skip('returns volunteers of department 1', function(done) {
         request
             .get('/volunteers/departments/1/volunteers')
             .expect(200, done);
     });
 
-    it.skip('reuturns volunteers of all departments', function (done) {
+    it.skip('reuturns volunteers of all departments', function(done) {
         //Iterate over all departments and see they are returning zero or more volunteers and the count is equal
         done();
     });
 });
 
-describe.skip('Volunteers addition', function () {
+describe.skip('Volunteers addition', function() {
     //ading one
     //add and get
     //collision returns error and does not change existing
@@ -117,7 +118,7 @@ describe.skip('Volunteers addition', function () {
 });
 
 
-describe.skip('Volunteers editing', function () {
+describe.skip('Volunteers editing', function() {
     //editing one
     //edit and get
     //edit non existing
@@ -128,7 +129,7 @@ describe.skip('Volunteers editing', function () {
 });
 
 
-describe('Volunteers deletion', function () {
+describe('Volunteers deletion', function() {
     //deleting one
     //get and delete and get
     //delete non existing
