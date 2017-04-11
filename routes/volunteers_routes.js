@@ -92,7 +92,7 @@ var get_volunteers = function(req, res) {
         .then((vol_info_col) => {
             res.status(200).json(vol_info_col);
         })
-        .cat
+        .catch(err => res.status(403).json({ message: err }));
 };
 //GET /volunteer/department/:department_id/volunteers
 var get_department_volunteers = function(req, res) {

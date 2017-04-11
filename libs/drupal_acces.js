@@ -36,7 +36,10 @@ var login = (function() {
     let request_agent = false;
     logger.info('DRUPAL_PROFILE_API_URL: ' + DRUPAL_PROFILE_API_URL +
         ", DRUPAL_PROFILE_API_USER: " + DRUPAL_PROFILE_API_USER)
+
     return function(forceLogin) {
+        //TEMPORARY DISABLE COOKIE REUSE TILL BETTER SOLUTION:
+        forceLogin = true;
         return new Promise((resolve, reject) => {
             if (request_agent && !forceLogin) {
                 resolve({ request_agent })
