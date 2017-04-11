@@ -55,7 +55,8 @@ function merge_volunteer_info(vol_data_model, user_info) {
         email: _.get(user_info, 'email'),
         phone_number: _.get(user_info, 'phone'),
         got_ticket: _.get(user_info, 'has_ticket'),
-        comment: vol_data_model.get('comment')
+        comment: vol_data_model.get('comment'),
+        is_production: vol_data_model.get('is_prodcution')
     };
 }
 
@@ -123,7 +124,8 @@ var post_volunteers = function(req, res) {
                         return Volunteer.forge({
                             user_id: data_to_save.user_data.uid,
                             department_id,
-                            role_id: _.get(req, 'params.role_id'),
+                            role_id: _.get(req, 'body[0].role_id'),
+                            is_prodcution: _.get(req, 'body[0].is_production'), //refactor ->rename column name
                             event_id: CURRENT_EVENT
                         }).save().then((save_result) => {
                             log.info('Saved ' + JSON.stringify(save_result));
