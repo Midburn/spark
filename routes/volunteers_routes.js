@@ -149,7 +149,7 @@ var put_volunteer = function(req, res) {
         role_id: _.get(req, 'body.role_id'),
         type_in_shift_id: _.get(req, 'body.shift_type'),
         comment: _.get(req, 'body.comment'),
-        is_production: _.get(req, 'body.is_production')
+        is_prodcution: _.get(req, 'body.is_production')
     };
     Volunteer
         .where({
@@ -186,10 +186,10 @@ var get_volunteering_info = function(req, res) {
 
 var delete_volunteer = function(req, res) {
     //validate ....
-    new Volunteer({ user_id: req.params.user_id, department_id: req.params.department_id, event_id: CURRENT_EVENT })
+    Volunteer.where({ user_id: req.params.user_id, department_id: req.params.department_id, event_id: CURRENT_EVENT })
         .destroy()
         .then(function(model) {
-            res.status(200);
+            res.status(200).end();
         }).catch((err) => {
             res.status(500).json({
                 error: true,
