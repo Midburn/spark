@@ -20,6 +20,7 @@ describe('Tests are fine', function () {
 });
 
 describe('Getters all respond', function () {
+    this.timeout(2500);
     it('returns roles', function getRoles(done) {
         request
             .get('/volunteers/roles/')
