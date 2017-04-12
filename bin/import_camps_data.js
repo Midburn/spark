@@ -45,8 +45,8 @@ function main(argv) {
                     email: user.email,
                     roles: user.role,
                     validated: false,
-                    created_at: Date(),
-                    updated_at: Date()
+                    created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' ')
                 }).then(function () {
                     console.log("inserted user: " + email);
                 }).catch(function (err) {
@@ -85,8 +85,8 @@ function main(argv) {
                             accept_families: camp.accept_families,
                             contact_person_name: camp.contact_person_name,
                             contact_person_email: camp.contact_parson_email,
-                            created_at: Date(),
-                            updated_at: Date()
+                            created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' ')
                         };
                         if (camp.status !== "closed" && camp.status !== "open" && camp.status !== "deleted" && camp.status !== "inactive") {
                             _camp_rec['status'] = 'closed';

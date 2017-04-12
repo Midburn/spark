@@ -1,3 +1,4 @@
+const common = require('../libs/common').common;
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
@@ -21,7 +22,6 @@ var User = bookshelf.Model.extend({
         var date = new Date();
         var offset = (24 * 60 * 60 * 1000); // hours*minutes*seconds*millis
         date.setTime(date.getTime() + offset);
-
         this.attributes.email_validation_expires = date.toISOString().slice(0, 19).replace('T', ' ');
         this.attributes.email_validation_token = randtoken.generate(32);
     },
@@ -55,20 +55,18 @@ var User = bookshelf.Model.extend({
                 var first_camp;
                 var is_manager = false;
                 var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
-                // i18next.init({lng:'he'});
                 for (var i in camps) {
                     let _status = camps[i].member_status;
                     if (t !== undefined) { // translate function
                         camps[i].member_status_i18n = t('camps:members.status_' + _status);
+                        // @TODO: update to req instead t for all places in the code
                     }
                     if (!first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if (((camps[i].main_contact === this.attributes.user_id || this.__hasRole('camp_manager', this.attributes.roles))
+                    if (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr')) {
-                        // if ((camps[i].main_contact === this.attributes.user_id && camps[i].member_status === 'approved') ||
-                        // camps[i].member_status === 'approved_mgr') {
                         first_camp = camps[i];
                         is_manager = true;
                         break;
@@ -85,11 +83,8 @@ var User = bookshelf.Model.extend({
     validPassword: function (password) {
         return bcrypt.compareSync(password, this.attributes.password);
     },
-    __hasRole: function (role, roles) {
-        return (roles && roles.split(',').indexOf(role) > -1);
-    },
     hasRole: function (role) {
-        return this.__hasRole(role, this.attributes.roles);
+        return common.__hasRole(role, this.attributes.roles);
     },
     isManagerOfCamp: function (camp_id) {
         let isCampManager = false;
@@ -98,6 +93,13 @@ var User = bookshelf.Model.extend({
         }
         return isCampManager;
     },
+    init_t: function (t) {
+        if (t !== undefined) {
+            this.attributes.gender_i18n = t(this.attributes.gender);
+            // this.attributes.noise_level_i18n = this.t_array('camps:new.camp_noise_level', this.attributes.noise_level, t);
+        }
+    },
+
     virtuals: {
         fullName: function () {
             return this.attributes.first_name + ' ' + this.attributes.last_name;

@@ -3,15 +3,15 @@ block content
     .camps.camp_details
         .heading.card.card__shad
             .card__actions
-                .dropdown
-                    button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
-                        span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
-                    ul.dropdown-menu(aria-labelledby="camp_card_menu")
-                      li
-                        if userIs('camp_manager')
-                          a(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
+                if userIs('camp_manager')
+                    .dropdown
+                        button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                            span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
+                        ul.dropdown-menu(aria-labelledby="camp_card_menu")
+                            li
+                                a(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
             .card__details
-                span.label.label-info #{t('camps:camps.title')} # #{id}
+                //- span.label.label-info #{t('camps:camps.title')} # #{id}
                 h2
                   if language == 'en'
                     | #{camp.camp_name_en}
@@ -19,18 +19,25 @@ block content
                     | #{camp.camp_name_he}  
                 .style
                     h5 #{t('camps:camps.style')}
-                    each type in camp.type.split(',')
+                    each type in camp.type_i18n.split(',')
                         span.label.label-primary #{type}
                 h5 
                 //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
             .desc.row
                 .col-xs-12
-                    h5 #{t('camps:camps.desc')}
-                .col-xs-12.col-sm-6
-                    p.well(lang='en', style='direction:ltr;') #{camp.camp_desc_en}
-                .text-right.col-xs-12.col-sm-6
-                    p.well(lang='he', style='direction:rtl;') #{camp.camp_desc_he}
+                    h4 #{t('camps:camps.desc')}
+                if language == 'en' 
+                    .col-xs-12.col-sm-6
+                        p.well(lang='en', style='direction:ltr;white-space:pre-line')!=camp.camp_desc_en_linkify
+                    .text-right.col-xs-12.col-sm-6
+                        p.well(lang='he', style='direction:rtl;white-space:pre-line')!=camp.camp_desc_he_linkify
+                else
+                    .text-right.col-xs-12.col-sm-6
+                        p.well(lang='he', style='direction:rtl;white-space:pre-line')!=camp.camp_desc_he_linkify
+                    .col-xs-12.col-sm-6
+                        p.well(lang='en', style='direction:ltr;white-space:pre-line')!=camp.camp_desc_en_linkify
+                
         .card.card__shad
             .publication.row
                 .col-xs-12
@@ -50,85 +57,95 @@ block content
                               li.list-group-item
                                 span #{t('camps:camps.email')}: 
                                 span.badge.contact_person_email #{camp.contact_person_email}
-                    .col-xs-12.col-md-6
-                        span=t('camps:stats.facebook_page_url')
-                        .facebook-info.Btn
-                            a(href='#{camp.facebook_page_url}', target='_blank')
-                                i(class="fa fa-facebook-official") 
-                                | &nbsp; #{t('camps:camps.facebook_page_url_link')}
-            .management.row
-                .col-xs-12
-                    h4=t('camps:camps.management_title')
-                    //- camp manager (main contact)
-                    .contact-info.col-md-4
-                        button.Btn.Btn__card.fetch_user_info(data-user-type='type--main', data-user-id='#{camp.main_contact}')
-                            span=t('camps:camps.main_contact')
-                        .info.type--main.hidden
-                            h6 #{t('camps:camps.name')}: 
-                                span.contact_person_name
-                            h6 #{t('camps:camps.phone')}: 
-                                span.contact_person_phone
-                            h6 #{t('camps:camps.email')}: 
-                                span.contact_person_email
-                            a.details.hidden(href='/users/#{camp.main_contact}')=t('camps:camps.more_info')
-                    //- moop contact
-                    .contact-info.col-md-4
-                        button.Btn.Btn__card.fetch_user_info(data-user-type='type--moop', data-user-id='#{camp.moop_contact}')
-                            span=t('camps:camps.moop_contact')
-                        .info.type--moop.hidden
-                            h6 #{t('camps:camps.name')}: 
-                                span.contact_person_name
-                            h6 #{t('camps:camps.phone')}: 
-                                span.contact_person_phone
-                            h6 #{t('camps:camps.email')}: 
-                                span.contact_person_email
-                            a.details.hidden(href='/users/#{camp.moop_contact}')=t('camps:camps.more_info')
-                    //- safety contact
-                    .contact-info.col-md-4
-                        button.Btn.Btn__card.fetch_user_info(data-user-type='type--safety', data-user-id='#{camp.safety_contact}')
-                            span=t('camps:camps.safety_contact')
-                        .info.type--safety.hidden
-                            h6 #{t('camps:camps.name')}: 
-                                span.contact_person_name
-                            h6 #{t('camps:camps.phone')}: 
-                                span.contact_person_phone
-                            h6 #{t('camps:camps.email')}: 
-                                span.contact_person_email
-                            a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
+                    if (camp.facebook_page_url) 
+                        .col-xs-12.col-md-6
+                            span=t('camps:stats.facebook_page_url')
+                            .facebook-info.Btn
+                                a(href='#{camp.facebook_page_url}', target='_blank')
+                                    i(class="fa fa-facebook-official") 
+                                    | &nbsp; #{t('camps:camps.facebook_page_url_link')}
+            if (isUserInCamp) 
+                .management.row
+                    .col-xs-12
+                        h4=t('camps:camps.management_title')
+                        //- camp manager (main contact)
+                        if (main_contact) 
+                            .contact-info.col-md-4
+                                span=t('camps:camps.main_contact')
+                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--main', data-user-id='#{camp.main_contact}')
+                                    span=t('camps:camps.main_contact')
+                                .info.type--main
+                                    h6 #{t('camps:camps.name')}: 
+                                        span.contact_person_name #{main_contact.name}
+                                    h6 #{t('camps:camps.phone')}: 
+                                        span.contact_person_phone #{main_contact.cell_phone}
+                                    h6 #{t('camps:camps.email')}: 
+                                        span.contact_person_email #{main_contact.email}
+                                    //- a.details.hidden(href='/users/#{camp.main_contact}')=t('camps:camps.more_info')
+                        //- moop contact
+                        if (moop_contact) 
+                            .contact-info.col-md-4
+                                span=t('camps:camps.moop_contact')
+                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--moop', data-user-id='#{camp.moop_contact}')
+                                    span=t('camps:camps.moop_contact')
+                                .info.type--moop
+                                    h6 #{t('camps:camps.name')}: 
+                                        span.contact_person_name #{moop_contact.name}
+                                    h6 #{t('camps:camps.phone')}: 
+                                        span.contact_person_phone #{moop_contact.cell_phone}
+                                    h6 #{t('camps:camps.email')}: 
+                                        span.contact_person_email #{moop_contact.email}
+                                    //- a.details.hidden(href='/users/#{camp.moop_contact}')=t('camps:camps.more_info')
+                        //- safety contact
+                        if (safety_contact) 
+                            .contact-info.col-md-4
+                                span=t('camps:camps.safety_contact')
+                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--safety', data-user-id='#{camp.safety_contact}')
+                                    span=t('camps:camps.safety_contact')
+                                .info.type--safety
+                                    h6 #{t('camps:camps.name')}: 
+                                        span.contact_person_name #{safety_contact.name}
+                                    h6 #{t('camps:camps.phone')}: 
+                                        span.contact_person_phone #{safety_contact.cell_phone}
+                                    h6 #{t('camps:camps.email')}: 
+                                        span.contact_person_email #{safety_contact.email}
+                                    //- a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
             .modifications.row
                 .col-xs-12
                     h4=t('camps:new.details')
-                    ul.list-group.col-xs-6
-                        li.list-group-item
-                            span=t('camps:edit.publication')
-                            if camp.web_published
-                              span.badge.bg__green=t('camps:camps.yes')
-                            else
-                              span.badge.bg__red=t('camps:camps.no')
-                        li.list-group-item
-                            span=t('camps:camps.status')
-                            if camp.status == 'open'
-                                span.badge.bg__teal=t('camps:camps.status_open')
-                            else if camp.status == 'closed'
-                                span.badge.bg__red=t('camps:camps.status_closed')
-                            else
-                                span.badge.bg__teal=t('camps:edit.inactive')
-                        li.list-group-item
-                            span=t('camps:camps.accept_families')
-                            span.badge #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
-                    ul.list-group.col-xs-6
-                        li.list-group-item
-                            span=t('camps:camps.time_active')
-                            span.badge #{details.camp_activity_time_i18n}
-                        li.list-group-item
-                            span #{t('camps:camps.child_friendly')}
-                            span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
-                        li.list-group-item
-                            span #{t('camps:new.camp_noise_level')}
-                            span.badge #{details.noise_level_i18n}
-                        li.list-group-item
-                            span #{t('camps:camps.art')}
-                            span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
+                    .col-xs-12.col-md-6
+                        ul.list-group
+                            li.list-group-item
+                                span=t('camps:edit.publication')
+                                if camp.web_published
+                                    span.badge.bg__green=t('camps:camps.yes')
+                                else
+                                    span.badge.bg__red=t('camps:camps.no')
+                            li.list-group-item
+                                span=t('camps:camps.status')
+                                if camp.status == 'open'
+                                    span.badge.bg__teal=t('camps:camps.status_open')
+                                else if camp.status == 'closed'
+                                    span.badge.bg__red=t('camps:camps.status_closed')
+                                else
+                                    span.badge.bg__teal=t('camps:edit.inactive')
+                            li.list-group-item
+                                span=t('camps:camps.accept_families')
+                                span.badge #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
+                    .col-xs-12.col-md-6
+                        ul.list-group
+                            li.list-group-item
+                                span=t('camps:camps.time_active')
+                                span.badge #{details.camp_activity_time_i18n}
+                            li.list-group-item
+                                span #{t('camps:camps.child_friendly')}
+                                span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
+                            li.list-group-item
+                                span #{t('camps:new.camp_noise_level')}
+                                span.badge #{details.noise_level_i18n}
+                            li.list-group-item
+                                span #{t('camps:camps.art')}
+                                span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
             .documents.hidden
                 h4=t('camps:camps.docs')
                 .col-xs-12.col-md-4

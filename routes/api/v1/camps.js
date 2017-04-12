@@ -10,7 +10,7 @@ module.exports = function(app) {
      * request => /api/v1/camps/published
      */
     app.get('/api/v1/camps/published', (req, res, next) => {
-        res.header('Access-Control-Allow-Origin', 'https://midburn-camps.firebaseapp.com/');
+        res.header('Access-Control-Allow-Origin', 'https://midburn-camps.firebaseapp.com');
         res.header('Access-Control-Allow-Methods', 'GET');
         res.header('Access-Control-Allow-Headers', 'Content-Type');
         Camp.query((q) => {
