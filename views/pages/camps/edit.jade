@@ -7,11 +7,7 @@ block content
         .heading.card.card__shad
             .card__actions
                 .dropdown
-                    button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
-                        span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
-                    ul.dropdown-menu(aria-labelledby="camp_card_menu")
-                      li
-                        a(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
+                    a.Btn.btn-default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             if(isNew)
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
