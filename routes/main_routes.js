@@ -206,12 +206,20 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/whoami'
         }]);
         req.user.getUserCamps((camps) => {
-            res.render('pages/whoami', {
+            req.user.init_t(req.t);
+            let data={
                 user: req.user,
-                camp: req.user.attributes.camp,
+                // camp: req.user.attributes.camp,
                 breadcrumbs: req.breadcrumbs()
-            });
-        });
+            };
+            let camp=req.user.attributes.camp;
+            if (camp) {
+                camp.camp_name=(req.lng==="he")?camp.camp_name_he:camp.camp_name_en;
+                camp.camp_desc=(req.lng==="he")?camp.camp_desc_he:camp.camp_desc_en;
+                data.camp=camp;
+            }
+            res.render('pages/whoami', data);
+        }, req.t);
     });
 
     // show the signup form

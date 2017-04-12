@@ -61,29 +61,26 @@ var Camp = bookshelf.Model.extend({
     isUserInCamp: function (user_id) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.users) {
-            if (this.attributes.users[i].user_id === user_id) {
+            if (this.attributes.users[i].user_id === user_id && this.attributes.users[i].member_status !== 'deleted') {
                 return this.attributes.users[i];
             }
         }
     },
-    t_array: function (key, value_str, t) {
-        if (value_str !== undefined && value_str && value_str !== '') {
-            var values = value_str.split(',');
-            for (let i in values) {
-                let t_value = t(key + '_' + values[i]);
-                if (t_value !== '') {
-                    values[i] = t_value;
-                }
+    isUserCampMember: function (user_id) {
+        user_id = parseInt(user_id);
+        for (var i in this.attributes.users) {
+            if (this.attributes.users[i].user_id === user_id && ['approved','approved_mgr'].indexOf(this.attributes.users[i].member_status)>-1) {
+                return this.attributes.users[i];
             }
-            return values.join(', ');
-        } else {
-            return '';
         }
     },
     init_t: function (t) {
         if (t !== undefined) {
-            this.attributes.camp_activity_time_i18n = this.t_array('camps:new.camp_activity_time', this.attributes.camp_activity_time, t);
-            this.attributes.noise_level_i18n = this.t_array('camps:new.camp_noise_level', this.attributes.noise_level, t);
+            this.attributes.camp_activity_time_i18n = common.t_array('camps:new.camp_activity_time', this.attributes.camp_activity_time, t);
+            this.attributes.noise_level_i18n = common.t_array('camps:new.camp_noise_level', this.attributes.noise_level, t);
+            this.attributes.type_i18n = common.t_array('camps:edit', this.attributes.type, t, '.');
+            this.attributes.camp_desc_he_linkify = common.linkify(this.attributes.camp_desc_he);
+            this.attributes.camp_desc_en_linkify = common.linkify(this.attributes.camp_desc_en);
         }
     },
     virtuals: {
