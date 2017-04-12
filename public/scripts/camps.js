@@ -158,10 +158,7 @@ function extractCampData() {
 $('#camp_edit_save').click(function () {
     var camp_id = $('#camp_edit_camp_id').val();
     var camp_data = extractCampData();
-
     var lang = document.getElementById('meta__lang').value;
-    var type = fetchAllCheckboxValues('camp_type');
-    var activity_time = fetchAllCheckboxValues('camp_activity_time');
 
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
@@ -215,8 +212,6 @@ $('#edit_type_other').click(function () {
  */
 $('#camp_create_save').click(function () {
     var camp_data = extractCampData();
-    var type = fetchAllCheckboxValues('camp_type');
-    var activity_time = fetchAllCheckboxValues('camp_activity_time');
 
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
