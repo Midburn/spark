@@ -189,7 +189,7 @@ var delete_volunteer = function(req, res) {
     Volunteer.where({ user_id: req.params.user_id, department_id: req.params.department_id, event_id: CURRENT_EVENT })
         .destroy()
         .then(function(model) {
-            res.status(200).end();
+            res.status(200).json({ status: "OK", user_id: req.params.user_id, department_id: req.params.department_id });
         }).catch((err) => {
             res.status(500).json({
                 error: true,
