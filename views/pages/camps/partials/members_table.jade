@@ -1,26 +1,43 @@
 table.table.table-striped.table-hover
-  thead
-    tr
-      th(ng-click='changeOrderBy("id")') #
-      th(ng-click='changeOrderBy("name")') Name
-      if userIs('admin')
-          th(ng-click='changeOrderBy("email")') Email
-      th(ng-click='changeOrderBy("phone")') Phone
-      if userIs('admin')
-          th(ng-click='changeOrderBy("status")') Status
-      if userIs('admin')
-          th(ng-click='changeOrderBy("hasTicket")') Has Ticket
-      th(ng-click='changeOrderBy("earlyArrival")') Early Arrival
-  tbody
-    tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-      td {{member.user.user_id}}
-      td {{[member.user.first_name, member.user.last_name].join(' ')}}
-      if userIs('admin')
-          td {{member.user.email}}
-      td {{member.user.cell_phone}}
-      if userIs('admin')
-          td
-              span.label(ng-class="member.status === 'approved' ? 'label-success':'label-default'") {{member.status}}
-      if userIs('admin')
-          td {{member.user.hasTicket ? 'yes':'no'}}
-      td {{member.user.earlyArrival ? 'yes':'no'}}
+    thead
+        tr
+        th(ng-click='changeOrderBy("id")') #
+        th(ng-click='changeOrderBy("name")')=t('camps:members.name')
+        th(ng-click='changeOrderBy("email")')=t('camps:members.email')
+        th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
+        th(ng-click='changeOrderBy("status")')=t('camps:members.status')
+        th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.ticket_count')
+        //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
+        th()=t('camps:members.actions')
+    tbody
+        tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
+            td {{member.user_id}}
+            td {{member.name}}
+            td {{member.email}}
+            td {{member.cell_phone}}
+            td {{member.member_status_i18n}}
+            td {{member.current_event_id_ticket_count}}
+            //- td {{member.earlyArrival ? 'yes':'no'}}
+            td
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove')
+                        =t('camps:members.reject')
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-ok')
+                        =t('camps:members.approve')
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve_mgr")', ng-if="member.can_approve_mgr")
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-king')
+                        =t('camps:members.approve_mgr')
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove")
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove')
+                        =t('camps:members.remove')
+.col-xs-6
+    h4=t('camps:admin_index.total_approved_members')
+        span.badge {{all_approved_members}}
+.col-xs-6
+    h4=t('camps:admin_index.total_camp_tickets')
+        span.badge {{total_camp_tickets}}

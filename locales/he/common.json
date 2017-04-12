@@ -78,14 +78,20 @@
         "visit_homepage": "בקרו באתר מידברן",
         "ten_principles": "עשרת העקרונות",
         "report_error": "דווחו על תקלה",
+        "report_error_link":"http://midburn.org/he-contact-us/",        
         "ask_question": "רוצה לשאול שאלה?",
         "help_translate": "עזרו לנו לתרגם",
         "open_source": "קוד פתוח",
         "want_to_help": "רוצה לעזור לנו לקודד?",
         "toc": "תנאי השימוש באתר ומדיניות פרטיות",
-        "toc_link": "http://midburn.org/he-terms-and-privacy/",
-        "links": {
+        "toc_link": "http://midburn.org/he-terms-and-privacy/"
+    },
+    "whoami": {
+      "gender": "מין",
+      "camp": "מחנה",
+      "phone": "טלפון",
+      "birth_date": "תאריך לידה",
+      "socials": "רשתות חברתיות"
 
-        }
     }
 }

@@ -57,6 +57,7 @@
     "bad_or_expired_token": "Password reset link is expired or broken",
     "password_reset_succeeded": "Password reset completed successfully",
     "password_changed_email_subject": "Spark Security Alert",
+    "status_pending": "Waiting for camp manager approval",
     "facebook": {
         "login": "Login with Facebook"
     },
@@ -71,14 +72,19 @@
         "visit_homepage": "Visit Midburn website",
         "ten_principles": "The 10 Principles",
         "report_error": "Report an error",
+        "report_error_link":"http://midburn.org/en/en-contact-us/",        
         "ask_question": "Ask a question",
         "help_translate": "Help translating the site",
         "open_source": "Open Source",
         "want_to_help": "Want to help us code?",
         "toc": "Terms of Use and Privacy Policy",
-        "toc_link": "http://midburn.org/en/en-terms-and-privacy/",
-        "links": {
-
-        }
+        "toc_link": "http://midburn.org/en/en-terms-and-privacy/"
+    },
+    "whoami": {
+      "gender": "Gender",
+      "camp": "Camp",
+      "phone": "Phone",
+      "birth_date": "Birth Date",
+      "socials": "Socials"
     }
 }

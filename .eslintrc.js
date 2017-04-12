@@ -26,6 +26,6 @@ module.exports = {
         "block-spacing": ["off"],
         "space-unary-ops": ["off"],
         "comma-dangle": ["off"],
-        "one-var": ["off"],
+        "one-var": ["off"]
     }
 };
