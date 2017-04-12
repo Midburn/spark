@@ -13,7 +13,7 @@ head
     crossorigin="anonymous" )
 
     if (language === 'he')
-      link( rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css")
+        link( rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css")
 
     link( rel="stylesheet", href="/stylesheets/main.scss" )
     // Font-awesome
@@ -32,13 +32,21 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
         crossorigin="anonymous" )
     script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
+    script(async src='/bower_components/bootstrap-table/dist/bootstrap-table.min.js')
+    if (language === 'he')
+        script(async src='/bower_components/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
+
+    // External packages
     script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
     script(src='/bower_components/sweetalert/dist/sweetalert.min.js')
-    //- angular dependencies
+
+    // Angular dependencies
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js")
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js')
     script(src="/bower_components/angular-ui-select/dist/select.min.js")
+
+    // Spark scripts
     script(src="/scripts/camps.js")
     script(src="/scripts/cards.js")
     script(src="/scripts/ng_app.js")

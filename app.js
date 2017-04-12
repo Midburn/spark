@@ -91,7 +91,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps'],
+        ns: ['common', 'camps', 'gate'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -156,20 +156,19 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
-
-// API
-require('./routes/api_routes.js')(app, passport);
-
-require('./routes/api_camps_routes.js')(app, passport);
-
-// Camps
-require('./routes/camps_routes.js')(app, passport);
-
-require('./routes/api/v1/camps.js')(app) // CAMPS PUBLIC API
+app.use('/:lng/gate', require('./routes/gate_routes'));
 
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
+
+// Camps / API
+require('./routes/api_routes.js')(app, passport);
+require('./routes/api_camps_routes.js')(app, passport);
+require('./routes/camps_routes.js')(app, passport);
+require('./routes/api/v1/camps.js')(app); // CAMPS PUBLIC API
+
+
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);

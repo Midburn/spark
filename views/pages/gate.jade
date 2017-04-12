@@ -1,0 +1,29 @@
+extends ../includes/page
+
+block content
+    h2=t('gate:gate')
+
+    if (errorMessage && errorMessage.length > 0)
+        .alert.alert-danger
+            p=errorMessage
+
+
+    .form-group
+        label=t('gate:search')
+        input( type="text", class="form-control", name="search_box", value='' )
+
+    table( data-toggle="table" )
+        thead
+            tr
+                th Ticket number
+                th Holder
+                th Lalala
+        tbody
+            tr
+                td 1
+                td Item 1
+                td $1
+            tr
+                td 2
+                td Item 2
+                td $2

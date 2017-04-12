@@ -108,7 +108,7 @@ var signup = function (email, password, user, done) {
 // expose this function to our app using module.exports
 module.exports = function (passport) {
     // =========================================================================
-    // passport session setup ==================================================
+    // passport session setup
     // =========================================================================
     // required for persistent login sessions
     // passport needs ability to serialize and deserialize users out of session
@@ -128,7 +128,7 @@ module.exports = function (passport) {
     });
 
     // =========================================================================
-    // LOCAL SIGNUP ============================================================
+    // LOCAL SIGNUP
     // =========================================================================
     passport.use('local-signup', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
@@ -147,7 +147,7 @@ module.exports = function (passport) {
         }));
 
     // =========================================================================
-    // LOCAL LOGIN =============================================================
+    // LOCAL LOGIN
     // =========================================================================
     passport.use('local-login', new LocalStrategy(
         {
@@ -165,9 +165,30 @@ module.exports = function (passport) {
             })
         }));
 
-    // ==========
+    // =========================================================================
+    // JWT login
+    // =========================================================================
+    // TODO https://jonathanmh.com/express-passport-json-web-token-jwt-authentication-beginners/
+    //passport.use('jwt-login', new LocalStrategy(
+    //    {
+    //        usernameField: 'email',
+    //        passwordField: 'password',
+    //        passReqToCallback: true
+    //    },
+    //    function (req, email, password, done) {
+    //        login(email, password, function (user, error) {
+    //            if (user) {
+    //                done(null, user, null)
+    //            } else {
+    //                done(null, false, req.flash('error', error))
+    //            }
+    //        })
+    //    }));
+
+
+    // =========================================================================
     // Facebook login
-    // ==========
+    // =========================================================================
     passport.use(new FacebookStrategy({
             clientID: facebookConfig.app_id,
             clientSecret: facebookConfig.app_secret,
