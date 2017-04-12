@@ -27,6 +27,7 @@ var setupDrupalMock = (function() {
     }]
     return function() {
         var options = { allowUnmocked: true };
+        console.log('Running With Mock');
         nock('https://profile.midburn.org/', options)
             .post('/api/user/login')
             .reply(200, {})
@@ -49,7 +50,7 @@ describe('Getters all respond', function() {
     this.timeout(2500);
     beforeEach(() => {
         setupDrupalMock();
-    })
+    });
     it('returns roles', function getRoles(done) {
         request
             .get('/volunteers/roles/')
