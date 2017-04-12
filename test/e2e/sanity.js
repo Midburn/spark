@@ -40,3 +40,27 @@ describe('Home page', function () {
             .catch(done);
     });
 });
+
+describe('Forgot Password Page', function () {
+    var email = 'ron.gross@gmail.com';
+    this.timeout(testTimeout);
+
+    // TODO: Fix this test
+    xit('Should say email was sent when a valid email is entered', function (done) {
+        newNightmare()
+            .goto(url)
+            .click('#login_email')
+            .type('.form-group input', email)
+            .click('#reset-password-btn')
+            .wait('.alert-success')
+            .evaluate(function () {
+                return document.querySelectorAll('.alert-success"').length;
+            })
+            .run(function (err, result) {
+                should.not.exist(err);
+                result.should.equal(1);
+                done();
+            })
+            .catch(done);
+    });
+});

@@ -46,7 +46,7 @@ block wrapper
                     hr
                     .center-block
                         div
-                            a(href="/#{language}/reset_password")=t('forgot_password_question')
+                            a(id='reset-password-link',href="/#{language}/reset_password")=t('forgot_password_question')
                         div
                             span=t('need_account')
                             a(href="signup")=t('sign_up')
