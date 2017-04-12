@@ -86,12 +86,10 @@ var search = function(login_data, email, uid, is_retry) {
         }
         login_data.request_agent
             .get(DRUPAL_PROFILE_API_URL + '/en/api/usersearch')
-            //.accept('application/json')
             .query(qs)
             .then((res) => {
                 var user_data_ = parseUser(res.body)
-                user_response = { email: qs.mail, uid: qs.uid, user_data: user_data_ };
-                resolve(user_response);
+                resolve({ email: qs.mail, uid: qs.uid, user_data: user_data_ });
             }).catch((err) => {
 
                 if (err.status === 403 && !is_retry) {

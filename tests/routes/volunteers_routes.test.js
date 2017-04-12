@@ -1,16 +1,42 @@
 const app = require('../../app');
 const should = require('chai').should();
 const request = require('supertest')(app);
-
+const nock = require('nock');
 
 const testUser1 = {
     id: 1,
-    email: 'it@midburn.com',
-    first_name: 'Master',
-    last_name: 'burner'
+    email: 'john.doe@gmail.com',
+    first_name: 'John',
+    last_name: 'Doe'
 };
 
-describe('Tests are fine', function () {
+
+var setupDrupalMock = (function() {
+
+    const resp = [{
+        'uid': '222',
+        'Active': 'Yes',
+        'E-mail': '<a href="mailto:john.doe@gmail.com">john.doe@gmail.com</a>',
+        'Uid': '<a href="/en/users/itmidburncom">1</a>',
+        'PHP': 'asdasdad',
+        'name': '<a href="/en/users/jhondoe" title="View user profile." class="username">john.doe@g...</a>',
+        'First name': 'John',
+        'I.D. or Passport #': { 'error': 'Access denied or format unknown on field.' },
+        'Last name': 'Doe',
+        'Phone number': '054112233555'
+    }]
+    return function() {
+        var options = { allowUnmocked: true };
+        nock('https://profile.midburn.org/', options)
+            .post('/api/user/login')
+            .reply(200, {})
+            .get('/en/api/usersearch')
+            .query(true)
+            .reply(200, resp)
+    }
+})();
+
+describe('Tests are fine', function() {
     it('responds to / with redirect to hebrew', function testSlash(done) {
         request
             .get('/')
@@ -19,14 +45,17 @@ describe('Tests are fine', function () {
     });
 });
 
-describe('Getters all respond', function () {
+describe('Getters all respond', function() {
     this.timeout(2500);
+    beforeEach(() => {
+        setupDrupalMock();
+    })
     it('returns roles', function getRoles(done) {
         request
             .get('/volunteers/roles/')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -49,7 +78,7 @@ describe('Getters all respond', function () {
             .get('/volunteers/departments/')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -71,12 +100,12 @@ describe('Getters all respond', function () {
             });
     });
 
-    it('returns all volunteers with expected structure', function (done) {
+    it('returns all volunteers with expected structure', function(done) {
         request
             .get('/volunteers/volunteers')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -102,12 +131,12 @@ describe('Getters all respond', function () {
             });
     });
 
-    it('returns volunteers of department 1', function (done) {
+    it('returns volunteers of department 1', function(done) {
         request
             .get('/volunteers/departments/1/volunteers')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(err);
                     done(err);
@@ -132,17 +161,19 @@ describe('Getters all respond', function () {
             });
     });
 
-    it.skip('returns volunteers of all departments', function (done) {
+    it.skip('returns volunteers of all departments', function(done) {
         //Iterate over all departments and see they are returning zero or more volunteers and the count is equal
         done();
     });
 });
 
-describe('Adding volunteers', function () {
+describe('Adding volunteers', function() {
     this.timeout(4000);
-
+    beforeEach(() => {
+        setupDrupalMock();
+    });
     //ading one
-    it('should return ok on adding a single volunteer', function (done) {
+    it('should return ok on adding a single volunteer', function(done) {
         //get number of volunteers and veridy our volunteer is not already there
         const departmentId = 2;
         request
@@ -165,7 +196,7 @@ describe('Adding volunteers', function () {
 
     });
 
-    it.skip('should get the volunteer if added successfully', function (done) {
+    it.skip('should get the volunteer if added successfully', function(done) {
         //get number of volunteers and veridy our volunteer is not already there
         const departmentId = 3;
         request
@@ -187,10 +218,10 @@ describe('Adding volunteers', function () {
             }], done);
 
         request
-            .get(`/volunteers/departments/${departmentId}/volunteers`)//TODO change back to dep 3 
+            .get(`/volunteers/departments/${departmentId}/volunteers`) //TODO change back to dep 3 
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) {
                     console.log(`ERROR: ${err}`);
                     done();
@@ -216,7 +247,7 @@ describe('Adding volunteers', function () {
 });
 
 
-describe.skip('Volunteers editing', function () {
+describe.skip('Volunteers editing', function() {
     //editing one
     //edit and get
     //edit non existing
@@ -227,7 +258,7 @@ describe.skip('Volunteers editing', function () {
 });
 
 
-describe('Volunteers deletion', function () {
+describe('Volunteers deletion', function() {
     //deleting one
     //get and delete and get
     //delete non existing
