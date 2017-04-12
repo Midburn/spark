@@ -25,13 +25,14 @@ var setupDrupalMock = (function() {
         'Last name': 'Doe',
         'Phone number': '054112233555'
     }]
-    return function() {
+    return function(repititions) {
         var options = { allowUnmocked: true };
         console.log('Running With Mock');
         nock('https://profile.midburn.org/', options)
             .post('/api/user/login')
             .reply(200, {})
             .get('/en/api/usersearch')
+            .times(repititions)
             .query(true)
             .reply(200, resp)
     }
@@ -49,7 +50,7 @@ describe('Tests are fine', function() {
 describe('Getters all respond', function() {
     this.timeout(2500);
     beforeEach(() => {
-        setupDrupalMock();
+        setupDrupalMock(1);
     });
     it('returns roles', function getRoles(done) {
         request
@@ -170,13 +171,11 @@ describe('Getters all respond', function() {
 
 describe('Adding volunteers', function() {
     this.timeout(4000);
-    beforeEach(() => {
-        setupDrupalMock();
-    });
     //ading one
     it('should return ok on adding a single volunteer', function(done) {
         //get number of volunteers and veridy our volunteer is not already there
         const departmentId = 2;
+        setupDrupalMock(1);
         request
             .post(`/volunteers/departments/${departmentId}/volunteers/`)
             .type('application/json')
@@ -199,7 +198,9 @@ describe('Adding volunteers', function() {
 
     it.skip('should get the volunteer if added successfully', function(done) {
         //get number of volunteers and veridy our volunteer is not already there
+        setupDrupalMock(1)
         const departmentId = 3;
+
         request
             .post(`/volunteers/departments/${departmentId}/volunteers/`)
             .type('application/json')
@@ -218,6 +219,7 @@ describe('Adding volunteers', function() {
                 "status": "OK"
             }], done);
 
+        setupDrupalMock(1);
         request
             .get(`/volunteers/departments/${departmentId}/volunteers`) //TODO change back to dep 3 
             .expect('Content-Type', /json/)
