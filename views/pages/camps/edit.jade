@@ -108,18 +108,24 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
-                                    select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
-                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                    ui-select(ng-model='temp', theme='selectize', title='Choose Main contact', ng-change="getMembers()")
+                                        ui-select-match(placeholder="#{t('camps:edit.choose_main_contact')}") {{$select.selected.member.name}}
+                                        ui-select-choices(group-by="'member.name'", repeat='member in approved_members | filter: $select.search')
+                                            small.label.label-info(ng-bind-html='member.id | highlight: $select.search')
+                                            span(ng-bind-html='member.name | highlight: $select.search')
+                                    //- select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
+                                    //-     option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_moop_contact')=t('camps:edit.moop_contact')
-                                    select.form-control(id='camp_moop_contact', name='moop_contact')
-                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_safety_contact')=t('camps:edit.safety_contact')
-                                    select.form-control(id='camp_safety_contact', name='safety_contact')
-                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                    ui-select(ng-model='temp', theme='selectize', title='Choose Main contact', ng-change="getMembers()")
+                                        ui-select-match(placeholder="#{t('camps:edit.choose_moop_contact')}") {{$select.selected.member.name}}
+                                        ui-select-choices(group-by="'member.name'", repeat='member in approved_members | filter: $select.search')
+                                            small.label.label-info(ng-bind-html='member.id | highlight: $select.search')
+                                            span(ng-bind-html='member.name | highlight: $select.search')
+
+                                    //- select.form-control(id='camp_moop_contact', name='moop_contact')
+                                    //-     option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
             //- Card 2
             .card.card-second.card-hide
                 h4=t('camps:edit.behavior_title')
