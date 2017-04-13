@@ -1,17 +1,3 @@
 language: node_js
 node_js:
   - "7"
-cache:
-  directories:
-    # - node_modules
-    - bower_components
-script:
-  - yarn add bower
-  - ./node_modules/.bin/bower install
-  - ./node_modules/.bin/knex migrate:latest
-  - npm test
-  - .travis/deploy.sh
-after_success:
-  - .travis/notify.sh "1"
-after_failure:
-  - .travis/notify.sh "0"
