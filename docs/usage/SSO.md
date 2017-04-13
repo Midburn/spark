@@ -93,3 +93,12 @@ Here are some scenarios to demonstrate the capabilities of the Spark SSO system
 * user is redirected to Spark sso log-out
 * user localStorage / cookie is deleted on Spark
 * user is redirected back to external site (same as in login flow)
+
+### external site backend api call
+* given that user is logged-in and verified on external site frontend
+* user performs an action that requires verification (e.g. delete a camp)
+  * the external site frontend contacts the Spark server API to perform the action
+  * the API request will contain the user's json web token
+  * Spark backend definitively verifies the token (using the json web token signature)
+  * Spark backend performs the action
+* the action is performed
