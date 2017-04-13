@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 var profiles = (function() {
     const profiles = [{
-            password: 123,
+            password: '123',
             email: 'spark.superuser@midburn.org',
             uid: '1',
             response: {
@@ -19,7 +19,7 @@ var profiles = (function() {
             }
         },
         {
-            password: 123456,
+            password: '123456',
             email: 'jane.doe@gmail.com',
             uid: '333',
             response: {
@@ -36,7 +36,7 @@ var profiles = (function() {
             }
         },
         {
-            password: 123456,
+            password: '123456',
             email: 'john.doe@gmail.com',
             uid: '222',
             response: {
@@ -56,7 +56,7 @@ var profiles = (function() {
     return {
         checkPassword: function(email, password) {
             let profile = _.find(profiles, x => x.email === email);
-            return profile && profile.password == password;
+            return profile && profile.password === password;
         },
         find: function(email, uid) {
             let profile = _.find(profiles, x => (x.email === email) || (x.uid === uid));
