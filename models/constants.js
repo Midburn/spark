@@ -1,11 +1,11 @@
-var get_default_enum = function (enu) {
-    return enu.find(function (e) {
+var get_default_enum = function(enu) {
+    return enu.find(function(e) {
         return e.default;
     }).id;
 };
 
-var get_enum = function (enu) {
-    return enu.map(function (e) {
+var get_enum = function(enu) {
+    return enu.map(function(e) {
         return e.id;
     })
 };
@@ -38,7 +38,15 @@ var prototype_camps = {
 };
 var events = {
     MIDBURN2017: {
-        bundles: ['39', '40']
+        bundles: [
+            '39', // Support Ticket 
+            '40', // Adult Ticket
+            '41', // Child Ticket 
+            '43', // Adult Direct Sale Ticket 
+            '44', // Youth Ticket
+            '45', // Low Income Ticket
+            '46' // International Direct Sale 
+        ]
     }
 };
 

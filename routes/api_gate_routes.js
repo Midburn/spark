@@ -8,11 +8,11 @@
 //     mailConfig = config.get('mail');
 // 
 // module.exports = (app, passport) => {
-//     /**
-//      * API: (GET) get user by id
-//      * request => /users/:id
-//      */
-//     app.get('/gate/:action/:reference',
+    /**
+     * API: (GET) get user by id
+     * request => /users/:id
+     */
+    // app.get('/gate/:action/:reference',
 //         [userRole.isLoggedIn(), userRole.isAllowToViewUser()],
 //         (req, res) => {
 //             User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
@@ -30,6 +30,7 @@
 //                     }
 //                 });
 //             });
-//         });
-
+        // });
+// 
 // }
+// 
