@@ -41,8 +41,14 @@ var functions = {
         //Change email addresses to mailto:: links.
         replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
         replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
-        /*eslint-enable */ 
+        /*eslint-enable */
         return replacedText;
+    },
+    validateEmail: function (user_email) {
+        var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+        if (filter.test(user_email)) {
+            return user_email;
+        }
     }
 }
 
