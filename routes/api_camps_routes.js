@@ -667,10 +667,9 @@ module.exports = (app, passport) => {
     * request => /camps/1/members/add
     */
     app.post('/camps/:id/members/add', userRole.isLoggedIn(), (req, res) => {
-        var user_email = req.body.user_email
-        var camp_id = req.params.id
-        var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
-        if (!filter.test(user_email)) {
+        var user_email = req.body.user_email;
+        var camp_id = req.params.id;
+        if (!common.validateEmail(user_email)) {
             res.status(500).json({ error: true, data: { message: 'Bad email entered!' } });
             return;
         }
