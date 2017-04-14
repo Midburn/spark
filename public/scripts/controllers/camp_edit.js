@@ -83,8 +83,8 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         $scope.status_options = ['מחנה פתוח למצטרפים חדשים', 'סגור למצטרפים חדשים'];
         $scope.noise_level_options = ['שקט', 'בינוני', 'רועש', 'מאוד רועש'];
     } else {
-        $scope.status_options = ['open to new member', 'closed to new members'];
-        $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy'];
+        $scope.status_options = ['Opened to new member', 'Closed to new members'];
+        $scope.noise_level_options = ['Quiet', 'Medium', 'Noisy', 'Very Noisy'];
     }
     $scope.getMembers = () => {
         angular_getMembers($http, $scope, camp_id);
