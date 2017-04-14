@@ -83,8 +83,16 @@ var User = bookshelf.Model.extend({
     validPassword: function (password) {
         return bcrypt.compareSync(password, this.attributes.password);
     },
-    hasRole: function (role) {
+    hasRole: function (role) { 
         return common.__hasRole(role, this.attributes.roles);
+    },
+    isUserInCamp: function (camp_id) {
+        camp_id = parseInt(camp_id);
+        for (var i in this.attributes.camps) {
+            if (this.attributes.camps[i].id === camp_id && this.attributes.camps[i].member_status !== 'deleted') {
+                return this.attributes.camps[i];
+            }
+        }
     },
     isManagerOfCamp: function (camp_id) {
         let isCampManager = false;

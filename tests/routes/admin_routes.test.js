@@ -1,10 +1,10 @@
 var should = require('chai').should(); //actually call the function
-var app = require('../app.js');
+var app = require('../../app');
 var request = require('supertest').agent(app);
-var DrupalUser = require('../models/user').DrupalUser;
-var User = require('../models/user').User;
-var knex = require('../libs/db').knex;
-var constants = require('../models/constants');
+var DrupalUser = require('../../models/user').DrupalUser;
+var User = require('../../models/user').User;
+var knex = require('../../libs/db').knex;
+var constants = require('../../models/constants');
 var _ = require('lodash');
 
 const ADMIN_USER_EMAIL = "omerpines@hotmail.com";
@@ -18,8 +18,8 @@ var givenAdminUserIsRegistered = function() {
         email: ADMIN_USER_EMAIL
     }).fetch().then(function(user) {
         if (user) {
-            console.log('user already exists...!'+user.attributes.roles);
-            return user.save({roles:'admin'});
+            console.log('user already exists...!' + user.attributes.roles);
+            return user.save({ roles: 'admin' });
             // return Promise.resolve(user);
         } else {
             var newUser = new User({
@@ -74,7 +74,7 @@ var givenUserAdminTableAjaxUrl = function() {
 
 var adminTableAjaxShouldContainAdminUser = function() {
     return request.get(givenUserAdminTableAjaxUrl()).expect(200).expect(function(res) {
-        console.log("loaded information:"+res.text);
+        console.log("loaded information:" + res.text);
         _(JSON.parse(res.text).data)
             .find({
                 email: ADMIN_USER_EMAIL,
