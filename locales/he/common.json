@@ -78,7 +78,7 @@
         "visit_homepage": "בקרו באתר מידברן",
         "ten_principles": "עשרת העקרונות",
         "report_error": "דווחו על תקלה",
-        "report_error_link":"http://midburn.org/he-contact-us/",        
+        "report_error_link": "http://midburn.org/he-contact-us/",
         "ask_question": "רוצה לשאול שאלה?",
         "help_translate": "עזרו לנו לתרגם",
         "open_source": "קוד פתוח",
@@ -87,11 +87,19 @@
         "toc_link": "http://midburn.org/he-terms-and-privacy/"
     },
     "whoami": {
-      "gender": "מין",
-      "camp": "מחנה",
-      "phone": "טלפון",
-      "birth_date": "תאריך לידה",
-      "socials": "רשתות חברתיות"
-
+        "gender": "מגדר",
+        "camp": "מחנה",
+        "phone": "טלפון",
+        "birth_date": "תאריך לידה",
+        "socials": "רשתות חברתיות",
+        "id_num": "מספר ת.ז.",
+        "address": "כתובת",
+        "cell_phone": "סלולארי",
+        "extra_phone":"מס טלפון נוסף"        
+    },
+    "events": {
+        "MIDBURN2014": "2014 - בראשית",
+        "MIDBURN2015": "2015 - התעלות",
+        "MIDBURN2016": "2016 – אבראכאדברא"
     }
 }

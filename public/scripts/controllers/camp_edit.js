@@ -34,19 +34,35 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     if (lang === undefined) {
         lang = 'he';
     }
-    var tpl;
+    var tpl,action_tpl;
+
     if (lang === "he") {
+        // debugger;
+        action_tpl = {
+            approve: 'לאשר את',
+            delete: 'למחוק את',
+            reject: 'לדחות את',
+            approve_mgr: 'לשלוח בקשה ל-',
+            remove: 'להסיר את'
+        };
         tpl = {
             alert_title: "האם את/ה בטוח?",
-            alert_text: "האם את/ה בטוח שתרצה לבצע " + action_type + " את משתמש " + user_name + "?",
+            alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " משתמש " + user_name + "?",
             alert_success_1: action_type + "!",
             alert_success_2: "משתמש " + user_name + action_type,
             alert_success_3: " בהצלחה",
         };
     } else {
+        action_tpl = {
+            approve: 'Approve',
+            delete: 'Delete',
+            reject: 'Reject',
+            approve_mgr: 'Send Approval to',
+            remove: 'Remove'
+        };
         tpl = {
             alert_title: "Are you sure?",
-            alert_text: "Are you sure you would like to " + action_type + " " + user_name + "?",
+            alert_text: "Are you sure you would like to " + action_tpl[action_type] + " " + user_name + "?",
             alert_success_1: action_type + "!",
             alert_success_2: user_name + "has been " + action_type,
             alert_success_3: "success",

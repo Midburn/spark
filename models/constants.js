@@ -38,7 +38,15 @@ var prototype_camps = {
 };
 var events = {
     MIDBURN2017: {
-        bundles: ['39', '40']
+        bundles: [
+            '39'    // Support Ticket 
+            , '40'   // Adult Ticket
+            , '41'   // Child Ticket 
+            , '43'   // Adult Direct Sale Ticket 
+            , '44'   // Youth Ticket
+            , '45'   // Low Income Ticket
+            , '46'   // International Direct Sale 
+        ]
     }
 };
 
