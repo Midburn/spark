@@ -36,16 +36,27 @@ var prototype_camps = {
         name: 'Art Exhibit',
     },
 };
-var events = {
+
+const ticketType = {
+    SUPPORT_TICKET: '39',
+    ADULT_TICKET: '40',
+    CHILD_TICKET: '41',
+    ADULT_DIRECT_SALE_TICKET: '43',
+    YOUTH_TICKET: '44',
+    LOW_INCOME_TICKET: '45',
+    INTERNATIONAL_DIRECT_SALE: '46'
+};
+
+const events = {
     MIDBURN2017: {
         bundles: [
-            '39', // Support Ticket 
-            '40', // Adult Ticket
-            '41', // Child Ticket 
-            '43', // Adult Direct Sale Ticket 
-            '44', // Youth Ticket
-            '45', // Low Income Ticket
-            '46' // International Direct Sale 
+            ticketType.SUPPORT_TICKET,  
+            ticketType.ADULT_TICKET,  
+            ticketType.CHILD_TICKET,  
+            ticketType.ADULT_DIRECT_SALE_TICKET,  
+            ticketType.YOUTH_TICKET,  
+            ticketType.LOW_INCOME_TICKET,  
+            ticketType.INTERNATIONAL_DIRECT_SALE   
         ]
     }
 };
@@ -55,7 +66,7 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     CURRENT_EVENT_ID: "MIDBURN2017",
-    events: events,
+    events,
 
     // -- table names --
     EVENTS_TABLE_NAME: "events",
