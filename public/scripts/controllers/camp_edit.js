@@ -75,8 +75,17 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
 
 app.controller("campEditController", ($scope, $http, $filter) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
-    $scope.status_options = ['open', 'closed'];
-    $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy'];
+    var lang = $scope.lang;
+    if (lang === undefined) {
+        lang = 'he';
+    }
+    if (lang === "he") {
+        $scope.status_options = ['מחנה פתוח למצטרפים חדשים', 'סגור למצטרפים חדשים'];
+        $scope.noise_level_options = ['שקט', 'בינוני', 'רועש', 'מאוד רועש'];
+    } else {
+        $scope.status_options = ['Opened to new member', 'Closed to new members'];
+        $scope.noise_level_options = ['Quiet', 'Medium', 'Noisy', 'Very Noisy'];
+    }
     $scope.getMembers = () => {
         angular_getMembers($http, $scope, camp_id);
         setTimeout(() => {
