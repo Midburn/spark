@@ -104,19 +104,19 @@ $(function () {
 /**
  * Component: View camp details
  */
-function _fetchCampContactPersonDetails() {
-    $.get('/camps_contact_person/' + contact_person_id, function (res) {
-        $('span.contact_person_name').text([res.user.first_name, res.user.last_name].join(' '));
-        $('span.contact_person_phone').text(res.user.cell_phone);
-        $('span.contact_person_email').text(res.user.email);
-    });
-}
-if ($('.camps').hasClass('camp_details')) {
-    var contact_person_id = $('.contact-person').attr('data-camp-contact-person-id');
-    if (contact_person_id !== "null") {
-        _fetchCampContactPersonDetails();
-    }
-}
+// function _fetchCampContactPersonDetails() {
+//     $.get('/camps_contact_person/' + contact_person_id, function (res) {
+//         $('span.contact_person_name').text([res.user.first_name, res.user.last_name].join(' '));
+//         $('span.contact_person_phone').text(res.user.cell_phone);
+//         $('span.contact_person_email').text(res.user.email);
+//     });
+// }
+// if ($('.camps').hasClass('camp_details')) {
+//     var contact_person_id = $('.contact-person').attr('data-camp-contact-person-id');
+//     if (contact_person_id !== "null") {
+//         _fetchCampContactPersonDetails();
+//     }
+// }
 
 function extractCampData() {
     var activity_time = fetchAllCheckboxValues('camp_activity_time');
