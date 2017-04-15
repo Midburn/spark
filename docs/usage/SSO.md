@@ -23,7 +23,7 @@ Here are some scenarios to demonstrate the capabilities of the Spark SSO system
   * **recommended** -  through all pages must keep the EXTERNAL_SITE_ID and EXTERNAL_SITE_RETURN_PATH values
 * logged-in: 
   * redirected to the external web-site
-    **recommended** - 
+    * **recommended** - 
       * Spark backend generates a json web token for this user
       * Spark frontend redirects the user back to url:
         * domain according EXTERNAL_SITE_ID
