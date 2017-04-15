@@ -37,7 +37,6 @@ var Camp = bookshelf.Model.extend({
                     users[i].can_remove = ['rejected', 'pending_mgr',].indexOf(_status) > -1;
                     users[i].can_approve = ['pending', 'rejected'].indexOf(_status) > -1 && users[i].validated;
                     users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id;
-                    
                     if (((_this.attributes.main_contact === users[i].user_id || common.__hasRole('camp_manager', users[i].roles))
                         && users[i].member_status === 'approved')
                         || (users[i].member_status === 'approved_mgr')) {
@@ -58,10 +57,10 @@ var Camp = bookshelf.Model.extend({
             }
         }
     },
-    isUserInCamp: function (user_id) {
+    isUserInCamp: function (user_id, include_deleted) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.users) {
-            if (this.attributes.users[i].user_id === user_id && this.attributes.users[i].member_status !== 'deleted') {
+            if (this.attributes.users[i].user_id === user_id && (this.attributes.users[i].member_status !== 'deleted' || include_deleted)) {
                 return this.attributes.users[i];
             }
         }
@@ -69,7 +68,7 @@ var Camp = bookshelf.Model.extend({
     isUserCampMember: function (user_id) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.users) {
-            if (this.attributes.users[i].user_id === user_id && ['approved','approved_mgr'].indexOf(this.attributes.users[i].member_status)>-1) {
+            if (this.attributes.users[i].user_id === user_id && ['approved', 'approved_mgr'].indexOf(this.attributes.users[i].member_status) > -1) {
                 return this.attributes.users[i];
             }
         }

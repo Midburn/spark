@@ -1,10 +1,7 @@
 require('dotenv').config()
 var request = require('superagent');
 var logger = require('../libs/logger')(module);
-
-var DRUPAL_PROFILE_API_URL = process.env.DRUPAL_PROFILE_API_URL;
-var DRUPAL_PROFILE_API_USER = process.env.DRUPAL_PROFILE_API_USER;
-var DRUPAL_PROFILE_API_PASSWORD = process.env.DRUPAL_PROFILE_API_PASSWORD;
+var drupalConfig = require('config').get('profiles_api');
 
 function parseFromAnchorTag(uid_string) {
     var re = /<a.*>(.+)<\/a>/g;
@@ -34,8 +31,8 @@ function parseUser(res_body) {
 
 var login = (function() {
     let request_agent = false;
-    logger.info('DRUPAL_PROFILE_API_URL: ' + DRUPAL_PROFILE_API_URL +
-        ", DRUPAL_PROFILE_API_USER: " + DRUPAL_PROFILE_API_USER)
+    logger.info('DRUPAL_PROFILE_API_URL: ' + drupalConfig.url +
+        ", DRUPAL_PROFILE_API_USER: " + drupalConfig.username)
 
     return function(forceLogin) {
         //TEMPORARY DISABLE COOKIE REUSE TILL BETTER SOLUTION:
@@ -46,10 +43,10 @@ var login = (function() {
             } else {
                 request_agent = request.agent();
                 request_agent
-                    .post(DRUPAL_PROFILE_API_URL + '/api/user/login')
+                    .post(drupalConfig.url + '/api/user/login')
                     .accept('application/json')
                     .set('Content-Type', 'application/x-www-form-urlencoded')
-                    .send({ 'username': DRUPAL_PROFILE_API_USER, 'password': DRUPAL_PROFILE_API_PASSWORD })
+                    .send({ 'username': drupalConfig.username, 'password': drupalConfig.password })
                     .then((res) => {
                         resolve({ request_agent });
                     }).catch((err) => {
@@ -85,7 +82,7 @@ var search = function(login_data, email, uid, is_retry) {
             qs.uid = uid
         }
         login_data.request_agent
-            .get(DRUPAL_PROFILE_API_URL + '/en/api/usersearch')
+            .get(drupalConfig.url + '/en/api/usersearch')
             .query(qs)
             .then((res) => {
                 var user_data_ = parseUser(res.body)

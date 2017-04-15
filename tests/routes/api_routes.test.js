@@ -1,10 +1,10 @@
 // This is magically used in code such as user.attributes.password.length.should.be.above(20);
 var should = require('chai').should(); // eslint-disable-line no-unused-vars
 
-var app = require('../app');
+var app = require('../../app');
 var request = require('supertest')(app);
-var User = require('../models/user').User;
-var knex = require('../libs/db').knex;
+var User = require('../../models/user').User;
+var knex = require('../../libs/db').knex;
 const assert = require('assert');
 const TEST_TOKEN = "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91";
 
