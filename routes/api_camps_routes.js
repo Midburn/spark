@@ -208,7 +208,7 @@ module.exports = (app, passport) => {
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             camp_desc_he: req.body.camp_desc_he,
             camp_desc_en: req.body.camp_desc_en,
-            status: req.body.status,
+            // status: req.body.camp_status,
             type: req.body.type,
             facebook_page_url: req.body.facebook_page_url,
             contact_person_name: req.body.contact_person_name,
@@ -217,7 +217,7 @@ module.exports = (app, passport) => {
             accept_families: req.body.accept_families,
             camp_activity_time: req.body.camp_activity_time,
             child_friendly: req.body.child_friendly,
-            noise_level: req.body.noise_level,
+            // noise_level: req.body.noise_level,
             support_art: req.body.support_art,
         }
         var __update_prop_foreign = function (propName) {
@@ -225,9 +225,13 @@ module.exports = (app, passport) => {
                 data[propName] = req.body[propName];
             }
         }
-        var __update_prop = function (propName) {
+        var __update_prop = function (propName, options) {
             if (req.body[propName] !== undefined) {
-                data[propName] = req.body[propName];
+                let value = req.body[propName];
+                if (!options || (typeof options === 'array' && options.indexOf(value) > -1)) {
+                    data[propName] = value;
+                }
+                return value;
             }
         }
         if (isNew) {
@@ -237,12 +241,16 @@ module.exports = (app, passport) => {
             __update_prop('camp_name_en');
             __update_prop('camp_name_he');
         }
+        __update_prop('noise_level',constants.CAMP_NOISE_LEVELS);
+        // if (req.body.camp_status)
         __update_prop_foreign('main_contact_person_id');
         __update_prop_foreign('main_contact');
         __update_prop_foreign('moop_contact');
         __update_prop_foreign('safety_contact');
 
+        let camp_statuses = ['open', 'closed'];
         if (req.user.isAdmin) {
+            camp_statuses = constants.CAMP_STATUSES;
             __update_prop('public_activity_area_sqm');
             __update_prop('public_activity_area_desc');
             __update_prop('location_comments');
@@ -250,6 +258,10 @@ module.exports = (app, passport) => {
             __update_prop('camp_location_street_time');
             __update_prop('camp_location_area');
         }
+        if (camp_statuses.indexOf(req.body.camp_status) > -1) {
+            data.status = req.body.camp_status;
+        }
+
         // console.log(data);
         return data;
     }
