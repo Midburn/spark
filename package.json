@@ -12,7 +12,7 @@
     "start": "node server.js",
     "pretest": "npm run lint",
     "test": "cross-env SPARK_DB_FILENAME=test.sqlite3 npm run testcore",
-    "testcore" : "rimraf test.sqlite3 && knex migrate:latest && mocha \"routes/*test.js\" ",
+        "testcore": "rimraf test.sqlite3 && knex migrate:latest && mocha \"tests/**/*test.js\" ",
     "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
     "//log": "send a generic log notification to slack",
     "log": "curl -X POST -g $npm_config_webhook --data-urlencode 'payload={\"channel\": \"'\"#${npm_config_channel:-sparksystem-log}\"'\", \"username\": \"'\"${npm_config_username:-bot}\"'\", \"text\": \"'\"${npm_config_text}\"'\", \"icon_emoji\": \"'\"${npm_config_emoji:-ghost}\"'\"}'",
@@ -97,6 +97,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^2.1.1",
     "mocha": "^3.2.0",
+     "nock": "^9.0.13",
     "rimraf": "2.6.1",
     "supertest": "^2.0.1"
   }
