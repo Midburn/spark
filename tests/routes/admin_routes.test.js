@@ -1,14 +1,11 @@
-const modules = require('../../libs/modules');
 var should = require('chai').should(); //actually call the function
-var app = modules.require('core', 'app.js');
+var app = require('../../app');
 var request = require('supertest').agent(app);
-var DrupalUser = modules.require('users', 'models/user').DrupalUser;
-var User = modules.require('users', 'models/user').User;
-var knex = modules.require('core', 'libs/db').knex;
-var constants = modules.require('core', 'models/constants');
+var DrupalUser = require('../../models/user').DrupalUser;
+var User = require('../../models/user').User;
+var knex = require('../../libs/db').knex;
+var constants = require('../../models/constants');
 var _ = require('lodash');
-var api = modules.require('api', 'libs/api');
-var testlib = modules.require('core', 'libs/testlib');
 
 const ADMIN_USER_EMAIL = "omerpines@hotmail.com";
 const ADMIN_USER_PASSWORD = "123456";
@@ -21,8 +18,8 @@ var givenAdminUserIsRegistered = function() {
         email: ADMIN_USER_EMAIL
     }).fetch().then(function(user) {
         if (user) {
-            console.log('user already exists...!'+user.attributes.roles);
-            return user.save({roles:'admin'});
+            console.log('user already exists...!' + user.attributes.roles);
+            return user.save({ roles: 'admin' });
             // return Promise.resolve(user);
         } else {
             var newUser = new User({
@@ -52,8 +49,7 @@ var givenAdminUserIsLoggedIn = function() {
                     r: "/admin"
                 })
                 .expect(302)
-                .expect('Location', '/admin')
-            ;
+                .expect('Location', '/admin');
         });
     } else {
         return Promise.resolve();
@@ -61,7 +57,7 @@ var givenAdminUserIsLoggedIn = function() {
 };
 
 var adminHomeShouldShowSomeData = function() {
-    return request.get('/admin').expect(200).expect(function(res) {
+    return request.get('/he/admin').expect(200).expect(function(res) {
         if (
             (res.text.indexOf("Total Users") < 0) ||
             (res.text.indexOf("Total Camps") < 0)
@@ -78,7 +74,7 @@ var givenUserAdminTableAjaxUrl = function() {
 
 var adminTableAjaxShouldContainAdminUser = function() {
     return request.get(givenUserAdminTableAjaxUrl()).expect(200).expect(function(res) {
-        console.log("loaded information:"+res.text);
+        console.log("loaded information:" + res.text);
         _(JSON.parse(res.text).data)
             .find({
                 email: ADMIN_USER_EMAIL,
@@ -125,9 +121,11 @@ var shouldChangeAdminUserLastNameTo = function(last_name) {
             }).expect(200);
         })
         .then(function() {
-            return api.users.fetchByEmail(testlib.getAdminHttpRequest(), ADMIN_USER_EMAIL);
+            return User.forge({
+                email: ADMIN_USER_EMAIL
+            }).fetch();
         }).then(function(user) {
-            user.last_name.should.equal(last_name + "");
+            user.attributes.last_name.should.equal(last_name + "");
         });
 };
 

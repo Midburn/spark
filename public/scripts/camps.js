@@ -102,41 +102,64 @@ $(function () {
 });
 
 /**
+ * Component: View camp details
+ */
+// function _fetchCampContactPersonDetails() {
+//     $.get('/camps_contact_person/' + contact_person_id, function (res) {
+//         $('span.contact_person_name').text([res.user.first_name, res.user.last_name].join(' '));
+//         $('span.contact_person_phone').text(res.user.cell_phone);
+//         $('span.contact_person_email').text(res.user.email);
+//     });
+// }
+// if ($('.camps').hasClass('camp_details')) {
+//     var contact_person_id = $('.contact-person').attr('data-camp-contact-person-id');
+//     if (contact_person_id !== "null") {
+//         _fetchCampContactPersonDetails();
+//     }
+// }
+
+function extractCampData() {
+    var activity_time = fetchAllCheckboxValues('camp_activity_time');
+    var type = fetchAllCheckboxValues('camp_type');
+
+    return {
+        camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
+        camp_name_en: $('#camp_name_en').val(),
+        camp_desc_he: $('#camp_desc_he').val() || '',
+        camp_desc_en: $('#camp_desc_en').val() || '',
+        contact_person_id: $('#camp_contact_person_id option:selected').val() || '',
+        facebook_page_url: $('#camp_facebook_page_url').val() || '',
+        contact_person_name: $('#camp_contact_person_name').val() || '',
+        contact_person_email: $('#camp_contact_person_email').val() || '',
+        contact_person_phone: $('#camp_contact_person_phone').val() || '',
+        accept_families: $('#camp_accept_families:checked').length,
+        main_contact: $('#camp_main_contact option:selected').val() || '',
+        moop_contact: $('#camp_moop_contact option:selected').val() || '',
+        safety_contact: $('#camp_safety_contact option:selected').val() || '',
+        type: type || '',
+        camp_status: $('#camp_status option:selected').val() || '',
+        camp_activity_time: activity_time || '',
+        child_friendly: $('#camp_child_friendly:checked').length,
+        noise_level: $('#camp_noise_level option:selected').val() || '',
+        public_activity_area_sqm: $('#camp_public_activity_area_sqm').val() || '',
+        public_activity_area_desc: $('#camp_public_area_desc').val() || '',
+        support_art: $('#support_art:checked').length,
+        location_comments: $('#location_comments').val() || '',
+        camp_location_street: $('#camp_location_street').val() || '',
+        camp_location_street_time: $('#camp_location_street_time').val() || '',
+        camp_location_area: $('#camp_location_area').val() || ''
+    };
+}
+
+/**
  * Component: Editing camp
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function () {
+    var camp_id = $('#camp_edit_camp_id').val();
+    var camp_data = extractCampData();
     var lang = document.getElementById('meta__lang').value;
-    var type = fetchAllCheckboxValues('camp_type');
-    var activity_time = fetchAllCheckboxValues('camp_activity_time');
-    var camp_id = $('#camp_edit_camp_id').val(),
-        camp_data = {
-            camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
-            camp_name_en: $('#camp_name_en').val(),
-            camp_desc_he: $('#camp_desc_he').val() || '',
-            camp_desc_en: $('#camp_desc_en').val() || '',
-            contact_person_id: $('#camp_contact_person_id option:selected').val() || '',
-            facebook_page_url: $('#camp_facebook_page_url').val() || '',
-            contact_person_name: $('#camp_contact_person_name').val() || '',
-            contact_person_email: $('#camp_contact_person_email').val() || '',
-            contact_person_phone: $('#camp_contact_person_phone').val() || '',
-            accept_families: $('#camp_accept_families:checked').length,
-            main_contact: $('#camp_main_contact option:selected').val() || '',
-            moop_contact: $('#camp_moop_contact option:selected').val() || '',
-            safety_contact: $('#camp_safety_contact option:selected').val() || '',
-            type: type || '',
-            status: $('#camp_status option:selected').val() || '',
-            camp_activity_time: activity_time || '',
-            child_friendly: $('#camp_child_friendly:checked').length,
-            noise_level: $('#camp_noise_level option:selected').val() || '',
-            public_activity_area_sqm: $('#camp_public_activity_area_sqm').val() || '',
-            public_activity_area_desc: $('#camp_public_area_desc').val() || '',
-            support_art: $('#support_art:checked').length,
-            location_comments: $('#location_comments').val() || '',
-            camp_location_street: $('#camp_location_street').val() || '',
-            camp_location_street_time: $('#camp_location_street_time').val() || '',
-            camp_location_area: $('#camp_location_area').val() || ''
-        };
+
     $.ajax({
         url: '/camps/' + camp_id + '/edit',
         type: 'PUT',
@@ -188,35 +211,8 @@ $('#edit_type_other').click(function () {
  * Component: Create new camp with approval modal
  */
 $('#camp_create_save').click(function () {
-    var type = fetchAllCheckboxValues('camp_type');
-    var activity_time = fetchAllCheckboxValues('camp_activity_time');
-    var camp_data = {
-        camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
-        camp_name_en: $('#camp_name_en').val(),
-        camp_desc_he: $('#camp_desc_he').val() || '',
-        camp_desc_en: $('#camp_desc_en').val() || '',
-        contact_person_id: $('#camp_contact_person_id option:selected').val() || '',
-        facebook_page_url: $('#camp_facebook_page_url').val() || '',
-        contact_person_name: $('#camp_contact_person_name').val() || '',
-        contact_person_email: $('#camp_contact_person_email').val() || '',
-        contact_person_phone: $('#camp_contact_person_phone').val() || '',
-        accept_families: $('#camp_accept_families:checked').length,
-        main_contact: $('#camp_main_contact option:selected').val() || '',
-        moop_contact: $('#camp_moop_contact option:selected').val() || '',
-        safety_contact: $('#camp_safety_contact option:selected').val() || '',
-        type: type || '',
-        status: $('#camp_status option:selected').val() || '',
-        camp_activity_time: activity_time || '',
-        child_friendly: $('#camp_child_friendly:checked').length,
-        noise_level: $('#camp_noise_level option:selected').val() || '',
-        public_activity_area_sqm: $('#camp_public_activity_area_sqm').val() || '',
-        public_activity_area_desc: $('#camp_public_area_desc').val() || '',
-        support_art: $('#support_art:checked').length,
-        location_comments: $('#location_comments').val() || '',
-        camp_location_street: $('#camp_location_street').val() || '',
-        camp_location_street_time: $('#camp_location_street_time').val() || '',
-        camp_location_area: $('#camp_location_area').val() || ''
-    };
+    var camp_data = extractCampData();
+
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
     _campAppendData();
