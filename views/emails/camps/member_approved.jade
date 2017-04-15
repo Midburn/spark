@@ -49,9 +49,23 @@ body
     .wrapper
         .card.card__text--center
             span Midburn Spark
-            h1 Camp join request!
+            h1='אשור חברות במחנה'
+            p.subtitle(dir='rtl')
+                span שלום #{user.first_name},
+                br
+                span בקשת החברות שלך במחנה "#{camp.camp_name_he}" אושרה. 
+                br
+                span אם חלה טעות, תוכל ליצור קשר עם מנהל המחנה, #{camp_manager.name}
+            p(dir='rtl')
+                span לבחירת מחנה אחר הכנס ל-
+                    a(href='//spark.midburn.org/') Spark
+            h1 Your membership has been approved
             p.subtitle
-                strong Someone,
-                span thank you for approving the request to join a camp
-            p You can view the details of the camp on
-                a(href='//spark.midburn.org/') Spark
+                span Hello #{user.first_name},
+                br
+                span Your camp membership request to "#{camp.camp_name_en}" has been approved. 
+                br
+                span If this was done by mistake, please contact #{camp_manager.name}, the camp manager.
+            p
+                span To select different camp, login to:
+                    a(href='//spark.midburn.org/') Spark
