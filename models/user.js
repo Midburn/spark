@@ -52,9 +52,10 @@ var User = bookshelf.Model.extend({
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
             .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID, __prototype: constants.prototype_camps.THEME_CAMP.id })
             .then((camps) => {
-                var first_camp;
+                var first_camp = null;
                 var is_manager = false;
                 var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
+                // var _camps = [];
                 for (var i in camps) {
                     let _status = camps[i].member_status;
                     if (t !== undefined) { // translate function
@@ -71,6 +72,7 @@ var User = bookshelf.Model.extend({
                         is_manager = true;
                         break;
                     }
+                    // _camps.push(camps[i]);
                 }
                 _this_user.attributes.camps = camps;
                 _this_user.attributes.camp = first_camp;
@@ -79,7 +81,6 @@ var User = bookshelf.Model.extend({
                 done(camps);
             });
     },
-
     validPassword: function (password) {
         return bcrypt.compareSync(password, this.attributes.password);
     },

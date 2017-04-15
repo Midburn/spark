@@ -26,7 +26,7 @@ var __render_camp = function (camp, req, res) {
                 breadcrumbs: req.breadcrumbs(),
                 details: camp.toJSON(),
                 isUserCampMember: (camp.isUserCampMember(req.user.id) || req.user.isAdmin),
-                isUserInCamp: (camp.isUserCampMember(req.user.id) || req.user.isAdmin),
+                isUserInCamp: (camp.isUserInCamp(req.user.id) || req.user.isAdmin),
                 main_contact: camp.isUserInCamp(camp.attributes.main_contact),
                 moop_contact: camp.isUserInCamp(camp.attributes.moop_contact),
                 safety_contact: camp.isUserInCamp(camp.attributes.moop_contact),
