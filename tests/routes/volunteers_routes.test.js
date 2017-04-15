@@ -2,6 +2,7 @@ const app = require('../../app');
 const should = require('chai').should();
 const request = require('supertest')(app);
 const nock = require('nock');
+const profilesApi = require('config').get('profiles_api');
 
 const testUser1 = {
     id: 1,
@@ -28,7 +29,7 @@ var setupDrupalMock = (function() {
     return function(repititions) {
         var options = { allowUnmocked: true };
         console.log('Running With Mock');
-        nock('https://profile.midburn.org/', options)
+        nock(profilesApi.url, options)
             .post('/api/user/login')
             .reply(200, {})
             .get('/en/api/usersearch')
