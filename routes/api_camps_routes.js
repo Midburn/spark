@@ -228,7 +228,7 @@ module.exports = (app, passport) => {
         var __update_prop = function (propName, options) {
             if (req.body[propName] !== undefined) {
                 let value = req.body[propName];
-                if (!options || (typeof options === 'array' && options.indexOf(value) > -1)) {
+                if (!options || (options instanceof Array && options.indexOf(value) > -1)) {
                     data[propName] = value;
                 }
                 return value;

@@ -9,8 +9,9 @@ __camp_data_to_json = function (camp) {
         'camp_location_street', 'camp_location_street_time', 'camp_location_area', 'contact_person_name',
         'contact_person_email', 'contact_person_phone'];
     for (let i in camp_check_null) {
-        if (camp_data[camp_check_null[i]] === null)
+        if (camp_data[camp_check_null[i]] === null) {
             camp_data[camp_check_null[i]] = '';
+        }
     }
     return camp_data;
 }
