@@ -23,7 +23,7 @@ var __gate_change_status = function (user_id, status, req, res) {
 
             User.forge({ _forge }).fetch().then((user) => {
                 let addinfo_json = {};
-                if (user && typeof user.attributes.addinfo_json === 'string') {
+                if (user && (typeof user.attributes.addinfo_json) === 'string') {
                     addinfo_json = JSON.parse(user.attributes.addinfo_json);
                 }
                 if (typeof addinfo_json.current_status_log !== 'array') {
