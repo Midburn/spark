@@ -34,19 +34,35 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     if (lang === undefined) {
         lang = 'he';
     }
-    var tpl;
+    var tpl,action_tpl;
+
     if (lang === "he") {
+        // debugger;
+        action_tpl = {
+            approve: 'לאשר את',
+            delete: 'למחוק את',
+            reject: 'לדחות את',
+            approve_mgr: 'לשלוח בקשה ל-',
+            remove: 'להסיר את'
+        };
         tpl = {
             alert_title: "האם את/ה בטוח?",
-            alert_text: "האם את/ה בטוח שתרצה לבצע " + action_type + " את משתמש " + user_name + "?",
+            alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " משתמש " + user_name + "?",
             alert_success_1: action_type + "!",
             alert_success_2: "משתמש " + user_name + action_type,
             alert_success_3: " בהצלחה",
         };
     } else {
+        action_tpl = {
+            approve: 'Approve',
+            delete: 'Delete',
+            reject: 'Reject',
+            approve_mgr: 'Send Approval to',
+            remove: 'Remove'
+        };
         tpl = {
             alert_title: "Are you sure?",
-            alert_text: "Are you sure you would like to " + action_type + " " + user_name + "?",
+            alert_text: "Are you sure you would like to " + action_tpl[action_type] + " " + user_name + "?",
             alert_success_1: action_type + "!",
             alert_success_2: user_name + "has been " + action_type,
             alert_success_3: "success",
@@ -75,8 +91,31 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
 
 app.controller("campEditController", ($scope, $http, $filter) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
-    $scope.status_options = ['open', 'closed'];
-    $scope.noise_level_options = ['quiet', 'medium', 'noisy', 'very noisy'];
+    var lang = $scope.lang;
+    if (lang === undefined) {
+        lang = 'he';
+    }
+    if (lang === "he") {
+        $scope.status_options = [
+           {id:'open',value:'מחנה פתוח למצטרפים חדשים'}, 
+           {id:'closed',value:'סגור למצטרפים חדשים'}];
+        $scope.noise_level_options = [
+            {id:'quiet',value:'שקט'},
+            {id:'medium',value:'בינוני'},
+            {id:'noisy',value:'רועש'},
+            {id:'very noisy',value:'מאוד רועש'} ];
+    } else {
+        $scope.status_options = ['Opened to new member', 'Closed to new members'];
+        $scope.status_options = [
+           {id:'open',value:'Opened to new member'}, 
+           {id:'closed',value:'Closed to new members'}];
+        $scope.noise_level_options = [
+            {id:'quiet',value:'Quiet'},
+            {id:'medium',value:'Medium'},
+            {id:'noisy',value:'Noisy'},
+            {id:'very noisy',value:'Very Noisy'} ];
+    }
+
     $scope.getMembers = () => {
         angular_getMembers($http, $scope, camp_id);
         setTimeout(() => {

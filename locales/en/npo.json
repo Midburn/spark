@@ -1,0 +1,17 @@
+{
+    "npo": "npo",
+    "join": {
+        "title": "NPO Join Request form",
+        "max300chars": "Up to 300 Chars",
+        "midburn_attended_q": "Which Midburn events you've attended in the past ?",
+        "previous_p_title": "Midburn encourage the Participation Principle. Please describe how have you particpated within Midburn events in the past ?  ",
+        "future_p_title": "How will you participate in the future ?",
+        "why_join_title": "Why would you like to join the NPO (Amuta) ?",
+        "id_image_title": "Please upload a good quality identification documents",
+        "license_l1": "I, hereby request to join Midburn NPO.",
+        "license_l2": "The objectives of the Amuta and its regulations are known to me. If I am accepted as a member, I undertake to comply with the provisions of the Bylaws and the resolutions of the general meeting of the Amuta.",
+        "license_l3": "I am aware that this e-mail address will be used to send messages to me. If I change my (electronic) address, it is my responsibility to inform the Association Committee about the change.",
+        "license_agree": "I hereby confirm that all the details listed in this form are correct and complete and I agree to all that is stated therein.",
+        "send_form": "Apply Form"
+    }
+}

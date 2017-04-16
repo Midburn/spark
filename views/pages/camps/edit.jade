@@ -7,11 +7,7 @@ block content
         .heading.card.card__shad
             .card__actions
                 .dropdown
-                    button.Btn.btn-default.dropdown-toggle(type='button', id="camp_card_menu", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
-                        span.glyphicon.glyphicon-option-vertical(aria-hidden='true', aria-label='Open camp menu')
-                    ul.dropdown-menu(aria-labelledby="camp_card_menu")
-                      li
-                        a(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
+                    a.Btn.btn-default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             if(isNew)
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
@@ -82,7 +78,7 @@ block content
                                     .col-xs-12
                                         label(for='camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}
                                         select.form-control(id='camp_status', name='status')
-                                            option(ng-repeat="option in status_options", ng-selected="option == #{camp.status}", value="{{option}}") {{ option }}
+                                            option(ng-repeat="option in status_options", ng-selected="option.id == '#{camp.status}'", value="{{option.id}}") {{option.value}}
                                 .col-md-4
                                     .col-xs-12
                                         label(for='camp_accept_families')=t('camps:camps.accept_families')
@@ -187,16 +183,16 @@ block content
                                         checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
                             .col-md-4
                                 .col-xs-12
-                                    script.
-                                        var noise_level = {
-                                          "quiet": "#{t('camps:new.camp_noise_level_quiet')}",
-                                          "medium": "#{t('camps:new.camp_noise_level_medium')}",
-                                          "noisy": "#{t('camps:new.camp_noise_level_noisy')}",
-                                          "very noisy": "#{t('camps:new.camp_noise_level_very_noisy')}"
-                                        }
-                                    label(for='noise_level') #{t('camps:edit.camp_noise_level')}: #{camp.noise_level}
+                                    //- script.
+                                    //-     var noise_level = {
+                                    //-       "quiet": "#{t('camps:new.camp_noise_level_quiet')}",
+                                    //-       "medium": "#{t('camps:new.camp_noise_level_medium')}",
+                                    //-       "noisy": "#{t('camps:new.camp_noise_level_noisy')}",
+                                    //-       "very noisy": "#{t('camps:new.camp_noise_level_very_noisy')}"
+                                    //-     }
+                                    label(for='noise_level') #{t('camps:edit.camp_noise_level')}
                                     select(id='camp_noise_level', class="form-control", name="noise_level")
-                                        option(ng-repeat="option in noise_level_options", ng-selected="option == #{camp.noise_level}", value="{{option}}") {{ option }}
+                                        option(ng-repeat="option in noise_level_options", ng-selected="option.id == '#{camp.noise_level}'", value="{{option.id}}") {{option.value}}
                 
                 //------- Lilach requested to hide section -------------//
                 //- h4=t('camps:edit.public_area_title')
