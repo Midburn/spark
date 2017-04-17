@@ -9,7 +9,6 @@ var constants = require('../models/constants');
 var request = require('superagent');
 var _ = require('lodash');
 
-var jwt = require('jsonwebtoken');
 var passportJWT = require("passport-jwt");
 var ExtractJwt = passportJWT.ExtractJwt;
 var JwtStrategy = passportJWT.Strategy;
@@ -111,10 +110,6 @@ var signup = function (email, password, user, done) {
         }
     })
 };
-
-//var authenticateJwt = function (req, res, next) {
-//    return passport.authenticate('jwt', {session: false});
-//};
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {

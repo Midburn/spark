@@ -4,13 +4,13 @@ var router = express.Router({
 });
 
 var userRole = require('../libs/user_role');
-var i18next = require('i18next');
-var mail = require('../libs/mail');
-var log = require('../libs/logger.js')(module);
+//var i18next = require('i18next');
+//var mail = require('../libs/mail');
+//var log = require('../libs/logger.js')(module);
 var security = require('../libs/security');
 
-var config = require('config');
-var serverConfig = config.get('server');
+//var config = require('config');
+//var serverConfig = config.get('server');
 
 var Ticket = require('../models/ticket').Ticket;
 
@@ -61,7 +61,7 @@ router.post('/api/get-ticket', function (req, res) {
         searchTerms = {ticket: req.params.ticket, order: req.params.order};
     }
     new Ticket(searchTerms).fetch().then((ticket) => {
-        if (ticket.entrance_timestamp != null){
+        if (ticket.entrance_timestamp != null) {
             res.status(500).json({
                 error: true,
                 data: {

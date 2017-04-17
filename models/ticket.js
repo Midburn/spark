@@ -1,7 +1,6 @@
-const common = require('../libs/common').common;
+//const common = require('../libs/common').common;
 var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants.js');
-const knex = require('../libs/db').knex;
 
 var Ticket = bookshelf.Model.extend({
     tableName: constants.TICKETS_TABLE_NAME,
@@ -11,6 +10,6 @@ var Ticket = bookshelf.Model.extend({
 // Create the model and expose it
 module.exports = {
     Ticket: Ticket,
-    idAttribute: 'ticket_id',
+    idAttribute: 'ticket_id'
 
 };
