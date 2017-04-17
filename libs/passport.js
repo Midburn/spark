@@ -180,10 +180,10 @@ module.exports = function (passport) {
 
     passport.use(new JwtStrategy(jwtOptions, function (jwt_payload, next) {
         console.log('JWT payload received', jwt_payload);
-        var id = jwt_payload.id;
+        var email = jwt_payload.email;
 
         new User({
-            user_id: id
+            email: email
         }).fetch().then(function (user) {
                 if (user) {
                     next(null, user);
@@ -257,7 +257,5 @@ module.exports = function (passport) {
 module.exports.sign_up = function (email, password, user, done) {
     signup(email, password, user, done)
 };
-//
-//module.exports.authenticateJwt = function (req, res, next) {
-//    authenticateJwt(req, res, next);
-//};
+
+module.exports.drupal_login = drupal_login;

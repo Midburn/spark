@@ -20,7 +20,7 @@ log.info('Spark is starting...');
 // Creating Express application
 var app = express();
 
-// Middleware registration
+// FavIcon registration
 app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
 
 // Log every HTTP request

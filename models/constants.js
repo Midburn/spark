@@ -50,13 +50,13 @@ const ticketType = {
 const events = {
     MIDBURN2017: {
         bundles: [
-            ticketType.SUPPORT_TICKET,  
-            ticketType.ADULT_TICKET,  
-            ticketType.CHILD_TICKET,  
-            ticketType.ADULT_DIRECT_SALE_TICKET,  
-            ticketType.YOUTH_TICKET,  
-            ticketType.LOW_INCOME_TICKET,  
-            ticketType.INTERNATIONAL_DIRECT_SALE   
+            ticketType.SUPPORT_TICKET,
+            ticketType.ADULT_TICKET,
+            ticketType.CHILD_TICKET,
+            ticketType.ADULT_DIRECT_SALE_TICKET,
+            ticketType.YOUTH_TICKET,
+            ticketType.LOW_INCOME_TICKET,
+            ticketType.INTERNATIONAL_DIRECT_SALE
         ]
     }
 };
@@ -65,6 +65,7 @@ module.exports = {
 
     // -- system constant --
     // note: Future release will change the event_id
+    // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
     CURRENT_EVENT_ID: "MIDBURN2017",
     events,
 
