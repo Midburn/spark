@@ -92,7 +92,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps', 'gate'],
+        ns: ['common', 'camps', 'npo', 'gate'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -158,17 +158,25 @@ app.use('/:lng/gate', require('./routes/gate_routes'));
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
+// API
+require('./routes/api_routes')(app, passport);
 
 // Camps / API
 // TODO this is not the right way to register routes
 require('./routes/api_routes.js')(app, passport);
-require('./routes/api_camps_routes.js')(app, passport);
-require('./routes/camps_routes.js')(app, passport);
-require('./routes/api/v1/camps.js')(app); // CAMPS PUBLIC API
+require('./routes/api_camps_routes')(app, passport);
+require('./routes/camps_routes')(app, passport);
+require('./routes/api/v1/camps')(app); // CAMPS PUBLIC API
+require('./routes/api_camps_routes')(app, passport);
+
+// Camps
+require('./routes/camps_routes')(app, passport);
 
 //TODO this is not the right way to register routes
 var ticket_routes = require('./routes/ticket_routes');
 app.use('/:lng/tickets/', ticket_routes);
+
+require('./routes/volunteers_routes')(app, passport);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);

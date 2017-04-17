@@ -97,6 +97,12 @@ exports.recaptcha = {
 };
 
 exports.api_tokens = {
-    // Using test token if no token is defined
-    token: process.env.SPARK_SECRET_TOKEN || "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91"
+  // Using test token if no token is defined
+  token: process.env.SPARK_SECRET_TOKEN || "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91"
+};
+
+exports.profiles_api = {
+    url: process.env.DRUPAL_PROFILE_API_URL || 'http://dummy.url',
+    username: process.env.DRUPAL_PROFILE_API_USER || 'dummy',
+    password: process.env.DRUPAL_PROFILE_API_PASSWORD || 'dummy'
 };

@@ -9,6 +9,7 @@
     "english": "English",
     "female": "Female",
     "first_name": "First Name",
+    "last_name": "Last Name",
     "forgot_password_question": "Forgot your password?",
     "gender": "Gender",
     "gender_error": "Please select your gender",
@@ -16,7 +17,6 @@
     "hello": "Hello",
     "home": "Home",
     "invalid_user_password": "Invalid username or password",
-    "last_name": "Last Name",
     "login": "Login",
     "logout": "Logout",
     "male": "Male",
@@ -72,7 +72,7 @@
         "visit_homepage": "Visit Midburn website",
         "ten_principles": "The 10 Principles",
         "report_error": "Report an error",
-        "report_error_link":"http://midburn.org/en/en-contact-us/",        
+        "report_error_link": "http://midburn.org/en/en-contact-us/",
         "ask_question": "Ask a question",
         "help_translate": "Help translating the site",
         "open_source": "Open Source",
@@ -81,10 +81,19 @@
         "toc_link": "http://midburn.org/en/en-terms-and-privacy/"
     },
     "whoami": {
-      "gender": "Gender",
-      "camp": "Camp",
-      "phone": "Phone",
-      "birth_date": "Birth Date",
-      "socials": "Socials"
+        "gender": "Gender",
+        "camp": "Camp",
+        "phone": "Phone",
+        "birth_date": "Birth Date",
+        "socials": "Socials",
+        "id_num": "ID Number",
+        "address": "Address",
+        "cell_phone": "Cellular Phone",
+        "extra_phone":"Extra Phone"
+    },
+    "events": {
+        "MIDBURN2014": "2014 - Genesis",
+        "MIDBURN2015": "2015 - Awakeness",
+        "MIDBURN2016": "2016 - Abrakadabra"
     }
 }
