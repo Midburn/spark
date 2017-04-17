@@ -6,14 +6,14 @@
 // const userRole = require('../libs/user_role');
 // var mail = require('../libs/mail'),
 //     mailConfig = config.get('mail');
-// 
+//
 // module.exports = (app, passport) => {
 //     /**
 //      * API: (GET) get user by id
 //      * request => /users/:id
 //      */
 //     app.get('/gate/:action/:reference',
-//         [userRole.isLoggedIn(), userRole.isAllowToViewUser()],
+//         [userRole.isLoggedIn(), userRole.isAllowedToViewUser()],
 //         (req, res) => {
 //             User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
 //                 if (user !== null) {

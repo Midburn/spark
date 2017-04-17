@@ -17,7 +17,7 @@ userRole.isCampManager = function () {
     return userRole.is(userRole.CAMP_MANAGER);
 };
 
-userRole.isAllowToViewUser = function () {
+userRole.isAllowedToViewUser = function () {
     return (req, res, next) => {
         if (req.user && (req.user.isAdmin || req.params.id === req.user.id)) {
             next();
