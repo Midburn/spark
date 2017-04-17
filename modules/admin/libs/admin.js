@@ -1,8 +1,8 @@
 /**
  * provides functionality related to the admin UI
  */
-
-var userRole = require('../libs/user_role');
+var modules = require('../../../libs/modules');
+var userRole = modules.require('users', 'libs/user_role');
 
 /**
  * constants
@@ -71,11 +71,11 @@ var datatableAdmin = function(name, router, opts) {
                 "lengthMenu": PAGE_LENGTH_MENU, // the options in the page length select list
                 "pageLength": DEFAULT_PAGE_LENGTH, // initial page length (number of rows per page)
                 "order": opts.defaultOrder,
-                "addUrl": ADMIN_URL_PREFIX + ADD_URL_TEMPLATE.replace('{name}', name),
                 "editKey": opts.editKey,
                 "editUrl": ADMIN_URL_PREFIX + EDIT_URL_TEMPLATE.replace('{name}', name)
             }),
-            addTitle: opts.addTitle
+            addTitle: opts.addTitle,
+            addUrl: ADMIN_URL_PREFIX + ADD_URL_TEMPLATE.replace('{name}', name),
         });
     };
 
@@ -92,12 +92,10 @@ var datatableAdmin = function(name, router, opts) {
         };
         if (req.params.object_id) {
             // edit existing object - need to fetch it first
-            var forgeObj = {};
-            forgeObj[opts.editKey] = req.params.object_id;
-            opts.model.forge(forgeObj).fetch().then(function(object) {
+            opts.api.fetchById(req, req.params.object_id).then(function(object) {
                 opts.columns.forEach(function(column) {
-                    if (object.attributes[column.attr]) {
-                        column.value = object.attributes[column.attr];
+                    if (object[column.attr]) {
+                        column.value = object[column.attr];
                     } else if (req.body && req.body[column.attr]) {
                         column.value = req.body[column.attr]
                     } else {
@@ -119,7 +117,7 @@ var datatableAdmin = function(name, router, opts) {
         }
     };
 
-    router.get('/' + name + '/table', userRole.isAdmin(), function(req, res) {
+    router.get('/admin/' + name + '/table', userRole.isAdmin(), function(req, res) {
         try {
             // initialize from datatables query params
             var resultsPerPage = req.query.length;
@@ -135,50 +133,42 @@ var datatableAdmin = function(name, router, opts) {
             });
         }
         var recordsTotal = 0;
-        opts.model
-            .count()
-            .then(function(count) {
-                recordsTotal = count;
-                opts.model.query(function(qb) {
-                        if (searchTerm) {
-                            opts.filter(qb, searchTerm);
-                        }
-                    })
-                    .orderBy(orderBy)
-                    .fetchPage({
-                        columns: opts.selectColumns,
-                        pageSize: resultsPerPage,
-                        page: currentPage
-                    })
-                    .then(function(rows) {
-                        // rows.pagination: { page: 1, pageSize: 2, rowCount: 5, pageCount: 3 }
-                        var data = rows.toJSON();
-                        data.forEach(function(row) {
-                            row.actions = "";
-                        });
-                        res.status(200).json({
-                            data: data,
-                            recordsTotal: recordsTotal, // total records before filtering
-                            recordsFiltered: rows.pagination.rowCount // total records after filtering
-                        })
-                    });
-            })
-            .catch(function(e) {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: e.message
-                    }
+        opts.api.getTotalCount(req).then(function(count) {
+            recordsTotal = count;
+            opts.api.fetchPage(req, {
+                searchTerm: searchTerm,
+                orderBy: orderBy,
+                columns: opts.selectColumns,
+                pageSize: resultsPerPage,
+                page: currentPage
+            }).then(function(fetchResponse) {
+                // fetchResponse.pagination: { page: 1, pageSize: 2, rowCount: 5, pageCount: 3 }
+                // fetchResponse.rows = [{}, {}..]
+                fetchResponse.rows.forEach(function(row) {
+                    row.actions = "";
                 });
+                res.status(200).json({
+                    data: fetchResponse.rows,
+                    recordsTotal: recordsTotal, // total records before filtering
+                    recordsFiltered: fetchResponse.pagination.rowCount // total records after filtering
+                })
             });
+        }).catch(function(e) {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: e.message
+                }
+            });
+        });
     });
 
-    router.get('/' + name + '/add', userRole.isAdmin(), function(req, res) {
+    router.get('/admin/' + name + '/add', userRole.isAdmin(), function(req, res) {
         _renderEditPage(req, res, "")
     });
 
-    router.post('/' + name + '/add', userRole.isAdmin(), function(req, res) {
-        opts.addCallback(req.body, function(ok, msg) {
+    router.post('/admin/' + name + '/add', userRole.isAdmin(), function(req, res) {
+        opts.addCallback(req, req.body, function(ok, msg) {
             if (ok) {
                 _renderTablePage(req, res, msg);
             } else {
@@ -187,12 +177,12 @@ var datatableAdmin = function(name, router, opts) {
         });
     });
 
-    router.get('/' + name + '/edit/:object_id', userRole.isAdmin(), function(req, res) {
+    router.get('/admin/' + name + '/edit/:object_id', userRole.isAdmin(), function(req, res) {
         _renderEditPage(req, res, "")
     });
 
-    router.post('/' + name + '/edit/:object_id', userRole.isAdmin(), function(req, res) {
-        opts.editCallback(req.params.object_id, req.body, function(ok, msg) {
+    router.post('/admin/' + name + '/edit/:object_id', userRole.isAdmin(), function(req, res) {
+        opts.editCallback(req, req.params.object_id, req.body, function(ok, msg) {
             if (ok) {
                 _renderEditPage(req, res, false, msg);
             } else {
@@ -201,7 +191,7 @@ var datatableAdmin = function(name, router, opts) {
         })
     });
 
-    router.get('/' + name, userRole.isAdmin(), function(req, res) {
+    router.get('/admin/' + name, userRole.isAdmin(), function(req, res) {
         _renderTablePage(req, res, "")
     });
 

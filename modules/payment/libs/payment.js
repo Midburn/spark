@@ -1,6 +1,6 @@
 var request = require('superagent');
 var Payment = require('../models/payment').Payment;
-var log = require('./logger.js')(module);
+var log = require('./../../../libs/logger.js')(module);
 
 var config = require('config');
 var paymentConfig = config.get('payment');

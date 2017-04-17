@@ -3,7 +3,7 @@ var router = express.Router({
     mergeParams: true
 });
 
-var User = require('../models/user').User;
+var User = require('../modules/users/models/user').User;
 
 router.get('/', function (req, res) {
     res.render('dev_tools/dev_home');

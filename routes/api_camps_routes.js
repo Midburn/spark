@@ -1,5 +1,5 @@
 const common = require('../libs/common').common;
-var User = require('../models/user').User;
+var User = require('../modules/users/models/user').User;
 var Camp = require('../models/camp').Camp;
 const constants = require('../models/constants.js');
 var config = require('config');

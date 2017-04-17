@@ -29,22 +29,6 @@ describe('Main routes', function() {
             .expect(200, done);
     });
 
-    it('shows signup form in Hebrew', function testSlash(done) {
-        request
-            .get('/he/signup')
-            .expect(/הרשמה.*סיסמה/)
-            .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=he/)
-            .expect(200, done);
-    });
-
-    it('shows signup form in English', function testSlash(done) {
-        request
-            .get('/en/signup')
-            .expect(/Sign Up.*Email.*Password/)
-            .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=en/)
-            .expect(200, done);
-    });
-
     it('returns 404 MOOP! on everything else', function testPath(done) {
         request
             .get('/foo/bar')

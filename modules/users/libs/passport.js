@@ -3,7 +3,7 @@ var FacebookStrategy = require('passport-facebook').Strategy
 var i18next = require('i18next')
 var User = require('../models/user').User
 var facebookConfig = require('config').get('facebook')
-var constants = require('../models/constants')
+var constants = require('../../../models/constants')
 var request = require('superagent')
 var _ = require('lodash')
 

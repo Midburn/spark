@@ -1,6 +1,6 @@
-const userRole = require('../libs/user_role');
+const userRole = require('../modules/users/libs/user_role');
 const constants = require('../models/constants.js');
-var Camp = require('../models/camp').Camp;
+var Camp = require('../modules/users/models/camp').Camp;
 // var User = require('../models/user').User;
 __camp_data_to_json = function (camp) {
     let camp_data = camp.toJSON();
@@ -29,7 +29,7 @@ var __render_camp = function (camp, req, res) {
     }).fetch({}).then((camp) => {
         camp.getCampUsers((users) => {
             camp.init_t(req.t);
-            // if user is camp_member, we can show all 
+            // if user is camp_member, we can show all
             // let _user = camp.isUserCampMember(req.user.id);
             let camp_data=__camp_data_to_json(camp);
             let data = {
