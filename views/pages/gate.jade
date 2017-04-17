@@ -12,18 +12,11 @@ block content
         label=t('gate:search')
         input( type="text", class="form-control", name="search_box", value='' )
 
-    table( data-toggle="table" )
+    table( data-toggle="table", data-url="/he/gate/ajax/tickets", data-search="true", data-side-pagination="server",
+    data-pagination="true" )
         thead
             tr
-                th Ticket number
+                th( data-field="ticket_number" ) Ticket number
                 th Holder
-                th Lalala
-        tbody
-            tr
-                td 1
-                td Item 1
-                td $1
-            tr
-                td 2
-                td Item 2
-                td $2
+
+

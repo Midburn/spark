@@ -2,10 +2,17 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var i18next = require('i18next');
 var User = require('../models/user').User;
-var facebookConfig = require('config').get('facebook');
+var config = require('config');
+var facebookConfig = config.get('facebook');
+var apiTokensConfig = config.get('api_tokens');
 var constants = require('../models/constants');
 var request = require('superagent');
 var _ = require('lodash');
+
+var jwt = require('jsonwebtoken');
+var passportJWT = require("passport-jwt");
+var ExtractJwt = passportJWT.ExtractJwt;
+var JwtStrategy = passportJWT.Strategy;
 
 /***
  * tries to login based on drupal users table
@@ -105,6 +112,10 @@ var signup = function (email, password, user, done) {
     })
 };
 
+//var authenticateJwt = function (req, res, next) {
+//    return passport.authenticate('jwt', {session: false});
+//};
+
 // expose this function to our app using module.exports
 module.exports = function (passport) {
     // =========================================================================
@@ -166,25 +177,26 @@ module.exports = function (passport) {
         }));
 
     // =========================================================================
-    // JWT login
+    // JWT routes
     // =========================================================================
-    // TODO https://jonathanmh.com/express-passport-json-web-token-jwt-authentication-beginners/
-    //passport.use('jwt-login', new LocalStrategy(
-    //    {
-    //        usernameField: 'email',
-    //        passwordField: 'password',
-    //        passReqToCallback: true
-    //    },
-    //    function (req, email, password, done) {
-    //        login(email, password, function (user, error) {
-    //            if (user) {
-    //                done(null, user, null)
-    //            } else {
-    //                done(null, false, req.flash('error', error))
-    //            }
-    //        })
-    //    }));
+    var jwtOptions = {};
+    jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
+    jwtOptions.secretOrKey = apiTokensConfig.token;
 
+    passport.use(new JwtStrategy(jwtOptions, function (jwt_payload, next) {
+        console.log('JWT payload received', jwt_payload);
+        var id = jwt_payload.id;
+
+        new User({
+            user_id: id
+        }).fetch().then(function (user) {
+                if (user) {
+                    next(null, user);
+                } else {
+                    next(null, false);
+                }
+            });
+    }));
 
     // =========================================================================
     // Facebook login
@@ -250,3 +262,7 @@ module.exports = function (passport) {
 module.exports.sign_up = function (email, password, user, done) {
     signup(email, password, user, done)
 };
+//
+//module.exports.authenticateJwt = function (req, res, next) {
+//    authenticateJwt(req, res, next);
+//};

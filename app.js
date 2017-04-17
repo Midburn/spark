@@ -76,6 +76,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // i18N Setup
@@ -133,10 +134,6 @@ app.use(middleware.handle(i18next, {
     ignoreRoutes: ['images/', 'images', 'images/', '/images/', 'stylesheets', '/favicon.ico'],
     removeLngFromUrl: false
 }));
-//i18next.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
-//    log.info('SEO friendly route ...');
-//    res.render('index');
-//});
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -163,12 +160,15 @@ var mail = require('./libs/mail');
 mail.setup(app);
 
 // Camps / API
+// TODO this is not the right way to register routes
 require('./routes/api_routes.js')(app, passport);
 require('./routes/api_camps_routes.js')(app, passport);
 require('./routes/camps_routes.js')(app, passport);
 require('./routes/api/v1/camps.js')(app); // CAMPS PUBLIC API
 
-
+//TODO this is not the right way to register routes
+var ticket_routes = require('./routes/ticket_routes');
+app.use('/:lng/tickets/', ticket_routes);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
