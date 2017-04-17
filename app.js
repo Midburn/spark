@@ -149,6 +149,7 @@ app.use(userRole.middleware());
 // Infrastructure Routes
 if (app.get('env') === 'development') {
     app.use('/dev', require('./routes/dev_routes'));
+    require('./routes/fake_drupal')(app);
 }
 require('./routes/main_routes.js')(app, passport);
 

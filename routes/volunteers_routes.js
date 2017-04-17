@@ -2,7 +2,7 @@ var volunteers_model = require('../models/volunteers');
 var Department = volunteers_model.Department;
 var Role = volunteers_model.VolunteerRole;
 var Volunteer = volunteers_model.Volunteer;
-var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
+var DrupalAccess = require('../libs/drupal_access').DrupalAccess;
 var log = require('../libs/logger')(module);
 var _ = require('lodash');
 

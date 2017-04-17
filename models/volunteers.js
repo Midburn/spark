@@ -1,7 +1,7 @@
 var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants');
 
-var DrupalAccess = require('../libs/drupal_acces').DrupalAccess;
+var DrupalAccess = require('../libs/drupal_access').DrupalAccess;
 var log = require('../libs/logger')(module);
 var VolunteerRole = bookshelf.Model.extend({
     tableName: constants.VOL_DEPARTMENT_ROLES_TABLE_NAME,
