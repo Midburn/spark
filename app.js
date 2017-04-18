@@ -154,25 +154,12 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
-<<<<<<< HEAD
-<<<<<<< HEAD
-// app.__app_config = {
-//     camps: 'yes',
-//     test: 'test'
-// };
-=======
-=======
->>>>>>> 658482674798668689cda7011560a51a60875589
 app.use('/:lng/gate', require('./routes/gate_routes'));
 
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
 
-<<<<<<< HEAD
->>>>>>> 35d63ba55b959c0967baca11005e11eac6548064
-=======
->>>>>>> 658482674798668689cda7011560a51a60875589
 // API
 require('./routes/api_routes')(app, passport);
 
