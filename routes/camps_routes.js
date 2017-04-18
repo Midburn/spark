@@ -31,7 +31,7 @@ var __render_camp = function (camp, req, res) {
             camp.init_t(req.t);
             // if user is camp_member, we can show all 
             // let _user = camp.isUserCampMember(req.user.id);
-            let camp_data=__camp_data_to_json(camp);
+            let camp_data=__camp_data_to_json(camp);            
             let data = {
                 user: req.user, //
                 userLoggedIn: req.user.hasRole('logged in'), //
@@ -41,9 +41,10 @@ var __render_camp = function (camp, req, res) {
                 details: camp_data,
                 isUserCampMember: (camp.isUserCampMember(req.user.id) || req.user.isAdmin),
                 isUserInCamp: (camp.isUserInCamp(req.user.id) || req.user.isAdmin),
+                isCampManager: (camp.isCampManager(req.user.id) || req.user.isAdmin),
                 main_contact: camp.isUserInCamp(camp.attributes.main_contact),
                 moop_contact: camp.isUserInCamp(camp.attributes.moop_contact),
-                safety_contact: camp.isUserInCamp(camp.attributes.moop_contact),
+                safety_contact: camp.isUserInCamp(camp.attributes.safety_contact),
             };
             res.render('pages/camps/camp', data);
 
@@ -73,7 +74,8 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/camps'
         }]);
         req.user.getUserCamps((camps) => {
-            if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
+            if (camps.length === 0 || !req.user.attributes.camp) {
+            // if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
                 camp = req.user.attributes.camp;
                 res.render('pages/camps/index_user', {
                     user: req.user,

@@ -262,7 +262,7 @@ module.exports = (app, passport) => {
             data.status = req.body.camp_status;
         }
 
-        // console.log(data);
+        console.log(data);
         return data;
     }
     /**
@@ -283,35 +283,40 @@ module.exports = (app, passport) => {
                 });
             });
         });
-
     /**
        * API: (PUT) edit camp
        * request => /camps/1/edit
        */
-    app.put('/camps/:id/edit',
-        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
-        (req, res) => {
-            Camp.forge({ id: req.params.id }).fetch().then((camp) => {
-                camp.save(__camps_create_camp_obj(req, false)).then(() => {
-                    res.json({ error: false, status: 'Camp updated' });
-                    // });
-                }).catch((err) => {
-                    res.status(500).json({
-                        error: true,
-                        data: {
-                            message: err.message
-                        }
+    app.put('/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+        Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+            camp.getCampUsers((users) => {
+                if (camp.isCampManager(req.user.attributes.user_id) || req.user.isAdmin) {
+                    Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+                        camp.save(__camps_create_camp_obj(req, false)).then(() => {
+                            res.json({ error: false, status: 'Camp updated' });
+                            // });
+                        }).catch((err) => {
+                            res.status(500).json({
+                                error: true,
+                                data: {
+                                    message: err.message
+                                }
+                            });
+                        });
                     });
-                });
-            }).catch((err) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
-                });
+                } else {
+                    res.status(401).json({ error: true, status: 'Cannot update camp' });
+                }
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
             });
         });
+    });
 
     // PUBLISH
     app.put('/camps/:id/publish',
@@ -501,7 +506,7 @@ module.exports = (app, passport) => {
      */
     app.get('/camps_open', userRole.isLoggedIn(), (req, res) => {
         let allowed_status = ['open', 'closed'];
-        let web_published = [true,false];
+        let web_published = [true, false];
         Camp.query((query) => {
             query
                 .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
