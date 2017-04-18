@@ -29,6 +29,9 @@ var Camp = bookshelf.Model.extend({
                 let managers = [];
                 for (let i in users) {
                     users[i].isManager = false;
+                    if (['open','closed'].indexOf(_this.attributes.status)===-1) {
+                        users[i].member_status='deleted';
+                    }
                     let _status = users[i].member_status;
                     if (t !== undefined) { // translate function
                         users[i].member_status_i18n = t('camps:members.status_' + _status);
