@@ -156,7 +156,10 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
-
+// app.__app_config = {
+//     camps: 'yes',
+//     test: 'test'
+// };
 // API
 require('./routes/api_routes')(app, passport);
 

@@ -241,7 +241,7 @@ module.exports = (app, passport) => {
             __update_prop('camp_name_en');
             __update_prop('camp_name_he');
         }
-        __update_prop('noise_level',constants.CAMP_NOISE_LEVELS);
+        __update_prop('noise_level', constants.CAMP_NOISE_LEVELS);
         // if (req.body.camp_status)
         __update_prop_foreign('main_contact_person_id');
         __update_prop_foreign('main_contact');
@@ -500,20 +500,28 @@ module.exports = (app, passport) => {
      * request => /camps_open
      */
     app.get('/camps_open', userRole.isLoggedIn(), (req, res) => {
-        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
-            if (camp !== null) {
-                res.status(200).json({ camps: camp.toJSON() })
-            } else {
-                res.status(404).json({ data: { message: 'Not found' } })
-            }
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
+        let allowed_status = ['open', 'closed'];
+        let web_published = [true,false];
+        Camp.query((query) => {
+            query
+                .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .whereIn('status', allowed_status)
+                .whereIn('web_published', web_published);
+        })
+            .fetchAll().then((camp) => {
+                if (camp !== null) {
+                    res.status(200).json({ camps: camp.toJSON() })
+                } else {
+                    res.status(404).json({ data: { message: 'Not found' } })
                 }
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
-        });
     });
 
     /**
