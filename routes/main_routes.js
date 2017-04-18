@@ -291,7 +291,7 @@ module.exports = function (app, passport) {
     // =====================================
     // Consists of two distinct views,
     // forgot password for requesting a password reset,
-    // and reset password for inputing a new password
+    // and reset password for setting a new password
 
     app.get('/:lng/reset_password', function (req, res) {
         res.render('pages/reset_password', {
@@ -359,7 +359,7 @@ module.exports = function (app, passport) {
                         model.attributes.email,
                         mailConfig.from,
                         i18next.t('reset_password_email_subject'),
-                        'emails/reset_password', {
+                        'emails/reset_password', { //TODO - not exists!
                             name: model.fullName,
                             link: link
                         });
@@ -406,8 +406,8 @@ module.exports = function (app, passport) {
             });
     });
 
-    app.post('/:lng/finilize_password_reset/:token', function (req, res) {
-        console.log('finilize password reset');
+    app.post('/:lng/finalize_password_reset/:token', function (req, res) {
+        console.log('finalize password reset');
 
         if (req.body.password !== req.body.confirm_password) {
             //shouldn't happen because of server side validation
