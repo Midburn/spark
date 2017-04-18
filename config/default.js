@@ -20,9 +20,9 @@ switch (process.env.SPARK_DB_CLIENT || "sqlite3") {
         break;
 
     default:
-        console.log("environment variable SPARK_DB_TYPE is configured wrong.");
-        console.log("See .env-example file for more details.");
-        console.log("");
+        console.error("environment variable SPARK_DB_TYPE is configured wrong.");
+        console.error("See .env-example file for more details.");
+        console.error("");
         process.exit(1);
 }
 
@@ -37,36 +37,36 @@ exports.server = {
  * Mail config
  */
 if (process.env.NODE_ENV !== 'production') {
-  // Mailtrap capture every email sent from Spark
-  // in here: mailtrap.io/inboxes/188733/messages
-  exports.mail = {
-      enabled: true,
-      from: "spark_mailtrap@midburn.org",
-      host: "smtp.mailtrap.io",
-      port: "2525",
-      transportMethod: "SMTP",
-      secureConnection: false
-  };
-  exports.mail.auth = {
-      user: '91e0015f5afde6',
-      pass: 'e60e0a6902a3df'
-  }
+    // Mailtrap capture every email sent from Spark
+    // in here: mailtrap.io/inboxes/188733/messages
+    exports.mail = {
+        enabled: true,
+        from: "spark_mailtrap@midburn.org",
+        host: "smtp.mailtrap.io",
+        port: "2525",
+        transportMethod: "SMTP",
+        secureConnection: false
+    };
+    exports.mail.auth = {
+        user: '91e0015f5afde6',
+        pass: 'e60e0a6902a3df'
+    }
 } else {
-  exports.mail = {
-      enabled: typeof(process.env.SPARK_MAILSERVER_ENABLE) === "undefined" ? true : (process.env.SPARK_MAILSERVER_ENABLE === "true"),
-      from: process.env.SPARK_MAILSERVER_FROM || "spark@localhost",
-      host: process.env.SPARK_MAILSERVER_HOST || "localhost",
-      port: process.env.SPARK_MAILSERVER_PORT || "25",
-      transportMethod: process.env.SPARK_MAILSERVER_METHOD || "SMTP", // default is SMTP. Accepts anything that nodemailer accepts
-      secureConnection: (process.env.SPARK_MAILSERVER_SECURE_CONNECTION === "true")
-  };
+    exports.mail = {
+        enabled: typeof(process.env.SPARK_MAILSERVER_ENABLE) === "undefined" ? true : (process.env.SPARK_MAILSERVER_ENABLE === "true"),
+        from: process.env.SPARK_MAILSERVER_FROM || "spark@localhost",
+        host: process.env.SPARK_MAILSERVER_HOST || "localhost",
+        port: process.env.SPARK_MAILSERVER_PORT || "25",
+        transportMethod: process.env.SPARK_MAILSERVER_METHOD || "SMTP", // default is SMTP. Accepts anything that nodemailer accepts
+        secureConnection: (process.env.SPARK_MAILSERVER_SECURE_CONNECTION === "true")
+    };
 
-  if (process.env.SPARK_MAILSERVER_USER) {
-      exports.mail.auth = {
-          user: process.env.SPARK_MAILSERVER_USER,
-          pass: process.env.SPARK_MAILSERVER_PASSWORD
-      }
-  }
+    if (process.env.SPARK_MAILSERVER_USER) {
+        exports.mail.auth = {
+            user: process.env.SPARK_MAILSERVER_USER,
+            pass: process.env.SPARK_MAILSERVER_PASSWORD
+        }
+    }
 }
 
 exports.i18n = {
