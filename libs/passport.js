@@ -8,7 +8,7 @@ var apiTokensConfig = config.get('api_tokens');
 var constants = require('../models/constants');
 var request = require('superagent');
 var _ = require('lodash');
-
+var jwt = require('jsonwebtoken');
 var passportJWT = require("passport-jwt");
 var ExtractJwt = passportJWT.ExtractJwt;
 var JwtStrategy = passportJWT.Strategy;
@@ -20,7 +20,7 @@ var JwtStrategy = passportJWT.Strategy;
  * @param password
  * @param done
  */
-const drupal_login = (email, password, done) =>
+const drupal_login_request = (email, password) =>
     request
         // .post('https://profile-test.midburn.org/api/user/login')
         .post('https://profile.midburn.org/api/user/login')
@@ -30,11 +30,46 @@ const drupal_login = (email, password, done) =>
         .then(({ body }) => body, () => null);
 
 var login = function (email, password, done) {
-    drupal_login(email, password, done).then(function (drupal_user) {
-        if (drupal_user != null) {
-            new User({
-                email: email
-            }).fetch().then(function (user) {
+    if (!email || !password || email.length === 0 || password.length === 0) {
+        console.log('User', email, 'failed to authenticate.');
+        done(false, null, i18next.t('invalid_user_password', {
+            email: email
+        }));
+    }
+
+    // Loading user from DB.
+    User.forge({email: email}).fetch().then(function (user) {
+        if (user) {
+            // User found in DB, now checking everything:
+            if (!user.attributes.enabled) {
+                done(false, user, i18next.t('user_disabled'));
+            }
+            else if (!user.attributes.validated) {
+                done(false, user, i18next.t('user_not_validated'))
+            }
+            else if (!user.validPassword(password)) {
+                done(false, user, i18next.t('invalid_user_password'));
+            }
+            else {
+                // Everything is OK, we're done.
+                done(true, user);
+            }
+        }
+        else {
+            done(false, null, i18next.t('invalid_user_password'));
+        }
+    })
+};
+
+var drupal_login = function (email, password, done) {
+    login(email, password, function (isLoggedIn, user, error) {
+        // If user is authenticated in the local DB, we're done here.
+        if (isLoggedIn) {
+            done(user);
+        }
+        else {
+            drupal_login_request(email, password).then(function (drupal_user) {
+                if (drupal_user != null) {
                     var drupal_details = {
                         first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
                         last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
@@ -42,7 +77,7 @@ var login = function (email, password, done) {
                         gender: constants.USER_GENDERS_DEFAULT,
                         validated: true
                     };
-                    console.log('User', email, 'authenticated successfully (in Drupal).');
+                    console.log('User', email, 'authenticated successfully in Drupal and synchronized to Spark.');
                     if (user === null) {
                         signup(email, password, drupal_details, function (newUser, error) {
                             if (newUser) {
@@ -51,35 +86,14 @@ var login = function (email, password, done) {
                                 done(false, error);
                             }
                         })
-                    } else if (!user.attributes.validated) {
-                        user.save(drupal_details).then((user) => {
-                            done(user);
-                        });
-                    } else if (!user.attributes.enabled) {
-                        done(false, i18next.t('user_disabled'));
-                    } else {
-                        done(user);
                     }
-                })
-        } else { // Local users (local admin / developer / etc.)
-            new User({
-                email: email
-            }).fetch().then(function (user) {
-                    if (user === null) {
-                        console.log('User', email, 'failed to authenticate.');
-                        done(false, i18next.t('invalid_user_password', {
-                            email: email
-                        }))
-                    }
-                    console.log('User', email, 'authenticated successfully.');
-                    if (!user.attributes.enabled) {
-                        done(false, i18next.t('user_disabled'));
-                    } else {
-                        done(user);
-                    }
-                });
+                }
+                else {
+                    done(false, i18next.t('invalid_user_password'));
+                }
+            });
         }
-    })
+    });
 };
 
 var signup = function (email, password, user, done) {
@@ -109,6 +123,14 @@ var signup = function (email, password, user, done) {
             })
         }
     })
+};
+
+var generateJwtToken = function (email) {
+    // from now on we'll identify the user by the email and the email
+    // is the only personalized value that goes into our token
+    var payload = {email: email};
+    var token = jwt.sign(payload, apiTokensConfig.token);
+    return 'JWT ' + token;
 };
 
 // expose this function to our app using module.exports
@@ -162,7 +184,7 @@ module.exports = function (passport) {
             passReqToCallback: true
         },
         function (req, email, password, done) {
-            login(email, password, function (user, error) {
+            drupal_login(email, password, function (user, error) {
                 if (user) {
                     done(null, user, null)
                 } else {
@@ -172,7 +194,7 @@ module.exports = function (passport) {
         }));
 
     // =========================================================================
-    // JWT routes
+    // JWT authentication
     // =========================================================================
     var jwtOptions = {};
     jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
@@ -258,4 +280,5 @@ module.exports.sign_up = function (email, password, user, done) {
     signup(email, password, user, done)
 };
 
-module.exports.drupal_login = drupal_login;
+module.exports.login = login;
+module.exports.generateJwtToken = generateJwtToken;

@@ -158,6 +158,7 @@ app.use('/:lng/gate', require('./routes/gate_routes'));
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
+
 // API
 require('./routes/api_routes')(app, passport);
 
@@ -223,7 +224,7 @@ else {
         if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
             res.render('pages/error', {
-                errorMessage: 'Illegal action. Your connection details has been logged.',
+                errorMessage: 'Illegal action. Your connection details has been logged.', //TODO: log if necessary
                 error: req.url
             });
             return;

@@ -7,7 +7,6 @@ var mailConfig = config.get('mail');
 var recaptchaConfig = config.get('recaptcha');
 var apiTokensConfig = config.get('api_tokens');
 const breadcrumbs = require('express-breadcrumbs');
-var jwt = require('jsonwebtoken');
 
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
@@ -87,6 +86,7 @@ module.exports = function (app, passport) {
                         errorMessage: req.flash('error')
                     });
                 } else {
+                    res.header('token', passportLib.generateJwtToken(req.body.email));
                     var r = req.body['r'];
                     if (r) {
                         return res.redirect(r);
@@ -136,45 +136,17 @@ module.exports = function (app, passport) {
     // =====================================
     // JWT =================================
     // =====================================
-    var jwtSuccess = function(res, email) {
-        // from now on we'll identify the user by the email and the email
-        // is the only personalized value that goes into our token
-        var payload = {email: email};
-        var token = jwt.sign(payload, apiTokensConfig.token);
-        res.json({message: "ok", token: token});
-    };
-
     // JWT Login route
     app.post("/jwt-login", function (req, res) {
-        if (!req.body.email || !req.body.password || req.body.email.length === 0 || req.body.password.length === 0) {
-            res.status(401).json({message: "email or password are empty"});
-        }
-
-        var errorMessage = "wrong user or password";
-        // Trying to load user from DB.
-        new User({email: req.body.email}).fetch().then(function (user) {
-            if (user) {
-                // User found in DB, checking password validity and user status
-                if (user.validPassword(req.body.password) && user.attributes.enabled && user.attributes.validated) {
-                    jwtSuccess(res, user.attributes.email);
-                }
-                else {
-                    res.status(401).json({message: errorMessage});
-                }
+        passportLib.login(req.body.email, req.body.password, function(result, user, error) {
+            if (result && user) {
+                var token = passportLib.generateJwtToken(req.body.email);
+                res.json({message: "ok", token: token});
             }
             else {
-                // User not in DB, trying on Drupal.
-                passportLib.drupal_login(req.body.email, req.body.password, () => null).then(function (drupal_user) {
-                    if (drupal_user != null) {
-                        // User login on Drupal succeeded.
-                        jwtSuccess(res, req.body.email);
-                    }
-                    else {
-                        res.status(401).json({message: errorMessage});
-                    }
-                });
+                res.status(401).json({message: error});
             }
-        })
+        });
     });
 
     // =====================================
