@@ -25,7 +25,7 @@ Additional documents:
 * [Spark architecture](/docs/development/architecture.md)
 * [Releases and deployment](/docs/development/releases-and-deployment.md)
 * [Users roles and permissions](/docs/development/users-roles-and-permissions.md)
-
+* [Drupal Profiles syetm](/docs/development/profile-system.md)
 ## Localization
 We use the **i18next** internationalization library for multi-language support.
 The strings are stored in the `/locales` folder. The file name is the language code.

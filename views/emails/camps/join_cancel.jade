@@ -49,10 +49,19 @@ body
     .wrapper
         .card.card__text--center
             span Midburn Spark
-            h1 Camp join canceled!
+            h1='ביטול חברות במחנה'
+            p.subtitle(dir='rtl')
+                span שלום #{camp_manager.first_name},
+                br
+                span #{user.name} (#{user.email}) ביטל את השתתפותו במחנה שלך "#{camp.camp_name_he}"
+            p(dir='rtl')
+                span לפאנל ניהול חברים היכנס בלינק הבא
+                    a(href='//spark.midburn.org/') Spark
+            h1 Cancellation of camp membership
             p.subtitle
-                strong Someone,
-                span has canceled the join request.
+                span Hello #{camp_manager.first_name},
+                br
+                span #{user.name} (#{user.email}) has canceled his join request of your camp "#{camp.camp_name_en}"
             p
-                You can visit pending join requests dashboard in 
-                a(href='//spark.midburn.org/') Spark
+                span For camp members management panel follow this link
+                    a(href='//spark.midburn.org/') Spark

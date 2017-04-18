@@ -49,10 +49,22 @@ body
     .wrapper
         .card.card__text--center
             span Midburn Spark
-            h1 Camp join request!
+            h1='סרוב חברות במחנה'
+            p.subtitle(dir='rtl')
+                span שלום #{user.first_name},
+                br
+                span בקשת החברות שלך במחנה "#{camp.camp_name_he}" נדחתה.
+                br
+                span  אם חלה טעות, תוכל ליצור קשר עם מנהל המחנה, #{camp_manager.name}
+            p(dir='rtl')
+                span לבחירת מחנה אחר הכנס ל-
+                    a(href='//spark.midburn.org/') Spark
+            h1 Your membership has been declined
             p.subtitle
-                strong Someone,
-                span thank you for your reply.
-            p We are sorry to hear that you have rejected the request to join a camp.
-            p You can request to join another camp on 
-                a(href='//spark.midburn.org/') Spark
+                span Hello #{user.first_name},
+                br
+                span Your camp membership request to "#{camp.camp_name_en}" has been rejected. If this was
+                span done by mistake, please contact #{camp_manager.name}, the camp manager.
+            p
+                span To select different camp, login to:
+                    a(href='//spark.midburn.org/') Spark

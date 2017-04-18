@@ -20,7 +20,7 @@ log.info('Spark is starting...');
 // Creating Express application
 var app = express();
 
-// Middleware registration
+// FavIcon registration
 app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
 
 // Log every HTTP request
@@ -76,6 +76,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // i18N Setup
@@ -91,7 +92,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps'],
+        ns: ['common', 'camps', 'npo', 'gate'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -133,10 +134,6 @@ app.use(middleware.handle(i18next, {
     ignoreRoutes: ['images/', 'images', 'images/', '/images/', 'stylesheets', '/favicon.ico'],
     removeLngFromUrl: false
 }));
-//i18next.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
-//    log.info('SEO friendly route ...');
-//    res.render('index');
-//});
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -149,6 +146,7 @@ app.use(userRole.middleware());
 // Infrastructure Routes
 if (app.get('env') === 'development') {
     app.use('/dev', require('./routes/dev_routes'));
+    require('./routes/fake_drupal')(app);
 }
 require('./routes/main_routes.js')(app, passport);
 
@@ -156,20 +154,31 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
-
-// API
-require('./routes/api_routes.js')(app, passport);
-
-require('./routes/api_camps_routes.js')(app, passport);
-
-// Camps
-require('./routes/camps_routes.js')(app, passport);
-
-require('./routes/api/v1/camps.js')(app) // CAMPS PUBLIC API
+app.use('/:lng/gate', require('./routes/gate_routes'));
 
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
+
+// API
+require('./routes/api_routes')(app, passport);
+
+// Camps / API
+// TODO this is not the right way to register routes
+require('./routes/api_routes.js')(app, passport);
+require('./routes/api_camps_routes')(app, passport);
+require('./routes/camps_routes')(app, passport);
+require('./routes/api/v1/camps')(app); // CAMPS PUBLIC API
+require('./routes/api_camps_routes')(app, passport);
+
+// Camps
+require('./routes/camps_routes')(app, passport);
+
+//TODO this is not the right way to register routes
+var ticket_routes = require('./routes/ticket_routes');
+app.use('/:lng/tickets/', ticket_routes);
+
+require('./routes/volunteers_routes')(app, passport);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
@@ -216,7 +225,7 @@ else {
         if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
             res.render('pages/error', {
-                errorMessage: 'Illegal action. Your connection details has been logged.',
+                errorMessage: 'Illegal action. Your connection details has been logged.', //TODO: log if necessary
                 error: req.url
             });
             return;

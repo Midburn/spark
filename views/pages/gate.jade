@@ -1,0 +1,22 @@
+extends ../includes/page
+
+block content
+    h2=t('gate:gate')
+
+    if (errorMessage && errorMessage.length > 0)
+        .alert.alert-danger
+            p=errorMessage
+
+
+    .form-group
+        label=t('gate:search')
+        input( type="text", class="form-control", name="search_box", value='' )
+
+    table( data-toggle="table", data-url="/he/gate/ajax/tickets", data-search="true", data-side-pagination="server",
+    data-pagination="true" )
+        thead
+            tr
+                th( data-field="ticket_number" ) Ticket number
+                th Holder
+
+
