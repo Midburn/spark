@@ -159,7 +159,7 @@ module.exports = (app, passport) => {
      * request => /users/:id
      */
     app.get('/users/:id',
-        [userRole.isLoggedIn(), userRole.isAllowToViewUser()],
+        [userRole.isLoggedIn(), userRole.isAllowedToViewUser()],
         (req, res) => {
             User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
                 if (user !== null) {

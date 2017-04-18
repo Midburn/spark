@@ -31,10 +31,10 @@ var prototype_camps = {
         id: 'theme_camp',
         name: 'Theme Camps'
     },
-    ART_EXHIBIT: {
-        id: 'art_exhibit',
-        name: 'Art Exhibit',
-    },
+    ART_EXHIBIT : {
+        id : 'art_exhibit',
+        name : 'Art Exhibit'
+    }
 };
 
 const ticketType = {
@@ -50,13 +50,13 @@ const ticketType = {
 const events = {
     MIDBURN2017: {
         bundles: [
-            ticketType.SUPPORT_TICKET,  
-            ticketType.ADULT_TICKET,  
-            ticketType.CHILD_TICKET,  
-            ticketType.ADULT_DIRECT_SALE_TICKET,  
-            ticketType.YOUTH_TICKET,  
-            ticketType.LOW_INCOME_TICKET,  
-            ticketType.INTERNATIONAL_DIRECT_SALE   
+            ticketType.SUPPORT_TICKET,
+            ticketType.ADULT_TICKET,
+            ticketType.CHILD_TICKET,
+            ticketType.ADULT_DIRECT_SALE_TICKET,
+            ticketType.YOUTH_TICKET,
+            ticketType.LOW_INCOME_TICKET,
+            ticketType.INTERNATIONAL_DIRECT_SALE
         ]
     }
 };
@@ -65,6 +65,7 @@ module.exports = {
 
     // -- system constant --
     // note: Future release will change the event_id
+    // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
     CURRENT_EVENT_ID: "MIDBURN2017",
     events,
 
@@ -76,6 +77,7 @@ module.exports = {
     CAMPS_TABLE_NAME: "camps",
     CAMP_MEMBERS_TABLE_NAME: "camp_members",
     DRUPAL_USERS_TABLE_NAME: "drupal_users",
+    TICKETS_TABLE_NAME: "tickets",
 
     prototype_camps: prototype_camps,
 
@@ -103,7 +105,7 @@ module.exports = {
     NPO_MEMBERSHIP_STATUSES_DEFAULT: get_default_enum(npo_membership_statuses),
 
     /**
-     * The prototype describes the camp types. 
+     * The prototype describes the camp types.
      *    camps - regular camps
      *    art_exhibit - art_exhibit
      */
@@ -126,6 +128,6 @@ module.exports = {
      *      approved_mgr - a member is approved as a member, and has manager rights to camp.
      *      supplier - member is supplier, for the supplier notification later.
      */
-    CAMP_MEMBER_STATUS: ['approved', 'pending', 'pending_mgr', 'rejected', 'approved_mgr', 'supplier', 'deleted'],
+    CAMP_MEMBER_STATUS: ['approved','pending','pending_mgr','rejected','approved_mgr','supplier','deleted'],
 
 };

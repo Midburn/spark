@@ -1,3 +1,4 @@
+var passport = require('passport');
 var csurf = require('csurf');
 var csrfProtection = csurf({
     cookie: true
@@ -42,8 +43,9 @@ var connectMiddleware = function (list) {
     }
 };
 
+var isJwtLoggedIn = passport.authenticate('jwt', {session: false});
+
 module.exports.protectGet = isLoggedIn;
-
 module.exports.protectPost = connectMiddleware([csrfProtection, isLoggedIn]);
-
 module.exports.protectAdminGet = isLoggedInAdmin;
+module.exports.protectJwt = isJwtLoggedIn;

@@ -16,6 +16,7 @@ router.get('/create-admin', function (req, res) {
         last_name: 'Admin',
         gender: 'female',
         validated: true,
+        enabled: true,
         roles: 'admin'
     });
     newUser.generateHash('a');
