@@ -107,5 +107,5 @@ var CampMember = bookshelf.Model.extend({
 // Create the model and expose it
 module.exports = {
     Camp: Camp,
-    CampMember: CampMember,
+    CampMember: CampMember
 };

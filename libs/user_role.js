@@ -17,7 +17,7 @@ userRole.isCampManager = function () {
     return userRole.is(userRole.CAMP_MANAGER);
 };
 
-userRole.isAllowToViewUser = function () {
+userRole.isAllowedToViewUser = function () {
     return (req, res, next) => {
         if (req.user && (req.user.isAdmin || req.params.id === req.user.id)) {
             next();
@@ -28,7 +28,7 @@ userRole.isAllowToViewUser = function () {
     };
 };
 
-const ALLOW_NEW_CAMP_DATE = new Date(2017, 5, 1); //TODO: puth this in settings file - what is the date needs to be?
+const ALLOW_NEW_CAMP_DATE = new Date(2017, 5, 1); //TODO: Should be per event, not a constant! move to the DB - what is the date needs to be?
 userRole.isAllowNewCamp = function () {
     return (req, res, next) => {
         if (req.user && (req.user.isAdmin || (ALLOW_NEW_CAMP_DATE.getTime() - (new Date().getTime())) > 0)) {
@@ -40,7 +40,7 @@ userRole.isAllowNewCamp = function () {
     };
 };
 
-const ALLOW_EDIT_CAMP_DATE = new Date(2017, 5, 1); //TODO: puth this in settings file - what is the date needs to be?
+const ALLOW_EDIT_CAMP_DATE = new Date(2017, 5, 1); //TODO: Should be per event, not a constant! move to the DB - what is the date needs to be?
 userRole.isAllowEditCamp = function () {
     return (req, res, next) => {
         if (req.user && (req.user.isAdmin || req.user.isCampManager && /** (req.params.id === req.user.campId) &&**/ (ALLOW_EDIT_CAMP_DATE.getTime() - (new Date().getTime())) > 0)) {

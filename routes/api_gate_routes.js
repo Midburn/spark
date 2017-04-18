@@ -7,7 +7,7 @@ const constants = require('../models/constants.js');
 // const userRole = require('../libs/user_role');
 // var mail = require('../libs/mail'),
 //     mailConfig = config.get('mail');
-// 
+//
 var __gate_change_status = function (user_id, status, req, res) {
     if (req.user.isAdmin) {
         if (['in', 'out'].indexOf(status) > -1) {
@@ -66,7 +66,7 @@ var __gate_change_status = function (user_id, status, req, res) {
 module.exports = (app, passport) => {
     /**
      * API: (GET) Set the location of the profile of event_id current status to be inside event
-     * 
+     *
      * request => /gate/event_in/id/:user_id
      */
     app.get('/gate/event_in/id/:user_id', userRole.isLoggedIn(), (req, res) => {
@@ -75,7 +75,7 @@ module.exports = (app, passport) => {
     });
     /**
      * API: (GET) Set the location of the profile of event_id current status to be inside event
-     * 
+     *
      * request => /gate/event_in/id/:user_id
      */
     app.get('/gate/event_out/id/:user_id', userRole.isLoggedIn(), (req, res) => {
@@ -84,7 +84,7 @@ module.exports = (app, passport) => {
     });
     /**
      * API: (GET) Set the location of the profile of event_id current status to be inside event
-     * 
+     *
      * request => /gate/event_in/id/:user_id
      */
     app.get('/gate/event_in/email/:email', userRole.isLoggedIn(), (req, res) => {
@@ -93,7 +93,7 @@ module.exports = (app, passport) => {
     });
     /**
      * API: (GET) Set the location of the profile of event_id current status to be inside event
-     * 
+     *
      * request => /gate/event_in/id/:user_id
      */
     app.get('/gate/event_out/email/:email', userRole.isLoggedIn(), (req, res) => {
