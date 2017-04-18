@@ -7,29 +7,37 @@ Here are some scenarios to demonstrate the capabilities of the Spark SSO system
 ### user login
 * user opens any external Spark web-site or app for the first time
 * user is identified as not logged-in
-  * the external web-site frontend code will look into the localStorage for a valid json web token
+  * the external web-site frontend code will look into the localStorage for a valid token (recommended - json web token but can be any other token / string which identifies the user)
   * this is a new user, so it will not find this token
 * user clicks "login"
-* user is redirected to Spark SSO login page
-  * the external web-site frontend code will redirect the user to an SSO login url on Spark site
-  * e.g. `https://spark.midburn.org/ssologin/EXTERNAL_SITE_ID?continue=EXTERNAL_SITE_RETURN_PATH`
-  * where EXTERNAL_SITE_ID will be replaced by for example `volunteers` or `gate`
-  * EXTERNAL_SITE_RETURN_PATH will contain the path in the external web-site that the user should return to
-    * pay attention to only use the path portion - the domain should be hard-coded (for security)
+* user is redirected to Spark login page
+  * **recommended** - a special SSO login url with the following logic:
+    * the external web-site frontend code will redirect the user to an SSO login url on Spark site
+    * e.g. `https://spark.midburn.org/ssologin/EXTERNAL_SITE_ID?continue=EXTERNAL_SITE_RETURN_PATH`
+    * where EXTERNAL_SITE_ID will be replaced by for example `volunteers` or `gate`
+    * EXTERNAL_SITE_RETURN_PATH will contain the path in the external web-site that the user should return to
+      * pay attention to only use the path portion - the domain should be hard-coded (for security)
+  * **simpler alternative** - the regular spark login page, just need to make sure user is redirected back to volunteers
 * user logs-in
-  * standard log-in / forgot password etc.. process
-  * through all pages must keep the EXTERNAL_SITE_ID and EXTERNAL_SITE_RETURN_PATH values
+  * standard log-in / forgot password etc.. process in Spark
+  * **recommended** -  through all pages must keep the EXTERNAL_SITE_ID and EXTERNAL_SITE_RETURN_PATH values
 * logged-in: 
   * redirected to the external web-site
-    * Spark backend generates a json web token for this user
-    * Spark frontend redirects the user back to url:
-      * domain according EXTERNAL_SITE_ID
-      * path according to EXTERNAL_SITE_RETURN_PATH
-      * add a query parameter of &t=THE_JSON_WEB_TOKEN
-    * now appears logged-in
-      * external site frontend code gets the json web token and validates it
-        * it checks the exp field of the json web token
-        * it stores the token in localStorage
+    * **recommended** - 
+      * Spark backend generates a json web token for this user
+      * Spark frontend redirects the user back to url:
+        * domain according EXTERNAL_SITE_ID
+        * path according to EXTERNAL_SITE_RETURN_PATH
+        * add a query parameter of &t=THE_JSON_WEB_TOKEN
+    * **simpler alternative** - Spark backend puts a domain level cookie which identifies the user
+    * user now appears logged-in on the external site
+      * external site knows user is logged in by - 
+        * **recommended** - 
+          * external site gets the json web token via a &t= query parameter
+          * it validates the token - checks the expiry field of the json web token
+        * **simpler alternative** - 
+          * checks the cookie
+      * stores the token / value from cookie in localStorage
       * this is all done on frontend, the external site doesn't require a backend
       * in this case the frontend only receives information that is visible to this user like:
         * user id, user name, user roles
