@@ -5,7 +5,6 @@ var i18nConfig = config.get('i18n');
 var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
 var recaptchaConfig = config.get('recaptcha');
-var apiTokensConfig = config.get('api_tokens');
 const breadcrumbs = require('express-breadcrumbs');
 
 var mail = require('../libs/mail');
