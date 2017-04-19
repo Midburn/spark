@@ -37,4 +37,22 @@ router.get('/view-debug/*', function (req, res) {
     }
 });
 
+router.get('/show-table/:table', function (req, res) {
+    let table = req.params.table;
+
+    // Getting headers, then data
+    knex(table).columnInfo().then(function (info) {
+        let counter = 0;
+        let headers = [];
+        for (let property in info) {
+            if (info.hasOwnProperty(property)) {
+                headers[counter++] = property;
+            }
+        }
+        knex.select().table(table).then((records) => {
+            res.render('dev_tools/show_table', {table: table, records: records, headers: headers});
+        });
+    });
+});
+
 module.exports = router;
