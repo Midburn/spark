@@ -57,6 +57,7 @@
 * once pull request was merged to production branch - 
   * create a new draft release and modify it to be a release for production branch (instead of the default which is master)
   * it's common practice to increment the path part of the version (the last part) when making a hotfix
+  * also, worth to note in the release notes that it's a hotfix release
 * publish the release and deploy normally as any other release
 
 **important**
