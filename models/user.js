@@ -82,7 +82,7 @@ var User = bookshelf.Model.extend({
             });
     },
     validPassword: function (password) {
-        return bcrypt.compareSync(password, this.attributes.password);
+        return this.attributes.password && bcrypt.compareSync(password, this.attributes.password);
     },
     hasRole: function (role) {
         return common.__hasRole(role, this.attributes.roles);
