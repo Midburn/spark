@@ -39,32 +39,29 @@
 
 ## Deploying a hot-fix release
 (assuming you have Git remote named midburn which points to midburn repo)
-```bash
-# make sure you have all tags from midburn
-git fetch midburn
-
-# go to the relevant release which is currently deployed on production
-$ git checkout v2.2.2
-
-# if there is no production branch - create a new one
-# (if there is already a production branch - it's easiest to delete it and create it again)
-$ git checkout -b production
-$ git push midburn production
-
-now, start working on your feature from this production branch
-$ git checkout -b your-feature-branch-name
-```
-now, make you changes as you normally would, on your feature branch, push to you fork etc..
-when you open the pull request, modify it to merge to production branch (instead of the default which is master branch)
-once pull request was merged to production branch - 
-create a new draft release and modify it to be a release for production branch (instead of the default which is master)
-it's common practice to increment the path part of the version (the last part) when making a hotfix
-publish this release
-deploy normally
+* make sure you have all tags from midburn
+  * `git fetch midburn`
+* go to the relevant release which is currently deployed on production
+  * `git checkout v2.2.2`
+* if there is no production branch - create a new one
+  * `git checkout -b production`
+  * `git push midburn production`
+* if there is already a production branch - best to delete and create again (assuming it's only used for hotfixes)
+  * `git branch -D production`
+  * `git checkout -b production`
+  * `git push --force midburn production`
+* start working on your feature from this production branch
+  * `git checkout -b your-feature-branch-name`
+* make you changes as you normally would, on your feature branch, push to you fork etc..
+* when you open the pull request, modify it to merge to production branch (instead of the default which is master branch)
+* once pull request was merged to production branch - 
+  * create a new draft release and modify it to be a release for production branch (instead of the default which is master)
+  * it's common practice to increment the path part of the version (the last part) when making a hotfix
+* publish the release and deploy normally as any other release
 
 **important**
-after you deploy your hotfix, it's important to backport (merge) these changes to master as well
-you can open another pull request from your feature branch - but this time for the default master branch
+* after you deploy your hotfix, it's important to backport (merge) these changes to master as well
+* you can open another pull request from your feature branch - but this time for the default master branch
 
 ## See Also
 
