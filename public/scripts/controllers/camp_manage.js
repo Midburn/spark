@@ -1,19 +1,33 @@
+var camps_all;
+
+__get_camps_all = function ($http, on_success) {
+    if (camps_all) {
+        on_success(camps_all);
+    } else {
+        $http.get('/camps_all').then((res) => {
+            camps_all = res;
+            on_success(res);
+        });
+    }
+}
+
 app.controller("manageCampsController", function ($scope, $http, $filter) {
-    $http.get('/camps_all').then(function (res) {
+    __get_camps_all($http, (res) => {
         $scope.camps = res.data.camps;
         setTimeout(() => {
             innerHeightChange()
         }, 500)
     });
+    // $http.get('/camps_all').then(function (res) {
+    //     $scope.camps = res.data.camps;
+    //     setTimeout(() => {
+    //         innerHeightChange()
+    //     }, 500)
+    // });
 
     $scope.removeCamp = (camp_id) => {
         var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');
         if (agree_remove) {
-            // NOT WORKING SOMEHOW
-            // $http.post(`/camps/${camp_id}/remove`, (res) => {
-            //     console.log(res);
-            //     window.location.reload();
-            // });
             $.post('/camps/' + camp_id + '/remove', (res) => {
                 window.location.reload();
             })
@@ -26,10 +40,20 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
 });
 
 app.controller("membersController", ($scope, $http) => {
-    $http.get('/camps_all').then((res) => {
-        console.log(res.data);
-        $scope.camps = res.data.camps;
+    __get_camps_all($http, (res) => {
+        var data = [];
+        for (var i in res.data.camps) {
+            if (['open','closed'].indexOf(res.data.camps[i].status)>-1) {
+                data.push(res.data.camps[i]);
+            }
+        }
+        $scope.camps = data;
     });
+    // $http.get('/camps_all').then((res) => {
+    //     var data = res.data.camps;
+    //     for (var i in res.data.camps) { }
+    //     $scope.camps = res.data.camps;
+    // });
 
     $scope.getMembers = (camp_id) => {
         if (typeof camp_id !== 'undefined') {
@@ -51,7 +75,7 @@ app.controller("membersController", ($scope, $http) => {
         }
         angular_updateUser($http, $scope, action_type, user_rec);
     }
-    
+
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
     }

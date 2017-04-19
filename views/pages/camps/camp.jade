@@ -3,7 +3,7 @@ block content
     .camps.camp_details
         .heading.card.card__shad
             .card__actions
-                if userIs('camp_manager')
+                if isCampManager
                     .dropdown
                         a.Btn.btn-default(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
             .card__details

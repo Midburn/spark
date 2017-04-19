@@ -159,7 +159,7 @@ module.exports = (app, passport) => {
      * request => /users/:id
      */
     app.get('/users/:id',
-        [userRole.isLoggedIn(), userRole.isAllowToViewUser()],
+        [userRole.isLoggedIn(), userRole.isAllowedToViewUser()],
         (req, res) => {
             User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
                 if (user !== null) {
@@ -241,7 +241,7 @@ module.exports = (app, passport) => {
             __update_prop('camp_name_en');
             __update_prop('camp_name_he');
         }
-        __update_prop('noise_level',constants.CAMP_NOISE_LEVELS);
+        __update_prop('noise_level', constants.CAMP_NOISE_LEVELS);
         // if (req.body.camp_status)
         __update_prop_foreign('main_contact_person_id');
         __update_prop_foreign('main_contact');
@@ -262,7 +262,7 @@ module.exports = (app, passport) => {
             data.status = req.body.camp_status;
         }
 
-        // console.log(data);
+        console.log(data);
         return data;
     }
     /**
@@ -283,35 +283,40 @@ module.exports = (app, passport) => {
                 });
             });
         });
-
     /**
        * API: (PUT) edit camp
        * request => /camps/1/edit
        */
-    app.put('/camps/:id/edit',
-        [userRole.isLoggedIn(), userRole.isAllowEditCamp()],
-        (req, res) => {
-            Camp.forge({ id: req.params.id }).fetch().then((camp) => {
-                camp.save(__camps_create_camp_obj(req, false)).then(() => {
-                    res.json({ error: false, status: 'Camp updated' });
-                    // });
-                }).catch((err) => {
-                    res.status(500).json({
-                        error: true,
-                        data: {
-                            message: err.message
-                        }
+    app.put('/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+        Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+            camp.getCampUsers((users) => {
+                if (camp.isCampManager(req.user.attributes.user_id) || req.user.isAdmin) {
+                    Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+                        camp.save(__camps_create_camp_obj(req, false)).then(() => {
+                            res.json({ error: false, status: 'Camp updated' });
+                            // });
+                        }).catch((err) => {
+                            res.status(500).json({
+                                error: true,
+                                data: {
+                                    message: err.message
+                                }
+                            });
+                        });
                     });
-                });
-            }).catch((err) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
-                });
+                } else {
+                    res.status(401).json({ error: true, status: 'Cannot update camp' });
+                }
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
             });
         });
+    });
 
     // PUBLISH
     app.put('/camps/:id/publish',
@@ -500,20 +505,28 @@ module.exports = (app, passport) => {
      * request => /camps_open
      */
     app.get('/camps_open', userRole.isLoggedIn(), (req, res) => {
-        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
-            if (camp !== null) {
-                res.status(200).json({ camps: camp.toJSON() })
-            } else {
-                res.status(404).json({ data: { message: 'Not found' } })
-            }
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
+        let allowed_status = ['open', 'closed'];
+        let web_published = [true, false];
+        Camp.query((query) => {
+            query
+                .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .whereIn('status', allowed_status)
+                .whereIn('web_published', web_published);
+        })
+            .fetchAll().then((camp) => {
+                if (camp !== null) {
+                    res.status(200).json({ camps: camp.toJSON() })
+                } else {
+                    res.status(404).json({ data: { message: 'Not found' } })
                 }
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
-        });
     });
 
     /**

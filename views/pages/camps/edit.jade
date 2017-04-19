@@ -21,7 +21,7 @@ block content
                 button.Btn.Btn__default.card-switcher#1=t('camps:edit.basic_info')
                 button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
                 //- TODO - test is user is camp manager of this camp
-                if(!isNew && (user.isCampManager || user.isAdmin))
+                if(!isNew)
                     button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.members')
                     button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.upload')
         .cards--wrapper.card__shad
