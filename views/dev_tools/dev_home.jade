@@ -4,3 +4,6 @@ body
     a( href="/dev/create-admin" ) Create admin user. (user=a, pass=a)
     p
     a( href="/dev/view-debug/" ) View Debugger
+    p Show table
+        input#table
+        button( onclick="location.href = '/dev/show-table/' + document.querySelector('#table').value + '/'")="Show!"

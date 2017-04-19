@@ -1,0 +1,14 @@
+div
+    h1=table
+    table( border )
+        thead
+            tr
+                th #
+                each header in headers
+                    th=header
+        tbody
+            each record, i in records
+                tr
+                    td=i+1
+                    each column in record
+                        td=column
