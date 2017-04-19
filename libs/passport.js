@@ -47,7 +47,7 @@ var login = function (email, password, done) {
             else if (!user.attributes.validated) {
                 done(false, user, i18next.t('user_not_validated'))
             }
-            else if (!user.validPassword(password)) {
+            else if (!user.attributes.password || !user.validPassword(password)) {
                 done(false, user, i18next.t('invalid_user_password'));
             }
             else {
