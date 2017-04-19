@@ -1,4 +1,5 @@
 {
+    "apply_now": "הגישו בקשה עכשיו",
     "apply_now_male": "הגש בקשה עכשיו",
     "apply_now_female": "הגישי בקשה עכשיו",
     "back_home": "בחזרה לדף הבית",
@@ -29,12 +30,14 @@
     "npo": "עמותת מידברן",
     "npo_applied_for_membership": "בקשת הצטרפותך לעמותה בטיפול",
     "npo_banned": "הרחקה מהעמותה",
+    "npo_call_to_action" : "רוצים להיות חברים בעמותה? הגישו בקשת הצטרפות עכשיו!",
     "npo_call_to_action_male": "רוצה להיות חבר עמותה? הגש בקשת הצטרפות עכשיו!",
     "npo_call_to_action_female": "רוצה להיות חברת עמותה? הגישי בקשת הצטרפות עכשיו!",
     "npo_member_paid_male": "חבר עמותה, שילם דמי חברות",
     "npo_member_paid_female": "חברת עמותה, שילמה דמי חברות",
     "npo_member_should_pay_male": "חבר עמותה, לא שילם דמי חברות",
     "npo_member_should_pay_female": "חברת עמותה, לא שילמה דמי חברות",
+    "npo_not_member": "לא חבר בעמותה",
     "npo_not_member_male": "לא חבר בעמותה",
     "npo_not_member_female": "לא חברה בעמותה",
     "npo_request_approved": "בקשת ההצטרפות אושרה",
@@ -95,7 +98,7 @@
         "id_num": "מספר ת.ז.",
         "address": "כתובת",
         "cell_phone": "סלולארי",
-        "extra_phone":"מס טלפון נוסף"        
+        "extra_phone":"מס טלפון נוסף"
     },
     "events": {
         "MIDBURN2014": "2014 - בראשית",
