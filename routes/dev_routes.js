@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router({
     mergeParams: true
 });
+var knex = require('../libs/db').knex;
 
 var User = require('../models/user').User;
 
