@@ -1,12 +1,14 @@
 extends ../includes/page
 
 block content
-    h1=t('npo')+' ' +currentYear
+    h1=t('npo:npo_name') + ' ' + currentYear
+    h3 #{t('npo:membership_status') + ': ' + t('npo:status.' + npoMember.attributes.membership_status)}
+
     if (npoMember.attributes.membership_status == 'request_approved' || npoMember.attributes.membership_status == 'member_should_pay')
-        h2=t('membership_fee', {year: currentYear})
+        h2=t('npo:membership_fee', {year: currentYear})
         a.btn.btn-default( href="npo/pay_fee" )=t('pay')
 
     if (npoMember.attributes.membership_status == 'not_member')
-        h3=t('npo_call_to_action')
-        a.btn.btn-default( href="npo/join" )=t('apply_now')
+        h3=t('npo:call_to_action')
+        a.btn.btn-default( href="npo/join" )=t('npo:apply_now')
 

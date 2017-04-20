@@ -1,17 +1,30 @@
 {
-    "npo": "npo",
+    "npo_name": "Midburn Association",
+    "apply_now": "Apply Now",
+    "applied_for_membership": "Membership application is being processed",
+    "call_to_action": "Want to become a member? Apply for membership!",
+    "membership_fee": "Membership fee for year {{year}}",
+    "membership_status": "Your membership status",
+    "status": {
+        "banned": "Banned from the NPO",
+        "member_paid": "Registered member, paid membership fees",
+        "member_should_pay": "Registered member, should pay membership fees",
+        "not_member": "Not a member",
+        "request_approved": "Membership request approved",
+        "request_rejected": "Membership request rejected"
+    },
     "join": {
-        "title": "NPO Join Request form",
-        "max300chars": "Up to 300 Chars",
-        "midburn_attended_q": "Which Midburn events you've attended in the past ?",
-        "previous_p_title": "Midburn encourage the Participation Principle. Please describe how have you particpated within Midburn events in the past ?  ",
-        "future_p_title": "How will you participate in the future ?",
-        "why_join_title": "Why would you like to join the NPO (Amuta) ?",
+        "title": "Midburn association membership request form",
+        "max300chars": "Up to 300 characters",
+        "midburn_attended_q": "Which Midburn events you've attended in the past?",
+        "previous_p_title": "Midburn encourage the Participation Principle. Please describe how have you participated within Midburn events in the past?",
+        "future_p_title": "How will you participate in the future?",
+        "why_join_title": "Why would you like to join Midburn Registered Association (RA) עמותת מידברן?",
         "id_image_title": "Please upload a good quality identification documents",
-        "license_l1": "I, hereby request to join Midburn NPO.",
-        "license_l2": "The objectives of the Amuta and its regulations are known to me. If I am accepted as a member, I undertake to comply with the provisions of the Bylaws and the resolutions of the general meeting of the Amuta.",
-        "license_l3": "I am aware that this e-mail address will be used to send messages to me. If I change my (electronic) address, it is my responsibility to inform the Association Committee about the change.",
+        "license_l1": "I, hereby request to join Midburn Registered Association (RA) מידברן (ע\"ר).",
+        "license_l2": "The objectives of the registered association and its regulations are known to me. If I am accepted as a member, I undertake to comply with the provisions of the Bylaws and the resolutions of the general meeting of the registered association.",
+        "license_l3": "I am aware that this e-mail address will be used to send messages to me. If I change my (electronic) address, it is my responsibility to inform the association managing board about the change.",
         "license_agree": "I hereby confirm that all the details listed in this form are correct and complete and I agree to all that is stated therein.",
-        "send_form": "Apply Form"
+        "send_form": "Submit Form"
     }
 }

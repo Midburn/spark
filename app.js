@@ -40,6 +40,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+app.use(fileUpload());
+
 
 var root = process.cwd();
 app.use(compileSass({
@@ -248,9 +250,6 @@ process.on('warning', function(warning) {
     log.warn(warning.message); // Print the warning message
     log.warn(warning.stack); // Print the stack trace
 });
-
-// Allow file uploads
-app.use(fileUpload());
 
 // == Export our app ==
 module.exports = app;
