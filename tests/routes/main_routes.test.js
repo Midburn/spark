@@ -9,6 +9,8 @@ var knex = require('../../libs/db').knex;
 
 describe('Main routes', function() {
     it('responds to / with redirect to hebrew', function testSlash(done) {
+        console.log('bump')
+        console.log('bumpp')
         request
             .get('/')
             .expect('Location', '/he/login?r=/')
