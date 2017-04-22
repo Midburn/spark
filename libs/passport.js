@@ -144,7 +144,12 @@ var drupal_login = function (email, password, done) {
                 }
             }
             else {
-                done(false, i18next.t('invalid_user_password'));
+                if (isLoggedIn) {
+                    done(user);
+                }
+                else {
+                    done(false, i18next.t('invalid_user_password'));
+                }
             }
         });
     });
