@@ -50,7 +50,11 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     save_method.method = 'insert';
                 }
             } else if (camp.isCampManager(camp_mgr_id) || isAdmin) {
-                if (user && action === "approve" && user.can_approve) {
+                if (user && action === "remove_mgr" && user.member_status === 'approved_mgr' && (camp_mgr_id === camp.attributes.main_contact || isAdmin)) {
+                    new_status = 'approved';
+                } else if (user && action === "approve_mgr" && user.member_status === 'approved' && (camp_mgr_id === camp.attributes.main_contact || isAdmin)) {
+                    new_status = 'approved_mgr';
+                } else if (user && action === "approve" && user.can_approve) {
                     mail_delivery.to_mail = user.email;
                     mail_delivery.subject = 'Spark: you have been approved!';
                     mail_delivery.template = 'emails/camps/member_approved';
@@ -375,7 +379,7 @@ module.exports = (app, passport) => {
         var user_id = req.params.user_id;
         var camp_id = req.params.camp_id;
         var action = req.params.action;
-        var actions = ['approve', 'remove', 'revive', 'reject'];
+        var actions = ['approve', 'remove', 'revive', 'reject','approve_mgr','remove_mgr'];
         if (actions.indexOf(action) > -1) {
             __camps_update_status(camp_id, user_id, action, req.user, res);
         } else {
@@ -675,7 +679,7 @@ module.exports = (app, passport) => {
                 } else {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });
                 }
-            }, req.t);
+            }, req);
         }).catch((e) => {
             res.status(500).json({
                 error: true,
