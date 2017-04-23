@@ -53,7 +53,7 @@ body
             p.subtitle(dir='rtl')
                 span שלום #{camp_manager.first_name},
                 br
-                span #{user.name} (#{user.email}) ביטל את השתתפותו במחנה שלך "#{camp.camp_name_he}"
+                span #{user.first_name} #{user.last_name} (#{user.email}) ביטל את השתתפותו במחנה שלך "#{camp.camp_name_he}"
             p(dir='rtl')
                 span לפאנל ניהול חברים היכנס בלינק הבא
                     a(href='//spark.midburn.org/') Spark
@@ -61,7 +61,7 @@ body
             p.subtitle
                 span Hello #{camp_manager.first_name},
                 br
-                span #{user.name} (#{user.email}) has canceled his join request of your camp "#{camp.camp_name_en}"
+                span #{user.first_name} #{user.last_name} (#{user.email}) has canceled his join request of your camp "#{camp.camp_name_en}"
             p
                 span For camp members management panel follow this link
                     a(href='//spark.midburn.org/') Spark

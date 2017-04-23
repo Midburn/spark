@@ -125,12 +125,12 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                 var _after_update = () => {
                     console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
                     if (mail_delivery.template !== '') {
-                        // let props={};
-                        if (mail_delivery.to_mail !== '') {
+                        if (!user) {
                             emailDeliver(mail_delivery.to_mail, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
                         } else {
                             User.forge({ user_id: user_id }).fetch().then((user) => {
-                                emailDeliver(user.attributes.email, mail_delivery.subject, mail_delivery.template, { user: user.toJSON(), camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
+                                let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.attributes.email;
+                                emailDeliver(email, mail_delivery.subject, mail_delivery.template, { user: user.toJSON(), camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
                             });
                         }
                     }
@@ -379,7 +379,7 @@ module.exports = (app, passport) => {
         var user_id = req.params.user_id;
         var camp_id = req.params.camp_id;
         var action = req.params.action;
-        var actions = ['approve', 'remove', 'revive', 'reject','approve_mgr','remove_mgr'];
+        var actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr'];
         if (actions.indexOf(action) > -1) {
             __camps_update_status(camp_id, user_id, action, req.user, res);
         } else {
