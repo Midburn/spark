@@ -12,6 +12,7 @@ exports.up = function(knex, Promise) {
             table.foreign('main_contact').references('users.user_id');
             table.foreign('moop_contact').references('users.user_id');
             table.foreign('safety_contact').references('users.user_id');
+            table.foreign('contact_person_id').references('users.user_id');
         }),
         //knex.schema.table(constants.CAMP_DETAILS_TABLE_NAME, function(table) {
         //    table.foreign('camp_id').references('camps.id');
