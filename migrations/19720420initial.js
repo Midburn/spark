@@ -1,17 +1,17 @@
 var constants = require('../models/constants.js');
 
-exports.up = function (knex, Promise) {
+exports.up = function(knex, Promise) {
     return Promise.all([
 
         // events table
-        knex.schema.createTable(constants.EVENTS_TABLE_NAME, function (table) {
-            table.string('event_id',15).primary();
+        knex.schema.createTable(constants.EVENTS_TABLE_NAME, function(table) {
+            table.string('event_id', 15).primary();
             table.integer('ext_id_event_id');
             table.text('addinfo_json', 'mediumtext');
         }),
 
         // User table
-        knex.schema.createTable(constants.USERS_TABLE_NAME, function (table) {
+        knex.schema.createTable(constants.USERS_TABLE_NAME, function(table) {
             // Basic ID + security fields
             table.timestamps();
             table.increments('user_id').primary();
@@ -40,8 +40,8 @@ exports.up = function (knex, Promise) {
             table.string('facebook_token', 255);
 
             /**
-              * User Current Status - Defines the current status of profile
-              */
+             * User Current Status - Defines the current status of profile
+             */
             table.string('current_event_id', 15);
             table.timestamp('current_last_status');
             table.enu('current_status', constants.USER_CURRENT_STATUS);
@@ -52,7 +52,7 @@ exports.up = function (knex, Promise) {
         }),
 
         // Payments table
-        knex.schema.createTable(constants.PAYMENTS_TABLE_NAME, function (table) {
+        knex.schema.createTable(constants.PAYMENTS_TABLE_NAME, function(table) {
             table.timestamps();
             table.increments('payment_id').primary();
             table.string('private_sale_token', 40);
@@ -63,7 +63,7 @@ exports.up = function (knex, Promise) {
         }),
 
         // NPO table
-        knex.schema.createTable(constants.NPO_MEMBERS_TABLE_NAME, function (table) {
+        knex.schema.createTable(constants.NPO_MEMBERS_TABLE_NAME, function(table) {
             table.timestamps();
             table.integer('user_id').unsigned().primary();
             table.enu('membership_status', constants.NPO_MEMBERSHIP_STATUSES).defaultTo(constants.NPO_MEMBERSHIP_STATUSES_DEFAULT);
@@ -119,105 +119,34 @@ exports.up = function (knex, Promise) {
             table.string('contact_person_name', 100);
             table.string('contact_person_email', 100);
             table.string('contact_person_phone', 14);
-        }),
 
-        // camps table: add accept families, facebook page url, contact person id
-        knex.schema.table(constants.CAMPS_TABLE_NAME, function (table) {
             table.boolean("accept_families");
             table.string("facebook_page_url");
             table.integer("contact_person_id").unsigned();
         }),
 
+        // camps relations
+        knex.schema.createTable(constants.CAMP_MEMBERS_TABLE_NAME, function(table) {
+            table.integer('camp_id').unsigned();
+            table.integer('user_id').unsigned();
+            table.unique(['camp_id', 'user_id']);
+            table.index(['camp_id', 'user_id']);
+            table.foreign('camp_id').references(constants.CAMPS_TABLE_NAME + '.id');
+            table.foreign('user_id').references(constants.USERS_TABLE_NAME + '.user_id');
+            table.enu('status', constants.CAMP_MEMBER_STATUS);
+
+            // additional information
+            table.text('addinfo_json', 'mediumtext');
+        }),
+
         // this table might be created and filled with data from an external process
         // that's why we use createTableIfNotExists - to allow for the option that the table already exists
-        knex.schema.createTableIfNotExists(constants.DRUPAL_USERS_TABLE_NAME, function (table) {
+        knex.schema.createTableIfNotExists(constants.DRUPAL_USERS_TABLE_NAME, function(table) {
             table.string('name', 60); // Unique user name.
             table.string('pass', 128); // User’s password (hashed)
             table.integer('status').unsigned(); // Whether the user is active(1) or blocked(0).
-        }),
-
-        //volunteer departments
-        knex.schema.createTable(constants.VOL_DEPARTMENTS_TABLE_NAME, function(table) {
-            table.increments();
-            table.string('name_en');
-            table.string('name_he');
-        }).then(function() {
-            return knex(constants.VOL_DEPARTMENTS_TABLE_NAME).insert([
-                { name_en: 'Tech', name_he: 'טכנולוגיה' },
-                { name_en: 'Gate', name_he: 'שער' },
-                { name_en: 'Volunteers', name_he: 'מתנדבים' }
-            ]);
-        }),
-        //roles in the department
-        knex.schema.createTable(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME, function(table) {
-            table.increments();
-            table.string('name')
-
-        }).then(function() {
-            return knex(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME).insert([
-                { name: 'Admin' },
-                { name: 'Admin of department / HR' },
-                { name: 'View all shifts' },
-                { name: 'View all personal data' }
-            ]);
-        }),
-        //types in shift
-        knex.schema.createTable(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME, function(table) {
-            table.increments();
-            table.string('name');
-        }).then(function() {
-            return knex(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME).insert([
-                { name: 'Volunteer' },
-                { name: 'Manager' },
-                { name: 'Day Manager' },
-                { name: 'Shift Manager' },
-                { name: 'Other' }
-            ]);
-        }),
-        //volunteers
-        knex.schema.createTable(constants.VOLUNTEERS_TABLE_NAME, function(table) {
-            table.integer('user_id').unsigned();
-            table.integer('department_id').unsigned();
-            table.integer('event_id').unsigned();
-            table.integer('role_id').unsigned();
-            table.integer('type_in_shift_id').unsigned();
-            table.boolean('is_prodcution');
-            table.string('comment');
-            table.timestamp('modified_date');
-            //key
-            table.primary(['user_id', 'department_id', 'event_id'])
-            //references
-            table.foreign('user_id').references('user_id').inTable(constants.USERS_TABLE_NAME);
-            table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
-            table.foreign('role_id').references('id').inTable(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME);
-            table.foreign('type_in_shift_id').references('id').inTable(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME);
-        }),
-        knex.schema.createTable(constants.VOL_SHIFTS_TABLE_NAME, function(table) {
-            table.increments();
-            table.integer('department_id').unsigned()
-            table.string('location');
-            table.integer('num_of_shift_managers');
-            table.integer('num_of_volunteers');
-            table.timestamp('start_time');
-            table.timestamp('end_time');
-            table.string('comment');
-            table.timestamp('modified_date');
-            //references
-            table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
-        }),
-        knex.schema.createTable(constants.VOL_SCHEDULE_TABLE_NAME, function(table) {
-            table.integer('user_id').unsigned();
-            table.integer('shift_id').unsigned();
-            table.boolean('attended');
-            table.string('comment');
-            //key
-            table.primary(['user_id', 'shift_id'])
-            //references
-            table.foreign('user_id').references('user_id').inTable(constants.VOLUNTEERS_TABLE_NAME);
-            table.foreign('shift_id').references('id').inTable(constants.VOL_SHIFTS_TABLE_NAME);
-
         })
     ]);
 };
 
-exports.down = function (knex, Promise) { };
+exports.down = function(knex, Promise) {};

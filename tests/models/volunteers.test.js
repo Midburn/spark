@@ -16,11 +16,6 @@ describe('Volunteer module db model', () => {
                 expect(dep.related('volunteers')).not.to.be.undefined
             });
         });
-        it('should contain mapping to its shifts', () => {
-            return new Department({ id: 1 }).fetch({ withRelated: ['shifts'] }).then((dep) => {
-                expect(dep.related('shifts')).not.to.be.undefined
-            });
-        });
 
     });
     describe('Volunteers', () => {
@@ -45,28 +40,5 @@ describe('Volunteer module db model', () => {
                 expect(vol.related('role')).not.to.be.undefined
             });
         });
-
-        it('should contain mapping to its type_in_shift', () => {
-            return new Volunteer({ user_id: 1, department_id: 1, event_id: 0 }).fetch({ withRelated: ['type_in_shift'] }).then((dep) => {
-                expect(dep.related('type_in_shift')).not.to.be.undefined
-            });
-        });
-
-        // it('should contain mapping to its user info', () => {
-        //     return new Volunteer({ user_id: 1, department_id: 1, event_id: 0 }).fetch({ withRelated: ['user_info'] }).then((dep) => {
-        //         expect(dep.related('user_info')).not.to.be.undefined
-        //     });
-        // });
-
-        it('should get vaolunteersby user id', () => {
-            return Volunteer.get_by_user(1).then((vols) => {
-                //      console.log(vols.toJSON());
-            });
-        });
-
-
-
     });
-
-
 });
