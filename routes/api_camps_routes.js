@@ -126,7 +126,8 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
                     if (mail_delivery.template !== '') {
                         if (!user) {
-                            emailDeliver(mail_delivery.to_mail, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
+                            let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.email;
+                            emailDeliver(email, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
                         } else {
                             User.forge({ user_id: user_id }).fetch().then((user) => {
                                 let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.attributes.email;
