@@ -9,6 +9,7 @@ const assert = require('assert');
 const TEST_TOKEN = "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91";
 
 describe('API routes', function() {
+    this.timeout(3000);
     it('should reject with no token', function() {
         return request
             .post('/api/userlogin')
