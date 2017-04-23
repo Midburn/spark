@@ -42,7 +42,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             approve: 'לאשר את',
             delete: 'למחוק את',
             reject: 'לדחות את',
-            approve_mgr: 'לשלוח בקשה ל-',
+            approve_mgr: 'להפוך למנהל את',
             remove: 'להסיר את'
         };
         tpl = {
@@ -57,7 +57,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             approve: 'Approve',
             delete: 'Delete',
             reject: 'Reject',
-            approve_mgr: 'Send Approval to',
+            approve_mgr: 'Set Manager',
             remove: 'Remove'
         };
         tpl = {
