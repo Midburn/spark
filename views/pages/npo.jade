@@ -2,7 +2,7 @@ extends ../includes/page
 
 block content
     h1=t('npo:npo_name') + ' ' + currentYear
-    h3 #{t('npo:membership_status') + ': ' + t('npo:status.' + npoMember.attributes.membership_status)}
+    h3 #{t('npo:membership_status') + ': ' + t('npo:status.' + npoMember.attributes.membership_status, {context: user.attributes.gender})}
 
     if (npoMember.attributes.membership_status == 'request_approved' || npoMember.attributes.membership_status == 'member_should_pay')
         h2=t('npo:membership_fee', {year: currentYear, context: user.attributes.gender})

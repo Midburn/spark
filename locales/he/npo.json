@@ -23,8 +23,8 @@
         "not_member": "לא חבר בעמותה",
         "not_member_male": "לא חבר בעמותה",
         "not_member_female": "לא חברה בעמותה",
-        "npo_request_approved": "בקשת ההצטרפות אושרה",
-        "npo_request_rejected": "בקשת ההצטרפות נדחתה"
+        "request_approved": "בקשת ההצטרפות אושרה",
+        "request_rejected": "בקשת ההצטרפות נדחתה"
     },
     "join": {
         "title": "טופס בקשת חברות בעמותה",
