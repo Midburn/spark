@@ -1,11 +1,17 @@
 {
     "npo_name": "Midburn Association",
     "apply_now": "Apply Now",
-    "applied_for_membership": "Membership application is being processed",
     "call_to_action": "Want to become a member? Apply for membership!",
     "membership_fee": "Membership fee for year {{year}}",
     "membership_status": "Your membership status",
+    "member_number": "Member no.",
+    "show_application": "Show application",
+    "approve_application": "Approve application",
+    "reject_application": "Reject application",
+    "reject_reason": "Rejection reason",
+    "nav_admin": "Association admin",
     "status": {
+        "applied_for_membership": "Membership application is being processed",
         "banned": "Banned from the NPO",
         "member_paid": "Registered member, paid membership fees",
         "member_should_pay": "Registered member, should pay membership fees",
@@ -15,7 +21,7 @@
     },
     "join": {
         "title": "Midburn association membership request form",
-        "max300chars": "Up to 300 characters",
+        "max_chars": "Up to 300 characters",
         "midburn_attended_q": "Which Midburn events you've attended in the past?",
         "previous_p_title": "Midburn encourage the Participation Principle. Please describe how have you participated within Midburn events in the past?",
         "future_p_title": "How will you participate in the future?",

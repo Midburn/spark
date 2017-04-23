@@ -20,6 +20,8 @@ block wrapper
                     if(user.isAdmin)
                         li( class="#{path[2] === 'camps-admin' ? 'active' : undefined }" )
                             a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
+                        li( class="#{path[2] === 'npo-admin' ? 'active' : undefined }" )
+                            a( href="/#{language}/npo-admin" )=t('npo:nav_admin')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
@@ -44,7 +46,7 @@ block wrapper
                             span.glyphicon.glyphicon-user(aria-hidden="true")
                     li
                         a( href= '/#{language}/logout' )=t('logout')
-    .main.container
+    page.main.container
         #ajax_indicator.hide
         if (breadcrumbs !== undefined)
             include crumbs

@@ -31,6 +31,7 @@
     "remember_me": "זכור אותי",
     "reset_password": "איפוס סיסמה",
     "sign_up": "הרשמה",
+    "status": "סטטוס",
     "user_disabled": "חשבונך נחסם",
     "user_exists": "שגיאה: במערכת כבר רשום משתמש עם אימייל זה",
     "user_not_validated": "כתובת האימייל שלך ({{email}}) לא אומתה. יש לעקוב אחר ההוראות שנשלחו לתיבת האימייל שלך",
@@ -47,6 +48,7 @@
     "bad_or_expired_token": "הקישור לאיפוס הסיסמה פג תוקף או לא תקין",
     "password_reset_succeeded": "החלפת סיסמה בוצעה בהצלחה",
     "password_changed_email_subject": "התראת אבטחה מ- Spark",
+    "user_id": "מס. משתמש",
     "facebook": {
         "login": "התחבר באמצעות פייסבוק"
     },

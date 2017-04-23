@@ -1,0 +1,41 @@
+extends ../includes/page
+
+block content
+    h2=t('npo:npo_name')
+
+    if (errorMessage && errorMessage.length > 0)
+        .alert.alert-danger
+            p=errorMessage
+
+    div( id="toolbar" class="btn-group" )
+        button( type="button" class="btn btn-default" )
+            i( class="glyphicon glyphicon-plus" )
+        button( type="button" class="btn btn-default" )
+            i( class="glyphicon glyphicon-heart" )
+        button( type="button" class="btn btn-default" )
+            i( class="glyphicon glyphicon-trash" )
+    table( data-toggle="table", data-url="/he/npo-admin/ajax/members", data-search="true", data-show-refresh="true",
+    data-show-toggle="true", data-side-pagination="server", data-pagination="true", data-toolbar="#toolbar" )
+        thead
+            tr
+                th( data-field="selected" data-checkbox="true" )
+                th( data-field="member_number", data-sortable="true" )=t('npo:member_number')
+                th( data-field="user_id", data-sortable="true" data-id )=t('user_id')
+                th( data-field="first_name", data-sortable="true" )=t('first_name')
+                th( data-field="last_name", data-sortable="true" )=t('last_name')
+                th( data-field="email", data-sortable="true" )=t('email')
+                th( data-field="status_text", data-sortable="true" )=t('status')
+                th( data-field="membership_status" data-formatter="statusFormatter" data-width="150")
+
+    script.
+        function statusFormatter(value, row, index) {
+            if (value == 'applied_for_membership') {
+                return "<div class='btn-group' style='position: absolute'>"
+                    + "<a type='button' class='btn btn-primary' href='npo-admin/application/" + row.user_id + "'>"
+                    + "<span class='glyphicon glyphicon-eye-open'></span> #{t('npo:show_application')}</a>"
+                    + "</div>";
+            }
+            else {
+                return "";
+            }
+        }

@@ -79,7 +79,7 @@ exports.payment = {
 };
 
 exports.npo = {
-    email: "amuta@localhost",
+    email: "amuta@midburn.org",
     idImagesFolder: "d:/temp/"
 };
 

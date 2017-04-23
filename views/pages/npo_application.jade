@@ -1,0 +1,98 @@
+extends ../includes/page
+
+block content
+    h2=t('npo:join.title')
+    if (errorMessage && errorMessage.length > 0)
+        .alert.alert-danger
+            p=errorMessage
+    form( action="#{formUrl}", method="post", enctype="multipart/form-data", data-toggle="validator", role="form", id="theForm" )
+        .form-group.required
+            label=t('first_name')
+            input( type="text", class="form-control", name="first_name", disabled='#{adminMode}', value='#{member.first_name}' )
+
+        .form-group.required
+            label=t('last_name')
+            input( type="text", class="form-control", name="last_name", disabled='#{adminMode}', value='#{member.last_name}' )
+
+        .form-group.required
+            label=t('whoami.birth_date')
+            input( type="text", class="form-control", name="date_of_birth", disabled='#{adminMode}', value='#{member.date_of_birth}' )
+
+        .form-group.required
+            label=t('whoami.id_num')
+            input( type="text", class="form-control", name="israeli_id", disabled='#{adminMode}' value='#{member.israeli_id}' )
+
+        .form-group.required
+            label=t('whoami.address')
+            input( type="text", class="form-control", name="address", disabled='#{adminMode}' value='#{member.address}' )
+
+        .form-group.required
+            label=t('whoami.cell_phone')
+            input( type="text", class="form-control", name="cell_phone", disabled='#{adminMode}' value='#{member.cell_phone}' )
+
+        .form-group
+            label=t('whoami.extra_phone')
+            input( type="text", class="form-control", name="extra_phone", disabled='#{adminMode}', value='#{member.extra_phone}' )
+
+        label=t('npo:join.midburn_attended_q')
+        // @TODO - load events from DB after adding support for events
+        .form-group
+            input( type="checkbox", name="lala", disabled='#{adminMode}' )
+            | &nbsp;
+            label=t('events.MIDBURN2014')
+            br
+            input( type="checkbox", name="lala", disabled='#{adminMode}' )
+            | &nbsp;
+            label=t('events.MIDBURN2015')
+            br
+            input( type="checkbox", name="lala", disabled='#{adminMode}' )
+            | &nbsp;
+            label=t('events.MIDBURN2016')
+
+        hr
+        .form-group.required
+            label=t('npo:join.previous_p_title')
+            br
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_previous_p", disabled='#{adminMode}', value='#{member.previous_p_title}' )
+        .form-group.required
+            label=t('npo:join.future_p_title')
+            br
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_future_p", disabled='#{adminMode}', value='#{member.future_p_title}' )
+        .form-group.required
+            label=t('npo:join.why_join_title')
+            br
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_why_join", disabled='#{adminMode}', value='#{member.why_join_title}' )
+
+        if( !adminMode )
+            .form-group.required
+                label=t('npo:join.id_image_title')
+                input( class="form-control", type="file", name="id_image", accept="image/*" )
+            hr
+
+            h4=t('npo:join.license_l1')
+            h4=t('npo:join.license_l2')
+            h4=t('npo:join.license_l3')
+
+            .form-group.required
+                input( type="checkbox", name="approve_box", id="approve_box", required="true" )
+                | &nbsp;
+                label=t('npo:join.license_agree')
+
+            button( type="submit", class="btn btn-info", id="submit_button" )=t('npo:join.send_form')
+        else
+            input( type='hidden', name='members', value='[{' + '"email":"' + member.email + '",' + '"user_id":' + member.user_id + '}]' )
+            img( src=member.documentImage )
+            p
+            button( type="submit", class="btn btn-primary", id="submit_button" onclick='mySubmit("approve")')=t('npo:approve_application')
+            | &nbsp;
+            button( type="submit", class="btn btn-warning", id="submit_button" )=t('npo:reject_application')
+            p
+            .form-group
+                label=t('npo:reject_reason')
+                textarea( class="form-control", rows="5", cols="80", maxlength="300", name="reject_reason" )
+
+    script.
+        var mySubmit = function(action){
+            var form = $('#theForm')
+            form.attr('action', form.attr('action') + action).submit();
+        }

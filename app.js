@@ -129,7 +129,7 @@ i18next
     }, function() {
         middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function(req, res) {
             //endpoint function
-            log.info("ROUTE");
+            //log.info("ROUTE");
         });
     });
 app.use(middleware.handle(i18next, {
@@ -156,6 +156,7 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
+app.use('/:lng/npo-admin', require('./routes/npo_admin_routes'));
 app.use('/:lng/gate', require('./routes/gate_routes'));
 
 // Mail

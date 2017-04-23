@@ -1,7 +1,7 @@
 extends ../includes/page
 
 block content
-    h2=t('npo:join.title') 
+    h2=t('npo:join.title')
     if (errorMessage && errorMessage.length > 0)
         .alert.alert-danger
             p=errorMessage
@@ -39,29 +39,29 @@ block content
         .form-group
             input( type="checkbox", name="lala" )
             | &nbsp;
-            label=t('events.MIDBURN2014') 
+            label=t('events.MIDBURN2014')
             br
             input( type="checkbox", name="lala" )
             | &nbsp;
-            label=t('events.MIDBURN2015') 
+            label=t('events.MIDBURN2015')
             br
             input( type="checkbox", name="lala" )
             | &nbsp;
-            label=t('events.MIDBURN2016') 
+            label=t('events.MIDBURN2016')
 
         hr
         .form-group.required
-            label=t('npo:join.previous_p_title') 
+            label=t('npo:join.previous_p_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_previous_p", required="true", placeholder="#{t('npo:join.max300chars')}" )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_previous_p", required="true", placeholder="#{t('npo:join.max_chars')}" )
         .form-group.required
             label=t('npo:join.future_p_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_future_p", required="true", placeholder="#{t('npo:join.max300chars')}" )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_future_p", required="true", placeholder="#{t('npo:join.max_chars')}" )
         .form-group.required
             label=t('npo:join.why_join_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_why_join", required="true", placeholder="#{t('npo:join.max300chars')}" )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_why_join", required="true", placeholder="#{t('npo:join.max_chars')}" )
         .form-group.required
             label=t('npo:join.id_image_title')
             input( class="form-control", type="file", required="true", name="id_image", accept="image/*" )
