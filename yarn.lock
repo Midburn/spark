@@ -465,7 +465,7 @@ base64-js@^1.0.2:
 
 base64url@2.0.0, base64url@^2.0.0:
   version "2.0.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/base64url/-/base64url-2.0.0.tgz#eac16e03ea1438eff9423d69baa36262ed1f70bb"
+  resolved "https://registry.yarnpkg.com/base64url/-/base64url-2.0.0.tgz#eac16e03ea1438eff9423d69baa36262ed1f70bb"
 
 basic-auth@~1.0.3:
   version "1.0.4"
@@ -581,7 +581,7 @@ browserify-zlib@^0.1.4:
 
 buffer-equal-constant-time@1.0.1:
   version "1.0.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
+  resolved "https://registry.yarnpkg.com/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
 
 buffer-shims@^1.0.0:
   version "1.0.0"
@@ -902,7 +902,7 @@ create-error@~0.3.1:
 
 cross-env@3.2.4:
   version "3.2.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/cross-env/-/cross-env-3.2.4.tgz#9e0585f277864ed421ce756f81a980ff0d698aba"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-3.2.4.tgz#9e0585f277864ed421ce756f81a980ff0d698aba"
   dependencies:
     cross-spawn "^5.1.0"
     is-windows "^1.0.0"
@@ -916,7 +916,7 @@ cross-spawn@^3.0.0:
 
 cross-spawn@^5.1.0:
   version "5.1.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
   dependencies:
     lru-cache "^4.0.1"
     shebang-command "^1.2.0"
@@ -1059,7 +1059,7 @@ deep-eql@^0.1.3:
 
 deep-equal@^1.0.0:
   version "1.0.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
+  resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
 
 deep-extend@~0.4.0:
   version "0.4.1"
@@ -1164,7 +1164,7 @@ ecc-jsbn@~0.1.1:
 
 ecdsa-sig-formatter@1.0.9:
   version "1.0.9"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.9.tgz#4bc926274ec3b5abb5016e7e1d60921ac262b2a1"
+  resolved "https://registry.yarnpkg.com/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.9.tgz#4bc926274ec3b5abb5016e7e1d60921ac262b2a1"
   dependencies:
     base64url "^2.0.0"
     safe-buffer "^5.0.1"
@@ -2182,7 +2182,7 @@ is-windows@^0.2.0:
 
 is-windows@^1.0.0:
   version "1.0.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/is-windows/-/is-windows-1.0.0.tgz#c61d61020c3ebe99261b781bd3d1622395f547f8"
+  resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.0.tgz#c61d61020c3ebe99261b781bd3d1622395f547f8"
 
 isarray@0.0.1:
   version "0.0.1"
@@ -2194,7 +2194,7 @@ isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
 
 isemail@1.x.x:
   version "1.2.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/isemail/-/isemail-1.2.0.tgz#be03df8cc3e29de4d2c5df6501263f1fa4595e9a"
+  resolved "https://registry.yarnpkg.com/isemail/-/isemail-1.2.0.tgz#be03df8cc3e29de4d2c5df6501263f1fa4595e9a"
 
 isexe@^1.1.1:
   version "1.1.2"
@@ -2239,7 +2239,7 @@ jodid25519@^1.0.0:
 
 joi@^6.10.1:
   version "6.10.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/joi/-/joi-6.10.1.tgz#4d50c318079122000fe5f16af1ff8e1917b77e06"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-6.10.1.tgz#4d50c318079122000fe5f16af1ff8e1917b77e06"
   dependencies:
     hoek "2.x.x"
     isemail "1.x.x"
@@ -2311,7 +2311,7 @@ jsonpointer@^4.0.0:
 
 jsonwebtoken@^7.0.0, jsonwebtoken@^7.3.0:
   version "7.3.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jsonwebtoken/-/jsonwebtoken-7.3.0.tgz#85118d6a70e3fccdf14389f4e7a1c3f9c8a9fbba"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-7.3.0.tgz#85118d6a70e3fccdf14389f4e7a1c3f9c8a9fbba"
   dependencies:
     joi "^6.10.1"
     jws "^3.1.4"
@@ -2337,7 +2337,7 @@ jstransformer@0.0.2:
 
 jwa@^1.1.4:
   version "1.1.5"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jwa/-/jwa-1.1.5.tgz#a0552ce0220742cd52e153774a32905c30e756e5"
+  resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.1.5.tgz#a0552ce0220742cd52e153774a32905c30e756e5"
   dependencies:
     base64url "2.0.0"
     buffer-equal-constant-time "1.0.1"
@@ -2346,7 +2346,7 @@ jwa@^1.1.4:
 
 jws@^3.1.4:
   version "3.1.4"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jws/-/jws-3.1.4.tgz#f9e8b9338e8a847277d6444b1464f61880e050a2"
+  resolved "https://registry.yarnpkg.com/jws/-/jws-3.1.4.tgz#f9e8b9338e8a847277d6444b1464f61880e050a2"
   dependencies:
     base64url "^2.0.0"
     jwa "^1.1.4"
@@ -2490,7 +2490,7 @@ lodash.keys@^3.0.0:
 
 lodash.once@^4.0.0:
   version "4.1.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
+  resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
 
 lodash.pickby@^4.6.0:
   version "4.6.0"
@@ -2688,7 +2688,7 @@ module-id@2.0.4:
 
 moment@2.x.x:
   version "2.18.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
 morgan@~1.7.0:
   version "1.7.0"
@@ -2734,7 +2734,7 @@ negotiator@0.5.3:
 
 nock@^9.0.13:
   version "9.0.13"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/nock/-/nock-9.0.13.tgz#d0bc39ef43d3179981e22b2e8ea069f916c5781a"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-9.0.13.tgz#d0bc39ef43d3179981e22b2e8ea069f916c5781a"
   dependencies:
     chai ">=1.9.2 <4.0.0"
     debug "^2.2.0"
@@ -2814,7 +2814,7 @@ node-pre-gyp@^0.6.29, node-pre-gyp@~0.6.31:
 
 node-rsa@^0.4.2:
   version "0.4.2"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/node-rsa/-/node-rsa-0.4.2.tgz#d6391729ec16a830ed5a38042b3157d2d5d72530"
+  resolved "https://registry.yarnpkg.com/node-rsa/-/node-rsa-0.4.2.tgz#d6391729ec16a830ed5a38042b3157d2d5d72530"
   dependencies:
     asn1 "0.2.3"
 
@@ -3028,7 +3028,7 @@ passport-facebook@2.1.1:
 
 passport-jwt@^2.2.1:
   version "2.2.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/passport-jwt/-/passport-jwt-2.2.1.tgz#0e004c94071319d673d9d9bcfd1574a868011527"
+  resolved "https://registry.yarnpkg.com/passport-jwt/-/passport-jwt-2.2.1.tgz#0e004c94071319d673d9d9bcfd1574a868011527"
   dependencies:
     jsonwebtoken "^7.0.0"
     passport-strategy "^1.0.0"
@@ -3210,7 +3210,7 @@ promise@~2.0:
 
 propagate@0.4.0:
   version "0.4.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/propagate/-/propagate-0.4.0.tgz#f3fcca0a6fe06736a7ba572966069617c130b481"
+  resolved "https://registry.yarnpkg.com/propagate/-/propagate-0.4.0.tgz#f3fcca0a6fe06736a7ba572966069617c130b481"
 
 proxy-addr@~1.0.10:
   version "1.0.10"
@@ -3504,7 +3504,7 @@ rimraf@2, rimraf@^2.2.8:
 
 rimraf@2.6.1:
   version "2.6.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
   dependencies:
     glob "^7.0.5"
 
@@ -3625,13 +3625,13 @@ sha.js@2.2.6:
 
 shebang-command@^1.2.0:
   version "1.2.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
+  resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
   dependencies:
     shebang-regex "^1.0.0"
 
 shebang-regex@^1.0.0:
   version "1.0.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
+  resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
 shelljs@^0.7.5:
   version "0.7.7"
@@ -3959,7 +3959,7 @@ to-fast-properties@^1.0.1:
 
 topo@1.x.x:
   version "1.1.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/topo/-/topo-1.1.0.tgz#e9d751615d1bb87dc865db182fa1ca0a5ef536d5"
+  resolved "https://registry.yarnpkg.com/topo/-/topo-1.1.0.tgz#e9d751615d1bb87dc865db182fa1ca0a5ef536d5"
   dependencies:
     hoek "2.x.x"
 
