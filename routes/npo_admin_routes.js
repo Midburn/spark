@@ -43,7 +43,7 @@ let getNextMemberNumber = () => {
 
 // TODO protect by npm_admin role
 router.get('/', userRole.isLoggedIn(), function (req, res) {
-    res.render('pages/npo_admin');
+    res.render('pages/npo/admin');
 });
 
 // TODO protect by npm_admin role
@@ -53,7 +53,7 @@ router.get('/application/:user_id', userRole.isLoggedIn(), (req, res) => {
         .where('users.user_id', req.params.user_id)
         .then((members) => {
             if (members && members[0]) {
-                return res.render('pages/npo_application',
+                return res.render('pages/npo/application',
                     {member: members[0], adminMode: true, formUrl: '/' + req.params.lng + '/npo-admin/application/'});
             }
             else {
@@ -77,7 +77,7 @@ router.post('/application/:action', (req, res) => {
                         if (theMember == null) {
                             //TODO handle error.
                             log.error("User not found!");
-                            return res.render('pages/npo_admin', {
+                            return res.render('pages/npo/admin', {
                                 errorMessage: 'email ' + memberEmail + ' not found'
                             });
                         }
@@ -99,7 +99,7 @@ router.post('/application/:action', (req, res) => {
                         } else {
                             //TODO handle error.
                             log.warn("Incorrect status - ", theMember.attributes.membership_status);
-                            return res.render('pages/npo_admin', {
+                            return res.render('pages/npo/admin', {
                                 errorMessage: 'email ' + memberEmail + ' - incorrect status'
                             });
                         }
