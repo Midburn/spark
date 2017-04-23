@@ -7,33 +7,14 @@ var knex = require('../libs/db').knex;
 var userRole = require('../libs/user_role');
 var i18next = require('i18next');
 var mail = require('../libs/mail');
-var payment = require('../libs/payment');
-var security = require('../libs/security');
 var log = require('../libs/logger.js')(module);
 
 var NpoMember = require('../models/npo_member').NpoMember;
 var NpoStatus = require('../models/npo_member').NPO_STATUS;
-var User = require('../models/user').User;
 
 var config = require('config');
 var npoConfig = config.get('npo');
 var serverConfig = config.get('server');
-
-var loadMember = function (user_id, next) {
-    new NpoMember({
-        user_id: user_id
-    }).fetch().then(function (member) {
-            if (member !== null) {
-                next(member);
-            } else {
-                next({
-                    attributes: {
-                        membership_status: NpoStatus.not_member
-                    }
-                });
-            }
-        })
-};
 
 let getNextMemberNumber = () => {
     knex('npo_members').max('member_number').then((number) => {
@@ -109,7 +90,6 @@ router.post('/application/:action', (req, res) => {
         }
     }
 });
-
 
 router.get('/ajax/members', /*TODO security.protectJwt,*/ (req, res) => {
 

@@ -42,7 +42,6 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(fileUpload());
 
-
 var root = process.cwd();
 app.use(compileSass({
     root: root + '/public',

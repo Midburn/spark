@@ -4,17 +4,10 @@ var router = express.Router({
 });
 
 var userRole = require('../libs/user_role');
-var mail = require('../libs/mail');
 
 var User = require('../models/user').User;
 var Camp = require('../models/camp').Camp;
-var NpoMember = require('../models/npo_member').NpoMember;
-var NpoStatus = require('../models/npo_member').NPO_STATUS;
 
-var config = require('config');
-var npoConfig = config.get('npo');
-var serverConfig = config.get('server');
-var log = require('../libs/logger.js')(module);
 var datatableAdmin = require('../libs/admin').datatableAdmin;
 var adminRender = require('../libs/admin').adminRender;
 var sign_up = require('../libs/passport').sign_up;
