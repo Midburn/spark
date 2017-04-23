@@ -19,23 +19,23 @@ table.table.table-striped.table-hover
             td {{member.current_event_id_ticket_count}}
             //- td {{member.earlyArrival ? 'yes':'no'}}
             td
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject" )&nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.reject')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")&nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-ok')
                         =t('camps:members.approve')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve_mgr")', ng-if="member.can_approve_mgr")&nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve_mgr")', ng-if="member.can_approve_mgr") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-king')
                         =t('camps:members.approve_as_manager')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove_mgr")', ng-if="member.can_remove_mgr")&nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove_mgr")', ng-if="member.can_remove_mgr") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-king')
                         =t('camps:members.remove_manager')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove")&nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove") &nbsp;
                     button.btn.btn-xs 
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.remove')
