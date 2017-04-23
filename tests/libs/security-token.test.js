@@ -6,7 +6,7 @@ const securityTokenTestSupport = require('./security-token-test-support');
 const encryptionKeys = securityTokenTestSupport.encryptionKeys;
 const anotherEncryptionKeys = securityTokenTestSupport.anotherEncryptionKeys;
 
-describe.only('jwt-crypto', () => {
+describe('jwt-crypto', () => {
 
     it('should encrypt/decrypt a token', () => {
         const data = {token: 'data-token'};
