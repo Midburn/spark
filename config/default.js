@@ -1,4 +1,6 @@
-switch (process.env.SPARK_DB_CLIENT || "sqlite3") {
+require('dotenv').config();
+
+switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":
         exports.database = {
             "client": process.env.SPARK_DB_CLIENT,
