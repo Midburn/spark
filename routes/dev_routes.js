@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router({
     mergeParams: true
 });
+var knex = require('../libs/db').knex;
 
 var User = require('../models/user').User;
 
@@ -35,6 +36,24 @@ router.get('/view-debug/*', function (req, res) {
     } else {
         res.render('${path}', JSON.parse(req.query.params)); // eslint-disable-line no-template-curly-in-string
     }
+});
+
+router.get('/show-table/:table', function (req, res) {
+    let table = req.params.table;
+
+    // Getting headers, then data
+    knex(table).columnInfo().then(function (info) {
+        let counter = 0;
+        let headers = [];
+        for (let property in info) {
+            if (info.hasOwnProperty(property)) {
+                headers[counter++] = property;
+            }
+        }
+        knex.select().table(table).then((records) => {
+            res.render('dev_tools/show_table', {table: table, records: records, headers: headers});
+        });
+    });
 });
 
 module.exports = router;
