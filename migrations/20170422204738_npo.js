@@ -3,9 +3,14 @@ exports.up = function (knex, Promise) {
 
         // Tickets table
         knex.schema.alterTable('npo_members', function (table) {
-            table.integer('member_number');
+            table.integer('member_number').unsigned();
             table.binary('document_image');
             table.string('application_data');
+            table.integer('application_reviewer_id').unsigned();
+        }),
+
+        knex.schema.alterTable('npo_members', function (table) {
+            table.foreign('application_reviewer_id').references('users.user_id');
         })
     ]);
 };

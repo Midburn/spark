@@ -7,3 +7,5 @@ module.exports = {
     debug: dbConfig.debug,
     useNullAsDefault: true
 };
+
+module.exports.development = module.exports.staging = module.exports.production = module.exports;
