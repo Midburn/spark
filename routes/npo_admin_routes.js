@@ -62,9 +62,12 @@ router.post('/application/:action', (req, res) => {
                                 errorMessage: 'email ' + memberEmail + ' not found'
                             });
                         }
-                        if (theMember.attributes.membership_status === NpoStatus.applied_for_membership) {
-                            theMember.attributes.membership_status = NpoStatus.request_approved;
-                            theMember.attributes.member_number = getNextMemberNumber();
+                        theMember = theMember.attributes;
+                        if (theMember.membership_status === NpoStatus.applied_for_membership) {
+                            theMember.membership_status = NpoStatus.request_approved;
+                            theMember.member_number = getNextMemberNumber();
+                            theMember.application_reviewer_id = req.user.attributes.user_id;
+                            theMember.membership_start_date = new Date();
                             theMember.save().then(() => {
                                 var payLink = serverConfig.url + "/he/npo/pay_fee?user='" + memberEmail;
                                 mail.send(
@@ -79,7 +82,7 @@ router.post('/application/:action', (req, res) => {
                             });
                         } else {
                             //TODO handle error.
-                            log.warn("Incorrect status - ", theMember.attributes.membership_status);
+                            log.warn("Incorrect status - ", theMember.membership_status);
                             return res.render('pages/npo/admin', {
                                 errorMessage: 'email ' + memberEmail + ' - incorrect status'
                             });

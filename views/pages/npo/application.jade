@@ -53,15 +53,15 @@ block content
         .form-group.required
             label=t('npo:join.previous_p_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_previous_p", disabled='#{adminMode}', value='#{member.previous_p_title}' )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_previous_p", disabled='#{adminMode}')=member.form_previous_p
         .form-group.required
             label=t('npo:join.future_p_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_future_p", disabled='#{adminMode}', value='#{member.future_p_title}' )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_future_p", disabled='#{adminMode}')=member.form_future_p
         .form-group.required
             label=t('npo:join.why_join_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_why_join", disabled='#{adminMode}', value='#{member.why_join_title}' )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_why_join", disabled='#{adminMode}')=member.form_why_join
 
         if( !adminMode )
             .form-group.required

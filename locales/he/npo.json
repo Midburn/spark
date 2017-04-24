@@ -10,6 +10,9 @@
     "membership_status": "סטטוס החברות שלך בעמותה",
     "member_number": "מס. חבר",
     "show_application": "בקשת חברות",
+    "approve_application": "אישור הבקשה",
+    "reject_application": "דחיית הבקשה",
+    "reject_reason": "סיבת הדחייה",
     "nav_admin": "ניהול עמותה",
     "status": {
         "applied_for_membership": "בקשת הצטרפותך לעמותה בטיפול",
@@ -29,7 +32,7 @@
     "join": {
         "title": "טופס בקשת חברות בעמותה",
         "max_chars": "עד 300 תווים",
-        "midburn_attended_q": "באילו אירועי מידברן השתתפת בעבר ?",
+        "midburn_attended_q": "באילו אירועי מידברן השתתפת בעבר?",
         "previous_p_title": "מידברן מעודדת את עקרון ההשתתפות, ספר/י כיצד השתתפת באחת ממסגרות מידברן בעבר",
         "future_p_title": "כיצד תשתתף/י בעתיד?",
         "why_join_title": "מדוע תרצה/י להצטרף לעמותה?",
