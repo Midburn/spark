@@ -69,7 +69,7 @@ var sessionStore = new KnexSessionStore({
     knex: knex
 });
 app.use(session({
-    secret: 'SparklePoniesAreFlyingOnEsplanade',
+    secret: 'SparklePoniesAreFlyingOnEsplanade', //TODO check - should we put this on conifg / dotenv files?
     resave: false,
     saveUninitialized: false,
     maxAge: 1000 * 60 * 30,

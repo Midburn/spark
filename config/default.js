@@ -3,6 +3,8 @@ if (!process.env.SPARK_DB_CLIENT) {
     require('dotenv').config();
 }
 
+process.env.version = require('../package.json').version;
+
 switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":
         exports.database = {

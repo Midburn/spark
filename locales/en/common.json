@@ -48,6 +48,7 @@
     "password_changed_email_subject": "Spark security alert",
     "status_pending": "Waiting for camp manager approval",
     "user_id": "User #",
+    "version": "Version",
     "facebook": {
         "login": "Login with Facebook"
     },

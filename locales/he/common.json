@@ -49,6 +49,7 @@
     "password_reset_succeeded": "החלפת סיסמה בוצעה בהצלחה",
     "password_changed_email_subject": "התראת אבטחה מ- Spark",
     "user_id": "מס. משתמש",
+    "version": "גרסה",
     "facebook": {
         "login": "התחבר באמצעות פייסבוק"
     },
@@ -59,7 +60,7 @@
         "whoami": "עריכת פרופיל"
     },
     "footer": {
-        "scrolltop": "חזור למעלה",
+        "scrolltop": "חזרה למעלה",
         "visit_homepage": "בקרו באתר מידברן",
         "ten_principles": "עשרת העקרונות",
         "report_error": "דווחו על תקלה",
