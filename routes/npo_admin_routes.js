@@ -63,7 +63,7 @@ router.post('/application/:action', (req, res) => {
                                 errorMessage: 'email ' + memberEmail + ' not found'
                             });
                         }
-                        User.forge({user_id: theMember.attributes.user_id}).fetch().then((theUser => {
+                        User.forge({user_id: theMember.attributes.user_id}).fetch().then((theUser) => {
                             if (theUser == null) {
                                 //TODO handle error.
                                 log.error("User not found!");
@@ -101,7 +101,7 @@ router.post('/application/:action', (req, res) => {
                                     errorMessage: 'email ' + memberEmail + ' - incorrect status'
                                 });
                             }
-                        })).catch(function (err) {
+                        }).catch(function (err) {
                             log.error(err.stack);
                         })
                     }).catch(function (err) {

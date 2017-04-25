@@ -1,6 +1,5 @@
 var config = require('config');
 var dbConfig = config.get('database');
-var log = require('./logger');
 
 var parameters = {
     client: dbConfig.client,
@@ -9,7 +8,7 @@ var parameters = {
     useNullAsDefault: true
 };
 
-if (process.env.SPARK_DB_CLIENT == "mysql") {
+if (process.env.SPARK_DB_CLIENT === "mysql") {
     parameters.pool = { min: 0 };
 }
 
