@@ -9,6 +9,7 @@ var i18next = require('i18next');
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
 
+var User = require('../models/user').User;
 var NpoMember = require('../models/npo_member').NpoMember;
 var NpoStatus = require('../models/npo_member').NPO_STATUS;
 
@@ -57,38 +58,55 @@ router.post('/application/:action', (req, res) => {
                     }).fetch().then((theMember) => {
                         if (theMember == null) {
                             //TODO handle error.
-                            log.error("User not found!");
+                            log.error("Member not found!");
                             return res.render('pages/npo/admin', {
                                 errorMessage: 'email ' + memberEmail + ' not found'
                             });
                         }
-                        theMember = theMember.attributes;
-                        if (theMember.membership_status === NpoStatus.applied_for_membership) {
-                            theMember.membership_status = NpoStatus.request_approved;
-                            theMember.member_number = getNextMemberNumber();
-                            theMember.application_reviewer_id = req.user.attributes.user_id;
-                            theMember.membership_start_date = new Date();
-                            theMember.save().then(() => {
-                                var payLink = serverConfig.url + "/he/npo/pay_fee?user='" + memberEmail;
-                                mail.send(
-                                    memberEmail,
-                                    npoConfig.email,
-                                    'Your Midburn membership approved!',
-                                    'emails/npo_membership_approved', {
-                                        name: theMember.fullName,
-                                        payLink: payLink
-                                    });
-                                res.redirect('/');
-                            });
-                        } else {
-                            //TODO handle error.
-                            log.warn("Incorrect status - ", theMember.membership_status);
-                            return res.render('pages/npo/admin', {
-                                errorMessage: 'email ' + memberEmail + ' - incorrect status'
-                            });
-                        }
-                    });
-
+                        User.forge({user_id: theMember.attributes.user_id}).fetch().then((theUser => {
+                            if (theUser == null) {
+                                //TODO handle error.
+                                log.error("User not found!");
+                                return res.render('pages/npo/admin', {
+                                    errorMessage: 'email ' + memberEmail + ' not found'
+                                });
+                            }
+                            if (theMember.attributes.membership_status === NpoStatus.applied_for_membership) {
+                                theMember.attributes.membership_status = NpoStatus.request_approved;
+                                theMember.attributes.member_number = getNextMemberNumber();
+                                theMember.attributes.application_reviewer_id = req.user.attributes.user_id;
+                                theMember.attributes.membership_start_date = new Date();
+                                // Backup all application data for legal purpose.
+                                theMember.attributes.application_data = JSON.stringify({
+                                    member: theMember.attributes,
+                                    user: theUser.attributes
+                                });
+                                //TODO store past events in DB as well
+                                theMember.save().then(() => {
+                                    var payLink = serverConfig.url + "/he/npo/pay_fee?user='" + memberEmail;
+                                    mail.send(
+                                        memberEmail,
+                                        npoConfig.email,
+                                        'Your Midburn membership approved!',
+                                        'emails/npo_membership_approved', {
+                                            name: theMember.fullName,
+                                            payLink: payLink
+                                        });
+                                    res.redirect('/');
+                                });
+                            } else {
+                                //TODO handle error.
+                                log.warn("Incorrect status - ", theMember.membership_status);
+                                return res.render('pages/npo/admin', {
+                                    errorMessage: 'email ' + memberEmail + ' - incorrect status'
+                                });
+                            }
+                        })).catch(function (err) {
+                            log.error(err.stack);
+                        })
+                    }).catch(function (err) {
+                        log.error(err.stack);
+                    })
                 }
         }
     }

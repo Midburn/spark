@@ -1,11 +1,10 @@
 exports.up = function (knex, Promise) {
     return Promise.all([
 
-        // Tickets table
         knex.schema.alterTable('npo_members', function (table) {
             table.integer('member_number').unsigned();
             table.binary('document_image');
-            table.string('application_data');
+            table.text('application_data');
             table.integer('application_reviewer_id').unsigned();
         }),
 

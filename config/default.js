@@ -1,4 +1,7 @@
-require('dotenv').config();
+if (!process.env.SPARK_DB_CLIENT) {
+    console.log("Spark: process.env is undefined. Loading...");
+    require('dotenv').config();
+}
 
 switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":

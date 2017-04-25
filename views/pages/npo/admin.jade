@@ -31,7 +31,7 @@ block content
         function statusFormatter(value, row, index) {
             if (value == 'applied_for_membership') {
                 return "<div class='btn-group' style='position: absolute'>"
-                    + "<a type='button' class='btn btn-primary' href='npo-admin/application/" + row.user_id + "'>"
+                    + "<a type='button' class='btn btn-primary' href='/#{language}/npo-admin/application/" + row.user_id + "'>"
                     + "<span class='glyphicon glyphicon-eye-open'></span> #{t('npo:show_application')}</a>"
                     + "</div>";
             }

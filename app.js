@@ -255,3 +255,4 @@ process.on('warning', function(warning) {
 module.exports = app;
 
 log.info("--- Spark is running :) ---");
+

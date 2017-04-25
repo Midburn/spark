@@ -83,16 +83,16 @@ block content
             input( type='hidden', name='members', value='[{' + '"email":"' + member.email + '",' + '"user_id":' + member.user_id + '}]' )
             img( src=member.documentImage )
             p
-            button( type="submit", class="btn btn-primary", id="submit_button" onclick='mySubmit("approve")')=t('npo:approve_application')
+            button( class="btn btn-primary", id="submit_button" onclick='mySubmit("approve")')=t('npo:approve_application')
             | &nbsp;
-            button( type="submit", class="btn btn-warning", id="submit_button" )=t('npo:reject_application')
+            button( class="btn btn-warning", id="submit_button" onclick='mySubmit("reject")')=t('npo:reject_application')
             p
             .form-group
                 label=t('npo:reject_reason')
                 textarea( class="form-control", rows="5", cols="80", maxlength="300", name="reject_reason" )
 
     script.
+        var actionUrl = '#{formUrl}';
         var mySubmit = function(action){
-            var form = $('#theForm')
-            form.attr('action', form.attr('action') + action).submit();
-        }
+            $('#theForm').attr('action', actionUrl + action).submit();
+        };
