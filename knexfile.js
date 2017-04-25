@@ -1,7 +1,7 @@
-console.log("knexfile.js - IN");
+console.log("Spark: knexfile.js - IN");
 
 if (!process.env.SPARK_DB_CLIENT) {
-    console.log("Spark: process.env is undefined in knexfile. Loading...");
+    console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in knexfile. Loading dotenv file...");
     require('dotenv').config();
 }
 
@@ -17,4 +17,4 @@ module.exports = {
 
 module.exports.development = module.exports.staging = module.exports.production = module.exports;
 
-console.log("knexfile.js - OUT");
+console.log("Spark: knexfile.js - OUT");

@@ -1,5 +1,5 @@
 if (!process.env.SPARK_DB_CLIENT) {
-    console.log("Spark: process.env is undefined. Loading...");
+    console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in knexfile. Loading dotenv file...");
     require('dotenv').config();
 }
 
