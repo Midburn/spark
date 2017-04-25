@@ -1,5 +1,5 @@
 if (!process.env.SPARK_DB_CLIENT) {
-    console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in knexfile. Loading dotenv file...");
+    console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in default.js config file. Loading dotenv file...");
     require('dotenv').config();
 }
 
@@ -7,6 +7,7 @@ process.env.version = require('../package.json').version;
 
 switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":
+        console.log("Using MySQL database", process.env.SPARK_DB_HOSTNAME);
         exports.database = {
             "client": process.env.SPARK_DB_CLIENT,
             "host": process.env.SPARK_DB_HOSTNAME,
@@ -19,6 +20,7 @@ switch (process.env.SPARK_DB_CLIENT || "mysql") {
         break;
 
     case "sqlite3":
+        console.log("Using sqlite3 database", process.env.SPARK_DB_FILENAME);
         exports.database = {
             "client": process.env.SPARK_DB_CLIENT || "sqlite3",
             "filename": process.env.SPARK_DB_FILENAME || "./dev.sqlite3",
