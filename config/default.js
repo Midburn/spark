@@ -1,19 +1,21 @@
+process.env.version = require('../package.json').version;
+
 if (!process.env.SPARK_DB_CLIENT) {
     console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in default.js config file. Loading dotenv file...");
     require('dotenv').config();
 }
 
-process.env.version = require('../package.json').version;
+console.log("process.env.SPARK_DB_CLIENT =", process.env.SPARK_DB_CLIENT);
 
 switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":
         console.log("Using MySQL database", process.env.SPARK_DB_HOSTNAME);
         exports.database = {
-            "client": process.env.SPARK_DB_CLIENT,
-            "host": process.env.SPARK_DB_HOSTNAME,
-            "database": process.env.SPARK_DB_DBNAME,
-            "user": process.env.SPARK_DB_USER,
-            "password": process.env.SPARK_DB_PASSWORD,
+            "client": process.env.SPARK_DB_CLIENT || "mysql",
+            "host": process.env.SPARK_DB_HOSTNAME || "localhost",
+            "database": process.env.SPARK_DB_DBNAME || "spark",
+            "user": process.env.SPARK_DB_USER || "spark",
+            "password": process.env.SPARK_DB_PASSWORD || "spark",
             "charset": "utf8",
             "debug": (process.env.SPARK_DB_DEBUG === "true")
         };
@@ -30,7 +32,7 @@ switch (process.env.SPARK_DB_CLIENT || "mysql") {
 
     default:
         console.error("environment variable SPARK_DB_TYPE is configured wrong.");
-        console.error("See .env-example file for more details.");
+        console.error("See .env_roy-example file for more details.");
         console.error("");
         process.exit(1);
 }

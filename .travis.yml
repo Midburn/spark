@@ -7,7 +7,6 @@ cache:
     - bower_components
 script:
   - yarn add bower
-  - ./node_modules/.bin/bower install
   - ./node_modules/.bin/knex migrate:latest
   - npm test
   - .travis/deploy.sh
