@@ -6,6 +6,7 @@ cache:
     # - node_modules
     - bower_components
 script:
+  - export SPARK_DB_CLIENT=sqlite3
   - yarn add bower
   - ./node_modules/.bin/knex migrate:latest
   - npm test
