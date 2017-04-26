@@ -1,4 +1,6 @@
 DROP DATABASE IF EXISTS spark;
+
+flush privileges;
 drop user 'spark'@'localhost';
 flush privileges;
 
