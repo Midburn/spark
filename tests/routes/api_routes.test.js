@@ -1,49 +1,53 @@
 // This is magically used in code such as user.attributes.password.length.should.be.above(20);
-var should = require('chai').should(); // eslint-disable-line no-unused-vars
-
-var app = require('../../app');
-var request = require('supertest')(app);
-var User = require('../../models/user').User;
-var knex = require('../../libs/db').knex;
+const should = require('chai').should(); // eslint-disable-line no-unused-vars
+const Cookies = require('expect-cookies');
+const app = require('../../app');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+const request = require('supertest')(app);
 const assert = require('assert');
-const TEST_TOKEN = "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91";
+const sessionTestSupport = require('../libs/session-test-support');
+const SessionCookieName = require('../../libs/midburn-express-session').SessionCookieName;
+const TestValidCredentials = {username: 'xnowvvra@sharklasers.com', password: '123456'};
+
+const sessionToken = () => {
+    const token = sessionTestSupport.createSession();
+    return `${SessionCookieName}=${token}`;
+};
+
+const UserLoginUrl = '/api/userlogin';
 
 describe('API routes', function() {
-    it('should reject with no token', function() {
-        return request
-            .post('/api/userlogin')
-            .expect(401);
-    });
+    it('should reject with no token', () =>
+        request.post(UserLoginUrl)
+               .expect(401));
 
-    it('should reject with invalid token', function() {
-        return request
-            .post('/api/userlogin')
-            .send({
-                token: "INVALID"
-            })
-            .expect(401);
-    });
+    it('should reject with invalid login', () =>
+        request.post(UserLoginUrl)
+               .send({
+                   username: "none",
+                   password: "invalid"
+                })
+               .expect(401));
 
-    it('should reject with invalid login', function() {
-        return request
-            .post('/api/userlogin')
-            .send({
-                username: "none",
-                password: "invalid",
-                token: TEST_TOKEN
-            })
-            .expect(401)
-    });
+    it('should return 200OK if encountered valid token', () =>
+        request.post(UserLoginUrl)
+               .set('cookie', sessionToken())
+               .expect(200));
 
-    it('should login', function() {
-        return request
-            .post('/api/userlogin')
-            .send({
-                username: "omerpines@hotmail.com",
-                password: "123456",
-                token: TEST_TOKEN
-            })
-            .expect(200)
-    });
+    it('should set cookie when login is successful', () =>
+        request.post(UserLoginUrl)
+               .send(TestValidCredentials)
+               .expect(200)
+               .expect(Cookies.new({'name': SessionCookieName, 'options': ['path', 'httponly', 'max-age']})));
 
+    it('login and then try to access another api with token', () =>
+        request.post(UserLoginUrl)
+                      .send(TestValidCredentials)
+                      .then(res => {
+                          const sessionToken = res.headers['set-cookie'][0].split(';')[0].split('=')[1]
+                          return request.post(UserLoginUrl)
+                                        .set('cookie', `${SessionCookieName}=${sessionToken}`)
+                                        .expect(200);
+                      }));
 });

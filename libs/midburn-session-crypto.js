@@ -9,10 +9,12 @@ class MidburnSessionCrypto {
         const identity = el => el;
         const parseDate = el => new Date(el);
         this.fieldTransforms = {
+            uid: {key: 'id', fn: identity},
+            name: {key: 'name', fn: identity},
             email: {key: 'email', fn: identity},
-            userName: {key: 'userName', fn: identity},
-            exp: {key: 'expiration', fn: parseDate},
-            cd: {key: 'created', fn: parseDate}
+            roles: {key: 'roles', fn: identity},
+            expiration: {key: 'expiration', fn: parseDate},
+            created: {key: 'created', fn: parseDate}
         };
     }
 

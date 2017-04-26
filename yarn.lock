@@ -861,7 +861,7 @@ cookie-parser@~1.4.3:
     cookie "0.3.1"
     cookie-signature "1.0.6"
 
-cookie-signature@1.0.6:
+cookie-signature@1.0.6, cookie-signature@1.0.x:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
 
@@ -1399,6 +1399,13 @@ expand-tilde@^1.2.2:
   resolved "https://registry.yarnpkg.com/expand-tilde/-/expand-tilde-1.2.2.tgz#0b81eba897e5a3d31d1c3d102f8f01441e559449"
   dependencies:
     os-homedir "^1.0.1"
+
+expect-cookies@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/expect-cookies/-/expect-cookies-0.1.2.tgz#1ac7374fe46d8847dc9e6e1811467707bd94f9fe"
+  dependencies:
+    cookie-signature "1.0.x"
+    should "7.1.x"
 
 express-breadcrumbs@0.0.2:
   version "0.0.2"
@@ -3641,6 +3648,30 @@ shelljs@^0.7.5:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
+should-equal@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/should-equal/-/should-equal-0.5.0.tgz#c797f135f3067feb69ebecdb306b1c3fe21b3e6f"
+  dependencies:
+    should-type "0.2.0"
+
+should-format@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/should-format/-/should-format-0.3.1.tgz#2cbb782461670ace4292b2b1ec468db8cf99e330"
+  dependencies:
+    should-type "0.2.0"
+
+should-type@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/should-type/-/should-type-0.2.0.tgz#6707ef95529d989dcc098fe0753ab1f9136bb7f6"
+
+should@7.1.x:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/should/-/should-7.1.1.tgz#6464c48b6f7c1e1f18ac0483578fa2dd55c2c6e0"
+  dependencies:
+    should-equal "0.5.0"
+    should-format "0.3.1"
+    should-type "0.2.0"
+
 sigmund@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/sigmund/-/sigmund-1.0.1.tgz#3ff21f198cad2175f9f3b781853fd94d0d19b590"
@@ -4269,6 +4300,10 @@ xml2js@0.2.6:
 xmlbuilder@0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-0.4.2.tgz#1776d65f3fdbad470a08d8604cdeb1c4e540ff83"
+
+"xmlhttprequest@git://github.com/jbeuckm/node-XMLHttpRequest#progress":
+  version "1.5.1"
+  resolved "git://github.com/jbeuckm/node-XMLHttpRequest#99e7b1559f5781733733d725dcf287f2452e9b5b"
 
 xoauth2@~0.1.8:
   version "0.1.8"

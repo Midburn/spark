@@ -58,16 +58,24 @@ function encryptAsMidburnSession(session, privateKey, jwtExpiration) {
 }
 
 function aMidburnSession(overrides) {
+    let roles = {};
+    roles[chance.natural()] = chance.word();
+    roles[chance.natural()] = chance.word();
+    roles[chance.natural()] = chance.word();
+    roles[chance.natural()] = chance.word();
+
     return Object.assign({}, {
+        uid: chance.natural(),
+        name: chance.word(),
         email: chance.word(),
-        userName: chance.word(),
-        cd: chance.date(),
-        exp: chance.date()
+        roles: roles,
+        created: chance.date(),
+        expiration: chance.date()
     }, overrides);
 }
 
-const createSession = (opts) => {
-    const sessionData = aMidburnSession({exp: opts.expiration || new Date(Date.now() + 60*60*24*1000)});
+const createSession = (opts = {}) => {
+    const sessionData = aMidburnSession({expiration: opts.expiration || new Date(Date.now() + 60*60*24*1000)});
     return encryptAsMidburnSession(sessionData, privateKey, opts.jwtExpiration);
 };
 

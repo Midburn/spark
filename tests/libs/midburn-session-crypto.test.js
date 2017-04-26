@@ -17,9 +17,11 @@ describe('midburn session crypto', () => {
 
         const decoded = new MidburnSessionCrypto(sessionTestSupport.validKey).decrypt(validSessionToken);
 
-        expect(Object.keys(decoded).length).to.equal(4);
+        expect(Object.keys(decoded).length).to.equal(6);
+        expect(decoded.id).to.be.a('number');
         expect(decoded.email).to.be.a('string');
-        expect(decoded.userName).to.be.a('string');
+        expect(decoded.roles).to.be.a('object');
+        expect(decoded.name).to.be.a('string');
         expect(decoded.expiration).to.be.a('date');
         expect(decoded.created).to.be.a('date');
     });
