@@ -155,6 +155,7 @@
           "reject": "Reject Member",
           "approve": "Approve Member",
           "approve_as_manager": "Approve as Manager",
+          "remove_manager": "Remove Manager",
           "remove": "Remove Member",
           "choose_camp": "Choose or search a camp",
           "status_pending": "Waiting for camp manager approval",
