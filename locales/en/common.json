@@ -50,6 +50,7 @@
     "status_pending": "Waiting for camp manager approval",
     "user_id": "User #",
     "version": "Version",
+    "volunteering": "Volunteering",
     "operations": "Operations",
     "facebook": {
         "login": "Login with Facebook"

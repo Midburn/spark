@@ -15,6 +15,8 @@ block wrapper
                         a( href="/#{language}/home" )=t('home')
                     li( class="#{path[2] === 'camps' ? 'active' : undefined }" )
                         a( href="/#{language}/camps" )=t('camps:nav')
+                    li( class="#{path[2] === 'volunteering' ? 'active' : undefined }" )
+                        a( href="/#{language}/volunteering" )=t('volunteering')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
                         a( href="/#{language}/npo" )=t('npo:npo_name')
                     if(user.isGateManager || user.isAdmin)
