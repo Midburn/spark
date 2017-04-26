@@ -1,6 +1,8 @@
 # Spark database
 
-The Spark project uses [Knex.js](http://knexjs.org/) to manage database connection and migrations.
+The Spark project uses 
+* **MyQSL** ( https://dev.mysql.com/downloads/mysql/ ) as the default database engine.
+* **Knex.js** ( http://knexjs.org/ ) to manage database connection and migrations.
 
 ### Database configuration
 
@@ -68,7 +70,7 @@ SET PASSWORD = PASSWORD('xxxxxxxx');
 
 #### MySql configuration in Spark project
 
-If you are not using a local server, edit your .env file and set the relevant settings to match your database (If you don't have an .env file, duplicate .env-example).
+If you are **not** using a simple local server configuration, edit your .env file and set the relevant settings to match your database (If you don't have an .env file, duplicate .env-example).
 
 ```
 SPARK_DB_CLIENT=mysql
@@ -84,6 +86,8 @@ To create the Spark database and the user, run:
 ```
 npm run-script createdb
 ```
+
+or: 
 
 ```shell
 sudo mysql -u root < migrations/create_db.sql
