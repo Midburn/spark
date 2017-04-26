@@ -87,7 +87,7 @@ To create the Spark database and the user, run:
 npm run-script createdb
 ```
 
-or: 
+or if you need to use different credentials, use a command similar to: 
 
 ```shell
 sudo mysql -u root < migrations/create_db.sql
