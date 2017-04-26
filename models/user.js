@@ -62,12 +62,12 @@ var User = bookshelf.Model.extend({
                         camps[i].member_status_i18n = t('camps:members.status_' + _status);
                         // @TODO: update to req instead t for all places in the code
                     }
-                    if (!first_camp && member_type_array.indexOf(_status) > -1) {
+                    if (['open', 'closed'].indexOf(camps[i].status)>-1 && !first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
+                    if (['open', 'closed'].indexOf(camps[i].status)>-1 && (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
-                        || (camps[i].member_status === 'approved_mgr')) {
+                        || (camps[i].member_status === 'approved_mgr'))) {
                         first_camp = camps[i];
                         is_manager = true;
                         break;
@@ -82,9 +82,9 @@ var User = bookshelf.Model.extend({
             });
     },
     validPassword: function (password) {
-        return bcrypt.compareSync(password, this.attributes.password);
+        return this.attributes.password && bcrypt.compareSync(password, this.attributes.password);
     },
-    hasRole: function (role) { 
+    hasRole: function (role) {
         return common.__hasRole(role, this.attributes.roles);
     },
     isUserInCamp: function (camp_id) {

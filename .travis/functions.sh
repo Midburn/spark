@@ -90,19 +90,20 @@ _upload_package() {
 
 _deploy() {
     if [ `_is_tagged` == "1" ]; then
-        if [ "${SPARK_RELEASE_NOTIFICATION_KEY}" != "" ] && [ "${SPARK_RELEASE_NOTIFICATION_HOST}" != "" ]; then
-            echo -e "${SPARK_RELEASE_NOTIFICATION_KEY}" > release_notify.key
-            chmod 400 release_notify.key
-            if ssh -o StrictHostKeyChecking=no -i release_notify.key "${SPARK_RELEASE_NOTIFICATION_HOST}" `_get_package_version` `_get_package_url`; then
-                echo; echo "OK"
-                return 0
-            else
-                echo; echo "ERROR"
-                return 1
-            fi
-        else
-            echo "skipping release notification because no SPARK_RELEASE_NOTIFICATION_KEY or SPARK_RELEASE_NOTIFICATION_HOST variables"
-        fi
+        echo "skipping release notification because we are using autoscaling groups and launch configurations now"
+        # if [ "${SPARK_RELEASE_NOTIFICATION_KEY}" != "" ] && [ "${SPARK_RELEASE_NOTIFICATION_HOST}" != "" ]; then
+        #     echo -e "${SPARK_RELEASE_NOTIFICATION_KEY}" > release_notify.key
+        #     chmod 400 release_notify.key
+        #     if ssh -o StrictHostKeyChecking=no -i release_notify.key "${SPARK_RELEASE_NOTIFICATION_HOST}" `_get_package_version` `_get_package_url`; then
+        #         echo; echo "OK"
+        #         return 0
+        #     else
+        #         echo; echo "ERROR"
+        #         return 1
+        #     fi
+        # else
+        #     echo "skipping release notification because no SPARK_RELEASE_NOTIFICATION_KEY or SPARK_RELEASE_NOTIFICATION_HOST variables"
+        # fi
     elif [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ] && [ "${SPARK_DEPLOYMENT_HOST}" != "" ]; then
         if [ ! -f deployment.key ]; then
             echo -e "${SPARK_DEPLOYMENT_KEY}" > deployment.key

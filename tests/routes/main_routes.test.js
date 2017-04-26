@@ -40,7 +40,7 @@ describe('Main routes', function() {
     it('shows signup form in English', function testSlash(done) {
         request
             .get('/en/signup')
-            .expect(/Sign Up.*Email.*Password/)
+            .expect(/Sign up.*Email.*Password/)
             .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=en/)
             .expect(200, done);
     });

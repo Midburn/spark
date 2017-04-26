@@ -42,7 +42,7 @@ router.get('/', userRole.isLoggedIn(), function (req, res) {
         url: '/' + req.params.lng + '/npo'
     }]);
     loadMember(req.user.id, function (member) {
-        res.render('pages/npo', {
+        res.render('pages/npo/home', {
             user: req.user,
             npoMember: member,
             breadcrumbs: req.breadcrumbs(),
@@ -65,7 +65,7 @@ router.get('/join', userRole.isLoggedIn(), function (req, res) {
         url: '/' + req.params.lng + '/npo/join'
     }]);
     loadMember(req.user.id, function (member) {
-        res.render('pages/npo_join', {
+        res.render('pages/npo/join', {
             user: req.user,
             breadcrumbs: req.breadcrumbs(),
             npoMember: member
@@ -166,7 +166,7 @@ router.get('/fee_received', userRole.isLoggedIn(), function (req, res, next) {
                                 name: req.user.fullName,
                                 year: new Date().getFullYear()
                             });
-                        res.render('pages/npo_fee_received', {
+                        res.render('pages/npo/fee_received', {
                             user: req.user
                         });
                     }).catch(NpoMember.NotFoundError, function () {

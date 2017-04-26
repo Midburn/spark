@@ -1,17 +1,31 @@
-switch (process.env.SPARK_DB_CLIENT || "sqlite3") {
+process.env.version = require('../package.json').version;
+console.log("Spark config: package.json version:", process.env.version);
+
+var fs = require('fs');
+if (!fs.existsSync(".env")) {
+    console.log("Spark config: .env file was not found, using default config.");
+}
+else {
+    console.log("Spark config: Loading .env file...");
+    require('dotenv').config();
+}
+
+switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":
+        console.log("Spark config: Using MySQL database", process.env.SPARK_DB_HOSTNAME || "localhost");
         exports.database = {
-            "client": process.env.SPARK_DB_CLIENT,
-            "host": process.env.SPARK_DB_HOSTNAME,
-            "database": process.env.SPARK_DB_DBNAME,
-            "user": process.env.SPARK_DB_USER,
-            "password": process.env.SPARK_DB_PASSWORD,
+            "client": process.env.SPARK_DB_CLIENT || "mysql",
+            "host": process.env.SPARK_DB_HOSTNAME || "localhost",
+            "database": process.env.SPARK_DB_DBNAME || "spark",
+            "user": process.env.SPARK_DB_USER || "spark",
+            "password": process.env.SPARK_DB_PASSWORD || "spark",
             "charset": "utf8",
             "debug": (process.env.SPARK_DB_DEBUG === "true")
         };
         break;
 
     case "sqlite3":
+        console.log("Spark config: Using sqlite3 database", process.env.SPARK_DB_FILENAME || "./dev.sqlite3");
         exports.database = {
             "client": process.env.SPARK_DB_CLIENT || "sqlite3",
             "filename": process.env.SPARK_DB_FILENAME || "./dev.sqlite3",
@@ -20,7 +34,7 @@ switch (process.env.SPARK_DB_CLIENT || "sqlite3") {
         break;
 
     default:
-        console.error("environment variable SPARK_DB_TYPE is configured wrong.");
+        console.error("Spark config: environment variable SPARK_DB_TYPE is configured wrong.");
         console.error("See .env-example file for more details.");
         console.error("");
         process.exit(1);
@@ -79,7 +93,7 @@ exports.payment = {
 };
 
 exports.npo = {
-    email: "amuta@localhost",
+    email: "amuta@midburn.org",
     idImagesFolder: "d:/temp/"
 };
 
