@@ -10,9 +10,9 @@ before_script:
   - cp .travis/travis.env .env
 script:
   - yarn add bower
+  - .travis/deploy.sh
   - ./node_modules/.bin/knex migrate:latest
   - npm test
-  - .travis/deploy.sh
 after_success:
   - .travis/notify.sh "1"
 after_failure:
