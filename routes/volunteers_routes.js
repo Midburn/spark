@@ -56,7 +56,7 @@ function merge_volunteer_info(vol_data_model, user_info) {
         phone_number: _.get(user_info, 'phone'),
         got_ticket: _.get(user_info, 'has_ticket'),
         comment: vol_data_model.get('comment'),
-        is_production: vol_data_model.get('is_prodcution')
+        is_production: vol_data_model.get('is_production')
     };
 }
 
@@ -125,7 +125,7 @@ var post_volunteers = function(req, res) {
                             user_id: data_to_save.user_data.uid,
                             department_id,
                             role_id: _.get(req, 'body[0].role_id'),
-                            is_prodcution: _.get(req, 'body[0].is_production'), //refactor ->rename column name
+                            is_production: _.get(req, 'body[0].is_production'), //refactor ->rename column name
                             event_id: CURRENT_EVENT
                         }).save().then((save_result) => {
                             log.info('Saved ' + JSON.stringify(save_result));
@@ -149,7 +149,7 @@ var put_volunteer = function(req, res) {
         role_id: _.get(req, 'body.role_id'),
         type_in_shift_id: _.get(req, 'body.shift_type'),
         comment: _.get(req, 'body.comment'),
-        is_prodcution: _.get(req, 'body.is_production')
+        is_production: _.get(req, 'body.is_production')
     };
     Volunteer
         .where({

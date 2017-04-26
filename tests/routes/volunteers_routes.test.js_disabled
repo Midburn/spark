@@ -8,7 +8,8 @@ const testUser1 = {
     id: 1,
     email: 'john.doe@gmail.com',
     first_name: 'John',
-    last_name: 'Doe'
+    last_name: 'Doe',
+    role_id: 1
 };
 
 
@@ -184,7 +185,7 @@ describe('Adding volunteers', function() {
             .send(JSON.stringify(
                 [{
                     email: testUser1.email,
-                    role_id: 9999,
+                    role_id: 1,
                     is_production: true
                 }]
             ))
@@ -209,7 +210,7 @@ describe('Adding volunteers', function() {
             .send( //JSON.stringify(
                 [{
                     email: testUser1.email,
-                    role_id: 9999,
+                    role_id: 1,
                     is_production: true
                 }]
                 //)
