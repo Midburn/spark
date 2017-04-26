@@ -40,6 +40,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+app.use(fileUpload());
 
 var root = process.cwd();
 app.use(compileSass({
@@ -68,7 +69,7 @@ var sessionStore = new KnexSessionStore({
     knex: knex
 });
 app.use(session({
-    secret: 'SparklePoniesAreFlyingOnEsplanade',
+    secret: 'SparklePoniesAreFlyingOnEsplanade', //TODO check - should we put this on conifg / dotenv files?
     resave: false,
     saveUninitialized: false,
     maxAge: 1000 * 60 * 30,
@@ -127,7 +128,7 @@ i18next
     }, function() {
         middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function(req, res) {
             //endpoint function
-            log.info("ROUTE");
+            //log.info("ROUTE");
         });
     });
 app.use(middleware.handle(i18next, {
@@ -154,6 +155,7 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 
 // Module's Routes
 app.use('/:lng/npo', require('./routes/npo_routes'));
+app.use('/:lng/npo-admin', require('./routes/npo_admin_routes'));
 app.use('/:lng/gate', require('./routes/gate_routes'));
 
 // Mail
@@ -249,10 +251,8 @@ process.on('warning', function(warning) {
     log.warn(warning.stack); // Print the stack trace
 });
 
-// Allow file uploads
-app.use(fileUpload());
-
 // == Export our app ==
 module.exports = app;
 
 log.info("--- Spark is running :) ---");
+

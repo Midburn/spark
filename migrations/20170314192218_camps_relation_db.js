@@ -7,7 +7,6 @@ exports.up = function (knex, Promise) {
             table.integer('user_id').unsigned();
             table.unique(['camp_id', 'user_id']);
             table.index(['camp_id', 'user_id']);
-            table.foreign('camp_id').references(constants.CAMPS_TABLE_NAME + '.id');
             table.foreign('user_id').references(constants.USERS_TABLE_NAME + '.user_id');
             table.enu('status', constants.CAMP_MEMBER_STATUS);
 
@@ -28,6 +27,6 @@ exports.up = function (knex, Promise) {
 exports.down = function (knex, Promise) {
     return Promise.all([
         knex.schema.dropTable('props'),
-        knex.schema.dropTable(constants.CAMP_MEMBERS_TABLE_NAME),
+        knex.schema.dropTable(constants.CAMP_MEMBERS_TABLE_NAME)
     ]);
 };
