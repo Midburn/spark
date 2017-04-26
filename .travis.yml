@@ -5,8 +5,10 @@ cache:
   directories:
     # - node_modules
     - bower_components
+before_script:
+  - mysql -u root < migrations/create_db.sql
+  - cp .travis/travis.env .env
 script:
-  - export SPARK_DB_CLIENT=sqlite3
   - yarn add bower
   - ./node_modules/.bin/knex migrate:latest
   - npm test
@@ -15,3 +17,5 @@ after_success:
   - .travis/notify.sh "1"
 after_failure:
   - .travis/notify.sh "0"
+services:
+  - mysql
