@@ -6,7 +6,7 @@ cache:
     # - node_modules
     - bower_components
 before_script:
-  - mysql -u root < migrations/create_db.sql
+  - npm run-script createdb
   - cp .travis/travis.env .env
 script:
   - yarn add bower

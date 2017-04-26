@@ -1,5 +1,6 @@
 DROP DATABASE IF EXISTS spark;
 
+DROP USER IF EXISTS 'spark'@'localhost';
 flush privileges;
 
 CREATE DATABASE IF NOT EXISTS spark;
