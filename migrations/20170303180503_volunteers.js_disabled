@@ -41,39 +41,34 @@ exports.up = function(knex, Promise) {
         }),
         //volunteers
         knex.schema.createTable(constants.VOLUNTEERS_TABLE_NAME, function(table) {
-            table.increments();
             table.integer('user_id').unsigned();
             table.integer('department_id').unsigned();
-            table.integer('event_id');
+            table.integer('event_id').unsigned();
             table.integer('role_id').unsigned();
             table.integer('type_in_shift_id').unsigned();
-            table.boolean('is_production');
+            table.boolean('is_prodcution');
             table.string('comment');
-            table.timestamp('modified_date').nullable();
-            //unique
-            table.unique(['user_id', 'department_id', 'event_id']);
-            //references
+            table.timestamp('modified_date');
+            //key
+            table.primary(['user_id', 'department_id', 'event_id'])
+                //references
             table.foreign('user_id').references('user_id').inTable(constants.USERS_TABLE_NAME);
             table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
             table.foreign('role_id').references('id').inTable(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME);
             table.foreign('type_in_shift_id').references('id').inTable(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME);
         }),
         knex.schema.createTable(constants.VOL_SHIFTS_TABLE_NAME, function(table) {
-            //table.increments();
-            table.integer('department_id').unsigned();
-            table.integer('volunteer_id').unsigned();
-            table.integer('shift_id').unsigned();
+            table.increments();
+            table.integer('department_id').unsigned()
             table.string('location');
             table.integer('num_of_shift_managers');
             table.integer('num_of_volunteers');
-            table.timestamp('start_time').nullable();
-            table.timestamp('end_time').nullable();
+            table.timestamp('start_time');
+            table.timestamp('end_time');
             table.string('comment');
-            table.timestamp('modified_date').nullable();
-            table.primary(['volunteer_id', 'shift_id']);
+            table.timestamp('modified_date');
             //references
             table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
-            table.foreign('volunteer_id').references('id').inTable(constants.VOLUNTEERS_TABLE_NAME);
         }),
         knex.schema.createTable(constants.VOL_SCHEDULE_TABLE_NAME, function(table) {
             table.integer('user_id').unsigned();
@@ -81,10 +76,11 @@ exports.up = function(knex, Promise) {
             table.boolean('attended');
             table.string('comment');
             //key
-            table.primary(['user_id', 'shift_id']);
+            table.primary(['user_id', 'shift_id'])
                 //references
             table.foreign('user_id').references('user_id').inTable(constants.VOLUNTEERS_TABLE_NAME);
-            //table.foreign(['shift_id', 'user_id']).references(['shift_id', 'volunteer_id']).inTable(constants.VOL_SHIFTS_TABLE_NAME);
+            table.foreign('shift_id').references('id').inTable(constants.VOL_SHIFTS_TABLE_NAME);
+
         })
     ]);
 };

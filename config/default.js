@@ -1,15 +1,17 @@
 process.env.version = require('../package.json').version;
 
-if (!process.env.SPARK_DB_CLIENT) {
-    console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in default.js config file. Loading dotenv file...");
+var fs = require('fs');
+if (!fs.existsSync(".env")) {
+    console.log("Spark config: .env file was not found, using deafult config.");
+}
+else {
+    console.log("Spark config: Loading .env file...");
     require('dotenv').config();
 }
 
-console.log("process.env.SPARK_DB_CLIENT =", process.env.SPARK_DB_CLIENT);
-
 switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":
-        console.log("Using MySQL database", process.env.SPARK_DB_HOSTNAME);
+        console.log("Spark config: Using MySQL database", process.env.SPARK_DB_HOSTNAME || "localhost");
         exports.database = {
             "client": process.env.SPARK_DB_CLIENT || "mysql",
             "host": process.env.SPARK_DB_HOSTNAME || "localhost",
@@ -22,7 +24,7 @@ switch (process.env.SPARK_DB_CLIENT || "mysql") {
         break;
 
     case "sqlite3":
-        console.log("Using sqlite3 database", process.env.SPARK_DB_FILENAME);
+        console.log("Spark config: Using sqlite3 database", process.env.SPARK_DB_FILENAME || "./dev.sqlite3");
         exports.database = {
             "client": process.env.SPARK_DB_CLIENT || "sqlite3",
             "filename": process.env.SPARK_DB_FILENAME || "./dev.sqlite3",
@@ -31,8 +33,8 @@ switch (process.env.SPARK_DB_CLIENT || "mysql") {
         break;
 
     default:
-        console.error("environment variable SPARK_DB_TYPE is configured wrong.");
-        console.error("See .env_roy-example file for more details.");
+        console.error("Spark config: environment variable SPARK_DB_TYPE is configured wrong.");
+        console.error("See .env-example file for more details.");
         console.error("");
         process.exit(1);
 }
