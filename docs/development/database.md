@@ -4,40 +4,6 @@ The Spark project uses
 * **MyQSL** ( https://dev.mysql.com/downloads/mysql/ ) as the default database engine.
 * **Knex.js** ( http://knexjs.org/ ) to manage database connection and migrations.
 
-### Database configuration
-
-Knex uses the database configuration from the [.env](/.env-example) file.
-
-By default (local dev machine) it is configured to use Sqlite which doesn't require any special installation or setup.
-
-### Running migrations
-
-Make sure you have Knex installed:
-
-```shell
-npm install -g knex
-```
-
-Migrate forward to latest migration
-
-```shell
-knex migrate:latest
-```
-
-See [Knex.js documentation](http://knexjs.org/#Migrations-CLI) for more options and details
-
-### Creating a new migration
-
-Run migrate:make with a relevant migration name:
-
-```shell
-knex migrate:make <migration_name>
-```
-
-Edit the created file and write your migration.
-
-You can see the other migration files for examples or refer to the [Knex.js documentation](http://knexjs.org/#Schema)
-
 ### Using MySql
 
 By default we use MySql. Other database are currently not supported.
@@ -92,3 +58,37 @@ or if you need to use different credentials, use a command similar to:
 ```shell
 sudo mysql -u root < migrations/create_db.sql
 ```
+### Database configuration
+
+Knex uses the database configuration from the [.env](/.env-example) file.
+
+By default (local dev machine) it is configured to use MySQL.
+
+### Running migrations
+
+Make sure you have Knex installed:
+
+```shell
+npm install -g knex
+```
+
+Migrate forward to latest migration
+
+```shell
+knex migrate:latest
+```
+
+See [Knex.js documentation](http://knexjs.org/#Migrations-CLI) for more options and details
+
+### Creating a new migration
+
+Run migrate:make with a relevant migration name:
+
+```shell
+knex migrate:make <migration_name>
+```
+
+Edit the created file and write your migration.
+
+You can see the other migration files for examples or refer to the [Knex.js documentation](http://knexjs.org/#Schema)
+
