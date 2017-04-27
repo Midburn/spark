@@ -36,7 +36,11 @@ SET PASSWORD = PASSWORD('xxxxxxxx');
 
 #### MySql configuration in Spark project
 
+The default configuration should get you started without additional configurations.
+
 If you are **not** using a simple local server configuration, edit your .env file and set the relevant settings to match your database (If you don't have an .env file, duplicate .env-example).
+
+.env file:
 
 ```
 SPARK_DB_CLIENT=mysql
@@ -46,6 +50,8 @@ SPARK_DB_USER=spark
 SPARK_DB_PASSWORD=spark
 SPARK_DB_DEBUG=false
 ```
+
+### Creating the database
 
 To create the Spark database and the user, run:
 
