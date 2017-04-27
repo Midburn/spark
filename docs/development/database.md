@@ -1,6 +1,8 @@
 # Spark database
 
-The Spark project uses [Knex.js](http://knexjs.org/) to manage database connection and migrations.
+The Spark project uses 
+* **MyQSL** ( https://dev.mysql.com/downloads/mysql/ ) as the default database engine.
+* **Knex.js** ( http://knexjs.org/ ) to manage database connection and migrations.
 
 ### Database configuration
 
@@ -36,11 +38,16 @@ Edit the created file and write your migration.
 
 You can see the other migration files for examples or refer to the [Knex.js documentation](http://knexjs.org/#Schema)
 
-### Using Mysql
+### Using MySql
 
-By default we use Sqlite for ease of use, but if you want to test the code with a real DB you should setup to use Mysql.
+By default we use MySql. Other database are currently not supported.
 
-##### Mysql installation
+#### MySql installation
+
+##### Windows
+Download MySQL Community Server from [MyQSL website](https://dev.mysql.com/downloads/mysql/). On the installation wizard, it is recommended to select custom install and include MySQL Server only. Choosing a full install will install tons of development tools that are not mandatory.
+
+##### Mac
 
 On Mac after installing, please add the following lines to your ~/.bash_profile
 ```shell
@@ -48,6 +55,7 @@ alias mysql=/usr/local/mysql/bin/mysql
 alias mysqladmin=/usr/local/mysql/bin/mysqladmin
 ```
 
+##### Overcoming root password problems
 Also, On first install, you might get mysql password expired or other root password related issues.
 
 To change mysql default password - run the following commands
@@ -60,9 +68,9 @@ Then run the following to set your password:
 SET PASSWORD = PASSWORD('xxxxxxxx');
 ```
 
-##### Mysql configuration in Spark project
+#### MySql configuration in Spark project
 
-Edit your .env file and set to use local mysql
+If you are **not** using a simple local server configuration, edit your .env file and set the relevant settings to match your database (If you don't have an .env file, duplicate .env-example).
 
 ```
 SPARK_DB_CLIENT=mysql
@@ -73,7 +81,13 @@ SPARK_DB_PASSWORD=spark
 SPARK_DB_DEBUG=false
 ```
 
-Create the Spark database and user:
+To create the Spark database and the user, run:
+
+```
+npm run-script createdb
+```
+
+or if you need to use different credentials, use a command similar to: 
 
 ```shell
 sudo mysql -u root < migrations/create_db.sql

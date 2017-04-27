@@ -7,6 +7,8 @@ This is a step-by-step guide to getting you up and running with Spark so you can
 * **NodeJS** ( https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
 * **GIT** ( https://git-scm.com/downloads )
 
+Download and install as described on the websites.
+
 ### Getting the source files
 
 * Fork the project on GitHub (this can be done in the GitHub web interface)
@@ -22,10 +24,10 @@ To be able to sync with Midburn repository you should add it as a remote:
 git remote add midburn https://github.com/Midburn/Spark.git
 ```
 
-### Installing Node
+### Installing NVM
 
 Optional - It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
-(If you are not planning to use nvm, just skip these commands).
+If you are not planning to use nvm or running Windows and having trouble setup things, just skip these section.
 
 We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
 
@@ -53,9 +55,7 @@ bower install
 
 ### Setting up the database
 
-Local development environment uses Sqlite do doesn't require any special DB setup.
-
-The database file is located (by default) at spark/dev.sqlite3
+Local development environment uses MySQL by default.
 
 We use Knex to run and manage the migrations.
 
