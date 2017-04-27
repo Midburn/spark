@@ -28,7 +28,7 @@ $('.card-switcher').click(function(e) {
     $('.card-forth').addClass('card-hide');
     $('.card-switcher').removeClass('Btn__default');
     $('.card-switcher').removeClass('Btn__transparent');
-    if ($(this).attr('href')){ //handle change URL bt click
+    if ($(this).attr('href')) { //handle change URL bt click
         let newUrl = $(this).attr('href');
         let state = newUrl.slice(newUrl.lastIndexOf('/') + 1);
         window.history.pushState(state, 'Title', newUrl);
