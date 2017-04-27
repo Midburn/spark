@@ -1,5 +1,7 @@
 # Codeship CI support
 
+**warning** Codeship is not used as part of the regular test / build / deploy process, we use Travis for that
+
 **warning** The free plan on Codeship is limited to 100 builds per month (along with other less important limitations)
 
 ## Using Codeship CI to run tests from your fork:
