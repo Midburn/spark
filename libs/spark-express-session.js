@@ -1,6 +1,6 @@
-const request = require('superagent');
 const _ = require('lodash');
 const jwtCrypto = require('./security-token');
+const passportLib = require('../libs/passport');
 
 const privateKey = `-----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCluCjsUovfGOA
@@ -37,41 +37,23 @@ function encryptAsMidburnSession(session, /*privateKey, */jwtExpiration) {
     return 'JWT.' + jwtCrypto.encrypt({exp, data: JSON.stringify(session)}, {privateKey});
 }
 
-const convertToMidburnSession = user => {
+const convertToSparkSession = user => {
     return {
-        uid        : _.get(user, 'uid', -1),
+        email      : _.get(user, 'email', ''),
         name       : _.get(user, 'name', ''),
-        email      : _.get(user, 'mail', ''),
-        roles      : _.get(user, 'roles', ''),
+        uid        : _.get(user, 'user_id', -1),
         created    : new Date(Date.now()),
         expiration : new Date(Date.now() + 60 * 1000)
     };
 };
 
-const loginToDrupal = (username, password) => {
+const login = (username, password) => {
     if (_.isEmpty(_.trim(username)) || _.isEmpty(_.trim(password))) return Promise.reject('Invalid Credentials');
 
-    return request.post('https://profile.midburn.org/api/user/login')
-                  .set('Content-Type', 'application/x-www-form-urlencoded')
-                  .set('Accept', 'application/json')
-                  .send({ username, password })
-                  .then(response => convertToMidburnSession(response.body.user));
+    return passportLib.login(username, password)
+                      .then(user => convertToSparkSession(user));
 };
 
 const SessionCookieName = 'midburn_session';
 
-module.exports = {loginToDrupal, encryptAsMidburnSession, SessionCookieName};
-
-// return new Promise((resolve, reject) => {
-//     drupal.login(username, password,
-//         userData => {
-//             console.log('User ' + userData.uid + ' has logged in.');
-//             // userObject = userData;
-//             resolve();
-//         },
-//         err => {
-//             console.log('login failed.' + err);
-//             reject()
-//         });
-//
-// })
+module.exports = {login, encryptAsMidburnSession, SessionCookieName};

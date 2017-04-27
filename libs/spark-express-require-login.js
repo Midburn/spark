@@ -1,10 +1,10 @@
 const assert = require('assert');
 const cookieParser = require('cookie-parser');
 const _ = require('lodash');
-const MidburnSessionCrypto = require('./midburn-session-crypto');
+const SparkSessionCrypto = require('./spark-session-crypto');
 const key = require('../tests/libs/session-test-support').validKey;
-const midburnSessionCrypto = new MidburnSessionCrypto(key);
-const SessionCookieName = require('./midburn-express-session').SessionCookieName;
+const sparkSessionCrypto = new SparkSessionCrypto(key);
+const SessionCookieName = require('./spark-express-session').SessionCookieName;
 //var csrf = require('csurf');
 //app.use(csrf());
 //res.cookie('sessionid', '1', { httpOnly: true });
@@ -32,10 +32,10 @@ const registerSessionReader = app => {
     app.use((req, res, next) => {
         if (!_.isUndefined(req.cookies[SessionCookieName])) {
             try {
-                req.midburnSession = midburnSessionCrypto.decrypt(req.cookies[SessionCookieName]);
+                req.sparkSession = sparkSessionCrypto.decrypt(req.cookies[SessionCookieName]);
             } catch (err) {
                 console.log('validation failed');
-                delete req.midburnSession;
+                delete req.sparkSession;
             }
         }
         next();

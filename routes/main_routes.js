@@ -132,21 +132,6 @@ module.exports = function (app, passport) {
             res.redirect('/');
         });
 
-    // =====================================
-    // JWT =================================
-    // =====================================
-    // JWT Login route
-    app.post("/jwt-login", function (req, res) {
-        passportLib.login(req.body.email, req.body.password, function(result, user, error) {
-            if (result && user) {
-                var token = passportLib.generateJwtToken(req.body.email);
-                res.json({message: "ok", token: token});
-            }
-            else {
-                res.status(401).json({message: error});
-            }
-        });
-    });
 
     // =====================================
     // SIGNUP ==============================

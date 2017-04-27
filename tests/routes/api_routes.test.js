@@ -7,18 +7,25 @@ app.use(cookieParser());
 const request = require('supertest')(app);
 const assert = require('assert');
 const sessionTestSupport = require('../libs/session-test-support');
-const SessionCookieName = require('../../libs/midburn-express-session').SessionCookieName;
-const TestValidCredentials = {username: 'xnowvvra@sharklasers.com', password: '123456'};
+const SessionCookieName = require('../../libs/spark-express-session').SessionCookieName;
+const TestValidCredentials = {username: 'a', password: 'a'};
+// const TestValidCredentials = {username: 'xnowvvra@sharklasers.com', password: '123456'};
 
 const sessionToken = () => {
     const token = sessionTestSupport.createSession();
     return `${SessionCookieName}=${token}`;
 };
 
-const UserLoginUrl = '/api/userlogin';
+const UserLoginUrl = '/jwt-login';
 
-describe('API routes', function() {
-    it('should reject with no token', () =>
+describe.only('API routes', function() {
+
+    before(() => {
+        console.log('before');
+        return request.get('/dev/create-admin')
+    });
+
+    it.only('should reject with no token', () =>
         request.post(UserLoginUrl)
                .expect(401));
 

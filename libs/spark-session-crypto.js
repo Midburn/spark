@@ -2,7 +2,7 @@ const jwtCrypto = require('./security-token');
 const assert = require('assert');
 const _ = require('lodash');
 
-class MidburnSessionCrypto {
+class SparkSessionCrypto {
     constructor(pubKey) {
         assert(pubKey, 'pubKey is mandatory');
         this.opts = {publicKey: this.normalizeKey(pubKey)};
@@ -61,4 +61,4 @@ class MidburnSessionCrypto {
     }
 }
 
-module.exports = MidburnSessionCrypto;
+module.exports = SparkSessionCrypto;

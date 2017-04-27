@@ -1,6 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var i18next = require('i18next');
+const i18next = require('i18next');
 var User = require('../models/user').User;
 var config = require('config');
 var facebookConfig = config.get('facebook');
@@ -29,36 +29,22 @@ const drupal_login_request = (email, password) =>
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .then(({ body }) => body, () => null);
 
-var login = function (email, password, done) {
+const login = function (email, password) {
     if (!email || !password || email.length === 0 || password.length === 0) {
         console.log('User', email, 'failed to authenticate.');
-        done(false, null, i18next.t('invalid_user_password', {
-            email: email
-        }));
+        return Promise.reject(i18next.t('invalid_user_password', { email: email }));
     }
 
     // Loading user from DB.
-    User.forge({email: email}).fetch().then(function (user) {
-        if (user) {
-            // User found in DB, now checking everything:
-            if (!user.attributes.enabled) {
-                done(false, user, i18next.t('user_disabled'));
-            }
-            else if (!user.attributes.validated) {
-                done(false, user, i18next.t('user_not_validated'))
-            }
-            else if (!user.attributes.password || !user.validPassword(password)) {
-                done(false, user, i18next.t('invalid_user_password'));
-            }
-            else {
-                // Everything is OK, we're done.
-                done(true, user);
-            }
-        }
-        else {
-            done(false, null, i18next.t('invalid_user_password'));
-        }
-    })
+    return User.forge({email: email})
+               .fetch()
+               .then(user => {
+                   if (!user) return Promise.reject(i18next.t('invalid_user_password'));
+                   if (!user.attributes.enabled) return Promise.reject(i18next.t('user_disabled'));
+                   if (!user.attributes.validated) return Promise.reject(i18next.t('user_not_validated'));
+                   if (!user.attributes.password || !user.validPassword(password)) return Promise.reject(i18next.t('invalid_user_password'));
+                   return Promise.resolve(user);
+               });
 };
 
 var drupal_login = function (email, password, done) {

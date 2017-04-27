@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const MidburnSessionCrypto = require('../../libs/midburn-session-crypto');
+const MidburnSessionCrypto = require('../../libs/spark-session-crypto');
 const sessionTestSupport = require('./session-test-support');
 
 describe('midburn session crypto', () => {
