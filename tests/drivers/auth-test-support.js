@@ -7,6 +7,7 @@ const chance = new Chance();
 const SessionCookieName = 'spark_session';
 const UserLoginUrl = '/jwt-login';
 const TestValidCredentials = {username: 'a', password: 'a'};
+const TestInvalidCredentials = {username: chance.word(), password: chance.word()};
 
 const withSessionCookie = sessionToken => [`${SessionCookieName}=${sessionToken}`];
 
@@ -19,4 +20,4 @@ const generateSessionCookie = () => {
     return withSessionCookie(jwt.encode(session, apiTokensConfig.token));
 };
 
-module.exports = {SessionCookieName, TestValidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie};
+module.exports = {SessionCookieName, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie};
