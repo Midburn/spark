@@ -2,18 +2,11 @@
 const should = require('chai').should(); // eslint-disable-line no-unused-vars
 const Cookies = require('expect-cookies');
 const app = require('../../app');
-const cookieParser = require('cookie-parser');
-app.use(cookieParser());
 const request = require('supertest')(app);
 const assert = require('assert');
-const SessionCookieName = 'spark_session';
-const TestValidCredentials = {username: 'a', password: 'a'};
-// const TestValidCredentials = {username: 'xnowvvra@sharklasers.com', password: '123456'};
+const {SessionCookieName, TestValidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie} = require('../drivers/auth-test-support');
 
-
-const UserLoginUrl = '/jwt-login';
-
-describe.only('API routes', function() {
+describe('API routes', function() {
 
     before(() => request.get('/dev/create-admin'));
 
@@ -35,16 +28,20 @@ describe.only('API routes', function() {
                .expect(200)
                .expect(Cookies.new({'name': SessionCookieName, 'options': ['path', 'httponly', 'max-age']})));
 
-    it.only('should return 200OK if encountered valid token', () =>
+    it('should be not redirect to login in case token exists', () =>
+        request.post(UserLoginUrl)
+               .set('Cookie', generateSessionCookie())
+               .expect(200));
+
+    it('should return 200OK if encountered valid token', () =>
         request.post(UserLoginUrl)
               .send(TestValidCredentials)
               .then(res => {
-                  console.log('ddddddddd');
-                  console.log(res.headers['set-cookie']);
-                  const sessionToken = res.headers['set-cookie'][0].split(';')[0].split('=')[1]
-                  console.log(sessionToken);
+                  if (res.status !== 200) assert.fail(res.status, 200, "login failed");
+                  const sessionToken = res.headers['set-cookie'][0].split(';')[0].split('=')[1];
+                  console.log(`login with token [${sessionToken}]`);
                   return request.post(UserLoginUrl)
-                                .set('cookie', `${SessionCookieName}=${sessionToken}`)
+                                .set('Cookie', withSessionCookie(sessionToken))
                                 .expect(200);
               }));
 });

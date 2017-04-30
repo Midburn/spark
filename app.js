@@ -12,8 +12,7 @@ var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass');
 var recaptchaConfig = require('config').get('recaptcha');
-const auth = require('./libs/auth')();
-const unless = require('express-unless');
+const authExpress = require('./libs/auth-express');
 
 // var KnexSessionStore = require('connect-session-knex')(session);
 // var knex = require('./libs/db').knex;
@@ -23,13 +22,6 @@ log.info('Spark is starting...');
 // Creating Express application
 const app = express();
 
-const initAuth = auth.initialize();
-initAuth.unless = unless;
-app.use(initAuth.unless(req => {
-    if (req.path.startsWith('/dev/')) console.log('bypassing auth');
-    return !req.path.startsWith('/dev/');
-}));
-// app.use(ejwt({secret: secret, userProperty: 'tokenPayload'}).unless({path: ['/login']}));
 
 // FavIcon registration
 app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
@@ -52,6 +44,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(fileUpload());
+
+const auth = authExpress(app);
 
 var root = process.cwd();
 app.use(compileSass({

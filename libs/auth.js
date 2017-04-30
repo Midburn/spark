@@ -12,11 +12,9 @@ const apiTokensConfig = config.get('api_tokens');
 const SessionCookieName = 'spark_session';
 
 const cookieExtractor = req => {
-    console.log('cookieExtractor');
-    if (!_.isUndefined(req.cookies[SessionCookieName])) {
+    if (!_.isUndefined(req.cookies && req.cookies[SessionCookieName])) {
         return req.cookies[SessionCookieName];
     }
-    console.log('found nothing');
     return null;
 };
 
@@ -36,8 +34,6 @@ const convertToSparkSession = user => {
 
 module.exports = () => {
     const strategy = new Strategy(params, (req, payload, done) => {
-        console.log('xxxxxxxxxx');
-        console.log(payload);
         req.sparkSession = payload;
         return done(null, payload);
     });
@@ -49,6 +45,7 @@ module.exports = () => {
             return users.login(username, password)
                         .then(user => convertToSparkSession(user))
                         .then(session => jwt.encode(session, apiTokensConfig.token))
-        }
+        },
+        SessionCookieName: SessionCookieName
     };
 };
