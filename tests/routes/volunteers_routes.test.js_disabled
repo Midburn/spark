@@ -3,6 +3,7 @@ const should = require('chai').should();
 const request = require('supertest')(app);
 const nock = require('nock');
 const profilesApi = require('config').get('profiles_api');
+const {generateSessionCookie} = require('../drivers/auth-test-support');
 
 const testUser1 = {
     id: 1,
@@ -56,6 +57,7 @@ describe('Getters all respond', function() {
     it('returns roles', function getRoles(done) {
         request
             .get('/volunteers/roles/')
+            .set('Cookie', [generateSessionCookie()])
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -79,6 +81,7 @@ describe('Getters all respond', function() {
     it('returns departments', function getDeprtments(done) {
         request
             .get('/volunteers/departments/')
+            .set('Cookie', [generateSessionCookie()])
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -106,6 +109,7 @@ describe('Getters all respond', function() {
     it('returns all volunteers with expected structure', function(done) {
         request
             .get('/volunteers/volunteers')
+            .set('Cookie', [generateSessionCookie()])
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -137,6 +141,7 @@ describe('Getters all respond', function() {
     it('returns volunteers of department 1', function(done) {
         request
             .get('/volunteers/departments/1/volunteers')
+            .set('Cookie', [generateSessionCookie()])
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -179,6 +184,7 @@ describe('Adding volunteers', function() {
         setupDrupalMock(1);
         request
             .post(`/volunteers/departments/${departmentId}/volunteers/`)
+            .set('Cookie', [generateSessionCookie()])
             .type('application/json')
             .accept('application/json')
             .send(JSON.stringify(
@@ -204,6 +210,7 @@ describe('Adding volunteers', function() {
 
         request
             .post(`/volunteers/departments/${departmentId}/volunteers/`)
+            .set('Cookie', [generateSessionCookie()])
             .type('application/json')
             .accept('application/json')
             .send( //JSON.stringify(
@@ -222,7 +229,8 @@ describe('Adding volunteers', function() {
 
         setupDrupalMock(1);
         request
-            .get(`/volunteers/departments/${departmentId}/volunteers`) //TODO change back to dep 3 
+            .get(`/volunteers/departments/${departmentId}/volunteers`) //TODO change back to dep 3
+            .set('Cookie', [generateSessionCookie()])
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -247,7 +255,7 @@ describe('Adding volunteers', function() {
     //extra fields are rejected
     //missing fields are ignored or rejected
     //length and type limits on mail and numbers
-    //wrong format 
+    //wrong format
 });
 
 
@@ -258,7 +266,7 @@ describe.skip('Volunteers editing', function() {
     //extra fields are rejected
     //missing fields are ignored or rejected
     //length and type limits on mail and numbers
-    //wrong format 
+    //wrong format
 });
 
 
