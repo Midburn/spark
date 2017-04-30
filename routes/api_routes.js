@@ -6,7 +6,7 @@ module.exports = (app, auth) => {
      * params => username, password
      * usage sample => curl --data "username=Profile_Username&password=Profile_Password&token=Secret_Token" http://localhost:3000/api/userlogin
      */
-    app.post('/jwt-login', (req, res) => {
+    app.post(['/jwt-login', '/:lng/login'], (req, res) => {
         console.log('/jwt-login');
         if (_.has(req, 'sparkSession')) {
             res.sendStatus(200);

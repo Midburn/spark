@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var morganLogger = require('morgan');
 var bodyParser = require('body-parser');
 // var passport = require('passport');
-// var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
@@ -14,6 +13,7 @@ var compileSass = require('express-compile-sass');
 var recaptchaConfig = require('config').get('recaptcha');
 const authExpress = require('./libs/auth-express');
 
+// var session = require('express-session');
 // var KnexSessionStore = require('connect-session-knex')(session);
 // var knex = require('./libs/db').knex;
 
@@ -21,7 +21,6 @@ log.info('Spark is starting...');
 
 // Creating Express application
 const app = express();
-
 
 // FavIcon registration
 app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
@@ -246,6 +245,10 @@ else {
 
 // Handler for unhandled rejections
 process.on('unhandledRejection', function(reason, p) {
+    log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+});
+
+process.on('uncaughtException', (reason, p) => {
     log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
