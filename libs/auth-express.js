@@ -11,7 +11,6 @@ const shouldProtectApi = req => {
     return devApi(req.path) || (loginUrl(req.path) && !containLoginToken(req));
 };
 
-
 module.exports = app => {
     app.use(auth.initialize());
 
