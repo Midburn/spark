@@ -10,7 +10,7 @@ var Camp = require('../models/camp').Camp;
 
 var datatableAdmin = require('../libs/admin').datatableAdmin;
 var adminRender = require('../libs/admin').adminRender;
-var sign_up = require('../libs/passport').sign_up;
+var sign_up = require('../libs/users').sign_up;
 
 router.get('/', userRole.isAdmin(), function (req, res) {
     adminRender(req, res, 'admin/home.jade', {

@@ -3,8 +3,8 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var morganLogger = require('morgan');
 var bodyParser = require('body-parser');
-var passport = require('passport');
-var session = require('express-session');
+// var passport = require('passport');
+// var session = require('express-session');
 var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var fileUpload = require('express-fileupload');
@@ -12,13 +12,24 @@ var log = require('./libs/logger')(module);
 var recaptcha = require('express-recaptcha');
 var compileSass = require('express-compile-sass');
 var recaptchaConfig = require('config').get('recaptcha');
-var KnexSessionStore = require('connect-session-knex')(session);
-var knex = require('./libs/db').knex;
+const auth = require('./libs/auth')();
+const unless = require('express-unless');
+
+// var KnexSessionStore = require('connect-session-knex')(session);
+// var knex = require('./libs/db').knex;
 
 log.info('Spark is starting...');
 
 // Creating Express application
-var app = express();
+const app = express();
+
+const initAuth = auth.initialize();
+initAuth.unless = unless;
+app.use(initAuth.unless(req => {
+    if (req.path.startsWith('/dev/')) console.log('bypassing auth');
+    return !req.path.startsWith('/dev/');
+}));
+// app.use(ejwt({secret: secret, userProperty: 'tokenPayload'}).unless({path: ['/login']}));
 
 // FavIcon registration
 app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
@@ -61,22 +72,22 @@ app.use(function(req, res, next) {
     next();
 });
 
-// Passport setup
-require('./libs/passport')(passport);
-
-// using session storage in DB - allows multiple server instances + cross session support between node js apps
-var sessionStore = new KnexSessionStore({
-    knex: knex
-});
-app.use(session({
-    secret: 'SparklePoniesAreFlyingOnEsplanade', //TODO check - should we put this on conifg / dotenv files?
-    resave: false,
-    saveUninitialized: false,
-    maxAge: 1000 * 60 * 30,
-    store: sessionStore
-}));
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+// // Passport setup
+// require('./libs/passport')(passport);
+//
+// // using session storage in DB - allows multiple server instances + cross session support between node js apps
+// var sessionStore = new KnexSessionStore({
+//     knex: knex
+// });
+// app.use(session({
+//     secret: 'SparklePoniesAreFlyingOnEsplanade', //TODO check - should we put this on conifg / dotenv files?
+//     resave: false,
+//     saveUninitialized: false,
+//     maxAge: 1000 * 60 * 30,
+//     store: sessionStore
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session()); // persistent login sessions
 
 app.use(flash()); // use connect-flash for flash messages stored in session
 
@@ -149,7 +160,7 @@ if (app.get('env') === 'development') {
     app.use('/dev', require('./routes/dev_routes'));
     require('./routes/fake_drupal')(app);
 }
-require('./routes/main_routes.js')(app, passport);
+require('./routes/main_routes.js')(app);
 
 app.use('/:lng?/admin', require('./routes/admin_routes'));
 
@@ -163,24 +174,23 @@ var mail = require('./libs/mail');
 mail.setup(app);
 
 // API
-require('./routes/api_routes')(app, passport);
+require('./routes/api_routes')(app, auth);
 
 // Camps / API
 // TODO this is not the right way to register routes
-require('./routes/api_routes.js')(app, passport);
-require('./routes/api_camps_routes')(app, passport);
-require('./routes/camps_routes')(app, passport);
+require('./routes/api_camps_routes')(app);
+require('./routes/camps_routes')(app);
 require('./routes/api/v1/camps')(app); // CAMPS PUBLIC API
-require('./routes/api_camps_routes')(app, passport);
+require('./routes/api_camps_routes')(app);
 
 // Camps
-require('./routes/camps_routes')(app, passport);
+require('./routes/camps_routes')(app);
 
 //TODO this is not the right way to register routes
 var ticket_routes = require('./routes/ticket_routes');
 app.use('/:lng/tickets/', ticket_routes);
 
-require('./routes/volunteers_routes')(app, passport);
+require('./routes/volunteers_routes')(app);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);

@@ -11,12 +11,14 @@ var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
 var User = require('../models/user').User;
 var userRole = require('../libs/user_role');
-var passportLib = require('../libs/passport');
+// var passportLib = require('../libs/spark-security');
 
 var async = require('async');
 var crypto = require('crypto');
 
-module.exports = function (app, passport) {
+
+
+module.exports = function (app) {
     // Breadcrumbs
     app.use(breadcrumbs.init());
 
@@ -65,74 +67,76 @@ module.exports = function (app, passport) {
             });
         }
 
-        passport.authenticate('local-login', {
-            failureFlash: true
-        }, function (err, user, info) {
-            if (err) {
-                return res.render('pages/login', {
-                    errorMessage: err.message
-                });
-            }
+        throw new Error('todo !!');
 
-            if (!user) {
-                return res.render('pages/login', {
-                    errorMessage: req.flash('error')
-                });
-            }
-            return req.logIn(user, function (err) {
-                if (err) {
-                    return res.render('pages/login', {
-                        errorMessage: req.flash('error')
-                    });
-                } else {
-                    res.header('token', passportLib.generateJwtToken(req.body.email));
-                    var r = req.body['r'];
-                    if (r) {
-                        return res.redirect(r);
-                    } else {
-                        return res.redirect('home');
-                    }
-                }
-            });
-        })(req, res, next);
+        // passport.authenticate('local-login', {
+        //     failureFlash: true
+        // }, function (err, user, info) {
+        //     if (err) {
+        //         return res.render('pages/login', {
+        //             errorMessage: err.message
+        //         });
+        //     }
+        //
+        //     if (!user) {
+        //         return res.render('pages/login', {
+        //             errorMessage: req.flash('error')
+        //         });
+        //     }
+        //     return req.logIn(user, function (err) {
+        //         if (err) {
+        //             return res.render('pages/login', {
+        //                 errorMessage: req.flash('error')
+        //             });
+        //         } else {
+        //             res.header('token', passportLib.generateJwtToken(req.body.email));
+        //             var r = req.body['r'];
+        //             if (r) {
+        //                 return res.redirect(r);
+        //             } else {
+        //                 return res.redirect('home');
+        //             }
+        //         }
+        //     });
+        // })(req, res, next);
     };
 
-    // process the login form
-    app.post('/:lng/login', loginPost);
-
-    // show the login form
-    app.get('/:lng/login', function (req, res) {
-        var r = req.query.r;
-        res.render('pages/login', {
-            errorMessage: req.flash('error'),
-            r: r
-        });
-    });
-
-    // =====================================
-    // OAuth ===============================
-    // =====================================
-    app.get('/auth/facebook',
-        passport.authenticate('facebook', {
-            scope: ['email']
-        }));
-
-    app.get('/auth/facebook/reauth',
-        passport.authenticate('facebook', {
-            authType: 'rerequest',
-            scope: ['email']
-        }));
-
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {
-            failureRedirect: '/'
-        }),
-        function (req, res, c) {
-            // Successful authentication, redirect home.
-            res.redirect('/');
-        });
-
-
+    // // process the login form
+    // app.post('/:lng/login', loginPost);
+    //
+    // // show the login form
+    // app.get('/:lng/login', function (req, res) {
+    //     var r = req.query.r;
+    //     res.render('pages/login', {
+    //         errorMessage: req.flash('error'),
+    //         r: r
+    //     });
+    // });
+    //
+    // // =====================================
+    // // OAuth ===============================
+    // // =====================================
+    // app.get('/auth/facebook',
+    //     passport.authenticate('facebook', {
+    //         scope: ['email']
+    //     }));
+    //
+    // app.get('/auth/facebook/reauth',
+    //     passport.authenticate('facebook', {
+    //         authType: 'rerequest',
+    //         scope: ['email']
+    //     }));
+    //
+    // app.get('/auth/facebook/callback',
+    //     passport.authenticate('facebook', {
+    //         failureRedirect: '/'
+    //     }),
+    //     function (req, res, c) {
+    //         // Successful authentication, redirect home.
+    //         res.redirect('/');
+    //     });
+    //
+    //
     // =====================================
     // SIGNUP ==============================
     // =====================================
