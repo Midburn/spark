@@ -11,8 +11,8 @@
         "postinstall": "bower install",
         "start": "node server.js",
         "pretest": "npm run lint",
-        "test": "cross-env npm run testcore",
-        "testcore": "rimraf test.sqlite3 && mocha \"tests/**/*test.js\" ",
+        "test": "npm run testcore",
+        "testcore": "npm run create_test_db  && cross-env SPARK_DB_DBNAME=spark_test mocha \"tests/**/*test.js\" ",
         "//devops": "Generic deployment / devops commands, used from .travis.yml, see /docs/development/releases-and-deployment.md",
         "//log": "send a generic log notification to slack",
         "log": "curl -X POST -g $npm_config_webhook --data-urlencode 'payload={\"channel\": \"'\"#${npm_config_channel:-sparksystem-log}\"'\", \"username\": \"'\"${npm_config_username:-bot}\"'\", \"text\": \"'\"${npm_config_text}\"'\", \"icon_emoji\": \"'\"${npm_config_emoji:-ghost}\"'\"}'",
@@ -27,7 +27,8 @@
         "//lint": "runs static analysis using eslint",
         "lint": "./node_modules/.bin/eslint .",
         "//createdb": "bootstraps MySql with a clean spark database & user",
-        "createdb": "mysql -u root < migrations/create_db.sql"
+        "createdb": "mysql -u root < migrations/create_db.sql",
+        "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest"
     },
     "dependencies": {
         "async": "^2.1.4",
