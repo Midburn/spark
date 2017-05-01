@@ -169,7 +169,7 @@ module.exports = function (app, passport) {
         });
     });
     // camps admin management panel
-    app.get('/:lng/camps-admin', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-./node_modules/.bin/knex migrate:latest
+echo In codeship/test.sh
+
+#./node_modules/.bin/knex migrate:latest
 npm test

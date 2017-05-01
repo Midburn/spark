@@ -43,8 +43,8 @@ module.exports = {
                 }).save().then(function (model) {
                     res.redirect(URL);
                 });
-            }, function() {
-                log.error('iCredit ERROR');
+            }, function(err) {
+                log.error('iCredit ERROR', err);
             });
     }
 };

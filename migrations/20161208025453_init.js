@@ -21,7 +21,7 @@ exports.up = function (knex, Promise) {
             table.string('reset_password_token', 32).unique();
             table.timestamp('reset_password_expires');
             table.string('email_validation_token', 32).unique();
-            table.timestamp('email_validation_expires');
+            table.timestamp('email_validation_expires').nullable();
             table.boolean('enabled').defaultTo(true);
             table.boolean('validated').defaultTo(false);
             table.string('roles', 200).defaultTo('');
@@ -33,7 +33,7 @@ exports.up = function (knex, Promise) {
             table.date('date_of_birth');
             table.string('israeli_id', 9);
             table.string('address', 100);
-            table.string('cell_phone', 10);
+            table.string('cell_phone', 16);
             table.string('extra_phone', 10);
             table.boolean('npo_member').defaultTo(false);
             table.string('facebook_id', 50);
@@ -43,7 +43,7 @@ exports.up = function (knex, Promise) {
               * User Current Status - Defines the current status of profile
               */
             table.string('current_event_id', 15);
-            table.timestamp('current_last_status');
+            table.timestamp('current_last_status').nullable();
             table.enu('current_status', constants.USER_CURRENT_STATUS);
             table.integer('current_event_id_ticket_count').unsigned();
 
@@ -67,7 +67,7 @@ exports.up = function (knex, Promise) {
             table.timestamps();
             table.integer('user_id').unsigned().primary();
             table.enu('membership_status', constants.NPO_MEMBERSHIP_STATUSES).defaultTo(constants.NPO_MEMBERSHIP_STATUSES_DEFAULT);
-            table.timestamp('application_date');
+            table.timestamp('application_date').nullable();
             table.date('membership_start_date');
             table.date('membership_end_date');
             table.text('form_previous_p', 'LONGTEXT');
@@ -77,4 +77,12 @@ exports.up = function (knex, Promise) {
     ]);
 };
 
-exports.down = function (knex, Promise) { };
+exports.down = function (knex, Promise) {
+    return Promise.all([
+        // Tickets table
+        knex.schema.dropTable(constants.NPO_MEMBERS_TABLE_NAME),
+        knex.schema.dropTable(constants.PAYMENTS_TABLE_NAME),
+        knex.schema.dropTable(constants.EVENTS_TABLE_NAME),
+        knex.schema.dropTable(constants.USERS_TABLE_NAME)
+    ])
+};

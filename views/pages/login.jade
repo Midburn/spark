@@ -15,7 +15,7 @@ block wrapper
                     if (successMessageResource && successMessageResource.length > 0)
                         .alert.alert-success
                             p=t(successMessageResource)
-                    
+
                 .well
                     .col-xs-6
                         .midburn_logo
@@ -40,21 +40,27 @@ block wrapper
                                 label(for="remember")=t('remember_me')
                         .center-block
                             button.btn.btn-info.btn-block(type="submit")=t('login')
-                            //- ## we are using dropal login / signup. old spark links are comment out for future use ##
+                            //- ## TODO we are using dropal login / signup. old spark links are comment out for future use ##
                             //- a.btn.btn-info.btn-block.fb-login(href="/auth/facebook")
                             //-     span.fa.fa-facebook-square(aria-hidden="true")
                             //-     span=t('facebook.login')
                     hr
                     .center-block
                         div
-                            //- ## we are using dropal login / signup. old spark links are comment out for future use ##
+                            //- ## TODO we are using dropal login / signup. old spark links are comment out for future use ##
                             //- a(href="/#{language}/reset_password")=t('forgot_password_question')
                             a(id='reset-password-link',href="https://profile.midburn.org/#{language}/user/password")=t('forgot_password_question')
                         div
                             span=t('need_account')
-                            //- ## we are using dropal login / signup. old spark links are comment out for future use ##
+                            //- ## TODO we are using dropal login / signup. old spark links are comment out for future use ##
                             //- a(href="signup")=t('sign_up')
                             a(href="https://profile.midburn.org/#{language}/user/register")=t('sign_up')
+                        if process.env.NODE_ENV != 'production'
+                            div(style="direction:ltr;")
+                                h4(style="color:red;") Development system
+                                p package.json version: #{process.env.version}
+                                p
+                                    a(href="/dev" style="text-decoration:underline;") Development Console
                         hr
                         .langs-wrapper
                             p

@@ -10,8 +10,17 @@ var closeCards = (currentButton) => {
     $('.card').addClass('card-hide');
 }
 
+/**
+ * handle sub url for admin panel
+ */
+let initCardSelect = () => {
+    let currPath = window.location.pathname;
+    $('a[href="'+currPath+'"]').trigger("click");
+}
+
 // Camp details card transition
-$('.card-switcher').click(function() {
+$('.card-switcher').click(function(e) {
+    e.preventDefault();
     // hide all cards
     $('.card-first').addClass('card-hide');
     $('.card-second').addClass('card-hide');
@@ -19,6 +28,12 @@ $('.card-switcher').click(function() {
     $('.card-forth').addClass('card-hide');
     $('.card-switcher').removeClass('Btn__default');
     $('.card-switcher').removeClass('Btn__transparent');
+    if ($(this).attr('href')) { //handle change URL bt click
+        let newUrl = $(this).attr('href');
+        let state = newUrl.slice(newUrl.lastIndexOf('/') + 1);
+        window.history.pushState(state, 'Title', newUrl);
+    }
+    
     // find clicked card and show it
     switch ($(this).attr('id')) {
             // show card 1
@@ -78,4 +93,5 @@ $('.card--close').click(function() {
 // Auto-Open current card
 $(document).ready(function() {
     innerHeightChange();
+    initCardSelect();
 });
