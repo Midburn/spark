@@ -24,5 +24,6 @@ const generateSessionCookie = () => withSessionCookie(jwt.encode(randomSession()
 const generateSessionHeader = () => withSessionHeader(jwt.encode(randomSession(), apiTokensConfig.token));
 
 const InvalidTokenCookie = withSessionCookie(jwt.encode(randomSession(), chance.word()));
+const ExpiredTokenCookie = withSessionCookie(jwt.encode(randomSession() + {exp: new Date(Date.now() - 24*60*60*1000)}, chance.word()));
 
-module.exports = {SessionCookieName, InvalidTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie, generateSessionHeader};
+module.exports = {SessionCookieName, InvalidTokenCookie, ExpiredTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, ExpiredTokenCookie, withSessionCookie, generateSessionCookie, generateSessionHeader};

@@ -4,7 +4,8 @@ const Cookies = require('expect-cookies');
 const app = require('../../app');
 const request = require('supertest')(app);
 const assert = require('assert');
-const {SessionCookieName, InvalidTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie, generateSessionHeader} = require('../drivers/auth-test-support');
+const {SessionCookieName, InvalidTokenCookie, ExpiredTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie, generateSessionHeader} = require('../drivers/auth-test-support');
+
 
 describe('API routes', function() {
 
@@ -22,6 +23,11 @@ describe('API routes', function() {
     it('should reject with invalid token', () =>
         request.post(UserLoginUrl)
                .set('Cookie', InvalidTokenCookie)
+               .expect(401));
+
+    it('should reject with expired token', () =>
+        request.post(UserLoginUrl)
+               .set('Cookie', ExpiredTokenCookie)
                .expect(401));
 
     it('should reject with valid auth header', () =>

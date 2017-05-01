@@ -11,6 +11,7 @@ const apiTokensConfig = config.get('api_tokens');
 
 const SessionCookieName = 'spark_session';
 const Algorithm = 'HS256';
+const TwentyFourHours = 24*60*60*1000;
 
 const cookieExtractor = req => {
     if (!_.isUndefined(req.cookies && req.cookies[SessionCookieName])) {
@@ -29,9 +30,9 @@ const convertToSparkSession = user => {
     return {
         email:  _.get(user, 'attributes.email', '') || '',
         name:   _.get(user, 'attributes.name', '') || '',
-        uid:    _.get(user, 'attributes.user_id', -1)/*,
-        exp:    new Date(Date.now() + 24*60*60*1000),
-        iat:    Date.now()*/
+        uid:    _.get(user, 'attributes.user_id', -1),
+        exp:    Date.now() + TwentyFourHours,
+        iat:    Date.now()
     };
 };
 
