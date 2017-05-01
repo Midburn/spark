@@ -1433,7 +1433,7 @@ express-fileupload@0.0.5:
 
 express-jwt@^5.3.0:
   version "5.3.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/express-jwt/-/express-jwt-5.3.0.tgz#3d90cd65802e6336252f19e6a3df3e149e0c5ea0"
+  resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-5.3.0.tgz#3d90cd65802e6336252f19e6a3df3e149e0c5ea0"
   dependencies:
     async "^1.5.0"
     express-unless "^0.3.0"
@@ -1466,7 +1466,7 @@ express-session@^1.14.0:
 
 express-unless@^0.3.0:
   version "0.3.0"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/express-unless/-/express-unless-0.3.0.tgz#5c795e7392571512dd28f520b3857a52b21261a2"
+  resolved "https://registry.yarnpkg.com/express-unless/-/express-unless-0.3.0.tgz#5c795e7392571512dd28f520b3857a52b21261a2"
 
 express@~4.13.4:
   version "4.13.4"
@@ -2378,7 +2378,7 @@ jws@^3.1.4:
 
 jwt-simple@^0.5.1:
   version "0.5.1"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/jwt-simple/-/jwt-simple-0.5.1.tgz#79ea01891b61de6b68e13e67c0b4b5bda937b294"
+  resolved "https://registry.yarnpkg.com/jwt-simple/-/jwt-simple-0.5.1.tgz#79ea01891b61de6b68e13e67c0b4b5bda937b294"
 
 keygrip@~1.0.0:
   version "1.0.1"
@@ -2526,7 +2526,7 @@ lodash.pickby@^4.6.0:
 
 lodash.set@^4.0.0:
   version "4.3.2"
-  resolved "https://repo.dev.wixpress.com/artifactory/api/npm/npm-repos/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
+  resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
 
 lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.0, lodash@~4.17.2:
   version "4.17.4"
