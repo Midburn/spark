@@ -1,10 +1,11 @@
 // This is magically used in code such as user.attributes.password.length.should.be.above(20);
-const should = require('chai').should(); // eslint-disable-line no-unused-vars
+const {should, expect} = require('chai'); // eslint-disable-line no-unused-vars
 const Cookies = require('expect-cookies');
 const app = require('../../app');
 const request = require('supertest')(app);
 const assert = require('assert');
-const {SessionCookieName, InvalidTokenCookie, ExpiredTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie, generateSessionHeader} = require('../drivers/auth-test-support');
+const {InvalidTokenCookie, ExpiredTokenCookie, RenewableTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie, generateSessionHeader} = require('../drivers/auth-test-support');
+const {SessionCookieName} = require('../../libs/auth')();
 
 
 describe('API routes', function() {
@@ -29,6 +30,17 @@ describe('API routes', function() {
         request.post(UserLoginUrl)
                .set('Cookie', ExpiredTokenCookie)
                .expect(401));
+
+    it('should automatically renew token is expired within a specific time range', () =>
+        request.post(UserLoginUrl)
+               .set('Cookie', RenewableTokenCookie)
+               .expect(200)
+               .then(res => {
+                   const sessionCookie = res.headers['set-cookie'][0];
+                   expect(sessionCookie).to.match(/^spark_session=/);
+                   const cookieProperties = sessionCookie.split(';').map(entry => entry.split('=')[0].trimLeft().toLowerCase());
+                   expect(cookieProperties).to.include.members(['path', 'httponly', 'max-age']);
+               }) );
 
     it('should reject with valid auth header', () =>
         request.post(UserLoginUrl)

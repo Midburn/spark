@@ -9,6 +9,17 @@ const containLoginToken = req => (req.cookies && req.cookies[auth.SessionCookieN
 
 const shouldProtectApi = req => staticContent(req.path) || devApi(req.path) || (loginUrl(req.path) && !containLoginToken(req));
 
+const sessionRenewalMiddleware = (req, res, next) => {
+    if (req.sparkSessionRenew) {
+        const sparkSession = req.sparkSession;
+        sparkSession.exp = Date.now() + auth.TokenTTL;
+        const token = auth.sign(sparkSession);
+        res.cookie(auth.SessionCookieName, token, {maxAge: 60 * 60 * 1000, httpOnly: true});
+        delete req.sparkSessionRenew;
+    }
+    next();
+};
+
 module.exports = app => {
     app.use(auth.initialize());
 
@@ -16,6 +27,7 @@ module.exports = app => {
     authenticate.unless = unless;
 
     app.use(authenticate.unless(req => shouldProtectApi(req)));
+    app.use(sessionRenewalMiddleware);
 
     return auth;
 };
