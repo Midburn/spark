@@ -1,7 +1,7 @@
-const config = require('config');
-const Chance = require('chance');
 const jwt = require('jwt-simple');
+const config = require('config');
 const apiTokensConfig = config.get('api_tokens');
+const Chance = require('chance');
 const chance = new Chance();
 
 const SessionCookieName = 'spark_session';
@@ -20,4 +20,6 @@ const generateSessionCookie = () => {
     return withSessionCookie(jwt.encode(session, apiTokensConfig.token));
 };
 
-module.exports = {SessionCookieName, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie};
+const InvalidTokenCookie = withSessionCookie(jwt.encode(session, 'someotherpassword'));
+
+module.exports = {SessionCookieName, InvalidTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie};
