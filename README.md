@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/Midburn/Spark.svg?branch=master)](https://travis-ci.org/Midburn/Spark)
 [![Code Climate](https://codeclimate.com/github/Midburn/Spark/badges/gpa.svg)](https://codeclimate.com/github/Midburn/Spark)
+[![Known Vulnerabilities](https://snyk.io/test/github/Midburn/Spark/badge.svg)](https://snyk.io/test/github/Midburn/Spark)
 
 # Spark by Midburn
 
