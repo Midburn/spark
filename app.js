@@ -194,7 +194,7 @@ log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', a
 // Error handlers
 // ==============
 app.use(function (err, req, res, next) {
-    console.error(err.stack)
+    console.error(err.stack);
     res.status(500).send('Something broke!')
 });
 
@@ -254,9 +254,9 @@ process.on('unhandledRejection', function(reason, p) {
     log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
-process.on('uncaughtException', (reason, p) => {
-    log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
-});
+// process.on('uncaughtException', (reason, p) => {
+//     log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+// });
 
 process.on('warning', function(warning) {
     log.warn(warning.name); // Print the warning name

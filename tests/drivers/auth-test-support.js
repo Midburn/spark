@@ -10,16 +10,19 @@ const TestValidCredentials = {username: 'a', password: 'a'};
 const TestInvalidCredentials = {username: chance.word(), password: chance.word()};
 
 const withSessionCookie = sessionToken => [`${SessionCookieName}=${sessionToken}`];
+const withSessionHeader = sessionToken => [`JWT ${sessionToken}`];
 
-const generateSessionCookie = () => {
-    const session = {
+const randomSession = () => {
+    return {
         email: chance.email(),
         name: chance.word(),
         uid: chance.natural()
-    };
-    return withSessionCookie(jwt.encode(session, apiTokensConfig.token));
+    }
 };
 
-const InvalidTokenCookie = withSessionCookie(jwt.encode(session, 'someotherpassword'));
+const generateSessionCookie = () => withSessionCookie(jwt.encode(randomSession(), apiTokensConfig.token));
+const generateSessionHeader = () => withSessionHeader(jwt.encode(randomSession(), apiTokensConfig.token));
 
-module.exports = {SessionCookieName, InvalidTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie};
+const InvalidTokenCookie = withSessionCookie(jwt.encode(randomSession(), chance.word()));
+
+module.exports = {SessionCookieName, InvalidTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie, generateSessionHeader};
