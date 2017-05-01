@@ -62,7 +62,6 @@ const get_roles_by_volunteer = (req, res) => {
 
 };
 
-
 function has_permissions(user_id, perm_level) {
     return new Promise((resolve, reject) => {
         //TODO - check if loggedin user has permissions...
