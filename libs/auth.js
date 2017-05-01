@@ -23,7 +23,8 @@ const cookieExtractor = req => {
 const params = {
     secretOrKey: apiTokensConfig.token,
     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor, ExtractJwt.fromAuthHeader()]),
-    passReqToCallback: true
+    passReqToCallback: true,
+    ignoreExpiration: true
 };
 
 const convertToSparkSession = user => {
@@ -38,6 +39,10 @@ const convertToSparkSession = user => {
 
 module.exports = () => {
     const strategy = new Strategy(params, (req, payload, done) => {
+        if (payload.exp < Date.now()) {
+            return done(null, false);
+        }
+
         req.sparkSession = payload;
         return done(null, payload);
     });

@@ -12,18 +12,22 @@ const TestInvalidCredentials = {username: chance.word(), password: chance.word()
 const withSessionCookie = sessionToken => [`${SessionCookieName}=${sessionToken}`];
 const withSessionHeader = sessionToken => [`JWT ${sessionToken}`];
 
-const randomSession = () => {
+
+const randomSessionWithExpiration = timestamp => {
     return {
         email: chance.email(),
         name: chance.word(),
-        uid: chance.natural()
+        uid: chance.natural(),
+        exp: timestamp
     }
 };
+
+const randomSession = () => randomSessionWithExpiration(Date.now() + (60 * 1000));
 
 const generateSessionCookie = () => withSessionCookie(jwt.encode(randomSession(), apiTokensConfig.token));
 const generateSessionHeader = () => withSessionHeader(jwt.encode(randomSession(), apiTokensConfig.token));
 
 const InvalidTokenCookie = withSessionCookie(jwt.encode(randomSession(), chance.word()));
-const ExpiredTokenCookie = withSessionCookie(jwt.encode(randomSession() + {exp: new Date(Date.now() - 24*60*60*1000)}, chance.word()));
+const ExpiredTokenCookie = withSessionCookie(jwt.encode(randomSessionWithExpiration(Date.now() - 1), apiTokensConfig.token));
 
-module.exports = {SessionCookieName, InvalidTokenCookie, ExpiredTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, ExpiredTokenCookie, withSessionCookie, generateSessionCookie, generateSessionHeader};
+module.exports = {SessionCookieName, InvalidTokenCookie, ExpiredTokenCookie, TestValidCredentials, TestInvalidCredentials, UserLoginUrl, withSessionCookie, generateSessionCookie, generateSessionHeader};
