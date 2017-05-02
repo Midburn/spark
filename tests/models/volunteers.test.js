@@ -22,12 +22,12 @@ describe('Volunteer module db model', () => {
 
         before(() => {
             //create a volunteer
-            Volunteer.forge({ user_id: 1, department_id: 1, event_id: 0 }).save().then((vol) => {
+            return Volunteer.forge({ user_id: 1, department_id: 1, event_id: 0 }).save().then((vol) => {
                 console.log("Successfully created a volunteer for tests");
             });
         });
         it('should contain mapping to Departments', () => {
-            return Volunteer.where({ user_id: 1, department_id: 1, event_id: 0 }).fetch().then((dep) => {
+            return Volunteer.where({ user_id: 1, department_id: 1, event_id: 0 }).fetch({withRelated: ['department']}).then((dep) => {
                 expect(dep.related('department')).not.to.be.undefined
             });
         });

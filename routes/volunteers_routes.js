@@ -74,6 +74,7 @@ function get_voluneer_info(department_id_arr, event_id) {
                 var user_ids = vol_data_col.models.map(vol_data => vol_data.get('user_id'));
                 DrupalAccess.get_user_info(user_ids)
                     .then(user_data_col => {
+                        if (!user_data_col) reject({message: 'Could not read data from Drupal'});
                         var result = vol_data_col.models.map((vol_data_model) => {
                             var user_data = user_data_col.find(x => x.uid === vol_data_model.get('user_id'));
                             return merge_volunteer_info(vol_data_model, user_data.user_data);
@@ -147,7 +148,6 @@ var post_volunteers = function(req, res) {
 var put_volunteer = function(req, res) {
     var new_data = {
         role_id: _.get(req, 'body.role_id'),
-        type_in_shift_id: _.get(req, 'body.shift_type'),
         comment: _.get(req, 'body.comment'),
         is_production: _.get(req, 'body.is_production')
     };
