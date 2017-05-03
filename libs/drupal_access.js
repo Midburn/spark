@@ -35,7 +35,8 @@ var login = (function() {
         ", DRUPAL_PROFILE_API_USER: " + drupalConfig.username)
 
     return function(forceLogin) {
-        
+        //TEMPORARY DISABLE COOKIE REUSE TILL BETTER SOLUTION:
+        forceLogin = true;
         return new Promise((resolve, reject) => {
             if (request_agent && !forceLogin) {
                 resolve({ request_agent })
@@ -87,14 +88,20 @@ var search = function(login_data, email, uid, is_retry) {
                 var user_data_ = parseUser(res.body)
                 resolve({ email: qs.mail, uid: qs.uid, user_data: user_data_ });
             }).catch((err) => {
+
                 if (err.status === 403 && !is_retry) {
-                    logger.error(err);
-                    return login(true).then(login_data =>
+
+                    logger.error(err)
+                    login(true);
+
+                    /*  
+                //need to check if this shit work...
+                  return login(true).then(login_data =>
                         search(login_data, email, uid, true)
                     ).catch(err => {
                         reject(err);
                     });
-
+*/
                 } else {
                     reject(err);
                 }
@@ -110,7 +117,7 @@ var DrupalAccess = {
             search_multiple_uids(login_data, uid_arr)
         ).catch(err => {
             logger.error(err)
-            //login(true);
+            login(true);
         });
     },
     get_user_by_email: function(email_arr, is_retry) {
@@ -118,7 +125,7 @@ var DrupalAccess = {
             search_multiple_emails(login_data, email_arr)
         ).catch(err => {
             logger.error(err)
-            //login(true);
+            login(true);
         });
     }
 }
