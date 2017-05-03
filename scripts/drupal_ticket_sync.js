@@ -11,37 +11,16 @@ var dateFormat = require('dateformat');
 var _ = require('lodash');
 var db = require('../libs/db');
 var bookshelf = db.bookshelf;
+var log = require('../libs/logger')(module);
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
 
-const DRUPAL_USERNAME = 'omerpines@hotmail.com';
-const DRUPAL_PASSWORD = '123456';
 const TICKETS_TYPE_IDS = [38, 39, 40];
 const STATUS_COMPLETED = 'Completed';
 
-const MYSQL_USERNAME = 'spark';
-const MYSQL_PASSWORD = 'spark';
-const MYSQL_HOST_NAME = 'localhost';
-const MYSQL_DB_NAME = 'spark';
-
-const TIME_SLOT = 15;           //1hr
-
 const EVENT_ID = "MIDBURN_2017";
-
-//var connection = mysql.createConnection({
-//    host: MYSQL_HOST_NAME,
-//    user: MYSQL_USERNAME,
-//    password: MYSQL_PASSWORD,
-//    database: MYSQL_DB_NAME
-//});
-//connection.connect();
-//
-//function r(options, stdCallback) {
-//    request(options, function (error, response, body) {
-//        return stdCallback(error, {response: response, body: body});
-//    });
-//}
+var globalMinutesDelta = 0;
 
 function r(options) {
     return new Promise(resolve => {
@@ -58,28 +37,28 @@ async function getDrupalSession(callback) {
     };
 
     var options = {
-        url: 'http://profile-test.midburn.org/en/api/user/login',
+        url: process.env.DRUPAL_PROFILE_API_URL + '/en/api/user/login',
         method: 'POST',
         headers: headers,
-        form: {'username': DRUPAL_USERNAME, 'password': DRUPAL_PASSWORD}
+        form: {'username': process.env.DRUPAL_PROFILE_API_USER, 'password': process.env.DRUPAL_PROFILE_API_PASSWORD}
     };
 
-    var x = await r(options);//WAIT
+    var x = await r(options);
     if (x.response && x.response.statusCode == 302) {
         var bodyJson = JSON.parse(x.body);
         session = {sessid: bodyJson["sessid"], session_name: bodyJson["session_name"]};
-        console.log("session info:" + JSON.stringify(session));
+        log.info("session info:" + JSON.stringify(session));
         return session;
     }
     else {
-        console.log("getting session key failed");
+        log.info("getting session key failed");
     }
-    console.log("getDrupalSession - OUT");
+    log.info("getDrupalSession - OUT");
 }
 
 async function dumpDrupalTickets(session, date, callback) {
 
-    console.log("dumping tickets from:" + dateFormat(date, "yyyy-mm-dd hh:MM:ss"));
+    log.info("dumping tickets from:" + dateFormat(date, "yyyy-mm-dd hh:MM:ss"));
 
     var headers = {
         'cache-control': 'no-cache',
@@ -89,22 +68,26 @@ async function dumpDrupalTickets(session, date, callback) {
     };
 
     var options = {
-        url: 'http://profile-test.midburn.org/en/api/ticket_export',
+        url: process.env.DRUPAL_PROFILE_API_URL + '/en/api/ticket_export',
         method: 'GET',
         headers: headers,
-        qs: {changed: dateFormat(date, "yyyy-mm-dd%20hh:MM:ss")}
+        qs: {changed: dateFormat(date, "yyyy-mm-dd hh:MM:ss")}
     };
 
-    var x = await r(options);  //WAIT
+    var x = await r(options);
     if (x.response && x.response.statusCode == 302) {
-        var result = parseStringSync(x.body); //WAIT
+        var result = parseStringSync(x.body);
         var tickets = result['result']['item'];
-        console.log("got " + tickets.length + " tickets");
+        if (!tickets) {
+            log.info("Didn't get any tickets from Drupal that need update");
+            return null;
+        }
+        log.info("got " + tickets.length + " tickets");
         var utickets = [];
         for (var ticket of tickets) {
             var status = ticket['Ticket_State'];
             var type_id = parseInt(ticket['ticket_registration_bundle']);
-            //console.log("type", type_id, ticket['user_ticket_type_name'][[0]], status);
+            //log.info("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (status == STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
                 var uticket = {};
                 uticket['holder_email'] = ticket['Email'][0];
@@ -121,26 +104,24 @@ async function dumpDrupalTickets(session, date, callback) {
             }
         }
         return utickets;
-        //callback(utickets)
     }
     else {
-        console.log("getting ticket dump failed");
+        log.info("getting ticket dump failed");
     }
 }
 
-async function updateAllTickets(tickets, callback) {
-    console.log("need to update " + tickets.length + " tickets");
+async function updateAllTickets(tickets) {
+    log.info("need to update " + tickets.length + " tickets");
     var counter = 1;
     for (ticket of tickets) {
-        //console.log("Updating ticket #", counter++);
+        //log.info("Updating ticket #", counter++);
         var order_id = ticket['order_id'];
         var ticket_id = ticket['ticket_id'];
         var barcode = ticket['barcode'];
         var email = ticket['holder_email'];
-        console.log("Found ticket #", counter++, "- email:" + email + " orderId:" + order_id + " ticketId:" + ticket_id + " barcode:" + barcode);
+        log.info("Found ticket #", counter++, "- email:" + email + " orderId:" + order_id + " ticketId:" + ticket_id + " barcode:" + barcode);
         ticket = _.clone(ticket);
         await updateTicket(ticket);
-        //await bookshelf.knex.destroy();
     }
 }
 
@@ -151,39 +132,39 @@ async function updateTicket(ticket) {
     var barcode = ticket['barcode'];
 
     if (typeof ticket['barcode'] !== "string" || ticket['barcode'].length == 0) {
-        console.log("No barcode for ticket", ticket_id, "user ", holder_email);
+        log.info("No barcode for ticket", ticket_id, "user ", holder_email);
         return;
     }
     else {
-        console.log("Updating ticket", ticket_id, "user ", holder_email);
+        log.info("Updating ticket", ticket_id, "user ", holder_email);
     }
 
     try {
         var user = await User.forge({email: holder_email}).fetch();
         if (user == null) {
             // We need to create a new user...
-            console.log("User", holder_email, "not found in Spark. Creating...");
-            user = await User.forge({ //WAIT
+            log.info("User", holder_email, "not found in Spark. Creating...");
+            user = await User.forge({
                 first_name: ticket["name"].split(' ')[0] || "",
                 last_name: ticket["name"].split(' ')[1] || "",
                 email: ticket["holder_email"],
                 israeli_id: ticket["id"]
             }).save();
 
-            console.log("User", ticket["holder_email"], "created!");
+            log.info("User", ticket["holder_email"], "created!");
         }
         else {
-            console.log("User", ticket["holder_email"], "exists.");
+            log.info("User", ticket["holder_email"], "exists.");
 
         }
 
         var sparkTicket = await Ticket.forge({ticket_id: ticket_id}).fetch();
         var saveOptions = {};
         if (sparkTicket != null) {
-            console.log("Updating ticket", ticket_id);
+            log.info("Updating ticket", ticket_id);
         }
         else {
-            console.log("Creating ticket", ticket_id);
+            log.info("Creating ticket", ticket_id);
             saveOptions = {method: 'insert'};
         }
 
@@ -195,14 +176,13 @@ async function updateTicket(ticket) {
             barcode: barcode,
             order_id: order_id,
             ticket_id: ticket_id
-
         });
 
-        await sparkTicket.save(null, saveOptions); //WAIT
-        console.log("Ticket update success for ticket", ticket_id);
+        await sparkTicket.save(null, saveOptions);
+        log.info("Ticket update success for ticket", ticket_id);
     }
     catch (err) {
-        console.error("ERROR:", err);
+        log.error("ERROR:", err);
     }
 }
 
@@ -215,49 +195,64 @@ function sendPassTicketRequest(session, barcode) {
     };
 
     var options = {
-        url: 'https://profile-test.midburn.org/en/api/ticket/' + barcode + '/pass',
+        url: process.env.DRUPAL_PROFILE_API_URL + '/en/api/ticket/' + barcode + '/pass',
         method: 'POST',
         headers: headers
     };
-    console.log('Ticket passed:' + barcode);
+    log.info('Passing ticket with barcode', barcode);
     request(options, function (error, response, body) {
-        parseString(body, function (err, result) {
-            console.log(result['result'])
-        });
+        var result = parseStringSync(body);
+        log.info(result['result'])
     })
 }
 
-function passTicket(barcode) {
-    getDrupalSession(function (session) {
-        sendPassTicketRequest(session, barcode);
-    });
+async function passTicket(barcode) {
+    var session = await getDrupalSession();
+    sendPassTicketRequest(session, barcode);
 }
 
-async function syncTickets(callback) {
-
+async function syncTickets(fromDate, callback) {
     try {
-
-        console.log('Starting Tickets Update Process...');
-        var session = await getDrupalSession(); //WAIT
-        console.log('Got Drupal session...');
-        var now = new Date();
-        var date = now.setMinutes(now.getMinutes() - TIME_SLOT);
-        //var tickets = wait.for(dumpDrupalTickets, session, date);
-        var tickets = await dumpDrupalTickets(session, date);
-        await updateAllTickets(tickets);
-        console.log("Tickets Update Process COMPLETED");
+        log.info('Starting Tickets Update Process...');
+        var session = await getDrupalSession();
+        log.info('Got Drupal session...');
+        var tickets = await dumpDrupalTickets(session, fromDate);
+        if (tickets) {
+            await updateAllTickets(tickets);
+            log.info("Tickets Update Process COMPLETED at", new Date());
+        }
         callback(null);
     }
     catch (err) {
-        console.error("ERROR:", err);
+        log.error("ERROR:", err);
         callback(err);
     }
 }
 
-syncTickets(() => {
-    process.exit(0);
-});
+function syncTicketsLoop() {
+    var timeoutMillis = globalMinutesDelta * 60 * 1000;
+    var nextDate = new Date();
+    nextDate.setMilliseconds(timeoutMillis);
+    log.info("Next ticket sync scheduled to", nextDate);
+    setTimeout(() => {
+        var now = new Date();
+        fromDate = now.setMinutes(-globalMinutesDelta);
+        fromDate = now.setSeconds(-10); // A few seconds overlap is always good.
+        syncTickets(fromDate, syncTicketsLoop);
+    }, timeoutMillis);
+}
 
-//activateTicket('006db47d8d98d4a1256c88ef9a01258a');
-//setInterval(syncTickets, TIMEOUT);
+function runSyncTicketsLoop(minutesDelta) {
+    log.info('First run, updating all tickets');
+    globalMinutesDelta = minutesDelta;
+    var now = new Date();
+    const ONE_YEAR_IN_SECONDS = 31556926;
+    var fromDate = now.setMinutes(-ONE_YEAR_IN_SECONDS);
+    syncTickets(fromDate, syncTicketsLoop);
+}
 
+module.exports = {
+    syncTickets: syncTickets,
+    passTicket: passTicket,
+    runSyncTicketsLoop: runSyncTicketsLoop
+};

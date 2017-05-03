@@ -8,6 +8,7 @@ var userRole = require('../libs/user_role');
 //var mail = require('../libs/mail');
 //var log = require('../libs/logger.js')(module);
 var security = require('../libs/security');
+var drupalSync = require('../scripts/drupal_ticket_sync');
 
 //var config = require('config');
 //var serverConfig = config.get('server');
@@ -75,8 +76,10 @@ router.post('/api/get-ticket', function (req, res) {
     });
 });
 
-router.post('/api/validate-ticket', function (req, res) {
-
+router.post('/api/ticket-pass', function (req, res) {
+    //TODO implement
+    var barcode = "TEMP";
+    drupalSync.passTicket(barcode);
 });
 
 router.post('/api/counter', function (req, res) {
