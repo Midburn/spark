@@ -5,6 +5,7 @@ var DrupalUser = require('../../models/user').DrupalUser;
 var User = require('../../models/user').User;
 var knex = require('../../libs/db').knex;
 var constants = require('../../models/constants');
+var {generateSessionCookie} = require('../drivers/auth-test-support');
 var _ = require('lodash');
 
 const ADMIN_USER_EMAIL = "omerpines@hotmail.com";
@@ -57,14 +58,17 @@ var givenAdminUserIsLoggedIn = function() {
 };
 
 var adminHomeShouldShowSomeData = function() {
-    return request.get('/he/admin').expect(200).expect(function(res) {
-        if (
-            (res.text.indexOf("Total Users") < 0) ||
-            (res.text.indexOf("Total Camps") < 0)
-        ) {
-            throw new Error();
-        }
-    });
+    return request.get('/he/admin')
+                  .set('Cookie', [generateSessionCookie()])
+                  .expect(200)
+                  .expect(function(res) {
+                      if (
+                          (res.text.indexOf("Total Users") < 0) ||
+                          (res.text.indexOf("Total Camps") < 0)
+                      ) {
+                          throw new Error();
+                      }
+                  });
 };
 
 var givenUserAdminTableAjaxUrl = function() {
@@ -132,7 +136,8 @@ var shouldChangeAdminUserLastNameTo = function(last_name) {
 describe('Admin routes', function() {
     it('should show some statistical data on admin homepage', function() {
         this.timeout(5000);
-        return givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
+        return adminHomeShouldShowSomeData();
+        // givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
     });
 
     // it('should show admin user in users table', function() {

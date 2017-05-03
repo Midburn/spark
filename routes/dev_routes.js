@@ -1,16 +1,15 @@
-var express = require('express');
-var router = express.Router({
+const express = require('express');
+const router = express.Router({
     mergeParams: true
 });
-
-var User = require('../models/user').User;
+const {User} = require('../models/user');
 
 router.get('/', function (req, res) {
     res.render('dev_tools/dev_home');
 });
 
 router.get('/create-admin', function (req, res) {
-    var newUser = new User({
+    const newUser = new User({
         email: 'a',
         first_name: 'Development',
         last_name: 'Admin',
@@ -21,11 +20,9 @@ router.get('/create-admin', function (req, res) {
     });
     newUser.generateHash('a');
 
-    newUser.save().then(function (model) {
-        res.redirect("/");
-    });
-
-    res.redirect("./");
+    return newUser.save()
+                  .then(() => res.redirect('/'))
+                  .catch(() => res.redirect('./'));
 });
 
 router.get('/view-debug/*', function (req, res) {
