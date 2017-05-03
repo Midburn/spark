@@ -1,5 +1,4 @@
-var config = require('config');
-var dbConfig = config.get('database');
+var dbConfig = require('config').database;
 
 var parameters = {
     client: dbConfig.client,
