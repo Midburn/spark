@@ -1,4 +1,4 @@
-var config = require('config');
+require('config');
 
 var dts = require('./scripts/drupal_ticket_sync');
 

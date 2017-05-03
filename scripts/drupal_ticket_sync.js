@@ -6,11 +6,8 @@
 
 var request = require('request');
 var parseStringSync = require('xml2js-parser').parseStringSync;
-var mysql = require('mysql');
 var dateFormat = require('dateformat');
 var _ = require('lodash');
-var db = require('../libs/db');
-var bookshelf = db.bookshelf;
 var log = require('../libs/logger')(module);
 
 var User = require('../models/user.js').User;
@@ -25,7 +22,7 @@ var globalMinutesDelta = 0;
 function r(options) {
     return new Promise(resolve => {
         request(options, (error, response, body) => {
-            resolve({response: response, body: body});
+            resolve({response: response, body: body, error:error});
         });
     });
 }
@@ -44,7 +41,7 @@ async function getDrupalSession(callback) {
     };
 
     var x = await r(options);
-    if (x.response && x.response.statusCode == 302) {
+    if (x.response && x.response.statusCode === 302) {
         var bodyJson = JSON.parse(x.body);
         session = {sessid: bodyJson["sessid"], session_name: bodyJson["session_name"]};
         log.info("session info:" + JSON.stringify(session));
@@ -75,7 +72,7 @@ async function dumpDrupalTickets(session, date, callback) {
     };
 
     var x = await r(options);
-    if (x.response && x.response.statusCode == 302) {
+    if (x.response && x.response.statusCode === 302) {
         var result = parseStringSync(x.body);
         var tickets = result['result']['item'];
         if (!tickets) {
@@ -88,7 +85,7 @@ async function dumpDrupalTickets(session, date, callback) {
             var status = ticket['Ticket_State'];
             var type_id = parseInt(ticket['ticket_registration_bundle']);
             //log.info("type", type_id, ticket['user_ticket_type_name'][[0]], status);
-            if (status == STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
+            if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
                 var uticket = {};
                 uticket['holder_email'] = ticket['Email'][0];
                 uticket['buyer_email'] = ticket['Buyer_E_mail'][0];
@@ -131,7 +128,7 @@ async function updateTicket(ticket) {
     var ticket_id = ticket['ticket_id'];
     var barcode = ticket['barcode'];
 
-    if (typeof ticket['barcode'] !== "string" || ticket['barcode'].length == 0) {
+    if (typeof ticket['barcode'] !== "string" || ticket['barcode'].length === 0) {
         log.info("No barcode for ticket", ticket_id, "user ", holder_email);
         return;
     }
@@ -168,7 +165,6 @@ async function updateTicket(ticket) {
             saveOptions = {method: 'insert'};
         }
 
-
         var holder_id = user.attributes.user_id;
         sparkTicket = Ticket.forge({
             event_id: EVENT_ID,
@@ -201,6 +197,9 @@ function sendPassTicketRequest(session, barcode) {
     };
     log.info('Passing ticket with barcode', barcode);
     request(options, function (error, response, body) {
+        if (error) {
+            log.error(error);
+        }
         var result = parseStringSync(body);
         log.info(result['result'])
     })
