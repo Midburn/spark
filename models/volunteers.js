@@ -33,6 +33,9 @@ var Volunteer = bookshelf.Model.extend({
     role: function() {
         return this.belongsTo(VolunteerRole, 'role_id', 'id');
     },
+    type_in_shift: function() {
+        return this.belongsTo(TypeInShift, 'type_in_shift_id');
+    },
     user_info: function(user) {
         return DrupalAccess.get_user_info(user_id);
     }

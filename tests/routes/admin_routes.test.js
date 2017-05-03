@@ -130,8 +130,8 @@ var shouldChangeAdminUserLastNameTo = function(last_name) {
 };
 
 describe('Admin routes', function() {
-    this.timeout(5000);
     it('should show some statistical data on admin homepage', function() {
+        this.timeout(5000);
         return givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
     });
 
