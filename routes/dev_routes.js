@@ -21,8 +21,8 @@ router.get('/create-admin', function (req, res) {
     newUser.generateHash('a');
 
     return newUser.save()
-                  .then(() => res.redirect("/"))
-                  .catch(() => res.redirect("./"));
+                  .then(() => res.redirect('/'))
+                  .catch(() => res.redirect('./'));
 });
 
 router.get('/view-debug/*', function (req, res) {
