@@ -22,6 +22,7 @@ knex.on('query-error', function (err) {
 
 bookshelf.plugin('virtuals');
 bookshelf.plugin('pagination');
+bookshelf.plugin(require('bookshelf-json-columns'));
 
 module.exports = {
     bookshelf: bookshelf,
