@@ -198,14 +198,12 @@ app.use(function (err, req, res, next) {
     res.status(500).send('Something broke!')
 });
 
-if (process.env.NODE_ENV === 'production') {
     // Catch 404 and forward to error handler
     app.use(function(req, res, next) {
         const err = new Error('Not Found: ' + req.url);
         err.status = 404;
         next(err);
     });
-}
 
 // Development error handler - will print stacktrace
 if (app.get('env') === 'development') {
