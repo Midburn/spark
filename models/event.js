@@ -1,5 +1,6 @@
 var bookshelf = require('../libs/db').bookshelf;
 var bcrypt = require('bcrypt-nodejs');
+var constants = require('./constants.js');
 
 var Event = bookshelf.Model.extend({
     tableName: constants.EVENTS_TABLE_NAME,

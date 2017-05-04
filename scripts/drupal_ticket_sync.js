@@ -22,7 +22,7 @@ var globalMinutesDelta = 0;
 function r(options) {
     return new Promise(resolve => {
         request(options, (error, response, body) => {
-            resolve({response: response, body: body, error:error});
+            resolve({response: response, body: body, error: error});
         });
     });
 }
@@ -44,18 +44,17 @@ async function getDrupalSession(callback) {
     if (x.response && x.response.statusCode === 302) {
         var bodyJson = JSON.parse(x.body);
         session = {sessid: bodyJson["sessid"], session_name: bodyJson["session_name"]};
-        log.info("session info:" + JSON.stringify(session));
+        log.info("Session info:" + JSON.stringify(session));
         return session;
     }
     else {
-        log.info("getting session key failed");
+        log.warn("Getting Drupal session key failed");
     }
-    log.info("getDrupalSession - OUT");
 }
 
-async function dumpDrupalTickets(session, date, callback) {
+async function dumpDrupalTickets(session, date) {
 
-    log.info("dumping tickets from:" + dateFormat(date, "yyyy-mm-dd hh:MM:ss"));
+    log.info("Dumping tickets changed after", dateFormat(date, "yyyy-mm-dd hh:MM:ss"));
 
     var headers = {
         'cache-control': 'no-cache',
@@ -82,9 +81,9 @@ async function dumpDrupalTickets(session, date, callback) {
         log.info("got " + tickets.length + " tickets");
         var utickets = [];
         for (var ticket of tickets) {
-            var status = ticket['Ticket_State'];
-            var type_id = parseInt(ticket['ticket_registration_bundle']);
-            //log.info("type", type_id, ticket['user_ticket_type_name'][[0]], status);
+            var status = ticket['Ticket_State'][0];
+            var type_id = parseInt(ticket['ticket_registration_bundle'][0]);
+            //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
                 var uticket = {};
                 uticket['holder_email'] = ticket['Email'][0];
@@ -103,7 +102,7 @@ async function dumpDrupalTickets(session, date, callback) {
         return utickets;
     }
     else {
-        log.info("getting ticket dump failed");
+        log.warn("Ticket dump failed");
     }
 }
 
@@ -127,6 +126,7 @@ async function updateTicket(ticket) {
     var order_id = ticket['order_id'];
     var ticket_id = ticket['ticket_id'];
     var barcode = ticket['barcode'];
+    var ticket_type = ticket['ticket_type'];
 
     if (typeof ticket['barcode'] !== "string" || ticket['barcode'].length === 0) {
         log.info("No barcode for ticket", ticket_id, "user ", holder_email);
@@ -171,7 +171,9 @@ async function updateTicket(ticket) {
             holder_id: holder_id,
             barcode: barcode,
             order_id: order_id,
-            ticket_id: ticket_id
+            ticket_id: ticket_id,
+            type: ticket_type,
+            ticket_number: ticket_id // In Drupal, they are the same
         });
 
         await sparkTicket.save(null, saveOptions);
@@ -218,7 +220,7 @@ async function syncTickets(fromDate, callback) {
         var tickets = await dumpDrupalTickets(session, fromDate);
         if (tickets) {
             await updateAllTickets(tickets);
-            log.info("Tickets Update Process COMPLETED at", new Date());
+            log.info("Tickets Update Process COMPLETED at", dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss"));
         }
         callback(null);
     }
@@ -232,7 +234,7 @@ function syncTicketsLoop() {
     var timeoutMillis = globalMinutesDelta * 60 * 1000;
     var nextDate = new Date();
     nextDate.setMilliseconds(timeoutMillis);
-    log.info("Next ticket sync scheduled to", nextDate);
+    log.info("Next ticket sync scheduled to", dateFormat(nextDate, "yyyy-mm-dd hh:MM:ss"));
     setTimeout(() => {
         var now = new Date();
         fromDate = now.setMinutes(-globalMinutesDelta);
@@ -245,7 +247,7 @@ function runSyncTicketsLoop(minutesDelta) {
     log.info('First run, updating all tickets');
     globalMinutesDelta = minutesDelta;
     var now = new Date();
-    const ONE_YEAR_IN_SECONDS = 31556926;
+    const ONE_YEAR_IN_SECONDS = 525948;
     var fromDate = now.setMinutes(-ONE_YEAR_IN_SECONDS);
     syncTickets(fromDate, syncTicketsLoop);
 }
