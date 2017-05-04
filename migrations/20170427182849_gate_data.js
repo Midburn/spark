@@ -1,5 +1,4 @@
-
-exports.up = function(knex, Promise) {
+exports.up = function (knex, Promise) {
     return Promise.all([
         knex.schema.table('events', function (table) {
             table.string('name', 128);
@@ -7,10 +6,8 @@ exports.up = function(knex, Promise) {
         }),
 
         knex.schema.table('tickets', function (table) {
+            table.dropForeign('event_id');
             table.dropColumn('event_id');
-            table.string('event_id', 15).notNullable();
-            table.dropUnique(['ticket_number', 'event_id']);
-            table.unique(['event_id', 'ticket_number']);
         }),
 
         knex('events').insert({
@@ -20,12 +17,13 @@ exports.up = function(knex, Promise) {
         }),
 
         knex.schema.table('attendances', function (table) {
-            table.dropForeign('ticket_pool_id');
+            table.dropForeign('ticket_pool');
+            table.integer('ticket_pool_id').unsigned();
             table.foreign('ticket_pool_id').references('ticket_pools.pool_id');
         })
     ]);
 };
 
-exports.down = function(knex, Promise) {
+exports.down = function (knex, Promise) {
 
 };
