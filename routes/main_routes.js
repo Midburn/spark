@@ -85,7 +85,7 @@ module.exports = function (app, passport) {
                         errorMessage: req.flash('error')
                     });
                 } else {
-                    res.header('token', passportLib.generateJwtToken(req.body.email));
+                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email), { httpOnly: true });
                     var r = req.body['r'];
                     if (r) {
                         return res.redirect(r);

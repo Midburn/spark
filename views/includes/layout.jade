@@ -29,8 +29,8 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     //- Scripts
     script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
     script(src="/bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
-        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
-        crossorigin="anonymous" )
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
+    crossorigin="anonymous" )
     script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
     script(async src='/bower_components/bootstrap-table/dist/bootstrap-table.min.js')
     if (language === 'he')
@@ -39,6 +39,8 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     // External packages
     script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
     script(src='/bower_components/sweetalert/dist/sweetalert.min.js')
+    script(src='/bower_components/js-cookie/src/js.cookie.js')
+
 
     // Angular dependencies
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")

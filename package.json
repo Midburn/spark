@@ -72,7 +72,7 @@
     "module-id": "2.0.4",
     "morgan": "~1.7.0",
     "mysql": "^2.11.1",
-    "node-sass": "^3.13.0",
+    "node-sass": "^3.13.1",
     "passport": "^0.3.2",
     "passport-facebook": "2.1.1",
     "passport-jwt": "^2.2.1",

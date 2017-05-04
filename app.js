@@ -164,6 +164,7 @@ mail.setup(app);
 
 // API
 require('./routes/api_routes')(app, passport);
+app.use('/api/gate', require('./routes/api_gate_routes'));
 
 // Camps / API
 // TODO this is not the right way to register routes
