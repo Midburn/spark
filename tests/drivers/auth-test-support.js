@@ -29,6 +29,6 @@ const generateSessionCookieWithExpiration = timestamp => withSessionCookie(jwt.e
 
 const InvalidTokenCookie = withSessionCookie(jwt.encode(randomSession(), chance.word()));
 const ExpiredTokenCookie = generateSessionCookieWithExpiration(Date.now() - (TokenTTL + TokenRenewalPeriod + 1));
-const RenewableTokenCookie = generateSessionCookieWithExpiration(Date.now() - (TokenTTL + TokenRenewalPeriod - 1000));
+const RenewableTokenCookie = generateSessionCookieWithExpiration(Date.now() - (TokenTTL + TokenRenewalPeriod - 2000));
 
 module.exports = {withSessionCookie, generateSessionCookie, generateSessionHeader, generateSessionCookieWithExpiration, InvalidTokenCookie, ExpiredTokenCookie, TestValidCredentials, TestInvalidCredentials, RenewableTokenCookie, UserLoginUrl};
