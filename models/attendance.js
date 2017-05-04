@@ -1,6 +1,4 @@
 var bookshelf = require('../libs/db').bookshelf;
-var constants = require('./constants.js');
-var User = require('./user').User;
 
 var Attendance = bookshelf.Model.extend({
     tableName: 'attendances',

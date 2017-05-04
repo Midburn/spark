@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
         }),
 
         knex.schema.table('tickets', function (table) {
+            table.dropString('event_id');
             table.string('event_id', 15).notNullable();
             table.dropUnique(['ticket_number', 'event_id']);
             table.unique(['event_id', 'ticket_number']);

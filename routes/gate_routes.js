@@ -7,9 +7,6 @@ var userRole = require('../libs/user_role');
 var security = require('../libs/security');
 
 var Ticket = require('../models/ticket').Ticket;
-var User = require('../models/user').User;
-var Event = require('../models/event').Event;
-var Attendance = require('../models/attendance').Attendance;
 
 router.get('/', userRole.isLoggedIn(), function (req, res) {
     res.render('pages/gate');

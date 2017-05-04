@@ -3,12 +3,9 @@ var router = express.Router({
     mergeParams: true
 });
 
-var userRole = require('../libs/user_role');
-var security = require('../libs/security');
 var drupalSync = require('../scripts/drupal_ticket_sync');
 
 var Ticket = require('../models/ticket').Ticket;
-var User = require('../models/user').User;
 var Event = require('../models/event').Event;
 var Attendance = require('../models/attendance').Attendance;
 
