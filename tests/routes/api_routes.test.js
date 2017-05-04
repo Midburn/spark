@@ -42,7 +42,7 @@ describe('API routes', function() {
                    expect(cookieProperties).to.include.members(['path', 'httponly', 'max-age']);
                }) );
 
-    it('should reject with valid auth header', () =>
+    it('should accept with valid auth header', () =>
         request.post(UserLoginUrl)
                .set({'authorization': generateSessionHeader()})
                .expect(200));
