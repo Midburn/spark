@@ -44,8 +44,8 @@ const get_roles_by_volunteer = (req, res) => {
     const userId = _.get(req, 'params.volunteerId');
 
     Volunteer.where('user_id', userId).fetchAll()
-        .then(roles => {
-            const userRoles = roles.map(role => {
+        .then(volunteer => {
+            const userRoles = volunteer.map(role => {
                 return {'permission': role.role_id, 'department_id': role.department_id};
             });
 
