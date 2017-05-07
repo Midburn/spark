@@ -1,7 +1,9 @@
 var constants = require('../models/constants');
 exports.up = function(knex, Promise) {
     return Promise.all([
-        knex.schema.createTable(constants.VOLUNTEERS_TABLE_NAME, function(table) {
+        knex.schema.dropTableIfExists(constants.VOLUNTEERS_TABLE_NAME)
+        .then(() => {
+        return knex.schema.createTable(constants.VOLUNTEERS_TABLE_NAME, function(table) {
             table.increments();
             table.integer('user_id');
             table.integer('department_id').unsigned();
@@ -12,14 +14,10 @@ exports.up = function(knex, Promise) {
             table.timestamp('modified_date');
             //unique
             table.unique(['user_id', 'department_id', 'event_id']);
-            //references
-            //table.foreign('user_id').references('id').inTable(constants.USERS_TABLE_NAME);
-            //table.foreign('department_id').references('id').inTable(constants.VOL_DEPARTMENTS_TABLE_NAME);
-            //table.foreign('role_id').references('id').inTable(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME);
-            //table.foreign('type_in_shift_id').references('id').inTable(constants.VOL_TYPES_IN_SHIFT_TABLE_NAME);
-        }),
+           
+        })}),
         //volunteer departments
-        knex.schema.createTable(constants.VOL_DEPARTMENTS_TABLE_NAME, function(table) {
+        knex.schema.createTableIfNotExists(constants.VOL_DEPARTMENTS_TABLE_NAME, function(table) {
             table.increments();
             table.string('name_en');
             table.string('name_he');
@@ -31,7 +29,7 @@ exports.up = function(knex, Promise) {
             ]);
         }),
         //roles in the department
-        knex.schema.createTable(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME, function(table) {
+        knex.schema.createTableIfNotExists(constants.VOL_DEPARTMENT_ROLES_TABLE_NAME, function(table) {
             table.increments();
             table.string('name')
 
