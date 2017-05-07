@@ -7,8 +7,6 @@ var knex = require('../libs/db').knex;
 var userRole = require('../libs/user_role');
 var security = require('../libs/security');
 
-var Ticket = require('../models/ticket').Ticket;
-
 router.get('/', userRole.isLoggedIn(), function (req, res) {
     res.render('pages/gate');
 });

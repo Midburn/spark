@@ -10,7 +10,6 @@ var request = require('superagent');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var passportJWT = require("passport-jwt");
-var ExtractJwt = passportJWT.ExtractJwt;
 var JwtStrategy = passportJWT.Strategy;
 
 /***
