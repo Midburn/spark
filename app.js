@@ -29,8 +29,7 @@ app.use(morganLogger('dev', {
         level: 'info',
         filter: function (message) {
             if ((typeof message === "undefined") || (message === null)) return true;
-            return !
-                (message.includes('/stylesheets/') || message.includes('/images/'));
+            return !(message.includes('/stylesheets/') || message.includes('/images/'));
         }
     })
 }));
@@ -176,10 +175,6 @@ require('./routes/api_camps_routes')(app, passport);
 
 // Camps
 require('./routes/camps_routes')(app, passport);
-
-//TODO this is not the right way to register routes
-var ticket_routes = require('./routes/ticket_routes');
-app.use('/:lng/tickets/', ticket_routes);
 
 require('./routes/volunteers_routes')(app, passport);
 

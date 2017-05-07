@@ -67,7 +67,7 @@ if (process.env.NODE_ENV !== 'production') {
     }
 } else {
     exports.mail = {
-        enabled: typeof(process.env.SPARK_MAILSERVER_ENABLE) === "undefined" ? true : (process.env.SPARK_MAILSERVER_ENABLE === "true"),
+        enabled: typeof process.env.SPARK_MAILSERVER_ENABLE === "undefined" ? true : (process.env.SPARK_MAILSERVER_ENABLE === "true"),
         from: process.env.SPARK_MAILSERVER_FROM || "spark@localhost",
         host: process.env.SPARK_MAILSERVER_HOST || "localhost",
         port: process.env.SPARK_MAILSERVER_PORT || "25",
@@ -104,7 +104,7 @@ exports.facebook = {
 };
 
 exports.recaptcha = {
-    ignore: typeof(process.env.SPARK_RECAPTCHA_IGNORE) === "undefined" ? true : (process.env.SPARK_RECAPTCHA_IGNORE === "true"), // when ignore is true - recaptcha is enabled but if it fails it ignores and continues sign up anyway
+    ignore: typeof process.env.SPARK_RECAPTCHA_IGNORE === "undefined" ? true : (process.env.SPARK_RECAPTCHA_IGNORE === "true"), // when ignore is true - recaptcha is enabled but if it fails it ignores and continues sign up anyway
     // TODO change eyalliebermann app in an oficial one
     sitekey: process.env.SPARK_RECAPTCHA_SITEKEY || "6LcdJwwUAAAAAGfkrUCxOp-uCE1_69AlIz8yeHdj",
     secretkey: process.env.SPARK_RECAPTCHA_SECRETKEY || "6LcdJwwUAAAAAFdmy7eFSjyhtz8Y6t-BawcB9ApF"
