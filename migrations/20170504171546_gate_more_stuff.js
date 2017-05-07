@@ -13,6 +13,7 @@ exports.up = function (knex, Promise) {
 
         knex.schema.table('ticket_pools', function (table) {
             table.renameColumn('quota', 'entrance_quota');
+            table.string('name', 128);
         }),
 
         knex.schema.dropTable('attendances'),

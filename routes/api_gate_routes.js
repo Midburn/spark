@@ -44,7 +44,7 @@ async function getTicketBySearchTerms(req, res) {
     }
 
     // Loading data from the DB.
-    let ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder', 'pools']});
+    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder', 'pools']});
     if (ticket) {
         return ticket;
     }
@@ -63,13 +63,19 @@ router.post('/get-ticket/', async function (req, res) {
         // Loading ticket data from the DB.
         let ticket = await getTicketBySearchTerms(req, res);
 
-        //TODO check if there are ticket pools for this ticket and if yes - return them as well.
+        // Get ticket pools
+        let pools = [];
+        _.each(ticket.relations.pools.models, pool => {
+            pools.push({id: pool.attributes.pool_id, name: pool.attributes.name});
+        });
 
         let result = {
             ticket_number: ticket.attributes.ticket_number,
             holder_name: ticket.relations.holder.fullName,
             type: ticket.attributes.type,
-            first_entrance_timestamp: ticket.attributes.first_entrance_timestamp
+            inside_event: ticket.attributes.inside_event,
+            first_entrance_timestamp: ticket.attributes.first_entrance_timestamp,
+            pools: pools
         };
         // All done, sending the results.
         res.status(200).json({

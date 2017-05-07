@@ -13,7 +13,7 @@ var Ticket = bookshelf.Model.extend({
         return this.belongsTo(User, 'buyer_id');
     },
     pools: function () {
-        return this.belongsToMany(TicketPool).through(Attendance, 'ticket_id', 'ticket_id');
+        return this.belongsToMany(TicketPool, 'tickets_in_ticket_pools', 'ticket_id', 'pool_id', 'ticket_id', 'pool_id');
     },
     poolsM2M: function () {
         return this.hasMany(Attendance);
@@ -25,7 +25,7 @@ var TicketPool = bookshelf.Model.extend({
     idAttribute: 'pool_id',
 
     tickets: function () {
-        return this.belongsToMany(Ticket).through(Attendance, 'pool_id', 'pool_id');
+        return this.belongsToMany(Ticket, 'tickets_in_ticket_pools', 'pool_id', 'ticket_id', 'pool_id', 'ticket_id');
     },
 
     virtuals: {
