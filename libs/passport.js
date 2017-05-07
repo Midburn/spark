@@ -189,7 +189,7 @@ var generateJwtToken = function (email) {
     // is the only personalized value that goes into our token
     var payload = {email: email};
     var token = jwt.sign(payload, apiTokensConfig.token);
-    return 'JWT ' + token;
+    return token;
 };
 
 // expose this function to our app using module.exports
@@ -256,8 +256,15 @@ module.exports = function (passport) {
     // JWT authentication
     // =========================================================================
     var jwtOptions = {};
-    jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
     jwtOptions.secretOrKey = apiTokensConfig.token;
+    jwtOptions.jwtFromRequest = function(req) {
+        var token = null;
+        if (req && req.cookies)
+        {
+            token = req.cookies['authToken'];
+        }
+        return token;
+    };
 
     passport.use(new JwtStrategy(jwtOptions, function (jwt_payload, next) {
         console.log('JWT payload received', jwt_payload);
