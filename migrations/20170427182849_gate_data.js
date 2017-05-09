@@ -11,7 +11,7 @@ exports.up = function (knex, Promise) {
         }),
 
         knex('events').insert({
-            event_id: "MIDBURN_2017",
+            event_id: "MIDBURN2017",
             gate_code: "171819",
             name: "Midburn 2017 מידברן"
         })

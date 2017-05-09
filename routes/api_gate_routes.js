@@ -21,7 +21,6 @@ const ERRORS = {
     USER_OUTSIDE_EVENT: "Participant is outside of the event"
 };
 
-
 function sendError(res, httpCode, errorCode, errorObj) {
     if (errorObj) {
         log.error(errorObj)
@@ -163,10 +162,10 @@ router.post('/gate-exit', async function (req, res) {
             return sendError(res, 500, "USER_OUTSIDE_EVENT");
         }
 
+        // Saving the exit.
         ticket.attributes.inside_event = false;
         ticket.attributes.entrance_group_id = null;
         ticket.attributes.last_exit_timestamp = new Date();
-
         await ticket.save();
 
         return res.status(200).json({
