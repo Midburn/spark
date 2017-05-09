@@ -16,15 +16,15 @@ block content
                     .col-xs-12.col-sm-7
                         ul.list-group
                             li.list-group-item
-                                span=t('whoami.gender') 
-                                span.badge #{user.attributes.gender_i18n}
+                                span=t('whoami.gender')
+                                span.badge #{user.gender_i18n}
                             if camp.member_status=="approved_mgr" || camp.member_status=="approved"
                                 li.list-group-item
                                     span=t('whoami.camp')
                                     span.badge
                                         if user.isCampFree
                                             #{t('camps:camps.no_camp_assigned')}
-                                        else     
+                                        else
                                             a(href='/:lng/camps/#{camp.id}') #{camp.camp_name} (##{camp.id})
                             li.list-group-item
                                 span=t('whoami.phone')

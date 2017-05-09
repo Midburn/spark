@@ -75,7 +75,7 @@ async function dumpDrupalTickets(session, date) {
         var result = parseStringSync(x.body);
         var tickets = result['result']['item'];
         if (!tickets) {
-            log.info("Didn't get any tickets from Drupal that need update");
+            log.info("Didn't get ticket updates from Drupal");
             return null;
         }
         log.info("got " + tickets.length + " tickets");

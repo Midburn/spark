@@ -3,11 +3,34 @@ var router = express.Router({
     mergeParams: true
 });
 var _ = require('lodash');
+var log = require('../libs/logger')(module);
 
 var drupalSync = require('../scripts/drupal_ticket_sync');
 
 var Ticket = require('../models/ticket').Ticket;
 var Event = require('../models/event').Event;
+var UsersGroup = require('../models/user').UsersGroup;
+
+const ERRORS = {
+    GATE_CODE_MISSING: "gate_code is missing or incorrect",
+    BAD_SEARCH_PARAMETERS: "Search parameters are missing or incorrect. Please provide barcode or (ticket and order)",
+    TICKET_NOT_FOUND: "Ticket not found",
+    ALREADY_INSIDE: "Participant is already inside the event",
+    QUOTA_REACHED: "Users group quota reached",
+    TICKET_NOT_IN_GROUP: "Ticket is not assigned to this users group",
+    USER_OUTSIDE_EVENT: "Participant is outside of the event"
+};
+
+
+function sendError(res, httpCode, errorCode, errorObj) {
+    if (errorObj) {
+        log.error(errorObj)
+    }
+    return res.status(httpCode).json({
+        error: errorCode,
+        message: (errorObj && errorObj.message ? "Internal error: " + errorObj.message : ERRORS[errorCode])
+    });
+}
 
 async function getTicketBySearchTerms(req, res) {
 
@@ -19,12 +42,7 @@ async function getTicketBySearchTerms(req, res) {
         event_id = event.attributes.event_id;
     }
     if (!req.body.gate_code || !event) {
-        res.status(500).json({
-            error: true,
-            data: {
-                message: "gate_code is missing or incorrect"
-            }
-        });
+        return sendError(res, 500, "GATE_CODE_MISSING");
     }
 
     // Setting the search terms for the ticket.
@@ -35,26 +53,16 @@ async function getTicketBySearchTerms(req, res) {
         searchTerms = {event_id: event_id, ticket: req.body.ticket, order: req.body.order};
     }
     else {
-        res.status(500).json({
-            error: true,
-            data: {
-                message: "Search parameters are missing or incorrect. Please provide barcode or (ticket and order)"
-            }
-        });
+        return sendError(res, 500, "BAD_SEARCH_PARAMETERS");
     }
 
     // Loading data from the DB.
-    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder', 'pools']});
+    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder']}); // ,'holder.groups'
     if (ticket) {
         return ticket;
     }
     else {
-        return res.status(404).json({
-            error: true,
-            data: {
-                message: "Ticket not found"
-            }
-        });
+        return sendError(res, 404, "TICKET_NOT_FOUND");
     }
 }
 
@@ -63,35 +71,38 @@ router.post('/get-ticket/', async function (req, res) {
         // Loading ticket data from the DB.
         let ticket = await getTicketBySearchTerms(req, res);
 
+        if (!ticket) {
+            return;
+        }
+
         // Get ticket pools
-        let pools = [];
-        _.each(ticket.relations.pools.models, pool => {
-            pools.push({id: pool.attributes.pool_id, name: pool.attributes.name});
-        });
+        let groups = [];
+        let holder = ticket.relations.holder;
+        await holder.fetch({withRelated: 'groups'});
+        if (holder.relations.groups) {
+            _.each(holder.relations.groups.models, group => {
+                groups.push({id: group.attributes.group_id, type: group.attributes.type, name: group.attributes.name});
+            });
+        }
 
         let result = {
             ticket_number: ticket.attributes.ticket_number,
             holder_name: ticket.relations.holder.fullName,
             type: ticket.attributes.type,
             inside_event: ticket.attributes.inside_event,
+            entrance_timestamp: ticket.attributes.entrance_timestamp,
             first_entrance_timestamp: ticket.attributes.first_entrance_timestamp,
-            pools: pools
+            last_exit_timestamp: ticket.attributes.last_exit_timestamp,
+            entrance_group_id: ticket.attributes.entrance_group_id,
+            groups: groups
         };
         // All done, sending the results.
         res.status(200).json({
-            error: false,
-            data: {
-                ticket: result
-            }
+            ticket: result
         });
     }
     catch (err) {
-        res.status(500).json({
-            error: true,
-            data: {
-                message: "Internal error: " + err.message
-            }
-        });
+        return sendError(res, 500, null, err);
     }
 });
 
@@ -100,66 +111,42 @@ router.post('/gate-enter', async function (req, res) {
     // Loading ticket data from the DB.
     let ticket = await getTicketBySearchTerms(req, res);
 
+    if (!ticket) {
+        return sendError(res, 500, "TICKET_NOT_FOUND");
+    }
+
     if (ticket.attributes.inside_event) {
-        return res.status(500).json({
-            error: true,
-            data: {
-                message: "Burner is already inside the event"
-            }
-        });
+        return sendError(res, 500, "ALREADY_INSIDE");
     }
 
-    // Finding the right ticket_in_ticket_pool and updating it.
-    let poolUpdated = false;
-    if (req.body.pool_id) {
-        _.each(ticket.relations.poolsM2M, async poolM2M => {
-            if (poolM2M.attributes.pool_id === req.body.pool_id) {
-                // Check the pool's quota
-                if (poolM2M.quotaReached) {
-                    return res.status(500).json({
-                        error: true,
-                        data: {
-                            message: "Ticket pool quota reached"
-                        }
-                    });
-                }
-                // Everything is OK, updating the pool.
-                else {
-                    poolM2M.attributes.entrance_timestamp = new Date();
-                    // Check if the user was here before, reuse this entry.
-                    if (poolM2M.attributes.entrance_timestamp && poolM2M.attributes.exit_timestamp) {
-                        poolM2M.attributes.exit_timestamp = null;
-                    }
-                    await poolM2m.save();
-                    poolUpdated = true;
-                }
-            }
-        });
-    }
+    // Finding the right users group and updating it.
+    if (req.body.group_id) {
+        let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch();
 
-    // If entrance requested with a pool but the pool was not found.
-    if (req.body.pool_id && !poolUpdated) {
-        return res.status(500).json({
-            error: true,
-            data: {
-                message: "Ticket is not assigned to this ticket pool"
-            }
-        });
+        if (!group) {
+            return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+        }
+
+        if (group.quotaReached) {
+            return sendError(res, 500, "QUOTA_REACHED");
+        }
     }
 
     // Saving the entrance.
-    ticket.attributes.first_entrance_timestamp = new Date();
+    ticket.attributes.entrance_timestamp = new Date();
+    ticket.attributes.entrance_group_id = req.body.group_id || null;
+    ticket.attributes.last_exit_timestamp = null;
     ticket.attributes.inside_event = true;
+    if (!ticket.attributes.first_entrance_timestamp) {
+        ticket.attributes.first_entrance_timestamp = new Date();
+    }
     await ticket.save();
 
     // PATCH - Notifying Drupal that this ticket is now non-transferable. Remove with Drupal.
     drupalSync.passTicket(ticket.attributes.barcode);
 
     return res.status(200).json({
-        error: false,
-        data: {
-            message: "Ticket entered successfully"
-        }
+        message: "Ticket entered successfully"
     });
 });
 
@@ -168,39 +155,26 @@ router.post('/gate-exit', async function (req, res) {
     try {
         let ticket = await getTicketBySearchTerms(req, res);
 
-        if (!ticket.attributes.inside_event) {
-            return res.status(500).json({
-                error: true,
-                data: {
-                    message: "Burner is not in the event"
-                }
-            });
+        if (!ticket) {
+            return sendError(res, 500, "TICKET_NOT_FOUND");
         }
 
-        _.each(ticket.relations.poolsM2M, async poolM2M => {
-            if (poolM2M.attributes.entrance_timestamp && !attendance.attributes.exit_timestamp) {
-                poolM2M.attributes.exit_timestamp = new Date();
-                await poolM2M.save();
-            }
-        });
+        if (!ticket.attributes.inside_event) {
+            return sendError(res, 500, "USER_OUTSIDE_EVENT");
+        }
 
         ticket.attributes.inside_event = false;
+        ticket.attributes.entrance_group_id = null;
+        ticket.attributes.last_exit_timestamp = new Date();
+
         await ticket.save();
 
         return res.status(200).json({
-            error: false,
-            data: {
-                message: "Ticket exit completed"
-            }
+            message: "Ticket exit completed"
         });
     }
     catch (err) {
-        return res.status(500).json({
-            error: true,
-            data: {
-                message: "Internal error: " + err.message
-            }
-        });
+        return sendError(res, 500, null, err)
     }
 })
 ;
