@@ -6,6 +6,7 @@ var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
 var userRole = require('../libs/user_role');
 var _ = require('lodash');
+var i18next = require('i18next');
 const knex = require('../libs/db').knex;
 
 /////////////////////////////////////////////////////////////
@@ -175,7 +176,7 @@ var User = bookshelf.Model.extend({
         },
 
         gender_i18n: function () {
-            return t(this.attributes.gender);
+            return i18next.t(this.attributes.gender);
         }
     }
 });

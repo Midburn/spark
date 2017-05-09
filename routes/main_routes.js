@@ -85,7 +85,7 @@ module.exports = function (app, passport) {
                         errorMessage: req.flash('error')
                     });
                 } else {
-                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email), { httpOnly: true });
+                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email), {httpOnly: true});
                     var r = req.body['r'];
                     if (r) {
                         return res.redirect(r);
@@ -137,7 +137,7 @@ module.exports = function (app, passport) {
     // =====================================
     // JWT Login route
     app.post("/jwt-login", function (req, res) {
-        passportLib.login(req.body.email, req.body.password, function(result, user, error) {
+        passportLib.login(req.body.email, req.body.password, function (result, user, error) {
             if (result && user) {
                 var token = passportLib.generateJwtToken(req.body.email);
                 res.json({message: "ok", token: token});
@@ -240,8 +240,12 @@ module.exports = function (app, passport) {
                 name: 'breadcrumbs.whoami',
                 url: '/' + req.params.lng + '/whoami'
             }]);
+
+        /* TODO - camp fetching here is incorrect.
+         * We don't have only one event with one camp!
+         * We need to iterate on all events and change the view to be a better solution. */
+
         req.user.getUserCamps((camps) => {
-            req.user.init_t(req.t);
             let data = {
                 user: req.user,
                 // camp: req.user.attributes.camp,
@@ -424,7 +428,7 @@ module.exports = function (app, passport) {
                             name: model.fullName
                         });
                     return done(null);
-                },
+                }
             ],
             function (err) {
                 if (err) {
