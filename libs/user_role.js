@@ -17,6 +17,16 @@ userRole.isCampManager = function () {
     return userRole.is(userRole.CAMP_MANAGER);
 };
 
+userRole.NPO_MANAGER = 'npo_manager';
+userRole.isNpoManager = function () {
+    return userRole.is(userRole.NPO_MANAGER);
+};
+
+userRole.GATE_MANAGER = 'gate_manager';
+userRole.isGateManager = function () {
+    return userRole.is(userRole.GATE_MANAGER);
+};
+
 userRole.isAllowedToViewUser = function () {
     return (req, res, next) => {
         if (req.user && (req.user.isAdmin || req.params.id === req.user.id)) {

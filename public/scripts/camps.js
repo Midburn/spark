@@ -123,7 +123,7 @@ function extractCampData() {
     var type = fetchAllCheckboxValues('camp_type');
 
     return {
-        camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
+        camp_name_he: $('#camp_name_he').val() || 'camp' + (+new Date()),
         camp_name_en: $('#camp_name_en').val(),
         camp_desc_he: $('#camp_desc_he').val() || '',
         camp_desc_en: $('#camp_desc_en').val() || '',
