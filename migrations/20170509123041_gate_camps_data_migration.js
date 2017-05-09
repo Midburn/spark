@@ -8,7 +8,7 @@ exports.up = function (knex, Promise) {
             "CREATE TRIGGER camp_members_groups_after_ins AFTER INSERT ON camp_members " +
             "FOR EACH ROW " +
             "BEGIN " +
-            "INSERT INTO users_groups_membership (group_id, user_id) VALUES (new.user_id, new.camp_id); " +
+            "INSERT INTO users_groups_membership (group_id, user_id) VALUES (new.camp_id, new.user_id); " +
             "END"),
 
         knex.raw(
@@ -36,29 +36,41 @@ exports.up = function (knex, Promise) {
 
         knex.select().from('camps').then(camps => {
             if (camps) {
+                console.log("Found", camps.length, "camps to migrate");
                 _.each(camps, camp => {
+                    console.log("Camp:", camp.camp_name_he);
                     knex('users_groups').insert({
                         group_id: camp.camp_id,
                         event_id: "MIDBURN2017",
                         type: "CAMP",
                         name: camp.camp_name_he,
                         created_at: new Date()
-                    });
+                    }).then();
                 })
             }
         }),
 
-        knex.select().from('camp_members').then(camp_members => {
-            if (camp_members) {
-                _.each(camp_members, member => {
-                    knex('users_groups_membership').insert({
-                        group_id: member.camp_id,
-                        user_id: member.user_id,
-                        created_at: new Date()
-                    });
-                })
-            }
+        knex.select().from('camp_members').leftJoin('users_groups_membership', function () {
+            this.on("camp_members.user_id", "=", "users_groups_membership.user_id")
+            .on("users_groups_membership.group_id", "=", "camp_members.camp_id");
         })
+            .then(camp_members => {
+                if (camp_members) {
+                    console.log("Found", camp_members.length, "camp members to migrate");
+                    _.each(camp_members, member => {
+                        if (member.camp_id && !member.group_id) {
+                            console.log("member:", member.user_id, "group:", member.camp_id);
+                            knex('users_groups_membership').insert({
+                                group_id: member.camp_id,
+                                user_id: member.user_id,
+                                created_at: new Date()
+                            }).then(() => {
+                                console.log("OK")
+                            });
+                        }
+                    })
+                }
+            })
     ])
 };
 
