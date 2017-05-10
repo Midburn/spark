@@ -90,6 +90,7 @@
             "support_art": "Support art",
             "location_card_title": "Camp location",
             "location_comments": "Comments",
+            "early_arrival_quota":"Early Arrival Quota",
             "camp_location_street": "Street",
             "camp_location_street_time": "Street time",
             "camp_location_area": "Area",
@@ -286,5 +287,58 @@
             "doc_status": "Status",
             "last_doc_status": "Last status by",
             "camp_name_en": "Camp Name (English)"
+        },
+        "art_exhibit": {
+            "nav": "My Art Exhibit",
+            "nav_admin": "Manage Art Exhibit",
+            "dash": {
+                "title": "Art Exhibit",
+                "desc": "Art Exhibit"
+            },
+            "admin_index": {
+                "all_camps": "All Art Exhibits",
+                "all_members": "All Members",
+                "docs": "Docs",
+                "new": "New",
+                "all_camps_table": "All Camps"
+            },
+            "stats": {
+                "search": "search",
+                "name_en": "Name",
+                "contact_person": "Contact Person",
+                "status": "Status",
+                "last_update": "Last Update",
+                "published": "Published"
+            },
+            "members": {
+                "actions": "Actions"
+            }
+        },
+        "prod_dep": {
+            "nav": "My Department",
+            "nav_admin": "Manage Departments",
+            "dash": {
+                "title": "Manage Departments",
+                "desc": "Manage Departments"
+            },
+            "admin_index": {
+                "all_camps": "All Departments",
+                "all_members": "All Members",
+                "docs": "Docs",
+                "new": "New",
+                "all_camps_table": "All Camps"
+            },
+            "stats": {
+                "search": "search",
+                "name_en": "Name",
+                "contact_person": "Contact Person",
+                "status": "Status",
+                "last_update": "Last Update",
+                "published": "Published"
+            },
+            "members": {
+                "actions": "Actions"
+            }
+
         }
 }

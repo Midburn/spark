@@ -16,7 +16,7 @@ block content
                 h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
                 h6 #{t('camps:edit.since')}: #{camp.created_at}
         .controls.row
-            .col-xs-12    
+            .col-xs-12
                 //- Card switcher
                 button.Btn.Btn__default.card-switcher#1=t('camps:edit.basic_info')
                 button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
@@ -87,11 +87,11 @@ block content
                                             // set checkbox status
                                             var checkbox = document.getElementById("camp_accept_families");
                                             checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
-                                if(!isNew)    
+                                if(!isNew)
                                     .col-md-4
                                         .col-xs-12
                                             label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
-                                            
+
                                             if camp.web_published == '1'
                                                 span.badge.bg__green=t('camps:camps.yes')
                                                 button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
@@ -193,7 +193,10 @@ block content
                                     label(for='noise_level') #{t('camps:edit.camp_noise_level')}
                                     select(id='camp_noise_level', class="form-control", name="noise_level")
                                         option(ng-repeat="option in noise_level_options", ng-selected="option.id == '#{camp.noise_level}'", value="{{option.id}}") {{option.value}}
-                
+                            .col-md-4
+                                .col-xs-12
+                                    label(for='camp_early_arrival_quota')=t('camps:edit.early_arrival_quota')
+                                    input.form-control(id='camp_early_arrival_quota', name='camp_early_arrival_quota', value=(isNew ? 0 : (details.addinfo_json.early_arrival_quota === null ? '' : '#{details.addinfo_json.early_arrival_quota}')),readonly=(user.isCampManager ? 'true' : undefined))
                 //------- Lilach requested to hide section -------------//
                 //- h4=t('camps:edit.public_area_title')
                 //- .camp-details.panel
@@ -227,11 +230,15 @@ block content
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_location_street')=t('camps:edit.location_street')
-                                    input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : '#{details.camp_location_street}'), readonly)
+                                    input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : (details.camp_location_street===null?'':'#{details.camp_location_street}')),readonly=(user.isCampManager?'true':undefined))
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_location_street_time')=t('camps:edit.location_time')
-                                    input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : '#{details.camp_location_street_time}'), readonly)
+                                    input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : (details.camp_location_street_time===null?'':'#{details.camp_location_street_time}')),readonly=(user.isCampManager?'true':undefined))
+                            .col-md-4
+                                .col-xs-12
+                                    label(for='camp_location_area')=t('camps:edit.location_area')
+                                    input.form-control(id='camp_location_area', name='public_camp_location_area', value=(isNew ? '' : (details.camp_location_area === null ? '' : '#{details.camp_location_area}')),readonly=(user.isCampManager ? 'true' : undefined))
                             //- .col-md-4
                             //-     .col-xs-12
                             //-         label(for='camp_location_area')=t('camps:edit.location_area')
@@ -331,4 +338,4 @@ block content
                                     span
                     .modal-footer
                         button.Btn.Btn__transparent(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('camps:new.close')
-                        button.Btn.Btn__green(id='camp_create_save_modal_request', type='button')=t('camps:new.send_request') 
+                        button.Btn.Btn__green(id='camp_create_save_modal_request', type='button')=t('camps:new.send_request')
