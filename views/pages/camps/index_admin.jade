@@ -1,41 +1,43 @@
 extends ../../includes/page
 block content
     .camps.camp_admin_index(ng-app="ngCamps")
+        script 
+            var groups_prototype="#{__groups_prototype}";
         .container.col-md-12
-            h1=t('camps:dash.title')
-            p.lead.text-muted=t('camps:dash.desc')
+            h1=t(t_prefix+'dash.title')
+            p.lead.text-muted=t(t_prefix+'dash.desc')
         .controls.row
             .col-xs-12
                 div.block-center
                     div.input-group
-                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/camps-admin/manage`, role='button')=t('camps:admin_index.all_camps')
-                        a.Btn.Btn__transparent.card-switcher#2(href=`/${language}/camps-admin/members`, role='button')=t('camps:admin_index.all_members')
-                        a.Btn.Btn__transparent.card-switcher#3(href=`/${language}/camps-admin/docs`, role='button')=t('camps:admin_index.docs')
+                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/camps-admin/manage`, role='button')=t(t_prefix+'admin_index.all_camps')
+                        a.Btn.Btn__transparent.card-switcher#2(href=`/${language}/camps-admin/members`, role='button')=t(t_prefix+'admin_index.all_members')
+                        a.Btn.Btn__transparent.card-switcher#3(href=`/${language}/camps-admin/docs`, role='button')=t(t_prefix+'admin_index.docs')
                         a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
                             span.glyphicon.glyphicon-plus(aria-hidden="true")
-                            span=t('camps:admin_index.new')
+                            span=t(t_prefix+'admin_index.new')
             
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageCampsController")
-                h4=t('camps:admin_index.all_camps_table')
+                h4=t(t_prefix+'admin_index.all_camps_table')
                 .controls.row
                   .col-xs-12.col-md-9
-                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t('camps:stats.search')}")
+                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'stats.search')}")
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers
                             th(ng-click='changeOrderBy("id")') #
-                            th.camp_name_en(ng-click='changeOrderBy("name")')=t('camps:stats.name_en')
-                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t('camps:stats.contact_person')
-                            th.status(ng-click='changeOrderBy("status")')=t('camps:stats.status')
-                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t('camps:stats.last_update')
-                            //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t('camps:stats.created_at')
-                            th.published(ng-click='changeOrderBy("published")')=t('camps:stats.published')
-                            //- th.facebook_page_url=t('camps:stats.facebook_page_url')
-                            th()=t('camps:members.actions')
-                            //- th.admin-edit=t('camps:stats.edit')
-                            //- th.admin-remove=t('camps:stats.remove')
+                            th.camp_name_en(ng-click='changeOrderBy("name")')=t(t_prefix+'stats.name_en')
+                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t(t_prefix+'stats.contact_person')
+                            th.status(ng-click='changeOrderBy("status")')=t(t_prefix+'stats.status')
+                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'stats.last_update')
+                            //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t(t_prefix+'stats.created_at')
+                            th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'stats.published')
+                            //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
+                            th()=t(t_prefix+'members.actions')
+                            //- th.admin-edit=t(t_prefix+'stats.edit')
+                            //- th.admin-remove=t(t_prefix+'stats.remove')
                     tbody
                         tr(ng-repeat="camp in camps | filter: searchCamp | orderBy: orderCamps")
                             td {{ camp.id }}
@@ -65,46 +67,46 @@ block content
                                 a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')&nbsp;
                                     button.btn.btn-xs 
                                         span(class='glyphicon glyphicon-pencil')
-                                        =t('camps:stats.edit')
+                                        =t(t_prefix+'stats.edit')
                                 a.cursor-p(ng-click='removeCamp(camp.id)')&nbsp;
                                     button.btn.btn-xs 
                                         span(class='glyphicon glyphicon-trash')
-                                        =t('camps:stats.remove')
+                                        =t(t_prefix+'stats.remove')
                             //- td
 
             //- Card 2
             .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
-                h4=t('camps:admin_index.all_members_table')
+                h4=t(t_prefix+'admin_index.all_members_table')
                 .controls.row
                     .col-xs-12.col-md-3
                         ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
                             if(language === 'en')
-                                ui-select-match(placeholder="#{t('camps:members.choose_camp')}") {{$select.selected.camp_name_en}}
+                                ui-select-match(placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_en}}
                                 ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
                                     small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
                                     span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
                             else
-                                ui-select-match(dir='rtl', placeholder="#{t('camps:members.choose_camp')}") {{$select.selected.camp_name_he}}
+                                ui-select-match(dir='rtl', placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_he}}
                                 ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
                                     small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
                                     span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
                     .col-xs-12.col-md-9
-                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:members.search')}")
+                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t(t_prefix+'members.search')}")
                 include partials/members_table
                 
             //- Card 3
             .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive
-                h4=t('camps:admin_index.docs_table')
+                h4=t(t_prefix+'admin_index.docs_table')
                     
             //- Card 4
             .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
-                h2=t('camps:new.header_title')
-                h4=t('camps:new.name_choosing_title')
+                h2=t(t_prefix+'new.header_title')
+                h4=t(t_prefix+'new.name_choosing_title')
                 .col-sm-8.col-xs-12
                     .pos-r
-                        label=t('camps:new.name_en')
+                        label=t(t_prefix+'new.name_en')
                         input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
                         span.indicator
                             span.glyphicon
                 .col-sm-4.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t('camps:btn_continue')
+                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t(t_prefix+'btn_continue')

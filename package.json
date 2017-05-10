@@ -41,6 +41,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.17.1",
     "bookshelf": "^0.10.0",
+    "bookshelf-json-columns": "^2.1.0",
     "bootstrap": "^3.3.7",
     "bootstrap-validator": "^0.11.5",
     "bower": "^1.8.0",
@@ -90,7 +91,8 @@
     "superagent": "^3.5.0",
     "webpack": "^1.14.0",
     "winston": "2.3.0",
-    "snyk": "^1.29.0"
+    "snyk": "^1.29.0",
+    "xml2js-parser": "^1.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -112,3 +114,4 @@
   },
   "snyk": true
 }
+

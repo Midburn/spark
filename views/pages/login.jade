@@ -24,6 +24,11 @@ block wrapper
                     .col-xs-12.text-center
                         h2=t('login')
 
+                    if process.env.NODE_ENV != 'production'
+                        .col-xs-12.text-center
+                            div(style="direction:ltr;")
+                                h3(style="color:red;") This system is not a production server
+
                     form(action="/#{language}/login", method="post", data-toggle="validator", role="form")
                         input(type="hidden", name="r", value=r)
                         .col-xs-12
@@ -57,10 +62,12 @@ block wrapper
                             a(href="https://profile.midburn.org/#{language}/user/register")=t('sign_up')
                         if process.env.NODE_ENV != 'production'
                             div(style="direction:ltr;")
-                                h4(style="color:red;") Development system
+                                h4(style="color:red;") Developers information:
                                 p package.json version: #{process.env.version}
-                                p
+                                p SPARK_DEPLOYMENT_TIME: #{process.env.SPARK_DEPLOYMENT_TIME}
+                                p >>>&nbsp;
                                     a(href="/dev" style="text-decoration:underline;") Development Console
+                                    |&nbsp;<<<
                         hr
                         .langs-wrapper
                             p

@@ -131,7 +131,7 @@ router.get('/ajax/members', /*TODO security.protectJwt,*/ (req, res) => {
     query.orderBy(sort, req.query.order)
         .then((records) => {
             for (i in records) {
-                //if (record.hasOwnProperty()) {
+                //if (record.hasOwnProperty(i)) {
                 records[i].status_text = i18next.t('npo:status.' + records[i].membership_status);
                 //}
             }

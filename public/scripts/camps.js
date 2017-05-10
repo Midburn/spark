@@ -123,7 +123,7 @@ function extractCampData() {
     var type = fetchAllCheckboxValues('camp_type');
 
     return {
-        camp_name_he: $('#camp_name_he').val() || 'camp' + (+ new Date()),
+        camp_name_he: $('#camp_name_he').val() || 'camp' + (+new Date()),
         camp_name_en: $('#camp_name_en').val(),
         camp_desc_he: $('#camp_desc_he').val() || '',
         camp_desc_en: $('#camp_desc_en').val() || '',
@@ -147,7 +147,8 @@ function extractCampData() {
         location_comments: $('#location_comments').val() || '',
         camp_location_street: $('#camp_location_street').val() || '',
         camp_location_street_time: $('#camp_location_street_time').val() || '',
-        camp_location_area: $('#camp_location_area').val() || ''
+        camp_location_area: $('#camp_location_area').val() || '',
+        camp_early_arrival_quota : $('#camp_early_arrival_quota').val() || ''
     };
 }
 

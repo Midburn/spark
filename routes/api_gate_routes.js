@@ -1,103 +1,188 @@
-const common = require('../libs/common').common;
-var User = require('../models/user').User;
-// var Camp = require('../models/camp').Camp;
-const constants = require('../models/constants.js');
-// var config = require('config');
-// const knex = require('../libs/db').knex;
-// const userRole = require('../libs/user_role');
-// var mail = require('../libs/mail'),
-//     mailConfig = config.get('mail');
-//
-var __gate_change_status = function (user_id, status, req, res) {
-    if (req.user.isAdmin) {
-        if (['in', 'out'].indexOf(status) > -1) {
-            let _forge = {};
-            if (typeof user_id === "number") {
-                _forge.user_id = user_id;
-            } else if (common.validateEmail(user_id)) {
-                _forge.email = user_id;
-            } else {
-                res.status(500).json({ error: true, data: { message: 'Unrecognized user id or email' } });
-                return;
-            }
+var express = require('express');
+var router = express.Router({
+    mergeParams: true
+});
+var _ = require('lodash');
+var log = require('../libs/logger')(module);
 
-            User.forge({ _forge }).fetch().then((user) => {
-                let addinfo_json = {};
-                if (user && typeof(user.attributes.addinfo_json) === 'string') {
-                    addinfo_json = JSON.parse(user.attributes.addinfo_json);
-                }
-                if (addinfo_json.current_status_log instanceof Array) {
-                    addinfo_json.current_status_log = [];
-                }
+var drupalSync = require('../scripts/drupal_ticket_sync');
 
-                let _newSettings = {
-                    current_event_id: constants.CURRENT_EVENT_ID,
-                    current_last_status: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                    current_status: status,
-                }
-                addinfo_json.current_status_log.push(_newSettings);
-                _newSettings.addinfo_json = JSON.stringify(addinfo_json);
-                user.save(_newStatus).then((user) => {
-                    let _res_data = {
-                        user_id: user.attributes.user_id,
-                        email: user.attributes.email,
-                        event_id: user.attributes.current_event_id,
-                        current_status: user.attributes.current_status,
-                        current_status_time: user.attributes.current_last_status,
-                    };
-                    res.status(200).json({ error: false, data: _res_data });
-                });
-            }).catch((err) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
-                });
-            });
-        } else {
-            res.status(500).json({ error: true, data: { message: 'Unrecognized status IN and OUT' } });
-        }
-    } else {
-        res.status(500).json({ error: true, data: { message: 'Not authorized to change user status' } });
+var Ticket = require('../models/ticket').Ticket;
+var Event = require('../models/event').Event;
+var UsersGroup = require('../models/user').UsersGroup;
+
+const ERRORS = {
+    GATE_CODE_MISSING: "gate_code is missing or incorrect",
+    BAD_SEARCH_PARAMETERS: "Search parameters are missing or incorrect. Please provide barcode or (ticket and order)",
+    TICKET_NOT_FOUND: "Ticket not found",
+    ALREADY_INSIDE: "Participant is already inside the event",
+    QUOTA_REACHED: "Users group quota reached",
+    TICKET_NOT_IN_GROUP: "Ticket is not assigned to this users group",
+    USER_OUTSIDE_EVENT: "Participant is outside of the event"
+};
+
+function sendError(res, httpCode, errorCode, errorObj) {
+    if (errorObj) {
+        log.error(errorObj)
+    }
+    return res.status(httpCode).json({
+        error: errorCode,
+        message: (errorObj && errorObj.message ? "Internal error: " + errorObj.message : ERRORS[errorCode])
+    });
+}
+
+async function getTicketBySearchTerms(req, res) {
+
+    // Loading event and checking that gate_code is valid.
+    let event = null;
+    let event_id = null;
+    if (req.body.gate_code) {
+        event = await Event.forge({gate_code: req.body.gate_code}).fetch();
+        event_id = event.attributes.event_id;
+    }
+    if (!req.body.gate_code || !event) {
+        return sendError(res, 500, "GATE_CODE_MISSING");
+    }
+
+    // Setting the search terms for the ticket.
+    let searchTerms;
+    if (req.body.barcode) {
+        searchTerms = {event_id: event_id, barcode: req.body.barcode};
+    } else if (req.params.ticket && req.params.order) {
+        searchTerms = {event_id: event_id, ticket: req.body.ticket, order: req.body.order};
+    }
+    else {
+        return sendError(res, 500, "BAD_SEARCH_PARAMETERS");
+    }
+
+    // Loading data from the DB.
+    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder']}); // ,'holder.groups'
+    if (ticket) {
+        return ticket;
+    }
+    else {
+        return sendError(res, 404, "TICKET_NOT_FOUND");
     }
 }
 
-module.exports = (app, passport) => {
-    /**
-     * API: (GET) Set the location of the profile of event_id current status to be inside event
-     *
-     * request => /gate/event_in/id/:user_id
-     */
-    app.get('/gate/event_in/id/:user_id', userRole.isLoggedIn(), (req, res) => {
-        let user_id = req.params.user_id;
-        __gate_change_status(parseInt(user_id), 'in', req, res);
+router.post('/get-ticket/', async function (req, res) {
+    try {
+        // Loading ticket data from the DB.
+        let ticket = await getTicketBySearchTerms(req, res);
+
+        if (!ticket) {
+            return;
+        }
+
+        // Get ticket pools
+        let groups = [];
+        let holder = ticket.relations.holder;
+        await holder.fetch({withRelated: 'groups'});
+        if (holder.relations.groups) {
+            _.each(holder.relations.groups.models, group => {
+                groups.push({id: group.attributes.group_id, type: group.attributes.type, name: group.attributes.name});
+            });
+        }
+
+        let result = {
+            ticket_number: ticket.attributes.ticket_number,
+            holder_name: ticket.relations.holder.fullName,
+            israeli_id: ticket.relations.holder.attributes.israeli_id,
+            gender: ticket.relations.holder.attributes.gender,
+            type: ticket.attributes.type,
+            inside_event: ticket.attributes.inside_event,
+            entrance_timestamp: ticket.attributes.entrance_timestamp ? ticket.attributes.entrance_timestamp.getTime() : null,
+            first_entrance_timestamp: ticket.attributes.first_entrance_timestamp ? ticket.attributes.first_entrance_timestamp.getTime() : null,
+            last_exit_timestamp: ticket.attributes.last_exit_timestamp ? ticket.attributes.last_exit_timestamp.getTime(): null,
+            entrance_group_id: ticket.attributes.entrance_group_id,
+            groups: groups
+        };
+        // All done, sending the results.
+        res.status(200).json({
+            ticket: result
+        });
+    }
+    catch (err) {
+        return sendError(res, 500, null, err);
+    }
+});
+
+router.post('/gate-enter', async function (req, res) {
+
+    // Loading ticket data from the DB.
+    let ticket = await getTicketBySearchTerms(req, res);
+
+    if (!ticket) {
+        return sendError(res, 500, "TICKET_NOT_FOUND");
+    }
+
+    if (ticket.attributes.inside_event) {
+        return sendError(res, 500, "ALREADY_INSIDE");
+    }
+
+    // Finding the right users group and updating it.
+    if (req.body.group_id) {
+        let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch();
+
+        if (!group) {
+            return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+        }
+
+        if (group.quotaReached) {
+            return sendError(res, 500, "QUOTA_REACHED");
+        }
+    }
+
+    // Saving the entrance.
+    ticket.attributes.entrance_timestamp = new Date();
+    ticket.attributes.entrance_group_id = req.body.group_id || null;
+    ticket.attributes.last_exit_timestamp = null;
+    ticket.attributes.inside_event = true;
+    if (!ticket.attributes.first_entrance_timestamp) {
+        ticket.attributes.first_entrance_timestamp = new Date();
+    }
+    await ticket.save();
+
+    // PATCH - Notifying Drupal that this ticket is now non-transferable. Remove with Drupal.
+    drupalSync.passTicket(ticket.attributes.barcode);
+
+    return res.status(200).json({
+        message: "Ticket entered successfully"
     });
-    /**
-     * API: (GET) Set the location of the profile of event_id current status to be inside event
-     *
-     * request => /gate/event_in/id/:user_id
-     */
-    app.get('/gate/event_out/id/:user_id', userRole.isLoggedIn(), (req, res) => {
-        let user_id = req.params.user_id;
-        __gate_change_status(parseInt(user_id), 'out', req, res);
-    });
-    /**
-     * API: (GET) Set the location of the profile of event_id current status to be inside event
-     *
-     * request => /gate/event_in/id/:user_id
-     */
-    app.get('/gate/event_in/email/:email', userRole.isLoggedIn(), (req, res) => {
-        let email = req.params.email;
-        __gate_change_status(email, 'in', req, res);
-    });
-    /**
-     * API: (GET) Set the location of the profile of event_id current status to be inside event
-     *
-     * request => /gate/event_in/id/:user_id
-     */
-    app.get('/gate/event_out/email/:email', userRole.isLoggedIn(), (req, res) => {
-        let email = req.params.email;
-        __gate_change_status(email, 'in', req, res);
-    });
-}
+});
+
+router.post('/gate-exit', async function (req, res) {
+
+    try {
+        let ticket = await getTicketBySearchTerms(req, res);
+
+        if (!ticket) {
+            return sendError(res, 500, "TICKET_NOT_FOUND");
+        }
+
+        if (!ticket.attributes.inside_event) {
+            return sendError(res, 500, "USER_OUTSIDE_EVENT");
+        }
+
+        // Saving the exit.
+        ticket.attributes.inside_event = false;
+        ticket.attributes.entrance_group_id = null;
+        ticket.attributes.entrance_timestamp = null;
+        ticket.attributes.last_exit_timestamp = new Date();
+        await ticket.save();
+
+        return res.status(200).json({
+            message: "Ticket exit completed"
+        });
+    }
+    catch (err) {
+        return sendError(res, 500, null, err)
+    }
+})
+;
+
+router.post('/tickets-counter', function (req, res) {
+    // TODO return the number of people inside the event. Parameter - event_code
+});
+
+module.exports = router;

@@ -10,13 +10,83 @@ block content
 
     .form-group
         label=t('gate:search')
-        input( type="text", class="form-control", name="search_box", value='' )
-
     table( data-toggle="table", data-url="/he/gate/ajax/tickets", data-search="true", data-side-pagination="server",
     data-pagination="true" )
         thead
             tr
-                th( data-field="ticket_number" ) Ticket number
-                th Holder
+                th( data-field="ticket_number" )=t('ticket_number')
+                th( data-field="order_id" )=t('order_number')
+                th( data-field="israeli_id" )=t('israeli_id')
+                th( data-field="first_name" )=t('first_name')
+                th( data-field="last_name" )=t('last_name')
+                th( data-field="email" )=t('email')
+                th( data-field="type" )=t('ticket_type')
+                th( data-field="first_entrance_timestamp" data-formatter="dateFormat" )=t('first_entrance_timestamp')
+                th( data-field="entrance_timestamp" data-formatter="dateFormat")=t('entrance_timestamp')
+                th( data-field="last_exit_timestamp" data-formatter="dateFormat")=t('last_exit_timestamp')
+                th( data-formatter="tableActions" )=t('operations')
 
+
+    #myModal.modal.fade(role='dialog')
+        .modal-dialog
+            // Modal content
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal') ×
+                    h4.modal-title=t("gate:enter_ticket")
+                .modal-body
+                    h3=t('gate:entrance_instructions')
+                    p
+                        b=t('ticket_number')
+                        |:&nbsp;
+                        span( id='modal_ticket_number' )
+                    p
+                        b=t('first_name')
+                        | :&nbsp;
+                        span( id='modal_first_name' )
+                    p
+                        b=t('last_name')
+                        | :&nbsp;
+                        span( id='modal_last_name' )
+
+                .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal', id='entrance_button')=t('gate:enter_ticket')
+                    button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')
+
+block scripts
+    script.
+        function tableActions(value, row, index) {
+            if (!row.inside_event) {
+                return '<a class="entranceAction" id=' + row.ticket_number + '" ' +
+                    'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:enter_ticket")}</a> ';
+            } else {
+                return '<span class="glyphicon glyphicon-ok" />';
+            }
+        };
+
+        function dateFormat(value) {
+            if (value) {
+                var d = new Date(value);
+                return ("0" + d.getDate()).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
+                    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            }
+        }
+
+        $(document).ready(function () {
+            $(document).on("click", ".entranceAction", function () {
+                $("#modal_ticket_number")[0].innerHTML = parseInt(this.id);
+            });
+
+            $(document).on("click", "#entrance_button", function () {
+                var id = $("#modal_ticket_number")[0].innerHTML;
+                $.post("/api/gate/gate-enter", {
+                    barcode: "",
+                    gate_code: "#{gate_code}",
+                    group_id: ""
+                },
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+            });
+        });
 

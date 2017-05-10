@@ -12,9 +12,32 @@ userRole.isAdmin = function () {
     return userRole.is(userRole.ADMIN);
 };
 
+userRole.THEME_CAMPS_ADMIN = 'camps_admin';
+userRole.isCampsAdmin = function () {
+    return userRole.is(userRole.THEME_CAMPS_ADMIN);
+};
+userRole.ART_EXHIBIT_ADMIN = 'art_exhibits_admin';
+userRole.isArtExhibitsAdmin = function () {
+    return userRole.is(userRole.ART_EXHIBIT_ADMIN);
+};
+userRole.PROD_DEP_ADMIN = 'prod_dep_admin';
+userRole.isProdDepsAdmin = function () {
+    return userRole.is(userRole.PROD_DEP_ADMIN);
+};
+
 userRole.CAMP_MANAGER = 'camp_manager';
 userRole.isCampManager = function () {
     return userRole.is(userRole.CAMP_MANAGER);
+};
+
+userRole.NPO_MANAGER = 'npo_manager';
+userRole.isNpoManager = function () {
+    return userRole.is(userRole.NPO_MANAGER);
+};
+
+userRole.GATE_MANAGER = 'gate_manager';
+userRole.isGateManager = function () {
+    return userRole.is(userRole.GATE_MANAGER);
 };
 
 userRole.isAllowedToViewUser = function () {

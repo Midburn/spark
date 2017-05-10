@@ -1,4 +1,6 @@
 {
     "gate" : "Gate",
-    "search": "Search by ticket number / person name / email"
+    "search": "Search by person name / email",
+    "enter_ticket": "Enter ticket",
+    "entrance_instructions" : "Please verify all the details of the ticket against a valid user ID card."
 }

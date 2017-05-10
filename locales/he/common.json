@@ -1,6 +1,7 @@
 {
     "back_home": "בחזרה לדף הבית",
     "bad_email": "כתובת אימייל לא חוקית",
+    "cancel": "ביטול",
     "confirm_password": "אשרו סיסמה",
     "email": "דואר אלקטרוני",
     "email_verification_required": "הוראות הפעלה לחשבונך נשלחו לתיבת הדואר האלקטרוני שלך",
@@ -50,9 +51,18 @@
     "password_changed_email_subject": "התראת אבטחה מ- Spark",
     "user_id": "מס. משתמש",
     "version": "גרסה",
+    "volunteering": "התנדבות",
     "facebook": {
         "login": "התחבר באמצעות פייסבוק"
     },
+    "ticket_number": "מס. כרטיס",
+    "order_number": "מס. הזמנה",
+    "ticket_type": "סוג כרטיס",
+    "operations": "פעולות",
+    "israeli_id": "מספר ת.ז.",
+    "entrance_timestamp": "תאריך ושעת כניסה נוכחית",
+    "last_exit_timestamp": "תאריך ושעת יציאה אחרונה",
+    "first_entrance_timestamp" : "תאריך ושעת כניסה ראשונה",
     "breadcrumbs": {
         "home": "עמוד ראשי",
         "npo": "עמותת מידברן",

@@ -27,10 +27,9 @@ app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
 app.use(morganLogger('dev', {
     stream: log.logger.stream({
         level: 'info',
-        filter: function(message) {
+        filter: function (message) {
             if ((typeof message === "undefined") || (message === null)) return true;
-            return !
-                (message.includes('/stylesheets/') || message.includes('/images/'));
+            return !(message.includes('/stylesheets/') || message.includes('/images/'));
         }
     })
 }));
@@ -55,7 +54,7 @@ app.use('/bower_components', express.static(path.join(__dirname, '/bower_compone
 
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.req = req;
     res.locals.path = req.path.split('/');
     next();
@@ -125,8 +124,8 @@ i18next
             //cookieExpirationDate: new Date(),
             //cookieDomain: 'SparkMidburn'
         }
-    }, function() {
-        middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function(req, res) {
+    }, function () {
+        middleware.addRoute(i18next, '/:lng', ['en', 'he'], app, 'get', function (req, res) {
             //endpoint function
             //log.info("ROUTE");
         });
@@ -157,6 +156,7 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 app.use('/:lng/npo', require('./routes/npo_routes'));
 app.use('/:lng/npo-admin', require('./routes/npo_admin_routes'));
 app.use('/:lng/gate', require('./routes/gate_routes'));
+app.use('/:lng/volunteering', require('./routes/volunteering_routes'));
 
 // Mail
 var mail = require('./libs/mail');
@@ -164,6 +164,7 @@ mail.setup(app);
 
 // API
 require('./routes/api_routes')(app, passport);
+app.use('/api/gate', require('./routes/api_gate_routes'));
 
 // Camps / API
 // TODO this is not the right way to register routes
@@ -175,10 +176,6 @@ require('./routes/api_camps_routes')(app, passport);
 
 // Camps
 require('./routes/camps_routes')(app, passport);
-
-//TODO this is not the right way to register routes
-var ticket_routes = require('./routes/ticket_routes');
-app.use('/:lng/tickets/', ticket_routes);
 
 require('./routes/volunteers_routes')(app, passport);
 
@@ -192,7 +189,7 @@ log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', a
 // ==============
 
 // Catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found: ' + req.url);
     err.status = 404;
     next(err);
@@ -201,7 +198,7 @@ app.use(function(req, res, next) {
 // Development error handler - will print stacktrace
 if (app.get('env') === 'development') {
 
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         // Handle CSRF token errors
         if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
@@ -222,7 +219,7 @@ if (app.get('env') === 'development') {
 }
 // Production error handler - no stacktraces leaked to user
 else {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         // Handle CSRF token errors
         if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
@@ -241,11 +238,11 @@ else {
 }
 
 // Handler for unhandled rejections
-process.on('unhandledRejection', function(reason, p) {
+process.on('unhandledRejection', function (reason, p) {
     log.error("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
 });
 
-process.on('warning', function(warning) {
+process.on('warning', function (warning) {
     log.warn(warning.name); // Print the warning name
     log.warn(warning.message); // Print the warning message
     log.warn(warning.stack); // Print the stack trace
@@ -256,3 +253,13 @@ module.exports = app;
 
 log.info("--- Spark is running :) ---");
 
+if (process.env.DRUPAL_TICKET_SYNC_EVERY_X_MINUTES) {
+    log.info("Drupal ticket sync is on. Sync will run every X minutes: ", process.env.DRUPAL_TICKET_SYNC_EVERY_X_MINUTES);
+    setTimeout(() => {
+        var drupalTicketSync = require('./scripts/drupal_ticket_sync');
+        drupalTicketSync.runSyncTicketsLoop(process.env.DRUPAL_TICKET_SYNC_EVERY_X_MINUTES);
+    }, 10000);
+}
+else {
+    log.warn("Drupal ticket sync is disabled. To run, set DRUPAL_TICKET_SYNC_EVERY_X_MINUTES in your .env file")
+}
