@@ -7,6 +7,7 @@ const knex = require('../libs/db').knex;
 const userRole = require('../libs/user_role');
 var mail = require('../libs/mail'),
     mailConfig = config.get('mail');
+var APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 var emailDeliver = (recipient, subject, template, props) => {
     /**
      * Deliver email request to camp manager
@@ -205,7 +206,7 @@ module.exports = (app, passport) => {
             });
         });
 
-    var __camps_create_camp_obj = function (req, isNew) {
+    var __camps_create_camp_obj = function (req, isNew,curCamp) {
         var data = {
             __prototype: constants.prototype_camps.THEME_CAMP.id,
             event_id: constants.CURRENT_EVENT_ID,
@@ -245,6 +246,19 @@ module.exports = (app, passport) => {
         if (isNew || req.user.isAdmin) {
             __update_prop('camp_name_en');
             __update_prop('camp_name_he');
+        }
+        if (req.user.isAdmin) {
+            var campAddInfoJson = {early_arrival_quota:''};
+            if (req.body.camp_early_arrival_quota) {
+                if (curCamp) {
+                    campAddInfoJson = JSON.parse(curCamp.attributes.addinfo_json);
+                    if (campAddInfoJson ==='' || campAddInfoJson === null) {
+                            campAddInfoJson = {early_arrival_quota:''};
+                        }
+                }
+                campAddInfoJson.early_arrival_quota = req.body.camp_early_arrival_quota;
+            }
+           data.addinfo_json =JSON.stringify(campAddInfoJson);
         }
         __update_prop('noise_level', constants.CAMP_NOISE_LEVELS);
         // if (req.body.camp_status)
@@ -297,7 +311,7 @@ module.exports = (app, passport) => {
             camp.getCampUsers((users) => {
                 if (camp.isCampManager(req.user.attributes.user_id) || req.user.isAdmin) {
                     Camp.forge({ id: req.params.id }).fetch().then((camp) => {
-                        camp.save(__camps_create_camp_obj(req, false)).then(() => {
+                        camp.save(__camps_create_camp_obj(req, false,camp)).then(() => {
                             res.json({ error: false, status: 'Camp updated' });
                             // });
                         }).catch((err) => {
@@ -682,7 +696,28 @@ module.exports = (app, passport) => {
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
         Camp.forge({ id: req.params.id }).fetch().then((camp) => {
             camp.getCampUsers((members) => {
-                if (camp.isCampManager(req.user.id, req.t) || req.user.isAdmin) {
+                var isCampManager = camp.isCampManager(req.user.id, req.t);
+                if (!req.user.isAdmin) {
+                    members = members.map(function(member) {
+                        if (APPROVAL_ENUM.indexOf(member.member_status)<0) {
+                            member.cell_phone = '';
+                            member.name = '';
+                        }
+                        delete member.email;
+                        delete member.first_name;
+                        delete member.last_name;
+                        delete member.gender;
+                        delete member.date_of_birth;
+                        delete member.israeli_id;
+                        delete member.address;
+                        delete member.extra_phone;
+                        delete member.facebook_id;
+                        delete member.facebook_token;
+                        delete member.addinfo_json;
+                        return member;
+                    });
+                }
+                if (isCampManager || req.user.isAdmin) {
                     res.status(200).json({ members: members });
                 } else {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });

@@ -12,18 +12,18 @@ block content
                   if language == 'en'
                     | #{camp.camp_name_en}
                   else
-                    | #{camp.camp_name_he}  
+                    | #{camp.camp_name_he}
                 .style
                     h5 #{t('camps:camps.style')}
                     each type in camp.type_i18n.split(',')
                         span.label.label-primary #{type}
-                h5 
+                h5
                 //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
             .desc.row
                 .col-xs-12
                     h4 #{t('camps:camps.desc')}
-                if language == 'en' 
+                if language == 'en'
                     .col-xs-12.col-sm-6
                         p.well(lang='en', style='direction:ltr;white-space:pre-line')!=camp.camp_desc_en_linkify
                     .text-right.col-xs-12.col-sm-6
@@ -33,7 +33,7 @@ block content
                         p.well(lang='he', style='direction:rtl;white-space:pre-line')!=camp.camp_desc_he_linkify
                     .col-xs-12.col-sm-6
                         p.well(lang='en', style='direction:ltr;white-space:pre-line')!=camp.camp_desc_en_linkify
-                
+
         .card.card__shad
             .publication.row
                 .col-xs-12
@@ -45,65 +45,65 @@ block content
                                 span=t('camps:stats.contact_person')
                             ul.list-group
                               li.list-group-item
-                                span #{t('camps:camps.name')}: 
+                                span #{t('camps:camps.name')}:
                                 span.badge.contact_person_name #{camp.contact_person_name}
                               li.list-group-item
-                                span #{t('camps:camps.phone')}: 
+                                span #{t('camps:camps.phone')}:
                                 span.badge.contact_person_phone #{camp.contact_person_phone}
                               li.list-group-item
-                                span #{t('camps:camps.email')}: 
+                                span #{t('camps:camps.email')}:
                                 span.badge.contact_person_email #{camp.contact_person_email}
-                    if (camp.facebook_page_url) 
+                    if (camp.facebook_page_url)
                         .col-xs-12.col-md-6
                             span=t('camps:stats.facebook_page_url')
                             .facebook-info.Btn
                                 a(href='#{camp.facebook_page_url}', target='_blank')
-                                    i(class="fa fa-facebook-official") 
+                                    i(class="fa fa-facebook-official")
                                     | &nbsp; #{t('camps:camps.facebook_page_url_link')}
-            if (isUserInCamp) 
+            if (isUserInCamp)
                 .management.row
                     .col-xs-12
                         h4=t('camps:camps.management_title')
                         //- camp manager (main contact)
-                        if (main_contact) 
+                        if (main_contact)
                             .contact-info.col-md-4
                                 span=t('camps:camps.main_contact')
                                 //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--main', data-user-id='#{camp.main_contact}')
                                     span=t('camps:camps.main_contact')
                                 .info.type--main
-                                    h6 #{t('camps:camps.name')}: 
+                                    h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{main_contact.name}
-                                    h6 #{t('camps:camps.phone')}: 
+                                    h6 #{t('camps:camps.phone')}:
                                         span.contact_person_phone #{main_contact.cell_phone}
-                                    h6 #{t('camps:camps.email')}: 
+                                    h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{main_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.main_contact}')=t('camps:camps.more_info')
                         //- moop contact
-                        if (moop_contact) 
+                        if (moop_contact)
                             .contact-info.col-md-4
                                 span=t('camps:camps.moop_contact')
                                 //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--moop', data-user-id='#{camp.moop_contact}')
                                     span=t('camps:camps.moop_contact')
                                 .info.type--moop
-                                    h6 #{t('camps:camps.name')}: 
+                                    h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{moop_contact.name}
-                                    h6 #{t('camps:camps.phone')}: 
+                                    h6 #{t('camps:camps.phone')}:
                                         span.contact_person_phone #{moop_contact.cell_phone}
-                                    h6 #{t('camps:camps.email')}: 
+                                    h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{moop_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.moop_contact}')=t('camps:camps.more_info')
                         //- safety contact
-                        if (safety_contact) 
+                        if (safety_contact)
                             .contact-info.col-md-4
                                 span=t('camps:camps.safety_contact')
                                 //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--safety', data-user-id='#{camp.safety_contact}')
                                     span=t('camps:camps.safety_contact')
                                 .info.type--safety
-                                    h6 #{t('camps:camps.name')}: 
+                                    h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{safety_contact.name}
-                                    h6 #{t('camps:camps.phone')}: 
+                                    h6 #{t('camps:camps.phone')}:
                                         span.contact_person_phone #{safety_contact.cell_phone}
-                                    h6 #{t('camps:camps.email')}: 
+                                    h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{safety_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
             .modifications.row
@@ -142,6 +142,17 @@ block content
                             li.list-group-item
                                 span #{t('camps:camps.art')}
                                 span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
+                    .col-xs-12.col-md-6
+                        ul.list-group
+                            li.list-group-item
+                                span=t('camps:edit.location_street')
+                                span.badge #{details.camp_location_street}
+                            li.list-group-item
+                                span #{t('camps:edit.location_time')}
+                                span.badge #{details.camp_location_street_time}
+                            li.list-group-item
+                                span #{t('camps:edit.location_area')}
+                                span.badge #{details.camp_location_area}
             .documents.hidden
                 h4=t('camps:camps.docs')
                 .col-xs-12.col-md-4

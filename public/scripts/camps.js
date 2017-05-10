@@ -147,7 +147,8 @@ function extractCampData() {
         location_comments: $('#location_comments').val() || '',
         camp_location_street: $('#camp_location_street').val() || '',
         camp_location_street_time: $('#camp_location_street_time').val() || '',
-        camp_location_area: $('#camp_location_area').val() || ''
+        camp_location_area: $('#camp_location_area').val() || '',
+        camp_early_arrival_quota : $('#camp_early_arrival_quota').val() || ''
     };
 }
 
