@@ -316,6 +316,29 @@
         },
         "prod_dep": {
             "nav": "My Department",
-            "nav_admin": "Manage Departments"
+            "nav_admin": "Manage Departments",
+            "dash": {
+                "title": "Manage Departments",
+                "desc": "Manage Departments"
+            },
+            "admin_index": {
+                "all_camps": "All Departments",
+                "all_members": "All Members",
+                "docs": "Docs",
+                "new": "New",
+                "all_camps_table": "All Camps"
+            },
+            "stats": {
+                "search": "search",
+                "name_en": "Name",
+                "contact_person": "Contact Person",
+                "status": "Status",
+                "last_update": "Last Update",
+                "published": "Published"
+            },
+            "members": {
+                "actions": "Actions"
+            }
+
         }
 }
