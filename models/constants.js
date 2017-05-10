@@ -26,7 +26,7 @@ var npo_membership_statuses = [
     { id: 'applied_for_membership' }
 ];
 
-var prototype_camps = {
+const prototype_camps = {
     THEME_CAMP: {
         id: 'theme_camp',
         name: 'Theme Camps'
