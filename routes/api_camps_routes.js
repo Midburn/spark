@@ -125,7 +125,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                 var _after_update = () => {
                     console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
                     if (mail_delivery.template !== '') {
-                        if (user) { 
+                        if (user) {
                             let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.email;
                             emailDeliver(email, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
                         } else {
@@ -634,6 +634,13 @@ module.exports = (app, passport) => {
                                 member_status_i18n: camp.member_status_i18n,
                                 camp_name_en: camp.camp_name_en,
                                 camp_name_he: camp.camp_name_he,
+                            }
+                        });
+                    } else {
+                        res.status(404).json({
+                            error: true,
+                            data: {
+                                message: 'Couldnt find user available camp',
                             }
                         });
                     }

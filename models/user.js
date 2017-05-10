@@ -52,9 +52,9 @@ var User = bookshelf.Model.extend({
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
             .where({ user_id: this.attributes.user_id, event_id: constants.CURRENT_EVENT_ID, __prototype: constants.prototype_camps.THEME_CAMP.id })
             .then((camps) => {
-                var first_camp = null;
-                var is_manager = false;
-                var member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
+                let first_camp = null;
+                let is_manager = false;
+                let member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
                 // var _camps = [];
                 for (var i in camps) {
                     let _status = camps[i].member_status;
