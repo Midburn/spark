@@ -90,6 +90,7 @@
             "support_art": "Support art",
             "location_card_title": "Camp location",
             "location_comments": "Comments",
+            "early_arrival_quota":"Early Arrival Quota",
             "camp_location_street": "Street",
             "camp_location_street_time": "Street time",
             "camp_location_area": "Area",

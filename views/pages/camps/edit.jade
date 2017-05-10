@@ -193,7 +193,10 @@ block content
                                     label(for='noise_level') #{t('camps:edit.camp_noise_level')}
                                     select(id='camp_noise_level', class="form-control", name="noise_level")
                                         option(ng-repeat="option in noise_level_options", ng-selected="option.id == '#{camp.noise_level}'", value="{{option.id}}") {{option.value}}
-
+                            .col-md-4
+                                .col-xs-12
+                                    label(for='camp_early_arrival_quota')=t('camps:edit.early_arrival_quota')
+                                    input.form-control(id='camp_early_arrival_quota', name='camp_early_arrival_quota', value=(isNew ? 0 : (details.addinfo_json.early_arrival_quota === null ? '' : '#{details.addinfo_json.early_arrival_quota}')),readonly=(user.isCampManager ? 'true' : undefined))
                 //------- Lilach requested to hide section -------------//
                 //- h4=t('camps:edit.public_area_title')
                 //- .camp-details.panel
