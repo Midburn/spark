@@ -91,9 +91,9 @@ router.post('/get-ticket/', async function (req, res) {
             gender: ticket.relations.holder.attributes.gender,
             type: ticket.attributes.type,
             inside_event: ticket.attributes.inside_event,
-            entrance_timestamp: ticket.attributes.entrance_timestamp.getTime(),
-            first_entrance_timestamp: ticket.attributes.first_entrance_timestamp.getTime(),
-            last_exit_timestamp: ticket.attributes.last_exit_timestamp.getTime(),
+            entrance_timestamp: ticket.attributes.entrance_timestamp ? ticket.attributes.entrance_timestamp.getTime() : null,
+            first_entrance_timestamp: ticket.attributes.first_entrance_timestamp ? ticket.attributes.first_entrance_timestamp.getTime() : null,
+            last_exit_timestamp: ticket.attributes.last_exit_timestamp ? ticket.attributes.last_exit_timestamp.getTime(): null,
             entrance_group_id: ticket.attributes.entrance_group_id,
             groups: groups
         };
