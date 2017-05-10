@@ -29,9 +29,9 @@ var __render_camp = function (camp, req, res) {
     }).fetch({}).then((camp) => {
         camp.getCampUsers((users) => {
             camp.init_t(req.t);
-            // if user is camp_member, we can show all 
+            // if user is camp_member, we can show all
             // let _user = camp.isUserCampMember(req.user.id);
-            let camp_data=__camp_data_to_json(camp);            
+            let camp_data=__camp_data_to_json(camp);
             let data = {
                 user: req.user, //
                 userLoggedIn: req.user.hasRole('logged in'), //
@@ -233,6 +233,11 @@ module.exports = function (app, passport) {
             req.user.getUserCamps((camps) => {
                 if (req.user.isManagerOfCamp(req.params.id) || req.user.isAdmin) {
                     let camp_data = __camp_data_to_json(camp);
+                    if (camp_data.addinfo_json===null) {
+                        camp_data.addinfo_json= {early_arrival_quota:''};
+                    } else {
+                        camp_data.addinfo_json= JSON.parse(camp_data.addinfo_json);
+                    }
                     res.render('pages/camps/edit', {
                         user: req.user,
                         breadcrumbs: req.breadcrumbs(),

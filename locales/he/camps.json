@@ -252,6 +252,7 @@
             "contact_person_name": "שם איש קשר",
             "contact_person_email": "אימייל איש קשר",
             "contact_person_phone": "טלפון אישר קשר",
+            "early_arrival_quota":"כמות מגיעים מוקדם",
             "security_file": "תיק בטיחות",
             "members_header": "נהל חברי מחנה",
             "search_member": "מצא חבר מחנה"
