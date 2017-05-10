@@ -41,7 +41,7 @@ async function getDrupalSession(callback) {
     };
 
     var x = await r(options);
-    if (x.response && x.response.statusCode === 302) {
+    if (x.response) {
         var bodyJson = JSON.parse(x.body);
         session = {sessid: bodyJson["sessid"], session_name: bodyJson["session_name"]};
         log.info("Session info:" + JSON.stringify(session));
@@ -52,7 +52,7 @@ async function getDrupalSession(callback) {
     }
 }
 
-async function dumpDrupalTickets(session, date) {
+async function dumpDrupalTickets(session, date, page) {
 
     log.info("Dumping tickets changed after", dateFormat(date, "yyyy-mm-dd hh:MM:ss"));
 
@@ -67,13 +67,16 @@ async function dumpDrupalTickets(session, date) {
         url: process.env.DRUPAL_PROFILE_API_URL + '/en/api/ticket_export',
         method: 'GET',
         headers: headers,
-        qs: {changed: dateFormat(date, "yyyy-mm-dd hh:MM:ss")}
+        qs: {
+            changed: dateFormat(date, "yyyy-mm-dd hh:MM:ss"),
+            ticket_state_target_id: 3,
+            page: page
+        }
     };
 
     var x = await r(options);
-    if (x.response && x.response.statusCode === 302) {
-        var result = parseStringSync(x.body);
-        var tickets = result['result']['item'];
+    if (x.response) {
+        var tickets = JSON.parse(x.body);
         if (!tickets) {
             log.info("Didn't get ticket updates from Drupal");
             return null;
@@ -81,22 +84,23 @@ async function dumpDrupalTickets(session, date) {
         log.info("got " + tickets.length + " tickets");
         var utickets = [];
         for (var ticket of tickets) {
-            var status = ticket['Ticket_State'][0];
-            var type_id = parseInt(ticket['ticket_registration_bundle'][0]);
+            var status = ticket['Ticket State'];
+            var type_id = parseInt(ticket['ticket_registration_bundle']);
             //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
                 var uticket = {};
-                uticket['holder_email'] = ticket['Email'][0];
-                uticket['buyer_email'] = ticket['Buyer_E_mail'][0];
-                uticket['name'] = ticket['Name'][0];
-                uticket['id'] = ticket['Docment_id'][0];
-                uticket['order_id'] = ticket['users_ticket_registration_uid'][0];
-                uticket['ticket_id'] = ticket['Ticket_number'][0];
-                uticket['ticket_number'] = ticket['Ticket_number'][0];
-                uticket['barcode'] = ticket['ticket_barcode'][0];
-                uticket['document_id'] = ticket['Docment_id'][0];
-                uticket['ticket_type'] = ticket['user_ticket_type_name'][0];
+                uticket['holder_email'] = ticket['Email'];
+                uticket['buyer_email'] = ticket['Buyer E-mail'];
+                uticket['name'] = ticket['Name'];
+                uticket['id'] = ticket['Docment id'];
+                uticket['order_id'] = ticket['users_ticket_registration_uid'];
+                uticket['ticket_id'] = ticket['Ticket number'];
+                uticket['ticket_number'] = ticket['Ticket number'];
+                uticket['barcode'] = ticket['ticket barcode']['value'];
+                console.log(ticket['ticket barcode']);
+                uticket['ticket_type'] = ticket['user_ticket_type_name'];
                 utickets.push(uticket);
+                console.log("Ticket",uticket);
             }
         }
         return utickets;
@@ -141,9 +145,17 @@ async function updateTicket(ticket) {
         if (user == null) {
             // We need to create a new user...
             log.info("User", holder_email, "not found in Spark. Creating...");
+            if (ticket["id"].length === 0) {
+                ticket["id"] = "";
+            }
+            let name = ticket.name;
+            if (!_.isFunction(name.split)) {
+                log.warn("Bad name", name);
+                name = "- -";
+            }
             user = await User.forge({
-                first_name: ticket["name"].split(' ')[0] || "",
-                last_name: ticket["name"].split(' ')[1] || "",
+                first_name: name.split(' ')[0] || "",
+                last_name: name.split(' ')[1] || "",
                 email: ticket["holder_email"],
                 israeli_id: ticket["id"]
             }).save();
@@ -216,10 +228,21 @@ async function syncTickets(fromDate, callback) {
     try {
         log.info('Starting Tickets Update Process...');
         var session = await getDrupalSession();
-        log.info('Got Drupal session...');
-        var tickets = await dumpDrupalTickets(session, fromDate);
-        if (tickets) {
-            await updateAllTickets(tickets);
+        if (session) {
+            log.info('Got Drupal session...');
+            var page = 0;
+            var running = true;
+            while (running) {
+                log.info("Page:", page);
+                var tickets = await dumpDrupalTickets(session, fromDate, page);
+                if (tickets.length > 0) {
+                    await updateAllTickets(tickets);
+                    page++;
+                }
+                else {
+                    running = false;
+                }
+            }
             log.info("Tickets Update Process COMPLETED at", dateFormat(new Date(), "yyyy-mm-dd hh:MM:ss"));
         }
         callback(null);
