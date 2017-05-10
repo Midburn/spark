@@ -9,7 +9,7 @@
 Spark is "burn in a box" suite of services that composes everything required to run a burn event throughout the year.
 
 It contains:
-- Theme Camps (MVP)
+- Theme Camps
 - Profiles
 - Ticketing
 - NGO (non-profit org, members, ...)
@@ -27,18 +27,16 @@ Spark is being developed by the Midburn Tech Team, with the purpose of utilizing
 - [Spark Staging](http://sparkstaging.midburn.org/)
 - [Development guide](/docs/development/README.md) - how to work on the development of the Spark project.
 - [Usage guide](/docs/usage/README.md) - how to use the Spark system and description of what it provides.
-- [Slack](https://www.hamsterpad.com/chat/midburnos)
+- [Slack](https://midburnos.slack.com/)
 
 ### Tech Stack
-- Node.js
-- Express web server
-- Mysql/SQLite, Bookshelf & Knex
-- Bootstrap
-- Pug/Jade templates, SaaS
+- Node.js /w Express.js (web server)
+- MySQL w/ Bookshelf & Knex
+- Pug/Jade templates
+- SCSS w/ Bootstrap
 - Morgan & Winston loggers
-- Webpack
+- Webpack /w Babel (ES6 support)
 - Tests: Mocha, Chai & supertest
-- Babel for ES2015 support
 
 ### We're Hiring!
 If you know [the 10 principles of Midburn](http://midburn.org/en-ten-principles/) and can code Node/javascript, you're welcome to join. Join Slack, pick [an issue](https://github.com/Midburn/Spark/issues) and start coding!
