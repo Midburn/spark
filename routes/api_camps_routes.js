@@ -701,7 +701,7 @@ module.exports = (app, passport) => {
                         delete member.last_name;
                         delete member.gender;
                         delete member.date_of_birth;
-                        delete member.israeli_id ;
+                        delete member.israeli_id;
                         delete member.address;
                         delete member.extra_phone;
                         delete member.facebook_id;
