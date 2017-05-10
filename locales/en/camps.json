@@ -290,7 +290,29 @@
         },
         "art_exhibit": {
             "nav": "My Art Exhibit",
-            "nav_admin": "Manage Art Exhibit"
+            "nav_admin": "Manage Art Exhibit",
+            "dash": {
+                "title": "Art Exhibit",
+                "desc": "Art Exhibit"
+            },
+            "admin_index": {
+                "all_camps": "All Art Exhibits",
+                "all_members": "All Members",
+                "docs": "Docs",
+                "new": "New",
+                "all_camps_table": "All Camps"
+            },
+            "stats": {
+                "search": "search",
+                "name_en": "Name",
+                "contact_person": "Contact Person",
+                "status": "Status",
+                "last_update": "Last Update",
+                "published": "Published"
+            },
+            "members": {
+                "actions": "Actions"
+            }
         },
         "prod_dep": {
             "nav": "My Department",
