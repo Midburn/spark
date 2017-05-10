@@ -1,6 +1,7 @@
 {
     "back_home": "Back to homepage",
     "bad_email": "Incorrect email",
+    "cancel": "Cancel",
     "confirm_password": "Confirm password",
     "email": "Email",
     "email_verification_required": "Please check your mailbox and follow the instructions in order to activate your account",
@@ -49,9 +50,17 @@
     "status_pending": "Waiting for camp manager approval",
     "user_id": "User #",
     "version": "Version",
+    "operations": "Operations",
     "facebook": {
         "login": "Login with Facebook"
     },
+    "ticket_number": "Ticket number",
+    "order_number": "Order number",
+    "ticket_type": "Ticket type",
+    "entrance_timestamp": "Current entrance date/time",
+    "last_exit_timestamp": "Last exit date/time",
+    "first_entrance_timestamp" : "First entrance date/time",
+    "israeli_id": "Israeli ID",
     "breadcrumbs": {
         "home": "Home",
         "npo": "Midburn NPO",
