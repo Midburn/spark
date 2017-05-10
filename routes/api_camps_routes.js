@@ -542,7 +542,7 @@ module.exports = (app, passport) => {
     app.get('/camps/:id/join', userRole.isLoggedIn(), (req, res) => {
         var user = {
             id: req.user.attributes.user_id,
-            full_name: [req.user.attributes.first_name, req.user.attributes.last_name].join(', '),
+            full_name: [req.user.attributes.first_name, req.user.attributes.last_name].join(', '), //TODO: use user.fullName instead
             email: req.user.attributes.email
         }
         var camp = {

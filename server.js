@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
 /**
+ * Loading configuration from our .env file.
+ */
+require('dotenv').config();
+
+/**
  * Module dependencies.
  */
-require('dotenv').config()
 var app = require('./app');
 var debug = require('debug')('spark:server');
 var http = require('http');

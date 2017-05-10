@@ -1,5 +1,4 @@
-var config = require('config');
-var dbConfig = config.get('database');
+var dbConfig = require('config').database;
 
 var parameters = {
     client: dbConfig.client,
@@ -23,6 +22,7 @@ knex.on('query-error', function (err) {
 
 bookshelf.plugin('virtuals');
 bookshelf.plugin('pagination');
+bookshelf.plugin(require('bookshelf-json-columns'));
 
 module.exports = {
     bookshelf: bookshelf,

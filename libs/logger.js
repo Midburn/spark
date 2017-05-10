@@ -11,9 +11,9 @@ module.exports = function (module) {
     var appDir = path.dirname(require.main.filename);
     var id = path.relative(appDir, module.id);
 
-    var logger = new(winston.Logger)({
+    var logger = new winston.Logger({
         transports: [
-            new(winston.transports.Console)({
+            new (winston.transports.Console)({
                 timestamp: function () {
                     return dateFormat(Date.now(), "dd/mm/yy hh:MM:ss.l");
                 },
