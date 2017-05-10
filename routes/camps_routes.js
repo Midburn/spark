@@ -182,7 +182,7 @@ module.exports = function (app, passport) {
             res.render('pages/camps/index_admin', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
-                __prototype: 'theme_camps',
+                __groups_prototype: 'theme_camps',
                 t_prefix: 'camps:'
                
             });
@@ -209,7 +209,7 @@ module.exports = function (app, passport) {
             res.render('pages/camps/index_admin', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
-                __prototype: 'art_exhibit',
+                __groups_prototype: 'art_exhibit',
                 t_prefix: 'camps:art_exhibit.'
             });
         } else {
@@ -234,7 +234,7 @@ module.exports = function (app, passport) {
             res.render('pages/camps/index_admin', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
-                __prototype: 'prod_dep',
+                __groups_prototype: 'prod_dep',
                 t_prefix: 'camps:prod_dep.'
             });
         } else {
