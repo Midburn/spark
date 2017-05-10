@@ -6,9 +6,15 @@ var knex = require('../libs/db').knex;
 
 var userRole = require('../libs/user_role');
 var security = require('../libs/security');
+var Event = require('../models/event').Event;
 
 router.get('/', userRole.isLoggedIn(), function (req, res) {
-    res.render('pages/gate');
+    //TODO Temp MIDBURN2017, we need to add a global current-event selector.
+    Event.forge({event_id: "MIDBURN2017"}).fetch().then(event => {
+        return res.render('pages/gate', {
+            gate_code: event.attributes.gate_code
+        });
+    });
 });
 
 router.get('/ajax/tickets', security.protectJwt, function (req, res) {

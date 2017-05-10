@@ -87,11 +87,13 @@ router.post('/get-ticket/', async function (req, res) {
         let result = {
             ticket_number: ticket.attributes.ticket_number,
             holder_name: ticket.relations.holder.fullName,
+            israeli_id: ticket.relations.holder.attributes.israeli_id,
+            gender: ticket.relations.holder.attributes.gender,
             type: ticket.attributes.type,
             inside_event: ticket.attributes.inside_event,
-            entrance_timestamp: ticket.attributes.entrance_timestamp,
-            first_entrance_timestamp: ticket.attributes.first_entrance_timestamp,
-            last_exit_timestamp: ticket.attributes.last_exit_timestamp,
+            entrance_timestamp: ticket.attributes.entrance_timestamp.getTime(),
+            first_entrance_timestamp: ticket.attributes.first_entrance_timestamp.getTime(),
+            last_exit_timestamp: ticket.attributes.last_exit_timestamp.getTime(),
             entrance_group_id: ticket.attributes.entrance_group_id,
             groups: groups
         };
@@ -165,6 +167,7 @@ router.post('/gate-exit', async function (req, res) {
         // Saving the exit.
         ticket.attributes.inside_event = false;
         ticket.attributes.entrance_group_id = null;
+        ticket.attributes.entrance_timestamp = null;
         ticket.attributes.last_exit_timestamp = new Date();
         await ticket.save();
 

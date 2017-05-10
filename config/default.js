@@ -1,4 +1,6 @@
+const path = require('path');
 process.env.version = require('../package.json').version;
+
 console.log("Spark config: package.json version:", process.env.version);
 
 var fs = require('fs');
@@ -6,7 +8,7 @@ if (!fs.existsSync(".env")) {
     console.log("Spark config: .env file was not found, using default config.");
 }
 else {
-    console.log("Spark config: Loading .env file...");
+    console.log("Spark config: Loading .env file:", process.cwd() + path.delimiter + ".env");
     require('dotenv').config();
 }
 

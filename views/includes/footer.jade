@@ -2,8 +2,9 @@ footer
     .container
         .row
             .col-xs-12.col-sm-4.text-left.text-center
-                img(src='/images/midburn_logo_120.png')
-                p.font__mono Spark #{process.env.version}
+                //img(src='/images/midburn_logo_120.png')
+                p.font__mono
+                    span Spark #{process.env.version}
                 p.font__mono
                     span.glyphicon.glyphicon-chevron-left
                     span.glyphicon.glyphicon-chevron-right
@@ -17,8 +18,6 @@ footer
                         a(href="#{t('footer.toc_link')}" target='_blank')=t('footer.toc')
                     li
                         a(href='//www.midburn.org')=t('footer.visit_homepage')
-                    li
-                        a(href="#{t('footer.report_error_link')}" target='_blank')=t('footer.report_error')
 
             .col-xs-12.col-sm-4
                 ul.footer__links
@@ -26,4 +25,6 @@ footer
                         a(href='//github.com/Midburn/Spark')=t('footer.open_source')
                     li
                         a(href='//goo.gl/forms/fpJ2vcDrLSojyORy1')=t('footer.want_to_help')
+                    li
+                        a(href="#{t('footer.report_error_link')}" target='_blank')=t('footer.report_error')
 
