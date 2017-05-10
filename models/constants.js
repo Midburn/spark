@@ -1,11 +1,11 @@
-var get_default_enum = function(enu) {
-    return enu.find(function(e) {
+var get_default_enum = function (enu) {
+    return enu.find(function (e) {
         return e.default;
     }).id;
 };
 
-var get_enum = function(enu) {
-    return enu.map(function(e) {
+var get_enum = function (enu) {
+    return enu.map(function (e) {
         return e.id;
     })
 };
@@ -31,9 +31,13 @@ var prototype_camps = {
         id: 'theme_camp',
         name: 'Theme Camps'
     },
-    ART_EXHIBIT : {
-        id : 'art_exhibit',
-        name : 'Art Exhibit'
+    ART_EXHIBIT: {
+        id: 'art_exhibit',
+        name: 'Art Exhibit'
+    },
+    PROD_DEP: {
+        id: 'prod_dep',
+        name: 'Production Department'
     }
 };
 
@@ -109,7 +113,7 @@ module.exports = {
      *    camps - regular camps
      *    art_exhibit - art_exhibit
      */
-    CAMP_PROTOTYPE: [prototype_camps.THEME_CAMP.id, prototype_camps.ART_EXHIBIT.id],
+    CAMP_PROTOTYPE: [prototype_camps.THEME_CAMP.id, prototype_camps.ART_EXHIBIT.id, prototype_camps.PROD_DEP.id],
 
     CAMP_STATUSES: ['deleted', 'open', 'closed', 'inactive'],
 
@@ -128,6 +132,6 @@ module.exports = {
      *      approved_mgr - a member is approved as a member, and has manager rights to camp.
      *      supplier - member is supplier, for the supplier notification later.
      */
-    CAMP_MEMBER_STATUS: ['approved','pending','pending_mgr','rejected','approved_mgr','supplier','deleted'],
+    CAMP_MEMBER_STATUS: ['approved', 'pending', 'pending_mgr', 'rejected', 'approved_mgr', 'supplier', 'deleted'],
 
 };

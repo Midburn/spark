@@ -28,7 +28,7 @@ block wrapper
                             a( href="/#{language}/art-admin" )=t('camps:art_exhibit.nav_admin')
                     if(user.isAdmin || user.isProdDepsAdmin)
                         li( class="#{path[2] === 'prod-admin' ? 'active' : undefined }" )
-                            a( href="/#{language}/art-admin" )=t('camps:prod_dep.nav_admin')
+                            a( href="/#{language}/prod-admin" )=t('camps:prod_dep.nav_admin')
                     if(user.isAdmin)
                         li( class="#{path[2] === 'npo-admin' ? 'active' : undefined }" )
                             a( href="/#{language}/npo-admin" )=t('npo:nav_admin')
