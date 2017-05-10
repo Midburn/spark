@@ -650,6 +650,13 @@ module.exports = (app, passport) => {
                                 camp_name_he: camp.camp_name_he,
                             }
                         });
+                    } else {
+                        res.status(404).json({
+                            error: true,
+                            data: {
+                                message: 'Couldnt find user available camp',
+                            }
+                        });
                     }
                 }, req.t);
             });

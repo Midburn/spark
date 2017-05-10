@@ -178,10 +178,13 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.manage',
             url: '/' + req.params.lng + '/camps-admin'
         }]);
-        if (req.user.hasRole('admin')) {
+        if (req.user.isAdmin || req.user.isCampsAdmin) {
             res.render('pages/camps/index_admin', {
                 user: req.user,
-                breadcrumbs: req.breadcrumbs()
+                breadcrumbs: req.breadcrumbs(),
+                __groups_prototype: 'theme_camps',
+                t_prefix: 'camps:'
+               
             });
         } else {
             // user not admin
@@ -191,6 +194,59 @@ module.exports = function (app, passport) {
             });
         }
     });
+
+    // art admin management panel
+    app.get('/:lng/art-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/art-admin'
+        }]);
+        if (req.user.isAdmin || req.user.isArtExhibitsAdmin) {
+            res.render('pages/camps/index_admin', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs(),
+                __groups_prototype: 'art_exhibit',
+                t_prefix: 'camps:art_exhibit.'
+            });
+        } else {
+            // user not admin
+            res.render('pages/camps/index_user', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        }
+    });
+    // art admin management panel
+    app.get('/:lng/prod-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/prod-admin'
+        }]);
+        if (req.user.isAdmin || req.user.isProdDepsAdmin) {
+            res.render('pages/camps/index_admin', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs(),
+                __groups_prototype: 'prod_dep',
+                t_prefix: 'camps:prod_dep.'
+            });
+        } else {
+            // user not admin
+            res.render('pages/camps/index_user', {
+                user: req.user,
+                breadcrumbs: req.breadcrumbs()
+            });
+        }
+    });
+
+
     /**
      * CRUD Routes
      */
