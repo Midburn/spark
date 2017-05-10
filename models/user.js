@@ -75,7 +75,7 @@ var User = bookshelf.Model.extend({
         }
 
         if (!membership) {
-            membership = UsersGroupMemberShip.forge({user_id: this.attributes.user_id, group_id: group_id});
+            membership = UsersGroupMemberShip.forge({ user_id: this.attributes.user_id, group_id: group_id });
         }
 
         return membership;
@@ -165,7 +165,15 @@ var User = bookshelf.Model.extend({
         isCampManager: function () {
             return this.hasRole(userRole.CAMP_MANAGER);
         },
-
+        isCampsAdmin: function () {
+            return this.hasRole(userRole.THEME_CAMPS_ADMIN);
+        },
+        isArtExhibitsAdmin: function () {
+            return this.hasRole(userRole.ART_EXHIBIT_ADMIN);
+        },
+        isProdDepsAdmin: function () {
+            return this.hasRole(userRole.PROD_DEP_ADMIN);
+        },
         isCampFree: function () {
             return (!this.attributes.camp);
         },
@@ -189,7 +197,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function (password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password + "\n"});
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], { 'input': password + "\n" });
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }

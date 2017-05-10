@@ -286,5 +286,13 @@
             "doc_status": "Status",
             "last_doc_status": "Last status by",
             "camp_name_en": "Camp Name (English)"
+        },
+        "art_exhibit": {
+            "nav": "My Art Exhibit",
+            "nav_admin": "Manage Art Exhibit"
+        },
+        "prod_dep": {
+            "nav": "My Department",
+            "nav_admin": "Manage Departments"
         }
 }
