@@ -248,13 +248,13 @@ module.exports = (app, passport) => {
         }
         if (req.user.isAdmin) {
             var campAddInfoJson = {early_arrival_quota:''};
-            if(req.body.camp_early_arrival_quota){
-                if(curCamp){
-                        campAddInfoJson = JSON.parse(curCamp.attributes.addinfo_json);
-                        if(campAddInfoJson ==='' || campAddInfoJson === null){
-                                campAddInfoJson = {early_arrival_quota:''};
-                            }
-                    }
+            if (req.body.camp_early_arrival_quota) {
+                if (curCamp) {
+                    campAddInfoJson = JSON.parse(curCamp.attributes.addinfo_json);
+                    if (campAddInfoJson ==='' || campAddInfoJson === null) {
+                            campAddInfoJson = {early_arrival_quota:''};
+                        }
+                }
                 campAddInfoJson.early_arrival_quota = req.body.camp_early_arrival_quota;
             }
            data.addinfo_json =JSON.stringify(campAddInfoJson);

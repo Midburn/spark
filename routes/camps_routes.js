@@ -233,9 +233,9 @@ module.exports = function (app, passport) {
             req.user.getUserCamps((camps) => {
                 if (req.user.isManagerOfCamp(req.params.id) || req.user.isAdmin) {
                     let camp_data = __camp_data_to_json(camp);
-                    if(camp_data.addinfo_json===null){
+                    if (camp_data.addinfo_json===null) {
                         camp_data.addinfo_json= {early_arrival_quota:''};
-                    }else{
+                    } else {
                         camp_data.addinfo_json= JSON.parse(camp_data.addinfo_json);
                     }
                     res.render('pages/camps/edit', {
