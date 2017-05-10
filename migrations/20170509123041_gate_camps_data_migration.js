@@ -52,27 +52,11 @@ exports.up = function (knex, Promise) {
             }
         }),
 
-        knex.raw("select cm.camp_id, users_groups_membership.user_id " +
-            "from `camp_members` cm  left join `users_groups_membership` " +
-            "on `cm`.`user_id` = `users_groups_membership`.`user_id` " +
-            "and `users_groups_membership`.`group_id` = `cm`.`camp_id`")
-            .then(camp_members => {
-                if (camp_members) {
-                    console.log("Found", camp_members.length, "camp members to migrate");
-                    _.each(camp_members, member => {
-                        if (member.camp_id && !member.group_id) {
-                            console.log("member:", member['cm.user_id'], "group:", member.camp_id);
-                            knex('users_groups_membership').insert({
-                                group_id: member.camp_id,
-                                user_id: member['cm.user_id'],
-                                created_at: new Date()
-                            }).then(() => {
-                                console.log("OK")
-                            });
-                        }
-                    })
-                }
-            })
+        knex.raw("insert into users_groups_membership(user_id, group_id)" + "select cm.user_id, cm.camp_id " +
+            "from users u " +
+            "inner join camp_members cm on u.user_id = cm.user_id " +
+            "where status='approved' " +
+            "ON DUPLICATE KEY UPDATE user_id = cm.user_id;")
     ])
 };
 
