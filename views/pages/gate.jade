@@ -112,7 +112,7 @@ block scripts
                         entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
                         entranceButton.disabled = false;
 
-                        if (data.ticket.groups) {
+                        if (data.ticket.groups && data.ticket.groups.length > 0) {
                             entranceButton.disabled = true;
                             let groupsElement = $("#ticket_groups_list")[0];
                             groupsElement.innerHTML = "";
