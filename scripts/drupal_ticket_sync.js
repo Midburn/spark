@@ -5,7 +5,6 @@
 ///////////////////////////////////////////////////////////
 
 var request = require('request');
-var parseStringSync = require('xml2js-parser').parseStringSync;
 var dateFormat = require('dateformat');
 var _ = require('lodash');
 var log = require('../libs/logger')(module);

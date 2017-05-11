@@ -8,7 +8,7 @@ var userRole = require('../libs/user_role');
 var security = require('../libs/security');
 var Event = require('../models/event').Event;
 
-router.get('/', userRole.isLoggedIn(), function (req, res) {
+router.get('/', userRole.isGateManager(), function (req, res) {
     //TODO Temp MIDBURN2017, we need to add a global current-event selector.
     Event.forge({event_id: "MIDBURN2017"}).fetch().then(event => {
         return res.render('pages/gate', {
@@ -17,7 +17,7 @@ router.get('/', userRole.isLoggedIn(), function (req, res) {
     });
 });
 
-router.get('/ajax/tickets', security.protectJwt, function (req, res) {
+router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], function (req, res) {
     if (req.query.search) {
         const MINIMUM_LENGTH = 3;
 
@@ -32,6 +32,7 @@ router.get('/ajax/tickets', security.protectJwt, function (req, res) {
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('email', 'LIKE', '%' + req.query.search + '%')
             .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
+            //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
             .then((tickets) => {
                     res.status(200).json({rows: tickets, total: tickets.length})
             }).catch((err) => {

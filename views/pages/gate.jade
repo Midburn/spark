@@ -107,9 +107,13 @@ block scripts
                         $("#modal_name")[0].innerHTML = data.ticket.holder_name;
                         $("#modal_email")[0].innerHTML = data.ticket.email;
                         $("#modal_type")[0].innerHTML = data.ticket.type;
-                        $("#entrance_button")[0].innerHTML = "#{t('gate:enter_ticket')}";
+
+                        let entranceButton = $("#entrance_button")[0];
+                        entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
+                        entranceButton.disabled = false;
 
                         if (data.ticket.groups) {
+                            entranceButton.disabled = true;
                             let groupsElement = $("#ticket_groups_list")[0];
                             groupsElement.innerHTML = "";
                             for (let group in data.ticket.groups) {
@@ -119,6 +123,7 @@ block scripts
                             $(".list-group-item").click(function () {
                                 $(".list-group-item").removeClass("active");
                                 $(this).addClass("active");
+                                entranceButton.disabled = false
                                 $("#modal_group_id")[0].innerHTML = $(this)[0].id;
                             });
                         }
@@ -140,6 +145,7 @@ block scripts
                         $("#entrance_button")[0].innerHTML = "#{t('gate:exit_ticket')}";
 
                         $("#ticket_groups_list")[0].innerHTML = "";
+                        $("#entrance_button")[0].disabled = false;
                     });
             });
 
