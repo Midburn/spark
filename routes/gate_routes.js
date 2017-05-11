@@ -10,7 +10,7 @@ var Event = require('../models/event').Event;
 
 router.get('/', userRole.isGateManager(), function (req, res) {
     //TODO Temp MIDBURN2017, we need to add a global current-event selector.
-    Event.forge({event_id: "MIDBURN2017"} ).fetch().then(event => {
+    Event.forge({event_id: "MIDBURN2017"}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });
@@ -34,7 +34,7 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], fun
             .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
             //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
             .then((tickets) => {
-                    res.status(200).json({rows: tickets, total: tickets.length})
+                res.status(200).json({rows: tickets, total: tickets.length})
             }).catch((err) => {
                 res.status(500).json({
                     error: true,

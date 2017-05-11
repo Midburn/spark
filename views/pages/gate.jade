@@ -142,10 +142,11 @@ block scripts
                         $("#modal_name")[0].innerHTML = data.ticket.holder_name;
                         $("#modal_email")[0].innerHTML = data.ticket.email;
                         $("#modal_type")[0].innerHTML = data.ticket.type;
-                        $("#entrance_button")[0].innerHTML = "#{t('gate:exit_ticket')}";
 
+                        var entranceButton = $("#entrance_button")[0];
+                        entranceButton.innerHTML = "#{t('gate:exit_ticket')}";
+                        entranceButton.disabled = false;
                         $("#ticket_groups_list")[0].innerHTML = "";
-                        $("#entrance_button")[0].disabled = false;
                     });
             });
 
@@ -155,8 +156,6 @@ block scripts
                     gate_code: "#{gate_code}",
                     group_id: $("#modal_group_id")[0].innerHTML.substring(2)
                 };
-
-                //TODO if group...
 
                 let mode = $("#modal_mode")[0].innerHTML;
                 $.post("/api/gate/gate-" + mode, parameters)

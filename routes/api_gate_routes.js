@@ -55,7 +55,7 @@ async function getTicketBySearchTerms(req, res) {
     }
 
     // Loading data from the DB.
-    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder']}); // ,'holder.groups'
+    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder']});
     if (ticket) {
         return ticket;
     }
