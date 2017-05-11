@@ -28,7 +28,9 @@
     "lint": "./node_modules/.bin/eslint .",
     "//createdb": "bootstraps MySql with a clean spark database & user",
     "createdb": "mysql -u root < migrations/create_db.sql",
-    "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest"
+    "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "async": "^2.1.4",
@@ -37,8 +39,8 @@
     "babel-preset-react": "^6.16.0",
     "babel-register": "^6.18.0",
     "bcrypt-nodejs": "0.0.3",
-    "body-parser": "~1.15.1",
-    "bookshelf": "^0.10.3",
+    "body-parser": "~1.17.1",
+    "bookshelf": "^0.10.0",
     "bookshelf-json-columns": "^2.1.0",
     "bootstrap": "^3.3.7",
     "bootstrap-validator": "^0.11.5",
@@ -54,7 +56,7 @@
     "debug": "~2.2.0",
     "dotenv": "^4.0.0",
     "drupal-hash": "^1.0.3",
-    "express": "~4.13.4",
+    "express": "~4.15.2",
     "express-breadcrumbs": "0.0.2",
     "express-compile-sass": "3.0.4",
     "express-fileupload": "0.0.5",
@@ -72,7 +74,7 @@
     "module-id": "2.0.4",
     "morgan": "~1.7.0",
     "mysql": "^2.11.1",
-    "node-sass": "^3.13.1",
+    "node-sass": "^3.13.0",
     "passport": "^0.3.2",
     "passport-facebook": "2.1.1",
     "passport-jwt": "^2.2.1",
@@ -89,6 +91,7 @@
     "superagent": "^3.5.0",
     "webpack": "^1.14.0",
     "winston": "2.3.0",
+    "snyk": "^1.29.0",
     "xml2js-parser": "^1.1.1"
   },
   "devDependencies": {
@@ -108,5 +111,7 @@
     "node-rsa": "^0.4.2",
     "rimraf": "2.6.1",
     "supertest": "^2.0.1"
-  }
+  },
+  "snyk": true
 }
+
