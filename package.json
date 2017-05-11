@@ -91,7 +91,7 @@
     "superagent": "^3.5.0",
     "webpack": "^1.14.0",
     "winston": "2.3.0",
-    "snyk": "^1.29.0",
+    "snyk": "^1.30.0",
     "xml2js-parser": "^1.1.1"
   },
   "devDependencies": {
