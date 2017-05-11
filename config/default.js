@@ -8,7 +8,11 @@ if (!fs.existsSync(".env")) {
     console.log("Spark config: .env file was not found, using default config.");
 }
 else {
-    console.log("Spark config: Loading .env file:", process.cwd() + path.delimiter + ".env");
+    console.log("Spark config: Loading .env file:",
+        path.format({
+            dir: process.cwd(),
+            base: ".env"
+        }));
     require('dotenv').config();
 }
 
@@ -113,8 +117,8 @@ exports.recaptcha = {
 };
 
 exports.api_tokens = {
-  // Using test token if no token is defined
-  token: process.env.SPARK_SECRET_TOKEN || "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91"
+    // Using test token if no token is defined
+    token: process.env.SPARK_SECRET_TOKEN || "YWxseW91bmVlZGlzbG92ZWFsbHlvdW5lZWRpc2xvdmVsb3ZlbG92ZWlzYWxseW91"
 };
 
 exports.profiles_api = {

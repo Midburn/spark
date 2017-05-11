@@ -2,9 +2,14 @@ console.log("Spark: knexfile.js - IN");
 
 var config = require('config');
 var dbConfig = config.get('database');
+var path = require('path');
 
 if (!process.env.SPARK_DB_CLIENT) {
-    console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in knexfile. Loading dotenv file...");
+    console.log("Spark: process.env.SPARK_DB_CLIENT is undefined in knexfile. Loading dotenv file from", path.format({
+        dir: process.cwd(),
+        base: ".env"
+    }));
+
     require('dotenv').config();
 }
 
