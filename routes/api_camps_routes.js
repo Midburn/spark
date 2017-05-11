@@ -1,14 +1,15 @@
 const common = require('../libs/common').common;
-var User = require('../models/user').User;
-var Camp = require('../models/camp').Camp;
+const _ = require('lodash');
+const User = require('../models/user').User;
+const Camp = require('../models/camp').Camp;
 const constants = require('../models/constants.js');
-var config = require('config');
+const config = require('config');
 const knex = require('../libs/db').knex;
 const userRole = require('../libs/user_role');
-var mail = require('../libs/mail'),
-    mailConfig = config.get('mail');
-var APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
-var emailDeliver = (recipient, subject, template, props) => {
+const mail = require('../libs/mail');
+const mailConfig = config.get('mail');
+const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
+const emailDeliver = (recipient, subject, template, props) => {
     /**
      * Deliver email request to camp manager
      * notifiying a user wants to join his camp
@@ -21,7 +22,8 @@ var emailDeliver = (recipient, subject, template, props) => {
         subject,
         template, props
     )
-}
+};
+
 var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
     var isAdmin = false;
     var camp_mgr_id;
@@ -498,26 +500,40 @@ module.exports = (app, passport) => {
         });
     });
 
+    const retrieveDataFor = prototype =>
+        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', prototype)
+            .fetchAll()
+            .then(camp => {
+                if (_.isUndefined(camp)) {
+                    return {
+                        status: 200,
+                        data: camp.toJSON()
+                    };
+                } else {
+                    return {
+                        status: 404,
+                        data: { data: { message: 'Not found' } }
+                    };
+                }
+            }).catch(err => {
+                return {
+                    status: 500,
+                    data: {
+                        error: true,
+                        data: { message: err.message }
+                    }
+                };
+            });
+
+    app.get('/arts_all', userRole.isAdmin(),
+            (req, res) => retrieveDataFor(constants.prototype_camps.ART_EXHIBIT.id).then(result => res.status(result.status).json(result.data)));
+
     /**
      * API: (GET) return camps list which are open to new members
      * request => /camps_open
      */
-    app.get('/camps_all', userRole.isAdmin(), (req, res) => {
-        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
-            if (camp !== null) {
-                res.status(200).json({ camps: camp.toJSON() })
-            } else {
-                res.status(404).json({ data: { message: 'Not found' } })
-            }
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
-                }
-            });
-        });
-    });
+    app.get('/camps_all', userRole.isAdmin(),
+            (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => res.status(result.status).json(result.data)));
 
     /**
      * API: (GET) return camps list which are open to new members
