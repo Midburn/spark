@@ -503,7 +503,8 @@ module.exports = (app, passport) => {
      * request => /camps_open
      */
     app.get('/camps_all', userRole.isAdmin(), (req, res) => {
-        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
+        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+            .orderBy('camp_name_en', 'ASC').fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
