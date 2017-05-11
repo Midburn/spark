@@ -287,10 +287,55 @@
         },
         "art_exhibit": {
             "nav": "המיצג שלי",
-            "nav_admin": "ניהול מיצגים"
+            "nav_admin": "ניהול מיצגים",
+            "dash": {
+                "title": "מיצגים אומנותיים",
+                "desc": "מיצגים אומנותיים"
+            },
+            "admin_index": {
+                "all_camps": "כל המייצגים",
+                "all_members": "כל המציגים",
+                "docs": "מסמכים",
+                "new": "חדש",
+                "all_camps_table": "כל המייצגים"
+            },
+            "stats": {
+                "search": "חיפוש",
+                "name_en": "שם",
+                "contact_person": "איש קשר",
+                "status": "סטטוס",
+                "last_update": "עודכן לאחרונה",
+                "published": "פורסם בתאריך"
+            },
+            "members": {
+                "actions": "פעולות"
+            }
         },
+
         "prod_dep": {
             "nav": "המחלקה שלי",
-            "nav_admin": "ניהול מחלקות הפקה"
-        }        
+            "nav_admin": "ניהול מחלקות הפקה",
+            "dash": {
+                "title": "ניהול מחלקות הפקה",
+                "desc": "ניהול מחלקות הפקה"
+            },
+            "admin_index": {
+                "all_camps": "כל המחלקות",
+                "all_members": "כל חברים",
+                "docs": "מסמכים",
+                "new": "חדש",
+                "all_camps_table": "כל החברים"
+            },
+            "stats": {
+                "search": "חיפוש",
+                "name_en": "שם",
+                "contact_person": "איש קשר",
+                "status": "סטטוס",
+                "last_update": "עודכן לאחרונה",
+                "published": "פורסם בתאריך"
+            },
+            "members": {
+                "actions": "פעולות"
+            }
+        }
 }

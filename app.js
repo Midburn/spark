@@ -156,6 +156,7 @@ app.use('/:lng?/admin', require('./routes/admin_routes'));
 app.use('/:lng/npo', require('./routes/npo_routes'));
 app.use('/:lng/npo-admin', require('./routes/npo_admin_routes'));
 app.use('/:lng/gate', require('./routes/gate_routes'));
+app.use('/:lng/volunteering', require('./routes/volunteering_routes'));
 
 // Mail
 var mail = require('./libs/mail');
