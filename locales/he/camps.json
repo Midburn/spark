@@ -285,19 +285,19 @@
             "last_doc_status": "סטטוס אחרון ע״י",
             "camp_name_en": "שם מחנה (אנגלית)"
         },
-        "art_exhibit": {
-            "nav": "המיצג שלי",
-            "nav_admin": "ניהול מיצגים",
+        "art_installation": {
+            "nav": "המיצב שלי",
+            "nav_admin": "ניהול מיצבים",
             "dash": {
-                "title": "מיצגים אומנותיים",
-                "desc": "מיצגים אומנותיים"
+                "title": "מיצבים",
+                "desc": "מיצבים אמנותיים"
             },
             "admin_index": {
-                "all_camps": "כל המייצגים",
+                "all_camps": "כל המיצבים",
                 "all_members": "כל המציגים",
                 "docs": "מסמכים",
                 "new": "חדש",
-                "all_camps_table": "כל המייצגים"
+                "all_camps_table": "כל המיצבים"
             },
             "stats": {
                 "search": "חיפוש",

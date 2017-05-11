@@ -168,8 +168,8 @@ var User = bookshelf.Model.extend({
         isCampsAdmin: function () {
             return this.hasRole(userRole.THEME_CAMPS_ADMIN);
         },
-        isArtExhibitsAdmin: function () {
-            return this.hasRole(userRole.ART_EXHIBIT_ADMIN);
+        isArtInstallationsAdmin: function () {
+            return this.hasRole(userRole.ART_INSTALLATION_ADMIN);
         },
         isProdDepsAdmin: function () {
             return this.hasRole(userRole.PROD_DEP_ADMIN);

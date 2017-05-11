@@ -526,7 +526,7 @@ module.exports = (app, passport) => {
             });
 
     app.get('/arts_all', userRole.isAdmin(),
-            (req, res) => retrieveDataFor(constants.prototype_camps.ART_EXHIBIT.id).then(result => res.status(result.status).json(result.data)));
+            (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
 
     /**
      * API: (GET) return camps list which are open to new members

@@ -31,9 +31,9 @@ const prototype_camps = {
         id: 'theme_camp',
         name: 'Theme Camps'
     },
-    ART_EXHIBIT: {
-        id: 'art_exhibit',
-        name: 'Art Exhibit'
+    ART_INSTALLATION: {
+        id: 'art_installation',
+        name: 'Art Installation'
     },
     PROD_DEP: {
         id: 'prod_dep',
@@ -111,9 +111,9 @@ module.exports = {
     /**
      * The prototype describes the camp types.
      *    camps - regular camps
-     *    art_exhibit - art_exhibit
+     *    art_installation - art_installation
      */
-    CAMP_PROTOTYPE: [prototype_camps.THEME_CAMP.id, prototype_camps.ART_EXHIBIT.id, prototype_camps.PROD_DEP.id],
+    CAMP_PROTOTYPE: [prototype_camps.THEME_CAMP.id, prototype_camps.ART_INSTALLATION.id, prototype_camps.PROD_DEP.id],
 
     CAMP_STATUSES: ['deleted', 'open', 'closed', 'inactive'],
 
