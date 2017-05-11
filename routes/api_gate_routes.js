@@ -1,9 +1,8 @@
 var express = require('express');
-var router = express.Router({
-    mergeParams: true
-});
+var router = express.Router({mergeParams: true});
 var _ = require('lodash');
 var log = require('../libs/logger')(module);
+var knex = require('../libs/db').knex;
 
 var drupalSync = require('../scripts/drupal_ticket_sync');
 
@@ -87,6 +86,8 @@ router.post('/get-ticket/', async function (req, res) {
         let result = {
             ticket_number: ticket.attributes.ticket_number,
             holder_name: ticket.relations.holder.fullName,
+            email: ticket.relations.holder.attributes.email,
+            barcode: ticket.attributes.barcode,
             israeli_id: ticket.relations.holder.attributes.israeli_id,
             gender: ticket.relations.holder.attributes.gender,
             type: ticket.attributes.type,
@@ -181,8 +182,20 @@ router.post('/gate-exit', async function (req, res) {
 })
 ;
 
-router.post('/tickets-counter', function (req, res) {
-    // TODO return the number of people inside the event. Parameter - event_code
+router.post('/tickets-counter', async function (req, res) {
+
+    // Loading event and checking that gate_code is valid.
+    let event_id = null;
+    if (req.body.gate_code) {
+        let event = await Event.forge({gate_code: req.body.gate_code}).fetch();
+        event_id = event.attributes.event_id;
+    }
+    if (!req.body.gate_code || !event_id) {
+        return sendError(res, 500, "GATE_CODE_MISSING");
+    }
+
+    let count = await knex('tickets').count('inside_event').where('event_id', '=', event_id);
+    return res.status(200).json(count);
 });
 
 module.exports = router;

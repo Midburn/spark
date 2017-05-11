@@ -51,6 +51,7 @@ const ticketType = {
     INTERNATIONAL_DIRECT_SALE: '46'
 };
 
+// TODO We should not use enums like this at all!! Add ticket_types table to DB
 const events = {
     MIDBURN2017: {
         bundles: [

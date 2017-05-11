@@ -40,9 +40,16 @@ async function getDrupalSession(callback) {
         form: {'username': process.env.DRUPAL_PROFILE_API_USER, 'password': process.env.DRUPAL_PROFILE_API_PASSWORD}
     };
 
+    log.info("Calling", options.url);
     var x = await r(options);
     if (x.response) {
-        var bodyJson = JSON.parse(x.body);
+        try {
+            var bodyJson = JSON.parse(x.body);
+        }
+        catch (err) {
+            log.warn("Unable to parse JSON while trying to get a drupal session", x.body);
+            return;
+        }
         session = {sessid: bodyJson["sessid"], session_name: bodyJson["session_name"]};
         log.info("Session info:" + JSON.stringify(session));
         return session;
@@ -97,10 +104,8 @@ async function dumpDrupalTickets(session, date, page) {
                 uticket['ticket_id'] = ticket['Ticket number'];
                 uticket['ticket_number'] = ticket['Ticket number'];
                 uticket['barcode'] = ticket['ticket barcode']['value'];
-                console.log(ticket['ticket barcode']);
                 uticket['ticket_type'] = ticket['user_ticket_type_name'];
                 utickets.push(uticket);
-                console.log("Ticket",uticket);
             }
         }
         return utickets;
@@ -147,6 +152,10 @@ async function updateTicket(ticket) {
             log.info("User", holder_email, "not found in Spark. Creating...");
             if (ticket["id"].length === 0) {
                 ticket["id"] = "";
+            }
+            else if (ticket["id"].length > 9) {
+                log.error("Israeli ID is too long for user", holder_email, "ID:", ticket["id"]);
+                return;
             }
             let name = ticket.name;
             if (!_.isFunction(name.split)) {
@@ -214,8 +223,7 @@ function sendPassTicketRequest(session, barcode) {
         if (error) {
             log.error(error);
         }
-        var result = parseStringSync(body);
-        log.info(result['result'])
+        log.info(body['result'])
     })
 }
 

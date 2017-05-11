@@ -18,21 +18,20 @@ router.get('/', userRole.isLoggedIn(), function (req, res) {
 });
 
 router.get('/ajax/tickets', security.protectJwt, function (req, res) {
-    var searchTerm = '';
-
     if (req.query.search) {
-        searchTerm = '%' + req.query.search + '%';
+        const MINIMUM_LENGTH = 3;
 
         // If not meeting a minimum length, return empty results.
-        if (searchTerm.length < 2) {
-            res.status(200).json({})
+        if (req.query.search.length < MINIMUM_LENGTH) {
+            return res.status(200).json({rows: [], total: 0})
         }
 
         knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
             .where('ticket_number', req.query.search)
-            .orWhere('first_name', 'LIKE', searchTerm)
-            .orWhere('last_name', 'LIKE', searchTerm)
-            .orWhere('email', 'LIKE', searchTerm)
+            .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('email', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
             .then((tickets) => {
                     res.status(200).json({rows: tickets, total: tickets.length})
             }).catch((err) => {
@@ -45,7 +44,7 @@ router.get('/ajax/tickets', security.protectJwt, function (req, res) {
             });
     }
     else {
-        res.status(200).json({});
+        return res.status(200).json({rows: [], total: 0})
     }
 });
 
