@@ -1,6 +1,9 @@
 {
     "gate" : "Gate",
-    "search": "Search by person name / email",
+    "search": "Search by ticket number / person name / email / id",
     "enter_ticket": "Enter ticket",
-    "entrance_instructions" : "Please verify all the details of the ticket against a valid user ID card."
+    "exit_ticket": "Exit ticket",
+    "entrance_instructions" : "Please verify all the details of the ticket against a valid user ID card.",
+    "inside_event": "Inside event",
+    "ticket_group": "Ticket group"
 }
