@@ -8,7 +8,7 @@ __get_camps_all = function ($http, on_success) {
         var _url='/camps_all';
         if (groups_prototype==='art_exhibit') {
             _url='/art_all';
-        } else if (groups_prototype='prod_dep') {
+        } else if (groups_prototype==='prod_dep') {
             _url='/prod_dep_all';
         }
         $http.get(_url).then((res) => {
