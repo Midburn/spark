@@ -530,7 +530,7 @@ module.exports = (app, passport) => {
             (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
 
     /**
-     * API: (GET) return camps list which are open to new members
+     * API: (GET) return camps list
      * request => /camps_open
      */
     app.get('/camps_all', userRole.isAdmin(),
@@ -539,6 +539,10 @@ module.exports = (app, passport) => {
                 res.status(result.status).json(result.data)
         })
     });
+    /**
+     * API: (GET) return camps list csv format
+     * request => /camps_csv
+     */
     app.get('/camps_csv', userRole.isAdmin(),
         (req, res) => {
             retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
