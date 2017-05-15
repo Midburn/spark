@@ -7,10 +7,11 @@ block content
         .alert.alert-danger
             p=errorMessage
 
+    span(id="alerts")
 
     .form-group
         label=t('gate:search')
-    table( data-toggle="table", data-url="/he/gate/ajax/tickets", data-search="true", data-side-pagination="server",
+    table( id='tickets_table', data-toggle="table", data-url="/he/gate/ajax/tickets", data-search="true", data-side-pagination="server",
     data-pagination="true" )
         thead
             tr
@@ -24,8 +25,8 @@ block content
                 th( data-field="first_entrance_timestamp" data-formatter="dateFormat" )=t('first_entrance_timestamp')
                 th( data-field="entrance_timestamp" data-formatter="dateFormat")=t('entrance_timestamp')
                 th( data-field="last_exit_timestamp" data-formatter="dateFormat")=t('last_exit_timestamp')
-                th( data-formatter="tableActions" )=t('operations')
-
+                th( data-formatter="insideEventFormatter" )=t('gate:inside_event')
+                th( data-formatter="tableActionsFormatter" )=t('operations')
 
     #myModal.modal.fade(role='dialog')
         .modal-dialog
@@ -36,32 +37,52 @@ block content
                     h4.modal-title=t("gate:enter_ticket")
                 .modal-body
                     h3=t('gate:entrance_instructions')
+                    span( id='modal_barcode' style="visibility:hidden;")
+                    span( id='modal_mode' style="visibility:hidden;")
+                    span( id='modal_group_id' style="visibility:hidden;")
                     p
                         b=t('ticket_number')
-                        |:&nbsp;
+                        | :&nbsp;
                         span( id='modal_ticket_number' )
                     p
-                        b=t('first_name')
+                        b=t('full_name')
                         | :&nbsp;
-                        span( id='modal_first_name' )
+                        span( id='modal_name' )
                     p
-                        b=t('last_name')
+                        b=t('email')
                         | :&nbsp;
-                        span( id='modal_last_name' )
+                        span( id='modal_email' )
+                    p
+                        b=t('gate:ticket_type')
+                        | :&nbsp;
+                        span( id='modal_type' )
+                    P( id="ticket_groups")
+                        b=t('gate:ticket_group')
+                        | :&nbsp;
+                        .list-group(id="ticket_groups_list")
 
                 .modal-footer
-                    button.btn.btn-default(type='button', data-dismiss='modal', id='entrance_button')=t('gate:enter_ticket')
+                    button.btn.btn-primary(type='button', data-dismiss='modal', id='entrance_button')
                     button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')
 
 block scripts
     script.
-        function tableActions(value, row, index) {
+
+        function tableActionsFormatter(value, row, index) {
             if (!row.inside_event) {
-                return '<a class="entranceAction" id=' + row.ticket_number + '" ' +
+                return '<a class="entranceAction" id="' + row.barcode + '" ' +
                     'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:enter_ticket")}</a> ';
             } else {
+                return '<a class="exitAction" id="' + row.barcode + '" ' +
+                    'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:exit_ticket")}</a> ';
+            }
+        };
+
+        function insideEventFormatter(value, row, index) {
+            if (row.inside_event) {
                 return '<span class="glyphicon glyphicon-ok" />';
             }
+            return "";
         };
 
         function dateFormat(value) {
@@ -73,20 +94,79 @@ block scripts
         }
 
         $(document).ready(function () {
+
             $(document).on("click", ".entranceAction", function () {
-                $("#modal_ticket_number")[0].innerHTML = parseInt(this.id);
+                $.post("/api/gate/get-ticket", {
+                        barcode: this.id,
+                        gate_code: "#{gate_code}"
+                    },
+                    function (data, status) {
+                        $("#modal_mode")[0].innerHTML = "enter";
+                        $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
+                        $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
+                        $("#modal_name")[0].innerHTML = data.ticket.holder_name;
+                        $("#modal_email")[0].innerHTML = data.ticket.email;
+                        $("#modal_type")[0].innerHTML = data.ticket.type;
+
+                        let entranceButton = $("#entrance_button")[0];
+                        entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
+                        entranceButton.disabled = false;
+
+                        if (data.ticket.groups && data.ticket.groups.length > 0) {
+                            entranceButton.disabled = true;
+                            let groupsElement = $("#ticket_groups_list")[0];
+                            groupsElement.innerHTML = "";
+                            for (let group in data.ticket.groups) {
+                                let groupData = data.ticket.groups[group];
+                                groupsElement.innerHTML += "<a class='list-group-item' id='g_" + groupData.id + "'>" + groupData.name + "</a>"
+                            }
+                            $(".list-group-item").click(function () {
+                                $(".list-group-item").removeClass("active");
+                                $(this).addClass("active");
+                                entranceButton.disabled = false
+                                $("#modal_group_id")[0].innerHTML = $(this)[0].id;
+                            });
+                        }
+                    });
+            });
+
+            $(document).on("click", ".exitAction", function () {
+                $.post("/api/gate/get-ticket", {
+                        barcode: this.id,
+                        gate_code: "#{gate_code}"
+                    },
+                    function (data, status) {
+                        $("#modal_mode")[0].innerHTML = "exit";
+                        $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
+                        $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
+                        $("#modal_name")[0].innerHTML = data.ticket.holder_name;
+                        $("#modal_email")[0].innerHTML = data.ticket.email;
+                        $("#modal_type")[0].innerHTML = data.ticket.type;
+
+                        var entranceButton = $("#entrance_button")[0];
+                        entranceButton.innerHTML = "#{t('gate:exit_ticket')}";
+                        entranceButton.disabled = false;
+                        $("#ticket_groups_list")[0].innerHTML = "";
+                    });
             });
 
             $(document).on("click", "#entrance_button", function () {
-                var id = $("#modal_ticket_number")[0].innerHTML;
-                $.post("/api/gate/gate-enter", {
-                    barcode: "",
+                let parameters = {
+                    barcode: $("#modal_barcode")[0].innerHTML,
                     gate_code: "#{gate_code}",
-                    group_id: ""
-                },
-                function (data, status) {
-                    alert("Data: " + data + "\nStatus: " + status);
-                });
+                    group_id: $("#modal_group_id")[0].innerHTML.substring(2)
+                };
+
+                let mode = $("#modal_mode")[0].innerHTML;
+                $.post("/api/gate/gate-" + mode, parameters)
+                    .done(function (data, status) {
+                        if (status === "success") {
+                            $("#alerts")[0].innerHTML = "<div class='alert alert-success'>" + data.message + "</div>";
+                        }
+                        $("#tickets_table").bootstrapTable('resetSearch');
+                    })
+                    .fail(function (xhr) {
+                        $("#alerts")[0].innerHTML = "<div class='alert alert-danger'>" + JSON.parse(xhr.responseText).message + "</div>";
+                    });
             });
         });
-

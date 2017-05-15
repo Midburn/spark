@@ -288,15 +288,15 @@
             "last_doc_status": "Last status by",
             "camp_name_en": "Camp Name (English)"
         },
-        "art_exhibit": {
-            "nav": "My Art Exhibit",
-            "nav_admin": "Manage Art Exhibit",
+        "art_installation": {
+            "nav": "My Art Installation",
+            "nav_admin": "Manage Art Installation",
             "dash": {
-                "title": "Art Exhibit",
-                "desc": "Art Exhibit"
+                "title": "Art Installation",
+                "desc": "Art Installation"
             },
             "admin_index": {
-                "all_camps": "All Art Exhibits",
+                "all_camps": "All Art Installations",
                 "all_members": "All Members",
                 "docs": "Docs",
                 "new": "New",

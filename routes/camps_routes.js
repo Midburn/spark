@@ -204,12 +204,12 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.manage',
             url: '/' + req.params.lng + '/art-admin'
         }]);
-        if (req.user.isAdmin || req.user.isArtExhibitsAdmin) {
+        if (req.user.isAdmin || req.user.isArtInstallationsAdmin) {
             res.render('pages/camps/index_admin', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
-                __groups_prototype: 'art_exhibit',
-                t_prefix: 'camps:art_exhibit.'
+                __groups_prototype: 'art_installation',
+                t_prefix: 'camps:art_installation.'
             });
         } else {
             // user not admin

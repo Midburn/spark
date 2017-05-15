@@ -16,9 +16,9 @@ userRole.THEME_CAMPS_ADMIN = 'camps_admin';
 userRole.isCampsAdmin = function () {
     return userRole.is(userRole.THEME_CAMPS_ADMIN);
 };
-userRole.ART_EXHIBIT_ADMIN = 'art_exhibits_admin';
-userRole.isArtExhibitsAdmin = function () {
-    return userRole.is(userRole.ART_EXHIBIT_ADMIN);
+userRole.ART_INSTALLATION_ADMIN = 'art_installations_admin';
+userRole.isArtInstallationsAdmin = function () {
+    return userRole.is(userRole.ART_INSTALLATION_ADMIN);
 };
 userRole.PROD_DEP_ADMIN = 'prod_dep_admin';
 userRole.isProdDepsAdmin = function () {
