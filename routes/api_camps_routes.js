@@ -7,7 +7,7 @@ const config = require('config');
 const knex = require('../libs/db').knex;
 const userRole = require('../libs/user_role');
 const mail = require('../libs/mail');
-const mailConfig = config.get('mail');
+const csv = require('json2csv');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 const emailDeliver = (recipient, subject, template, props) => {
     /**
@@ -502,9 +502,10 @@ module.exports = (app, passport) => {
 
     const retrieveDataFor = prototype =>
         Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', prototype)
+            .orderBy('camp_name_en', 'ASC')
             .fetchAll()
             .then(camp => {
-                if (_.isUndefined(camp)) {
+                if (!_.isUndefined(camp)) {
                     return {
                         status: 200,
                         data: camp.toJSON()
@@ -529,12 +530,29 @@ module.exports = (app, passport) => {
             (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
 
     /**
-     * API: (GET) return camps list which are open to new members
+     * API: (GET) return camps list
      * request => /camps_open
      */
     app.get('/camps_all', userRole.isAdmin(),
-            (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => res.status(result.status).json(result.data)));
+            (req, res) => {
+        retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
+                res.status(result.status).json(result.data)
+        })
+    });
+    /**
+     * API: (GET) return camps list csv format
+     * request => /camps_csv
+     */
+    app.get('/camps_csv', userRole.isAdmin(),
+        (req, res) => {
+            retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
+                let csvRes = csv({ data: result.data});
+                res.setHeader('Content-disposition', 'attachment; filename=camps.csv');
+                res.set('Content-Type', 'text/csv');
+                res.status(200).send(csvRes);
 
+            })
+        });
     /**
      * API: (GET) return camps list which are open to new members
      * request => /camps_open
