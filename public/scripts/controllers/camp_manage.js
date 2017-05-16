@@ -6,6 +6,7 @@ __get_camps_all = function ($http, on_success) {
     } else {
         $http.get('/camps_all').then((res) => {
             camps_all = res;
+            console.log('allCampos',res);
             on_success(res);
         });
     }
@@ -13,7 +14,7 @@ __get_camps_all = function ($http, on_success) {
 
 app.controller("manageCampsController", function ($scope, $http, $filter) {
     __get_camps_all($http, (res) => {
-        $scope.camps = res.data.camps;
+        $scope.camps = res.data;
         setTimeout(() => {
             innerHeightChange()
         }, 500)
@@ -42,9 +43,9 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
 app.controller("membersController", ($scope, $http) => {
     __get_camps_all($http, (res) => {
         var data = [];
-        for (var i in res.data.camps) {
-            if (['open','closed'].indexOf(res.data.camps[i].status)>-1) {
-                data.push(res.data.camps[i]);
+        for (var i in res.data) {
+            if (['open','closed'].indexOf(res.data[i].status)>-1) {
+                data.push(res.data[i]);
             }
         }
         $scope.camps = data;
