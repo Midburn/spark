@@ -79,18 +79,12 @@ async function dumpDrupalTickets(session, date, page) {
             page: page
         }
     };
-    console.log(`requesting params: ${JSON.stringify({
-            changed: dateFormat(date, "yyyy-mm-dd hh:MM:ss"),
-            ticket_state_target_id: 3,
-            page: page
-        },false,2)}`);
+
     var x = await r(options);
     if (x.response) {
-        try {
-            var tickets = JSON.parse(x.body);
-        } catch(e) {
-            console.error('json parse error', e);
-        }
+
+        var tickets = JSON.parse(x.body);
+
 
         if (!tickets) {
             log.info("Didn't get ticket updates from Drupal");
