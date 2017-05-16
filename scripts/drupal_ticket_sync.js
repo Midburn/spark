@@ -85,7 +85,6 @@ async function dumpDrupalTickets(session, date, page) {
 
         var tickets = JSON.parse(x.body);
 
-
         if (!tickets) {
             log.info("Didn't get ticket updates from Drupal");
             return null;
