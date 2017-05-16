@@ -11,8 +11,8 @@ var log = require('../libs/logger')(module);
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-
-const TICKETS_TYPE_IDS = [38, 39, 40];
+const TICKETS_TYPE_IDS = [39, 40, 41, 43, 44, 45, 46]
+// const TICKETS_TYPE_IDS = [38, 39, 40];
 const STATUS_COMPLETED = 'Completed';
 
 const EVENT_ID = "MIDBURN2017";
@@ -79,35 +79,46 @@ async function dumpDrupalTickets(session, date, page) {
             page: page
         }
     };
-
+    console.log(`requesting params: ${JSON.stringify({
+            changed: dateFormat(date, "yyyy-mm-dd hh:MM:ss"),
+            ticket_state_target_id: 3,
+            page: page
+        },false,2)}`);
     var x = await r(options);
     if (x.response) {
-        var tickets = JSON.parse(x.body);
+        try {
+            var tickets = JSON.parse(x.body);
+        } catch(e) {
+            console.error('json parse error', e);
+        }
+
         if (!tickets) {
             log.info("Didn't get ticket updates from Drupal");
             return null;
         }
         log.info("got " + tickets.length + " tickets");
+
         var utickets = [];
+
         for (var ticket of tickets) {
             var status = ticket['Ticket State'];
             var type_id = parseInt(ticket['ticket_registration_bundle']);
             //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
-                var uticket = {};
-                uticket['holder_email'] = ticket['Email'];
-                uticket['buyer_email'] = ticket['Buyer E-mail'];
-                uticket['name'] = ticket['Name'];
-                uticket['id'] = ticket['Docment id'];
-                uticket['order_id'] = ticket['users_ticket_registration_uid'];
-                uticket['ticket_id'] = ticket['Ticket number'];
-                uticket['ticket_number'] = ticket['Ticket number'];
-                uticket['barcode'] = ticket['ticket barcode']['value'];
-                uticket['ticket_type'] = ticket['user_ticket_type_name'];
-                utickets.push(uticket);
+                utickets.push({
+                    'id'            : ticket['Docment id'],
+                    'holder_email'  : ticket['Email'],
+                    'buyer_email'   : ticket['Buyer E-mail'],
+                    'name'          : ticket['Name'],
+                    'order_id'      : ticket['users_ticket_registration_uid'],
+                    'ticket_id'     : ticket['Ticket number'],
+                    'ticket_number' : ticket['Ticket number'],
+                    'barcode'       : ticket['ticket barcode']['value'],
+                    'ticket_type'   : ticket['user_ticket_type_name']
+                });
             }
         }
-        return utickets;
+        return [utickets, tickets.length];
     }
     else {
         log.warn("Ticket dump failed");
@@ -237,16 +248,17 @@ async function syncTickets(fromDate, callback) {
         var session = await getDrupalSession();
         if (session) {
             log.info('Got Drupal session...');
-            var page = 0;
+            var page = 42;
             var running = true;
             while (running) {
                 log.info("Page:", page);
-                var tickets = await dumpDrupalTickets(session, fromDate, page);
-                if (tickets.length > 0) {
+                var [tickets, resultCount] = await dumpDrupalTickets(session, fromDate, page);
+                if (resultCount > 0) {
                     await updateAllTickets(tickets);
                     page++;
                 }
                 else {
+                    log.info(`FINISH SYNC TICKETS page:${page}`);
                     running = false;
                 }
             }
