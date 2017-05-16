@@ -1,6 +1,140 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.7.0
-ignore: {}
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  'npm:ms:20170412':
+    - debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.756Z'
+    - morgan > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.757Z'
+    - jsonwebtoken > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.757Z'
+    - passport-jwt > jsonwebtoken > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.775Z'
+    - serve-favicon > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.775Z'
+    - body-parser > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - express > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - express > send > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - express > serve-static > send > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - express > send > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - express > serve-static > send > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - express-session > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - babel-core > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - babel-register > babel-core > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.816Z'
+    - babel-core > babel-register > babel-core > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.835Z'
+    - express > finalhandler > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.835Z'
+    - json2csv > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.835Z'
+    - snyk > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.835Z'
+    - snyk > snyk-config > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.835Z'
+    - snyk > snyk-module > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.835Z'
+    - snyk > snyk-policy > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - snyk > snyk-resolve > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - snyk > snyk-resolve-deps > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - snyk > snyk-try-require > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - babel-core > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - babel-register > babel-core > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - babel-core > babel-register > babel-core > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - babel-core > babel-template > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.836Z'
+    - babel-register > babel-core > babel-template > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.837Z'
+    - babel-core > babel-register > babel-core > babel-template > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.837Z'
+    - babel-core > babel-helpers > babel-template > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.837Z'
+    - babel-register > babel-core > babel-helpers > babel-template > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.837Z'
+    - babel-core > babel-register > babel-core > babel-helpers > babel-template > babel-traverse > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.837Z'
+    - sqlite3 > node-pre-gyp > tar-pack > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.875Z'
+    - webpack > watchpack > chokidar > fsevents > node-pre-gyp > tar-pack > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.875Z'
+    - snyk > snyk-policy > snyk-module > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.875Z'
+    - snyk > snyk-policy > snyk-resolve > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.875Z'
+    - snyk > snyk-resolve-deps > snyk-resolve > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.876Z'
+    - snyk > snyk-policy > snyk-try-require > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.876Z'
+    - snyk > snyk-resolve-deps > snyk-try-require > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.876Z'
+    - snyk > snyk-resolve-deps > clite > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.876Z'
+    - snyk > snyk-resolve-deps > snyk-module > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.876Z'
+    - knex > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.876Z'
+    - superagent > debug > ms:
+        reason: None given
+        expires: '2017-06-15T06:46:09.876Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:minimatch:20160620':
