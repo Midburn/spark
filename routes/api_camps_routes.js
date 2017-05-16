@@ -3,7 +3,6 @@ const _ = require('lodash');
 const User = require('../models/user').User;
 const Camp = require('../models/camp').Camp;
 const constants = require('../models/constants.js');
-const config = require('config');
 const knex = require('../libs/db').knex;
 const userRole = require('../libs/user_role');
 const mail = require('../libs/mail');
@@ -546,7 +545,7 @@ module.exports = (app, passport) => {
     app.get('/camps_csv', userRole.isAdmin(),
         (req, res) => {
             retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
-                let csvRes = csv({ data: result.data});
+                let csvRes = csv({data: result.data});
                 res.setHeader('Content-disposition', 'attachment; filename=camps.csv');
                 res.set('Content-Type', 'text/csv');
                 res.status(200).send(csvRes);
