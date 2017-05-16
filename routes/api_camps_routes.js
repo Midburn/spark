@@ -500,15 +500,18 @@ module.exports = (app, passport) => {
         });
     });
 
-    const retrieveDataFor = prototype =>
-        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', prototype)
+    const retrieveDataFor = group_proto =>
+        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', group_proto)
             .orderBy('camp_name_en', 'ASC')
             .fetchAll()
             .then(camp => {
                 if (!_.isUndefined(camp)) {
+                    console.log(group_proto)
                     return {
                         status: 200,
-                        data: camp.toJSON()
+                        data: {
+                            camps: camp.toJSON()
+                        }
                     };
                 } else {
                     return {
@@ -526,7 +529,7 @@ module.exports = (app, passport) => {
                 };
             });
 
-    app.get('/arts_all', userRole.isAdmin(),
+    app.get('/art_all', userRole.isAdmin(),
             (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
 
     /**
@@ -539,6 +542,9 @@ module.exports = (app, passport) => {
                 res.status(result.status).json(result.data)
         })
     });
+    app.get('/prod_dep_all', userRole.isAdmin(),
+            (req, res) => retrieveDataFor(constants.prototype_camps.PROD_DEP.id).then(result => res.status(result.status).json(result.data)));
+
     /**
      * API: (GET) return camps list csv format
      * request => /camps_csv
