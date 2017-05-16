@@ -9,6 +9,7 @@ const mail = require('../libs/mail');
 const csv = require('json2csv');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 const emailDeliver = (recipient, subject, template, props) => {
+
     /**
      * Deliver email request to camp manager
      * notifiying a user wants to join his camp
