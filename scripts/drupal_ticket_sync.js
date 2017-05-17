@@ -104,7 +104,7 @@ async function dumpDrupalTickets(session, date, page) {
                     'holder_email'    : ticket['Email'],
                     'buyer_email'     : ticket['Buyer E-mail'],
                     'name'            : ticket['Name'],
-                    'disabledParking' : ticket['disabledParking'],
+                    'disabledParking' : parseInt(ticket['disabledParking']),
                     'order_id'        : ticket['users_ticket_registration_uid'],
                     'ticket_id'       : ticket['Ticket number'],
                     'ticket_number'   : ticket['Ticket number'],
@@ -199,6 +199,7 @@ async function updateTicket(ticket) {
             order_id: order_id,
             ticket_id: ticket_id,
             type: ticket_type,
+            disabledParking: parseInt(ticket.disabledParking, 10) ? true : false,
             ticket_number: ticket_id // In Drupal, they are the same
         });
 
