@@ -96,18 +96,20 @@ async function dumpDrupalTickets(session, date, page) {
         for (var ticket of tickets) {
             var status = ticket['Ticket State'];
             var type_id = parseInt(ticket['ticket_registration_bundle']);
+            console.log('disabled parking', ticket['disabledParking']);
             //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
                 utickets.push({
-                    'id'            : ticket['Docment id'],
-                    'holder_email'  : ticket['Email'],
-                    'buyer_email'   : ticket['Buyer E-mail'],
-                    'name'          : ticket['Name'],
-                    'order_id'      : ticket['users_ticket_registration_uid'],
-                    'ticket_id'     : ticket['Ticket number'],
-                    'ticket_number' : ticket['Ticket number'],
-                    'barcode'       : ticket['ticket barcode']['value'],
-                    'ticket_type'   : ticket['user_ticket_type_name']
+                    'id'              : ticket['Docment id'],
+                    'holder_email'    : ticket['Email'],
+                    'buyer_email'     : ticket['Buyer E-mail'],
+                    'name'            : ticket['Name'],
+                    'disabledParking' : ticket['disabledParking'],
+                    'order_id'        : ticket['users_ticket_registration_uid'],
+                    'ticket_id'       : ticket['Ticket number'],
+                    'ticket_number'   : ticket['Ticket number'],
+                    'barcode'         : ticket['ticket barcode']['value'],
+                    'ticket_type'     : ticket['user_ticket_type_name']
                 });
             }
         }
