@@ -14,6 +14,7 @@ var compileSass = require('express-compile-sass');
 var recaptchaConfig = require('config').get('recaptcha');
 var KnexSessionStore = require('connect-session-knex')(session);
 var knex = require('./libs/db').knex;
+const compression = require('compression');
 
 log.info('Spark is starting...');
 
@@ -78,6 +79,9 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 app.use(flash()); // use connect-flash for flash messages stored in session
+
+// compress all responses
+app.use(compression());
 
 // i18N Setup
 var i18next = require('i18next');
