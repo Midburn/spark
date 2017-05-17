@@ -85,7 +85,7 @@ module.exports = function (app, passport) {
                         errorMessage: req.flash('error')
                     });
                 } else {
-                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email), {httpOnly: true});
+                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email), {httpOnly: true, domain:'.midburn.org'});
                     var r = req.body['r'];
                     if (r) {
                         return res.redirect(r);
