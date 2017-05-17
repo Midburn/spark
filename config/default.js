@@ -124,5 +124,6 @@ exports.api_tokens = {
 exports.profiles_api = {
     url: process.env.DRUPAL_PROFILE_API_URL || 'http://dummy.url',
     username: process.env.DRUPAL_PROFILE_API_USER || 'dummy',
-    password: process.env.DRUPAL_PROFILE_API_PASSWORD || 'dummy'
+    password: process.env.DRUPAL_PROFILE_API_PASSWORD || 'dummy',
+    useCache: process.env.USE_DRUPAL_CACHE || false,
 };
