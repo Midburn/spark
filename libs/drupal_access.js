@@ -3,7 +3,8 @@ const request = require('superagent');
 const logger = require('../libs/logger')(module);
 const drupalConfig = require('config').get('profiles_api');
 const NodeCache = require("node-cache");
-const drupalCache = new NodeCache({ stdTTL: 60*60*24, checkperiod: 600 });
+
+const drupalCache = new NodeCache({ stdTTL: drupalConfig.cacheTTL, checkperiod: 600 });
 
 function parseFromAnchorTag(uid_string) {
     var re = /<a.*>(.+)<\/a>/g;
