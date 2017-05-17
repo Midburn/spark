@@ -85,13 +85,9 @@ module.exports = function (app, passport) {
                         errorMessage: req.flash('error')
                     });
                 } else {
-                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email), {httpOnly: true, domain:'.midburn.org'});
-                    var r = req.body['r'];
-                    if (r) {
-                        return res.redirect(r);
-                    } else {
-                        return res.redirect('home');
-                    }
+                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email, user.attributes.user_id), {httpOnly: true, domain:'.midburn.org'});
+                    const r = req.body['r'] || 'home';
+                    return res.redirect(r);
                 }
             });
         })(req, res, next);
