@@ -63,6 +63,31 @@ const get_roles_by_volunteer = (req, res) => {
 
 };
 
+//volunteers/roles?email= 
+const get_roles_by_volunteer_by_email = (req, res) => {
+
+    const email = _.get(req, 'query.email');
+    DrupalAccess.get_user_by_email([email])
+    .then(users => {
+        Volunteer.where('user_id', _.get(users[0], 'user_data.uid')).fetchAll()
+        .then(volunteers => {
+            const userRoles = volunteers.models.map(volunteer => {
+                return {'permission': _.get(volunteer, 'attributes.role_id'), 
+                        'department_id': _.get(volunteer, 'attributes.department_id')};
+            });
+            res.json(userRoles);
+        })
+        .catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });}
+)
+};
+
 function has_permissions(user_id, perm_level) {
     return new Promise((resolve, reject) => {
         //TODO - check if loggedin user has permissions...
@@ -236,6 +261,7 @@ module.exports = function (app, passport) {
     app.get('/volunteers/roles', /* userRole.isLoggedIn(), */ get_roles);
     app.get('/volunteers/volunteers', /* userRole.isLoggedIn(), */ get_volunteers);
     app.get('/volunteers/:volunteerId/roles', /* userRole.isLoggedIn(), */ get_roles_by_volunteer);
+    app.get('/volunteers/user_roles', /* userRole.isLoggedIn(), */ get_roles_by_volunteer_by_email);
     //user story 2
     app.get('/volunteers/departments/:department_id/volunteers', /* userRole.isLoggedIn(), */ get_department_volunteers);
     app.post('/volunteers/departments/:department_id/volunteers', /*userRole.isLoggedIn(), */ post_volunteers);
