@@ -1,7 +1,8 @@
 extends ../../includes/page
 block content
     .camps.camp_admin_index(ng-app="ngCamps")
-        script 
+        script.
+            console.log("#{__groups_prototype}");
             var groups_prototype="#{__groups_prototype}";
         .container.col-md-12
             h1=t(t_prefix+'dash.title')
@@ -67,11 +68,11 @@ block content
                                 a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')&nbsp;
                                     button.btn.btn-xs 
                                         span(class='glyphicon glyphicon-pencil')
-                                        =t(t_prefix+'stats.edit')
+                                        =t('camps:stats.edit')
                                 a.cursor-p(ng-click='removeCamp(camp.id)')&nbsp;
                                     button.btn.btn-xs 
                                         span(class='glyphicon glyphicon-trash')
-                                        =t(t_prefix+'stats.remove')
+                                        =t('camps:stats.remove')
                             //- td
 
             //- Card 2

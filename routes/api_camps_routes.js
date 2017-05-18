@@ -208,7 +208,7 @@ module.exports = (app, passport) => {
             });
         });
 
-    var __camps_create_camp_obj = function (req, isNew,curCamp) {
+    var __camps_create_camp_obj = function (req, isNew, curCamp) {
         var data = {
             __prototype: constants.prototype_camps.THEME_CAMP.id,
             event_id: constants.CURRENT_EVENT_ID,
@@ -250,17 +250,17 @@ module.exports = (app, passport) => {
             __update_prop('camp_name_he');
         }
         if (req.user.isAdmin) {
-            var campAddInfoJson = {early_arrival_quota:''};
+            var campAddInfoJson = { early_arrival_quota: '' };
             if (req.body.camp_early_arrival_quota) {
                 if (curCamp) {
                     campAddInfoJson = JSON.parse(curCamp.attributes.addinfo_json);
-                    if (campAddInfoJson ==='' || campAddInfoJson === null) {
-                            campAddInfoJson = {early_arrival_quota:''};
-                        }
+                    if (campAddInfoJson === '' || campAddInfoJson === null) {
+                        campAddInfoJson = { early_arrival_quota: '' };
+                    }
                 }
                 campAddInfoJson.early_arrival_quota = req.body.camp_early_arrival_quota;
             }
-           data.addinfo_json =JSON.stringify(campAddInfoJson);
+            data.addinfo_json = JSON.stringify(campAddInfoJson);
         }
         __update_prop('noise_level', constants.CAMP_NOISE_LEVELS);
         // if (req.body.camp_status)
@@ -313,7 +313,7 @@ module.exports = (app, passport) => {
             camp.getCampUsers((users) => {
                 if (camp.isCampManager(req.user.attributes.user_id) || req.user.isAdmin) {
                     Camp.forge({ id: req.params.id }).fetch().then((camp) => {
-                        camp.save(__camps_create_camp_obj(req, false,camp)).then(() => {
+                        camp.save(__camps_create_camp_obj(req, false, camp)).then(() => {
                             res.json({ error: false, status: 'Camp updated' });
                             // });
                         }).catch((err) => {
@@ -500,15 +500,26 @@ module.exports = (app, passport) => {
         });
     });
 
-    const retrieveDataFor = prototype =>
-        Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', prototype)
+    const retrieveDataFor = group_proto => {
+        // Camp.query((query) => {
+        //     query
+        //         .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', group_proto)
+        //     // .whereIn('status', allowed_status)
+        //     // .whereIn('web_published', web_published);
+        // })
+        // .fetchAll().then((camp) => {
+        return Camp.where({ 'event_id': constants.CURRENT_EVENT_ID, '__prototype': group_proto })
+            // return Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', 'art_installation')
             .orderBy('camp_name_en', 'ASC')
             .fetchAll()
             .then(camp => {
                 if (!_.isUndefined(camp)) {
+                    console.log(group_proto)
                     return {
                         status: 200,
-                        data: camp.toJSON()
+                        data: {
+                            camps: camp.toJSON()
+                        }
                     };
                 } else {
                     return {
@@ -525,20 +536,20 @@ module.exports = (app, passport) => {
                     }
                 };
             });
-
-    app.get('/arts_all', userRole.isAdmin(),
-            (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
-
-    /**
-     * API: (GET) return camps list
-     * request => /camps_open
-     */
+    }
+    // /**
+    //  * API: (GET) return camps list
+    //  * request => /camps_open
+    //  */
     app.get('/camps_all', userRole.isAdmin(),
-            (req, res) => {
-        retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
-                res.status(result.status).json(result.data)
-        })
-    });
+        (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => res.status(result.status).json(result.data)));
+
+    app.get('/prod_dep_all', userRole.isAdmin(),
+        (req, res) => retrieveDataFor(constants.prototype_camps.PROD_DEP.id).then(result => res.status(result.status).json(result.data)));
+
+    app.get('/art_all', userRole.isAdmin(),
+        (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
+
     /**
      * API: (GET) return camps list csv format
      * request => /camps_csv
@@ -546,7 +557,7 @@ module.exports = (app, passport) => {
     app.get('/camps_csv', userRole.isAdmin(),
         (req, res) => {
             retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
-                let csvRes = csv({data: result.data});
+                let csvRes = csv({ data: result.data });
                 res.setHeader('Content-disposition', 'attachment; filename=camps.csv');
                 res.set('Content-Type', 'text/csv');
                 res.status(200).send(csvRes);
@@ -732,8 +743,8 @@ module.exports = (app, passport) => {
             camp.getCampUsers((members) => {
                 var isCampManager = camp.isCampManager(req.user.id, req.t);
                 if (!req.user.isAdmin) {
-                    members = members.map(function(member) {
-                        if (APPROVAL_ENUM.indexOf(member.member_status)<0) {
+                    members = members.map(function (member) {
+                        if (APPROVAL_ENUM.indexOf(member.member_status) < 0) {
                             member.cell_phone = '';
                             member.name = '';
                         }

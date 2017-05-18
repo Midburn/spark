@@ -20,7 +20,7 @@ userRole.ART_INSTALLATION_ADMIN = 'art_installations_admin';
 userRole.isArtInstallationsAdmin = function () {
     return userRole.is(userRole.ART_INSTALLATION_ADMIN);
 };
-userRole.PROD_DEP_ADMIN = 'prod_dep_admin';
+userRole.PROD_DEP_ADMIN = 'prod_deps_admin';
 userRole.isProdDepsAdmin = function () {
     return userRole.is(userRole.PROD_DEP_ADMIN);
 };
