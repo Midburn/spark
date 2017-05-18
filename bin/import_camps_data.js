@@ -30,8 +30,8 @@ function main(argv) {
 
     var _update_camp_member = function (user_id, camp_id, status, vars) {
         let query = 'INSERT INTO camp_members (user_id,camp_id,status) VALUES ("' + user_id + '","' + camp_id + '","' + status + '") ON DUPLICATE KEY UPDATE status=values(status);';
-        console.log('updating approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name + ' of status ' + status);
-        console.log(query);
+        // console.log('updating approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name + ' of status ' + status);
+        // console.log(query);
         return knex.raw(query).then(() => {
             console.log('updated approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name);
         });
@@ -69,34 +69,55 @@ function main(argv) {
 
         //     ]
     );
-
+    console.log('*** Working on Users ***');
     Promise.all(_(users_data).map(function (user) {
         let email = user.email;
         if (!email) {
-            console.log("bad email. skipping this line!");
+            // console.log("bad email. skipping this line! "+email);
             return true;
         }
         email = email.trim().toLowerCase();
+        // console.log(email);
         return knex(constants.USERS_TABLE_NAME).where({ email: email }).then(function (res) {
             // console.log(res);
             // process.exit();
-            if (res.length > 0) {
+            if (res && res.length > 0) {
                 console.log("user already exists for email " + email + " - skipping inserting this user");
                 return true;
             } else {
+                console.log('Trying to insert user ' + email);
                 let _get_name = function (_name) {
-                    if (_name && _name !== '') {
+                    if (_name !== undefined && _name && _name !== '') {
                         return _name.split(" ");
-                    }
+                    } else return '';
                 }
-                let _name = _get_name(user.first_name);
-                if (!_name) {
-                    _name = _get_name(user.full_name);
+                let full_name;
+                if (user.first_name) {
+                    full_name = _get_name(user.first_name);
                 }
-                var first_name = (_name.length > 0) ? _name[0] : '';
-                var last_name = (_name.length > 1) ? _name.slice(1, _name.length).join(" ") : '';
+                if (!full_name) {
+                    full_name = _get_name(user.full_name);
+                }
+                let first_name = '';
+                let last_name = '';
+                if (full_name !== undefined && full_name !== null) {
+                    first_name = (full_name.length > 0) ? full_name[0] : '';
+                    last_name = (full_name.length > 1) ? full_name.slice(1, full_name.length).join(" ") : '';
+                }
+                // let _data={
+                //     name: full_name,
+                //     first_name: first_name,
+                //     last_name: last_name,
+                //     cell_phone: user.cell_phone,
+                //     email: email,
+                //     roles: user.role,
+                //     validated: false,
+                //     created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                //     updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' ')
+                // };
+
                 return knex(constants.USERS_TABLE_NAME).insert({
-                    name: user.name,
+                    name: full_name,
                     first_name: first_name,
                     last_name: last_name,
                     cell_phone: user.cell_phone,
@@ -107,15 +128,18 @@ function main(argv) {
                     updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' ')
                 }).then(function () {
                     console.log("inserted user: " + email);
+                    // return true;
                 }).catch(function (err) {
                     // console.log(res); 
                     console.log("error inserting user: " + email);
+                    // return true;
                     // console.log(err);
                     // process.exit();
                 });
             }
         });
     })).then(function () {
+        console.log('*** Working on Groups ***');
         let times = 0;
         return Promise.all(_(camps_data).map(function (camp) {
             // find camp or new
@@ -290,7 +314,10 @@ function main(argv) {
                     // console.log(camp.member_status);
                     // console.log('member status '+camp.member_status);
                     return knex(constants.CAMPS_TABLE_NAME).where(_where).then(function (camps) {
-                        if (camps.length !== 1) throw new Error();
+                        if (!camps || camps.length !== 1) {
+                            // throw new Error();
+                            return true;
+                        }
                         let _camp = camps[0];
                         let camp_id = _camp.id;
                         // console.log(camp.email);
@@ -340,12 +367,12 @@ function main(argv) {
                                     if (!camps[0].main_contact || parseInt(camps[0].main_contact) === 0) {
                                         update.main_contact = user_id;
                                         need_to_update = true;
-                                    } 
+                                    }
                                     // else console.log(' No need to update main_contact on ' + camp_id + ' for camp ' + camps[0].camp_name_he);
                                     if (!camps[0].contact_person_id || parseInt(camps[0].contact_person_id) === 0) {
                                         update.contact_person_id = user_id;
                                         need_to_update = true;
-                                    } 
+                                    }
                                     // else console.log(' No need to update contact_person on ' + camp_id + ' for camp ' + camps[0].camp_name_he);
                                     // console.log(' group managers '+camps[0].main_contact);
                                     if (need_to_update) {
