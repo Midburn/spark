@@ -285,7 +285,27 @@ module.exports = function (app, passport) {
             // withRelated: ['details']
         }).then((camp) => {
             req.user.getUserCamps((camps) => {
-                if (req.user.isManagerOfCamp(req.params.id) || req.user.isAdmin) {
+                let isAdmin=req.user.isAdmin;
+                let t_prefix='';
+                let __groups_prototype='';
+
+                if (camp.attributes.__prototype===constants.prototype_camps.THEME_CAMP.id) {
+                    isAdmin=isAdmin || req.user.isCampsAdmin;
+                    
+                } else if (camp.attributes.__prototype===constants.prototype_camps.ART_INSTALLATION.id){
+                    isAdmin=isAdmin || req.user.isArtInstallationsAdmin;
+                } else if (camp.attributes.__prototype===constants.prototype_camps.PROD_DEP.id){
+                    isAdmin=isAdmin || req.user.isProdDepsAdmin;
+                } else {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: 'failed to edit camp'
+                        }
+                    });
+                    return;
+                }
+                if (req.user.isManagerOfCamp(req.params.id) || isAdmin) {
                     let camp_data = __camp_data_to_json(camp);
                     if (camp_data.addinfo_json===null) {
                         camp_data.addinfo_json= {early_arrival_quota:''};
@@ -297,7 +317,11 @@ module.exports = function (app, passport) {
                         breadcrumbs: req.breadcrumbs(),
                         camp: camp_data,
                         details: camp_data,
-                        isNew: false
+                        isNew: false,
+                        __groups_prototype: 'art_installation',
+                        t_prefix: 'camps:art_installation.'
+                        
+                        
                     });
                 } else {
                     res.status(500).json({
