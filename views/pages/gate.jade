@@ -50,6 +50,10 @@ block content
                         | :&nbsp;
                         span( id='modal_name' )
                     p
+                        b=t('israeli_id')
+                        | :&nbsp;
+                        span( id='modal_ilid' )
+                    p
                         b=t('email')
                         | :&nbsp;
                         span( id='modal_email' )
@@ -112,6 +116,7 @@ block scripts
                         $("#modal_name")[0].innerHTML = data.ticket.holder_name;
                         $("#modal_email")[0].innerHTML = data.ticket.email;
                         $("#modal_type")[0].innerHTML = data.ticket.type;
+                        $("#modal_ilid")[0].innerHTML = data.ticket.israeli_id;
 
                         let entranceButton = $("#entrance_button")[0];
                         entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
@@ -131,6 +136,9 @@ block scripts
                                 entranceButton.disabled = false
                                 $("#modal_group_id")[0].innerHTML = $(this)[0].id;
                             });
+                        } else {
+                            let groupsElement = $("#ticket_groups_list")[0];
+                            groupsElement.innerHTML = "";
                         }
                     });
             });
