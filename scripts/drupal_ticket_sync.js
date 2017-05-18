@@ -99,15 +99,16 @@ async function dumpDrupalTickets(session, date, page) {
             //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
                 utickets.push({
-                    'id'            : ticket['Docment id'],
-                    'holder_email'  : ticket['Email'],
-                    'buyer_email'   : ticket['Buyer E-mail'],
-                    'name'          : ticket['Name'],
-                    'order_id'      : ticket['users_ticket_registration_uid'],
-                    'ticket_id'     : ticket['Ticket number'],
-                    'ticket_number' : ticket['Ticket number'],
-                    'barcode'       : ticket['ticket barcode']['value'],
-                    'ticket_type'   : ticket['user_ticket_type_name']
+                    'id'              : ticket['Docment id'],
+                    'holder_email'    : ticket['Email'],
+                    'buyer_email'     : ticket['Buyer E-mail'],
+                    'name'            : ticket['Name'],
+                    'disabledParking' : parseInt(ticket['disabledParking']) === 1,
+                    'order_id'        : ticket['users_ticket_registration_uid'],
+                    'ticket_id'       : ticket['Ticket number'],
+                    'ticket_number'   : ticket['Ticket number'],
+                    'barcode'         : ticket['ticket barcode']['value'],
+                    'ticket_type'     : ticket['user_ticket_type_name']
                 });
             }
         }
@@ -190,6 +191,7 @@ async function updateTicket(ticket) {
         }
 
         var holder_id = user.attributes.user_id;
+
         sparkTicket = Ticket.forge({
             event_id: EVENT_ID,
             holder_id: holder_id,
@@ -197,6 +199,7 @@ async function updateTicket(ticket) {
             order_id: order_id,
             ticket_id: ticket_id,
             type: ticket_type,
+            disabledParking: parseInt(ticket.disabledParking, 10) === 1,
             ticket_number: ticket_id // In Drupal, they are the same
         });
 
@@ -241,7 +244,7 @@ async function syncTickets(fromDate, callback) {
         var session = await getDrupalSession();
         if (session) {
             log.info('Got Drupal session...');
-            var page = 0;
+            var page = 1;
             var running = true;
             while (running) {
                 log.info("Page:", page);

@@ -5,7 +5,7 @@
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
-  "version": "2.4.2",
+  "version": "2.4.4",
   "private": true,
   "scripts": {
     "postinstall": "bower install",
@@ -54,7 +54,7 @@
     "csurf": "^1.9.0",
     "csv": "^1.1.1",
     "dateformat": "1.0.12",
-    "debug": "~2.2.0",
+    "debug": "~2.6.7",
     "dotenv": "^4.0.0",
     "drupal-hash": "^1.0.3",
     "express": "~4.15.2",
@@ -88,7 +88,7 @@
     "react-dom": "^15.4.1",
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
-    "serve-favicon": "~2.3.0",
+    "serve-favicon": "~2.4.3",
     "sprintf-js": "1.0.3",
     "sqlite3": "^3.1.8",
     "superagent": "^3.5.0",
@@ -117,4 +117,3 @@
   },
   "snyk": true
 }
-
