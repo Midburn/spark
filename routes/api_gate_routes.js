@@ -48,7 +48,7 @@ async function getTicketBySearchTerms(req, res) {
     if (req.body.barcode) {
         searchTerms = {event_id: event_id, barcode: req.body.barcode};
     } else if (req.body.ticket && req.body.order) {
-        searchTerms = {event_id: event_id, ticket: req.body.ticket, order: req.body.order};
+        searchTerms = {event_id: event_id, ticket_id: req.body.ticket, order_id: req.body.order};
     }
     else {
         return sendError(res, 500, "BAD_SEARCH_PARAMETERS");
