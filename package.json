@@ -5,7 +5,7 @@
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
-  "version": "2.4.1",
+  "version": "2.4.2",
   "private": true,
   "scripts": {
     "postinstall": "bower install",
@@ -45,6 +45,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-validator": "^0.11.5",
     "bower": "^1.8.0",
+    "compression": "^1.6.2",
     "config": "^1.21.0",
     "connect-flash": "^0.1.1",
     "connect-roles": "^3.1.2",
@@ -75,6 +76,7 @@
     "module-id": "2.0.4",
     "morgan": "~1.7.0",
     "mysql": "^2.11.1",
+    "node-cache": "^4.1.1",
     "node-sass": "^3.13.0",
     "passport": "^0.3.2",
     "passport-facebook": "2.1.1",
