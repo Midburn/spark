@@ -103,7 +103,7 @@ async function dumpDrupalTickets(session, date, page) {
                     'holder_email'    : ticket['Email'],
                     'buyer_email'     : ticket['Buyer E-mail'],
                     'name'            : ticket['Name'],
-                    'disabledParking' : parseInt(ticket['disabledParking']),
+                    'disabledParking' : parseInt(ticket['disabledParking']) ? true : false,
                     'order_id'        : ticket['users_ticket_registration_uid'],
                     'ticket_id'       : ticket['Ticket number'],
                     'ticket_number'   : ticket['Ticket number'],
