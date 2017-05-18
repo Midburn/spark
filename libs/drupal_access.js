@@ -1,7 +1,10 @@
 require('dotenv').config()
-var request = require('superagent');
-var logger = require('../libs/logger')(module);
-var drupalConfig = require('config').get('profiles_api');
+const request = require('superagent');
+const logger = require('../libs/logger')(module);
+const drupalConfig = require('config').get('profiles_api');
+const NodeCache = require("node-cache");
+
+const drupalCache = new NodeCache({ stdTTL: drupalConfig.cacheTTL, checkperiod: 600 });
 
 function parseFromAnchorTag(uid_string) {
     var re = /<a.*>(.+)<\/a>/g;
@@ -74,17 +77,25 @@ var search_multiple_emails = function(login_data, email_arr) {
 var search = function(login_data, email, uid, is_retry) {
     return new Promise((resolve, reject) => {
         var qs = {};
+        var key;
         if (email) {
-            qs.mail = email
+            qs.mail = email;
+            key = email;
         }
         if (uid) {
-            qs.uid = uid
+            qs.uid = uid;
+            key = uid;
+        }
+        var user_data_ = drupalCache.get(key)
+        if (user_data_ && drupalConfig.useCache) {
+            return resolve({ email: qs.mail, uid: qs.uid, user_data: user_data_ });
         }
         login_data.request_agent
             .get(drupalConfig.url + '/en/api/usersearch')
             .query(qs)
             .then((res) => {
-                var user_data_ = parseUser(res.body)
+                user_data_ = parseUser(res.body)
+                drupalCache.set(key, user_data_);
                 resolve({ email: qs.mail, uid: qs.uid, user_data: user_data_ });
             }).catch((err) => {
                 if (err.status === 403 && !is_retry) {
