@@ -47,7 +47,7 @@ async function getTicketBySearchTerms(req, res) {
     let searchTerms;
     if (req.body.barcode) {
         searchTerms = {event_id: event_id, barcode: req.body.barcode};
-    } else if (req.params.ticket && req.params.order) {
+    } else if (req.body.ticket && req.body.order) {
         searchTerms = {event_id: event_id, ticket: req.body.ticket, order: req.body.order};
     }
     else {
