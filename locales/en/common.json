@@ -57,7 +57,7 @@
         "login": "Login with Facebook"
     },
     "ticket_number": "Ticket number",
-    "disabled_parking": "disability parking",
+    "disabledParking": "disability parking",
     "order_number": "Order number",
     "ticket_type": "Ticket type",
     "entrance_timestamp": "Current entrance date/time",
