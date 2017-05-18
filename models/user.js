@@ -216,7 +216,7 @@ var UsersGroup = bookshelf.Model.extend({
     },
 
     virtuals: {
-        usersInsideEventsCounter: function () {
+        usersInsideCounter: function () {
             let insideCounter = 0;
             _.each(this.users, user => {
                 var foundTicket = 0;
@@ -230,7 +230,7 @@ var UsersGroup = bookshelf.Model.extend({
             return insideCounter;
         },
         quotaReached: function () {
-            return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+            return (this.usersInsideCounter >= this.attributes.entrance_quota);
         }
     }
 });

@@ -3,6 +3,7 @@ var router = express.Router({mergeParams: true});
 var _ = require('lodash');
 var log = require('../libs/logger')(module);
 var knex = require('../libs/db').knex;
+
 var drupalSync = require('../scripts/drupal_ticket_sync');
 
 var Ticket = require('../models/ticket').Ticket;
@@ -72,32 +73,16 @@ router.post('/get-ticket/', async function (req, res) {
             return;
         }
 
-        // Getting user groups.
+        // Get ticket pools
         let groups = [];
-        let groupsMembershipData = [];
         let holder = ticket.relations.holder;
-        await holder.fetch({withRelated: ['groups', 'groupsMembership']});
-        if (holder.relations.groupsMembership) {
-            _.each(holder.relations.groupsMembership.models, groupMembership => {
-                if (groupMembership.attributes.status === 'approved' ||
-                    groupMembership.attributes.status === 'approved_mgr') {
-                    groupsMembershipData.push(groupMembership.attributes.group_id);
-                }
-            })
-        }
-        if (holder.relations.groupsMembership) {
+        await holder.fetch({withRelated: 'groups'});
+        if (holder.relations.groups) {
             _.each(holder.relations.groups.models, group => {
-                if (groupsMembershipData.contains(group.attributes.group_id)) {
-                    groups.push({
-                        id: group.attributes.group_id,
-                        type: group.attributes.type,
-                        name: group.attributes.name
-                    });
-                }
+                groups.push({id: group.attributes.group_id, type: group.attributes.type, name: group.attributes.name});
             });
         }
 
-        // Preparing result.
         let result = {
             ticket_number: ticket.attributes.ticket_number,
             holder_name: ticket.relations.holder.fullName,
@@ -109,12 +94,11 @@ router.post('/get-ticket/', async function (req, res) {
             inside_event: ticket.attributes.inside_event,
             entrance_timestamp: ticket.attributes.entrance_timestamp ? ticket.attributes.entrance_timestamp.getTime() : null,
             first_entrance_timestamp: ticket.attributes.first_entrance_timestamp ? ticket.attributes.first_entrance_timestamp.getTime() : null,
-            last_exit_timestamp: ticket.attributes.last_exit_timestamp ? ticket.attributes.last_exit_timestamp.getTime() : null,
+            last_exit_timestamp: ticket.attributes.last_exit_timestamp ? ticket.attributes.last_exit_timestamp.getTime(): null,
             entrance_group_id: ticket.attributes.entrance_group_id,
             groups: groups
         };
-
-        // All done, sending the result.
+        // All done, sending the results.
         res.status(200).json({
             ticket: result
         });
