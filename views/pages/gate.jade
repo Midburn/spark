@@ -69,6 +69,9 @@ block content
                 .modal-footer
                     button.btn.btn-primary(type='button', data-dismiss='modal', id='entrance_button')
                     button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')
+                    .pull-right
+                        button.btn.btn-danger(type='button', data-dismiss='modal', id='force_entrance_button')
+                            =t('gate:force_enter_ticket')
 
 block scripts
     script.
@@ -120,7 +123,7 @@ block scripts
 
                         let entranceButton = $("#entrance_button")[0];
                         entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
-                        entranceButton.disabled = false;
+                        entranceButton.disabled = true;
 
                         if (data.ticket.groups && data.ticket.groups.length > 0) {
                             entranceButton.disabled = true;
@@ -162,7 +165,29 @@ block scripts
                         $("#ticket_groups_list")[0].innerHTML = "";
                     });
             });
+            $(document).on("click", "#force_entrance_button", function () {
+                if(prompt("נא לכתוב בכוח ^_^", "בלי כוח") == "בכוח") {
+                    let parameters = {
+                        barcode: $("#modal_barcode")[0].innerHTML,
+                        gate_code: "#{gate_code}",
+                        group_id: $("#modal_group_id")[0].innerHTML.substring(2),
+                        force: true
+                    };
 
+                    let mode = $("#modal_mode")[0].innerHTML;
+                    $.post("/api/gate/gate-" + mode, parameters)
+                    .done(function (data, status) {
+                        if (status === "success") {
+                            $("#alerts")[0].innerHTML = "<div class='alert alert-success'>" + data.message + "</div>";
+                        }
+                        $("#tickets_table").bootstrapTable('resetSearch');
+                    })
+                    .fail(function (xhr) {
+                        $("#alerts")[0].innerHTML = "<div class='alert alert-danger'>" + JSON.parse(xhr.responseText).message + "</div>";
+                    });
+                }
+
+            });
             $(document).on("click", "#entrance_button", function () {
                 let parameters = {
                     barcode: $("#modal_barcode")[0].innerHTML,

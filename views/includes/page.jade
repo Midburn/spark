@@ -19,7 +19,7 @@ block wrapper
                         a( href="/#{language}/volunteering" )=t('volunteering')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
                         a( href="/#{language}/npo" )=t('npo:npo_name')
-                    if(user.isGateManager || user.isAdmin)
+                    if(user.isAdmin || user.isGateManager)
                         li( class="#{path[2] === 'gate' ? 'active' : undefined }" )
                             a( href="/#{language}/gate" )=t('gate:gate')
                     if(user.isAdmin || user.isCampsAdmin)
