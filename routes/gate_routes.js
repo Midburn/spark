@@ -10,7 +10,7 @@ var Event = require('../models/event').Event;
 
 router.get('/', userRole.isGateManager(), function (req, res) {
     //TODO Temp MIDBURN2017, we need to add a global current-event selector.
-    Event.forge({event_id: "MIDBURN2017"}).fetch().then(event => {
+    Event.forge({event_id: 'MIDBURN2017'}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });
@@ -27,7 +27,7 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], fun
         }
 
         knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
-            .where('ticket_number', req.query.search)
+            .where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))
             .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('email', 'LIKE', '%' + req.query.search + '%')
