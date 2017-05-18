@@ -11,13 +11,13 @@ var Event = require('../models/event').Event;
 var UsersGroup = require('../models/user').UsersGroup;
 
 const ERRORS = {
-    GATE_CODE_MISSING: "gate_code is missing or incorrect",
-    BAD_SEARCH_PARAMETERS: "Search parameters are missing or incorrect. Please provide barcode or (ticket and order)",
-    TICKET_NOT_FOUND: "Ticket not found",
-    ALREADY_INSIDE: "Participant is already inside the event",
-    QUOTA_REACHED: "Users group quota reached",
-    TICKET_NOT_IN_GROUP: "Ticket is not assigned to this users group",
-    USER_OUTSIDE_EVENT: "Participant is outside of the event"
+    GATE_CODE_MISSING: 'gate_code is missing or incorrect',
+    BAD_SEARCH_PARAMETERS: 'Search parameters are missing or incorrect. Please provide barcode or (ticket and order)',
+    TICKET_NOT_FOUND: 'Ticket not found',
+    ALREADY_INSIDE: 'Participant is already inside the event',
+    QUOTA_REACHED: 'Users group quota reached',
+    TICKET_NOT_IN_GROUP: 'Ticket is not assigned to this users group',
+    USER_OUTSIDE_EVENT: 'Participant is outside of the event'
 };
 
 function sendError(res, httpCode, errorCode, errorObj) {
