@@ -550,7 +550,6 @@ module.exports = (app, passport) => {
     app.get('/art_all', userRole.isAdmin(),
         (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
 
-
     /**
      * API: (GET) return camps list csv format
      * request => /camps_csv

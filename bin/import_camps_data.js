@@ -5,7 +5,7 @@ const _ = require('lodash');
 const knex = require('../libs/db').knex;
 const constants = require('../models/constants');
 const UserGroup = require('../models/user.js').UsersGroup;
-const Camp = require('../models/camp.js').Camp;
+// const Camp = require('../models/camp.js').Camp;
 
 function help() {
     console.log("\nImport camps data into the DB\n\nUsage:\n  bin/import_camps_data.js <camp_users_csv_file> <camps_csv_file> [--dry-run]\n")
@@ -129,7 +129,7 @@ function main(argv) {
                 }).then(function () {
                     console.log("inserted user: " + email);
                     // return true;
-                }).catch(function (err) {
+                }).catch(function () {
                     // console.log(res); 
                     console.log("error inserting user: " + email);
                     // return true;
@@ -140,7 +140,7 @@ function main(argv) {
         });
     })).then(function () {
         console.log('*** Working on Groups ***');
-        let times = 0;
+        // let times = 0;
         return Promise.all(_(camps_data).map(function (camp) {
             // find camp or new
             let camp_name_en = camp.camp_name_en;
@@ -192,7 +192,7 @@ function main(argv) {
                 if (camp.web_published) {
                     web_published = (camp.web_published.toLowerCase() === 'true');
                 }
-                var _camp_rec = {
+                _camp_rec = {
                     '__prototype': __prototype,
                     event_id: event_id,
                     // camp_name_he: camp.camp_name_he,
@@ -280,12 +280,12 @@ function main(argv) {
                         return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
                             console.log("inserted camp: " + camp_name_en);
                             return update_early_quota();
-                        }).catch(function (err) {
+                        }).catch(function () {
                             // console.log(res); 
                             console.log("error inserting camp: " + _camp_rec);
                             // console.log(err);
                             // process.exit();
-                        });;
+                        });
                     } else {
                         console.log('failed to create group with empty hebrew/english name');
                     }
