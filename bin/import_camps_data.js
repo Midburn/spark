@@ -27,6 +27,16 @@ function main(argv) {
     //      status: "open" / null, facebook_page_url: "", accept_families: "FALSE" / "TRUE", email: ""
     // }...]
     let camps_data = parse(camps_csv_data, { columns: true });
+
+    var _update_camp_member = function (user_id, camp_id, status, vars) {
+        let query = 'INSERT INTO camp_members (user_id,camp_id,status) VALUES ("' + user_id + '","' + camp_id + '","' + status + '") ON DUPLICATE KEY UPDATE status=values(status);';
+        console.log('updating approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name + ' of status ' + status);
+        console.log(query);
+        return knex.raw(query).then(() => {
+            console.log('updated approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name);
+        });
+    }
+
     Promise.all([
         // Camps table
         // knex.schema.alterTable(constants.CAMPS_TABLE_NAME, function (table) {
@@ -236,21 +246,25 @@ function main(argv) {
                     // console.log("updated camp: " + camp_name_en);
                     // debugger;
                     // console.log('update eaarly quota');
-                    return update_early_quota();
+                    // return update_early_quota();
                     // }).catch(err => {
                     // console.log(err)
                     // });
                 } else {
-                    console.log("inserting new camp " + camp_name_en);
-                    return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
-                        console.log("inserted camp: " + camp_name_en);
-                        return update_early_quota();
-                    }).catch(function (err) {
-                        // console.log(res); 
-                        console.log("error inserting camp: " + _camp_rec);
-                        // console.log(err);
-                        // process.exit();
-                    });;
+                    if (camp_name_en && camp_name_he) {
+                        console.log("inserting new camp " + camp_name_en);
+                        return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
+                            console.log("inserted camp: " + camp_name_en);
+                            return update_early_quota();
+                        }).catch(function (err) {
+                            // console.log(res); 
+                            console.log("error inserting camp: " + _camp_rec);
+                            // console.log(err);
+                            // process.exit();
+                        });;
+                    } else {
+                        console.log('failed to create group with empty hebrew/english name');
+                    }
                     // }
                 }
 
@@ -266,25 +280,25 @@ function main(argv) {
                             });
                         }
                     });
+                } else {
+                    return true;
                 }
-
             }).then(function () {
-                console.log('Updating camp_members for ' + __prototype + '/' + camp_name_he);
+                // console.log('Updating camp_members for ' + __prototype + '/' + camp_name_he);
                 // if (camp.)
-                if (camp.member_status !== '' && camp.email !== '') {
+                if (camp.member_status !== undefined && ['approved', 'approved_mgr', 'pending', 'pending_mgr'].indexOf(camp.member_status) > -1 && camp.email !== '') {
+                    // console.log(camp.member_status);
+                    // console.log('member status '+camp.member_status);
                     return knex(constants.CAMPS_TABLE_NAME).where(_where).then(function (camps) {
                         if (camps.length !== 1) throw new Error();
                         let _camp = camps[0];
                         let camp_id = _camp.id;
                         // console.log(camp.email);
                         return knex(constants.USERS_TABLE_NAME).where({ email: camp.email }).then((users) => {
-                            if (users.length !==1) return true;
+                            if (users.length !== 1) return true;
                             let user_id = users[0].user_id;
-                            console.log(users[0]+ ' '+user_id);
-                            let query = 'INSERT INTO camp_members (user_id,camp_id,status) VALUES ("' + user_id + '","' + camp_id + '","' + camp.member_status + '") ON DUPLICATE KEY UPDATE status=values(status);';
-                            return knex.raw(query).then(() => {
-                                console.log('updated approved for user_id ' + user_id + '/'+camp.email+' of camp ' + camp_id + '/' + camp_name_he);
-                            });
+                            // console.log(users[0] + ' ' + user_id);
+                            return _update_camp_member(user_id, camp_id, camp.member_status, { email: camp.email, name: camp.camp_name_he });
                         });
                         // return knex(constants.CAMPS_TABLE_NAME).where({ camp_name_en: camp_name_en }).update({
                         //     main_contact: user_id,
@@ -307,7 +321,40 @@ function main(argv) {
                         // });
                         // });
                     });
-
+                } else {
+                    return true;
+                }
+            }).then(function () {
+                if (camp.manager_email) {
+                    console.log('Updating group managers');
+                    return knex(constants.USERS_TABLE_NAME).where({ email: camp.manager_email }).then((users) => {
+                        if (users.length > 0) {
+                            let user_id = users[0].user_id;
+                            return knex(constants.CAMPS_TABLE_NAME).where(_where).then((camps) => {
+                                if (camps.length > 0) {
+                                    let camp_id = camps[0].id;
+                                    let need_to_update;
+                                    let update = {};
+                                    // console.log(camps[0]);
+                                    // console.log(parseInt(camps[0].main_contact));
+                                    if (!camps[0].main_contact || parseInt(camps[0].main_contact) === 0) {
+                                        update.main_contact = user_id;
+                                        need_to_update = true;
+                                    } 
+                                    // else console.log(' No need to update main_contact on ' + camp_id + ' for camp ' + camps[0].camp_name_he);
+                                    if (!camps[0].contact_person_id || parseInt(camps[0].contact_person_id) === 0) {
+                                        update.contact_person_id = user_id;
+                                        need_to_update = true;
+                                    } 
+                                    // else console.log(' No need to update contact_person on ' + camp_id + ' for camp ' + camps[0].camp_name_he);
+                                    // console.log(' group managers '+camps[0].main_contact);
+                                    if (need_to_update) {
+                                        return _update_camp_member(user_id, camp_id, 'approved', { email: users[0].email, name: camps[0].camp_name_he });
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
             });
         })).then(function () {
