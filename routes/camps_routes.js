@@ -1,8 +1,9 @@
 const userRole = require('../libs/user_role');
 const constants = require('../models/constants.js');
 var Camp = require('../models/camp').Camp;
+
 // var User = require('../models/user').User;
-__camp_data_to_json = function (camp) {
+var __camp_data_to_json = function (camp) {
     let camp_data = camp.toJSON();
     let camp_check_null = [
         'type', 'status', 'public_activity_area_desc', 'camp_activity_time', 'location_comments',
@@ -31,7 +32,7 @@ var __render_camp = function (camp, req, res) {
             camp.init_t(req.t);
             // if user is camp_member, we can show all
             // let _user = camp.isUserCampMember(req.user.id);
-            let camp_data=__camp_data_to_json(camp);
+            let camp_data = __camp_data_to_json(camp);
             let data = {
                 user: req.user, //
                 userLoggedIn: req.user.hasRole('logged in'), //
@@ -75,7 +76,7 @@ module.exports = function (app, passport) {
         }]);
         req.user.getUserCamps((camps) => {
             if (camps.length === 0 || !req.user.attributes.camp || !req.user.attributes.camp_manager) {
-            // if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
+                // if (req.user.attributes.camps.length === 0 || !req.user.attributes.camp_manager) {
                 camp = req.user.attributes.camp;
                 res.render('pages/camps/index_user', {
                     user: req.user,
@@ -285,18 +286,9 @@ module.exports = function (app, passport) {
             // withRelated: ['details']
         }).then((camp) => {
             req.user.getUserCamps((camps) => {
-                let isAdmin=req.user.isAdmin;
-                let t_prefix='';
-                let __groups_prototype='';
-
-                if (camp.attributes.__prototype===constants.prototype_camps.THEME_CAMP.id) {
-                    isAdmin=isAdmin || req.user.isCampsAdmin;
-                    
-                } else if (camp.attributes.__prototype===constants.prototype_camps.ART_INSTALLATION.id){
-                    isAdmin=isAdmin || req.user.isArtInstallationsAdmin;
-                } else if (camp.attributes.__prototype===constants.prototype_camps.PROD_DEP.id){
-                    isAdmin=isAdmin || req.user.isProdDepsAdmin;
-                } else {
+                // let __groups_prototype='';
+                let result = camp.__parsePrototype(camp.attributes.__prototype, req.user);
+                if (!result) {
                     res.status(500).json({
                         error: true,
                         data: {
@@ -305,12 +297,12 @@ module.exports = function (app, passport) {
                     });
                     return;
                 }
-                if (req.user.isManagerOfCamp(req.params.id) || isAdmin) {
+                if (req.user.isManagerOfCamp(req.params.id) || result.isAdmin) {
                     let camp_data = __camp_data_to_json(camp);
-                    if (camp_data.addinfo_json===null) {
-                        camp_data.addinfo_json= {early_arrival_quota:''};
+                    if (camp_data.addinfo_json === null) {
+                        camp_data.addinfo_json = { early_arrival_quota: '' };
                     } else {
-                        camp_data.addinfo_json= JSON.parse(camp_data.addinfo_json);
+                        camp_data.addinfo_json = JSON.parse(camp_data.addinfo_json);
                     }
                     res.render('pages/camps/edit', {
                         user: req.user,
@@ -318,10 +310,11 @@ module.exports = function (app, passport) {
                         camp: camp_data,
                         details: camp_data,
                         isNew: false,
-                        __groups_prototype: 'art_installation',
-                        t_prefix: 'camps:art_installation.'
-                        
-                        
+                        __groups_prototype: camp.attributes.__prototype,
+                        t_prefix: result.t_prefix,
+                        isArt: camp.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id,
+                        isCamp: camp.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id,
+                        isProd: camp.attributes.__prototype === constants.prototype_camps.PROD_DEP.id,
                     });
                 } else {
                     res.status(500).json({

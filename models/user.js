@@ -212,7 +212,71 @@ var UsersGroup = bookshelf.Model.extend({
     idAttribute: 'group_id',
 
     users: function () {
+        // this.attributes.group_id
         return this.belongsToMany(User, 'users_groups_membership', 'group_id', 'user_id', 'group_id', 'user_id');
+        // return this.belongsToMany(User).through(UsersGroupMemberShip);
+    },
+    // groups: function () {
+    // return this.belongsToMany(UsersGroup, 'users_groups_membership', 'user_id', 'group_id', 'user_id', 'group_id');
+    // },
+    getGroupUsers: function(done,req) {
+    // getCampUsers: function (done, req) {
+        var _this = this;
+        let t, _current_user;
+        if (typeof (req) === 'function') {
+            t = req;
+        }
+        if (typeof (req) === 'object' && typeof (req['t']) === 'function') {
+            t = req.t;
+            if (req['user']) {
+                _current_user = req.user;
+            }
+        }
+
+        let _camps_members = 'users_groups_membership';
+        let _users = constants.USERS_TABLE_NAME;
+        knex(_users)
+            .select(_users + '.*', _camps_members + '.status AS member_status')
+            .innerJoin(_camps_members, _users + '.user_id', _camps_members + '.user_id')
+            .where({ 'users_groups_membership.camp_id': this.attributes.group_id })
+            .then((users) => {
+                // let managers = [];
+                // for (let i in users) {
+                //     users[i].isManager = false;
+                //     if (['open', 'closed'].indexOf(_this.attributes.status) === -1) {
+                //         users[i].member_status = 'deleted';
+                //     }
+                //     let _status = users[i].member_status;
+                //     common.__updateUserRec(users[i]);
+                //     users[i].can_remove = ['rejected', 'pending_mgr',].indexOf(_status) > -1;
+                //     users[i].can_approve = ['pending', 'rejected'].indexOf(_status) > -1 && users[i].validated;
+                //     users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id;
+                //     if (((_this.attributes.main_contact === users[i].user_id /*|| common.__hasRole('camp_manager', users[i].roles)*/)
+                //         && users[i].member_status === 'approved')
+                //         || (users[i].member_status === 'approved_mgr')) {
+                //         users[i].isManager = true;
+                //         managers.push(users[i]);
+                //     } else {
+                //         users[i].isManager = false;
+                //     }
+                //     users[i].can_approve_mgr = ['approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id && _current_user &&
+                //         (_current_user.attributes.user_id === _this.attributes.main_contact || _current_user.attributes.isAdmin);
+                //     users[i].can_remove_mgr = ['approved_mgr'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id && _current_user &&
+                //         (_current_user.attributes.user_id === _this.attributes.main_contact || _current_user.attributes.isAdmin);
+                //     if (t !== undefined) { // translate function
+                //         if (users[i].isManager) {
+                //             _status = 'approved_mgr';
+                //         }
+                //         users[i].member_status_i18n = t('camps:members.status_' + _status);
+                //     }
+                // }
+                // _this.attributes.users = users;
+                // _this.attributes.managers = managers;
+                done(users);
+            });
+    },
+    usersMembership: function () {
+        return this.hasMany(User, 'group_id', 'user_id');
     },
 
     virtuals: {
@@ -220,7 +284,7 @@ var UsersGroup = bookshelf.Model.extend({
             let insideCounter = 0;
             _.each(this.users, user => {
                 var foundTicket = 0;
-                _.each(use.tickets, ticket => {
+                _.each(user.tickets, ticket => {
                     if (ticket.attributs.inside_event) {
                         foundTicket = 1;
                     }

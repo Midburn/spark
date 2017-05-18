@@ -31,7 +31,8 @@ function main(argv) {
     var _update_camp_member = function (user_id, camp_id, status, vars) {
         let query = 'INSERT INTO camp_members (user_id,camp_id,status) VALUES ("' + user_id + '","' + camp_id + '","' + status + '") ON DUPLICATE KEY UPDATE status=values(status);';
         // console.log('updating approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name + ' of status ' + status);
-        // console.log(query);
+        if (user_id===117)
+         console.log(query);
         return knex.raw(query).then(() => {
             console.log('updated approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name);
         });
