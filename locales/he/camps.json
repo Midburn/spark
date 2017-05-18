@@ -136,7 +136,6 @@
             "published": "מפורסם",
             "facebook_page_url": "דף פייסבוק",
             "remove": "הסרה",
-            "edit": "עריכה",
             "search": "חפש מחנה"
         },
         "members": {
@@ -337,6 +336,5 @@
             "members": {
                 "actions": "פעולות"
             }
-
         }
 }
