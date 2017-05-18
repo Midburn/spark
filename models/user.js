@@ -5,7 +5,7 @@ var randtoken = require('rand-token');
 var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
 var userRole = require('../libs/user_role');
-var Ticket = require('../models/ticket').Ticket;
+// var _Ticket = require('../models/ticket').Ticket;
 var _ = require('lodash');
 var i18next = require('i18next');
 const knex = require('../libs/db').knex;
@@ -60,8 +60,9 @@ var User = bookshelf.Model.extend({
     },
 
     // tickets: function () {
-    //     return this.belongsTo(Ticket, 'holder_id');
-    //     // return this.hasMany(Ticket);
+    //     return this.hasMany(Ticket
+    // //     return this.belongsTo(Ticket, 'holder_id');
+    // //     // return this.hasMany(Ticket);
     //     // return this.belongsToMany(Ticket);
     //     // return this.hasMany(Ticket,'holder_id');
     // },
@@ -228,16 +229,16 @@ var UsersGroup = bookshelf.Model.extend({
     virtuals: {
         usersInsideEventsCounter: function () {
             let insideCounter = 0;
-            let users = this.relations.users;
-            _.each(users.models, (user) => {
+            let _users = this.relations.users;
+            _.each(_users.models, (user) => {
                 var foundTicket = 0;
                 // console.log(user.tickets);
                 // console.log(user.relations.tickets);
                 // return;
-                let tickets=[];
+                let _tickets=[];
                 // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
                 // tickets=await Ticket.forge()
-                _.each(tickets, ticket => {
+                _.each(_tickets, ticket => {
                     if (ticket.attributs.inside_event) {
                         foundTicket = 1;
                     }

@@ -5,7 +5,6 @@ var User = require('./user').User;
 var Ticket = bookshelf.Model.extend({
     tableName: constants.TICKETS_TABLE_NAME,
     idAttribute: 'ticket_id',
-
     holder: function () {
         return this.belongsTo(User, 'holder_id');
     },

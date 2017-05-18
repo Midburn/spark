@@ -77,7 +77,7 @@ router.post('/get-ticket/', async function (req, res) {
         let groupsMembershipData = [];
         let holder = ticket.relations.holder;
         // await holder.fetch({withRelated: ['groups', 'groupsMembership']});
-        await holder.fetch({withRelated: ['groups']});
+        await holder.fetch({ withRelated: ['groups'] });
         // if (holder.relations.groupsMembership) {
         //     _.each(holder.relations.groupsMembership.models, groupMembership => {
         //         if (groupMembership.attributes.status === 'approved' ||
@@ -89,11 +89,11 @@ router.post('/get-ticket/', async function (req, res) {
         if (holder.relations.groups) {
             _.each(holder.relations.groups.models, group => {
                 // if (groupsMembershipData.contains(group.attributes.group_id)) {
-                    groups.push({
-                        id: group.attributes.group_id,
-                        type: group.attributes.type,
-                        name: group.attributes.name
-                    });
+                groups.push({
+                    id: group.attributes.group_id,
+                    type: group.attributes.type,
+                    name: group.attributes.name
+                });
                 // }
             });
         }
@@ -140,21 +140,75 @@ router.post('/gate-enter', async function (req, res) {
 
     // Finding the right users group and updating it.
     if (req.body.group_id) {
-        let group = await UsersGroup.forge({ group_id: req.body.group_id }).fetch({withRelated: ['users']});
+        let group = await UsersGroup.forge({ group_id: req.body.group_id }).fetch({ withRelated: ['users'] });
 
         if (!group) {
             return sendError(res, 500, "TICKET_NOT_IN_GROUP");
         }
-        console.log(group.users);
+        // console.log(group.users);
         // await holder.fetch({withRelated: ['groups']});
 
         // await group.getGroupUsers((users) => {
         //     console.log(users);
         //     console.log(group.users());
         // });
-        if (group.quotaReached) {
+        // usersInsideEventsCounter: function () {
+        //     let insideCounter = 0;
+        //     let _users = this.relations.users;
+        //     _.each(_users.models, (user) => {
+        //         var foundTicket = 0;
+        //         // console.log(user.tickets);
+        //         // console.log(user.relations.tickets);
+        //         // return;
+        //         let _tickets=[];
+        //         // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
+        //         // tickets=await Ticket.forge()
+        //         _.each(_tickets, ticket => {
+        //             if (ticket.attributs.inside_event) {
+        //                 foundTicket = 1;
+        //             }
+        //         });
+        //         insideCounter += foundTicket;
+        //     });
+        //     return insideCounter;
+        // },
+        // quotaReached: function () {
+        //     this.usersInsideEventsCounter;
+        //     return true;
+        //     // return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+        // }
+        let insideCounter = 0;
+        let _users = group.relations.users;
+        _.each(_users.models,async (user) => {
+            var foundTicket = 0;
+            console.log(user);
+            // console.log(user.tickets);
+            // console.log(user.relations.tickets);
+            // return;
+            // let _tickets = [];
+            // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
+            // tickets=await Ticket.forge()
+            let searchTerms = {
+                event_id: constants.CURRENT_EVENT_ID,
+                holder_id: user.attributes.user_id
+            };
+            let _tickets = await Ticket.forge(searchTerms).fetchAll({ withRelated: ['holder'] });
+            console.log(_tickets);
+            _.each(_tickets, ticket => {
+                if (ticket.attributs.inside_event) {
+                    foundTicket = 1;
+                }
+            });
+            insideCounter += foundTicket;
+        });
+        if (insideCounter >= group.attributes.entrance_quota) {
             return sendError(res, 500, "QUOTA_REACHED");
         }
+        console.log(insideCounter);
+
+        // if (group.quotaReached) {
+        // return sendError(res, 500, "QUOTA_REACHED");
+        // }
     }
 
     // Saving the entrance.
