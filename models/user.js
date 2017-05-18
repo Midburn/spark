@@ -5,6 +5,7 @@ var randtoken = require('rand-token');
 var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
 var userRole = require('../libs/user_role');
+var Ticket = require('../models/ticket').Ticket;
 var _ = require('lodash');
 var i18next = require('i18next');
 const knex = require('../libs/db').knex;
@@ -41,7 +42,6 @@ var User = bookshelf.Model.extend({
         }
         return false;
     },
-
     validPassword: function (password) {
         return this.attributes.password && bcrypt.compareSync(password, this.attributes.password);
     },
@@ -58,6 +58,13 @@ var User = bookshelf.Model.extend({
     groupsMembership: function () {
         return this.hasMany(UsersGroup);
     },
+
+    // tickets: function () {
+    //     return this.belongsTo(Ticket, 'holder_id');
+    //     // return this.hasMany(Ticket);
+    //     // return this.belongsToMany(Ticket);
+    //     // return this.hasMany(Ticket,'holder_id');
+    // },
 
     /**
      * Adds a user to a group. The function returns the group and the caller is responsible to save it.
@@ -212,79 +219,25 @@ var UsersGroup = bookshelf.Model.extend({
     idAttribute: 'group_id',
 
     users: function () {
-        // this.attributes.group_id
         return this.belongsToMany(User, 'users_groups_membership', 'group_id', 'user_id', 'group_id', 'user_id');
-        // return this.belongsToMany(User).through(UsersGroupMemberShip);
-    },
-    // groups: function () {
-    // return this.belongsToMany(UsersGroup, 'users_groups_membership', 'user_id', 'group_id', 'user_id', 'group_id');
-    // },
-    getGroupUsers: function(done,req) {
-    // getCampUsers: function (done, req) {
-        var _this = this;
-        let t, _current_user;
-        if (typeof (req) === 'function') {
-            t = req;
-        }
-        if (typeof (req) === 'object' && typeof (req['t']) === 'function') {
-            t = req.t;
-            if (req['user']) {
-                _current_user = req.user;
-            }
-        }
-
-        let _camps_members = 'users_groups_membership';
-        let _users = constants.USERS_TABLE_NAME;
-        knex(_users)
-            .select(_users + '.*', _camps_members + '.status AS member_status')
-            .innerJoin(_camps_members, _users + '.user_id', _camps_members + '.user_id')
-            .where({ 'users_groups_membership.camp_id': this.attributes.group_id })
-            .then((users) => {
-                // let managers = [];
-                // for (let i in users) {
-                //     users[i].isManager = false;
-                //     if (['open', 'closed'].indexOf(_this.attributes.status) === -1) {
-                //         users[i].member_status = 'deleted';
-                //     }
-                //     let _status = users[i].member_status;
-                //     common.__updateUserRec(users[i]);
-                //     users[i].can_remove = ['rejected', 'pending_mgr',].indexOf(_status) > -1;
-                //     users[i].can_approve = ['pending', 'rejected'].indexOf(_status) > -1 && users[i].validated;
-                //     users[i].can_reject = ['pending', 'approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id;
-                //     if (((_this.attributes.main_contact === users[i].user_id /*|| common.__hasRole('camp_manager', users[i].roles)*/)
-                //         && users[i].member_status === 'approved')
-                //         || (users[i].member_status === 'approved_mgr')) {
-                //         users[i].isManager = true;
-                //         managers.push(users[i]);
-                //     } else {
-                //         users[i].isManager = false;
-                //     }
-                //     users[i].can_approve_mgr = ['approved'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id && _current_user &&
-                //         (_current_user.attributes.user_id === _this.attributes.main_contact || _current_user.attributes.isAdmin);
-                //     users[i].can_remove_mgr = ['approved_mgr'].indexOf(_status) > -1 && _this.attributes.main_contact !== users[i].user_id && _current_user &&
-                //         (_current_user.attributes.user_id === _this.attributes.main_contact || _current_user.attributes.isAdmin);
-                //     if (t !== undefined) { // translate function
-                //         if (users[i].isManager) {
-                //             _status = 'approved_mgr';
-                //         }
-                //         users[i].member_status_i18n = t('camps:members.status_' + _status);
-                //     }
-                // }
-                // _this.attributes.users = users;
-                // _this.attributes.managers = managers;
-                done(users);
-            });
     },
     usersMembership: function () {
-        return this.hasMany(User, 'group_id', 'user_id');
+        return this.hasMany(User);
     },
 
     virtuals: {
         usersInsideEventsCounter: function () {
             let insideCounter = 0;
-            _.each(this.users, user => {
+            let users = this.relations.users;
+            _.each(users.models, (user) => {
                 var foundTicket = 0;
-                _.each(user.tickets, ticket => {
+                // console.log(user.tickets);
+                // console.log(user.relations.tickets);
+                // return;
+                let tickets=[];
+                // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
+                // tickets=await Ticket.forge()
+                _.each(tickets, ticket => {
                     if (ticket.attributs.inside_event) {
                         foundTicket = 1;
                     }
@@ -294,7 +247,9 @@ var UsersGroup = bookshelf.Model.extend({
             return insideCounter;
         },
         quotaReached: function () {
-            return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+            this.usersInsideEventsCounter;
+            return true;
+            // return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
         }
     }
 });

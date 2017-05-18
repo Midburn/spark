@@ -76,24 +76,25 @@ router.post('/get-ticket/', async function (req, res) {
         let groups = [];
         let groupsMembershipData = [];
         let holder = ticket.relations.holder;
-        await holder.fetch({withRelated: ['groups', 'groupsMembership']});
-        if (holder.relations.groupsMembership) {
-            _.each(holder.relations.groupsMembership.models, groupMembership => {
-                if (groupMembership.attributes.status === 'approved' ||
-                    groupMembership.attributes.status === 'approved_mgr') {
-                    groupsMembershipData.push(groupMembership.attributes.group_id);
-                }
-            })
-        }
-        if (holder.relations.groupsMembership) {
+        // await holder.fetch({withRelated: ['groups', 'groupsMembership']});
+        await holder.fetch({withRelated: ['groups']});
+        // if (holder.relations.groupsMembership) {
+        //     _.each(holder.relations.groupsMembership.models, groupMembership => {
+        //         if (groupMembership.attributes.status === 'approved' ||
+        //             groupMembership.attributes.status === 'approved_mgr') {
+        //             groupsMembershipData.push(groupMembership.attributes.group_id);
+        //         }
+        //     })
+        // }
+        if (holder.relations.groups) {
             _.each(holder.relations.groups.models, group => {
-                if (groupsMembershipData.contains(group.attributes.group_id)) {
+                // if (groupsMembershipData.contains(group.attributes.group_id)) {
                     groups.push({
                         id: group.attributes.group_id,
                         type: group.attributes.type,
                         name: group.attributes.name
                     });
-                }
+                // }
             });
         }
 
@@ -127,7 +128,7 @@ router.post('/get-ticket/', async function (req, res) {
 router.post('/gate-enter', async function (req, res) {
 
     // Loading ticket data from the DB.
-    let ticket = await getTicketBySearchTerms(req, res);
+    let ticket = await getTicketBySearchTerms(req, res)
 
     if (!ticket) {
         return sendError(res, 500, "TICKET_NOT_FOUND");
@@ -139,15 +140,18 @@ router.post('/gate-enter', async function (req, res) {
 
     // Finding the right users group and updating it.
     if (req.body.group_id) {
-        let group = await UsersGroup.forge({ group_id: req.body.group_id }).fetch();
+        let group = await UsersGroup.forge({ group_id: req.body.group_id }).fetch({withRelated: ['users']});
 
         if (!group) {
             return sendError(res, 500, "TICKET_NOT_IN_GROUP");
         }
-        await group.getGroupUsers((users) => {
-            console.log(users);
-            console.log(group.users());
-        });
+        console.log(group.users);
+        // await holder.fetch({withRelated: ['groups']});
+
+        // await group.getGroupUsers((users) => {
+        //     console.log(users);
+        //     console.log(group.users());
+        // });
         if (group.quotaReached) {
             return sendError(res, 500, "QUOTA_REACHED");
         }
