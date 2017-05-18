@@ -133,7 +133,6 @@
             "status": "Status",
             "last_update": "Last update",
             "created_at": "Created at",
-            "edit": "Edit",
             "published": "Published",
             "facebook_page_url": "Facebook Page",
             "remove": "Remove",
@@ -339,6 +338,5 @@
             "members": {
                 "actions": "Actions"
             }
-
         }
 }

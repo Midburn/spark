@@ -1,20 +1,29 @@
 var camps_all;
+var groups_prototype;
 
 __get_camps_all = function ($http, on_success) {
     if (camps_all) {
         on_success(camps_all);
     } else {
-        $http.get('/camps_all').then((res) => {
+        var _url='/camps_all';
+        if (groups_prototype==='art_installation') {
+            _url='/art_all';
+        } else if (groups_prototype==='prod_dep') {
+            _url='/prod_dep_all';
+        }
+        console.log(_url);
+        $http.get(_url).then((res) => {
             camps_all = res;
-            console.log('allCampos',res);
             on_success(res);
         });
     }
 }
 
 app.controller("manageCampsController", function ($scope, $http, $filter) {
+    // console.log(groups_prototype);
     __get_camps_all($http, (res) => {
-        $scope.camps = res.data;
+        // console.log(groups_prototype);
+        $scope.camps = res.data.camps;
         setTimeout(() => {
             innerHeightChange()
         }, 500)
@@ -43,9 +52,9 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
 app.controller("membersController", ($scope, $http) => {
     __get_camps_all($http, (res) => {
         var data = [];
-        for (var i in res.data) {
-            if (['open','closed'].indexOf(res.data[i].status)>-1) {
-                data.push(res.data[i]);
+        for (var i in res.data.camps) {
+            if (['open', 'closed'].indexOf(res.data.camps[i].status) > -1) {
+                data.push(res.data.camps[i]);
             }
         }
         $scope.camps = data;

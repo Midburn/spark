@@ -184,7 +184,6 @@ module.exports = function (app, passport) {
                 breadcrumbs: req.breadcrumbs(),
                 __groups_prototype: 'theme_camps',
                 t_prefix: 'camps:'
-
             });
         } else {
             // user not admin
