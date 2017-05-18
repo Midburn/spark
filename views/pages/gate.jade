@@ -22,7 +22,7 @@ block content
                 th( data-field="last_name" )=t('last_name')
                 th( data-field="email" )=t('email')
                 th( data-field="type" )=t('ticket_type')
-                th( data-field="disabledParking" data-formatter="parkingFormat")=t('disabledParking')
+                th( data-field="disabled_parking" data-formatter="parkingFormat")=t('disabled_parking')
                 th( data-field="first_entrance_timestamp" data-formatter="dateFormat" )=t('first_entrance_timestamp')
                 th( data-field="entrance_timestamp" data-formatter="dateFormat")=t('entrance_timestamp')
                 th( data-field="last_exit_timestamp" data-formatter="dateFormat")=t('last_exit_timestamp')
@@ -92,11 +92,11 @@ block scripts
                 return ("0" + d.getDate()).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
                     d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             }
-        }
+        };
 
         function parkingFormat(value) {
             return parseInt(value, 10) === 1 ? '<button type="button" class="btn btn-success">&nbsp;</button>' : '';
-        }
+        };
 
         $(document).ready(function () {
 
