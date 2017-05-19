@@ -141,7 +141,7 @@ router.post('/gate-enter', async function (req, res) {
     if (req.body.force) {
         log.warn(`forced ticket`);
     } else {
-    // Finding the right users group and updating it.
+        // Finding the right users group and updating it.
         if (req.body.group_id) {
             let group = await UsersGroup.forge({ group_id: req.body.group_id }).fetch({ withRelated: ['users'] });
 
@@ -150,7 +150,10 @@ router.post('/gate-enter', async function (req, res) {
             }
 
             let _users = group.relations.users;
-            const insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
+            let insideCounter = 0;
+            for (i = 0; i < _users.models.length; i++) {
+                let user = _users.models[i];
+
                 let searchTerms = {
                     event_id: 'MIDBURN2017',
                     holder_id: user.attributes.user_id
@@ -161,13 +164,32 @@ router.post('/gate-enter', async function (req, res) {
                         return tickets;
                     });
                 _.each(_tickets.models, ticket => {
+                    // console.log(user.attributes.email + ' ' + user.attributes.user_id + ' ticket ' + ticket.attributes.ticket_id + ' inside:' + ticket.attributes.inside_event);
                     if (ticket.attributes.inside_event) {
-                        foundTicket += 1;
+                        insideCounter += 1;
                     }
                 })
+            }
+            // console.log(foundTicket);
+            // const insideCounter = _.reduce(_users.models, async (foundTicket, user) => {
+            //     let searchTerms = {
+            //         event_id: 'MIDBURN2017',
+            //         holder_id: user.attributes.user_id
+            //     };
+            //     let _tickets = await Ticket.where(searchTerms)
+            //         .fetchAll()
+            //         .then((tickets) => {
+            //             return tickets;
+            //         });
+            //     _.each(_tickets.models, ticket => {
+            //         console.log(user.attributes.email+' '+user.attributes.user_id+' ticket '+ticket.attributes.ticket_id+' inside:'+ticket.attributes.inside_event);
+            //         if (ticket.attributes.inside_event) {
+            //             foundTicket += 1;
+            //         }
+            //     })
 
-                return foundTicket;
-            }, 0);
+            //     return foundTicket;
+            // }, 0);
 
             if (insideCounter >= group.attributes.entrance_quota) {
                 return sendError(res, 500, "QUOTA_REACHED");
