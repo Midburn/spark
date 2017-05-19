@@ -153,8 +153,6 @@ router.post('/gate-enter', async function (req, res) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
 
-            let insideCounter = await group.usersInsideEventsCounter;
-
             if (group.quotaReached) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
