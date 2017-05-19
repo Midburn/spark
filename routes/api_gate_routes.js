@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router({ mergeParams: true });
+var router = express.Router({mergeParams: true});
 var _ = require('lodash');
 var log = require('../libs/logger')(module);
 var knex = require('../libs/db').knex;
@@ -16,7 +16,8 @@ const ERRORS = {
     ALREADY_INSIDE: 'Participant is already inside the event',
     QUOTA_REACHED: 'Users group quota reached',
     TICKET_NOT_IN_GROUP: 'Ticket is not assigned to this users group',
-    USER_OUTSIDE_EVENT: 'Participant is outside of the event'
+    USER_OUTSIDE_EVENT: 'Participant is outside of the event',
+    EXIT_NOT_ALLOWED: 'Exit is not permitted after the event has started'
 };
 
 function sendError(res, httpCode, errorCode, errorObj) {
@@ -34,9 +35,11 @@ async function getTicketBySearchTerms(req, res) {
     // Loading event and checking that gate_code is valid.
     let event = null;
     let event_id = null;
+    let gate_status = null;
     if (req.body.gate_code) {
-        event = await Event.forge({ gate_code: req.body.gate_code }).fetch();
+        event = await Event.forge({gate_code: req.body.gate_code}).fetch();
         event_id = event.attributes.event_id;
+        gate_status = event.attributes.gate_status;
     }
     if (!req.body.gate_code || !event) {
         return sendError(res, 500, "GATE_CODE_MISSING");
@@ -45,18 +48,18 @@ async function getTicketBySearchTerms(req, res) {
     // Setting the search terms for the ticket.
     let searchTerms;
     if (req.body.barcode) {
-        searchTerms = { event_id: event_id, barcode: req.body.barcode };
+        searchTerms = {event_id: event_id, barcode: req.body.barcode};
     } else if (req.body.ticket && req.body.order) {
-        searchTerms = { event_id: event_id, ticket_id: req.body.ticket, order_id: req.body.order };
+        searchTerms = {event_id: event_id, ticket_id: req.body.ticket, order_id: req.body.order};
     }
     else {
         return sendError(res, 500, "BAD_SEARCH_PARAMETERS");
     }
 
     // Loading data from the DB.
-    var ticket = await Ticket.forge(searchTerms).fetch({ withRelated: ['holder'] });
+    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder']});
     if (ticket) {
-        return ticket;
+        return [ticket, gate_status];
     }
     else {
         return sendError(res, 404, "TICKET_NOT_FOUND");
@@ -66,7 +69,7 @@ async function getTicketBySearchTerms(req, res) {
 router.post('/get-ticket/', async function (req, res) {
     try {
         // Loading ticket data from the DB.
-        let ticket = await getTicketBySearchTerms(req, res);
+        let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
 
         if (!ticket) {
             return;
@@ -76,7 +79,7 @@ router.post('/get-ticket/', async function (req, res) {
         let groups = [];
         let holder = ticket.relations.holder;
         // await holder.fetch({withRelated: ['groups', 'groupsMembership']});
-        await holder.fetch({ withRelated: ['groups'] });
+        await holder.fetch({withRelated: ['groups']});
         // if (holder.relations.groupsMembership) {
         //     _.each(holder.relations.groupsMembership.models, groupMembership => {
         //         if (groupMembership.attributes.status === 'approved' ||
@@ -117,7 +120,8 @@ router.post('/get-ticket/', async function (req, res) {
 
         // All done, sending the result.
         res.status(200).json({
-            ticket: result
+            ticket: result,
+            gate_status: gate_status
         });
     }
     catch (err) {
@@ -128,52 +132,35 @@ router.post('/get-ticket/', async function (req, res) {
 router.post('/gate-enter', async function (req, res) {
 
     // Loading ticket data from the DB.
-    let ticket = await getTicketBySearchTerms(req, res)
+    let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
 
     if (!ticket) {
         return sendError(res, 500, "TICKET_NOT_FOUND");
     }
-
     if (ticket.attributes.inside_event) {
         return sendError(res, 500, "ALREADY_INSIDE");
     }
 
     if (req.body.force) {
-        log.warn(`forced ticket`);
-    } else {
-    // Finding the right users group and updating it.
-        if (req.body.group_id) {
-            let group = await UsersGroup.forge({ group_id: req.body.group_id }).fetch({ withRelated: ['users'] });
+        log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
+    }
+    else {
+        // Finding the right users group and updating it.
+        if (req.body.group_id && gate_status === "early_arrival") {
+            let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
 
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
 
-            let _users = group.relations.users;
-            const insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
-                let searchTerms = {
-                    event_id: 'MIDBURN2017',
-                    holder_id: user.attributes.user_id
-                };
-                let _tickets = await Ticket.where(searchTerms)
-                    .fetchAll()
-                    .then((tickets) => {
-                        return tickets;
-                    });
-                _.each(_tickets.models, ticket => {
-                    if (ticket.attributes.inside_event) {
-                        foundTicket += 1;
-                    }
-                })
+            let insideCounter = await group.usersInsideEventsCounter;
 
-                return foundTicket;
-            }, 0);
-
-            if (insideCounter >= group.attributes.entrance_quota) {
+            if (group.quotaReached) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
         }
     }
+
     // Saving the entrance.
     ticket.attributes.entrance_timestamp = new Date();
     ticket.attributes.entrance_group_id = req.body.group_id || null;
@@ -184,7 +171,7 @@ router.post('/gate-enter', async function (req, res) {
     }
     await ticket.save();
 
-    // PATCH - Notifying Drupal that this ticket is now non-transferable. Remove with Drupal.
+    // TODO PATCH - Notifying Drupal that this ticket is now non-transferable. Remove with Drupal.
     drupalSync.passTicket(ticket.attributes.barcode);
 
     return res.status(200).json({
@@ -195,7 +182,7 @@ router.post('/gate-enter', async function (req, res) {
 router.post('/gate-exit', async function (req, res) {
 
     try {
-        let ticket = await getTicketBySearchTerms(req, res);
+        let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
 
         if (!ticket) {
             return sendError(res, 500, "TICKET_NOT_FOUND");
@@ -203,6 +190,10 @@ router.post('/gate-exit', async function (req, res) {
 
         if (!ticket.attributes.inside_event) {
             return sendError(res, 500, "USER_OUTSIDE_EVENT");
+        }
+
+        if (gate_status === "regular") {
+            return sendError(res, 500, "EXIT_NOT_ALLOWED");
         }
 
         // Saving the exit.
@@ -220,14 +211,14 @@ router.post('/gate-exit', async function (req, res) {
         return sendError(res, 500, null, err)
     }
 })
-    ;
+;
 
 router.post('/tickets-counter', async function (req, res) {
 
     // Loading event and checking that gate_code is valid.
     let event_id = null;
     if (req.body.gate_code) {
-        let event = await Event.forge({ gate_code: req.body.gate_code }).fetch();
+        let event = await Event.forge({gate_code: req.body.gate_code}).fetch();
         event_id = event.attributes.event_id;
     }
     if (!req.body.gate_code || !event_id) {

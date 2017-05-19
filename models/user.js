@@ -1,14 +1,14 @@
-const common = require('../libs/common').common;
-var bookshelf = require('../libs/db').bookshelf;
+var _ = require('lodash');
+var i18next = require('i18next');
 var bcrypt = require('bcrypt-nodejs');
 var randtoken = require('rand-token');
+
+var common = require('../libs/common').common;
+var bookshelf = require('../libs/db').bookshelf;
+var knex = require('../libs/db').knex;
 var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
 var userRole = require('../libs/user_role');
-// var _Ticket = require('../models/ticket').Ticket;
-var _ = require('lodash');
-var i18next = require('i18next');
-const knex = require('../libs/db').knex;
 
 /////////////////////////////////////////////////////////////
 /////////////////////////// USER  ///////////////////////////
@@ -59,14 +59,6 @@ var User = bookshelf.Model.extend({
         return this.hasMany(UsersGroup);
     },
 
-    // tickets: function () {
-    //     return this.hasMany(Ticket
-    // //     return this.belongsTo(Ticket, 'holder_id');
-    // //     // return this.hasMany(Ticket);
-    //     // return this.belongsToMany(Ticket);
-    //     // return this.hasMany(Ticket,'holder_id');
-    // },
-
     /**
      * Adds a user to a group. The function returns the group and the caller is responsible to save it.
      */
@@ -83,7 +75,7 @@ var User = bookshelf.Model.extend({
         }
 
         if (!membership) {
-            membership = UsersGroupMemberShip.forge({ user_id: this.attributes.user_id, group_id: group_id });
+            membership = UsersGroupMemberShip.forge({user_id: this.attributes.user_id, group_id: group_id});
         }
 
         return membership;
@@ -205,7 +197,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function (password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], { 'input': password + "\n" });
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password + "\n"});
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }
@@ -227,30 +219,17 @@ var UsersGroup = bookshelf.Model.extend({
     },
 
     virtuals: {
-        usersInsideEventsCounter: function () {
-            let insideCounter = 0;
-            let _users = this.relations.users;
-            _.each(_users.models, (user) => {
-                var foundTicket = 0;
-                // console.log(user.tickets);
-                // console.log(user.relations.tickets);
-                // return;
-                let _tickets=[];
-                // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
-                // tickets=await Ticket.forge()
-                _.each(_tickets, ticket => {
-                    if (ticket.attributs.inside_event) {
-                        foundTicket = 1;
-                    }
+        usersInsideEventsCounter: async function () {
+            return await knex('tickets')
+                .count('inside_event')
+                .where('entrance_group_id', '=', this.attributes.group_id)
+                .then(count => {
+                    return count;
                 });
-                insideCounter += foundTicket;
-            });
-            return insideCounter;
         },
-        quotaReached: function () {
-            this.usersInsideEventsCounter;
-            return true;
-            // return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+
+        quotaReached: async function () {
+            return (await this.usersInsideEventsCounter >= this.attributes.entrance_quota);
         }
     }
 });

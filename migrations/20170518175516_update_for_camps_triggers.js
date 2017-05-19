@@ -11,12 +11,15 @@ exports.up = function (knex, Promise) {
 
             knex.raw("DROP TRIGGER camp_members_groups_after_ins").then(
 
-                knex.raw(
-                    "CREATE TRIGGER camp_members_groups_after_ins AFTER INSERT ON camp_members " +
-                    "FOR EACH ROW " +
-                    "BEGIN " +
-                    "INSERT INTO users_groups_membership (group_id, user_id, status) VALUES (new.camp_id, new.user_id, new.status); " +
-                    "END").then(
+                // Commented after deployment to server to avoid migration warnings.
+                // The new trigger is created instead in 20170519184911_missing_trigger.js
+
+                //knex.raw(
+                //    "CREATE TRIGGER camp_members_groups_after_ins AFTER INSERT ON camp_members " +
+                //    "FOR EACH ROW " +
+                //    "BEGIN " +
+                //    "INSERT INTO users_groups_membership (group_id, user_id, status) VALUES (new.camp_id, new.user_id, new.status); " +
+                //    "END").then(
 
                     knex.raw("CREATE TRIGGER camp_members_groups_after_upd AFTER UPDATE ON camp_members " +
                         "FOR EACH ROW " +
@@ -30,7 +33,7 @@ exports.up = function (knex, Promise) {
                             "inner join camp_members cm on u.user_id = cm.user_id " +
                             "ON DUPLICATE KEY UPDATE status = cm.status;")
                     )
-                )
+                //)
             )
         )
     ])
