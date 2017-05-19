@@ -31,8 +31,6 @@ function main(argv) {
     var _update_camp_member = function (user_id, camp_id, status, vars) {
         let query = 'INSERT INTO camp_members (user_id,camp_id,status) VALUES ("' + user_id + '","' + camp_id + '","' + status + '") ON DUPLICATE KEY UPDATE status=values(status);';
         // console.log('updating approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name + ' of status ' + status);
-        if (user_id===117)
-         console.log(query);
         return knex.raw(query).then(() => {
             console.log('updated approved for user_id ' + user_id + '/' + vars.email + ' of camp ' + camp_id + '/' + vars.name);
         });
@@ -105,12 +103,12 @@ function main(argv) {
                     first_name = (full_name.length > 0) ? full_name[0] : '';
                     last_name = (full_name.length > 1) ? full_name.slice(1, full_name.length).join(" ") : '';
                 }
-                let _user={
-                    validated: false,
-                    email: email,
-                    created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                };
+                // let _user = {
+                //     validated: false,
+                //     email: email,
+                //     created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                //     updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                // };
                 var _user_rec_add_field = function (key, value, default_value) {
                     if (value) {
                         _user_rec[key] = value;
@@ -128,7 +126,7 @@ function main(argv) {
                     console.log("inserted user: " + email);
                     // return true;
                 }).catch(function () {
-                    // console.log(res); 
+                    // console.log(res);
                     console.log("error inserting user: " + email);
                     // return true;
                     // console.log(err);
@@ -275,14 +273,13 @@ function main(argv) {
                 } else {
                     if (camp_name_en && camp_name_he) {
                         console.log("inserting new camp " + camp_name_en);
-                        _camp_rec.create_at=                         (new Date()).toISOString().substring(0, 19).replace('T', ' ');
-                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' ')
+                        _camp_rec.create_at=(new Date()).toISOString().substring(0, 19).replace('T', ' ');
 
                         return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
                             console.log("inserted camp: " + camp_name_en);
                             return update_early_quota();
                         }).catch(function () {
-                            // console.log(res); 
+                            // console.log(res);
                             console.log("error inserting camp: " + _camp_rec);
                             // console.log(err);
                             // process.exit();
