@@ -149,9 +149,9 @@ router.post('/gate-enter', async function (req, res) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
 
-            let insideCounter = 0;
+
             let _users = group.relations.users;
-            insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
+            const insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
                 let searchTerms = {
                     event_id: 'MIDBURN2017',
                     holder_id: user.attributes.user_id
@@ -159,7 +159,6 @@ router.post('/gate-enter', async function (req, res) {
                 let _tickets = await Ticket.where(searchTerms)
                     .fetchAll()
                     .then((tickets) => {
-                        console.log(tickets);
                         return tickets;
                     });
                 _.each(_tickets.models, ticket => {
@@ -170,7 +169,6 @@ router.post('/gate-enter', async function (req, res) {
 
                 return foundTicket;
             }, 0);
-
 
             if (insideCounter >= group.attributes.entrance_quota) {
                 return sendError(res, 500, "QUOTA_REACHED");
