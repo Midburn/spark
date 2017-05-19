@@ -137,19 +137,22 @@ router.post('/gate-enter', async function (req, res) {
         return sendError(res, 500, "ALREADY_INSIDE");
     }
 
-    // Finding the right users group and updating it.
-    if (req.body.group_id) {
-        let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch();
+    if (req.body.force) {
+        log.warn(`forced ticket`);
+    } else {
+        // Finding the right users group and updating it.
+        if (req.body.group_id) {
+            let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch();
 
-        if (!group) {
-            return sendError(res, 500, "TICKET_NOT_IN_GROUP");
-        }
+            if (!group) {
+                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+            }
 
-        if (group.quotaReached) {
-            return sendError(res, 500, "QUOTA_REACHED");
+            if (group.quotaReached) {
+                return sendError(res, 500, "QUOTA_REACHED");
+            }
         }
     }
-
     // Saving the entrance.
     ticket.attributes.entrance_timestamp = new Date();
     ticket.attributes.entrance_group_id = req.body.group_id || null;

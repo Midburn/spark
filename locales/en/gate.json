@@ -2,6 +2,7 @@
     "gate" : "Gate",
     "search": "Search by ticket number / person name / email / id",
     "enter_ticket": "Enter ticket",
+    "force_enter_ticket": "Force enter ticket!",
     "exit_ticket": "Exit ticket",
     "entrance_instructions" : "Please verify all the details of the ticket against a valid user ID card.",
     "inside_event": "Inside event",
