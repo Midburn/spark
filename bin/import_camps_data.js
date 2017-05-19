@@ -273,7 +273,8 @@ function main(argv) {
                 } else {
                     if (camp_name_en && camp_name_he) {
                         console.log("inserting new camp " + camp_name_en);
-                        _camp_rec.create_at=(new Date()).toISOString().substring(0, 19).replace('T', ' ');
+                        _camp_rec.create_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+                        _camp_rec.updated_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
 
                         return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
                             console.log("inserted camp: " + camp_name_en);
