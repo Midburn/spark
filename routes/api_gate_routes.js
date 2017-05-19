@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router({mergeParams: true});
+var router = express.Router({ mergeParams: true });
 var _ = require('lodash');
 var log = require('../libs/logger')(module);
 var knex = require('../libs/db').knex;
@@ -35,7 +35,7 @@ async function getTicketBySearchTerms(req, res) {
     let event = null;
     let event_id = null;
     if (req.body.gate_code) {
-        event = await Event.forge({gate_code: req.body.gate_code}).fetch();
+        event = await Event.forge({ gate_code: req.body.gate_code }).fetch();
         event_id = event.attributes.event_id;
     }
     if (!req.body.gate_code || !event) {
@@ -45,16 +45,16 @@ async function getTicketBySearchTerms(req, res) {
     // Setting the search terms for the ticket.
     let searchTerms;
     if (req.body.barcode) {
-        searchTerms = {event_id: event_id, barcode: req.body.barcode};
+        searchTerms = { event_id: event_id, barcode: req.body.barcode };
     } else if (req.body.ticket && req.body.order) {
-        searchTerms = {event_id: event_id, ticket_id: req.body.ticket, order_id: req.body.order};
+        searchTerms = { event_id: event_id, ticket_id: req.body.ticket, order_id: req.body.order };
     }
     else {
         return sendError(res, 500, "BAD_SEARCH_PARAMETERS");
     }
 
     // Loading data from the DB.
-    var ticket = await Ticket.forge(searchTerms).fetch({withRelated: ['holder']});
+    var ticket = await Ticket.forge(searchTerms).fetch({ withRelated: ['holder'] });
     if (ticket) {
         return ticket;
     }
@@ -74,26 +74,26 @@ router.post('/get-ticket/', async function (req, res) {
 
         // Getting user groups.
         let groups = [];
-        let groupsMembershipData = [];
         let holder = ticket.relations.holder;
-        await holder.fetch({withRelated: ['groups', 'groupsMembership']});
-        if (holder.relations.groupsMembership) {
-            _.each(holder.relations.groupsMembership.models, groupMembership => {
-                if (groupMembership.attributes.status === 'approved' ||
-                    groupMembership.attributes.status === 'approved_mgr') {
-                    groupsMembershipData.push(groupMembership.attributes.group_id);
-                }
-            })
-        }
-        if (holder.relations.groupsMembership) {
+        // await holder.fetch({withRelated: ['groups', 'groupsMembership']});
+        await holder.fetch({ withRelated: ['groups'] });
+        // if (holder.relations.groupsMembership) {
+        //     _.each(holder.relations.groupsMembership.models, groupMembership => {
+        //         if (groupMembership.attributes.status === 'approved' ||
+        //             groupMembership.attributes.status === 'approved_mgr') {
+        //             groupsMembershipData.push(groupMembership.attributes.group_id);
+        //         }
+        //     })
+        // }
+        if (holder.relations.groups) {
             _.each(holder.relations.groups.models, group => {
-                if (groupsMembershipData.contains(group.attributes.group_id)) {
-                    groups.push({
-                        id: group.attributes.group_id,
-                        type: group.attributes.type,
-                        name: group.attributes.name
-                    });
-                }
+                // if (groupsMembershipData.contains(group.attributes.group_id)) {
+                groups.push({
+                    id: group.attributes.group_id,
+                    type: group.attributes.type,
+                    name: group.attributes.name
+                });
+                // }
             });
         }
 
@@ -127,7 +127,7 @@ router.post('/get-ticket/', async function (req, res) {
 router.post('/gate-enter', async function (req, res) {
 
     // Loading ticket data from the DB.
-    let ticket = await getTicketBySearchTerms(req, res);
+    let ticket = await getTicketBySearchTerms(req, res)
 
     if (!ticket) {
         return sendError(res, 500, "TICKET_NOT_FOUND");
@@ -140,15 +140,35 @@ router.post('/gate-enter', async function (req, res) {
     if (req.body.force) {
         log.warn(`forced ticket`);
     } else {
-        // Finding the right users group and updating it.
+    // Finding the right users group and updating it.
         if (req.body.group_id) {
-            let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch();
+            let group = await UsersGroup.forge({ group_id: req.body.group_id }).fetch({ withRelated: ['users'] });
 
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
 
-            if (group.quotaReached) {
+            let _users = group.relations.users;
+            const insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
+                let searchTerms = {
+                    event_id: 'MIDBURN2017',
+                    holder_id: user.attributes.user_id
+                };
+                let _tickets = await Ticket.where(searchTerms)
+                    .fetchAll()
+                    .then((tickets) => {
+                        return tickets;
+                    });
+                _.each(_tickets.models, ticket => {
+                    if (ticket.attributes.inside_event) {
+                        foundTicket += 1;
+                    }
+                })
+
+                return foundTicket;
+            }, 0);
+
+            if (insideCounter >= group.attributes.entrance_quota) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
         }
@@ -199,14 +219,14 @@ router.post('/gate-exit', async function (req, res) {
         return sendError(res, 500, null, err)
     }
 })
-;
+    ;
 
 router.post('/tickets-counter', async function (req, res) {
 
     // Loading event and checking that gate_code is valid.
     let event_id = null;
     if (req.body.gate_code) {
-        let event = await Event.forge({gate_code: req.body.gate_code}).fetch();
+        let event = await Event.forge({ gate_code: req.body.gate_code }).fetch();
         event_id = event.attributes.event_id;
     }
     if (!req.body.gate_code || !event_id) {

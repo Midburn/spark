@@ -102,6 +102,26 @@ var Camp = bookshelf.Model.extend({
             this.attributes.camp_desc_en_linkify = common.linkify(this.attributes.camp_desc_en);
         }
     },
+    __parsePrototype: function (prototype, user) {
+        let isAdmin = user.isAdmin;
+        let t_prefix = '';
+        if (this.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id) {
+            isAdmin = isAdmin || req.user.isCampsAdmin;
+            t_prefix = 'camps:';
+        } else if (this.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id) {
+            isAdmin = isAdmin || req.user.isArtInstallationsAdmin;
+            t_prefix = 'camps:art_installation.';
+        } else if (this.attributes.__prototype === constants.prototype_camps.PROD_DEP.id) {
+            isAdmin = isAdmin || req.user.isProdDepsAdmin;
+            t_prefix = 'camps:prod_dep.';
+        } else {
+            return false;
+        }
+        return {
+            isAdmin: isAdmin,
+            t_prefix: t_prefix,
+        }
+    },
     virtuals: {
         managers: function () {
             return this.attributes.managers;
@@ -127,5 +147,6 @@ var CampMember = bookshelf.Model.extend({
 // Create the model and expose it
 module.exports = {
     Camp: Camp,
-    CampMember: CampMember
+    CampMember: CampMember,
+    // __parsePrototype: __parsePrototype,
 };

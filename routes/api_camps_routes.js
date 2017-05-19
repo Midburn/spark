@@ -762,7 +762,9 @@ module.exports = (app, passport) => {
                         return member;
                     });
                 }
-                if (isCampManager || req.user.isAdmin) {
+                result=camp.__parsePrototype(camp.attributes.__prototype,req.user);
+
+                if (isCampManager || (result && result.isAdmin)) {
                     res.status(200).json({ members: members });
                 } else {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });
