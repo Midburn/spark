@@ -103,12 +103,12 @@ function main(argv) {
                     first_name = (full_name.length > 0) ? full_name[0] : '';
                     last_name = (full_name.length > 1) ? full_name.slice(1, full_name.length).join(" ") : '';
                 }
-                // let _user = {
-                //     validated: false,
-                //     email: email,
-                //     created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                //     updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                // };
+                let _user_rec = {
+                    validated: false,
+                    email: email,
+                    created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                };
                 var _user_rec_add_field = function (key, value, default_value) {
                     if (value) {
                         _user_rec[key] = value;
