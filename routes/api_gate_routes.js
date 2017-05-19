@@ -148,70 +148,33 @@ router.post('/gate-enter', async function (req, res) {
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
-            // console.log(group.users);
-            // await holder.fetch({withRelated: ['groups']});
 
-            // await group.getGroupUsers((users) => {
-            //     console.log(users);
-            //     console.log(group.users());
-            // });
-            // usersInsideEventsCounter: function () {
-            //     let insideCounter = 0;
-            //     let _users = this.relations.users;
-            //     _.each(_users.models, (user) => {
-            //         var foundTicket = 0;
-            //         // console.log(user.tickets);
-            //         // console.log(user.relations.tickets);
-            //         // return;
-            //         let _tickets=[];
-            //         // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
-            //         // tickets=await Ticket.forge()
-            //         _.each(_tickets, ticket => {
-            //             if (ticket.attributs.inside_event) {
-            //                 foundTicket = 1;
-            //             }
-            //         });
-            //         insideCounter += foundTicket;
-            //     });
-            //     return insideCounter;
-            // },
-            // quotaReached: function () {
-            //     this.usersInsideEventsCounter;
-            //     return true;
-            //     // return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
-            // }
             let insideCounter = 0;
             let _users = group.relations.users;
-            _.each(_users.models,async (user) => {
-                var foundTicket = 0;
-                console.log(user);
-                // console.log(user.tickets);
-                // console.log(user.relations.tickets);
-                // return;
-                // let _tickets = [];
-                // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
-                // tickets=await Ticket.forge()
+            insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
                 let searchTerms = {
-                    event_id: constants.CURRENT_EVENT_ID,
+                    event_id: 'MIDBURN2017',
                     holder_id: user.attributes.user_id
                 };
-                let _tickets = await Ticket.forge(searchTerms).fetchAll({ withRelated: ['holder'] });
-                console.log(_tickets);
-                _.each(_tickets, ticket => {
-                    if (ticket.attributs.inside_event) {
-                        foundTicket = 1;
+                let _tickets = await Ticket.where(searchTerms)
+                    .fetchAll()
+                    .then((tickets) => {
+                        console.log(tickets);
+                        return tickets;
+                    });
+                _.each(_tickets.models, ticket => {
+                    if (ticket.attributes.inside_event) {
+                        foundTicket += 1;
                     }
-                });
-                insideCounter += foundTicket;
-            });
+                })
+
+                return foundTicket;
+            }, 0);
+
+
             if (insideCounter >= group.attributes.entrance_quota) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
-            console.log(insideCounter);
-
-            // if (group.quotaReached) {
-            // return sendError(res, 500, "QUOTA_REACHED");
-            // }
         }
     }
     // Saving the entrance.
