@@ -508,8 +508,21 @@ module.exports = (app, passport) => {
         //     // .whereIn('web_published', web_published);
         // })
         // .fetchAll().then((camp) => {
-        return Camp.where({ 'event_id': constants.CURRENT_EVENT_ID, '__prototype': group_proto })
-            // return Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', 'art_installation')
+        return Camp.query((query) => {
+            query
+                // .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .select('camps.*','users_groups.entrance_quota')
+                .leftJoin( 'users_groups','camps.id','users_groups.group_id')
+                .where({ 'camps.event_id': constants.CURRENT_EVENT_ID, 'camps.__prototype': group_proto })
+            // .whereIn('status', allowed_status)
+            // .whereIn('web_published', web_published);
+        })
+            // .fetchAll().then((camp) => {
+            // return Camp
+            //     // .select('camps.*','users_groups.entrance_quota')
+            //     .leftJoin( 'users_groups','camps.id','users_groups.group_id')
+            //     .where({ 'event_id': constants.CURRENT_EVENT_ID, '__prototype': group_proto })
+            //     // return Camp.where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', 'art_installation')
             .orderBy('camp_name_en', 'ASC')
             .fetchAll()
             .then(camp => {
@@ -762,7 +775,7 @@ module.exports = (app, passport) => {
                         return member;
                     });
                 }
-                result=camp.__parsePrototype(camp.attributes.__prototype,req.user);
+                result = camp.__parsePrototype(camp.attributes.__prototype, req.user);
 
                 if (isCampManager || (result && result.isAdmin)) {
                     res.status(200).json({ members: members });
