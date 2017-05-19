@@ -74,7 +74,6 @@ router.post('/get-ticket/', async function (req, res) {
 
         // Getting user groups.
         let groups = [];
-        let groupsMembershipData = [];
         let holder = ticket.relations.holder;
         // await holder.fetch({withRelated: ['groups', 'groupsMembership']});
         await holder.fetch({ withRelated: ['groups'] });
@@ -148,7 +147,6 @@ router.post('/gate-enter', async function (req, res) {
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
-
 
             let _users = group.relations.users;
             const insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
