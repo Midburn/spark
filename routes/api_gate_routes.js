@@ -179,9 +179,9 @@ router.post('/gate-enter', async function (req, res) {
         // }
         let insideCounter = 0;
         let _users = group.relations.users;
-        _.each(_users.models,async (user) => {
-            var foundTicket = 0;
-            console.log(user);
+        insideCounter = await _.reduce(_users.models, async (foundTicket, user) => {
+            
+            // console.log(user);
             // console.log(user.tickets);
             // console.log(user.relations.tickets);
             // return;
@@ -189,18 +189,24 @@ router.post('/gate-enter', async function (req, res) {
             // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
             // tickets=await Ticket.forge()
             let searchTerms = {
-                event_id: constants.CURRENT_EVENT_ID,
+                event_id: 'MIDBURN2017',
                 holder_id: user.attributes.user_id
             };
-            let _tickets = await Ticket.forge(searchTerms).fetchAll({ withRelated: ['holder'] });
-            console.log(_tickets);
-            _.each(_tickets, ticket => {
-                if (ticket.attributs.inside_event) {
-                    foundTicket = 1;
+            let _tickets = await Ticket.where(searchTerms)
+                .fetchAll()
+                .then((tickets) => {
+                    console.log(tickets);
+                    return tickets;
+                });
+            _.each(_tickets.models, ticket => {
+                if (ticket.attributes.inside_event) {
+                    foundTicket += 1;
                 }
-            });
-            insideCounter += foundTicket;
-        });
+            })
+        
+            return foundTicket;
+        },0);
+        console.log(insideCounter);
         if (insideCounter >= group.attributes.entrance_quota) {
             return sendError(res, 500, "QUOTA_REACHED");
         }
