@@ -102,6 +102,7 @@ router.post('/get-ticket/', async function (req, res) {
             ticket_number: ticket.attributes.ticket_number,
             holder_name: ticket.relations.holder.fullName,
             email: ticket.relations.holder.attributes.email,
+            disabled_parking: ticket.attributes.disabled_parking,
             barcode: ticket.attributes.barcode,
             israeli_id: ticket.relations.holder.attributes.israeli_id,
             gender: ticket.relations.holder.attributes.gender,
