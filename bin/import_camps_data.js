@@ -42,8 +42,35 @@ function main(argv) {
         //     table.enu('__prototype', constants.CAMP_PROTOTYPE);
         //     console.log('updating default prototypes: ' + constants.CAMP_PROTOTYPE);
         // }),
-        knex.schema.raw("ALTER TABLE  `camps` CHANGE  `__prototype`  `__prototype` ENUM(  'theme_camp',  'art_installation',  'prod_dep') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL")
+        knex.schema.raw("ALTER TABLE  `camps` CHANGE  `__prototype`  `__prototype` ENUM(  'theme_camp',  'art_installation',  'prod_dep') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL"),
+        knex("users_groups_membership", table => {
+            table.enu('status', constants.CAMP_MEMBER_STATUS);
+        }).then(
+            knex.raw(
+                "CREATE TRIGGER `camp_members_groups_after_ins` AFTER INSERT ON `camp_members` FOR EACH ROW INSERT INTO users_groups_membership (group_id, user_id, status) VALUES (new.camp_id, new.user_id,new.status)"
+                // "CREATE TRIGGER camp_members_groups_after_ins AFTER INSERT ON camp_members " +
+                // "FOR EACH ROW " +
+                // "BEGIN " +
+                // "INSERT INTO users_groups_membership (group_id, user_id, status) VALUES (new.camp_id, new.user_id, new.status); " +
+                // "END"
+                ).then(
 
+                knex.raw(
+                    "CREATE TRIGGER `camp_members_groups_after_upd` AFTER UPDATE ON `camp_members` FOR EACH ROW UPDATE users_groups_membership SET status = new.status WHERE group_id = new.camp_id AND user_id = new.user_id "
+                    // "CREATE TRIGGER camp_members_groups_after_upd AFTER UPDATE ON camp_members " +
+                    // "FOR EACH ROW " +
+                    // "BEGIN " +
+                    // "UPDATE users_groups_membership SET status = new.status WHERE group_id = new.camp_id AND user_id = new.user_id; " +
+                    // "END"
+                    ).then(
+                    knex.raw("insert into users_groups_membership(user_id, group_id, status) " +
+                        "select cm.user_id, cm.camp_id, cm.status " +
+                        "from users u " +
+                        "inner join camp_members cm on u.user_id = cm.user_id " +
+                        "ON DUPLICATE KEY UPDATE status = cm.status;")
+                    )
+                )
+            )
     ]
         // , [
         //         Camp.forge({ id: 1 }).fetch().then(function (res) {
@@ -116,17 +143,17 @@ function main(argv) {
                         _user_rec[key] = default_value;
                     }
                 }
-                _user_rec_add_field('name',full_name);
-                _user_rec_add_field('first_name',first_name);
-                _user_rec_add_field('last_name',last_name);
-                _user_rec_add_field('cell_phone',user.cell_phone);
-                _user_rec_add_field('roles',user.role,'');
-
+                _user_rec_add_field('name', full_name);
+                _user_rec_add_field('first_name', first_name);
+                _user_rec_add_field('last_name', last_name);
+                _user_rec_add_field('cell_phone', user.cell_phone);
+                _user_rec_add_field('roles', user.role, '');
+                console.log(_user_rec);
                 return knex(constants.USERS_TABLE_NAME).insert(_user_rec).then(function () {
                     console.log("inserted user: " + email);
                     // return true;
-                }).catch(function () {
-                    // console.log(res);
+                }).catch(function (err) {
+                    console.log(res);
                     console.log("error inserting user: " + email);
                     // return true;
                     // console.log(err);
@@ -273,7 +300,7 @@ function main(argv) {
                 } else {
                     if (camp_name_en && camp_name_he) {
                         console.log("inserting new camp " + camp_name_en);
-                        _camp_rec.create_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+                        _camp_rec.created_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
                         _camp_rec.updated_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
 
                         return knex(constants.CAMPS_TABLE_NAME).insert(_camp_rec).then(function () {
