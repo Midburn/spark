@@ -137,7 +137,7 @@ router.post('/gate-enter', async function (req, res) {
         return sendError(res, 500, "ALREADY_INSIDE");
     }
 
-    if(req.body.force) {
+    if (req.body.force) {
         log.warn(`forced ticket`);
     } else {
         // Finding the right users group and updating it.
