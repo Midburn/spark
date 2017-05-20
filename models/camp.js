@@ -103,24 +103,27 @@ var Camp = bookshelf.Model.extend({
         }
     },
     __parsePrototype: function (prototype, user) {
-        let isAdmin = user.isAdmin;
-        let t_prefix = '';
-        if (this.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id) {
-            isAdmin = isAdmin || req.user.isCampsAdmin;
-            t_prefix = 'camps:';
-        } else if (this.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id) {
-            isAdmin = isAdmin || req.user.isArtInstallationsAdmin;
-            t_prefix = 'camps:art_installation.';
-        } else if (this.attributes.__prototype === constants.prototype_camps.PROD_DEP.id) {
-            isAdmin = isAdmin || req.user.isProdDepsAdmin;
-            t_prefix = 'camps:prod_dep.';
-        } else {
+        let result = constants.prototype_camps.by_prototype(prototype);
+        if (!result)
             return false;
+        let isAdmin = false;
+        let t_prefix = '';
+        if (user instanceof User) {
+            isAdmin = user.isAdmin;
+            if (this.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id) {
+                isAdmin = isAdmin || req.user.isCampsAdmin;
+                t_prefix = 'camps:';
+            } else if (this.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id) {
+                isAdmin = isAdmin || req.user.isArtInstallationsAdmin;
+                t_prefix = 'camps:art_installation.';
+            } else if (this.attributes.__prototype === constants.prototype_camps.PROD_DEP.id) {
+                isAdmin = isAdmin || req.user.isProdDepsAdmin;
+                t_prefix = 'camps:prod_dep.';
+            }
         }
-        return {
-            isAdmin: isAdmin,
-            t_prefix: t_prefix,
-        }
+        result.isAdmin = isAdmin;
+        result.t_prefix = t_prefix;
+        return result;
     },
     virtuals: {
         managers: function () {
