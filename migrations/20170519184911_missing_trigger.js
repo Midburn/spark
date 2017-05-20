@@ -11,9 +11,11 @@ exports.up = function (knex, Promise) {
                 "END"
             )
         ),
-        knex.schema.table("events", table => {
-            table.enu("gate_status", constants.EVENT_GATE_STATUS);
-        }),
+        !knex.schema.hasColumn("events", "gate_status") ?
+            knex.schema.table("events", table => {
+                table.enu("gate_status", constants.EVENT_GATE_STATUS);
+            })
+            : '',
         knex.raw("update events set gate_status='early_arrival'")
     ])
 };
