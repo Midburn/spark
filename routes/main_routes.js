@@ -12,6 +12,7 @@ var log = require('../libs/logger.js')(module);
 var User = require('../models/user').User;
 var userRole = require('../libs/user_role');
 var passportLib = require('../libs/passport');
+const DrupalAccess = require('../libs/drupal_access');
 
 var async = require('async');
 var crypto = require('crypto');
@@ -58,7 +59,7 @@ module.exports = function (app, passport) {
     // =====================================
     // LOGIN ===============================
     // =====================================
-    var loginPost = function (req, res, next) {
+    const loginPost = function (req, res, next) {
         if (req.body.email.length === 0 || req.body.password.length === 0) {
             return res.render('pages/login', {
                 errorMessage: i18next.t('invalid_user_password')
@@ -85,13 +86,16 @@ module.exports = function (app, passport) {
                         errorMessage: req.flash('error')
                     });
                 } else {
-                    res.cookie('authToken', passportLib.generateJwtToken(req.body.email), {httpOnly: true, domain:'.midburn.org'});
-                    var r = req.body['r'];
-                    if (r) {
-                        return res.redirect(r);
-                    } else {
-                        return res.redirect('home');
-                    }
+                    console.log('\n\n\nget_user_by_email');
+                    return DrupalAccess.get_user_by_email(req.body.email)
+                                       .then(drupalUser => {
+                                           console.log('\n\n\n');
+                                           console.log(drupalUser);
+                                           res.cookie('authToken', passportLib.generateJwtToken(req.body.email, user.attributes.user_id/* profile id from drupal user */), {httpOnly: true}); /*, domain:'.midburn.org'*/
+                                           const r = req.body['r'] || 'home';
+                                           return res.redirect(r);
+                                       })
+                                       .catch(err => console.log(err));
                 }
             });
         })(req, res, next);

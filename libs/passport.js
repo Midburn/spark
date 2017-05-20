@@ -183,13 +183,9 @@ var signup = function (email, password, user, done) {
     })
 };
 
-var generateJwtToken = function (email) {
-    // from now on we'll identify the user by the email and the email
-    // is the only personalized value that goes into our token
-    var payload = {email: email};
-    var token = jwt.sign(payload, apiTokensConfig.token);
-    return token;
-};
+// from now on we'll identify the user by the email and the email
+// is the only personalized value that goes into our token
+const generateJwtToken = (email, userId) => jwt.sign({email: email, id: userId}, apiTokensConfig.token);
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
