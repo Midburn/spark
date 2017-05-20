@@ -9,28 +9,31 @@ block content
             var groups_prototype="#{__groups_prototype}";
         .heading.card.card__shad
             .card__actions
-                .dropdown
-                    a.Btn.btn-default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
+                if(isCamp)
+                    .dropdown
+                        a.Btn.btn-default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             if(isNew)
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
             else
-                span.label.label-info #{t('camps:edit.camp')} # #{camp.id}
+                span.label.label-info #{t(t_prefix+'edit.camp')} # #{camp.id}
                 h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
                 h6 #{t('camps:edit.since')}: #{camp.created_at}
         .controls.row
             .col-xs-12
                 //- Card switcher
                 button.Btn.Btn__default.card-switcher#1=t('camps:edit.basic_info')
-                button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
+                if(isCamp)
+                    button.Btn.Btn__transparent.card-switcher#2=t('camps:edit.details')
                 //- TODO - test is user is camp manager of this camp
                 if(!isNew)
                     button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.members')
-                    button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.upload')
+                    if(isCamp)
+                        button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.upload')
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
-                h4=t('camps:edit.name_and_desc')
+                h4=t(t_prefix+'edit.name_and_desc')
                 .camp-info.panel
                     .panel-body
                         .details-he.col-md-6
@@ -47,59 +50,59 @@ block content
                             .col-xs-12
                                 label(for='camp_desc_en')=t('camps:edit.desc_en')
                                 textarea.form-control(id='camp_desc_en', dir='ltr', name='camp_desc_en') #{camp.camp_desc_en}
-                h4=t('camps:new.website_publication')
-                .camp-publication.panel
-                    .panel-body
-                        .information
-                            .row
-                                //- .col-md-4
-                                //-     .col-xs-12
-                                //-         //- TODO - fix for if(isNew)
-                                //-         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
-                                //-         select.form-control(id='camp_contact_person_id', name='contact_person_id')
-                                //-             option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.name }} ({{ member.email }})
-                                .col-md-8
-                                    .col-xs-12
-                                        label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
-                                        input.form-control(id='camp_facebook_page_url', name='facebook_page_url', value=(isNew ? '' : '#{camp.facebook_page_url}'))
+                if(isCamp)
+                    h4=t('camps:new.website_publication')
+                    .camp-publication.panel
+                        .panel-body
+                            .information
+                                .row
+                                    //- .col-md-4
+                                    //-     .col-xs-12
+                                    //-         //- TODO - fix for if(isNew)
+                                    //-         label(for='camp_contact_person_id', data-camp-contact-person-id='#{camp.contact_person_id}') #{t('camps:new.contact_person_id')}
+                                    //-         select.form-control(id='camp_contact_person_id', name='contact_person_id')
+                                    //-             option(ng-repeat="member in members", ng-selected="member.user_id == #{camp.contact_person_id}", value="{{member.user_id}}") {{ member.name }} ({{ member.email }})
+                                    .col-md-8
+                                        .col-xs-12
+                                            label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
+                                            input.form-control(id='camp_facebook_page_url', name='facebook_page_url', value=(isNew ? '' : '#{camp.facebook_page_url}'))
 
-                            .row
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='camp_contact_person_name')=t('camps:edit.contact_person_name')
-                                        input.form-control(id='camp_contact_person_name', name='contact_person_name', value=(isNew ? '' : '#{camp.contact_person_name}'))
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='camp_contact_person_email')=t('camps:edit.contact_person_email')
-                                        input.form-control(id='camp_contact_person_email', name='contact_person_email', value=(isNew ? '' : '#{camp.contact_person_email}'))
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='camp_contact_person_phone')=t('camps:edit.contact_person_phone')
-                                        input.form-control(id='camp_contact_person_phone', name='contact_person_phone', value=(isNew ? '' : '#{camp.contact_person_phone}'))
-                            .row
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}
-                                        select.form-control(id='camp_status', name='status')
-                                            option(ng-repeat="option in status_options", ng-selected="option.id == '#{camp.status}'", value="{{option.id}}") {{option.value}}
-                                .col-md-4
-                                    .col-xs-12
-                                        label(for='camp_accept_families')=t('camps:camps.accept_families')
-                                        input.checkbox(id='camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
-                                        script.
-                                            // set checkbox status
-                                            var checkbox = document.getElementById("camp_accept_families");
-                                            checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
-                                if(!isNew)
+                                .row
                                     .col-md-4
                                         .col-xs-12
-                                            label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
-
-                                            if camp.web_published == '1'
-                                                span.badge.bg__green=t('camps:camps.yes')
-                                                button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
-                                            else
-                                                span.badge.bg__red=t('camps:camps.no')
+                                            label(for='camp_contact_person_name')=t('camps:edit.contact_person_name')
+                                            input.form-control(id='camp_contact_person_name', name='contact_person_name', value=(isNew ? '' : '#{camp.contact_person_name}'))
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='camp_contact_person_email')=t('camps:edit.contact_person_email')
+                                            input.form-control(id='camp_contact_person_email', name='contact_person_email', value=(isNew ? '' : '#{camp.contact_person_email}'))
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='camp_contact_person_phone')=t('camps:edit.contact_person_phone')
+                                            input.form-control(id='camp_contact_person_phone', name='contact_person_phone', value=(isNew ? '' : '#{camp.contact_person_phone}'))
+                                .row
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='camp_status', data-camp-status='#{camp.status}') #{t('camps:edit.status')}
+                                            select.form-control(id='camp_status', name='status')
+                                                option(ng-repeat="option in status_options", ng-selected="option.id == '#{camp.status}'", value="{{option.id}}") {{option.value}}
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='camp_accept_families')=t('camps:camps.accept_families')
+                                            input.checkbox(id='camp_accept_families', checked='#{camp.accept_families}', type='checkbox', name='accept_families')
+                                            script.
+                                                // set checkbox status
+                                                var checkbox = document.getElementById("camp_accept_families");
+                                                checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
+                                    if(!isNew)
+                                        .col-md-4
+                                            .col-xs-12
+                                                label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
+                                                if camp.web_published == '1'
+                                                    span.badge.bg__green=t('camps:camps.yes')
+                                                    button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
+                                                else
+                                                    span.badge.bg__red=t('camps:camps.no')
                 h4=t('camps:edit.contact_title')
                 .camp-leaders.panel
                     .panel-body
@@ -109,16 +112,51 @@ block content
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
                                     select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
                                         option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_moop_contact')=t('camps:edit.moop_contact')
-                                    select.form-control(id='camp_moop_contact', name='moop_contact')
-                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_safety_contact')=t('camps:edit.safety_contact')
-                                    select.form-control(id='camp_safety_contact', name='safety_contact')
-                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                            if (isCamp)
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='camp_moop_contact')=t('camps:edit.moop_contact')
+                                        select.form-control(id='camp_moop_contact', name='moop_contact')
+                                            option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='camp_safety_contact')=t('camps:edit.safety_contact')
+                                        select.form-control(id='camp_safety_contact', name='safety_contact')
+                                            option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                if (!isNew)
+                    h4=t(t_prefix+'edit.add_info')
+                    .camp-details.panel
+                        .panel-body
+                            .camp-location
+                                if(isCamp)
+                                    h5=t('camps:edit.location_title')
+
+                                    //------- Lilach requested to hide input -------------//
+                                    //- .col-md-4
+                                    //-     .col-xs-12
+                                    //-         label(for='location_comments')=t('camps:edit.location_comments')
+                                    //-         input.form-control(id='location_comments', name='location_comments', value=(isNew ? '' : '#{details.location_comments}'))
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='camp_location_street')=t('camps:edit.location_street')
+                                            input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : (details.camp_location_street===null?'':'#{details.camp_location_street}')),readonly=(!isAdmin?'true':undefined))
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='camp_location_street_time')=t('camps:edit.location_time')
+                                            input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : (details.camp_location_street_time===null?'':'#{details.camp_location_street_time}')),readonly=(!user.isAdmin?'true':undefined))
+                                    .col-md-4
+                                        .col-xs-12
+                                            label(for='camp_location_area')=t('camps:edit.location_area')
+                                            input.form-control(id='camp_location_area', name='public_camp_location_area', value=(isNew ? '' : (details.camp_location_area === null ? '' : '#{details.camp_location_area}')),readonly=(!isAdmin ? 'true' : undefined))
+                                    //- .col-md-4
+                                    //-     .col-xs-12
+                                    //-         label(for='camp_location_area')=t('camps:edit.location_area')
+                                    //-         input.form-control(id='camp_location_area', type='number', name='public_camp_location_area', value=(isNew ? '' : '#{details.camp_location_area}'))
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='entrance_quota')=t('camps:edit.early_arrival_quota')
+                                        input.form-control(id='entrance_quota', name='entrance_quota', value=(isNew ? 0 : (camp.entrance_quota === null ? '' : '#{camp.entrance_quota}')),readonly=(!isAdmin ? 'true' : undefined))
+
             //- Card 2
             .card.card-second.card-hide
                 h4=t('camps:edit.behavior_title')
@@ -196,10 +234,6 @@ block content
                                     label(for='noise_level') #{t('camps:edit.camp_noise_level')}
                                     select(id='camp_noise_level', class="form-control", name="noise_level")
                                         option(ng-repeat="option in noise_level_options", ng-selected="option.id == '#{camp.noise_level}'", value="{{option.id}}") {{option.value}}
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_early_arrival_quota')=t('camps:edit.early_arrival_quota')
-                                    input.form-control(id='camp_early_arrival_quota', name='camp_early_arrival_quota', value=(isNew ? 0 : (details.addinfo_json.early_arrival_quota === null ? '' : '#{details.addinfo_json.early_arrival_quota}')),readonly=(user.isCampManager ? 'true' : undefined))
                 //------- Lilach requested to hide section -------------//
                 //- h4=t('camps:edit.public_area_title')
                 //- .camp-details.panel
@@ -221,31 +255,6 @@ block content
                 //-                         // set checkbox status
                 //-                         var checkbox = document.getElementById("support_art");
                 //-                         checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
-                h4=t('camps:edit.location_title')
-                .camp-details.panel
-                    .panel-body
-                        .camp-location
-                            //------- Lilach requested to hide input -------------//
-                            //- .col-md-4
-                            //-     .col-xs-12
-                            //-         label(for='location_comments')=t('camps:edit.location_comments')
-                            //-         input.form-control(id='location_comments', name='location_comments', value=(isNew ? '' : '#{details.location_comments}'))
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_location_street')=t('camps:edit.location_street')
-                                    input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : (details.camp_location_street===null?'':'#{details.camp_location_street}')),readonly=(user.isCampManager?'true':undefined))
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_location_street_time')=t('camps:edit.location_time')
-                                    input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : (details.camp_location_street_time===null?'':'#{details.camp_location_street_time}')),readonly=(user.isCampManager?'true':undefined))
-                            .col-md-4
-                                .col-xs-12
-                                    label(for='camp_location_area')=t('camps:edit.location_area')
-                                    input.form-control(id='camp_location_area', name='public_camp_location_area', value=(isNew ? '' : (details.camp_location_area === null ? '' : '#{details.camp_location_area}')),readonly=(user.isCampManager ? 'true' : undefined))
-                            //- .col-md-4
-                            //-     .col-xs-12
-                            //-         label(for='camp_location_area')=t('camps:edit.location_area')
-                            //-         input.form-control(id='camp_location_area', type='number', name='public_camp_location_area', value=(isNew ? '' : '#{details.camp_location_area}'))
             //- Card 3 - Manage Members
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
@@ -274,7 +283,8 @@ block content
                 else
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
-                    if camp.web_published != '1'
+                
+                    if isCamp && camp.web_published != '1'
                         button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
 
         // Camp create request modal

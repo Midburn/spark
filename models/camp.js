@@ -1,7 +1,9 @@
 const common = require('../libs/common').common;
 var bookshelf = require('../libs/db').bookshelf;
 var constants = require('./constants.js');
-var User = require('../models/user').User;
+var models = require('../models/user');
+var User = models.User;
+var UsersGroup = models.UsersGroup;
 const knex = require('../libs/db').knex;
 
 var Camp = bookshelf.Model.extend({
@@ -9,6 +11,9 @@ var Camp = bookshelf.Model.extend({
     idAttribute: 'id',
     members: function () {
         return this.hasMany(CampMember, 'camp_id')
+    },
+    users_groups: function () {
+        return this.hasOne(UsersGroup, 'group_id');
     },
     /**
      * get this camp users. the result is on attributes.users or attributes.managers
@@ -29,9 +34,11 @@ var Camp = bookshelf.Model.extend({
 
         let _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         let _users = constants.USERS_TABLE_NAME;
-        knex(_users)
-            .select(_users + '.*', _camps_members + '.status AS member_status')
+        return knex(_users)
+            .select(_users + '.*', _camps_members + '.status AS member_status'/*,'tickets.ticket_id'*/)
             .innerJoin(_camps_members, _users + '.user_id', _camps_members + '.user_id')
+            // .leftJoin('tickets', () => { this.on('tickets.holder_id', '=', 'users.user_id').andON('tickets.event_id', '=', 'MIDBURN2017') })
+            // .leftjoin('tickets','tickets.holder_id','users.user_id')
             .where({ 'camp_members.camp_id': this.attributes.id })
             .then((users) => {
                 let managers = [];

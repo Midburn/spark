@@ -155,7 +155,6 @@ router.post('/gate-enter', async function (req, res) {
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
-
             if (group.quotaReached) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }

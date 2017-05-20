@@ -88,6 +88,22 @@ module.exports = function (app, passport) {
             }
         }, req.t);
     });
+    // Read
+    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'camps:breadcrumbs.my_camp',
+            url: '/' + req.params.lng + '/camps'
+        },
+        {
+            name: 'camps:breadcrumbs.camp_stat',
+            url: '/' + req.params.lng + '/camps/' + req.params.id
+        }]);
+        __render_camp(req.params.id, req, res);
+    });
     // new camp
     app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
@@ -103,14 +119,76 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/camps/new/?c=' + req.query.c
         }]);
 
+        let prototype = constants.prototype_camps.THEME_CAMP.id;
+        let result = Camp.__parsePrototype(prototype, req.user);
         res.render('pages/camps/edit', {
             user: req.user,
             camp_name_en: req.query.c,
             breadcrumbs: req.breadcrumbs(),
-            isNew: true,
             camp: { type: '', id: 'new' },
-            details: {}
+            details: {},
+            isAdmin: result.isAdmin,
+            isNew: true,
+            __groups_prototype: prototype,
+            t_prefix: result.t_prefix,
+            isArt: prototype === constants.prototype_camps.ART_INSTALLATION.id,
+            isCamp: prototype === constants.prototype_camps.THEME_CAMP.id,
+            isProd: prototype === constants.prototype_camps.PROD_DEP.id,
         });
+    });
+    // Edit
+    app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + req.params.lng + '/home'
+        },
+        {
+            name: 'camps:breadcrumbs.manage',
+            url: '/' + req.params.lng + '/camps-admin'
+        },
+        {
+            name: 'camps:breadcrumbs.edit',
+            url: '/' + req.params.lng + '/camps/' + req.params.id + '/edit'
+        }]);
+        Camp.forge({
+            id: req.params.id,
+            // event_id: constants.CURRENT_EVENT_ID,
+        })/*.related('users_groups')*/.fetch({
+            withRelated: ['users_groups']
+        }).then((camp) => {
+            req.user.getUserCamps((camps) => {
+                // let __groups_prototype='';
+                let result = camp.__parsePrototype(camp.attributes.__prototype, req.user);
+                if (req.user.isManagerOfCamp(req.params.id) || result.isAdmin) {
+                    let camp_data = __camp_data_to_json(camp);
+                    if (camp_data.addinfo_json !== null) {
+                        camp_data.addinfo_json = JSON.parse(camp_data.addinfo_json);
+                    }
+                    camp_data.entrance_quota = camp.relations.users_groups.attributes.entrance_quota;
+                    let _edit_rec = {
+                        user: req.user,
+                        breadcrumbs: req.breadcrumbs(),
+                        camp: camp_data,
+                        details: camp_data,
+                        isNew: false,
+                        isAdmin: result.isAdmin,
+                        __groups_prototype: camp.attributes.__prototype,
+                        t_prefix: result.t_prefix,
+                        isArt: camp.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id,
+                        isCamp: camp.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id,
+                        isProd: camp.attributes.__prototype === constants.prototype_camps.PROD_DEP.id,
+                    }
+                    res.render('pages/camps/edit', _edit_rec);
+                } else {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: 'failed to edit camp'
+                        }
+                    });
+                }
+            });
+        })
     });
     // camps statistics
     app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
@@ -246,87 +324,6 @@ module.exports = function (app, passport) {
         }
     });
 
-    /**
-     * CRUD Routes
-     */
-    // Read
-    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs([{
-            name: 'breadcrumbs.home',
-            url: '/' + req.params.lng + '/home'
-        },
-        {
-            name: 'camps:breadcrumbs.my_camp',
-            url: '/' + req.params.lng + '/camps'
-        },
-        {
-            name: 'camps:breadcrumbs.camp_stat',
-            url: '/' + req.params.lng + '/camps/' + req.params.id
-        }]);
-        __render_camp(req.params.id, req, res);
-    });
-    // Edit
-    app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs([{
-            name: 'breadcrumbs.home',
-            url: '/' + req.params.lng + '/home'
-        },
-        {
-            name: 'camps:breadcrumbs.manage',
-            url: '/' + req.params.lng + '/camps-admin'
-        },
-        {
-            name: 'camps:breadcrumbs.edit',
-            url: '/' + req.params.lng + '/camps/' + req.params.id + '/edit'
-        }]);
-        Camp.forge({
-            id: req.params.id,
-            // event_id: constants.CURRENT_EVENT_ID,
-        }).fetch({
-            // withRelated: ['details']
-        }).then((camp) => {
-            req.user.getUserCamps((camps) => {
-                // let __groups_prototype='';
-                let result = camp.__parsePrototype(camp.attributes.__prototype, req.user);
-                if (!result) {
-                    res.status(500).json({
-                        error: true,
-                        data: {
-                            message: 'failed to edit camp'
-                        }
-                    });
-                    return;
-                }
-                if (req.user.isManagerOfCamp(req.params.id) || result.isAdmin) {
-                    let camp_data = __camp_data_to_json(camp);
-                    if (camp_data.addinfo_json === null) {
-                        camp_data.addinfo_json = { early_arrival_quota: '' };
-                    } else {
-                        camp_data.addinfo_json = JSON.parse(camp_data.addinfo_json);
-                    }
-                    res.render('pages/camps/edit', {
-                        user: req.user,
-                        breadcrumbs: req.breadcrumbs(),
-                        camp: camp_data,
-                        details: camp_data,
-                        isNew: false,
-                        __groups_prototype: camp.attributes.__prototype,
-                        t_prefix: result.t_prefix,
-                        isArt: camp.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id,
-                        isCamp: camp.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id,
-                        isProd: camp.attributes.__prototype === constants.prototype_camps.PROD_DEP.id,
-                    });
-                } else {
-                    res.status(500).json({
-                        error: true,
-                        data: {
-                            message: 'failed to edit camp'
-                        }
-                    });
-                }
-            });
-        })
-    });
     // Program
     app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-new_program');
