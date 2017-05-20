@@ -104,17 +104,30 @@ var User = bookshelf.Model.extend({
      *  user.attribute.is_manager - for the camp if has manager flag.
      *  user.attributes.camps - array of all camps user is involved.
      */
-    getUserCamps: function (done, req) {
+    getUserCamps: function (done, req, prototype) {
+        let t;
+        // let _current_user;
+        if (typeof (req) === 'function') {
+            t = req;
+        }  
+        if (req && typeof (req) === 'object' && typeof (req['t']) === 'function') {
+            t = req.t;
+            // if (req['user']) {
+                // _current_user = req.user;
+            // }
+        }
+
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         var _camps = constants.CAMPS_TABLE_NAME;
         var _this_user = this;
+        if (!prototype) prototype = constants.prototype_camps.THEME_CAMP.id;
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
             .where({
                 user_id: this.attributes.user_id,
                 event_id: constants.CURRENT_EVENT_ID,
-                __prototype: constants.prototype_camps.THEME_CAMP.id
+                __prototype: prototype,
             })
             .then((camps) => {
                 let first_camp = null;
@@ -122,8 +135,8 @@ var User = bookshelf.Model.extend({
                 let member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
                 for (var i in camps) {
                     let _status = camps[i].member_status;
-                    if (req !== undefined) { // translate function
-                        camps[i].member_status_i18n = req('camps:members.status_' + _status);
+                    if (t) { // translate function
+                        camps[i].member_status_i18n = t('camps:members.status_' + _status);
                     }
                     if (['open', 'closed'].indexOf(camps[i].status) > -1 && !first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
@@ -232,12 +245,7 @@ var UsersGroup = bookshelf.Model.extend({
             let _users = this.relations.users;
             _.each(_users.models, (user) => {
                 var foundTicket = 0;
-                // console.log(user.tickets);
-                // console.log(user.relations.tickets);
-                // return;
-                let _tickets=[];
-                // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
-                // tickets=await Ticket.forge()
+                let _tickets = [];
                 _.each(_tickets, ticket => {
                     if (ticket.attributs.inside_event) {
                         foundTicket = 1;
@@ -248,9 +256,7 @@ var UsersGroup = bookshelf.Model.extend({
             return insideCounter;
         },
         quotaReached: function () {
-            this.usersInsideEventsCounter;
-            return true;
-            // return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+            return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
         }
     }
 });

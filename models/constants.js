@@ -29,15 +29,34 @@ var npo_membership_statuses = [
 const prototype_camps = {
     THEME_CAMP: {
         id: 'theme_camp',
-        name: 'Theme Camps'
+        name: 'Theme Camps',
+        multiple_groups_for_user: false,
+        allow_new_users: true,
+        send_mail: true,
+        auto_approve_new_members: false,
     },
     ART_INSTALLATION: {
         id: 'art_installation',
-        name: 'Art Installation'
+        name: 'Art Installation',
+        multiple_groups_for_user: true,
+        allow_new_users: false,
+        send_mail: false,
+        auto_approve_new_members: true,
     },
     PROD_DEP: {
         id: 'prod_dep',
-        name: 'Production Department'
+        name: 'Production Department',
+        multiple_groups_for_user: true,
+        send_mail: false,
+        auto_approve_new_members: true,
+        allow_new_users: false,
+    },
+    by_prototype: function (prototype) {
+        for (let key in this) {
+            if (typeof (this[key]) === 'object' && this[key].id === prototype) {
+                return this[key];
+            }
+        }
     }
 };
 

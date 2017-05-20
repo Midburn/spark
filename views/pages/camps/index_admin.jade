@@ -2,7 +2,6 @@ extends ../../includes/page
 block content
     .camps.camp_admin_index(ng-app="ngCamps")
         script.
-            console.log("#{__groups_prototype}");
             var groups_prototype="#{__groups_prototype}";
         .container.col-md-12
             h1=t(t_prefix+'dash.title')
@@ -35,6 +34,7 @@ block content
                             th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'stats.last_update')
                             //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t(t_prefix+'stats.created_at')
                             th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'stats.published')
+                            th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t('camps:stats.entrance_quota')
                             //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
                             th()=t(t_prefix+'members.actions')
                             //- th.admin-edit=t(t_prefix+'stats.edit')
@@ -52,8 +52,9 @@ block content
                             td {{ camp.status }}
                             td {{ camp.updated_at.split('GMT')[0] }}
                             //- td {{ camp.created_at.split('GMT')[0] }}
-                            td {{ camp.web_public }}
+                            td {{ camp.web_published }}
                             //- td
+                            td {{ camp.entrance_quota }}
                             td
                                 //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
                                     span(class='glyphicon glyphicon-pencil')

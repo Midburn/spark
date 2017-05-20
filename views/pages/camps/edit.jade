@@ -3,7 +3,10 @@ block content
     input.hidden.meta(id='meta__lang', value='#{language}')
     input.hidden.meta(id='meta__camp_name_en', value='#{camp.camp_name_en}')
     input.hidden.meta(id='meta__camp_id', value='#{camp.id}')
+    input.hidden.meta(id='meta__grouptype', value='#{camp.__prototype}')
     .camps.camp_edit(ng-app="ngCamps", ng-controller="campEditController")
+        script.
+            var groups_prototype="#{__groups_prototype}";
         .heading.card.card__shad
             .card__actions
                 .dropdown
