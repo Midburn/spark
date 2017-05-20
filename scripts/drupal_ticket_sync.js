@@ -11,8 +11,7 @@ var log = require('../libs/logger')(module);
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-const TICKETS_TYPE_IDS = [39, 40, 41, 43, 44, 45, 46]
-// const TICKETS_TYPE_IDS = [38, 39, 40];
+const TICKETS_TYPE_IDS = [39, 40, 41, 43, 44, 45, 46];
 const STATUS_COMPLETED = 'Completed';
 
 const EVENT_ID = "MIDBURN2017";
