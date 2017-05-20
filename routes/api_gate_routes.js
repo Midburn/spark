@@ -142,6 +142,7 @@ router.post('/gate-enter', async function (req, res) {
     }
 
     if (req.body.force) {
+
         log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
     }
     else {

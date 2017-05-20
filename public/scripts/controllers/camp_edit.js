@@ -130,15 +130,14 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         $scope.getMembers();
     }
     $scope.lang = document.getElementById('meta__lang').value;
-
+    // $scope.grouptype = document.getElementById('meta__grouptype').value;
     $scope.addMember = () => {
         var camp_id = $scope.current_camp_id;
         var new_user_email = $scope.camps_members_add_member
         var data = {
             user_email: new_user_email,
-            camp_id: camp_id
+            camp_id: camp_id,
         }
-
         $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
             // update table with new data
             $scope.getMembers();

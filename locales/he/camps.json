@@ -136,7 +136,8 @@
             "published": "מפורסם",
             "facebook_page_url": "דף פייסבוק",
             "remove": "הסרה",
-            "search": "חפש מחנה"
+            "search": "חפש מחנה",
+            "entrance_quota": "מכסת הגעה מוקדמת"
         },
         "members": {
           "title": "משתתפים במחנה",

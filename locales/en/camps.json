@@ -137,7 +137,8 @@
             "facebook_page_url": "Facebook Page",
             "remove": "Remove",
             "edit": "Edit",
-            "search": "Search Camp"
+            "search": "Search Camp",
+            "entrance_quota": "Early arrival quota"
         },
         "members": {
           "title": "Members Boards",
