@@ -9,17 +9,14 @@ exports.up = function (knex, Promise) {
     }).then(
       knex.raw('DROP TRIGGER camp_members_groups_after_ins').then(
         knex.raw('DROP TRIGGER IF EXISTS camp_members_groups_after_upd').then(
-          knex.raw('CREATE TRIGGER camp_members_groups_after_upd AFTER UPDATE ON camp_members ' +
-            'FOR EACH ROW ' +
-            // 'BEGIN ' +
-            'INSERT INTO users_groups_membership (group_id, user_id, status) VALUES (new.camp_id, new.user_id, new.status) '
-            // + 'END'
+          knex.raw(
+              'CREATE TRIGGER camp_members_groups_after_ins AFTER INSERT ON camp_members ' +
+              'FOR EACH ROW ' +
+              'INSERT INTO users_groups_membership (group_id, user_id, status) VALUES (new.camp_id, new.user_id, new.status) '
           ).then(
             knex.raw('CREATE TRIGGER camp_members_groups_after_upd AFTER UPDATE ON camp_members ' +
               'FOR EACH ROW ' +
-              // 'BEGIN ' +
               'UPDATE users_groups_membership SET status = new.status WHERE group_id = new.camp_id AND user_id = new.user_id '
-              // + 'END'
             ).then(
               knex.raw('insert into users_groups_membership(user_id, group_id, status) ' +
                 'select cm.user_id, cm.camp_id, cm.status ' +
@@ -30,7 +27,7 @@ exports.up = function (knex, Promise) {
           )
         )
       )
-    );
+    )
   ]);
 };
 
