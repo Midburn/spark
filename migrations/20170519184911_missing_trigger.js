@@ -2,7 +2,7 @@ var constants = require('../models/constants');
 
 exports.up = function (knex, Promise) {
   return Promise.all([
-    knex.raw('DROP TRIGGER camp_members_groups_after_ins').then(
+    knex.raw('DROP TRIGGER IF EXISTS camp_members_groups_after_ins').then(
       knex.raw(
         "CREATE TRIGGER camp_members_groups_after_ins AFTER INSERT ON camp_members " +
         "FOR EACH ROW " +
