@@ -11,8 +11,7 @@ block content
 
     .form-group
         label=t('gate:search')
-    table( id='tickets_table', data-toggle="table", data-url="/he/gate/ajax/tickets", data-search="true", data-side-pagination="server",
-    data-pagination="true" )
+    table( id='tickets_table', data-toggle="table", data-url="/he/gate/ajax/tickets", data-search="true", data-side-pagination="server" )
         thead
             tr
                 th( data-field="ticket_number" )=t('ticket_number')
@@ -52,7 +51,7 @@ block content
                     p
                         b=t('israeli_id')
                         | :&nbsp;
-                        span( id='modal_ilid' )
+                        span( id='modal_israeli_id' )
                     p
                         b=t('email')
                         | :&nbsp;
@@ -102,7 +101,7 @@ block scripts
         };
 
         function parkingFormat(value) {
-            return parseInt(value, 10) === 1 ? '<button type="button" class="btn btn-success">&nbsp;</button>' : '';
+            return parseInt(value, 10) === 1 ? '<i class="fa fa-wheelchair"></i>' : '';
         };
 
         $(document).ready(function () {
@@ -119,13 +118,13 @@ block scripts
                         $("#modal_name")[0].innerHTML = data.ticket.holder_name;
                         $("#modal_email")[0].innerHTML = data.ticket.email;
                         $("#modal_type")[0].innerHTML = data.ticket.type;
-                        $("#modal_ilid")[0].innerHTML = data.ticket.israeli_id;
+                        $("#modal_israeli_id")[0].innerHTML = data.ticket.israeli_id;
+
+                        $("#force_entrance_button").show();
 
                         let entranceButton = $("#entrance_button")[0];
                         entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
-                        entranceButton.disabled = true;
-
-                        if (data.ticket.groups && data.ticket.groups.length > 0) {
+                        if (data.ticket.groups && data.ticket.groups.length > 0 && data.gate_status === "early_arrival") {
                             entranceButton.disabled = true;
                             let groupsElement = $("#ticket_groups_list")[0];
                             groupsElement.innerHTML = "";
@@ -139,7 +138,8 @@ block scripts
                                 entranceButton.disabled = false
                                 $("#modal_group_id")[0].innerHTML = $(this)[0].id;
                             });
-                        } else {
+                        }
+                        else {
                             let groupsElement = $("#ticket_groups_list")[0];
                             groupsElement.innerHTML = "";
                         }
@@ -152,19 +152,28 @@ block scripts
                         gate_code: "#{gate_code}"
                     },
                     function (data, status) {
-                        $("#modal_mode")[0].innerHTML = "exit";
-                        $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
-                        $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
-                        $("#modal_name")[0].innerHTML = data.ticket.holder_name;
-                        $("#modal_email")[0].innerHTML = data.ticket.email;
-                        $("#modal_type")[0].innerHTML = data.ticket.type;
+                        //if (data.gate_status === "early_arrival") {
+                            $("#modal_mode")[0].innerHTML = "exit";
+                            $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
+                            $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
+                            $("#modal_name")[0].innerHTML = data.ticket.holder_name;
+                            $("#modal_email")[0].innerHTML = data.ticket.email;
+                            $("#modal_type")[0].innerHTML = data.ticket.type;
 
-                        var entranceButton = $("#entrance_button")[0];
-                        entranceButton.innerHTML = "#{t('gate:exit_ticket')}";
-                        entranceButton.disabled = false;
-                        $("#ticket_groups_list")[0].innerHTML = "";
+                            var entranceButton = $("#entrance_button")[0];
+                            entranceButton.innerHTML = "#{t('gate:exit_ticket')}";
+                            entranceButton.disabled = false;
+                            $("#ticket_groups_list")[0].innerHTML = "";
+
+                            $("#force_entrance_button").hide();
+                        //}
+                        //else {
+                        //    $('#myModal').modal('hide');
+                        //    alert("#{t('gate:no_exit')}");
+                        //}
                     });
             });
+
             $(document).on("click", "#force_entrance_button", function () {
                 if(prompt("נא לכתוב בכוח ^_^", "בלי כוח") == "בכוח") {
                     let parameters = {
@@ -188,6 +197,7 @@ block scripts
                 }
 
             });
+
             $(document).on("click", "#entrance_button", function () {
                 let parameters = {
                     barcode: $("#modal_barcode")[0].innerHTML,
