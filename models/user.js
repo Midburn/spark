@@ -237,7 +237,7 @@ var UsersGroup = bookshelf.Model.extend({
                 .count('inside_event')
                 .where('entrance_group_id', '=', this.attributes.group_id)
                 .then(count => {
-                    return count;
+                    return count[0]['count(`inside_event`)'];
 
                 });
         },
