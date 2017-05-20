@@ -142,7 +142,7 @@ router.post('/gate-enter', async function (req, res) {
         return sendError(res, 500, "ALREADY_INSIDE");
     }
 
-    if (req.body.force) {
+    if (req.body.force === "true") {
         log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
         ticket.attributes.forced_entrance = true;
         ticket.attributes.forced_entrance_reason = req.body.force_reason;

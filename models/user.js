@@ -242,7 +242,8 @@ var UsersGroup = bookshelf.Model.extend({
                 });
         },
         quotaReached: async function () {
-            return (await this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+            let inside = await this.usersInsideEventsCounter;
+            return (inside >= this.attributes.entrance_quota);
         }
     }
 });
