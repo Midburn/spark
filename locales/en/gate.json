@@ -6,5 +6,6 @@
     "exit_ticket": "Exit ticket",
     "entrance_instructions" : "Please verify all the details of the ticket against a valid user ID card.",
     "inside_event": "Inside event",
-    "ticket_group": "Ticket group"
+    "ticket_group": "Ticket group",
+    "no_exit": "Unavailable after gates are open"
 }

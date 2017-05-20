@@ -11,19 +11,24 @@ var get_enum = function (enu) {
 };
 
 var user_genders = [
-    { id: 'male' },
-    { id: 'female' },
-    { id: 'other', default: true }
+    {id: 'male'},
+    {id: 'female'},
+    {id: 'other', default: true}
 ];
 
 var npo_membership_statuses = [
-    { id: 'not_member', default: true },
-    { id: 'request_approved' },
-    { id: 'member_paid' },
-    { id: 'member_should_pay' },
-    { id: 'banned' },
-    { id: 'request_rejected' },
-    { id: 'applied_for_membership' }
+    {id: 'not_member', default: true},
+    {id: 'request_approved'},
+    {id: 'member_paid'},
+    {id: 'member_should_pay'},
+    {id: 'banned'},
+    {id: 'request_rejected'},
+    {id: 'applied_for_membership'}
+];
+
+var gate_status = [
+    {id: 'regular', default: true},
+    {id: 'early_arrival'}
 ];
 
 const prototype_camps = {
@@ -153,5 +158,7 @@ module.exports = {
      *      supplier - member is supplier, for the supplier notification later.
      */
     CAMP_MEMBER_STATUS: ['approved', 'pending', 'pending_mgr', 'rejected', 'approved_mgr', 'supplier', 'deleted'],
+
+    EVENT_GATE_STATUS: get_enum(gate_status)
 
 };
