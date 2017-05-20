@@ -105,16 +105,16 @@ var User = bookshelf.Model.extend({
      *  user.attributes.camps - array of all camps user is involved.
      */
     getUserCamps: function (done, req, prototype) {
-
-        let t, _current_user;
+        let t;
+        // let _current_user;
         if (typeof (req) === 'function') {
             t = req;
         }  
         if (req && typeof (req) === 'object' && typeof (req['t']) === 'function') {
             t = req.t;
-            if (req['user']) {
-                _current_user = req.user;
-            }
+            // if (req['user']) {
+                // _current_user = req.user;
+            // }
         }
 
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;

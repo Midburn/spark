@@ -104,8 +104,7 @@ var Camp = bookshelf.Model.extend({
     },
     __parsePrototype: function (prototype, user) {
         let result = constants.prototype_camps.by_prototype(prototype);
-        if (!result)
-            return false;
+        if (!result) return false;
         let isAdmin = false;
         let t_prefix = '';
         if (user instanceof User) {

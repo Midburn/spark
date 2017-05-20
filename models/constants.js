@@ -53,7 +53,7 @@ const prototype_camps = {
     },
     by_prototype: function (prototype) {
         for (let key in this) {
-            if (typeof (this[key]) == 'object' && this[key].id === prototype) {
+            if (typeof (this[key]) === 'object' && this[key].id === prototype) {
                 return this[key];
             }
         }
