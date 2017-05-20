@@ -3,6 +3,7 @@ exports.up = function (knex, Promise) {
         knex.schema.table('events', function (table) {
             table.string('name', 128);
             table.string('gate_code', 100);
+            table.string("gate_status", 16);
         }),
 
         knex.schema.table('tickets', function (table) {
