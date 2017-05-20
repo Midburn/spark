@@ -3,6 +3,7 @@ exports.up = function (knex, Promise) {
         knex.schema.table('events', function (table) {
             table.string('name', 128);
             table.string('gate_code', 100);
+            table.string("gate_status", 16);
         }),
 
         knex.schema.table('tickets', function (table) {
@@ -13,7 +14,8 @@ exports.up = function (knex, Promise) {
         knex('events').insert({
             event_id: "MIDBURN2017",
             gate_code: "171819",
-            name: "Midburn 2017 מידברן"
+            name: "Midburn 2017 מידברן",
+            gate_status: "early_arrival"
         })
     ]);
 };

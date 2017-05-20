@@ -2,10 +2,13 @@
     "gate" : "Gate",
     "search": "Search by ticket number / person name / email / id",
     "enter_ticket": "Enter ticket",
-    "force_enter_ticket": "Force enter ticket!",
+    "force_enter_ticket": "Force entrance",
     "exit_ticket": "Exit ticket",
     "entrance_instructions" : "Please verify all the details of the ticket against a valid user ID card.",
     "inside_event": "Inside event",
     "ticket_group": "Ticket group",
-    "no_exit": "Unavailable after gates are open"
+    "no_exit": "Unavailable after gates are open",
+    "force_instructions": "Forced entrance requires permission from the shift manager. Please contact them and write down the reason for the forced entrance",
+    "reason": "Reason",
+    "force_reason_placeholder": "10 Characters minimum"
 }
