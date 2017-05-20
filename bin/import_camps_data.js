@@ -72,28 +72,6 @@ function main(argv) {
                 )
             )
     ]
-        // , [
-        //         Camp.forge({ id: 1 }).fetch().then(function (res) {
-        //             console.log(res);
-        //             if (res.length > 0 && res[0].id > 0) {
-        //                 let camp = {
-        //                     early_arrival_quota: 5
-        //                 }
-        //                 console.log('updating entrance_quota to ' + camp.early_arrival_quota);
-        //                 UserGroup.forge({ group_id: res[0].id }).save(
-        //                     { 'entrance_quota': camp.early_arrival_quota }
-        //                 ).then(() => {
-        //                     console.log('updated entrance_quota to ' + camp.early_arrival_quota);
-        //                 });
-        //                 // let query = 'UPDATE users_groups SET entrance_quota="0" WHERE group_id="' + res[0].id + '";';
-        //                 // console.log(query);
-        //                 // knex.raw(query).then(() => {
-        //                 //     console.log('updated camp early adapter');
-        //                 // });
-        //             }
-        //         })
-
-        //     ]
     );
     console.log('*** Working on Users ***');
     Promise.all(_(users_data).map(function (user) {
@@ -248,55 +226,10 @@ function main(argv) {
                     _camp_rec['status'] = 'closed';
                 }
                 var update_early_quota = function () {
-                    // if (camp.early_arrival_quota && camp.early_arrival_quota.trim() !== '') {
-                    //     times++;
-                    //     if (times > 1)
-                    //         return true;
-                    //     console.log(camp.early_arrival_quota + " " + times);
-
-                    //     knex.raw('select * from camps where event_id="MIDBURN2017" AND camp_name_he LIKE "Reflectopus";').then(function (res) {
-                    //     // return knex.raw('select * from camps where id=1;').then(function (res) {
-                    //         // _where = {
-                    //         // 'event_id': 'MIDBURN2017',
-                    //         // 'camp_name_he': 'Reflectopus',
-                    //         // '__prototype': 'art_installation'
-                    //         // }
-                    //         // _where = {
-                    //         // 'id': 1,
-                    //         // }
-                    //         // console.log(_where);
-                    //         // Camps
-                    //         // return knex(constants.CAMPS_TABLE_NAME).where(_where).then(function (res) {
-                    //         // return Camp.forge(_where).fetch().then(function (res) {
-                    //         console.log(res);
-                    //         // process.exit();
-                    //         if (res.length > 0 && res[0].id > 0) {
-                    //             console.log('updating entrance_quota to ' + camp.early_arrival_quota);
-                    //             return UserGroup.forge({ group_id: res[0].id }).save(
-                    //                 { 'entrance_quota': camp.early_arrival_quota }
-                    //             ).then(() => { console.log('updated entrance_quota to ' + camp.early_arrival_quota); });
-                    //             // let query = 'UPDATE users_groups SET entrance_quota="0" WHERE group_id="' + res[0].id + '";';
-                    //             // console.log(query);
-                    //             // knex.raw(query).then(() => {
-                    //             //     console.log('updated camp early adapter');
-                    //             // });
-                    //         }
-                    //     });
-                    // }
+                    return false;
                 }
                 if (res.length > 0) {
-                    // console.log(res[0]);
                     _camp_rec.id = res[0].id;
-                    // console.log('updating ' + res[0].id + '/'.camp_name_he);
-                    // console.log(_camp_rec);
-                    // return knex(constants.CAMPS_TABLE_NAME).update(_camp_rec).then(function () {
-                    // console.log("updated camp: " + camp_name_en);
-                    // debugger;
-                    // console.log('update eaarly quota');
-                    // return update_early_quota();
-                    // }).catch(err => {
-                    // console.log(err)
-                    // });
                 } else {
                     if (camp_name_en && camp_name_he) {
                         console.log("inserting new camp " + camp_name_en);

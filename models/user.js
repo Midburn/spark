@@ -75,7 +75,7 @@ var User = bookshelf.Model.extend({
         }
 
         if (!membership) {
-            membership = UsersGroupMemberShip.forge({user_id: this.attributes.user_id, group_id: group_id});
+            membership = UsersGroupMemberShip.forge({ user_id: this.attributes.user_id, group_id: group_id });
         }
 
         return membership;
@@ -101,24 +101,24 @@ var User = bookshelf.Model.extend({
         // let _current_user;
         if (typeof (req) === 'function') {
             t = req;
-        }  
+        }
         if (req && typeof (req) === 'object' && typeof (req['t']) === 'function') {
             t = req.t;
             // if (req['user']) {
-                // _current_user = req.user;
+            // _current_user = req.user;
             // }
         }
-
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         var _camps = constants.CAMPS_TABLE_NAME;
         var _this_user = this;
         if (!prototype) prototype = constants.prototype_camps.THEME_CAMP.id;
         knex(_camps)
-            .select(_camps + '.*', _camps_members + '.status AS member_status')
+            .select(_camps + '.*', _camps_members + '.status AS member_status', 'users_groups.entrance_quota')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
+            .innerJoin('users_groups', _camps + '.id', 'users_groups.group_id')
             .where({
                 user_id: this.attributes.user_id,
-                event_id: constants.CURRENT_EVENT_ID,
+                'camps.event_id': constants.CURRENT_EVENT_ID,
                 __prototype: prototype,
             })
             .then((camps) => {
@@ -210,7 +210,7 @@ var DrupalUser = bookshelf.Model.extend({
 
     validPassword: function (password) {
         var child_process = require('child_process');
-        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], {'input': password + "\n"});
+        var res = child_process.execFileSync('python', ["libs/drupal_7_pw.py", this.attributes.pass], { 'input': password + "\n" });
         msg = res.toString('ascii');
         return (msg.indexOf('Yey! win') > -1);
     }
