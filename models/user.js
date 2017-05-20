@@ -104,17 +104,18 @@ var User = bookshelf.Model.extend({
      *  user.attribute.is_manager - for the camp if has manager flag.
      *  user.attributes.camps - array of all camps user is involved.
      */
-    getUserCamps: function (done, req) {
+    getUserCamps: function (done, req, prototype) {
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         var _camps = constants.CAMPS_TABLE_NAME;
         var _this_user = this;
+        if (!prototype) prototype = constants.prototype_camps.THEME_CAMP.id;
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
             .where({
                 user_id: this.attributes.user_id,
                 event_id: constants.CURRENT_EVENT_ID,
-                __prototype: constants.prototype_camps.THEME_CAMP.id
+                __prototype: prototype,
             })
             .then((camps) => {
                 let first_camp = null;
@@ -232,12 +233,7 @@ var UsersGroup = bookshelf.Model.extend({
             let _users = this.relations.users;
             _.each(_users.models, (user) => {
                 var foundTicket = 0;
-                // console.log(user.tickets);
-                // console.log(user.relations.tickets);
-                // return;
-                let _tickets=[];
-                // let tickets = await Ticket.forge({ event_id: constants.CURRENT_EVENT_ID, holder_id: user.attributes.user_id }).fetch();
-                // tickets=await Ticket.forge()
+                let _tickets = [];
                 _.each(_tickets, ticket => {
                     if (ticket.attributs.inside_event) {
                         foundTicket = 1;
@@ -248,9 +244,7 @@ var UsersGroup = bookshelf.Model.extend({
             return insideCounter;
         },
         quotaReached: function () {
-            this.usersInsideEventsCounter;
-            return true;
-            // return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+            return (this.usersInsideEventsCounter >= this.attributes.entrance_quota);
         }
     }
 });

@@ -149,6 +149,7 @@ router.post('/gate-enter', async function (req, res) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
 
+            // get right inside counter for group, patch until roy will fix on his
             let _users = group.relations.users;
             let insideCounter = 0;
             for (i = 0; i < _users.models.length; i++) {
@@ -164,33 +165,11 @@ router.post('/gate-enter', async function (req, res) {
                         return tickets;
                     });
                 _.each(_tickets.models, ticket => {
-                    // console.log(user.attributes.email + ' ' + user.attributes.user_id + ' ticket ' + ticket.attributes.ticket_id + ' inside:' + ticket.attributes.inside_event);
                     if (ticket.attributes.inside_event) {
                         insideCounter += 1;
                     }
                 })
             }
-            // console.log(foundTicket);
-            // const insideCounter = _.reduce(_users.models, async (foundTicket, user) => {
-            //     let searchTerms = {
-            //         event_id: 'MIDBURN2017',
-            //         holder_id: user.attributes.user_id
-            //     };
-            //     let _tickets = await Ticket.where(searchTerms)
-            //         .fetchAll()
-            //         .then((tickets) => {
-            //             return tickets;
-            //         });
-            //     _.each(_tickets.models, ticket => {
-            //         console.log(user.attributes.email+' '+user.attributes.user_id+' ticket '+ticket.attributes.ticket_id+' inside:'+ticket.attributes.inside_event);
-            //         if (ticket.attributes.inside_event) {
-            //             foundTicket += 1;
-            //         }
-            //     })
-
-            //     return foundTicket;
-            // }, 0);
-
             if (insideCounter >= group.attributes.entrance_quota) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
