@@ -153,7 +153,7 @@ function main(argv) {
                     console.log("inserted user: " + email);
                     // return true;
                 }).catch(function (err) {
-                    console.log(res);
+                    console.log(err);
                     console.log("error inserting user: " + email);
                     // return true;
                     // console.log(err);
