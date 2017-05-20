@@ -142,7 +142,6 @@ router.post('/gate-enter', async function (req, res) {
     }
 
     if (req.body.force) {
-
         log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
     }
     else {
@@ -153,7 +152,6 @@ router.post('/gate-enter', async function (req, res) {
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
-
             if (group.quotaReached) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
