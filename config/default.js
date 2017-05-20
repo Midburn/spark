@@ -18,7 +18,9 @@ else {
 
 switch (process.env.SPARK_DB_CLIENT || "mysql") {
     case "mysql":
-        console.log("Spark config: Using MySQL database", process.env.SPARK_DB_HOSTNAME || "localhost");
+        console.log("Spark config: Using MySQL database",
+            process.env.SPARK_DB_HOSTNAME || "localhost", "/",
+            process.env.SPARK_DB_DBNAME || "spark");
         exports.database = {
             "client": process.env.SPARK_DB_CLIENT || "mysql",
             "host": process.env.SPARK_DB_HOSTNAME || "localhost",
