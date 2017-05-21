@@ -7,7 +7,7 @@ var knex = require('../../libs/db').knex;
 var constants = require('../../models/constants');
 var _ = require('lodash');
 
-const ADMIN_USER_EMAIL = "omerpines@hotmail.com";
+const ADMIN_USER_EMAIL = "omerp@websplanet.com";
 const ADMIN_USER_PASSWORD = "123456";
 const ADMIN_USER_FIRST_NAME = "Omer Hatotach";
 
