@@ -186,12 +186,12 @@ var User = bookshelf.Model.extend({
         camp_id = parseInt(camp_id);
         // let isCampManager = false;
         for (let i in this.attributes.camps) {
-            if (this.attributes.camps[i].id === camp_id && this.attributes.camps[i].isManager ) {
+            if (this.attributes.camps[i].id === camp_id && this.attributes.camps[i].isManager) {
                 return this.attributes.camps[i];
             }
         }
         // return isCampManager;
-        // 
+        //
         // if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager) {
         //     isCampManager = true;
         // }
@@ -267,7 +267,7 @@ var UsersGroup = bookshelf.Model.extend({
 
     virtuals: {
         usersInsideEventsCounter: async function () {
-            return await knex('tickets')
+            return knex('tickets')
                 .count('inside_event')
                 .where('entrance_group_id', '=', this.attributes.group_id)
                 .then(count => {
