@@ -103,6 +103,7 @@ router.post('/get-ticket/', async function (req, res) {
         // Preparing result.
         let result = {
             ticket_number: ticket.attributes.ticket_number,
+            order_id: ticket.attributes.order_id,
             holder_name: ticket.relations.holder.fullName,
             email: ticket.relations.holder.attributes.email,
             disabled_parking: ticket.attributes.disabled_parking,
@@ -141,8 +142,10 @@ router.post('/gate-enter', async function (req, res) {
         return sendError(res, 500, "ALREADY_INSIDE");
     }
 
-    if (req.body.force) {
+    if (req.body.force === "true") {
         log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
+        ticket.attributes.forced_entrance = true;
+        ticket.attributes.forced_entrance_reason = req.body.force_reason;
     }
     else {
         // Finding the right users group and updating it.
@@ -152,7 +155,7 @@ router.post('/gate-enter', async function (req, res) {
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
-            if (group.quotaReached) {
+            if (await group.quotaReached) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
         }

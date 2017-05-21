@@ -30,7 +30,6 @@ block content
 
     #myModal.modal.fade(role='dialog')
         .modal-dialog
-            // Modal content
             .modal-content
                 .modal-header
                     button.close(type='button', data-dismiss='modal') ×
@@ -72,6 +71,26 @@ block content
                         button.btn.btn-danger(type='button', data-dismiss='modal', id='force_entrance_button')
                             =t('gate:force_enter_ticket')
 
+    #forceDialog.modal.fade(role='dialog')
+        .modal-dialog
+            .modal-content
+                form( data-toggle="validator", id="force_form" )
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal') ×
+                        h4.modal-title=t("gate:enter_ticket")
+                    .modal-body
+                        h3=t('gate:entrance_instructions')
+                        .alert.alert-danger
+                            strong=t('gate:force_instructions')
+                        p
+                            strong=t('gate:reason')
+                            | :&nbsp;
+                            textarea( id="force_reason", rows=3, cols=50, minlength=10, maxlength=150,
+                            required, placeholder="#{t('gate:force_reason_placeholder')}" )
+                    .modal-footer
+                        button.btn.btn-primary(type='submit', id='force_entrance_dialog_button')=t('gate:force_enter_ticket')
+                        button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')
+
 block scripts
     script.
 
@@ -105,6 +124,12 @@ block scripts
         };
 
         $(document).ready(function () {
+
+            $(".search .form-control").focus();
+
+            $("#force_form").submit(function (e) {
+                e.preventDefault();
+            });
 
             $(document).on("click", ".entranceAction", function () {
                 $.post("/api/gate/get-ticket", {
@@ -152,59 +177,47 @@ block scripts
                         gate_code: "#{gate_code}"
                     },
                     function (data, status) {
-                        //if (data.gate_status === "early_arrival") {
-                            $("#modal_mode")[0].innerHTML = "exit";
-                            $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
-                            $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
-                            $("#modal_name")[0].innerHTML = data.ticket.holder_name;
-                            $("#modal_email")[0].innerHTML = data.ticket.email;
-                            $("#modal_type")[0].innerHTML = data.ticket.type;
+                        $("#modal_mode")[0].innerHTML = "exit";
+                        $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
+                        $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
+                        $("#modal_name")[0].innerHTML = data.ticket.holder_name;
+                        $("#modal_email")[0].innerHTML = data.ticket.email;
+                        $("#modal_type")[0].innerHTML = data.ticket.type;
 
-                            var entranceButton = $("#entrance_button")[0];
-                            entranceButton.innerHTML = "#{t('gate:exit_ticket')}";
-                            entranceButton.disabled = false;
-                            $("#ticket_groups_list")[0].innerHTML = "";
+                        var entranceButton = $("#entrance_button")[0];
+                        entranceButton.innerHTML = "#{t('gate:exit_ticket')}";
+                        entranceButton.disabled = false;
+                        $("#ticket_groups_list")[0].innerHTML = "";
 
-                            $("#force_entrance_button").hide();
-                        //}
-                        //else {
-                        //    $('#myModal').modal('hide');
-                        //    alert("#{t('gate:no_exit')}");
-                        //}
+                        $("#force_entrance_button").hide();
                     });
             });
 
             $(document).on("click", "#force_entrance_button", function () {
-                if(prompt("נא לכתוב בכוח ^_^", "בלי כוח") == "בכוח") {
-                    let parameters = {
-                        barcode: $("#modal_barcode")[0].innerHTML,
-                        gate_code: "#{gate_code}",
-                        group_id: $("#modal_group_id")[0].innerHTML.substring(2),
-                        force: true
-                    };
+                $("#force_reason").val('')
+                $('#forceDialog').modal('show');
+            });
 
-                    let mode = $("#modal_mode")[0].innerHTML;
-                    $.post("/api/gate/gate-" + mode, parameters)
-                    .done(function (data, status) {
-                        if (status === "success") {
-                            $("#alerts")[0].innerHTML = "<div class='alert alert-success'>" + data.message + "</div>";
-                        }
-                        $("#tickets_table").bootstrapTable('resetSearch');
-                    })
-                    .fail(function (xhr) {
-                        $("#alerts")[0].innerHTML = "<div class='alert alert-danger'>" + JSON.parse(xhr.responseText).message + "</div>";
-                    });
+            $(document).on("click", "#force_entrance_dialog_button", function () {
+                if (!$("#force_entrance_dialog_button").hasClass("disabled")) {
+                    var force_reason = $("#force_reason").val();
+                    $('#forceDialog').modal('hide');
+                    enter(true, force_reason);
                 }
-
             });
 
             $(document).on("click", "#entrance_button", function () {
+                enter(false, null);
+            });
+
+            function enter(force, force_reason) {
                 let parameters = {
                     barcode: $("#modal_barcode")[0].innerHTML,
                     gate_code: "#{gate_code}",
-                    group_id: $("#modal_group_id")[0].innerHTML.substring(2)
+                    group_id: $("#modal_group_id")[0].innerHTML.substring(2),
+                    force: force,
+                    force_reason: force_reason
                 };
-
                 let mode = $("#modal_mode")[0].innerHTML;
                 $.post("/api/gate/gate-" + mode, parameters)
                     .done(function (data, status) {
@@ -216,5 +229,5 @@ block scripts
                     .fail(function (xhr) {
                         $("#alerts")[0].innerHTML = "<div class='alert alert-danger'>" + JSON.parse(xhr.responseText).message + "</div>";
                     });
-            });
+            }
         });

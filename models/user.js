@@ -239,12 +239,13 @@ var UsersGroup = bookshelf.Model.extend({
                 .count('inside_event')
                 .where('entrance_group_id', '=', this.attributes.group_id)
                 .then(count => {
-                    return count;
+                    return count[0]['count(`inside_event`)'];
 
                 });
         },
         quotaReached: async function () {
-            return (await this.usersInsideEventsCounter >= this.attributes.entrance_quota);
+            let inside = await this.usersInsideEventsCounter;
+            return (inside >= this.attributes.entrance_quota);
         }
     }
 });

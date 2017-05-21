@@ -11,8 +11,7 @@ var log = require('../libs/logger')(module);
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-const TICKETS_TYPE_IDS = [39, 40, 41, 43, 44, 45, 46]
-// const TICKETS_TYPE_IDS = [38, 39, 40];
+const TICKETS_TYPE_IDS = [39, 40, 41, 43, 44, 45, 46];
 const STATUS_COMPLETED = 'Completed';
 
 const EVENT_ID = "MIDBURN2017";
@@ -104,7 +103,7 @@ async function dumpDrupalTickets(session, date, page) {
                     'buyer_email'     : ticket['Buyer E-mail'],
                     'name'            : ticket['Name'],
                     'disabled_parking': parseInt(ticket['disabledParking']) === 1,
-                    'order_id'        : ticket['users_ticket_registration_uid'],
+                    'order_id'        : ticket['Order id'],
                     'ticket_id'       : ticket['Ticket number'],
                     'ticket_number'   : ticket['Ticket number'],
                     'barcode'         : ticket['ticket barcode']['value'],
