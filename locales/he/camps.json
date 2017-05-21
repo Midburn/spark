@@ -163,6 +163,7 @@
         "status_rejected": "נדחה על ידי מנהלת המחנה",
         "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
         "status_approved_mgr": "מנהלת מחנה מאושרת",
+        "inside_event": "בתוך האירוע",
         "status_supplier": "מאושר כספק"
     },
     "camps": {

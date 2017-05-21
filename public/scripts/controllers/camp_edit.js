@@ -10,6 +10,7 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             var _members = [];
             var approved_members = [];
             var total_camp_tickets = 0;
+            var total_in_event = 0;
             for (var i in members) {
                 if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(members[i].member_status) > -1) {
                     _members.push(members[i]);
@@ -17,12 +18,14 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                 if (['approved', 'approved_mgr'].indexOf(members[i].member_status) > -1) {
                     approved_members.push(members[i]);
                 }
-                total_camp_tickets+=parseInt(members[i].current_event_id_ticket_count) || 0;
+                total_in_event+=parseInt(members[i].inside_event);
+                total_camp_tickets+=parseInt(members[i].ticket_count) || 0;
             }
             $scope.members = _members;
             $scope.approved_members = approved_members;
             $scope.all_approved_members = approved_members.length;
             $scope.total_camp_tickets = total_camp_tickets;
+            $scope.total_in_event = total_in_event;
         });
     }
 }

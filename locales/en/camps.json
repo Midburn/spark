@@ -163,6 +163,7 @@
         "status_approved": "Approved",
         "status_rejected": "Camp manager did not approve request",
         "status_pending_mgr": "Waiting for member acceptance",
+        "inside_event": "Inside Event",
         "status_approved_mgr": "Approved as Manager",
         "status_supplier": "Supplier"
     },
