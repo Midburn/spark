@@ -165,6 +165,7 @@ app.controller("homeController", ($scope, $http, $filter) => {
         $http.get(`/my_groups`).then((res) => {
             // debugger;
             $scope.groups = res.data.groups;
+            $scope.stat = res.data.stats;
         });
     }
     $scope.angular_getMyGroups($http, $scope);

@@ -40,6 +40,7 @@
     "welcome_home": "ברוכים הבאות הביתה, {{user}}!",
     "welcome_home_female": "ברוכה הבאה הביתה, {{user}}!",
     "welcome_home_male": "ברוך הבא הביתה, {{user}}!",
+    "my_midburn": "המידברן שלי",
     "welcome_spark": "מידברן ספארק",
     "reset_password_email_subject": "שחזור סיסמה עבור Spark",
     "back_to_login": "חזרה למסך כניסה",

@@ -892,33 +892,81 @@ module.exports = (app, passport) => {
         });
     });
 
-    app.get('/my_groups',userRole.isLoggedIn(), (req, res) => {
+    app.get('/my_groups', userRole.isLoggedIn(), (req, res) => {
         req.user.getUserCamps((camps) => {
-            let groups=[];
-            let group={};
+            let groups = [];
+            let group = {};
             let group_props;
             // console.log(camps);
             for (let i in camps) {
-                group_props=Camp.prototype.__parsePrototype(camps[i].__prototype,req.user);
-                if (['approved','pending','pending_mgr','approved_mgr'].indexOf(camps[i].member_status)>-1) {
-                   group={
+                group_props = Camp.prototype.__parsePrototype(camps[i].__prototype, req.user);
+                if (['approved', 'pending', 'pending_mgr', 'approved_mgr'].indexOf(camps[i].member_status) > -1) {
+                    group = {
                         // group_type:'מחנה נושא',
                         group_id: camps[i].id,
-                        group_type: req.t(group_props.t_prefix+'edit.camp'),
+                        group_type: req.t(group_props.t_prefix + 'edit.camp'),
                         member_status: camps[i].member_status,
                         member_status_i18n: camps[i].member_status_i18n,
                         camp_desc_i18n: camps[i].camp_name_he,
                         camp_desc_he: camps[i].camp_name_he,
                         camp_name_en: camps[i].camp_name_en,
-                        can_view: ['theme_camp'].indexOf(camps[i].__prototype)>-1,
+                        can_view: ['theme_camp'].indexOf(camps[i].__prototype) > -1,
                         can_edit: camps[i].isManager,
-                        is_manager_i18n: camps[i].isManager?req.t('camps:yes'):req.t('camps:no'),
-                   };
-                   groups.push(group);
+                        is_manager_i18n: camps[i].isManager ? req.t('camps:yes') : req.t('camps:no'),
+                    };
+                    groups.push(group);
                 }
             }
-            // console.log(groups);
-            res.status(200).json({ groups: groups });
+            if (req.user.isAdmin) {
+                let query = "SELECT camps.__prototype	,SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='MIDBURN2017' GROUP BY __prototype;";
+                let query1 = "SELECT " +
+                    "count(*) AS total_tickets" +
+                    ",SUM(inside_event) AS inside_event " +
+                    ",SUM( IF(first_entrance_timestamp>='2017-01-01%',1,0)) AS ticketing " +
+                    ",SUM( IF(first_entrance_timestamp>=NOW() - INTERVAL 1 DAY,1,0)) AS last_24h_first_entrance " +
+                    ",SUM( IF(first_entrance_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_first_entrance " +
+                    ",SUM( IF(entrance_timestamp>=NOW() - INTERVAL 1 DAY,1,0)) AS last_24h_entrance " +
+                    ",SUM( IF(last_exit_timestamp>=NOW() - INTERVAL 1 DAY,1,0)) AS last_24h_exit " +
+                    ",SUM( IF(entrance_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_entrance " +
+                    ",SUM( IF(last_exit_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_exit " +
+                    "FROM tickets  " +
+                    "WHERE tickets.event_id='MIDBURN2017'  " +
+                    "GROUP BY event_id; ";
+                if (req.user.isAdmin) {
+                    let stat = {};
+                    knex.raw(query).then((result) => {
+                        stat.groups = {};
+                        for (let i in result[0]) {
+                            stat.groups[result[0][i]['__prototype']] = {
+                                total: result[0][i].total
+                            };
+                        }
+                        // stat.total_tickets = result[0][0]['total_tickets'];
+                        // stat.inside_event = result[0][0]['inside_event'];
+                        // stat.ticketing = result[0][0]['ticketing'];
+                        // stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
+                        // stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
+                        // stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
+                    }).then(() => {
+                        knex.raw(query1).then((result) => {
+                            stat.total_tickets = result[0][0]['total_tickets'];
+                            stat.inside_event = result[0][0]['inside_event'];
+                            stat.ticketing = result[0][0]['ticketing'];
+                            stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
+                            stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
+                            stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
+                            stat.last_24h_exit = result[0][0]['last_24h_exit'];
+                            stat.last_1h_entrance = result[0][0]['last_1h_entrance'];
+                            stat.last_1h_exit = result[0][0]['last_1h_exit'];
+                            // console.log(stat);
+                            res.status(200).json({ groups: groups, stats: stat });
+
+                        });
+                    });
+                }
+            } else {
+                res.status(200).json({ groups: groups });
+            }
         }, req, 'all');
     });
 
@@ -939,13 +987,14 @@ module.exports = (app, passport) => {
                 return;
             }
             req.user.getUserCamps((camps) => {
+                // let group_props = camp.parsePrototype(req.user);
                 let group_props = camp.parsePrototype(req.user);
                 if (req.user.isManagerOfCamp(camp_id) || group_props.isAdmin) {
                     User.forge({ email: user_email }).fetch().then((user) => {
                         if (user !== null) {
                             // check that user is only at one camp!
                             user.getUserCamps((camps) => {
-                                if (camps.length === 0 || !user.attributes.camp) {
+                                if (camps.length === 0 || !user.attributes.camp || group_props.multiple_groups_for_user) {
                                     __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                                 } else {
                                     let message;
@@ -976,7 +1025,7 @@ module.exports = (app, passport) => {
                 } else {
                     res.status(404).end();
                 }
-            }, null, camp.attributes.__prototype);
+            }, req, camp.attributes.__prototype);
         });
     })
 

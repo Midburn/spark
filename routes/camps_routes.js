@@ -156,10 +156,10 @@ module.exports = function (app, passport) {
         })/*.related('users_groups')*/.fetch({
             withRelated: ['users_groups']
         }).then((camp) => {
+            let group_props = camp.parsePrototype(req.user);
             req.user.getUserCamps((camps) => {
                 // let __groups_prototype='';
-                let result = camp.parsePrototype(req.user);
-                if (req.user.isManagerOfCamp(req.params.id) || result.isAdmin) {
+                if (req.user.isManagerOfCamp(req.params.id) || group_props.isAdmin) {
                     let camp_data = __camp_data_to_json(camp);
                     if (camp_data.addinfo_json !== null) {
                         camp_data.addinfo_json = JSON.parse(camp_data.addinfo_json);
@@ -171,9 +171,9 @@ module.exports = function (app, passport) {
                         camp: camp_data,
                         details: camp_data,
                         isNew: false,
-                        isAdmin: result.isAdmin,
+                        isAdmin: group_props.isAdmin,
                         __groups_prototype: camp.attributes.__prototype,
-                        t_prefix: result.t_prefix,
+                        t_prefix: group_props.t_prefix,
                         isArt: camp.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id,
                         isCamp: camp.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id,
                         isProd: camp.attributes.__prototype === constants.prototype_camps.PROD_DEP.id,
@@ -187,7 +187,7 @@ module.exports = function (app, passport) {
                         }
                     });
                 }
-            });
+            },req,group_props.id);
         })
     });
     // camps statistics
