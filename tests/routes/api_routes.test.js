@@ -39,7 +39,7 @@ describe('API routes', function() {
         return request
             .post('/api/userlogin')
             .send({
-                username: "omerpines@hotmail.com",
+                username: "omerp@websplanet.com",
                 password: "123456",
                 token: TEST_TOKEN
             })
