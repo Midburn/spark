@@ -6,7 +6,6 @@ var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
 var recaptchaConfig = config.get('recaptcha');
 const breadcrumbs = require('express-breadcrumbs');
-const knex = require('../libs/db').knex;
 
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
