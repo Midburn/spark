@@ -49,16 +49,10 @@ module.exports = function (app, passport) {
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
         });
-        req.user.getUserCamps((camps) => {
-            // console.log(camps);
-            // for (let i in camps) {
-            // 
-            // }
             res.render('pages/home', {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs()
             });
-        }, req, 'all');
     });
 
     // =====================================

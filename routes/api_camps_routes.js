@@ -35,8 +35,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
         } else {
             camp_mgr_id = parseInt(camp_mgr);
         }
-        group_options = camp.__parsePrototype(camp.attributes.__prototype, camp_mgr);
-        console.log(group_options);
+        group_options = camp.parsePrototype(camp_mgr);
         let isAdmin = group_options.isAdmin;
         console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
 
@@ -224,10 +223,7 @@ module.exports = (app, passport) => {
         } else if (typeof (camp) === 'string' && camp !== '') {
             prototype = camp;
         } else prototype = constants.prototype_camps.THEME_CAMP.id;
-
-        group_props = Camp.forge().__parsePrototype(prototype, req.user);
-
-        // group_props=camp.__parsePrototype(camp.attribu)}
+        group_props = Camp.prototype.__parsePrototype(prototype, req.user);
         var data = {
             event_id: constants.CURRENT_EVENT_ID,
             // for update or insert, need to merge with create to be the same call
@@ -424,7 +420,7 @@ module.exports = (app, passport) => {
             .fetch({ withRelated: ['users_groups'] })
             .then((camp) => {
                 camp.getCampUsers((users) => {
-                    group_props = camp.__parsePrototype(camp.attributes.__prototype, req.user);
+                    group_props = camp.parsePrototype(req.user);
                     if (camp.isCampManager(req.user.attributes.user_id) || group_props.isAdmin) {
                         __camps_save(req, false, camp)
                             // Camp.forge({ id: req.params.id }).fetch().then((camp) => {
@@ -874,7 +870,7 @@ module.exports = (app, passport) => {
                         return member;
                     });
                 }
-                result = camp.__parsePrototype(camp.attributes.__prototype, req.user);
+                result = camp.parsePrototype(req.user);
 
                 if (isCampManager || (result && result.isAdmin)) {
                     res.status(200).json({ members: members });
@@ -896,6 +892,36 @@ module.exports = (app, passport) => {
         });
     });
 
+    app.get('/my_groups',userRole.isLoggedIn(), (req, res) => {
+        req.user.getUserCamps((camps) => {
+            let groups=[];
+            let group={};
+            let group_props;
+            // console.log(camps);
+            for (let i in camps) {
+                group_props=Camp.prototype.__parsePrototype(camps[i].__prototype,req.user);
+                if (['approved','pending','pending_mgr','approved_mgr'].indexOf(camps[i].member_status)>-1) {
+                   group={
+                        // group_type:'מחנה נושא',
+                        group_id: camps[i].id,
+                        group_type: req.t(group_props.t_prefix+'edit.camp'),
+                        member_status: camps[i].member_status,
+                        member_status_i18n: camps[i].member_status_i18n,
+                        camp_desc_i18n: camps[i].camp_name_he,
+                        camp_desc_he: camps[i].camp_name_he,
+                        camp_name_en: camps[i].camp_name_en,
+                        can_view: ['theme_camp'].indexOf(camps[i].__prototype)>-1,
+                        can_edit: camps[i].isManager,
+                        is_manager_i18n: camps[i].isManager?req.t('camps:yes'):req.t('camps:no'),
+                   };
+                   groups.push(group);
+                }
+            }
+            // console.log(groups);
+            res.status(200).json({ groups: groups });
+        }, req, 'all');
+    });
+
     /**
     * API: (POST) camp manager send member join request
     * request => /camps/1/members/add
@@ -913,7 +939,7 @@ module.exports = (app, passport) => {
                 return;
             }
             req.user.getUserCamps((camps) => {
-                let group_props = camp.__parsePrototype(camp.attributes.__prototype, req.user);
+                let group_props = camp.parsePrototype(req.user);
                 if (req.user.isManagerOfCamp(camp_id) || group_props.isAdmin) {
                     User.forge({ email: user_email }).fetch().then((user) => {
                         if (user !== null) {
