@@ -61,7 +61,7 @@ describe('Main routes', function() {
     });
 
     it('logs-in a drupal user', function loginDrupalUser(done) {
-        var email = 'omerpines@hotmail.com';
+        var email = 'omerp@websplanet.com';
         // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
         var clear_password = '123456';
         Promise.all([
