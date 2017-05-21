@@ -883,7 +883,7 @@ module.exports = (app, passport) => {
                 }
             }, req)
             // .then(() => {
-                // console.log('knex')
+            // console.log('knex')
             // });
 
         }).catch((e) => {
@@ -913,10 +913,10 @@ module.exports = (app, passport) => {
                 return;
             }
             req.user.getUserCamps((camps) => {
-                let group_props=camp.__parsePrototype(camp.attributes.__prototype, req.user);
+                let group_props = camp.__parsePrototype(camp.attributes.__prototype, req.user);
                 if (req.user.isManagerOfCamp(camp_id) || group_props.isAdmin) {
                     User.forge({ email: user_email }).fetch().then((user) => {
-                        if (user !== null ) {
+                        if (user !== null) {
                             // check that user is only at one camp!
                             user.getUserCamps((camps) => {
                                 if (camps.length === 0 || !user.attributes.camp) {
