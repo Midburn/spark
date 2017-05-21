@@ -115,26 +115,7 @@ var Camp = bookshelf.Model.extend({
         }
     },
     __parsePrototype: function(prototype, user) {
-        let result = constants.prototype_camps.by_prototype(prototype);
-        if (!result) return false;
-        let isAdmin = false;
-        let t_prefix = '';
-        if (user instanceof User) {
-            isAdmin = user.isAdmin;
-            if (prototype === constants.prototype_camps.THEME_CAMP.id) {
-                isAdmin = isAdmin || user.isCampsAdmin;
-                t_prefix = 'camps:';
-            } else if (prototype === constants.prototype_camps.ART_INSTALLATION.id) {
-                isAdmin = isAdmin || user.isArtInstallationsAdmin;
-                t_prefix = 'camps:art_installation.';
-            } else if (prototype === constants.prototype_camps.PROD_DEP.id) {
-                isAdmin = isAdmin || user.isProdDepsAdmin;
-                t_prefix = 'camps:prod_dep.';
-            }
-        }
-        result.isAdmin = isAdmin;
-        result.t_prefix = t_prefix;
-        return result;
+        return User.prototype.__parsePrototype(prototype, user);
     },
 
     parsePrototype: function (user) {

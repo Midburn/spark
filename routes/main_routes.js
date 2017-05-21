@@ -49,10 +49,11 @@ module.exports = function (app, passport) {
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
         });
-            res.render('pages/home', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
+        res.render('pages/home', {
+            user: req.user,
+            isAdmin: req.user.isAdmins,
+            breadcrumbs: req.breadcrumbs()
+        });
     });
 
     // =====================================
