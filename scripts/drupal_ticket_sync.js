@@ -99,9 +99,11 @@ async function dumpDrupalTickets(session, date, page) {
             if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
                 utickets.push({
                     'id'              : ticket['Docment id'],
+                    'passport_id'     : ticket['passport_id'],
                     'holder_email'    : ticket['Email'],
                     'buyer_email'     : ticket['Buyer E-mail'],
-                    'name'            : ticket['Name'],
+                    'first_name'      : ticket['First name'],
+                    'last_name'       : ticket['Last name'],
                     'disabled_parking': parseInt(ticket['disabledParking']) === 1,
                     'order_id'        : ticket['Order id'],
                     'ticket_id'       : ticket['Ticket number'],
@@ -153,23 +155,19 @@ async function updateTicket(ticket) {
         if (user == null) {
             // We need to create a new user...
             log.info("User", holder_email, "not found in Spark. Creating...");
-            if (ticket["id"].length === 0) {
-                ticket["id"] = "";
+            if (ticket["passport_id"].length === 0) {
+                ticket["passport_id"] = "";
             }
-            else if (ticket["id"].length > 9) {
-                log.error("Israeli ID is too long for user", holder_email, "ID:", ticket["id"]);
+            else if (ticket["passport_id"].length > 9) {
+                log.error("Israeli ID is too long for user", holder_email, "ID:", ticket["passport_id"]);
                 return;
             }
-            let name = ticket.name;
-            if (!_.isFunction(name.split)) {
-                log.warn("Bad name", name);
-                name = "- -";
-            }
+            const {first_name, last_name, holder_email, passport_id} = ticket;
             user = await User.forge({
-                first_name: name.split(' ')[0] || "",
-                last_name: name.split(' ')[1] || "",
-                email: ticket["holder_email"],
-                israeli_id: ticket["id"]
+                first_name,
+                last_name,
+                email: holder_email,
+                israeli_id: passport_id
             }).save();
 
             log.info("User", ticket["holder_email"], "created!");
