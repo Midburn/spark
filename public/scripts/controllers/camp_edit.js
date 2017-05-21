@@ -18,8 +18,8 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                 if (['approved', 'approved_mgr'].indexOf(members[i].member_status) > -1) {
                     approved_members.push(members[i]);
                 }
-                total_in_event+=parseInt(members[i].inside_event);
-                total_camp_tickets+=parseInt(members[i].ticket_count) || 0;
+                total_in_event += parseInt(members[i].inside_event);
+                total_camp_tickets += parseInt(members[i].ticket_count) || 0;
             }
             $scope.members = _members;
             $scope.approved_members = approved_members;
@@ -37,7 +37,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     if (lang === undefined) {
         lang = 'he';
     }
-    var tpl,action_tpl;
+    var tpl, action_tpl;
 
     if (lang === "he") {
         // debugger;
@@ -100,23 +100,23 @@ app.controller("campEditController", ($scope, $http, $filter) => {
     }
     if (lang === "he") {
         $scope.status_options = [
-           {id:'open',value:'מחנה פתוח למצטרפים חדשים'}, 
-           {id:'closed',value:'סגור למצטרפים חדשים'}];
+            { id: 'open', value: 'מחנה פתוח למצטרפים חדשים' },
+            { id: 'closed', value: 'סגור למצטרפים חדשים' }];
         $scope.noise_level_options = [
-            {id:'quiet',value:'שקט'},
-            {id:'medium',value:'בינוני'},
-            {id:'noisy',value:'רועש'},
-            {id:'very noisy',value:'מאוד רועש'} ];
+            { id: 'quiet', value: 'שקט' },
+            { id: 'medium', value: 'בינוני' },
+            { id: 'noisy', value: 'רועש' },
+            { id: 'very noisy', value: 'מאוד רועש' }];
     } else {
         $scope.status_options = ['Opened to new member', 'Closed to new members'];
         $scope.status_options = [
-           {id:'open',value:'Opened to new member'}, 
-           {id:'closed',value:'Closed to new members'}];
+            { id: 'open', value: 'Opened to new member' },
+            { id: 'closed', value: 'Closed to new members' }];
         $scope.noise_level_options = [
-            {id:'quiet',value:'Quiet'},
-            {id:'medium',value:'Medium'},
-            {id:'noisy',value:'Noisy'},
-            {id:'very noisy',value:'Very Noisy'} ];
+            { id: 'quiet', value: 'Quiet' },
+            { id: 'medium', value: 'Medium' },
+            { id: 'noisy', value: 'Noisy' },
+            { id: 'very noisy', value: 'Very Noisy' }];
     }
 
     $scope.getMembers = () => {
@@ -144,7 +144,7 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
             // update table with new data
             $scope.getMembers();
-            $scope.camps_members_add_member='';
+            $scope.camps_members_add_member = '';
         }).catch((err) => {
             sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
         });
@@ -158,5 +158,14 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         }
         angular_updateUser($http, $scope, action_type, user_rec);
     }
+});
 
+app.controller("homeController", ($scope, $http, $filter) => {
+    $scope.angular_getMyGroups = function ($http, $scope) {
+        $http.get(`/my_groups`).then((res) => {
+            // debugger;
+            $scope.groups = res.data.groups;
+        });
+    }
+    $scope.angular_getMyGroups($http, $scope);
 });

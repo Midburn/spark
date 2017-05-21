@@ -49,7 +49,7 @@ var functions = {
         if (filter.test(user_email)) {
             return user_email;
         }
-    }
+    },
 }
 
 // Create the model and expose it

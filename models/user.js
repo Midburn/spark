@@ -104,9 +104,6 @@ var User = bookshelf.Model.extend({
         }
         if (req && typeof (req) === 'object' && typeof (req['t']) === 'function') {
             t = req.t;
-            // if (req['user']) {
-            // _current_user = req.user;
-            // }
         }
         var _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         var _camps = constants.CAMPS_TABLE_NAME;
@@ -117,7 +114,6 @@ var User = bookshelf.Model.extend({
             'camps.event_id': constants.CURRENT_EVENT_ID,
         };
         if (prototype!=='all') _where['__prototype']=prototype;
-        console.log(_where);
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status', 'users_groups.entrance_quota')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
@@ -140,7 +136,7 @@ var User = bookshelf.Model.extend({
                         || (camps[i].member_status === 'approved_mgr'))) {
                         first_camp = camps[i];
                         is_manager = true;
-                        break;
+                        // break;
                     }
                 }
                 _this_user.attributes.camps = camps;

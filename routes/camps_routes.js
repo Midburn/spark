@@ -120,7 +120,7 @@ module.exports = function (app, passport) {
         }]);
 
         let prototype = constants.prototype_camps.THEME_CAMP.id;
-        let result = Camp.__parsePrototype(prototype, req.user);
+        let result = Camp.prototype.__parsePrototype(prototype, req.user);
         res.render('pages/camps/edit', {
             user: req.user,
             camp_name_en: req.query.c,
@@ -158,7 +158,7 @@ module.exports = function (app, passport) {
         }).then((camp) => {
             req.user.getUserCamps((camps) => {
                 // let __groups_prototype='';
-                let result = camp.__parsePrototype(camp.attributes.__prototype, req.user);
+                let result = camp.parsePrototype(req.user);
                 if (req.user.isManagerOfCamp(req.params.id) || result.isAdmin) {
                     let camp_data = __camp_data_to_json(camp);
                     if (camp_data.addinfo_json !== null) {
@@ -262,7 +262,8 @@ module.exports = function (app, passport) {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
                 __groups_prototype: 'theme_camps',
-                t_prefix: 'camps:'
+                t_prefix: 'camps:',
+                isCamp: true,
             });
         } else {
             // user not admin
@@ -288,7 +289,8 @@ module.exports = function (app, passport) {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
                 __groups_prototype: 'art_installation',
-                t_prefix: 'camps:art_installation.'
+                t_prefix: 'camps:art_installation.',
+                isArt: true,
             });
         } else {
             // user not admin
@@ -313,7 +315,9 @@ module.exports = function (app, passport) {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
                 __groups_prototype: 'prod_dep',
-                t_prefix: 'camps:prod_dep.'
+                t_prefix: 'camps:prod_dep.',
+                isProd: true,
+
             });
         } else {
             // user not admin

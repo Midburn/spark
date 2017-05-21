@@ -34,8 +34,7 @@ var Camp = bookshelf.Model.extend({
 
         // let _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         // let _users = constants.USERS_TABLE_NAME;
-//,SUM(tickets.inside_event) AS inside_event
-        let query="SELECT users.*,camp_members.status AS member_status,SUM(IF(tickets.ticket_id>0,1,0)) AS ticket_count,SUM(tickets.inside_event) AS inside_event FROM users inner join camp_members on users.user_id=camp_members.user_id left join tickets on tickets.holder_id=users.user_id and tickets.event_id='MIDBURN2017' where camp_members.camp_id="+this.attributes.id+" group by users.user_id";
+        let query = "SELECT users.*,camp_members.status AS member_status,SUM(IF(tickets.ticket_id>0,1,0)) AS ticket_count,SUM(tickets.inside_event) AS inside_event FROM users inner join camp_members on users.user_id=camp_members.user_id left join tickets on tickets.holder_id=users.user_id and tickets.event_id='MIDBURN2017' where camp_members.camp_id=" + this.attributes.id + " group by users.user_id";
         return knex //(_users)
             .raw(query)
             // .select(_users + '.*', _camps_members + '.status AS member_status'/*,'tickets.ticket_id'*/)
@@ -44,8 +43,7 @@ var Camp = bookshelf.Model.extend({
             // .leftjoin('tickets','tickets.holder_id','users.user_id')
             // .where({ 'camp_members.camp_id': this.attributes.id })
             .then((users_raw_data) => {
-                let users=users_raw_data[0];
-                // console.log(users);    
+                let users = users_raw_data[0];
                 let managers = [];
                 // let emails
                 for (let i in users) {
@@ -116,27 +114,31 @@ var Camp = bookshelf.Model.extend({
             this.attributes.camp_desc_en_linkify = common.linkify(this.attributes.camp_desc_en);
         }
     },
-    __parsePrototype: function (prototype, user) {
+    __parsePrototype: function(prototype, user) {
         let result = constants.prototype_camps.by_prototype(prototype);
         if (!result) return false;
         let isAdmin = false;
         let t_prefix = '';
         if (user instanceof User) {
             isAdmin = user.isAdmin;
-            if (this.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id) {
-                isAdmin = isAdmin || req.user.isCampsAdmin;
+            if (prototype === constants.prototype_camps.THEME_CAMP.id) {
+                isAdmin = isAdmin || user.isCampsAdmin;
                 t_prefix = 'camps:';
-            } else if (this.attributes.__prototype === constants.prototype_camps.ART_INSTALLATION.id) {
-                isAdmin = isAdmin || req.user.isArtInstallationsAdmin;
+            } else if (prototype === constants.prototype_camps.ART_INSTALLATION.id) {
+                isAdmin = isAdmin || user.isArtInstallationsAdmin;
                 t_prefix = 'camps:art_installation.';
-            } else if (this.attributes.__prototype === constants.prototype_camps.PROD_DEP.id) {
-                isAdmin = isAdmin || req.user.isProdDepsAdmin;
+            } else if (prototype === constants.prototype_camps.PROD_DEP.id) {
+                isAdmin = isAdmin || user.isProdDepsAdmin;
                 t_prefix = 'camps:prod_dep.';
             }
         }
         result.isAdmin = isAdmin;
         result.t_prefix = t_prefix;
         return result;
+    },
+
+    parsePrototype: function (user) {
+        return this.__parsePrototype(this.attributes.__prototype, user);
     },
     virtuals: {
         managers: function () {
