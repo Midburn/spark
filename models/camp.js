@@ -6,7 +6,6 @@ var User = models.User;
 var UsersGroup = models.UsersGroup;
 const knex = require('../libs/db').knex;
 
-
 var Camp = bookshelf.Model.extend({
     tableName: constants.CAMPS_TABLE_NAME,
     idAttribute: 'id',
