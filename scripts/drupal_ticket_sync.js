@@ -243,7 +243,7 @@ async function syncTickets(fromDate, callback) {
         var session = await getDrupalSession();
         if (session) {
             log.info('Got Drupal session...');
-            var page = 1;
+            var page = 0;
             var running = true;
             while (running) {
                 log.info("Page:", page);
