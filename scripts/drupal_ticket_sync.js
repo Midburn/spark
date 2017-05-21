@@ -116,7 +116,7 @@ async function dumpDrupalTickets(session, date, page) {
         return [utickets, tickets.length];
     }
     else {
-        log.warn("Ticket dump failed");
+        log.warn('Ticket dump failed');
     }
 }
 
@@ -136,59 +136,65 @@ async function updateAllTickets(tickets) {
 }
 
 async function updateTicket(ticket) {
-    var holder_email = ticket['holder_email'];
-    var order_id = ticket['order_id'];
-    var ticket_id = ticket['ticket_id'];
-    var barcode = ticket['barcode'];
-    var ticket_type = ticket['ticket_type'];
+    const {
+        first_name,
+        last_name,
+        holder_email,
+        passport_id,
+        order_id,
+        ticket_id,
+        barcode,
+        ticket_type
+    } = ticket;
 
-    if (typeof ticket['barcode'] !== "string" || ticket['barcode'].length === 0) {
-        log.info("No barcode for ticket", ticket_id, "user ", holder_email);
+    if (typeof barcode !== 'string' || barcode.length === 0) {
+        log.info('No barcode for ticket', ticket_id, 'user ', holder_email);
         return;
-    }
-    else {
-        log.info("Updating ticket", ticket_id, "user ", holder_email);
+    } else {
+        log.info('Updating ticket', ticket_id, 'user ', holder_email);
     }
 
     try {
         var user = await User.forge({email: holder_email}).fetch();
         if (user == null) {
             // We need to create a new user...
-            log.info("User", holder_email, "not found in Spark. Creating...");
-            if (ticket["passport_id"].length === 0) {
-                ticket["passport_id"] = "";
+            log.info('User', holder_email+' not Found in Spark. Creating...');
+            if (passport_id.length === 0) {
+                ticket['passport_id'] = '';
             }
-            else if (ticket["passport_id"].length > 9) {
-                log.error("Israeli ID is too long for user", holder_email, "ID:", ticket["passport_id"]);
+            else if (ticket['passport_id'].length > 9) {
+                log.error('Israeli ID is too long for user', holder_email, ' ID:', ticket['passport_id']);
                 return;
             }
-            const {first_name, last_name, holder_email, passport_id} = ticket;
             user = await User.forge({
-                first_name,
-                last_name,
+                first_name: ''+first_name,
+                last_name: ''+last_name,
                 email: holder_email,
-                israeli_id: passport_id
+                israeli_id: ''+ticket['passport_id']
             }).save();
 
-            log.info("User", ticket["holder_email"], "created!");
+            log.info(`User ${ticket['holder_email']} created!`);
         }
         else {
-            log.info("User", ticket["holder_email"], "exists.");
-
+            await user.save({
+                first_name: ''+first_name,
+                last_name: ''+last_name,
+                israeli_id: ''+ticket['passport_id']
+            });
+            log.info(`User ${ticket['holder_email']} exists - updating.`);
         }
 
         var sparkTicket = await Ticket.forge({ticket_id: ticket_id}).fetch();
         var saveOptions = {};
         if (sparkTicket != null) {
-            log.info("Updating ticket", ticket_id);
+            log.info('Updating ticket', ticket_id);
         }
         else {
-            log.info("Creating ticket", ticket_id);
+            log.info('Creating ticket', ticket_id);
             saveOptions = {method: 'insert'};
         }
 
         var holder_id = user.attributes.user_id;
-
         sparkTicket = Ticket.forge({
             event_id: EVENT_ID,
             holder_id: holder_id,
@@ -201,17 +207,17 @@ async function updateTicket(ticket) {
         });
 
         await sparkTicket.save(null, saveOptions);
-        log.info("Ticket update success for ticket", ticket_id);
+        log.info('Ticket update success for ticket', ticket_id);
     }
     catch (err) {
-        log.error("ERROR:", err);
+        log.error('ERROR:', err);
     }
 }
 
 function sendPassTicketRequest(session, barcode) {
     var headers = {
         'cache-control': 'no-cache',
-        'x-csrf-token': session["sessid"],
+        'x-csrf-token': session['sessid'],
         'Accept': '*/*',
         'cookie': session["session_name"] + "=" + session["sessid"]
     };
