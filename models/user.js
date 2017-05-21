@@ -112,15 +112,17 @@ var User = bookshelf.Model.extend({
         var _camps = constants.CAMPS_TABLE_NAME;
         var _this_user = this;
         if (!prototype) prototype = constants.prototype_camps.THEME_CAMP.id;
+        let _where = {
+            user_id: this.attributes.user_id,
+            'camps.event_id': constants.CURRENT_EVENT_ID,
+        };
+        if (prototype!=='all') _where['__prototype']=prototype;
+        console.log(_where);
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status', 'users_groups.entrance_quota')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
             .innerJoin('users_groups', _camps + '.id', 'users_groups.group_id')
-            .where({
-                user_id: this.attributes.user_id,
-                'camps.event_id': constants.CURRENT_EVENT_ID,
-                __prototype: prototype,
-            })
+            .where(_where)
             .then((camps) => {
                 let first_camp = null;
                 let is_manager = false;

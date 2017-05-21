@@ -4,9 +4,10 @@ table.table.table-striped.table-hover
         th(ng-click='changeOrderBy("id")') #
         th(ng-click='changeOrderBy("name")')=t('camps:members.name')
         th(ng-click='changeOrderBy("email")')=t('camps:members.email')
-        th(ng-click='changeOrderBy("phone")')=t('camps:members.phone')
-        th(ng-click='changeOrderBy("status")')=t('camps:members.status')
-        th(ng-click='changeOrderBy("hasTicket")')=t('camps:members.ticket_count')
+        th(ng-click='changeOrderBy("cell_phone")')=t('camps:members.phone')
+        th(ng-click='changeOrderBy("member_status_i18n")')=t('camps:members.status')
+        th(ng-click='changeOrderBy("ticket_count")')=t('camps:members.ticket_count')
+        th(ng-click='changeOrderBy("inside_event")')=t('camps:members.inside_event')
         //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
         th()=t('camps:members.actions')
     tbody
@@ -16,7 +17,8 @@ table.table.table-striped.table-hover
             td {{member.email}}
             td {{member.cell_phone}}
             td {{member.member_status_i18n}}
-            td {{member.current_event_id_ticket_count}}
+            td {{member.ticket_count}}
+            td {{member.inside_event}}
             //- td {{member.earlyArrival ? 'yes':'no'}}
             td
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject") &nbsp;
