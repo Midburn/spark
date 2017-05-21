@@ -1,4 +1,3 @@
-const common = require('../libs/common').common;
 const userRole = require('../libs/user_role');
 const constants = require('../models/constants.js');
 var Camp = require('../models/camp').Camp;
