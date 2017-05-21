@@ -1,0 +1,25 @@
+extends ../includes/page
+block content
+    h2=t('gate:gate')
+
+    h3 סה"כ כרטיסים באירוע: #{totalCounter}
+    h3 בתוך האירוע: #{insideCounter}
+    h3 כניסה בכוח: #{forcedCounter}
+
+    hr
+
+    .form-group
+    table.table.table-hover
+        thead
+            tr
+                th קבוצה
+                th הקצאה
+                th באירוע
+        tbody
+        for row in groupsData
+            tr
+                th=row["name"]
+                th=row["entrance_quota"]
+                th=row["sum(`inside_event`)"]
+
+

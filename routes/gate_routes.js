@@ -32,7 +32,7 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
         let gate_status = event.attributes.gate_status;
 
         knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
-            .where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))
+            .where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
             .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('email', 'LIKE', '%' + req.query.search + '%')
@@ -53,6 +53,50 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
     else {
         return res.status(200).json({rows: [], total: 0})
     }
+});
+
+router.get('/gate-statistics', userRole.isGateManager(), async (req, res) => {
+
+    const event_id = 'MIDBURN2017';
+    let event = await Event.forge({event_id: event_id}).fetch();
+
+    let totalCounter = await knex('tickets')
+        .select(knex.raw('count(*) as count'))
+        .where('event_id', '=', event_id).then(data => {
+            return data[0].count;
+        });
+
+    let insideCounter = await knex('tickets')
+        .sum('inside_event')
+        .where('event_id', '=', event_id).then(data => {
+            return data[0]["sum(`inside_event`)"];
+        });
+
+    let forcedCounter = await knex('tickets')
+        .sum('forced_entrance')
+        .where('event_id', '=', event_id).then(data => {
+            return data[0]["sum(`forced_entrance`)"];
+        });
+
+    let groupsData = await knex('tickets')
+        .leftJoin('users_groups', 'users_groups.group_id', '=', 'tickets.entrance_group_id')
+        .select('name', 'entrance_quota')
+        .sum('inside_event')
+        .where('tickets.event_id', '=', event_id)
+        .groupBy('name', 'entrance_quota')
+        .orderBy('name')
+        .then(data => {
+            console.log(data);
+            return data;
+        });
+
+    return res.render('pages/gate_statistics', {
+        event: event,
+        totalCounter: totalCounter,
+        insideCounter: insideCounter,
+        forcedCounter: forcedCounter,
+        groupsData: groupsData
+    });
 });
 
 module.exports = router;
