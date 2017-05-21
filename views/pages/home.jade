@@ -3,7 +3,7 @@ block content
     h1=t('welcome_home', {user: user.attributes.first_name, context: user.attributes.gender})
     .camps.camp_edit(ng-app="ngCamps", ng-controller="homeController")
         br
-        h4 המידברן שלי
+        h4=t('my_midburn')
         table.table.table-striped.table-hover
             thead
                 tr
@@ -60,4 +60,41 @@ block content
         //- .col-xs-6
             h4=t('camps:admin_index.total_camp_tickets')
                 span.badge {{total_camp_tickets}}
-            
+                        //- h4=סטטיסטיקת אדמין
+        if user.isAdmin
+            br
+            h3 סטטיסטיקות שער
+            .col-xs-12.col-sm-6.col-md-3
+                h4 סהכ כרטיסים לאירוע
+                    span.badge {{stat.total_tickets}}
+            .col-xs-12.col-sm-6.col-md-3
+                h4 כרגע בתוך הארוע
+                    span.badge {{stat.inside_event}}
+            .col-xs-12.col-sm-6.col-md-3
+                h4 מספר כירטוסים
+                    span.badge {{stat.ticketing}}
+            .col-xs-12.col-sm-6.col-md-3
+                h4 מספר כירטוסים ב-24 שעות אחרונות
+                    span.badge {{stat.last_24h_first_entrance}}
+            .col-xs-12.col-sm-6.col-md-3
+                h4 מספר כירטוסים בשעה אחרונה
+                    span.badge {{stat.last_1h_first_entrance}}
+            .col-xs-12.col-sm-6.col-md-3
+                h4 כניסות 24 שעות / 1 שעה
+                    span.badge {{stat.last_24h_entrance}} / {{stat.last_1h_entrance}}
+            .col-xs-12.col-sm-6.col-md-3
+                h4 יציאות 24 שעות / 1 שעה
+                    span.badge {{stat.last_24h_exit}} / {{stat.last_1h_exit}}
+            .row        
+            h3 סטטיסטיקת מחנות/מחלקות/מיצבים
+            .col-xs-12
+                h4 סהכ במחנות נושא מאושרים
+                    span.badge {{stat.groups.theme_camp.total}}
+            .col-xs-12
+                h4 סהכ במיצבי אומנות
+                    span.badge {{stat.groups.art_installation.total}}
+            .col-xs-12
+                h4 סהכ מחלקות הפקה
+                    span.badge {{stat.groups.prod_dep.total}}
+
+

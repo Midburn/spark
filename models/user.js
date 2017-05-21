@@ -88,6 +88,31 @@ var User = bookshelf.Model.extend({
     },
 
     /////////////////////////// CAMPS ///////////////////////////
+    __parsePrototype: function (prototype, user) {
+        let result = constants.prototype_camps.by_prototype(prototype);
+        if (!result) return false;
+        let isAdmin = false;
+        let t_prefix = '';
+        if (user instanceof User) {
+            isAdmin = user.isAdmin;
+            if (prototype === constants.prototype_camps.THEME_CAMP.id) {
+                isAdmin = isAdmin || user.isCampsAdmin;
+                t_prefix = 'camps:';
+            } else if (prototype === constants.prototype_camps.ART_INSTALLATION.id) {
+                isAdmin = isAdmin || user.isArtInstallationsAdmin;
+                t_prefix = 'camps:art_installation.';
+            } else if (prototype === constants.prototype_camps.PROD_DEP.id) {
+                isAdmin = isAdmin || user.isProdDepsAdmin;
+                t_prefix = 'camps:prod_dep.';
+            }
+        }
+        result.isAdmin = isAdmin;
+        result.t_prefix = t_prefix;
+        return result;
+    },
+    parsePrototype: function (prototype) {
+        return this.__parsePrototype(prototype,this);
+    },
 
     /**
      * get this.user_id camps he is in for the CURRENT_EVENT_ID, executing function done.
@@ -113,7 +138,7 @@ var User = bookshelf.Model.extend({
             user_id: this.attributes.user_id,
             'camps.event_id': constants.CURRENT_EVENT_ID,
         };
-        if (prototype!=='all') _where['__prototype']=prototype;
+        if (prototype !== 'all') _where['__prototype'] = prototype;
         knex(_camps)
             .select(_camps + '.*', _camps_members + '.status AS member_status', 'users_groups.entrance_quota')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
@@ -123,19 +148,21 @@ var User = bookshelf.Model.extend({
                 let first_camp = null;
                 let is_manager = false;
                 let member_type_array = ['approved', 'pending', 'pending_mgr', 'approved_mgr', 'supplier'];
-                for (var i in camps) {
+                for (let i in camps) {
                     let _status = camps[i].member_status;
+                    let group_props=this.parsePrototype(camps[i].__prototype);
                     if (t) { // translate function
                         camps[i].member_status_i18n = t('camps:members.status_' + _status);
                     }
                     if (['open', 'closed'].indexOf(camps[i].status) > -1 && !first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if (['open', 'closed'].indexOf(camps[i].status) > -1 && (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
+                    if ((['open', 'closed'].indexOf(camps[i].status) > -1 || !group_props.require_group_status_open_closed) && (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr'))) {
                         first_camp = camps[i];
                         is_manager = true;
+                        camps[i].isManager = true;
                         // break;
                     }
                 }
@@ -146,20 +173,29 @@ var User = bookshelf.Model.extend({
                 done(camps);
             });
     },
+
     isUserInCamp: function (camp_id) {
         camp_id = parseInt(camp_id);
-        for (var i in this.attributes.camps) {
+        for (let i in this.attributes.camps) {
             if (this.attributes.camps[i].id === camp_id && this.attributes.camps[i].member_status !== 'deleted') {
                 return this.attributes.camps[i];
             }
         }
     },
     isManagerOfCamp: function (camp_id) {
-        let isCampManager = false;
-        if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager) {
-            isCampManager = true;
+        camp_id = parseInt(camp_id);
+        // let isCampManager = false;
+        for (let i in this.attributes.camps) {
+            if (this.attributes.camps[i].id === camp_id && this.attributes.camps[i].isManager ) {
+                return this.attributes.camps[i];
+            }
         }
-        return isCampManager;
+        // return isCampManager;
+        // 
+        // if (this.attributes.camp && this.attributes.camp.id === parseInt(camp_id) && this.attributes.camp_manager) {
+        //     isCampManager = true;
+        // }
+        // return isCampManager;
     },
 
     /////////////////////////// VIRTUALS ///////////////////////////

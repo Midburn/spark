@@ -6,6 +6,7 @@ var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
 var recaptchaConfig = config.get('recaptcha');
 const breadcrumbs = require('express-breadcrumbs');
+const knex = require('../libs/db').knex;
 
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
@@ -49,10 +50,11 @@ module.exports = function (app, passport) {
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
         });
-            res.render('pages/home', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
+        res.render('pages/home', {
+            user: req.user,
+            isAdmin: req.user.isAdmins,
+            breadcrumbs: req.breadcrumbs()
+        });
     });
 
     // =====================================

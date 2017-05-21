@@ -39,6 +39,7 @@ const prototype_camps = {
         allow_new_users: true,
         send_mail: true,
         auto_approve_new_members: false,
+        require_group_status_open_closed: true,
     },
     ART_INSTALLATION: {
         id: 'art_installation',
