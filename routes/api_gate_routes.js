@@ -8,6 +8,7 @@ var drupalSync = require('../scripts/drupal_ticket_sync');
 var Ticket = require('../models/ticket').Ticket;
 var Event = require('../models/event').Event;
 var UsersGroup = require('../models/user').UsersGroup;
+var UsersGroupMembership = require('../models/user').UsersGroupMembership;
 
 const ERRORS = {
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',
@@ -155,6 +156,13 @@ router.post('/gate-enter', async function (req, res) {
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
+
+            let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
+
+            if (!groupMembership) {
+                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+            }
+
             if (await group.quotaReached) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
