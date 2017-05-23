@@ -388,8 +388,6 @@ module.exports = (app, passport) => {
         if (camp_statuses.indexOf(req.body.camp_status) > -1) {
             data.status = req.body.camp_status;
         }
-
-        console.log(data);
         return data;
     }
     /**
@@ -570,12 +568,9 @@ module.exports = (app, passport) => {
     app.get('/users', (req, res) => {
         if (req.user.isAdmin) {
             User.where('validated', '=', '1').fetchAll().then((users) => {
-                // User.forge({ validated: true }).fetchAll().then((users) => {
-                // console.log(users);
                 var _users = users.toJSON();
                 for (var i in _users) {
                     common.__updateUserRec(_users[i]);
-                    // console.log(_users[i]);
                 }
                 res.status(200).json({ users: _users })
             }).catch((err) => {
@@ -649,13 +644,13 @@ module.exports = (app, passport) => {
     //  * API: (GET) return camps list
     //  * request => /camps_open
     //  */
-    app.get('/camps_all', userRole.isAdmin(),
+    app.get('/camps_all', [userRole.isCampsAdmin()],
         (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => res.status(result.status).json(result.data)));
 
-    app.get('/prod_dep_all', userRole.isAdmin(),
+    app.get('/prod_dep_all', userRole.isProdDepsAdmin(),
         (req, res) => retrieveDataFor(constants.prototype_camps.PROD_DEP.id).then(result => res.status(result.status).json(result.data)));
 
-    app.get('/art_all', userRole.isAdmin(),
+    app.get('/art_all', userRole.isArtInstallationsAdmin(),
         (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
 
     /**
@@ -878,10 +873,6 @@ module.exports = (app, passport) => {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });
                 }
             }, req)
-            // .then(() => {
-            // console.log('knex')
-            // });
-
         }).catch((e) => {
             res.status(500).json({
                 error: true,
@@ -897,7 +888,6 @@ module.exports = (app, passport) => {
             let groups = [];
             let group = {};
             let group_props;
-            // console.log(camps);
             for (let i in camps) {
                 group_props = Camp.prototype.__parsePrototype(camps[i].__prototype, req.user);
                 if (['approved', 'pending', 'pending_mgr', 'approved_mgr'].indexOf(camps[i].member_status) > -1) {
@@ -958,7 +948,6 @@ module.exports = (app, passport) => {
                             stat.last_24h_exit = result[0][0]['last_24h_exit'];
                             stat.last_1h_entrance = result[0][0]['last_1h_entrance'];
                             stat.last_1h_exit = result[0][0]['last_1h_exit'];
-                            // console.log(stat);
                             res.status(200).json({ groups: groups, stats: stat });
 
                         });
