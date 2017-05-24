@@ -10,5 +10,6 @@
     "no_exit": "Unavailable after gates are open",
     "force_instructions": "Forced entrance requires permission from the shift manager. Please contact them and write down the reason for the forced entrance",
     "reason": "Reason",
-    "force_reason_placeholder": "10 Characters minimum"
+    "force_reason_placeholder": "10 Characters minimum",
+    "entrance_group": "Entrance group"
 }
