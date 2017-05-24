@@ -31,12 +31,15 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
         let event = await Event.forge({event_id: constants.CURRENT_EVENT_ID}).fetch();
         let gate_status = event.attributes.gate_status;
 
+        let searchRegex = req.query.search.trim().replace(' ', '|');
+
         knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
             .where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
             .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('email', 'LIKE', '%' + req.query.search + '%')
             .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
+            .orWhereRaw("(first_name REGEXP '" + searchRegex + "' and last_name REGEXP '" + searchRegex + "')")
             //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
             .then((tickets) => {
                 res.status(200).json({rows: tickets, total: tickets.length})
