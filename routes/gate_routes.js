@@ -33,7 +33,10 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
 
         let searchRegex = req.query.search.trim().replace(' ', '|');
 
-        knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
+        knex.select('*')
+            .from('tickets')
+            .leftJoin('users', 'tickets.holder_id', 'users.user_id')
+            .leftJoin('users_groups', 'tickets.entrance_group_id', 'users_groups.group_id')
             .where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
             .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
