@@ -167,6 +167,10 @@ router.post('/gate-enter', async function (req, res) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
         }
+        else if (!req.body.group_id && gate_status === "early_arrival")
+        {
+            return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+        }
     }
 
     // Saving the entrance.
