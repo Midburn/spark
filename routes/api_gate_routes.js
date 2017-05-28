@@ -194,7 +194,7 @@ router.post('/gate-enter', async function (req, res) {
 router.post('/gate-exit', async function (req, res) {
 
     try {
-        let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
+        let [ticket] = await getTicketBySearchTerms(req, res);
 
         if (!ticket) {
             return sendError(res, 500, "TICKET_NOT_FOUND");
@@ -204,9 +204,9 @@ router.post('/gate-exit', async function (req, res) {
             return sendError(res, 500, "USER_OUTSIDE_EVENT");
         }
 
-        if (gate_status === "regular") {
-            return sendError(res, 500, "EXIT_NOT_ALLOWED");
-        }
+//         if (gate_status === "regular") {
+//             //return sendError(res, 500, "EXIT_NOT_ALLOWED");
+//         }
 
         // Saving the exit.
         ticket.attributes.inside_event = false;

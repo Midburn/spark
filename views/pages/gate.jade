@@ -234,4 +234,14 @@ block scripts
                         $("#alerts")[0].innerHTML = "<div class='alert alert-danger'>" + JSON.parse(xhr.responseText).message + "</div>";
                     });
             }
+
+            $("#myModal").on('hide.bs.modal', function() {
+                $("#modal_mode")[0].innerHTML = "";
+                $("#modal_barcode")[0].innerHTML = "";
+                $("#modal_ticket_number")[0].innerHTML = "";
+                $("#modal_name")[0].innerHTML = "";
+                $("#modal_email")[0].innerHTML = "";
+                $("#modal_type")[0].innerHTML = "";
+                $("#modal_israeli_id")[0].innerHTML = "";
+            });
         });

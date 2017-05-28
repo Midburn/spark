@@ -33,7 +33,7 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
 
         let searchRegex = req.query.search.trim().replace(' ', '|');
 
-        knex.select('*')
+        knex.select('tickets.*', 'users.*', 'users_groups.name')
             .from('tickets')
             .leftJoin('users', 'tickets.holder_id', 'users.user_id')
             .leftJoin('users_groups', 'tickets.entrance_group_id', 'users_groups.group_id')
