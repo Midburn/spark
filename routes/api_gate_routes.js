@@ -204,9 +204,9 @@ router.post('/gate-exit', async function (req, res) {
             return sendError(res, 500, "USER_OUTSIDE_EVENT");
         }
 
-        if (gate_status === "regular") {
-            return sendError(res, 500, "EXIT_NOT_ALLOWED");
-        }
+        // if (gate_status === "regular") {
+        //     return sendError(res, 500, "EXIT_NOT_ALLOWED");
+        // }
 
         // Saving the exit.
         ticket.attributes.inside_event = false;
