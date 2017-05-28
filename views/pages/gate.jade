@@ -136,6 +136,7 @@ block scripts
             });
 
             $(document).on("click", ".entranceAction", function () {
+                clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
                         gate_code: "#{gate_code}"
@@ -176,6 +177,7 @@ block scripts
             });
 
             $(document).on("click", ".exitAction", function () {
+                clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
                         gate_code: "#{gate_code}"
@@ -235,7 +237,7 @@ block scripts
                     });
             }
 
-            $("#myModal").on('hide.bs.modal', function() {
+            function clearModal() {
                 $("#modal_mode")[0].innerHTML = "";
                 $("#modal_barcode")[0].innerHTML = "";
                 $("#modal_ticket_number")[0].innerHTML = "";
@@ -243,5 +245,5 @@ block scripts
                 $("#modal_email")[0].innerHTML = "";
                 $("#modal_type")[0].innerHTML = "";
                 $("#modal_israeli_id")[0].innerHTML = "";
-            });
+            }
         });
