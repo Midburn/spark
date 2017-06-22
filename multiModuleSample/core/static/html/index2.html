@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>UI Integration - AJAX</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- <script type="text/javascript" src="jquery.js"></script> -->
+<script type="text/javascript">
+$(function() {
+$("#content1").load("http://localhost:3000/tab1");
+$("#content2").load("http://localhost:3000/tab2");
+$("#content3").load("http://localhost:6081/tab1/index.html");
+});
+</script>
+</head>
+<body>
+<div id="content1">-</div>
+<div id="content2">-</div>
+<div id="content3">-</div>
+</body>
+</html>
