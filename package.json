@@ -57,7 +57,7 @@
     "debug": "~2.6.7",
     "dotenv": "^4.0.0",
     "drupal-hash": "^1.0.3",
-    "express": "~4.15.2",
+    "express": "~4.16.0",
     "express-breadcrumbs": "0.0.2",
     "express-compile-sass": "3.0.4",
     "express-fileupload": "0.0.5",
