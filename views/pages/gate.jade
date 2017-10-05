@@ -103,7 +103,8 @@ block scripts
                 return '<a class="entranceAction" id="' + row.barcode + '" ' +
                     'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:enter_ticket")}</a> ';
             } else {
-                return '<a disabled class="exitAction" id="' + row.barcode + '" ' +
+                return 'יציאה עם צמיד'
+                return '<a class="exitAction" id="' + row.barcode + '" ' +
                     'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:exit_ticket")}</a> ';
             }
         };
