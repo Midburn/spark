@@ -13,7 +13,7 @@ exports.up = function (knex, Promise) {
             gate_code: "171820",
 >>>>>>> master
             name: "Sandbox 2017 ארגז חול",
-            gate_status: "early_arrival"
+            gate_status: "regular"
         })
     ]);
 <<<<<<< HEAD
