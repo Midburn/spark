@@ -4,7 +4,13 @@ const assert = require('assert');
 const sprintf = require('sprintf-js').sprintf;
 const dateFormat = require('dateformat');
 const Slack = require('winston-slack-transport');
-
+winston.add(Slack, {
+    webhook_url: 'https://hooks.slack.com/services/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',
+    channel: '#devops-log',
+    username: 'ErrorBot',
+    level: 'warn',
+    handleExceptions: true
+})
 module.exports = function (module) {
     assert(module);
     assert(module.id);
@@ -14,13 +20,6 @@ module.exports = function (module) {
 
     var logger = new winston.Logger({
         transports: [
-            new Slack({
-                webhook_url: 'https://hooks.slack.com/services/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',
-                channel: '#devops-log',
-                username: 'ErrorBot',
-                level: 'warn',
-                handleExceptions: true
-            }),
             new (winston.transports.Console)({
                 timestamp: function () {
                     return dateFormat(Date.now(), 'dd/mm/yy hh:MM:ss.l');
