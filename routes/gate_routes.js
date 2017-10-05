@@ -38,13 +38,15 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
             .leftJoin('users', 'tickets.holder_id', 'users.user_id')
             .leftJoin('users_groups', 'tickets.entrance_group_id', 'users_groups.group_id')
             .where('tickets.event_id', constants.CURRENT_EVENT_ID)
-            .where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
-            .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
-            .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
-            .orWhere('email', 'LIKE', '%' + req.query.search + '%')
-            .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
-            .orWhereRaw("(first_name REGEXP '" + searchRegex + "' and last_name REGEXP '" + searchRegex + "')")
-            //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
+            .andWhere(function() {
+                this.where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
+                    .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
+                    .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
+                    .orWhere('email', 'LIKE', '%' + req.query.search + '%')
+                    .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
+                    .orWhereRaw("(first_name REGEXP '" + searchRegex + "' and last_name REGEXP '" + searchRegex + "')")
+                //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
+            })
             .then((tickets) => {
                 res.status(200).json({rows: tickets, total: tickets.length})
             }).catch((err) => {
