@@ -1,8 +1,9 @@
 const path = require('path');
 const winston = require('winston');
 const assert = require('assert');
-const sprintf = require("sprintf-js").sprintf;
+const sprintf = require('sprintf-js').sprintf;
 const dateFormat = require('dateformat');
+const Slack = require('winston-slack-transport');
 
 module.exports = function (module) {
     assert(module);
@@ -13,13 +14,20 @@ module.exports = function (module) {
 
     var logger = new winston.Logger({
         transports: [
+            new Slack({
+                webhook_url: 'https://hooks.slack.com/services/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',
+                channel: '#devops-log',
+                username: 'ErrorBot',
+                level: 'info',
+                handleExceptions: true
+            }),
             new (winston.transports.Console)({
                 timestamp: function () {
-                    return dateFormat(Date.now(), "dd/mm/yy hh:MM:ss.l");
+                    return dateFormat(Date.now(), 'dd/mm/yy hh:MM:ss.l');
                 },
                 formatter: function (options) {
                     // Return string will be passed to logger.
-                    return sprintf("%-33s", options.timestamp() + ' ' + options.level.toUpperCase() + ' ' + id + ' : ') + (options.message ? options.message : '') +
+                    return sprintf('%-33s', options.timestamp() + ' ' + options.level.toUpperCase() + ' ' + id + ' : ') + (options.message ? options.message : '') +
                         (options.meta && Object.keys(options.meta).length ? '\n\t' + JSON.stringify(options.meta) : '');
                 }
             })
