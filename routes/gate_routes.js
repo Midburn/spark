@@ -10,8 +10,8 @@ var Event = require('../models/event').Event;
 var constants = require('../models/constants');
 
 router.get('/', userRole.isGateManager(), function (req, res) {
-    //TODO Temp MIDBURN2017, we need to add a global current-event selector.
-    Event.forge({event_id: 'MIDBURN2017'}).fetch().then(event => {
+    //TODO Temp SANDBOX2017, we need to add a global current-event selector.
+    Event.forge({event_id: 'SANDBOX2017'}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });
@@ -63,7 +63,7 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
 
 router.get('/gate-statistics', userRole.isGateManager(), async (req, res) => {
 
-    const event_id = 'MIDBURN2017';
+    const event_id = 'SANDBOX2017';
     let event = await Event.forge({event_id: event_id}).fetch();
 
     let totalCounter = await knex('tickets')
