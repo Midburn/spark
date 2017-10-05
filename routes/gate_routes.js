@@ -11,7 +11,7 @@ var constants = require('../models/constants');
 
 router.get('/', userRole.isGateManager(), function (req, res) {
     //TODO Temp SANDBOX2017, we need to add a global current-event selector.
-    Event.forge({event_id: 'SANDBOX2017'}).fetch().then(event => {
+    Event.forge({event_id: constants.CURRENT_EVENT_ID}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });
@@ -37,6 +37,7 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
             .from('tickets')
             .leftJoin('users', 'tickets.holder_id', 'users.user_id')
             .leftJoin('users_groups', 'tickets.entrance_group_id', 'users_groups.group_id')
+            .where('tickets.event_id', constants.CURRENT_EVENT_ID)
             .where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
             .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
