@@ -11,7 +11,7 @@ var constants = require('../models/constants');
 
 router.get('/', userRole.isGateManager(), function (req, res) {
     //TODO Temp SANDBOX2017, we need to add a global current-event selector.
-    Event.forge({event_id: 'SANDBOX2017'}).fetch().then(event => {
+    Event.forge({event_id: constants.CURRENT_EVENT_ID}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });
@@ -37,13 +37,16 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
             .from('tickets')
             .leftJoin('users', 'tickets.holder_id', 'users.user_id')
             .leftJoin('users_groups', 'tickets.entrance_group_id', 'users_groups.group_id')
-            .where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
-            .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
-            .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
-            .orWhere('email', 'LIKE', '%' + req.query.search + '%')
-            .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
-            .orWhereRaw("(first_name REGEXP '" + searchRegex + "' and last_name REGEXP '" + searchRegex + "')")
-            //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
+            .where('tickets.event_id', constants.CURRENT_EVENT_ID)
+            .andWhere(function() {
+                this.where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
+                    .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
+                    .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
+                    .orWhere('email', 'LIKE', '%' + req.query.search + '%')
+                    .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
+                    .orWhereRaw("(first_name REGEXP '" + searchRegex + "' and last_name REGEXP '" + searchRegex + "')")
+                //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
+            })
             .then((tickets) => {
                 res.status(200).json({rows: tickets, total: tickets.length})
             }).catch((err) => {
