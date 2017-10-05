@@ -5,7 +5,7 @@
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
-  "version": "2.10.0",
+  "version": "2.10.1",
   "private": true,
   "scripts": {
     "postinstall": "bower install",
@@ -87,12 +87,13 @@
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
     "serve-favicon": "~2.4.3",
+    "snyk": "^1.34.4",
     "sprintf-js": "1.0.3",
     "sqlite3": "^3.1.8",
     "superagent": "^3.5.0",
     "webpack": "^1.14.0",
     "winston": "2.3.0",
-    "snyk": "^1.34.4",
+    "winston-slack-transport": "^2.0.0",
     "xml2js-parser": "^1.1.1"
   },
   "devDependencies": {
