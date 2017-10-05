@@ -75,6 +75,9 @@ const ticketType = {
     LOW_INCOME_TICKET: '45',
     INTERNATIONAL_DIRECT_SALE: '46',
     SANDBOX2017_ADULT_TICKET: '49',
+    SANDBOX2017_TICKET_A: '50',
+    SANDBOX2017_TICKET_B: '51',
+    SANDBOX2017_TICKET_C: '52'
 };
 
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
@@ -92,7 +95,10 @@ const events = {
     },
     SANDBOX2017: {
         bundles: [
-            ticketType.SANDBOX2017_ADULT_TICKET
+            ticketType.SANDBOX2017_ADULT_TICKET,
+            ticketType.SANDBOX2017_TICKET_A,
+            ticketType.SANDBOX2017_TICKET_B,
+            ticketType.SANDBOX2017_TICKET_C
         ]
     }
 };
