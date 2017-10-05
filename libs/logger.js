@@ -18,7 +18,7 @@ module.exports = function (module) {
                 webhook_url: 'https://hooks.slack.com/services/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',
                 channel: '#devops-log',
                 username: 'ErrorBot',
-                level: 'info',
+                level: 'warn',
                 handleExceptions: true
             }),
             new (winston.transports.Console)({
