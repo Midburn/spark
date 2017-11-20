@@ -8,6 +8,7 @@ var drupalSync = require('../scripts/drupal_ticket_sync');
 var Ticket = require('../models/ticket').Ticket;
 var Event = require('../models/event').Event;
 var UsersGroup = require('../models/user').UsersGroup;
+var UsersGroupMembership = require('../models/user').UsersGroupMembership;
 
 const ERRORS = {
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',
@@ -155,9 +156,20 @@ router.post('/gate-enter', async function (req, res) {
             if (!group) {
                 return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
+
+            let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
+
+            if (!groupMembership) {
+                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+            }
+
             if (await group.quotaReached) {
                 return sendError(res, 500, "QUOTA_REACHED");
             }
+        }
+        else if (!req.body.group_id && gate_status === "early_arrival")
+        {
+            return sendError(res, 500, "TICKET_NOT_IN_GROUP");
         }
     }
 
@@ -182,7 +194,7 @@ router.post('/gate-enter', async function (req, res) {
 router.post('/gate-exit', async function (req, res) {
 
     try {
-        let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
+        let [ticket] = await getTicketBySearchTerms(req, res);
 
         if (!ticket) {
             return sendError(res, 500, "TICKET_NOT_FOUND");
@@ -192,9 +204,9 @@ router.post('/gate-exit', async function (req, res) {
             return sendError(res, 500, "USER_OUTSIDE_EVENT");
         }
 
-        if (gate_status === "regular") {
-            return sendError(res, 500, "EXIT_NOT_ALLOWED");
-        }
+//         if (gate_status === "regular") {
+//             //return sendError(res, 500, "EXIT_NOT_ALLOWED");
+//         }
 
         // Saving the exit.
         ticket.attributes.inside_event = false;

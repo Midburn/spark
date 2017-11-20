@@ -22,22 +22,36 @@
 * notification is sent to slack #sparksystemlog with the release name - notifying you that it's ready for deployment
 
 ## Deploying a published release
+
+We have 2 autoscaling groups on AWS:
+
+* `spark-production` - Spark web-app (behind a amazon load balancer)
+* `spark-production-worker` - Spark worker - runs sync with drupal every X minutes (possibly other stuff in the future)
+
+They have corresponding launch configurtaions, which change with each version.
+
+At time of writing they are (you can write arbitrary comments in brackets after the launch configuration name):
+* `spark-production-v2.6.1 (comment...)`
+* `spark-production-v2.6.1-worker (comment...)`
+
+
+Deployment process:
 * get the package_url from the slack notification in sparksystem-log channel
 * log-in to AWS
+* prepare the launch configurations
+  * duplicate the latest launch configuration you want to modify
+  * edit the userdata and modify the DEPLOYMENT_PACKAGE_URL to the new url you got from sparksystem-log
+  * save the new launch configuration with the version in the launch configuration name
 * if migrations are needed
-  * open the latest spark-production launch configuration (e.g. spark-production-v2.2.2)
-  * copy the userdata script
+  * copy the userdata script from the latest web-app launch configuration
   * modify the DEPLOYMENT_PACKAGE_URL to the new url you got from sparksystem-log
   * launch a new instance directly (without the autoscaling group) using this userdata script and based on the AMI of the launch configuration
   * ssh into this new instance
   * `cd /opt/spark/latest`
   * `./knex migrate:latest`
   * if migrations worked, you can terminate this instance
-* after migrations ran:
-  * duplicate the latest spark-production launch configuration
-  * edit the userdata and modify the DEPLOYMENT_PACKAGE_URL to the new url you got from sparksystem-log
-  * save the new launch configuration with the version in the launch configuration name
-  * edit the spark-production autoscaling group - to use the new launch configuration
+* launch new instances
+  * edit the corresponding autoscaling group - to use the new launch configuration
   * raise number of instances to launch new instances with the new version
   * wait for new instance to be launched
   * reduce number of instances back to normal

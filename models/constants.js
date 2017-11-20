@@ -73,7 +73,11 @@ const ticketType = {
     ADULT_DIRECT_SALE_TICKET: '43',
     YOUTH_TICKET: '44',
     LOW_INCOME_TICKET: '45',
-    INTERNATIONAL_DIRECT_SALE: '46'
+    INTERNATIONAL_DIRECT_SALE: '46',
+    SANDBOX2017_ADULT_TICKET: '49',
+    SANDBOX2017_TICKET_A: '50',
+    SANDBOX2017_TICKET_B: '51',
+    SANDBOX2017_TICKET_C: '52'
 };
 
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
@@ -88,6 +92,14 @@ const events = {
             ticketType.LOW_INCOME_TICKET,
             ticketType.INTERNATIONAL_DIRECT_SALE
         ]
+    },
+    SANDBOX2017: {
+        bundles: [
+            ticketType.SANDBOX2017_ADULT_TICKET,
+            ticketType.SANDBOX2017_TICKET_A,
+            ticketType.SANDBOX2017_TICKET_B,
+            ticketType.SANDBOX2017_TICKET_C
+        ]
     }
 };
 
@@ -96,27 +108,27 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
-    CURRENT_EVENT_ID: "MIDBURN2017",
+    CURRENT_EVENT_ID: 'SANDBOX2017',
     events,
 
     // -- table names --
-    EVENTS_TABLE_NAME: "events",
-    USERS_TABLE_NAME: "users",
-    PAYMENTS_TABLE_NAME: "payments",
-    NPO_MEMBERS_TABLE_NAME: "npo_members",
-    CAMPS_TABLE_NAME: "camps",
-    CAMP_MEMBERS_TABLE_NAME: "camp_members",
-    DRUPAL_USERS_TABLE_NAME: "drupal_users",
-    TICKETS_TABLE_NAME: "tickets",
+    EVENTS_TABLE_NAME: 'events',
+    USERS_TABLE_NAME: 'users',
+    PAYMENTS_TABLE_NAME: 'payments',
+    NPO_MEMBERS_TABLE_NAME: 'npo_members',
+    CAMPS_TABLE_NAME: 'camps',
+    CAMP_MEMBERS_TABLE_NAME: 'camp_members',
+    DRUPAL_USERS_TABLE_NAME: 'drupal_users',
+    TICKETS_TABLE_NAME: 'tickets',
 
     prototype_camps: prototype_camps,
 
-    VOL_DEPARTMENTS_TABLE_NAME: "vol_departments",
-    VOLUNTEERS_TABLE_NAME: "volunteers",
-    VOL_DEPARTMENT_ROLES_TABLE_NAME: "vol_departments_roles",
-    VOL_TYPES_IN_SHIFT_TABLE_NAME: "vol_types_in_shift",
-    VOL_SHIFTS_TABLE_NAME: "vol_shifts",
-    VOL_SCHEDULE_TABLE_NAME: "vol_schedule",
+    VOL_DEPARTMENTS_TABLE_NAME: 'vol_departments',
+    VOLUNTEERS_TABLE_NAME: 'volunteers',
+    VOL_DEPARTMENT_ROLES_TABLE_NAME: 'vol_departments_roles',
+    VOL_TYPES_IN_SHIFT_TABLE_NAME: 'vol_types_in_shift',
+    VOL_SHIFTS_TABLE_NAME: 'vol_shifts',
+    VOL_SCHEDULE_TABLE_NAME: 'vol_schedule',
 
     // -- enums --
 

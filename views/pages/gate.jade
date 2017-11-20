@@ -26,7 +26,11 @@ block content
                 th( data-field="entrance_timestamp" data-formatter="dateFormat")=t('entrance_timestamp')
                 th( data-field="last_exit_timestamp" data-formatter="dateFormat")=t('last_exit_timestamp')
                 th( data-formatter="insideEventFormatter" )=t('gate:inside_event')
+                th( data-field="name" )=t('gate:entrance_group')
                 th( data-formatter="tableActionsFormatter" )=t('operations')
+
+
+    a( href="gate/gate-statistics" ) סטטיסטיקות אירוע
 
     #myModal.modal.fade(role='dialog')
         .modal-dialog
@@ -99,6 +103,7 @@ block scripts
                 return '<a class="entranceAction" id="' + row.barcode + '" ' +
                     'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:enter_ticket")}</a> ';
             } else {
+                return 'יציאה עם צמיד';
                 return '<a class="exitAction" id="' + row.barcode + '" ' +
                     'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:exit_ticket")}</a> ';
             }
@@ -132,6 +137,7 @@ block scripts
             });
 
             $(document).on("click", ".entranceAction", function () {
+                clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
                         gate_code: "#{gate_code}"
@@ -172,6 +178,7 @@ block scripts
             });
 
             $(document).on("click", ".exitAction", function () {
+                clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
                         gate_code: "#{gate_code}"
@@ -229,5 +236,16 @@ block scripts
                     .fail(function (xhr) {
                         $("#alerts")[0].innerHTML = "<div class='alert alert-danger'>" + JSON.parse(xhr.responseText).message + "</div>";
                     });
+            }
+
+            function clearModal() {
+                $("#modal_mode")[0].innerHTML = "";
+                $("#modal_barcode")[0].innerHTML = "";
+                $("#modal_ticket_number")[0].innerHTML = "";
+                $("#modal_name")[0].innerHTML = "";
+                $("#modal_email")[0].innerHTML = "";
+                $("#modal_type")[0].innerHTML = "";
+                $("#modal_israeli_id")[0].innerHTML = "";
+
             }
         });

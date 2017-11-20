@@ -11,10 +11,10 @@ var log = require('../libs/logger')(module);
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-const TICKETS_TYPE_IDS = [39, 40, 41, 43, 44, 45, 46];
+const TICKETS_TYPE_IDS = [49, 50, 51, 52];
 const STATUS_COMPLETED = 'Completed';
 
-const EVENT_ID = "MIDBURN2017";
+const EVENT_ID = "SANDBOX2017";
 var globalMinutesDelta = 0;
 
 function r(options) {
@@ -164,13 +164,13 @@ async function updateTicket(ticket) {
             }
             else if (ticket['passport_id'].length > 9) {
                 log.error('Israeli ID is too long for user', holder_email, ' ID:', ticket['passport_id']);
-                return;
+                //return;
             }
             user = await User.forge({
                 first_name: ''+first_name,
                 last_name: ''+last_name,
                 email: holder_email,
-                israeli_id: ''+ticket['passport_id']
+                israeli_id: ''+ticket['passport_id'].slice(0, 9)
             }).save();
 
             log.info(`User ${ticket['holder_email']} created!`);
