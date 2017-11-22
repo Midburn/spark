@@ -96,7 +96,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps', 'npo', 'gate'],
+        ns: ['common', 'camps', 'npo', 'gate', 'events'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
