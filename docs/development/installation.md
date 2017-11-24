@@ -17,7 +17,10 @@ Download and install as described on the websites.
 ```shell
 git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
-
+Enter into the new Spark directory
+```shell
+cd Spark
+```
 To be able to sync with Midburn repository you should add it as a remote:
 
 ```shell
@@ -32,7 +35,6 @@ If you are not planning to use nvm or running Windows and having trouble setup t
 We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
 
 ```shell
-cd spark
 nvm install
 nvm use
 ```
@@ -40,7 +42,6 @@ nvm use
 ### Installing Node modules
 
 ```shell
-cd spark
 npm install
 npm install -g nodemon knex bower
 ```
@@ -90,10 +91,10 @@ All the configurations are set in the config file in the `/config` folder.
 
 To override this configurations to match your development environment:
 
-1. Create a file named `/config/local-evelopment.json`
-2. Open the file and copy all the settings you wish to override from `/config/default.json`
+1. Create a file named `/config/local-development.js`
+2. Open the file and copy all the settings you wish to override from `/config/default.js`
 
 **Notes**:
 
 * You only need to copy the settings you need to override, not all the settings.
-* The file format should be the same as `/config/default.json`
+* The file format should be the same as `/config/default.js`
