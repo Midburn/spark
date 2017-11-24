@@ -89,7 +89,6 @@ _upload_package() {
 }
 
 _deploy() {
-	set +x
     if [ `_is_tagged` == "1" ]; then
         echo "skipping release notification because we are using autoscaling groups and launch configurations now"
         # if [ "${SPARK_RELEASE_NOTIFICATION_KEY}" != "" ] && [ "${SPARK_RELEASE_NOTIFICATION_HOST}" != "" ]; then
@@ -121,7 +120,6 @@ _deploy() {
         echo "skipping deployment"
         return 0
     fi
-    set -x
 }
 
 _send_slack_error_notification() {
