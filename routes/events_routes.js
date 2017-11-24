@@ -5,7 +5,10 @@ const userRole = require('../libs/user_role');
 module.exports = function (app, passport) {
    
     app.get('/:lng/events-admin', userRole.isLoggedIn(), (req, res) => {
-        res.send('Events Index')
+        // res.send('Events Index')
+        res.render('pages/events/index', {
+            t_prefix: 'events:'
+        })
     });
     // Read
     app.get('/:lng/events-admin/:id', userRole.isLoggedIn(), (req, res) => {
