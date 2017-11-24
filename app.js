@@ -96,7 +96,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps', 'npo', 'gate'],
+        ns: ['common', 'camps', 'npo', 'gate', 'events'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -182,6 +182,9 @@ require('./routes/api_camps_routes')(app, passport);
 require('./routes/camps_routes')(app, passport);
 
 require('./routes/volunteers_routes')(app, passport);
+
+//Events
+require('./routes/events_routes')(app, passport);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
