@@ -183,6 +183,9 @@ require('./routes/camps_routes')(app, passport);
 
 require('./routes/volunteers_routes')(app, passport);
 
+//Events
+require('./routes/events_routes')(app, passport);
+
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
 
