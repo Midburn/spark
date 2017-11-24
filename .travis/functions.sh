@@ -107,7 +107,7 @@ _deploy() {
         # fi
     elif [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${SLACK_API_TOKEN}" != "" ] && [ "${SPARK_DEPLOYMENT_HOST}" != "" ]; then
         if [ ! -f deployment.key ]; then
-            echo -e "${SPARK_DEPLOYMENT_KEY}" > deployment.key
+            echo -e "${SPARK_DEPLOYMENT_KEY}" | base64 -d > deployment.key
         fi
         chmod 400 deployment.key
         if ssh -o StrictHostKeyChecking=no -i deployment.key "${SPARK_DEPLOYMENT_HOST}" `_get_package_url`; then
