@@ -74,10 +74,10 @@ const ticketType = {
     YOUTH_TICKET: '44',
     LOW_INCOME_TICKET: '45',
     INTERNATIONAL_DIRECT_SALE: '46',
-    SANDBOX2017_ADULT_TICKET: '49',
-    SANDBOX2017_TICKET_A: '50',
-    SANDBOX2017_TICKET_B: '51',
-    SANDBOX2017_TICKET_C: '52'
+    MIDBURN2017_ADULT_TICKET: '49',
+    MIDBURN2017_TICKET_A: '50',
+    MIDBURN2017_TICKET_B: '51',
+    MIDBURN2017_TICKET_C: '52'
 };
 
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
@@ -93,12 +93,12 @@ const events = {
             ticketType.INTERNATIONAL_DIRECT_SALE
         ]
     },
-    SANDBOX2017: {
+    MIDBURN2017: {
         bundles: [
-            ticketType.SANDBOX2017_ADULT_TICKET,
-            ticketType.SANDBOX2017_TICKET_A,
-            ticketType.SANDBOX2017_TICKET_B,
-            ticketType.SANDBOX2017_TICKET_C
+            ticketType.MIDBURN2017_ADULT_TICKET,
+            ticketType.MIDBURN2017_TICKET_A,
+            ticketType.MIDBURN2017_TICKET_B,
+            ticketType.MIDBURN2017_TICKET_C
         ]
     }
 };
@@ -108,7 +108,7 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
-    CURRENT_EVENT_ID: 'SANDBOX2017',
+    CURRENT_EVENT_ID: 'MIDBURN2017',
     events,
 
     // -- table names --
