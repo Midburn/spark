@@ -5,6 +5,7 @@ This is a step-by-step guide to getting you up and running with Spark so you can
 ### Preconditions
 
 * **NodeJS** ( https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
+* **MySQL** ( https://dev.mysql.com/downloads/mysql/ )
 * **GIT** ( https://git-scm.com/downloads )
 
 Download and install as described on the websites.
@@ -17,7 +18,11 @@ Download and install as described on the websites.
 ```shell
 git clone https://github.com/<YOUR_GITHUB_USER>/Spark.git
 ```
+Enter into the new Repository Folder
 
+```shell
+cd Spark
+```
 To be able to sync with Midburn repository you should add it as a remote:
 
 ```shell
@@ -26,13 +31,12 @@ git remote add midburn https://github.com/Midburn/Spark.git
 
 ### Installing NVM
 
-Optional - It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
+Optional (Linux\UNIX) - It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
 If you are not planning to use nvm or running Windows and having trouble setup things, just skip these section.
 
 We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
 
 ```shell
-cd spark
 nvm install
 nvm use
 ```
@@ -40,9 +44,8 @@ nvm use
 ### Installing Node modules
 
 ```shell
-cd spark
-npm install
 npm install -g nodemon knex bower
+npm install
 ```
 
 ### Installing bower dependencies
@@ -57,10 +60,30 @@ bower install
 
 Local development environment uses MySQL by default.
 
-We use Knex to run and manage the migrations.
+Create the spark MySQL DB
+```shell
+npm run-script createdb
+```
+
+We use Knex to run and manage the migrations.  
+run Knex to initialize the DB tables structure.
 
 ```shell
 knex migrate:latest
+```
+
+Create a new user.  
+by defulat spark connectes to MySql with user 'spark' and password 'spark',  
+set the a spark MySQL user (unless you are creating a local '/config.env' file)
+
+Connect to MySql
+```shell
+mysql -u root -p
+```
+Create a new MySql user with all privileges to spark DB.
+```shell
+CREATE USER 'spark'@'localhost' IDENTIFIED BY 'spark';
+GRANT ALL PRIVILEGES ON spark . * TO 'spark'@'localhost';
 ```
 
 See [/docs/database.md](/docs/development/database.md) for more details about our database setup.
