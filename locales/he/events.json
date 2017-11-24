@@ -3,5 +3,16 @@
     "dash": {
         "title": "אירועים",
         "desc": "תפריט ניהול אירועים"    
+    },
+    "new_event": "אירוע חדש",
+    "admin": {
+        "all_events_table": "טבלת אירועים"
+    },
+    "stats": {
+        "search": "חיפוש אירוע",
+        "name_en":"שם האירוע",
+        "gate_code": "קוד אירוע",
+        "gate_status": "סטאטוס"
     }
+
 }

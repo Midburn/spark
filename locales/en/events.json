@@ -3,5 +3,15 @@
     "dash": {
         "title": "Events",
         "desc": "Events management dashboard"
+    },
+    "new_event": "New Event",
+    "admin": {
+        "all_events_table": "Events Table"
+    },
+    "stats": {
+        "search": "Seach",
+        "name_en":"Event Name",
+        "gate_code": "Gate Code",
+        "gate_status": "Status"
     }
 }
