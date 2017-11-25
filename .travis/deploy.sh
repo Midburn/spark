@@ -13,14 +13,15 @@ if [ "$TRAVIS_REPO_SLUG" = "Midburn/spark" ]; then
 			echo "Deploying to staging server from $TRAVIS_BRANCH branch"
 			echo -e $SPRAK_DEPLOYMENT_KEY | base64 -d > stage_machine.key
 			chmod 400 stage_machine.key
-			scp -o StrictHostKeyChecking=no -i stage_machine.key `_get_deployment_package_filename` "${SPARK_DEPLOYMENT_HOST}:/opt/spark/package.tar.gz"
+			scp -o StrictHostKeyChecking=no -i stage_machine.key `_get_deployment_package_filename` "${SPARK_DEPLOYMENT_HOST}:/opt/spark/package.tar.gz" &&
+			  ssh -o StrictHostKeyChecking=no -i stage_machine.key ${SPARK_DEPLOYMENT_HOST} "/opt/spark/deploy.sh"
 			RC=$?
-			if [ $RC -eq 0 ]; then
-				if ssh -o StrictHostKeyChecking=no -i stage_machine.key ${SPARK_DEPLOYMENT_HOST} "/opt/spark/deploy.sh"; then
-					_exit_success "deployment completed successfully"
-				fi
 			rm -f stage_machine.key
-			exit $RC
+			if [ $RC -eq 0 ]; then
+				_exit_success "deployment completed successfully"
+			else
+				_exit_error "deployment failed"
+			fi
 		else
 			echo "We don't deploy from $TRAVIS_BRANCH"
 		fi
@@ -30,4 +31,3 @@ if [ "$TRAVIS_REPO_SLUG" = "Midburn/spark" ]; then
 else
 	echo "Not the oficial repository, not deploying"
 fi
-
