@@ -5,6 +5,7 @@
         "desc": "Events management dashboard"
     },
     "new_event": "New Event",
+    "manage": "Manage",
     "admin": {
         "all_events_table": "Events Table"
     },
@@ -12,6 +13,8 @@
         "search": "Seach",
         "name_en":"Event Name",
         "gate_code": "Gate Code",
-        "gate_status": "Status"
+        "gate_status": "Status",
+        "edit":"Edit",
+        "remove": "Remove"
     }
 }

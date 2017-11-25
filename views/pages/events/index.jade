@@ -10,7 +10,10 @@ block content
             .col-xs-12
                 div.block-center
                     div.input-group
-                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/events-admin/new`, role='button')=t(t_prefix+'new_event')
+                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/events-admin/manage`, role='button')=t(t_prefix+'manage')
+                        a.Btn.Btn__green.card-switcher#2(href=`/${language}/events-admin/new`, role='button')
+                                span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                span=t(t_prefix+'new_event')
             
         .cards--wrapper.card__shad
             //- Card 1    
@@ -29,8 +32,7 @@ block content
                             //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t(t_prefix+'stats.created_at')
                             th.gate_status(ng-click='changeOrderBy("gate_status")')=t(t_prefix+'stats.gate_status')
                     tbody
-                        tr(ng-repeat="event in events") 
-                            // filter: searchEvent | orderBy: orderEvents"
+                        tr(ng-repeat="event in events | filter: searchEvent | orderBy: orderEvents")
                             td {{ event.event_id }}
                             // td 
                             //    a(ng-href=`/${language}/events-admin/{{event.event_id}}`) 
@@ -53,24 +55,9 @@ block content
                             //- td
     
             //- Card 2
-    //        .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
-    //            h4=t(t_prefix+'admin_index.all_members_table')
-    //            .controls.row
-    //                .col-xs-12.col-md-3
-    //                    ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
-    //                        if(language === 'en')
-    //                            ui-select-match(placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_en}}
-    //                            ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
-    //                                small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
-    //                                span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
-    //                        else
-    //                            ui-select-match(dir='rtl', placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_he}}
-    //                            ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
-    //                                small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
-    //                                span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
-    //                .col-xs-12.col-md-9
-    //                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t(t_prefix+'members.search')}")
-    //            include partials/members_table
+            .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
+                h4=t(t_prefix+'admin_index.all_members_table')
+                
     //            
     //        //- Card 3
     //        .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive

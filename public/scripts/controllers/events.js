@@ -20,4 +20,7 @@ events_app.controller("eventsController", ($scope, $http, $filter) => {
             innerHeightChange()
         }, 500);
     });
+    $scope.changeOrderBy = function (orderByValue) {
+        $scope.orderEvents = orderByValue;
+    }
 })

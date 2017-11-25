@@ -5,6 +5,7 @@
         "desc": "תפריט ניהול אירועים"    
     },
     "new_event": "אירוע חדש",
+    "manage": "נהל",
     "admin": {
         "all_events_table": "טבלת אירועים"
     },
@@ -12,7 +13,9 @@
         "search": "חיפוש אירוע",
         "name_en":"שם האירוע",
         "gate_code": "קוד אירוע",
-        "gate_status": "סטאטוס"
+        "gate_status": "סטאטוס",
+        "edit": "ערוך",
+        "remove": "מחק"
     }
 
 }
