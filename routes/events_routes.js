@@ -29,11 +29,19 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.new',
             url: '/' + req.params.lng + '/events/new/?c=' + req.query.c
         }]);
-
+        console.log('hello');
+        console.log(req.event);
+        console.log(req.Event);
+        var event={
+            
+        };
+        event.attributes.name_desc_he='';
+        event.event_name_en='jfdddjf';
         // let prototype = constants.prototype_camps.THEME_CAMP.id;
         // let result = Camp.prototype.__parsePrototype(prototype, req.user);
         res.render('pages/events/edit', {
             event: req.event,
+            
             user: req.user,
             // camp_name_en: req.query.c,
             // breadcrumbs: req.breadcrumbs(),
