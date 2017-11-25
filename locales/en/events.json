@@ -19,9 +19,12 @@
     },
     "new":{
         "header_title":"Create an event",
-        "header_desc":"To create an event you have to provide us some information, then your new event will be reviewed"
+        "header_desc":"To create an event you have to provide us some information, then your new event will be reviewed",
+        "close":"Close",
+        "send_request":"Create New Event"
     },
     "edit": {
+        "basic_info":"Event Details",
         "name_en": "Name (English)",
         "name_he": "Name (Hebrew)",
         "desc_en": "Description (English)",
@@ -36,6 +39,7 @@
         "community_art_installation": "Community Art Installation",
         "community_prod_dep": "Community Production Department",
         "tickets_info":"Tickets Info",
-        "url":"Event Link"
+        "url":"Event Link",
+        "name_and_discription":"Enter the event details"
     }
 }

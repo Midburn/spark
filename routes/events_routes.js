@@ -15,68 +15,21 @@ module.exports = function (app, passport) {
     // new camp
     app.get('/:lng/events-admin/new', userRole.isAdmin(), (req, res) => {
 
-        req.event = {
-            'created_at': '01-01-2017',
-            'main_contact': 'contact person',
-            'moop': 'moop person',
-            'safety': 'safety person',
-            'entrance_quota': '999',
-            'status': 'new',
-            'camp_activity_time': '01-01-2000',
-            'type': 'new Event type',
-            'noise_level': '9999',
-            'web_published': '0',
-            'child_friendly': 'YES',
-            //is not new - required
-        };
-
+        req.event = {};
         res.render('pages/events/edit', {
-
             event: req.event,
             user: req.user,
             isNew: true
-
         });
-
     });
 
 
 
     // Read
     app.get('/:lng/events-admin/:id', userRole.isLoggedIn(), (req, res) => {
-        // var event_id = req.params.id;
-        // res.send('Event details ' + event_id)
-        // res.send('New Event');
-        // var isNew=(event_id === 'new');
-        // req.breadcrumbs([{
-        //     name: 'breadcrumbs.home',
-        //     url: '/' + req.params.lng + '/home'
-        // },
-        // {
-        //     name: 'camps:breadcrumbs.manage',
-        //     url: '/' + req.params.lng + '/events-admin'
-        // },
-        // {
-        //     name: 'camps:breadcrumbs.new',
-        //     url: '/' + req.params.lng + '/events/new/?c=' + req.query.c
-        // }]);
-
-        // let prototype = constants.prototype_camps.THEME_CAMP.id;
-        // let result = Camp.prototype.__parsePrototype(prototype, req.user);
 
         req.event = {
             'created_at': '01-01-2017',
-            'main_contact': 'contact person',
-            'moop': 'moop person',
-            'safety': 'safety person',
-            'entrance_quota': '999',
-            'status': 'new',
-            'camp_activity_time': '01-01-2000',
-            'type': 'new Event type',
-            'noise_level': '9999',
-            'web_published': '0',
-            'child_friendly': 'YES',
-            //is not new - required
             'id': req.params.id,
             'previousEventId': '8888888',
             'event_desc_he': 'אירוע קיים',
@@ -120,5 +73,4 @@ module.exports = function (app, passport) {
         var event_id = req.params.id;
         res.send('Edit event ' + event_id)
     });
-
 };
