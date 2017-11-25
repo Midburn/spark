@@ -10,8 +10,8 @@ var Event = require('../models/event').Event;
 var constants = require('../models/constants');
 
 router.get('/', userRole.isGateManager(), function (req, res) {
-    //TODO Temp MIDBURN2017, we need to add a global current-event selector.
-    Event.forge({event_id: 'MIDBURN2017'}).fetch().then(event => {
+    //TODO Temp MIDBURN2018, we need to add a global current-event selector.
+    Event.forge({event_id: 'MIDBURN2018'}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });

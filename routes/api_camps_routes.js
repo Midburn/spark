@@ -1,5 +1,6 @@
 const common = require('../libs/common').common;
 const _ = require('lodash');
+const Event = require('../models/event').Event;
 const User = require('../models/user').User;
 const Camp = require('../models/camp').Camp;
 const constants = require('../models/constants.js');
@@ -908,7 +909,7 @@ module.exports = (app, passport) => {
                 }
             }
             if (req.user.isAdmin) {
-                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='MIDBURN2017' GROUP BY __prototype;";
+                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='MIDBURN2018' GROUP BY __prototype;";
                 let query1 = "SELECT " +
                     "count(*) AS total_tickets" +
                     ",SUM(inside_event) AS inside_event " +
@@ -920,7 +921,7 @@ module.exports = (app, passport) => {
                     ",SUM( IF(entrance_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_entrance " +
                     ",SUM( IF(last_exit_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_exit " +
                     "FROM tickets  " +
-                    "WHERE tickets.event_id='MIDBURN2017'  " +
+                    "WHERE tickets.event_id='MIDBURN2018'  " +
                     "GROUP BY event_id; ";
                 if (req.user.isAdmin) {
                     let stat = {};
