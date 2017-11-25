@@ -7,13 +7,13 @@ __get_all_events = function ($http, on_success) {
         var _url='/events';
         console.log(_url);
         $http.get(_url).then((res) => {
-            events = res;
+            events_all = res;
             on_success(res);
         });
     }
 }
 
-app.controller("eventsController", ($scope, $http, $filter) => {
+events_app.controller("eventsController", ($scope, $http, $filter) => {
     __get_all_events($http, (res) => {
         $scope.events = res.data.events;
         setTimeout(() => {

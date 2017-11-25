@@ -7,7 +7,11 @@ module.exports = (app, passport) => {
     app.get('/events', (req, res) => {
         Event.fetchAll()
         .then((events) => {
-            res.status(200).json(events.toJSON())
+            res.status(200).json(
+                { 
+                    events: events.toJSON()
+                }
+            )
         })
         .catch((err) => {
             res.status(500).json({
