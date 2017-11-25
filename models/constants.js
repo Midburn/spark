@@ -67,30 +67,37 @@ const prototype_camps = {
 };
 
 const ticketType = {
-    SUPPORT_TICKET: '39',
-    ADULT_TICKET: '40',
-    CHILD_TICKET: '41',
-    ADULT_DIRECT_SALE_TICKET: '43',
-    YOUTH_TICKET: '44',
-    LOW_INCOME_TICKET: '45',
+    MIDBURN2017_SUPPORT_TICKET: '39',
+    MIDBURN2017_ADULT_TICKET: '40',
+    MIDBURN2017_CHILD_TICKET: '41',
+    MIDBURN2017_ADULT_DIRECT_SALE_TICKET: '43',
+    MIDBURN2017_YOUTH_TICKET: '44',
+    MIDBURN2017_LOW_INCOME_TICKET: '45',
     INTERNATIONAL_DIRECT_SALE: '46',
-    SANDBOX2017_ADULT_TICKET: '49',
-    SANDBOX2017_TICKET_A: '50',
-    SANDBOX2017_TICKET_B: '51',
-    SANDBOX2017_TICKET_C: '52'
+    SANDBOX2018_ADULT_TICKET: '49',
+    SANDBOX2018_TICKET_A: '50',
+    SANDBOX2018_TICKET_B: '51',
+    SANDBOX2018_TICKET_C: '52',
+    MIDBURN2018_SUPPORT_TICKET: '53',
+    MIDBURN2018_ADULT_TICKET: '54',
+    MIDBURN2018_CHILD_TICKET: '55',
+    MIDBURN2018_ADULT_DIRECT_SALE_TICKET: '56',
+    MIDBURN2018_YOUTH_TICKET: '57',
+    MIDBURN2018_LOW_INCOME_TICKET: '58',
 };
 
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
+// TODO This object should be loaded from db for all events
 const events = {
     MIDBURN2017: {
         bundles: [
-            ticketType.SUPPORT_TICKET,
-            ticketType.ADULT_TICKET,
-            ticketType.CHILD_TICKET,
-            ticketType.ADULT_DIRECT_SALE_TICKET,
-            ticketType.YOUTH_TICKET,
-            ticketType.LOW_INCOME_TICKET,
-            ticketType.INTERNATIONAL_DIRECT_SALE
+            ticketType.MIDBURN2017_SUPPORT_TICKET,
+            ticketType.MIDBURN2017_ADULT_TICKET,
+            ticketType.MIDBURN2017_CHILD_TICKET,
+            ticketType.MIDBURN2017_ADULT_DIRECT_SALE_TICKET,
+            ticketType.MIDBURN2017_YOUTH_TICKET,
+            ticketType.MIDBURN2017_LOW_INCOME_TICKET,
+            ticketType.MIDBURN2017_INTERNATIONAL_DIRECT_SALE
         ]
     },
     SANDBOX2017: {
@@ -100,6 +107,17 @@ const events = {
             ticketType.SANDBOX2017_TICKET_B,
             ticketType.SANDBOX2017_TICKET_C
         ]
+    },
+    'MIDBURN2018': {
+        bundles: [
+            ticketType.SUPPORT_TICKET,
+            ticketType.ADULT_TICKET,
+            ticketType.CHILD_TICKET,
+            ticketType.ADULT_DIRECT_SALE_TICKET,
+            ticketType.YOUTH_TICKET,
+            ticketType.LOW_INCOME_TICKET,
+            ticketType.INTERNATIONAL_DIRECT_SALE
+        ]
     }
 };
 
@@ -108,7 +126,7 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
-    CURRENT_EVENT_ID: 'SANDBOX2017',
+    CURRENT_EVENT_ID: 'MIDBURN2018',
     events,
 
     // -- table names --
