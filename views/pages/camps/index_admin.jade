@@ -14,7 +14,7 @@ block content
                         a.Btn.Btn__transparent.card-switcher#2(href=`/${language}/camps-admin/members`, role='button')=t(t_prefix+'admin_index.all_members')
                         if isCamp
                             a.Btn.Btn__transparent.card-switcher#3(href=`/${language}/camps-admin/docs`, role='button')=t(t_prefix+'admin_index.docs')
-                        if isCamp                            
+                        if isCamp || isProd                            
                             a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'admin_index.new')
@@ -113,4 +113,4 @@ block content
                         span.indicator
                             span.glyphicon
                 .col-sm-4.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t(t_prefix+'btn_continue')
+                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t('camps:btn_continue')
