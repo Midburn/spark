@@ -4,15 +4,15 @@ var _creatEvent = function(req) {
 
 }
 
-const common = require('../libs/common').common;
-const _ = require('lodash');
-const Event = require('../models/event').Event;
-const User = require('../models/user').User;
+// const common = require('../libs/common').common;
+// const _ = require('lodash');
+// const Event = require('../models/event').Event;
+// const User = require('../models/user').User;
 // const Camp = require('../models/camp').Camp;
-const constants = require('../models/constants.js');
-const knex = require('../libs/db').knex;
-const userRole = require('../libs/user_role');
-const config = require('config')
+// const constants = require('../models/constants.js');
+// const knex = require('../libs/db').knex;
+//const userRole = require('../libs/user_role');
+// const config = require('config')
 
 module.exports = (app, passport) => {
     /**
