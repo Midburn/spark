@@ -11,7 +11,7 @@ if [ "$TRAVIS_REPO_SLUG" = "Midburn/spark" ]; then
 	if [ -n "${SPARK_DEPLOYMENT_KEY}" ]; then
 		if [ "$TRAVIS_BRANCH" = "master" ]; then
 			echo "Deploying to staging server from $TRAVIS_BRANCH branch"
-			echo -e ${SPRAK_DEPLOYMENT_KEY} | base64 -d > stage_machine.key
+			echo -e ${SPARK_DEPLOYMENT_KEY} | base64 -d > stage_machine.key
 			chmod 400 stage_machine.key
 			ls -l stage_machine.key
 			md5sum stage_machine.key
