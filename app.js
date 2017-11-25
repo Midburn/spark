@@ -177,6 +177,8 @@ require('./routes/api_events_routes')(app, passport);
 require('./routes/api_camps_routes')(app, passport);
 require('./routes/camps_routes')(app, passport);
 require('./routes/api/v1/camps')(app); // CAMPS PUBLIC API
+require('./routes/api_camps_routes')(app, passport);
+require('./routes/api_events_routes')(app, passport);
 
 // Camps
 require('./routes/camps_routes')(app, passport);

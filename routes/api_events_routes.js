@@ -1,18 +1,58 @@
-const common = require('../libs/common').common;
-const _ = require('lodash');
-const Event = require('../models/event').Event;
-const User = require('../models/user').User;
-// const Camp = require('../models/camp').Camp;
-const constants = require('../models/constants.js');
-const knex = require('../libs/db').knex;
+const Event = require('../models/event').Event
 const userRole = require('../libs/user_role');
-const config = require('config')
+var _creatEvent = function(req) {
+
+}
+
+// const common = require('../libs/common').common;
+// const _ = require('lodash');
+// const Event = require('../models/event').Event;
+// const User = require('../models/user').User;
+// const Camp = require('../models/camp').Camp;
+// const constants = require('../models/constants.js');
+// const knex = require('../libs/db').knex;
+//const userRole = require('../libs/user_role');
+// const config = require('config')
 
 module.exports = (app, passport) => {
     /**
      * API: (GET) get user by id
      * request => /users/:id
      */
+
+    app.get('/events', (req, res) => {
+        Event.fetchAll()
+        .then((events) => {
+            res.status(200).json(
+                { 
+                    events: events.toJSON()
+                }
+            )
+        })
+        .catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
+
+    app.post('/events/new', 
+        [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
+        (req, res) => {
+            Events.forge(_creatEvent(req)).save()
+            .then(res.send(200))
+            .catch((e) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: e.message
+                    }
+                });
+            });
+        }); 
     app.get('/events/:event_id',
         [userRole.isLoggedIn()],
         (req, res) => {
