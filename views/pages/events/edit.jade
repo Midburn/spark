@@ -6,19 +6,22 @@ block content
     //- input.hidden.meta(id='meta__grouptype', value='#{camp.__prototype}')
     .camps.camp_edit(ng-app="ngCamps", ng-controller="campEditController")
         script.
+            var test1 = checked;
+            var test2 = "";
             var groups_prototype="#{__groups_prototype}";
         .heading.card.card__shad
             .card__actions
                 if(isCamp)
                     .dropdown
-                        a.Btn.btn-default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
+                        a.Btn.btn-default(href='/#{language}/camps/#{event.id}')=t('camps:edit.view')
             if(isNew)
-                h2=t('camps:new.header_title')
-                h4=t('camps:new.header_desc')
+                h2=t('events:new.header_title')
+                h4=t('events:new.header_desc')
             else
-                span.label.label-info #{t(t_prefix+'edit.camp')} # #{camp.id}
-                h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
-                h6 #{t('camps:edit.since')}: #{camp.created_at}
+                if(event_name = language.includes('he') ? event.event_name_he : event.event_name_en )
+                span.label.label-info #{t(t_prefix+'edit.camp')} # #{event.id}
+                h2 #{t('event:edit.title')}: #{event_name}
+                h6 #{t('event:edit.since')}: #{event.created_at}
         .controls.row
             .col-xs-12
                 //- Card switcher
@@ -38,18 +41,51 @@ block content
                     .panel-body
                         .details-he.col-md-6
                             .col-xs-12
-                                label(for='camp_name_he')=t('camps:edit.name_he')
-                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
+                                label(for='event_name_he')=t('events:edit.name_he')
+                                input.form-control(id='event_name_he', dir='rtl', name='event_name_he', value=(isNew ? '' : '#{event.event_name_he}'))
                             .col-xs-12
-                                label(for='camp_desc_he')=t('camps:edit.desc_he')
-                                textarea.form-control(id='camp_desc_he', dir='rtl', name='camp_desc_he') #{camp.camp_desc_he}
+                                label(for='event_desc_he')=t('events:edit.desc_he')
+                                input.form-control(id='event_desc_he', dir='rtl', name='event_desc_he', value=(isNew ? '' : '#{event.event_desc_he}'))
+                            .col-xs-12
+                                label(for='event_id')=t('events:edit.id')
+                                input.form-control(id='event_id', dir='ltr', name='event_id', value=(isNew ? '' : '#{event.id}'))
+                            .col-xs-12
+                                label(for='start_date')=t('events:edit.start_date')
+                                input.form-control(id='start_date', dir='ltr', name='start_date', value=(isNew ? '' : '#{event.startDate}'))
+                            .col-xs-12
+                                label(for='start_presale_tickets')=t('events:edit.start_presale_tickets')
+                                input.form-control(id='start_presale_tickets', dir='ltr', name='start_presale_tickets', value=(isNew ? '' : '#{event.startPresaleTickets}'))
+                            .col-xs-12
+                                label(for='tickets_info')=t('events:edit.tickets_info')
+                                input.form-control(id='tickets_info', dir='ltr', name='tickets_info', value=(isNew ? '' : '#{event.ticketsInfo}'))
+                            .col-xs-12
+                                label(for='community_camps')=t('events:edit.community_camps')
+                                input.form-control(type="checkbox" id='community_camps', dir='ltr', name='community_camps', value='true', checked=(isNew ? undefined : event.communityCamps ? "checked" : undefined) )
+                                label(for='community_art_installation')=t('events:edit.community_art_installation')
+                                input.form-control(type="checkbox" id='community_art_installation', dir='ltr', name='community_art_installation', value='true'  checked=(isNew ? undefined : event.communityArtInstallation ? "checked" : undefined) )
+                                label(for='community_prod_dep')=t('events:edit.community_prod_dep')
+                                input.form-control(type="checkbox" id='community_prod_dep', dir='ltr', name='community_prod_dep', value='true' checked=(isNew ? undefined :event.communityProdDep ? "checked" : undefined))
+
                         .details-en.col-md-6
                             .col-xs-12
-                                label(for='camp_name_en')=t('camps:edit.name_en')
-                                input.form-control(id='camp_name_en', dir='ltr', name='camp_name_en', value=(isNew ? '#{camp_name_en}' : '#{camp.camp_name_en}'), readonly, autofocus)
+                                label(for='event_name_en')=t('events:edit.name_en')
+                                input.form-control(id='event_name_en', dir='ltr', name='event_name_en', value=(isNew ? '' : '#{event.event_name_en}'))
                             .col-xs-12
-                                label(for='camp_desc_en')=t('camps:edit.desc_en')
-                                textarea.form-control(id='camp_desc_en', dir='ltr', name='camp_desc_en') #{camp.camp_desc_en}
+                                label(for='event_desc_en')=t('events:edit.desc_en')
+                                input.form-control(id='event_desc_en', dir='ltr', name='event_desc_en', value=(isNew ? '' : '#{event.event_desc_en}') )
+                            .col-xs-12
+                                label(for='previous_event_id')=t('events:edit.previous_event_id')
+                                input.form-control(id='previous_event_id', dir='ltr', name='event_id', value=(isNew ? '' : '#{event.previousEventId}') )       
+                            .col-xs-12
+                                label(for='end_date')=t('events:edit.end_date')
+                                input.form-control(id='end_date', dir='ltr', name='end_date', value=(isNew ? '' : '#{event.endDate}'))
+                            .col-xs-12
+                                label(for='end_presale_tickets')=t('events:edit.end_presale_tickets')
+                                input.form-control(id='end_presale_tickets', dir='ltr', name='end_presale_tickets', value=(isNew ? '' : '#{event.endPresaleTickets}'))
+                            .col-xs-12
+                                label(for='url')=t('events:edit.url')
+                                input.form-control(id='url', dir='ltr', name='url', value=(isNew ? '' : '#{event.url}'))
+                            
                 if(isCamp)
                     h4=t('camps:new.website_publication')
                     .camp-publication.panel
@@ -111,18 +147,18 @@ block content
                                 .col-xs-12
                                     label(for='camp_main_contact')=t('camps:edit.main_contact')
                                     select.form-control.form__input--important(id='camp_main_contact', name='main_contact')
-                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.main_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                        option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{event.main_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
                             if (isCamp)
                                 .col-md-4
                                     .col-xs-12
                                         label(for='camp_moop_contact')=t('camps:edit.moop_contact')
                                         select.form-control(id='camp_moop_contact', name='moop_contact')
-                                            option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                            option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{event.moop_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
                                 .col-md-4
                                     .col-xs-12
                                         label(for='camp_safety_contact')=t('camps:edit.safety_contact')
                                         select.form-control(id='camp_safety_contact', name='safety_contact')
-                                            option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{camp.safety_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
+                                            option(ng-repeat="member in approved_members", ng-selected="member.user_id == #{event.safety_contact}", value="{{member.user_id}}") {{ member.name}} ({{ member.email }})
                 if (!isNew)
                     h4=t(t_prefix+'edit.add_info')
                     .camp-details.panel
@@ -155,7 +191,7 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='entrance_quota')=t('camps:edit.early_arrival_quota')
-                                        input.form-control(id='entrance_quota', name='entrance_quota', value=(isNew ? 0 : (camp.entrance_quota === null ? '' : '#{camp.entrance_quota}')),readonly=(!isAdmin ? 'true' : undefined))
+                                        input.form-control(id='entrance_quota', name='entrance_quota', value=(isNew ? 0 : (event.entrance_quota === null ? '' : '#{event.entrance_quota}')),readonly=(!isAdmin ? 'true' : undefined))
 
             //- Card 2
             .card.card-second.card-hide
@@ -165,59 +201,59 @@ block content
                         .camp-behavior
                             .col-md-4
                                 .col-xs-12
-                                    label(for='camp_activity_time', data-camp-status='#{camp.status}') #{t('camps:edit.camp_activity_time')}
+                                    label(for='camp_activity_time', data-camp-status='#{event.status}') #{t('camps:edit.camp_activity_time')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('morning') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_activity_time', id="activity_time_morning", name="activity_time_morning", value="morning", checked=event.camp_activity_time ? (event.camp_activity_time.indexOf('morning') > -1 ? "checked" : undefined) : undefined)
                                             label(for="activity_time_morning")
                                                 | #{t('camps:new.camp_activity_time_morning')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('drinks') > -1 ? "noon" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_activity_time', id="activity_time_noon", name="activity_time_noon", value="noon", checked=event.camp_activity_time ? (event.camp_activity_time.indexOf('drinks') > -1 ? "noon" : undefined) : undefined)
                                             label(for="activity_time_noon")
                                                 | #{t('camps:new.camp_activity_time_noon')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('evening') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_evening", name="camp_activity_time_evening", value="evening", checked=event.camp_activity_time ? (event.camp_activity_time.indexOf('evening') > -1 ? "checked" : undefined) : undefined)
                                             label(for="camp_activity_time_evening")
                                                 | #{t('camps:new.camp_activity_time_evening')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=camp.camp_activity_time ? (camp.camp_activity_time.indexOf('night') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_activity_time', id="camp_activity_time_night", name="camp_activity_time_night", value="night", checked=event.camp_activity_time ? (event.camp_activity_time.indexOf('night') > -1 ? "checked" : undefined) : undefined)
                                             label(for="camp_activity_time_night")
                                                 | #{t('camps:new.camp_activity_time_night')}
                             .col-md-4
                                 .col-xs-12
-                                    label(for='camp_type', data-camp-type='#{camp.type}') #{t('camps:edit.type')}
+                                    label(for='camp_type', data-camp-type='#{event.type}') #{t('camps:edit.type')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_music", name="type_music", value="music", checked=camp.type ? (camp.type.indexOf('music') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="type_music", name="type_music", value="music", checked=event.type ? (event.type.indexOf('music') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_music")
                                                 | #{t('camps:edit.music')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_drinks", name="type_drinks", value="drinks", checked=camp.type ? (camp.type.indexOf('drinks') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="type_drinks", name="type_drinks", value="drinks", checked=event.type ? (event.type.indexOf('drinks') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_drinks")
                                                 | #{t('camps:edit.drinks')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_workshop", name="type_workshop", value="workshop", checked=camp.type ? (camp.type.indexOf('workshop') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="type_workshop", name="type_workshop", value="workshop", checked=event.type ? (event.type.indexOf('workshop') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_workshop")
                                                 | #{t('camps:edit.workshop')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_art", name="type_art", value="art", checked=camp.type ? (camp.type.indexOf('art') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="type_art", name="type_art", value="art", checked=event.type ? (event.type.indexOf('art') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_art")
                                                 | #{t('camps:edit.art')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_lecture", name="type_lecture", value="lecture", checked=camp.type ? (camp.type.indexOf('lecture') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="type_lecture", name="type_lecture", value="lecture", checked=event.type ? (event.type.indexOf('lecture') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_lecture")
                                                 | #{t('camps:edit.lecture')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="type_food", name="type_food", value="food", checked=camp.type ? (camp.type.indexOf('food') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="type_food", name="type_food", value="food", checked=event.type ? (event.type.indexOf('food') > -1 ? "checked" : undefined) : undefined)
                                             label(for="type_food")
                                                 | #{t('camps:edit.food')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type ? (camp.type.indexOf('other') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=event.type ? (event.type.indexOf('other') > -1 ? "checked" : undefined) : undefined)
                                             label(for="camp_type_other_checkbox")
                                                 | #{t('camps:edit.other')}
-                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other hidden", name="type_other_text", value=(event.type.slice(event.type.indexOf('other') + 6)))
                             .col-md-4
                                 .col-xs-12
                                     label(for='camp_child_friendly') #{t('camps:edit.camp_child_friendly')}
-                                    input.checkbox(id='camp_child_friendly', checked='#{camp.child_friendly}', type="checkbox", name='child_friendly')
+                                    input.checkbox(id='camp_child_friendly', checked='#{event.child_friendly}', type="checkbox", name='child_friendly')
                                     script.
                                         // set checkbox status
                                         var checkbox = document.getElementById("camp_child_friendly");
@@ -233,7 +269,7 @@ block content
                                     //-     }
                                     label(for='noise_level') #{t('camps:edit.camp_noise_level')}
                                     select(id='camp_noise_level', class="form-control", name="noise_level")
-                                        option(ng-repeat="option in noise_level_options", ng-selected="option.id == '#{camp.noise_level}'", value="{{option.id}}") {{option.value}}
+                                        option(ng-repeat="option in noise_level_options", ng-selected="option.id == '#{event.noise_level}'", value="{{option.id}}") {{option.value}}
                 //------- Lilach requested to hide section -------------//
                 //- h4=t('camps:edit.public_area_title')
                 //- .camp-details.panel
@@ -281,10 +317,10 @@ block content
                     a.Btn.Btn__default.card-switcher#2(href='#')=t('camps:btn_continue')
                     button(type="submit", id='camp_create_save', class="Btn Btn__green")=t('camps:btn_save_camp')
                 else
-                    input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
+                    input(id='camp_edit_camp_id', type='hidden', value='#{event.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
                 
-                    if isCamp && camp.web_published != '1'
+                    if isCamp && event.web_published != '1'
                         button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
 
         // Camp create request modal

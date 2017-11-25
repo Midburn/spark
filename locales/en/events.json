@@ -3,5 +3,26 @@
     "dash": {
         "title": "Events",
         "desc": "Events management dashboard"
+    },
+    "new":{
+        "header_title":"Create an event",
+        "header_desc":"To create an event you have to provide us some information, then your new event will be reviewed"
+    },
+    "edit": {
+        "name_en": "Name (English)",
+        "name_he": "Name (Hebrew)",
+        "desc_en": "Description (English)",
+        "desc_he": "Description (Hebrew)",
+        "id":"Event Number",
+        "previous_event_id":"Previous Event Number",
+        "start_date":"Event Start Date",
+        "end_date":"Event End Date",
+        "start_presale_tickets":"Start Presale Tickets",
+        "end_presale_tickets":"End Presale Tickets",
+        "community_camps":"Community Camps",
+        "community_art_installation": "Community Art Installation",
+        "community_prod_dep": "Community Production Department",
+        "tickets_info":"Tickets Info",
+        "url":"Event Link"
     }
 }
