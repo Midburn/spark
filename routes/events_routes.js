@@ -12,6 +12,34 @@ module.exports = function (app, passport) {
         })
     });
 
+    // new camp
+    app.get('/:lng/events-admin/new', userRole.isAdmin(), (req, res) => {
+
+        req.event = {
+            'created_at': '01-01-2017',
+            'main_contact': 'contact person',
+            'moop': 'moop person',
+            'safety': 'safety person',
+            'entrance_quota': '999',
+            'status': 'new',
+            'camp_activity_time': '01-01-2000',
+            'type': 'new Event type',
+            'noise_level': '9999',
+            'web_published': '0',
+            'child_friendly': 'YES',
+            //is not new - required
+        };
+
+        res.render('pages/events/edit', {
+
+            event: req.event,
+            user: req.user,
+            isNew: true
+
+        });
+
+    });
+
 
 
     // Read
@@ -50,22 +78,22 @@ module.exports = function (app, passport) {
             'child_friendly': 'YES',
             //is not new - required
             'id': req.params.id,
-            'previousEventId':'8888888',
+            'previousEventId': '8888888',
             'event_desc_he': 'אירוע קיים',
             'event_desc_en': 'Exist Event',
             'event_name_he': 'שם אירוע קיים',
             'event_name_en': 'Exist event name',
-            'startDate':'01-01-2000',
-            'endDate':'31-12-2000',
-            'startPresaleTickets':'10-10-1999',
-            'endPresaleTickets':'20-10-1999',
+            'startDate': '01-01-2000',
+            'endDate': '31-12-2000',
+            'startPresaleTickets': '10-10-1999',
+            'endPresaleTickets': '20-10-1999',
             'communityCamps': true,
             'communityArtInstallation': false,
             'communityProdDep': true,
-            'ticketsInfo':"{json}",
-            'url':"www.someWebSite.com"     
+            'ticketsInfo': "{json}",
+            'url': "www.someWebSite.com"
         };
-        
+
         res.render('pages/events/edit', {
 
             event: req.event,
@@ -86,10 +114,7 @@ module.exports = function (app, passport) {
         });
 
     });
-    // new camp
-    app.get('/:lng/events-admin/0', userRole.isAdmin(), (req, res) => {
 
-    });
     // Edit
     app.get('/:lng/events-admin/:id/edit', userRole.isLoggedIn(), (req, res) => {
         var event_id = req.params.id;
