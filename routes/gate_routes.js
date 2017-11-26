@@ -10,15 +10,15 @@ var Event = require('../models/event').Event;
 var constants = require('../models/constants');
 
 router.get('/', userRole.isGateManager(), function (req, res) {
-    //TODO Temp SANDBOX2017, we need to add a global current-event selector.
-    Event.forge({event_id: constants.CURRENT_EVENT_ID}).fetch().then(event => {
+    //TODO Temp MIDBURN2018, we need to add a global current-event selector.
+    Event.forge({event_id: 'MIDBURN2018'}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });
     });
 });
 
-router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], async function (req, res) {
+router.get('/ajax/tickets', [/*security.protectJwt, */userRole.isGateManager()], async function (req, res) {
     if (req.query.search) {
         const MINIMUM_LENGTH = 3;
 
@@ -31,22 +31,14 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
         let event = await Event.forge({event_id: constants.CURRENT_EVENT_ID}).fetch();
         let gate_status = event.attributes.gate_status;
 
-        let searchRegex = req.query.search.trim().replace(' ', '|');
-
-        knex.select('tickets.*', 'users.*', 'users_groups.name')
-            .from('tickets')
-            .leftJoin('users', 'tickets.holder_id', 'users.user_id')
-            .leftJoin('users_groups', 'tickets.entrance_group_id', 'users_groups.group_id')
-            .where('tickets.event_id', constants.CURRENT_EVENT_ID)
-            .andWhere(function() {
-                this.where('ticket_number', isNaN(parseInt(req.query.search)) ? req.query.search : parseInt(req.query.search))
-                    .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
-                    .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
-                    .orWhere('email', 'LIKE', '%' + req.query.search + '%')
-                    .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
-                    .orWhereRaw("(first_name REGEXP '" + searchRegex + "' and last_name REGEXP '" + searchRegex + "')")
-                //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
-            })
+        knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
+            .where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))
+            .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('email', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
+            .andWhere('event_id',constants.CURRENT_EVENT_ID)
+            //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
             .then((tickets) => {
                 res.status(200).json({rows: tickets, total: tickets.length})
             }).catch((err) => {
@@ -62,50 +54,6 @@ router.get('/ajax/tickets', [security.protectJwt, userRole.isGateManager()], asy
     else {
         return res.status(200).json({rows: [], total: 0})
     }
-});
-
-router.get('/gate-statistics', userRole.isGateManager(), async (req, res) => {
-
-    const event_id = 'SANDBOX2017';
-    let event = await Event.forge({event_id: event_id}).fetch();
-
-    let totalCounter = await knex('tickets')
-        .select(knex.raw('count(*) as count'))
-        .where('event_id', '=', event_id).then(data => {
-            return data[0].count;
-        });
-
-    let insideCounter = await knex('tickets')
-        .sum('inside_event')
-        .where('event_id', '=', event_id).then(data => {
-            return data[0]["sum(`inside_event`)"];
-        });
-
-    let forcedCounter = await knex('tickets')
-        .sum('forced_entrance')
-        .where('event_id', '=', event_id).then(data => {
-            return data[0]["sum(`forced_entrance`)"];
-        });
-
-    let groupsData = await knex('tickets')
-        .leftJoin('users_groups', 'users_groups.group_id', '=', 'tickets.entrance_group_id')
-        .select('name', 'entrance_quota')
-        .sum('inside_event')
-        .where('tickets.event_id', '=', event_id)
-        .groupBy('name', 'entrance_quota')
-        .orderBy('name')
-        .then(data => {
-            console.log(data);
-            return data;
-        });
-
-    return res.render('pages/gate_statistics', {
-        event: event,
-        totalCounter: totalCounter,
-        insideCounter: insideCounter,
-        forcedCounter: forcedCounter,
-        groupsData: groupsData
-    });
 });
 
 module.exports = router;

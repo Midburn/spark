@@ -8,6 +8,9 @@ var Event = bookshelf.Model.extend({
 
     generateGateCode: function (code) {
         this.attributes.password = bcrypt.hashSync(code, bcrypt.genSaltSync(8), null);
+    },
+    loadProps: function() {
+        // this.attributes.json_data;
     }
 });
 

@@ -173,10 +173,12 @@ app.use('/api/gate', require('./routes/api_gate_routes'));
 // Camps / API
 // TODO this is not the right way to register routes
 require('./routes/api_routes.js')(app, passport);
+require('./routes/api_events_routes')(app, passport);
 require('./routes/api_camps_routes')(app, passport);
 require('./routes/camps_routes')(app, passport);
 require('./routes/api/v1/camps')(app); // CAMPS PUBLIC API
 require('./routes/api_camps_routes')(app, passport);
+require('./routes/api_events_routes')(app, passport);
 
 // Camps
 require('./routes/camps_routes')(app, passport);
