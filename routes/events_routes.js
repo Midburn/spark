@@ -25,8 +25,6 @@ module.exports = function (app, passport) {
         });
     });
 
-
-
     // Read
     app.get('/:lng/events-admin/:id', userRole.isLoggedIn(), (req, res) => {
 
