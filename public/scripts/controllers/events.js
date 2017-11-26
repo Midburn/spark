@@ -24,3 +24,20 @@ events_app.controller("eventsController", ($scope, $http, $filter) => {
         $scope.orderEvents = orderByValue;
     }
 })
+
+events_app.controller("eventsFormController", ($scope, $http, $filter) => {
+    $scope.event = {};
+    
+    $scope.close = function () {
+        //TODO: Need to configure correct close URL
+        // url = '../he/events-admin';
+        window.location.replace(url);
+    }
+
+    $scope.sendEvent = function () {
+        //TODO: Need to configure correct send event URL
+        // url = '../he/events-admin';
+        $http.post(url, $scope.event);
+    }
+
+})

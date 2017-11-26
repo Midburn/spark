@@ -13,6 +13,8 @@ module.exports = function (app, passport) {
     });
 
     // new camp
+    // need to be changed to /:lng/events-admin/edit
+    // creating a new event is availble directly form the UI- green button
     app.get('/:lng/events-admin/new', userRole.isAdmin(), (req, res) => {
 
         req.event = {};

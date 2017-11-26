@@ -153,7 +153,7 @@ function extractCampData() {
 }
 
 /**
- * Component: Editing camp
+ * Component: Editing event
  * (PUT) /camps/:camp_id/edit
  */
 $('#camp_edit_save').click(function () {
@@ -209,7 +209,7 @@ $('#edit_type_other').click(function () {
 })
 
 /**
- * Component: Create new camp with approval modal
+ * Component: Create new event with approval modal
  */
 $('#camp_create_save').click(function () {
     var camp_data = extractCampData();
@@ -218,7 +218,7 @@ $('#camp_create_save').click(function () {
     $('#create_camp_request_modal').modal('show');
     _campAppendData();
     // approve create camp
-    $('#camp_create_save_modal_request').click(function () {
+    $('#event_create_save_modal_request').click(function () {
         _sendRequest();
     });
 
