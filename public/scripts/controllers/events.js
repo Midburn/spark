@@ -36,7 +36,7 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
 
     $scope.sendEvent = function () {
         //TODO: Need to configure correct send event URL
-        // url = '../he/events-admin';
+        const url = '/events/new';
         $http.post(url, $scope.event);
     }
 
