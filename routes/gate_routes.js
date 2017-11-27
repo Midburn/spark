@@ -5,7 +5,6 @@ var router = express.Router({
 
 var knex = require('../libs/db').knex;
 var userRole = require('../libs/user_role');
-var security = require('../libs/security');
 var Event = require('../models/event').Event;
 var constants = require('../models/constants');
 
@@ -18,7 +17,8 @@ router.get('/', userRole.isGateManager(), function (req, res) {
     });
 });
 
-router.get('/ajax/tickets', [/*security.protectJwt, */userRole.isGateManager()], async function (req, res) {
+router.get('/ajax/tickets',
+    [userRole.isGateManager()], async function (req, res) {
     if (req.query.search) {
         const MINIMUM_LENGTH = 3;
 
