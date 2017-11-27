@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -e
 
 source .travis/functions.sh
 
@@ -11,11 +11,10 @@ if [ "$TRAVIS_REPO_SLUG" = "Midburn/spark" ]; then
 	if [ -n "${SPARK_DEPLOYMENT_KEY}" ]; then
 		if [ "$TRAVIS_BRANCH" = "master" ]; then
 			echo "Deploying to staging server from $TRAVIS_BRANCH branch"
-			echo -e ${SPRAK_DEPLOYMENT_KEY} | base64 -d > stage_machine.key
+			echo -e ${SPARK_DEPLOYMENT_KEY} | base64 -d > stage_machine.key
 			chmod 400 stage_machine.key
-			cat stage_machine.key
-			scp -v -o StrictHostKeyChecking=no -o ConnectTimeout=60 -i stage_machine.key `_get_deployment_package_filename` "${SPARK_DEPLOYMENT_HOST}:/opt/spark/package.tar.gz" &&
-			  ssh -v -o StrictHostKeyChecking=no -o ConnectTimeout=60 -i stage_machine.key ${SPARK_DEPLOYMENT_HOST} "/opt/spark/deploy.sh"
+			scp -o StrictHostKeyChecking=no -i stage_machine.key `_get_deployment_package_filename` "${SPARK_DEPLOYMENT_HOST}:/opt/spark/package.tar.gz" &&
+			  ssh -o StrictHostKeyChecking=no -i stage_machine.key ${SPARK_DEPLOYMENT_HOST} "/opt/spark/deploy.sh"
 			RC=$?
 			rm -f stage_machine.key
 			if [ $RC -eq 0 ]; then
