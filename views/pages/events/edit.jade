@@ -42,10 +42,10 @@ block content
                                 input.form-control(id='event_id', dir='ltr', name='event_id', value=(isNew ? '' : '#{event.id}'))
                             .col-xs-12
                                 label(for='start_date')=t('events:edit.start_date')
-                                input.form-control(id='start_date', dir='ltr', name='start_date', value=(isNew ? '' : '#{event.startDate}'))
+                                input.form-control(type='date' id='start_date', dir='ltr', name='start_date', value=(isNew ? '' : '#{event.startDate}'))
                             .col-xs-12
                                 label(for='start_presale_tickets')=t('events:edit.start_presale_tickets')
-                                input.form-control(id='start_presale_tickets', dir='ltr', name='start_presale_tickets', value=(isNew ? '' : '#{event.startPresaleTickets}'))
+                                input.form-control(type='date' id='start_presale_tickets', dir='ltr', name='start_presale_tickets', value=(isNew ? '' : '#{event.startPresaleTickets}'))
                             .col-xs-12
                                 label(for='tickets_info')=t('events:edit.tickets_info')
                                 input.form-control(id='tickets_info', dir='ltr', name='tickets_info', value=(isNew ? '' : '#{event.ticketsInfo}'))
@@ -69,14 +69,14 @@ block content
                                 input.form-control(id='previous_event_id', dir='ltr', name='event_id', value=(isNew ? '' : '#{event.previousEventId}') )       
                             .col-xs-12
                                 label(for='end_date')=t('events:edit.end_date')
-                                input.form-control(id='end_date', dir='ltr', name='end_date', value=(isNew ? '' : '#{event.endDate}'))
+                                input.form-control(type='date' id='end_date', dir='ltr', name='end_date', value=(isNew ? '' : '#{event.endDate}'))
                             .col-xs-12
                                 label(for='end_presale_tickets')=t('events:edit.end_presale_tickets')
-                                input.form-control(id='end_presale_tickets', dir='ltr', name='end_presale_tickets', value=(isNew ? '' : '#{event.endPresaleTickets}'))
+                                input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets', value=(isNew ? '' : '#{event.endPresaleTickets}'))
                             .col-xs-12
                                 label(for='url')=t('events:edit.url')
                                 input.form-control(id='url', dir='ltr', name='url', value=(isNew ? '' : '#{event.url}'))
                             
                     .modal-footer
-                        button.Btn.Btn__transparent(id='event_camp_close_btn', type='button', data-dismiss='modal')=t('events:new.close')
+                        button.Btn.Btn__transparent(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('events:new.close')
                         button.Btn.Btn__green(id='event_create_save_modal_request', type='button')=t('events:new.send_request')
