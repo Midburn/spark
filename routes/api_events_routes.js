@@ -2,6 +2,11 @@ var log = require('../libs/logger')(module);
 const Event = require('../models/event').Event
 const userRole = require('../libs/user_role');
 
+var createEvent = function(req) {
+    log.debug('Saving event ' + req.body);
+    return req.body;
+}
+
 module.exports = (app, passport) => {
 
     app.get('/events', (req, res) => {
@@ -26,7 +31,7 @@ module.exports = (app, passport) => {
     app.post('/events/new', 
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
-            Events.forge(_creatEvent(req)).save()
+            Event.forge(createEvent(req)).save()
             .then(res.send(200))
             .catch((e) => {
                 res.status(500).json({
@@ -53,19 +58,6 @@ module.exports = (app, passport) => {
             });    
         });
 
-    /**
-      * API: (POST) create event
-      * request => /events/new
-      */
-    app.post('/events/new',
-        [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
-        (req, res) => {
-            log.debug('EventsAPI new');
-        });
-    /**
-       * API: (PUT) save camp data
-       * request => /events/1/edit
-       */
     app.put('/events/:event/edit', 
         userRole.isLoggedIn(),
         (req, res) => {
