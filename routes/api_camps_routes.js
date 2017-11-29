@@ -51,6 +51,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
             var user = camp.isUserInCamp(user_id, true);
             var camp_manager = camp.isCampManager(camp.attributes.main_contact);
             // camp manager commands
+            var addinfo_jason;
             if (action === 'approve_new_mgr' && (camp_mgr_id === camp.attributes.main_contact || isAdmin)) {
                 new_status = 'approved';
                 if (!user) {
@@ -76,6 +77,8 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     new_status = 'rejected';
                 } else if (user && action === "revive") {
                     new_status = 'pending';
+                } else if (user && action === "pre_sale_ticket"){
+                    addinfo_jason_subAction ="pre_sale_ticket";
                 } else if (action === "request_mgr") {
                     if (group_options.auto_approve_new_members) {
                         new_status = 'approved';
@@ -122,7 +125,97 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     }
                 }
             }
-            if (new_status) {
+
+            var _after_update = () => {
+                var data = {
+                    camp_id: camp.attributes.id,
+                    user_id: user_id,
+                };
+                console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
+                if (group_options.send_mail && mail_delivery.template !== '') {
+                    if (user) {
+                        let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.email;
+                        //emailDeliver(email, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
+                    } else {
+                        User.forge({ user_id: user_id }).fetch().then((user) => {
+                            let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.attributes.email;
+                           // emailDeliver(email, mail_delivery.subject, mail_delivery.template, { user: user.toJSON(), camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
+                        });
+                    }
+                }
+                var res_data = { data: { member: data } };
+                if (action === 'approve_new_mgr') {
+                    res_data.data.message = 'camp created';
+                    res_data.data.camp_id = camp_id;
+                }
+                res.status(200).json(res_data);
+
+            }
+
+            //check if the request is to update the addinfo_json column 
+            if(addinfo_jason_subAction){
+                var userData = {
+                    camp_id: camp.attributes.id,
+                    user_id: user_id,
+   
+                };
+                
+                /*
+                here we pass the query info from the SQL 
+                and check the json inof
+                */
+                function _get_json_data (resp,addinfo_jason_subAction){
+                    var userData = {
+                        camp_id: camp.attributes.id,
+                        user_id: user_id,
+                        addinfo_json : resp[0].addinfo_json,
+                    };
+                    var jsonInfo;
+                    //first check if its null
+                    //if so then set it the value
+                    if(addinfo_jason_subAction == "pre_sale_ticket"){
+                        if(userData.addinfo_json == null){
+                            jsonInfo = {"pre_sale_ticket": "true"};
+                        }
+                        else{
+                            //if the object is not null then parse it and toggle the current value 
+                            jsonInfo=JSON.parse(userData.addinfo_json);
+                            if(jsonInfo.pre_sale_ticket == "true"){
+                                jsonInfo.pre_sale_ticket = "false";
+                            } 
+                            else {
+                                jsonInfo.pre_sale_ticket ="true";
+                            }
+                        }
+                    }
+                    //update the table with the new value of the json info
+                    //on success go to _after_update callback
+                    jsonInfo = JSON.stringify(jsonInfo) 
+                    knex(constants.CAMP_MEMBERS_TABLE_NAME).update({addinfo_json : jsonInfo})
+                        .where({
+                            camp_id : userData.camp_id, 
+                            user_id : userData.user_id
+                        })
+                        .then(_after_update).catch((e)=>{
+                        console.log(e);
+                    })
+                }
+
+                //select the addinfo_json column from the camp member table
+                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('addinfo_json')
+                .where({
+                    camp_id : userData.camp_id, 
+                    user_id : userData.user_id
+                })
+                .then( resp =>{
+                    //pass the response to the process method
+                    _get_json_data(resp,addinfo_jason_subAction)
+                })
+                .catch((e)=>{
+                    console.log(e);
+                })
+            }
+            else if (new_status) {
                 var data = {
                     camp_id: camp.attributes.id,
                     user_id: user_id,
@@ -134,27 +227,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                 } else {
                     query = 'UPDATE ' + constants.CAMP_MEMBERS_TABLE_NAME + ' SET status="' + data.status + '" WHERE camp_id=' + data.camp_id + ' AND user_id=' + data.user_id + ';';
                 }
-                var _after_update = () => {
-                    console.log(action + " from camp " + data.camp_id + " of user " + data.user_id + " / status: " + data.status);
-                    if (group_options.send_mail && mail_delivery.template !== '') {
-                        if (user) {
-                            let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.email;
-                            emailDeliver(email, mail_delivery.subject, mail_delivery.template, { user: user, camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
-                        } else {
-                            User.forge({ user_id: user_id }).fetch().then((user) => {
-                                let email = mail_delivery.to_mail !== '' ? mail_delivery.to_mail : user.attributes.email;
-                                emailDeliver(email, mail_delivery.subject, mail_delivery.template, { user: user.toJSON(), camp: camp.toJSON(), camp_manager: camp_manager }); // notify the user
-                            });
-                        }
-                    }
-                    var res_data = { data: { member: data } };
-                    if (action === 'approve_new_mgr') {
-                        res_data.data.message = 'camp created';
-                        res_data.data.camp_id = camp_id;
-                    }
-                    res.status(200).json(res_data);
-
-                }
+                
                 knex.raw(query).then(_after_update);
             } else {
                 res.status(404).json({ error: true, data: { message: "Cannot execute this command." } });
@@ -507,7 +580,7 @@ module.exports = (app, passport) => {
         var user_id = req.params.user_id;
         var camp_id = req.params.camp_id;
         var action = req.params.action;
-        var actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr'];
+        var actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket'];
         if (actions.indexOf(action) > -1) {
             __camps_update_status(camp_id, user_id, action, req.user, res);
         } else {
@@ -852,6 +925,7 @@ module.exports = (app, passport) => {
                             member.cell_phone = '';
                             member.name = '';
                         }
+                        
                         delete member.email;
                         delete member.first_name;
                         delete member.last_name;
@@ -866,6 +940,18 @@ module.exports = (app, passport) => {
                         return member;
                     });
                 }
+
+                for (var i in members) {
+                    if(members[i].camps_members_addinfo_json){
+                        var addinfo_json = JSON.parse(members[i].camps_members_addinfo_json);
+                        if(addinfo_json.pre_sale_ticket == "true"){
+                            members[i].pre_sale_ticket = true;
+                        }
+                    } else{
+                        members[i].pre_sale_ticket = false;
+                    }    
+                }
+
                 result = camp.parsePrototype(req.user);
 
                 if (isCampManager || (result && result.isAdmin)) {

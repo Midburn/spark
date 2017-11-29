@@ -126,7 +126,7 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
-    CURRENT_EVENT_ID: 'MIDBURN2018',
+    CURRENT_EVENT_ID: 'MIDBURN2017',
     events,
 
     // -- table names --

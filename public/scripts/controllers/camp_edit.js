@@ -11,16 +11,28 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             var approved_members = [];
             var total_camp_tickets = 0;
             var total_in_event = 0;
+            var preSaleCounter=0;
             for (var i in members) {
-                if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(members[i].member_status) > -1) {
-                    _members.push(members[i]);
+                var newMember=members[i]
+                if(members[i].pre_sale_ticket){
+                    newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
+                    if(newMember.pre_sale_ticket_approved == true){
+                        preSaleCounter++;
+                    }
                 }
-                if (['approved', 'approved_mgr'].indexOf(members[i].member_status) > -1) {
-                    approved_members.push(members[i]);
+                else{
+                    newMember.pre_sale_ticket_approved = false;
                 }
-                total_in_event += parseInt(members[i].inside_event);
-                total_camp_tickets += parseInt(members[i].ticket_count) || 0;
+                if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(newMember.member_status) > -1) {
+                    _members.push(newMember);
+                }
+                if (['approved', 'approved_mgr'].indexOf(newMember.member_status) > -1) {
+                    approved_members.push(newMember);
+                }
+                total_in_event += parseInt(newMember.inside_event);
+                total_camp_tickets += parseInt(newMember.ticket_count) || 0;
             }
+            $scope.preSaleCounter = preSaleCounter;
             $scope.members = _members;
             $scope.approved_members = approved_members;
             $scope.all_approved_members = approved_members.length;
@@ -46,7 +58,8 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             delete: 'למחוק את',
             reject: 'לדחות את',
             approve_mgr: 'להפוך למנהל את',
-            remove: 'להסיר את'
+            remove: 'להסיר את',
+            pre_sale_ticket : 'לאשר כרטיס מוקדם ל',
         };
         tpl = {
             alert_title: "האם את/ה בטוח?",
@@ -61,7 +74,8 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             delete: 'Delete',
             reject: 'Reject',
             approve_mgr: 'Set Manager',
-            remove: 'Remove'
+            remove: 'Remove',
+            pre_sale_ticket: 'Update Pre Sale Ticket',
         };
         tpl = {
             alert_title: "Are you sure?",
@@ -149,14 +163,37 @@ app.controller("campEditController", ($scope, $http, $filter) => {
             sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
         });
     }
-    $scope.updateUser = (user_name, user_id, action_type) => {
+    $scope.updateUser = (user_name, user_id,action_type) => {
+        var camp_id = $scope.current_camp_id;
+        var user_rec = {
+            camp_id: camp_id,
+            user_name: user_name,
+            user_id: user_id,
+            addinfo_json : parsedJsonInfo,
+        }
+        angular_updateUser($http, $scope, action_type, user_rec);
+    }
+    $scope.updatePreSaleTicket = (user_name, user_id,action_type,pre_sale_ticket_approved) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
             camp_id: camp_id,
             user_name: user_name,
             user_id: user_id,
         }
-        angular_updateUser($http, $scope, action_type, user_rec);
+        if(document.getElementById('pre_sale_ticket_quota').value <= $scope.preSaleCounter && pre_sale_ticket_approved == false)
+        {
+            var lang = $scope.lang;
+            if(lang == "en"){
+                sweetAlert("Pre sale ticket quota exceeded");
+            }
+            else{
+                sweetAlert("עברת את מכסת הכרטיסים המותרת");
+            }
+        } else{
+            angular_updateUser($http, $scope, action_type, user_rec);
+        }
+        
+
     }
 });
 
