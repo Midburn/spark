@@ -18,11 +18,11 @@ userRole.isCampsAdmin = function () {
 };
 userRole.ART_INSTALLATION_ADMIN = 'art_installations_admin';
 userRole.isArtInstallationsAdmin = function () {
-    return userRole.is(userRole.ART_INSTALLATION_ADMIN) || userRole.is(userRole.ADMIN);;
+    return userRole.is(userRole.ART_INSTALLATION_ADMIN) || userRole.is(userRole.ADMIN);
 };
 userRole.PROD_DEP_ADMIN = 'prod_deps_admin';
 userRole.isProdDepsAdmin = function () {
-    return userRole.is(userRole.PROD_DEP_ADMIN) || userRole.is(userRole.ADMIN);;
+    return userRole.is(userRole.PROD_DEP_ADMIN) || userRole.is(userRole.ADMIN);
 };
 
 userRole.CAMP_MANAGER = 'camp_manager';

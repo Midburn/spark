@@ -1,6 +1,5 @@
 const common = require('../libs/common').common;
 const _ = require('lodash');
-const Event = require('../models/event').Event;
 const User = require('../models/user').User;
 const Camp = require('../models/camp').Camp;
 const constants = require('../models/constants.js');

@@ -2,6 +2,7 @@ const userRole = require('../libs/user_role');
 // const constants = require('../models/constants');
 // var Event = require('../models/event').Event;
 const Event = require('../models/event').Event;
+const _ = require('lodash')
 
 module.exports = function (app, passport) {
 
@@ -13,6 +14,8 @@ module.exports = function (app, passport) {
     });
 
     // new camp
+    // need to be changed to /:lng/events-admin/edit
+    // creating a new event is availble directly form the UI- green button
     app.get('/:lng/events-admin/new', userRole.isAdmin(), (req, res) => {
 
         req.event = {};
@@ -23,49 +26,35 @@ module.exports = function (app, passport) {
         });
     });
 
-
-
     // Read
     app.get('/:lng/events-admin/:id', userRole.isLoggedIn(), (req, res) => {
-
-        req.event = {
-            'created_at': '01-01-2017',
-            'id': req.params.id,
-            'previousEventId': '8888888',
-            'event_desc_he': 'אירוע קיים',
-            'event_desc_en': 'Exist Event',
-            'event_name_he': 'שם אירוע קיים',
-            'event_name_en': 'Exist event name',
-            'startDate': '01-01-2000',
-            'endDate': '31-12-2000',
-            'startPresaleTickets': '10-10-1999',
-            'endPresaleTickets': '20-10-1999',
-            'communityCamps': true,
-            'communityArtInstallation': false,
-            'communityProdDep': true,
-            'ticketsInfo': "{json}",
-            'url': "www.someWebSite.com"
-        };
-
-        res.render('pages/events/edit', {
-
-            event: req.event,
-            user: req.user,
-            // isNew: true
-
-            // camp_name_en: req.query.c,
-            // breadcrumbs: req.breadcrumbs(),
-            // camp: { type: '', id: 'new' },
-            // details: {},
-            // isAdmin: result.isAdmin,
-            // isNew: true,
-            // __groups_prototype: prototype,
-            // t_prefix: result.t_prefix,
-            // isArt: prototype === constants.prototype_camps.ART_INSTALLATION.id,
-            // isCamp: prototype === constants.prototype_camps.THEME_CAMP.id,
-            // isProd: prototype === constants.prototype_camps.PROD_DEP.id,
-        });
-
+        Event.where({event_id: req.params.id}).fetch()
+            .then((event) => {
+                
+                req.event = {
+                    'created_at': '01-01-2017', //TODO: need to add attribute from DB
+                    'id': req.params.id,
+                    'previousEventId': '8888888', //TODO: need to add attribute from DB
+                    'gate_code': _.get(event.attributes, 'gate_code'),
+                    'event_desc_he': _.get(event.attributes, 'name'),
+                    'event_desc_en': _.get(event.attributes, 'name'),
+                    'event_name_he': _.get(event.attributes, 'name'),
+                    'event_name_en': _.get(event.attributes, 'name'),
+                    'startDate': _.get(event.attributes, 'addinfo_json.startDate'),
+                    'endDate': _.get(event.attributes, 'addinfo_json.endDate'),
+                    'startPresaleTickets': _.get(event.attributes, 'addinfo_json.startPresaleTickets'),
+                    'endPresaleTickets': _.get(event.attributes, 'addinfo_json.endPresaleTickets'),
+                    'community_camps' : '', //TODO: need to add attribute from DB
+                    'community_art_installation': '', //TODO: need to add attribute from DB
+                    'community_prod_dep': '', //TODO: need to add attribute from DB
+                    'tickets_info': '', //TODO: need to add attribute from DB
+                };
+                res.render('pages/events/edit', {
+                    event: req.event,
+                    user: req.user,
+                });
+                    
+            })
     });
 
     // Edit
