@@ -8,6 +8,7 @@ table.table.table-striped.table-hover
         th(ng-click='changeOrderBy("member_status_i18n")')=t('camps:members.status')
         th(ng-click='changeOrderBy("ticket_count")')=t('camps:members.ticket_count')
         th(ng-click='changeOrderBy("inside_event")')=t('camps:members.inside_event')
+        th(ng-click='changeOrderBy("pre_sale_ticket_approved")')=t('camps:members.pre_sale_ticket_approved')
         //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
         th()=t('camps:members.actions')
     tbody
@@ -19,6 +20,8 @@ table.table.table-striped.table-hover
             td {{member.member_status_i18n}}
             td {{member.ticket_count}}
             td {{member.inside_event}}
+            td 
+                input(id='pre_sale_ticket_approved' type="checkbox" name="ticket_approved" ng-checked="{{member.pre_sale_ticket_approved}}" ng-model="member.pre_sale_ticket_approved" disabled)
             //- td {{member.earlyArrival ? 'yes':'no'}}
             td
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject") &nbsp;
@@ -41,9 +44,25 @@ table.table.table-striped.table-hover
                     button.btn.btn-xs 
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.remove')
+                a.cursor-p(ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="member.pre_sale_ticket_approved === false") &nbsp;
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-ok' )
+                        =t('camps:members.pre_sale_ticket_approved')
+                a.cursor-p(ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)' ng-if="member.pre_sale_ticket_approved === true") &nbsp;
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove' )
+                        =t('camps:members.pre_sale_ticket_remove')
+                        
+
+                       
+
+                       
 .col-xs-6
     h4=t('camps:admin_index.total_approved_members')
         span.badge {{all_approved_members}}
 .col-xs-6
     h4=t('camps:admin_index.total_camp_tickets')
         span.badge {{total_camp_tickets}}
+.col-xs-6
+    h4=t(t('camps:edit.pre_sale_ticket_count'))
+        span.badge {{preSaleTicketsCount}}
