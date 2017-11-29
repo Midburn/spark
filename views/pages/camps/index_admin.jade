@@ -37,6 +37,7 @@ block content
                             //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t(t_prefix+'stats.created_at')
                             th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'stats.published')
                             th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t('camps:stats.entrance_quota')
+                            th.pre_sale_ticket_quota(ng-click='changeOrderBy("pre_sale_ticket_quota")')=t('camps:stats.pre_sale_ticket_quota')
                             //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
                             th()=t(t_prefix+'members.actions')
                             //- th.admin-edit=t(t_prefix+'stats.edit')
@@ -57,6 +58,7 @@ block content
                             td {{ camp.web_published }}
                             //- td
                             td {{ camp.entrance_quota }}
+                            td {{ camp.pre_sale_ticket_quota }}
                             td
                                 //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
                                     span(class='glyphicon glyphicon-pencil')
