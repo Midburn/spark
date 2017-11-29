@@ -94,3 +94,13 @@ knex migrate:make <migration_name>
 ```
 
 Edit the created file and write your migration. You can use the exising migration files as examples or refer to the [Knex.js documentation](http://knexjs.org/#Schema)
+
+### Populating the database
+
+It is usually helpful for developers to work with some data in the database. Use knex seed mechanism to populate the database for the first time after migration.
+
+```shell
+knex seed:run
+```
+
+You can then login into the system with the user `admin@midburn.org` and password `admin`.
