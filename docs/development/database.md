@@ -99,6 +99,8 @@ Edit the created file and write your migration. You can use the exising migratio
 
 It is usually helpful for developers to work with some data in the database. Use knex seed mechanism to populate the database for the first time after migration.
 
+**IMPORTANT**: Seeding will drop your current data.
+
 ```shell
 knex seed:run
 ```
