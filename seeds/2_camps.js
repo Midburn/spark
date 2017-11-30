@@ -2,13 +2,14 @@ var log = require('../libs/logger')(module);
 const camps = require('./dev/camps');
 
 exports.seed = function(knex, Promise) {
-    return Promise.resolve(() => {
-        let campPromises = [];
-        camps.forEach((camp) => {
-            campPromises.push(createCamp(knex, camp));
-        });
-        return Promise.all(campPromises);
-    })
+    log.info('Creating camps...');
+
+    let campPromises = [];
+    camps.forEach((camp) => {
+        campPromises.push(createCamp(knex, camp));
+    });
+    
+    return Promise.all(campPromises)
     .catch((error) => {
         log.error('Spark encountered an error while seeding camps:');
         log.error(error);
