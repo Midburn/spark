@@ -44,19 +44,18 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
     $scope.event.community_prod_dep;//TODO - capture form the DB
     $scope.event.tickets_info;//TODO - capture form the DB
     
-
-    $scope.close = function () {
-        const url = '/events-admin';
-            
+    $scope.close = function() {
+        var url = '/events-admin';
+        window.location.replace(url);
     }
 
     $scope.sendEvent = function () {
         const url = '/events/new';
         $http.post(url, $scope.event)
-        .success (function (response) {
+        .success(function(response) {
             alert("Event add to DB");
         })
-        .error (function() {
+        .error(function() {
             alert("Something went wrong");
         });
     }
