@@ -52,10 +52,10 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
     $scope.sendEvent = function () {
         const url = '/events/new';
         $http.post(url, $scope.event)
-        .success(function(response){
+        .success(function(response) {
             alert("Event add to DB");
         })
-        .error(function(){
+        .error(function() {
             alert("Something went wrong");
         });
     }
