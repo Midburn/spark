@@ -117,7 +117,7 @@ block content
                                     input.form-control(id='url', dir='ltr', name='url', ng-model='event.url')
                                 
                         .modal-footer
-                            a(href='./')=t('events:new.close')
-                                button.Btn.Btn__transparent(id='create_camp_close_btn')
+                            a(href='./')
+                                button.Btn.Btn__transparent(id='create_camp_close_btn')=t('events:new.close')
                             button.Btn.Btn__green(id='event_create_save_modal_request', ng-click="sendEvent()")=t('events:new.send_request')
   
