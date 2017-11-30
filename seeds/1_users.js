@@ -3,14 +3,14 @@ var log = require('../libs/logger')(module);
 const users = require('./dev/users');
 
 exports.seed = function(knex, Promise) {
-  return Promise.resolve(() => {
-    let userPromises = [];
-    users.forEach((user) => {
-      userPromises.push(cteateUser(user));
-    });
-    
-    return Promise.all(userPromises);
-  })
+  log.info('Creating users...');
+
+  let userPromises = [];
+  users.forEach((user) => {
+    userPromises.push(cteateUser(user));
+  });
+  
+  return Promise.all(userPromises)
   .catch((error) => {
     log.error('Spark encountered an error while seeding users:');
     log.error(error);
