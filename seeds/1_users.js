@@ -15,7 +15,6 @@ exports.seed = function(knex, Promise) {
     log.error('Spark encountered an error while seeding users:');
     log.error(error);
   });
-
 };
 
 /**
