@@ -1,15 +1,21 @@
-const common = require('../libs/common').common;
-const _ = require('lodash');
-const User = require('../models/user').User;
-const Camp = require('../models/camp').Camp;
-const constants = require('../models/constants.js');
-const knex = require('../libs/db').knex;
-const userRole = require('../libs/user_role');
-const config = require('config');
-const mail = require('../libs/mail');
-const mailConfig = config.get('mail');
-const csv = require('json2csv');
+const common = require('../libs/common').common,
+_ = require('lodash'),
+User = require('../models/user').User,
+Camp = require('../models/camp').Camp,
+constants = require('../models/constants.js'),
+knex = require('../libs/db').knex,
+userRole = require('../libs/user_role'),
+config = require('config'),
+mail = require('../libs/mail'),
+mailConfig = config.get('mail'),
+csv = require('json2csv'),
+awsConfig = config.get('aws_config'),
+LOG = require('../libs/logger')(module),
+s3 = require('../libs/aws-s3');
+
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
+const CONSTS = require('../consts');
+
 const emailDeliver = (recipient, subject, template, props) => {
 
     /**
@@ -512,6 +518,60 @@ module.exports = (app, passport) => {
         } else {
             res.status(404).json({ error: true, data: { message: "illegal command (" + action + ")" } });
         }
+    })
+
+    app.post('/camps/:camp_id/:doc_type/', userRole.isLoggedIn(), (req, res) => {
+
+        const camp_id = req.params.camp_id,
+             doc_type = req.params.doc_type;
+
+        // Check that the document type is valid
+        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
+            res.return(400).json({
+                 error: true,
+                 data: {
+                     message: 'Invalid document type'
+                 }
+             });
+        }
+
+        Camp.forge({id: camp_id}).fetch()
+        .then((camp) => {
+
+            if (!camp) {
+                res.return(500).json({
+                    error: true,
+                    message: 'Camp Id does not exist'
+                })
+            }
+
+            let data = req.files.file.data;
+            let fileName = `${camp.camp_name_en}/${doc_type}_${req.files.file.name}`;
+
+            // Upload the file to S3
+            s3.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
+            .then(() => {
+                // Get the URL for the file, so we can save to DB
+                let filePath = s3.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload);
+                // Add the file to the camp_files table
+                // If the file type exists, update
+                // If not, insert a new file record
+                //let campFiles = camp.files;
+
+                res.return(200).json({
+                    filePath: filePath
+                });
+            }).catch((err) => {
+                console.log(err);
+            })
+        }).catch((err) => {
+            LOG.error(err.message);
+            res.return(500).json({
+                error: true,
+                message: 'DB Error: could not connect or fetch data'
+            })
+        });
+
     })
 
     /**

@@ -15,6 +15,9 @@ var Camp = bookshelf.Model.extend({
     users_groups: function () {
         return this.hasOne(UsersGroup, 'group_id');
     },
+    files: function () {
+        return this.hasMany(CampFile, 'camp_id')
+    },
     /**
      * get this camp users. the result is on attributes.users or attributes.managers
      * to check if camp has manager check attributes.managers.length>0
@@ -81,6 +84,17 @@ var Camp = bookshelf.Model.extend({
                 done(users);
             });
     },
+    getCampFiles: function(camp_id) {
+        // let query = `SELECT * FROM ${constants.CAMP_FILES_TABLE_NAME} WHERE camp_id = ${camp_id}`
+        // let _this = this;
+
+        // return knex.raw(query)
+        // .then((raw_data) => {
+        //     _this.attributes.files = raw_data[0]
+        // })
+
+         return CampFile.where({camp_id: camp_id}).fetch();
+    },
     isCampManager: function (user_id) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.managers) {
@@ -131,7 +145,7 @@ var Camp = bookshelf.Model.extend({
     }
 });
 
-var CampMember = bookshelf.Model.extend({
+const CampMember = bookshelf.Model.extend({
     tableName: constants.CAMP_MEMBERS_TABLE_NAME,
     idAttribute: 'user_id,camp_id',
     users: function () {
@@ -142,6 +156,11 @@ var CampMember = bookshelf.Model.extend({
     }
 
 });
+
+const CampFile = bookshelf.Model.extend({
+    tableName: constants.CAMP_FILES_TABLE_NAME,
+    idAttribute: 'file_id',
+})
 
 // Create the model and expose it
 module.exports = {
