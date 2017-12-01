@@ -171,8 +171,8 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                         addinfo_json : resp[0].addinfo_json,
                     };
                     var jsonInfo;
-                    //first check if its null
-                    //if so then set it the value
+                    
+                    //check for the sub action in the json info
                     if(addinfo_jason_subAction == "pre_sale_ticket"){
 
                         //if the user is not approved yet in the
@@ -183,6 +183,8 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                             throw new Error(res.json({ error: true, data: {message: "Cannot assign Pre-sale ticket to pending user" }}));   
                         }
 
+                        //check if the json info is null
+                         //if so then set it the value as this is the first init of the data
                         if(userData.addinfo_json == null){
                             jsonInfo = {"pre_sale_ticket": "true"};
                         }
@@ -974,9 +976,11 @@ module.exports = (app, passport) => {
                     });
                 }
                 
+                //check eahc memebr and send to the client the jason info
                 for (var i in members) {
                     if(members[i].camps_members_addinfo_json){
                         var addinfo_json = JSON.parse(members[i].camps_members_addinfo_json);
+                        //check for pre sale ticket info and update the memebr
                         if(addinfo_json.pre_sale_ticket == "true"){
                             members[i].pre_sale_ticket = true;
                         }
