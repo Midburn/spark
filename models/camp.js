@@ -84,17 +84,6 @@ var Camp = bookshelf.Model.extend({
                 done(users);
             });
     },
-    getCampFiles: function(camp_id) {
-        // let query = `SELECT * FROM ${constants.CAMP_FILES_TABLE_NAME} WHERE camp_id = ${camp_id}`
-        // let _this = this;
-
-        // return knex.raw(query)
-        // .then((raw_data) => {
-        //     _this.attributes.files = raw_data[0]
-        // })
-
-         return CampFile.where({camp_id: camp_id}).fetch();
-    },
     isCampManager: function (user_id) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.managers) {
