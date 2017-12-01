@@ -197,7 +197,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                             }
                         }
 
-                        //if we are going to set a oresale ticket to true, e eed to check if the quota is ok
+                        //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
                         if(jsonInfo.pre_sale_ticket == "true"){
                             //first count how many pre sale tickets are assinged to the camp members
                             var preSaleTicketsCount=0;
@@ -210,7 +210,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                                 }    
                             }
 
-                            //if the pre sale ticket count equa or higher than the qouta
+                            //if the pre sale ticket count equal or higher than the quota
                             //reject the reuest 
                             if(preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota)
                             {
