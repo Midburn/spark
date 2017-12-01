@@ -140,7 +140,7 @@ var User = bookshelf.Model.extend({
         };
         if (prototype !== 'all') _where['__prototype'] = prototype;
         knex(_camps)
-            .select(_camps + '.*', _camps_members + '.status AS member_status', 'users_groups.entrance_quota')
+            .select(_camps + '.*', _camps_members + '.status AS member_status',_camps_members + '.addinfo_json AS camps_members_addinfo_json','users_groups.entrance_quota')
             .innerJoin(_camps_members, _camps + '.id', _camps_members + '.camp_id')
             .innerJoin('users_groups', _camps + '.id', 'users_groups.group_id')
             .where(_where)
