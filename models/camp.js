@@ -160,11 +160,15 @@ const CampMember = bookshelf.Model.extend({
 const CampFile = bookshelf.Model.extend({
     tableName: constants.CAMP_FILES_TABLE_NAME,
     idAttribute: 'file_id',
+    camp: function() {
+        return belongsTo(Camp);
+    }
 })
 
 // Create the model and expose it
 module.exports = {
     Camp: Camp,
     CampMember: CampMember,
+    CampFile: CampFile
     // __parsePrototype: __parsePrototype,
 };
