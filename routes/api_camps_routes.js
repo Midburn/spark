@@ -545,7 +545,15 @@ module.exports = (app, passport) => {
             })
         }
 
-        let data = req.files.file.data;
+        let data;
+        try {
+            data = req.files.file.data;
+        } catch (err) {
+            return res.status(400).json({
+                error: true,
+                message: 'No file attached to request'
+            })
+        }
         let fileName = `${camp.attributes.camp_name_en}/${doc_type}_${req.files.file.name}`
 
         // Upload the file to S3
@@ -599,6 +607,48 @@ module.exports = (app, passport) => {
         return res.status(200).json({
             error: false
         })
+    })
+
+    app.get('/camps/:camp_id/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
+        const camp_id = req.params.camp_id,
+        doc_type = req.params.doc_type
+
+        // Check that the document type is valid
+        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
+            return res.return(400).json({
+                 error: true,
+                 data: {
+                     message: 'Invalid document type'
+                 }
+             })
+        }
+
+        let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
+
+        if (!camp) {
+            return res.status(500).json({
+                error: true,
+                message: 'Camp Id does not exist'
+            })
+        }
+
+        let existingFile = camp.relations.files.models.find((file) => {
+            if (file.attributes.file_type === doc_type) {
+                return file
+            }
+        })
+
+        if (existingFile) {
+            return res.status(200).json({
+                error: false,
+                path: existingFile.attributes.file_path
+            })
+        } else {
+            return res.status(404).json({
+                error: true,
+                message: 'File does not exist'
+            })
+        }
     })
 
     /**
