@@ -174,15 +174,6 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     //first check if its null
                     //if so then set it the value
                     if(addinfo_jason_subAction == "pre_sale_ticket"){
-
-                        //if the user is not approved yet in the camp
-                        //reject the reuest 
-                        if(user.member_status === 'pending')
-                        {
-                            res.status(500);
-                            throw new Error(res.json({ error: true, data: {message: "Cannot assign Pre-sale ticket to pending user" }}));   
-                        }
-
                         if(userData.addinfo_json == null){
                             jsonInfo = {"pre_sale_ticket": "true"};
                         }
@@ -196,30 +187,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                                 jsonInfo.pre_sale_ticket ="true";
                             }
                         }
-
-                        //if we are going to set a oresale ticket to true, e eed to check if the quota is ok
-                        if(jsonInfo.pre_sale_ticket == "true"){
-                            //first count how many pre sale tickets are assinged to the camp members
-                            var preSaleTicketsCount=0;
-                            for (var i in users) {
-                                if(users[i].camps_members_addinfo_json){
-                                    var addinfo_json = JSON.parse(users[i].camps_members_addinfo_json);
-                                    if(addinfo_json.pre_sale_ticket == "true"){
-                                        preSaleTicketsCount++
-                                    }
-                                }    
-                            }
-
-                            //if the pre sale ticket count equa or higher than the qouta
-                            //reject the reuest 
-                            if(preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota)
-                            {
-                                res.status(500);
-                                throw new Error(res.json({ error: true, data: {message: "exceed pre sale tickets quota" }}));   
-                            }
-                        }
                     }
-                    
                     //update the table with the new value of the json info
                     //on success go to _after_update callback
                     jsonInfo = JSON.stringify(jsonInfo) 
@@ -233,7 +201,6 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     })
                 }
 
-                
                 //select the addinfo_json column from the camp member table
                 knex(constants.CAMP_MEMBERS_TABLE_NAME).select('addinfo_json')
                 .where({
