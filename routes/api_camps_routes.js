@@ -165,53 +165,11 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
    
                 };
 
-                //select the addinfo_json column from the camp member table
-                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('addinfo_json')
-                .where({
-                    camp_id : userData.camp_id, 
-                    user_id : userData.user_id
-                })
-                .then(resp => {
-                    //pass the response to the process method
-                    _get_json_data(resp,addinfo_jason_subAction)
-                })
-                .catch((e) => {
-                    console.log(e);
-                })
-            }
-            else if (new_status) {
-                var data = {
-                    camp_id: camp.attributes.id,
-                    user_id: user_id,
-                    status: new_status
-                };
-                var query = '';
-                if (save_method.method === 'insert') {
-                    query = knex(constants.CAMP_MEMBERS_TABLE_NAME).insert(data).toString();
-                } else {
-                    query = 'UPDATE ' + constants.CAMP_MEMBERS_TABLE_NAME + ' SET status="' + data.status + '" WHERE camp_id=' + data.camp_id + ' AND user_id=' + data.user_id + ';';
-                }
-                
-                knex.raw(query).then(_after_update);
-            } else {
-                res.status(404).json({ error: true, data: { message: "Cannot execute this command." } });
-            }
-        });
-    }).catch((e) => {
-        res.status(500).json({
-            error: true,
-            data: {
-                message: e.message
-            }
-        })
-    });
-}
-
-/*
+                 /*
                 here we pass the query info from the SQL 
                 and check the json inof
                 */
-                function _get_json_data (resp,addinfo_jason_subAction) {
+                var _get_json_data = (resp,addinfo_jason_subAction) => {
                     var userData = {
                         camp_id: camp.attributes.id,
                         user_id: user_id,
@@ -279,7 +237,48 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                         console.log(e);
                     })
                 }
+                //select the addinfo_json column from the camp member table
+                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('addinfo_json')
+                .where({
+                    camp_id : userData.camp_id, 
+                    user_id : userData.user_id
+                })
+                .then(resp => {
+                    //pass the response to the process method
+                    _get_json_data(resp,addinfo_jason_subAction)
+                })
+                .catch((e) => {
+                    console.log(e);
+                })
+            }
+            else if (new_status) {
+                var data = {
+                    camp_id: camp.attributes.id,
+                    user_id: user_id,
+                    status: new_status
+                };
+                var query = '';
+                if (save_method.method === 'insert') {
+                    query = knex(constants.CAMP_MEMBERS_TABLE_NAME).insert(data).toString();
+                } else {
+                    query = 'UPDATE ' + constants.CAMP_MEMBERS_TABLE_NAME + ' SET status="' + data.status + '" WHERE camp_id=' + data.camp_id + ' AND user_id=' + data.user_id + ';';
+                }
                 
+                knex.raw(query).then(_after_update);
+            } else {
+                res.status(404).json({ error: true, data: { message: "Cannot execute this command." } });
+            }
+        });
+    }).catch((e) => {
+        res.status(500).json({
+            error: true,
+            data: {
+                message: e.message
+            }
+        })
+    });
+}
+
 module.exports = (app, passport) => {
     /**
      * API: (GET) get user by id
@@ -405,6 +404,7 @@ module.exports = (app, passport) => {
             __update_prop('camp_location_street');
             __update_prop('camp_location_street_time');
             __update_prop('camp_location_area');
+            __update_prop('pre_sale_tickets_quota');
         }
         if (camp_statuses.indexOf(req.body.camp_status) > -1) {
             data.status = req.body.camp_status;

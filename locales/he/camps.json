@@ -138,7 +138,7 @@
         "remove": "הסרה",
         "search": "חפש מחנה",
         "entrance_quota": "מכסת הגעה מוקדמת",
-        "pre_sale_ticket_quota": "מכסת מכירה מוקדמת",
+        "pre_sale_tickets_quota": "מכסת מכירה מוקדמת",
         "pre_sale_ticket_count": "סה״כ כרטיסים במכירה מוקדמת"
     },
     "members": {
@@ -259,7 +259,7 @@
         "contact_person_email": "אימייל איש קשר",
         "contact_person_phone": "טלפון אישר קשר",
         "early_arrival_quota": "כמות מגיעים מוקדם",
-        "pre_sale_ticket_quota": "מכסת כרטיסים במכירה מוקדמת",
+        "pre_sale_tickets_quota": "מכסת כרטיסים במכירה מוקדמת",
         "pre_sale_ticket_count": "סה״כ כרטיסים במכירה מוקדמת",
         "security_file": "תיק בטיחות",
         "members_header": "נהל חברי מחנה",

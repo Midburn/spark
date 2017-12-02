@@ -148,7 +148,8 @@ function extractCampData() {
         camp_location_street: $('#camp_location_street').val() || '',
         camp_location_street_time: $('#camp_location_street_time').val() || '',
         camp_location_area: $('#camp_location_area').val() || '',
-        entrance_quota : $('#entrance_quota').val() || ''
+        entrance_quota : $('#entrance_quota').val() || '',
+        pre_sale_tickets_quota : $('#pre_sale_tickets_quota').val() || ''
     };
 }
 
