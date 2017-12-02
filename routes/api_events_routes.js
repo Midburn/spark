@@ -19,6 +19,11 @@ var createEvent = function(req) {
         addinfo_json: JSON.stringify({
             start_date: _.get(req, 'body.start_date'),
             end_date: _.get(req, 'body.end_date'),
+            previousEventId: _.get(req, 'body.previousEventId'),
+            event_desc_he: _.get(req, 'body.event_desc_he'),
+            event_desc_en: _.get(req, 'body.event_desc_en'),
+            event_name_he: _.get(req, 'body.event_name_he'),
+            event_name_en: _.get(req, 'body.event_name_en')
         }),//_.get(req,'body.addinfo_json'),
         name: _.get(req, 'body.event_name_he') + _.get(req, 'body.event_name_en'),
         gate_code: _.get(req, 'body.gateCode'),
