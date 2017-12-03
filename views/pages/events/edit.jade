@@ -18,22 +18,10 @@ block content
         }
     .camps.camp_edit(ng-app="ngEvents", ng-controller="eventsFormController")
         .heading.card.card__shad
-            .card__actions
-                if(isCamp)
-                    .dropdown
-                        a.Btn.btn-default(href='/#{language}/camps/#{event.id}')=t('camps:edit.view')
-            if(isNew)
-                h2=t('events:new.header_title')
-                h4=t('events:new.header_desc')
-            else
                 if(event_name = language.includes('he') ? event.event_name_he : event.event_name_en )
-                span.label.label-info #{t(t_prefix+'edit.camp')} # #{event.id}
-                h2 #{t('event:edit.title')}: #{event_name}
-                h6 #{t('event:edit.since')}: #{event.created_at}
-        .controls.row
-            .col-xs-12
-                //- Card switcher
-                button.Btn.Btn__default.card-switcher#1=t('events:edit.basic_info')
+                span.label.label-info #{t(t_prefix+'edit.event')} # #{event.id}
+                h2 #{t('events:edit.title')}: #{event_name}
+                h6 #{t('events:edit.since')}: #{event.created_at}
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
