@@ -24,6 +24,8 @@
         "send_request":"Create New Event"
     },
     "edit": {
+        "title":"Edit The Event",
+        "since":"Event Creation Date",
         "basic_info":"Event Details",
         "name_en": "Name (English)",
         "name_he": "Name (Hebrew)",
