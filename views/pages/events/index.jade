@@ -2,7 +2,6 @@ extends ../../includes/page
 block content
     script.
         newEvent="true";
-    input.hidden.meta(id='meta__new', value='false')
     .camps.camp_admin_index(ng-app="ngEvents")
         .container.col-md-12
             h1=t(t_prefix+'dash.title')
@@ -19,28 +18,18 @@ block content
         .cards--wrapper.card__shad
             //- Card 1    
             .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="eventsController")
-                h4=t(t_prefix+'admin.all_events_table')
-                .controls.row
-                  .col-xs-12.col-md-9
-                        input.form-control(id='camps_list_search_camp', ng-model="searchEvent", type="text", placeholder="#{t(t_prefix+'stats.search')}")
+                h4=t(t_prefix+'admin.all_events_table')                
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers
-                            th(ng-click='changeOrderBy("id")') #
-                            th.event_name_en(ng-click='changeOrderBy("name")')=t(t_prefix+'stats.name_en')
-                            
-                            th.gate_code(ng-click='changeOrderBy("gate_code")')=t(t_prefix+'stats.gate_code')
-                            //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t(t_prefix+'stats.created_at')
-                            th.gate_status(ng-click='changeOrderBy("gate_status")')=t(t_prefix+'stats.gate_status')
+                            th #
+                            th.event_name_en=t(t_prefix+'stats.name_en')                            
+                            th.gate_code=t(t_prefix+'stats.gate_code')
+                            th.gate_status=t(t_prefix+'stats.gate_status')
+                            th
                     tbody
-                        tr(ng-repeat="event in events | filter: searchEvent | orderBy: orderEvents")
-                            td {{ event.event_id }}
-                            // td 
-                            //    a(ng-href=`/${language}/events-admin/{{event.event_id}}`) 
-                            //        {{ event.event_name_en }}
-                            //    br 
-                            //    a(ng-href=`/${language}/events-admin/{{event.event_id}}`) 
-                            //        {{ event.event_name_he }}
+                        tr(ng-repeat="event in events | orderBy: event_id")
+                            td {{ event.event_id }}                        
                             td {{ event.name }}
                             td {{ event.gate_code }}
                             td {{ event.gate_status }}
@@ -53,7 +42,6 @@ block content
                                     button.btn.btn-xs 
                                         span(class='glyphicon glyphicon-trash')
                                         =t('events:stats.remove')
-                            //- td
     
             //- Card 2
             .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="eventsFormController")
