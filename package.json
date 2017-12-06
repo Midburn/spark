@@ -28,7 +28,9 @@
     "lint": "./node_modules/.bin/eslint .",
     "//createdb": "bootstraps MySql with a clean spark database & user",
     "createdb": "mysql -u root < migrations/create_db.sql",
-    "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest"
+    "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "async": "^2.1.4",
@@ -84,7 +86,7 @@
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
     "serve-favicon": "~2.4.3",
-    "snyk": "^1.34.4",
+    "snyk": "^1.53.0",
     "sprintf-js": "1.0.3",
     "sqlite3": "^3.1.8",
     "superagent": "^3.5.0",
