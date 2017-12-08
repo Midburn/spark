@@ -1,10 +1,36 @@
+
 var log = require('../libs/logger')(module);
 const Event = require('../models/event').Event
 const userRole = require('../libs/user_role');
-
+const _ = require('lodash')
+/*
+.
+event_id,
+ext_id_event_id,
+addinfo_json,
+name,
+gate_code,
+gate_status
+*/
 var createEvent = function(req) {
-    log.debug('Saving event ' + req.body);
-    return req.body;
+    var new_event = {
+        event_id: _.get(req, 'body.event_id'),
+        ext_id_event_id: _.get(req, 'body.ext_id_event_id'),
+        addinfo_json: JSON.stringify({
+            start_date: _.get(req, 'body.start_date'),
+            end_date: _.get(req, 'body.end_date'),
+            previousEventId: _.get(req, 'body.previousEventId'),
+            event_desc_he: _.get(req, 'body.event_desc_he'),
+            event_desc_en: _.get(req, 'body.event_desc_en'),
+            event_name_he: _.get(req, 'body.event_name_he'),
+            event_name_en: _.get(req, 'body.event_name_en')
+        }),//_.get(req,'body.addinfo_json'),
+        name: _.get(req, 'body.event_name_he') + _.get(req, 'body.event_name_en'),
+        gate_code: _.get(req, 'body.gateCode'),
+        gate_status: _.get(req, 'body.gate_status')
+    }
+    log.debug('Event received ' + new_event);
+    return new_event;
 }
 
 module.exports = (app, passport) => {
@@ -31,7 +57,8 @@ module.exports = (app, passport) => {
     app.post('/events/new', 
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
-            Event.forge(createEvent(req)).save()
+            var new_event = createEvent(req);
+            Event.forge().save(new_event)
             .then(res.send(200))
             .catch((e) => {
                 res.status(500).json({
