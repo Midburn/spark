@@ -165,69 +165,25 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
    
                 };
 
-                 /*
-                here we pass the query info from the SQL 
-                and check the json inof
-                */
-                var _get_json_data = (resp,addinfo_jason_subAction) => {
-                    var userData = {
-                        camp_id: camp.attributes.id,
-                        user_id: user_id,
-                        addinfo_json : resp[0].addinfo_json,
-                    };
-                    var jsonInfo;
-                    
-                    //check for the sub action in the json info
-                    if (addinfo_jason_subAction === "pre_sale_ticket") {
+                //select the addinfo_json column from the camp member table
+                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('user_id','addinfo_json')
+                .where({
+                    camp_id : userData.camp_id, 
+                    user_id : userData.user_id
+                })
+                .then(resp => {
 
-                        //if the user is not approved yet in the
-                        //reject the reuest 
-                        if (user.member_status === 'pending') {
-                            res.status(500);
-                            throw new Error(res.json({error: true, data:{ message: "Cannot assign Pre-sale ticket to pending user" }}));   
-                        }
-
-                        //check if the json info is null
-                         //if so then set it the value as this is the first init of the data
-                        if (userData.addinfo_json === null) {
-                            jsonInfo = {"pre_sale_ticket": "true"};
-                        }
-                        else {
-                            //if the object is not null then parse it and toggle the current value 
-                            jsonInfo=JSON.parse(userData.addinfo_json);
-                            if (jsonInfo.pre_sale_ticket === "true") {
-                                jsonInfo.pre_sale_ticket = "false";
-                            } 
-                            else {
-                                jsonInfo.pre_sale_ticket ="true";
-                            }
-                        }
-
-                        //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
-                        if (jsonInfo.pre_sale_ticket === "true") {
-                            //first count how many pre sale tickets are assinged to the camp members
-                            var preSaleTicketsCount=0;
-                            for (var i in users) {
-                                if (users[i].camps_members_addinfo_json) {
-                                    var addinfo_json = JSON.parse(users[i].camps_members_addinfo_json);
-                                    if (addinfo_json.pre_sale_ticket === "true") {
-                                        preSaleTicketsCount++
-                                    }
-                                }    
-                            }
-
-                            //if the pre sale ticket count equal or higher than the quota
-                            //reject the reuest 
-                            if (preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota) {
-                                res.status(500);
-                                throw new Error(res.json({error: true, data: { message: "exceed pre sale tickets quota" }}));   
-                            }
-                        }
+                    let jsonInfo;
+                    try {
+                        //pass the response to the process method
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user);
+                    } catch (err) {
+                        res.status(500);
+                        throw new Error(res.json({error: true, data: { message: err.message }}));
                     }
-                    
+
                     //update the table with the new value of the json info
                     //on success go to _after_update callback
-                    jsonInfo = JSON.stringify(jsonInfo) 
                     knex(constants.CAMP_MEMBERS_TABLE_NAME).update({addinfo_json : jsonInfo})
                         .where({
                             camp_id : userData.camp_id, 
@@ -236,16 +192,6 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                         .then(_after_update).catch((e) => {
                         console.log(e);
                     })
-                }
-                //select the addinfo_json column from the camp member table
-                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('addinfo_json')
-                .where({
-                    camp_id : userData.camp_id, 
-                    user_id : userData.user_id
-                })
-                .then(resp => {
-                    //pass the response to the process method
-                    _get_json_data(resp,addinfo_jason_subAction)
                 })
                 .catch((e) => {
                     console.log(e);
@@ -278,6 +224,66 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
         })
     });
 }
+
+/*
+here we pass the query info from the SQL 
+and check the json info, the method will throw and error if failed
+*/
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user) {
+    
+    var userData = info;
+
+    var jsonInfo;
+    
+    //check for the sub action in the json info
+    if (addinfo_jason_subAction === "pre_sale_ticket") {
+
+        //if the user is not approved yet in the
+        //reject the reuest 
+        if (user.member_status === 'pending') {
+            throw new Error("Cannot assign Pre-sale ticket to pending user"); 
+        }
+
+        //check if the json info is null
+        //if so then set it the value as this is the first init of the data
+        if (userData === null) {
+            jsonInfo = {"pre_sale_ticket": "true"};
+        }
+        else {
+            //if the object is not null then parse it and toggle the current value 
+            jsonInfo=JSON.parse(userData);
+            if (jsonInfo.pre_sale_ticket === "true") {
+                jsonInfo.pre_sale_ticket = "false";
+            } 
+            else {
+                jsonInfo.pre_sale_ticket = "true";
+            }
+        }
+
+        //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
+        if (jsonInfo.pre_sale_ticket === "true") {
+            //first count how many pre sale tickets are assinged to the camp members
+            var preSaleTicketsCount=0;
+            for (var i in users) {
+                if (users[i].camps_members_addinfo_json) {
+                    var addinfo_json = JSON.parse(users[i].camps_members_addinfo_json);
+                    if (addinfo_json.pre_sale_ticket === "true") {
+                        preSaleTicketsCount++
+                    }
+                }    
+            }
+
+            //if the pre sale ticket count equal or higher than the quota
+            //reject the reuest 
+            if (preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota) {
+                throw new Error("exceed pre sale tickets quota");  
+            }
+        }
+    }
+
+    jsonInfo = JSON.stringify(jsonInfo) 
+    return jsonInfo;
+}           
 
 module.exports = (app, passport) => {
     /**
