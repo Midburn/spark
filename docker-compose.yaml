@@ -2,8 +2,46 @@ version: '3'
 
 services:
 
+  mysql:
+    image: mariadb:10.0
+    environment:
+    - MYSQL_ROOT_PASSWORD=123456
+    - MYSQL_DATABASE=spark
+    - MYSQL_USER=spark
+    - MYSQL_PASSWORD=spark
+    volumes:
+    - "mysql:/var/lib/mysql"
+
+#  spark-init:
+#    depends_on:
+#    - mysql
+#    build:
+#      context: .
+#      dockerfile: Dockerfile.spark-init
+#    environment:
+#    - MYSQL_ROOT_PASSWORD=123456
+
   spark:
+    depends_on:
+#    - spark-init
+    - mysql
     build: .
     image: spark
     ports:
     - "3000:3000"
+    environment:
+    - SPARK_DB_CLIENT=mysql
+    - SPARK_DB_HOSTNAME=mysql
+    - SPARK_DB_DBNAME=spark
+    - SPARK_DB_USER=spark
+    - SPARK_DB_PASSWORD=spark
+    - SPARK_DB_DEBUG=false
+    - SPARK_SERVER_PORT=3000
+    - SPARK_SERVER_HOSTNAME=localhost
+    - SPARK_SERVER_PROTOCOL=http
+    - SPARK_SERVER_URL=http://localhost:3000
+    - SPARK_MAILSERVER_ENABLE=false
+    - SPARK_RECAPTCHA_IGNORE=true
+
+volumes:
+  mysql:
