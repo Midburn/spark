@@ -5214,12 +5214,12 @@ yargs@~3.10.0:
     camelcase "^1.0.2"
     cliui "^2.1.0"
     decamelize "^1.0.0"
-    window-size "0.1.0"
+    camelcase "^1.0.2"
+    cliui "^2.1.0"
+    decamelize "^1.0.0"
+    decamelize "^1.0.0"
 
 yargs@~3.15.0:
-  version "3.15.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.15.0.tgz#3d9446ef21fb3791b3985690662e4b9683c7f181"
-  dependencies:
     camelcase "^1.0.2"
     cliui "^2.1.0"
     decamelize "^1.0.0"
