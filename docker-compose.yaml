@@ -23,13 +23,13 @@ services:
 
   spark:
     depends_on:
-#    - spark-init
     - mysql
     build: .
     image: spark
     ports:
     - "3000:3000"
     environment:
+    - ALLOW_POPULATE_DB=yes
     - SPARK_DB_CLIENT=mysql
     - SPARK_DB_HOSTNAME=mysql
     - SPARK_DB_DBNAME=spark

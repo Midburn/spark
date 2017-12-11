@@ -15,4 +15,11 @@ while ! node -e "
     sleep 1
 done
 
+if [ "${ALLOW_POPULATE_DB}" == "yes" ]; then
+    echo "Populating DB with initial data"
+    echo "This will delete all existing DB data!"
+    ! node_modules/.bin/knex migrate:latest && echo "Failed migrations" && exit 1
+    ! node_modules/.bin/knex seed:run && echo "Failed seed" && exit 1
+fi
+
 node server.js
