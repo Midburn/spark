@@ -1,5 +1,5 @@
-var log = require('../libs/logger')(module);
-const camps = require('./dev/camps');
+const log = require('../libs/logger')(module),
+camps = require('./dev/camps')
 
 exports.seed = function(knex, Promise) {
     log.info('Creating camps...');
@@ -8,7 +8,7 @@ exports.seed = function(knex, Promise) {
     camps.forEach((camp) => {
         campPromises.push(createCamp(knex, camp));
     });
-    
+
     return Promise.all(campPromises)
     .catch((error) => {
         log.error('Spark encountered an error while seeding camps:');
@@ -19,7 +19,7 @@ exports.seed = function(knex, Promise) {
 /**
 * Supplied camp json is expected to hold email address
 * of main contact and owner under contact_person_email.
-* Entry will then be normalized with respect to users table. 
+* Entry will then be normalized with respect to users table.
 */
 const createCamp = (knex, camp) => {
     return knex('users').where('email', camp.contact_person_email).first()

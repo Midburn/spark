@@ -1,15 +1,22 @@
-const common = require('../libs/common').common;
-const _ = require('lodash');
-const User = require('../models/user').User;
-const Camp = require('../models/camp').Camp;
-const constants = require('../models/constants.js');
-const knex = require('../libs/db').knex;
-const userRole = require('../libs/user_role');
-const config = require('config');
-const mail = require('../libs/mail');
-const mailConfig = config.get('mail');
-const csv = require('json2csv');
+const common = require('../libs/common').common,
+_ = require('lodash'),
+User = require('../models/user').User,
+Camp = require('../models/camp').Camp,
+CampFile = require('../models/camp').CampFile,
+constants = require('../models/constants.js'),
+knex = require('../libs/db').knex,
+userRole = require('../libs/user_role'),
+config = require('config'),
+mail = require('../libs/mail'),
+mailConfig = config.get('mail'),
+csv = require('json2csv'),
+awsConfig = config.get('aws_config'),
+LOG = require('../libs/logger')(module),
+s3 = require('../libs/aws-s3');
+
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
+const CONSTS = require('../consts');
+
 const emailDeliver = (recipient, subject, template, props) => {
 
     /**
@@ -511,6 +518,136 @@ module.exports = (app, passport) => {
             __camps_update_status(camp_id, user_id, action, req.user, res);
         } else {
             res.status(404).json({ error: true, data: { message: "illegal command (" + action + ")" } });
+        }
+    })
+
+    app.post('/camps/:camp_id/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
+
+        const camp_id = req.params.camp_id,
+             doc_type = req.params.doc_type
+
+        // Check that the document type is valid
+        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
+            return res.return(400).json({
+                 error: true,
+                 data: {
+                     message: 'Invalid document type'
+                 }
+             })
+        }
+
+        let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
+
+        if (!camp) {
+            return res.status(500).json({
+                error: true,
+                message: 'Camp Id does not exist'
+            })
+        }
+
+        let data;
+        try {
+            data = req.files.file.data;
+        } catch (err) {
+            return res.status(400).json({
+                error: true,
+                message: 'No file attached to request'
+            })
+        }
+        let fileName = `${camp.attributes.camp_name_en}/${doc_type}_${req.files.file.name}`
+
+        // Upload the file to S3
+        try {
+            await s3.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
+        } catch (err) {
+            LOG.error(err.message);
+            return res.status(500).json({
+                error: true,
+                message: 'S3 Error: could not put file in S3'
+            })
+        }
+
+        // Get the URL for the file, so we can save to DB
+        let filePath = s3.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload)
+
+        // Add the file to the camp_files table
+        // If the file type exists, update
+        // If not, insert a new file record
+        let existingFile = camp.relations.files.models.find((file) => {
+            if (file.attributes.file_type === doc_type) {
+                return file
+            }
+        })
+
+        try {
+            if (!existingFile) {
+                    await new CampFile({
+                        created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                        updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                        camp_id: camp.attributes.id,
+                        uploader_id: req.user.id,
+                        file_path: filePath,
+                        file_type: doc_type
+                    }).save()
+            } else {
+                existingFile.attributes.updated_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ')
+                existingFile.attributes.uploader_id = req.user.id
+                existingFile.attributes.file_path = filePath
+
+                await existingFile.save()
+            }
+        } catch (err) {
+            LOG.error(err.message);
+            return res.status(500).json({
+                error: true,
+                message: 'DB Error: could not connect or fetch data'
+            })
+        }
+
+        return res.status(200).json({
+            error: false
+        })
+    })
+
+    app.get('/camps/:camp_id/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
+        const camp_id = req.params.camp_id,
+        doc_type = req.params.doc_type
+
+        // Check that the document type is valid
+        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
+            return res.return(400).json({
+                 error: true,
+                 data: {
+                     message: 'Invalid document type'
+                 }
+             })
+        }
+
+        let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
+
+        if (!camp) {
+            return res.status(500).json({
+                error: true,
+                message: 'Camp Id does not exist'
+            })
+        }
+
+        let existingFile = camp.relations.files.models.find((file) => {
+            if (file.attributes.file_type === doc_type) {
+                return file
+            }
+        })
+
+        if (existingFile) {
+            return res.status(200).json({
+                error: false,
+                path: existingFile.attributes.file_path
+            })
+        } else {
+            return res.status(404).json({
+                error: true,
+                message: 'File does not exist'
+            })
         }
     })
 

@@ -15,6 +15,9 @@ var Camp = bookshelf.Model.extend({
     users_groups: function () {
         return this.hasOne(UsersGroup, 'group_id');
     },
+    files: function () {
+        return this.hasMany(CampFile, 'camp_id')
+    },
     /**
      * get this camp users. the result is on attributes.users or attributes.managers
      * to check if camp has manager check attributes.managers.length>0
@@ -131,7 +134,7 @@ var Camp = bookshelf.Model.extend({
     }
 });
 
-var CampMember = bookshelf.Model.extend({
+const CampMember = bookshelf.Model.extend({
     tableName: constants.CAMP_MEMBERS_TABLE_NAME,
     idAttribute: 'user_id,camp_id',
     users: function () {
@@ -143,9 +146,18 @@ var CampMember = bookshelf.Model.extend({
 
 });
 
+const CampFile = bookshelf.Model.extend({
+    tableName: constants.CAMP_FILES_TABLE_NAME,
+    idAttribute: 'file_id',
+    camp: function() {
+        return belongsTo(Camp);
+    }
+})
+
 // Create the model and expose it
 module.exports = {
     Camp: Camp,
     CampMember: CampMember,
+    CampFile: CampFile
     // __parsePrototype: __parsePrototype,
 };
