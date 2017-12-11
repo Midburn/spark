@@ -23,7 +23,7 @@ exports.up = function (knex, Promise) {
             "CREATE TRIGGER camp_groups_after_ins AFTER INSERT ON camps " +
             "FOR EACH ROW " +
             "BEGIN " +
-            "INSERT INTO users_groups (group_id, event_id, type, name) VALUES (new.id, 'MIDBURN2017', 'CAMP', new.camp_name_he); " +
+            "INSERT INTO users_groups (group_id, event_id, type, name) VALUES (new.id, 'MIDBURN2018', 'CAMP', new.camp_name_he); " +
             "END"),
 
         knex
@@ -42,7 +42,7 @@ exports.up = function (knex, Promise) {
                         console.log("Camp:", camp.id, camp.camp_name_he);
                         knex('users_groups').insert({
                             group_id: camp.id,
-                            event_id: "MIDBURN2017",
+                            event_id: camp.event_id,
                             type: "CAMP",
                             name: camp.camp_name_he,
                             created_at: new Date()

@@ -12,8 +12,8 @@ script:
   - yarn add bower
   - ./node_modules/.bin/knex migrate:latest
   - npm test
-  - .travis/deploy.sh
 after_success:
+  - .travis/deploy.sh
   - .travis/notify.sh "1"
 after_failure:
   - .travis/notify.sh "0"

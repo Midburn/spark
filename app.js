@@ -96,7 +96,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps', 'npo', 'gate'],
+        ns: ['common', 'camps', 'npo', 'gate', 'events'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -173,15 +173,20 @@ app.use('/api/gate', require('./routes/api_gate_routes'));
 // Camps / API
 // TODO this is not the right way to register routes
 require('./routes/api_routes.js')(app, passport);
+require('./routes/api_events_routes')(app, passport);
 require('./routes/api_camps_routes')(app, passport);
 require('./routes/camps_routes')(app, passport);
 require('./routes/api/v1/camps')(app); // CAMPS PUBLIC API
 require('./routes/api_camps_routes')(app, passport);
+require('./routes/api_events_routes')(app, passport);
 
 // Camps
 require('./routes/camps_routes')(app, passport);
 
 require('./routes/volunteers_routes')(app, passport);
+
+//Events
+require('./routes/events_routes')(app, passport);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);

@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.7.1
+version: v1.8.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:ms:20170412':
@@ -135,6 +135,14 @@ ignore:
     - superagent > debug > ms:
         reason: None given
         expires: '2017-06-15T06:46:09.876Z'
+  'npm:mime:20170907':
+    - express-mailer > nodemailer > mailcomposer > mime:
+        reason: None given
+        expires: '2018-01-05T09:20:12.455Z'
+  'npm:tunnel-agent:20170305':
+    - node-sass > request > tunnel-agent:
+        reason: None given
+        expires: '2018-01-05T09:20:12.456Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   'npm:minimatch:20160620':
@@ -142,9 +150,15 @@ patch:
         patched: '2017-05-03T09:24:47.781Z'
     - express-compile-sass > gaze > globule > glob > minimatch:
         patched: '2017-05-03T09:24:47.781Z'
+    - express-compile-sass > gaze > globule > minimatch:
+        patched: '2017-12-06T09:20:12.458Z'
+    - express-compile-sass > gaze > globule > glob > minimatch:
+        patched: '2017-12-06T09:20:12.458Z'
   'npm:uglify-js:20151024':
     - jade > transformers > uglify-js:
         patched: '2017-05-03T09:24:47.781Z'
+    - jade > transformers > uglify-js:
+        patched: '2017-12-06T09:20:12.458Z'
   'npm:uglify-js:20150824':
     - jade > transformers > uglify-js:
         patched: '2017-05-11T07:20:00.068Z'

@@ -34,6 +34,9 @@ block wrapper
                     if(user.isAdmin)
                         li( class="#{path[2] === 'npo-admin' ? 'active' : undefined }" )
                             a( href="/#{language}/npo-admin" )=t('npo:nav_admin')
+                    if(user.isAdmin)
+                        li( class="#{path[2] === 'events-admin' ? 'active' : undefined }" )
+                            a( href="/#{language}/events-admin" )=t('events:nav_admin')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")

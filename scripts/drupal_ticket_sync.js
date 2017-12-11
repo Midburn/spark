@@ -14,7 +14,7 @@ var Ticket = require('../models/ticket.js').Ticket;
 const TICKETS_TYPE_IDS = [49, 50, 51, 52];
 const STATUS_COMPLETED = 'Completed';
 
-const EVENT_ID = "SANDBOX2017";
+const EVENT_ID = "MIDBURN2018";
 var globalMinutesDelta = 0;
 
 function r(options) {
