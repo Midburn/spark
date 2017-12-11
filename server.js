@@ -18,6 +18,7 @@ var log = require('./libs/logger.js')(module);
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+var host = process.env.SPARK_SERVER_HOSTNAME || 'localhost';
 app.set('port', port);
 
 /**
@@ -31,7 +32,7 @@ var server = http.createServer(app);
  */
 
 server.listen(port, function() {
-    log.info('Listening on port ' + port + " (http://localhost:" + port + ")");
+    log.info('Listening on port ' + port + " (http://"+ host +":" + port + ")");
 });
 server.on('error', onError);
 server.on('listening', onListening);
