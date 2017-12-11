@@ -1,5 +1,7 @@
 FROM node:8
 
+RUN npm install -g node-sass --unsafe
+
 RUN adduser --system spark
 COPY .bowerrc .npmrc .yarnrc bower.json package.json yarn.lock /home/spark/
 RUN chown -R spark /home/spark/
@@ -10,4 +12,4 @@ USER root
 COPY . /home/spark
 WORKDIR /home/spark
 
-ENTRYPOINT ["node", "server.js"]
+ENTRYPOINT ["/home/spark/entrypoint.sh"]
