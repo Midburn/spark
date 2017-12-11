@@ -631,14 +631,14 @@ module.exports = (app, passport) => {
         }
     })
 
-    app.post('/camps/:camp_id/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
+    app.post('/camps/:camp_id/documents/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
 
         const camp_id = req.params.camp_id,
              doc_type = req.params.doc_type
 
         // Check that the document type is valid
         if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
-            return res.return(400).json({
+            return res.status(400).json({
                  error: true,
                  data: {
                      message: 'Invalid document type'
@@ -719,13 +719,13 @@ module.exports = (app, passport) => {
         })
     })
 
-    app.get('/camps/:camp_id/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
+    app.get('/camps/:camp_id/documents/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
         const camp_id = req.params.camp_id,
         doc_type = req.params.doc_type
 
         // Check that the document type is valid
         if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
-            return res.return(400).json({
+            return res.status(400).json({
                  error: true,
                  data: {
                      message: 'Invalid document type'
