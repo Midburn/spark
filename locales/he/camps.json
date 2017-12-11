@@ -137,7 +137,9 @@
         "facebook_page_url": "דף פייסבוק",
         "remove": "הסרה",
         "search": "חפש מחנה",
-        "entrance_quota": "מכסת הגעה מוקדמת"
+        "entrance_quota": "מכסת הגעה מוקדמת",
+        "pre_sale_tickets_quota": "מכסת מכירה מוקדמת",
+        "pre_sale_ticket_count": "סה״כ כרטיסים במכירה מוקדמת"
     },
     "members": {
         "title": "משתתפים במחנה",
@@ -164,6 +166,8 @@
         "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
         "status_approved_mgr": "מנהלת מחנה מאושרת",
         "inside_event": "בתוך האירוע",
+        "pre_sale_ticket_approved": "אשר כרטיס במכירה מוקדמת",
+        "pre_sale_ticket_remove": "הסר כרטיס ממכירה מוקדמת",
         "status_supplier": "מאושר כספק"
     },
     "camps": {
@@ -255,6 +259,8 @@
         "contact_person_email": "אימייל איש קשר",
         "contact_person_phone": "טלפון אישר קשר",
         "early_arrival_quota": "כמות מגיעים מוקדם",
+        "pre_sale_tickets_quota": "מכסת כרטיסים במכירה מוקדמת",
+        "pre_sale_ticket_count": "סה״כ כרטיסים במכירה מוקדמת",
         "security_file": "תיק בטיחות",
         "members_header": "נהל חברי מחנה",
         "search_member": "מצא חבר מחנה"
