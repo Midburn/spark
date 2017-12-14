@@ -1,9 +1,0 @@
-FROM alpine
-
-# Initialize the spark environment
-# ensure environment is ready before starting the main spark image
-# optionally populates DB for development / testing
-
-RUN apk --update --no-cache add bash
-
-ENTRYPOINT ["/bin/bash"]

@@ -14,4 +14,6 @@ USER root
 COPY . /home/spark
 WORKDIR /home/spark
 
+ENV PATH="/home/spark/node_modules/.bin:${PATH}"
+
 ENTRYPOINT ["/home/spark/entrypoint.sh"]
