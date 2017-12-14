@@ -64,7 +64,7 @@ describe('Getters all respond', function() {
                     console.log(err);
                     done(err);
                 }
-                res.should.be.json;
+                // res.should.be.json;
                 res.body.should.be.a('array');
                 res.body.length.should.be.greaterThan(2);
 
@@ -87,7 +87,7 @@ describe('Getters all respond', function() {
                     console.log(err);
                     done(err);
                 }
-                res.should.be.json;
+                // res.should.be.json;
                 res.body.should.be.a('array');
                 res.body.length.should.be.greaterThan(2);
 
@@ -114,7 +114,7 @@ describe('Getters all respond', function() {
                     console.log(err);
                     done(err);
                 }
-                res.should.be.json;
+                // res.should.be.json;
 
                 //console.log(`VOLYNTEERS OF ONE DEPARTMENT BODY:\n${JSON.stringify(res.body)}`);
 
@@ -145,7 +145,7 @@ describe('Getters all respond', function() {
                     console.log(err);
                     done(err);
                 }
-                res.should.be.json;
+                // res.should.be.json;
 
                 //console.log(`VOLYNTEERS BODY:\n${JSON.stringify(res.body)}`);
 
@@ -223,7 +223,7 @@ describe('Adding volunteers', function() {
 
         setupDrupalMock(1);
         request
-            .get(`/volunteers/departments/${departmentId}/volunteers`) //TODO change back to dep 3 
+            .get(`/volunteers/departments/${departmentId}/volunteers`) //TODO change back to dep 3
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -231,7 +231,7 @@ describe('Adding volunteers', function() {
                     console.log(`ERROR: ${err}`);
                     done();
                 }
-                res.body.should.be.json;
+                // res.body.should.be.json;
 
                 console.log(`VOLUNTEERS IN DEPARTMENT departmentId:${departmentId}, res.body:${JSON.stringify(res.body)}`)
                 const match = res.body.find((volunteer) => volunteer.email === testUser1.email);
@@ -248,7 +248,7 @@ describe('Adding volunteers', function() {
     //extra fields are rejected
     //missing fields are ignored or rejected
     //length and type limits on mail and numbers
-    //wrong format 
+    //wrong format
 });
 
 
@@ -259,7 +259,7 @@ describe.skip('Volunteers editing', function() {
     //extra fields are rejected
     //missing fields are ignored or rejected
     //length and type limits on mail and numbers
-    //wrong format 
+    //wrong format
 });
 
 
