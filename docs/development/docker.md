@@ -53,7 +53,14 @@ ln -s docker-compose.env .env
 Install spark locally, usually:
 
 ```
+nvm install
+yarn install
+```
 
+Start the spark
+
+```
+yarn run nodemon server.js
 ```
 
 Refer to the [dockerless environment installation](/docs/development/installation.md) for more details
