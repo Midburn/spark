@@ -104,7 +104,7 @@
     "babel-loader": "^6.2.10",
     "chai": "*",
     "cross-env": "3.2.4",
-    "eslint": "^3.15.0",
+    "eslint": "^4.13.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^2.1.1",

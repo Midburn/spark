@@ -54,7 +54,7 @@ Install spark locally, usually:
 
 ```
 nvm install
-yarn install
+yarn install --dev
 ```
 
 Start the spark
