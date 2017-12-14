@@ -130,3 +130,18 @@ exports.profiles_api = {
     useCache: process.env.USE_DRUPAL_CACHE || false,
     cacheTTL: process.env.USE_DRUPAL_CACHE_TTL || 3600*24,
 };
+
+/**
+ * Aws Config
+ */
+let aws_config = {};
+if (process.env.NODE_ENV !== 'production') { // Dev.
+    aws_config.defualt_region = 'eu-west-1';
+    aws_config.buckets = {
+        camp_file_upload: 'midburn-spark-camp-files',
+    }
+} else { // Prod.
+    aws_config.region = '';
+    aws_config.camp_file_upload_bucket = '';
+}
+exports.aws_config = aws_config;

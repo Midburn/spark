@@ -91,6 +91,8 @@
         "location_card_title": "Camp location",
         "location_comments": "Comments",
         "early_arrival_quota": "Early Arrival Quota",
+        "pre_sale_tickets_quota": "Pre-Sale Tickets Quota",
+        "pre_sale_ticket_count": "Pre-Sale Tickets Count",
         "camp_location_street": "Street",
         "camp_location_street_time": "Street time",
         "camp_location_area": "Area",
@@ -164,6 +166,8 @@
         "status_rejected": "Camp manager did not approve request",
         "status_pending_mgr": "Waiting for member acceptance",
         "inside_event": "Inside Event",
+        "pre_sale_ticket_approved": "Approve Pre-sale Ticket",
+        "pre_sale_ticket_remove": "Remove Pre-sale Ticket",
         "status_approved_mgr": "Approved as Manager",
         "status_supplier": "Supplier"
     },

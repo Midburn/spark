@@ -156,6 +156,10 @@ block content
                                     .col-xs-12
                                         label(for='entrance_quota')=t('camps:edit.early_arrival_quota')
                                         input.form-control(id='entrance_quota', name='entrance_quota', value=(isNew ? 0 : (camp.entrance_quota === null ? '' : '#{camp.entrance_quota}')),readonly=(!isAdmin ? 'true' : undefined))
+                                .col-md-4
+                                    .col-xs-12
+                                        label(for='pre_sale_tickets_quota')=t('camps:edit.pre_sale_tickets_quota')
+                                        input.form-control(id='pre_sale_tickets_quota', name='pre_sale_tickets_quota', value=(isNew ? 0 : (camp.pre_sale_tickets_quota === null ? 0 : '#{camp.pre_sale_tickets_quota}')),readonly=(!isAdmin ? 'true' : undefined))
 
             //- Card 2
             .card.card-second.card-hide
