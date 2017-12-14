@@ -14,6 +14,7 @@ docker-compose up -d --build
 
 Available services:
 
+* DB - Mysql, exposed on port 3306 (make sure to stop existing DB first)
 * Adminer - Web UI to access the DB
   * http://localhost:8080/
     * System: `MySQL`
@@ -40,6 +41,22 @@ docker-compose up -d --build
 
 * DB migrations - `docker-compose exec spark knex migrate:latest`
 * Open a shell - `docker-compose exec spark bash`
+
+### Running Spark code locally but use docker-compose for DB
+
+You can symlink the provided `docker-compose.env` file to `.env`:
+
+```
+ln -s docker-compose.env .env
+```
+
+Install spark locally, usually:
+
+```
+
+```
+
+Refer to the [dockerless environment installation](/docs/development/installation.md) for more details
 
 ### Recreating the DB
 
