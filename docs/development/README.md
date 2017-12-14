@@ -7,6 +7,7 @@ If you just want to use Spark or integrate it with your system, refer to the [Sp
 
 ## TL;DR / Quickstart
 
+* [Using Spark with Docker](/docs/development/docker.md)
 * [Install the Spark development environment](/docs/development/installation.md)
 
 If you want to update the documentation, have a look here:

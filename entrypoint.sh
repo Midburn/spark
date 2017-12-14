@@ -16,10 +16,28 @@ while ! node -e "
 done
 
 if [ "${ALLOW_POPULATE_DB}" == "yes" ]; then
-    echo "Populating DB with initial data"
-    echo "This will delete all existing DB data!"
-    ! node_modules/.bin/knex migrate:latest && echo "Failed migrations" && exit 1
-    ! node_modules/.bin/knex seed:run && echo "Failed seed" && exit 1
+    HAS_USERS=`node -e "
+        let connection = require('mysql').createConnection({
+            host     : '${SPARK_DB_HOSTNAME}',
+            user     : '${SPARK_DB_USER}',
+            password : '${SPARK_DB_PASSWORD}',
+            database : '${SPARK_DB_DBNAME}'
+        });
+        connection.connect();
+        connection.query('select count(1) as num_users from users', function(error, results, fields) {
+            if (error) throw error;
+            console.log(results[0]['num_users'] > 0 ? '1' : '0');
+        });
+        connection.end()
+    "`
+    if [ "${HAS_USERS}" == "0" ]; then
+        echo "Populating DB with initial data"
+        echo "This will delete all existing DB data!"
+        ! node_modules/.bin/knex migrate:latest && echo "Failed migrations" && exit 1
+        ! node_modules/.bin/knex seed:run && echo "Failed seed" && exit 1
+    else
+        echo "DB Already has data, will not overwrite"
+    fi
 fi
 
 node server.js
