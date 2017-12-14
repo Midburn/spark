@@ -3,15 +3,13 @@ node_js:
   - "8"
 cache:
   directories:
-    # - node_modules
     - bower_components
 before_script:
-  - npm run-script createdb
+  - yarn run createdb
   - cp .travis/travis.env .env
 script:
-  - yarn add bower
-  - ./node_modules/.bin/knex migrate:latest
-  - npm test
+  - yarn run knex migrate:latest
+  - yarn run test
 after_success:
   - .travis/deploy.sh
   - .travis/notify.sh "1"
