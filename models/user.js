@@ -84,7 +84,7 @@ var User = bookshelf.Model.extend({
     /////////////////////////// NPO ///////////////////////////
 
     npoMember: function () {
-        return this.hasMany(NpoMember);  //TODO maybe hasOne is better?
+        return this.hasMany(NpoMember); //TODO maybe hasOne is better?
     },
 
     /////////////////////////// CAMPS ///////////////////////////
