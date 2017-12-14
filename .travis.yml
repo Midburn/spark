@@ -4,6 +4,8 @@ node_js:
 cache:
   directories:
     - bower_components
+install:
+  - yarn install --dev --pure-lockfile
 before_script:
   - yarn run createdb
   - cp .travis/travis.env .env
