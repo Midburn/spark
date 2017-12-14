@@ -52,10 +52,10 @@ function Camps() {
         renderContactsList();
     }
 
-    function fetchData() {
-        getUsersList();
-        getCampsList();
-    }
+    // function fetchData() {
+    //     getUsersList();
+    //     getCampsList();
+    // }
 
     function init() {
         // fetchData();
