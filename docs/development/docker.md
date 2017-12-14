@@ -74,3 +74,13 @@ docker-compose stop
 docker-compose rm -sfv db
 docker-compose up -d --build
 ```
+
+### Running tests with the docker compose DB
+
+Recreate the test DB and run the mocha tests:
+
+```
+yarn run cross-env SPARK_DB_DBNAME=spark_test mysql --user=root --host=localhost --password=123456 --port=3306 --protocol=tcp < migrations/create_test_db.sql
+yarn run cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest
+yarn run cross-env SPARK_DB_DBNAME=spark_test mocha "tests/**/*test.js" 
+```

@@ -25,7 +25,7 @@
     "//deploy": "prepare the directory of an extracted deployment package",
     "deploy": "echo SPARK_DEPLOYMENT_TIME=\\\"$(date \"+%F %T\")\\\" >> .env",
     "//lint": "runs static analysis using eslint",
-    "lint": "./node_modules/.bin/eslint .",
+    "lint": "npm run eslint .",
     "//createdb": "bootstraps MySql with a clean spark database & user",
     "createdb": "mysql -u root < migrations/create_db.sql",
     "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest",
@@ -109,7 +109,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^2.1.1",
     "mocha": "^3.2.0",
-    "nock": "^9.0.13",
+    "nock": "^9.1.4",
     "node-rsa": "^0.4.2",
     "rimraf": "2.6.1",
     "supertest": "^2.0.1"
