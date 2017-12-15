@@ -30,13 +30,13 @@ if [ "${ALLOW_POPULATE_DB}" == "yes" ]; then
         });
         connection.end()
     "`
-    if [ "${HAS_USERS}" == "0" ]; then
+    if [ "${HAS_USERS}" == "1" ]; then
+        echo "DB Already has data, will not overwrite"
+    else
         echo "Populating DB with initial data"
         echo "This will delete all existing DB data!"
         ! node_modules/.bin/knex migrate:latest && echo "Failed migrations" && exit 1
         ! node_modules/.bin/knex seed:run && echo "Failed seed" && exit 1
-    else
-        echo "DB Already has data, will not overwrite"
     fi
 fi
 
