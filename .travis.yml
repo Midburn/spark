@@ -39,6 +39,8 @@ script:
        ./helm_update_values.sh '${HELM_UPDATE_VALUES}' '${HELM_UPDATE_COMMIT_MESSAGE}' &&\
        ${UPGRADE_SCRIPT}
       "
+      curl https://raw.githubusercontent.com/Midburn/midburn-k8s/master/run_docker_ops.sh > ./run_docker_ops.sh &&\
+      chmod +x ./run_docker_ops.sh &&\
       openssl aes-256-cbc -K $encrypted_f2bd2a0d33d6_key -iv $encrypted_f2bd2a0d33d6_iv -in secret-midburn-k8s-ops.json.enc -out secret-midburn-k8s-ops.json -d &&\
       ./run_docker_ops.sh "${OPS_DOCKER_IMAGE}" "${OPS_REPO_SLUG}" "${SECRET_JSON_FILE}" "${ENVIRONMENT_NAME}" "${DEPLOYMENT_SCRIPT}" "${OPS_DOCKER_RUN_ARGS}"
     fi
