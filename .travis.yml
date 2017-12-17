@@ -15,14 +15,30 @@ before_script:
   - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn run createdb && cp .travis/travis.env .env; fi
 script:
   - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn run knex migrate:latest && yarn run test; fi
-  - >
-    if [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${TRAVIS_BRANCH}" == "master" ] && [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ]; then
-      openssl aes-256-cbc -K $encrypted_de69cc520442_key -iv $encrypted_de69cc520442_iv -in midburn-k8s-ops.json.enc -out secret-midburn-k8s-ops.json -d &&
-      ./run_docker_ops.sh "orihoch/midburn-k8s@sha256:dc3531820588d0b217a2e4af0432e492900cc78efd078a9a555889f80f015222" \
-                          "Midburn/midburn-k8s" \
-                          "" \
-                          "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" \
-                          "./helm_upgrade.sh";
+  - |
+    if [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${TRAVIS_BRANCH}" == "master" ]; then
+      IMAGE_TAG="gcr.io/uumpa123/spark:${TRAVIS_COMMIT}"
+      OPS_DOCKER_IMAGE="orihoch/midburn-k8ssha256:bc6fadc5fe3d5e005dcff273fb522337eb40b1ef3b1ee6b1e7197acc19409692"
+      OPS_REPO_SLUG="Midburn/midburn-k8s"
+      SECRET_JSON_FILE="`pwd`/secret-midburn-k8s-ops.json"
+      ENVIRONMENT_NAME="${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}"
+      DOCKER_APP_DIR="/spark"
+      DOCKER_OPS_DIR="/ops"
+      HELM_UPDATE_VALUES='{"'"spark"'":{"'"image"'":"'"'${IMAGE_TAG}'"'"}}'
+      HELM_UPDATE_COMMIT_MESSAGE="${ENVIRONMENT_NAME} spark image update --no-deploy'"
+      UPGRADE_SCRIPT="
+        kubectl set image deployment/spark spark=${IMAGE_TAG} &&\
+        kubectl rollout status deployment spark
+      "
+      OPS_DOCKER_RUN_ARGS="-v `pwd`:/spark"
+       DEPLOYMENT_SCRIPT="
+       cd $DOCKER_APP_DIR && gcloud container builds submit --tag $IMAGE_TAG . &&\
+       cd $DOCKER_OPS_DIR &&\
+       ./helm_update_values.sh '${HELM_UPDATE_VALUES}' '${HELM_UPDATE_COMMIT_MESSAGE}' &&\
+       ${UPGRADE_SCRIPT}
+      "
+      openssl aes-256-cbc -K $encrypted_f2bd2a0d33d6_key -iv $encrypted_f2bd2a0d33d6_iv -in secret-midburn-k8s-ops.json.enc -out secret-midburn-k8s-ops.json -d &&\
+      ./run_docker_ops.sh "${OPS_DOCKER_IMAGE}" "${OPS_REPO_SLUG}" "${SECRET_JSON_FILE}" "${ENVIRONMENT_NAME}" "${DEPLOYMENT_SCRIPT}" "${OPS_DOCKER_RUN_ARGS}"
     fi
 services:
   - mysql
