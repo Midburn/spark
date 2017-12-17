@@ -1,21 +1,29 @@
 language: node_js
+sudo: required
 node_js:
   - "8"
+env:
+  matrix:
+  - "CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME=staging"
+  - ""
 cache:
   directories:
     - bower_components
 install:
-  - yarn install --dev --pure-lockfile
+  - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn install --dev --pure-lockfile; fi
 before_script:
-  - yarn run createdb
-  - cp .travis/travis.env .env
+  - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn run createdb && cp .travis/travis.env .env; fi
 script:
-  - yarn run knex migrate:latest
-  - yarn run test
-after_success:
-  - .travis/deploy.sh
-  - .travis/notify.sh "1"
-after_failure:
-  - .travis/notify.sh "0"
+  - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn run knex migrate:latest && yarn run test; fi
+  - >
+    if [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${TRAVIS_BRANCH}" == "master" ] && [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ]; then
+      openssl aes-256-cbc -K $encrypted_de69cc520442_key -iv $encrypted_de69cc520442_iv -in midburn-k8s-ops.json.enc -out secret-midburn-k8s-ops.json -d &&
+      ./run_docker_ops.sh "orihoch/midburn-k8s@sha256:dc3531820588d0b217a2e4af0432e492900cc78efd078a9a555889f80f015222" \
+                          "Midburn/midburn-k8s" \
+                          "" \
+                          "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" \
+                          "./helm_upgrade.sh";
+    fi
 services:
   - mysql
+  - docker

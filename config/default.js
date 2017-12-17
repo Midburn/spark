@@ -58,7 +58,7 @@ exports.server = {
 /**
  * Mail config
  */
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && ! process.env.SPARK_DISABLE_MAILTRAP) {
     // Mailtrap capture every email sent from Spark
     // in here: mailtrap.io/inboxes/188733/messages
     exports.mail = {
