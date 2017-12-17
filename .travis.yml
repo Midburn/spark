@@ -24,8 +24,8 @@ script:
       ENVIRONMENT_NAME="${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}"
       DOCKER_APP_DIR="/spark"
       DOCKER_OPS_DIR="/ops"
-      HELM_UPDATE_VALUES='{"'"spark"'":{"'"image"'":"'"'${IMAGE_TAG}'"'"}}'
-      HELM_UPDATE_COMMIT_MESSAGE="${ENVIRONMENT_NAME} spark image update --no-deploy'"
+      HELM_UPDATE_VALUES='{"spark":{"image":"'${IMAGE_TAG}'"}}'
+      HELM_UPDATE_COMMIT_MESSAGE="${ENVIRONMENT_NAME} spark image update --no-deploy"
       UPGRADE_SCRIPT="
         kubectl set image deployment/spark spark=${IMAGE_TAG} &&\
         kubectl rollout status deployment spark
