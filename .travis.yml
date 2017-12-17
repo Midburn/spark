@@ -20,7 +20,7 @@ script:
        [ "${TRAVIS_PULL_REQUEST}" == "false" ] &&\
        ([ "${TRAVIS_BRANCH}" == "master" ] || [ "${TRAVIS_BRANCH}" == "modernize-dockerize-kubernetize" ]); then
       IMAGE_TAG="gcr.io/uumpa123/spark:${TRAVIS_COMMIT}"
-      OPS_DOCKER_IMAGE="orihoch/midburn-k8ssha256:bc6fadc5fe3d5e005dcff273fb522337eb40b1ef3b1ee6b1e7197acc19409692"
+      OPS_DOCKER_IMAGE="orihoch/midburn-k8s@sha256:bc6fadc5fe3d5e005dcff273fb522337eb40b1ef3b1ee6b1e7197acc19409692"
       OPS_REPO_SLUG="Midburn/midburn-k8s"
       SECRET_JSON_FILE="`pwd`/secret-midburn-k8s-ops.json"
       ENVIRONMENT_NAME="${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}"
