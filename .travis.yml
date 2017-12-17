@@ -16,7 +16,9 @@ before_script:
 script:
   - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn run knex migrate:latest && yarn run test; fi
   - |
-    if [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${TRAVIS_BRANCH}" == "master" ]; then
+    if [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ] &&\
+       [ "${TRAVIS_PULL_REQUEST}" == "false" ] &&\
+       ([ "${TRAVIS_BRANCH}" == "master" ] || [ "${TRAVIS_BRANCH}" == "modernize-dockerize-kubernetize" ]); then
       IMAGE_TAG="gcr.io/uumpa123/spark:${TRAVIS_COMMIT}"
       OPS_DOCKER_IMAGE="orihoch/midburn-k8ssha256:bc6fadc5fe3d5e005dcff273fb522337eb40b1ef3b1ee6b1e7197acc19409692"
       OPS_REPO_SLUG="Midburn/midburn-k8s"
