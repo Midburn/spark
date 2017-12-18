@@ -24,10 +24,10 @@ if [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ] &&\
       GIT_REPO_TOKEN="${K8S_OPS_GITHUB_REPO_TOKEN}"
       OPS_DOCKER_RUN_ARGS="-v `pwd`:/spark"
       DEPLOYMENT_SCRIPT="
-        cd $DOCKER_OPS_DIR;
+        cd $DOCKER_OPS_DIR &&\
           ./helm_update_values.sh '${HELM_UPDATE_VALUES}' '${HELM_UPDATE_COMMIT_MESSAGE}' '${GIT_REPO_TOKEN}' '${OPS_REPO_SLUG}' &&\
-          kubectl set image deployment/spark spark=${IMAGE_TAG}
-        cd $DOCKER_APP_DIR;
+          kubectl set image deployment/spark spark=${IMAGE_TAG};
+        cd $DOCKER_APP_DIR &&\
           gcloud container builds submit --tag $IMAGE_TAG .;
       "
       ! (
@@ -39,3 +39,5 @@ if [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ] &&\
 else
       echo "Skipping deployment"
 fi
+
+exit 0
