@@ -23,9 +23,11 @@ var createEvent = function(req) {
             event_desc_he: _.get(req, 'body.event_desc_he'),
             event_desc_en: _.get(req, 'body.event_desc_en'),
             event_name_he: _.get(req, 'body.event_name_he'),
-            event_name_en: _.get(req, 'body.event_name_en')
+            event_name_en: _.get(req, 'body.event_name_en'),
+            tickets_info: _.get(req, 'body.tickets_info:'),
         }),//_.get(req,'body.addinfo_json'),
-        name: _.get(req, 'body.event_name_he') + _.get(req, 'body.event_name_en'),
+        name: _.get(req, 'body.event_name_he'),
+        // name: _.get(req, 'body.event_name_he') + _.get(req, 'body.event_name_en'),
         gate_code: _.get(req, 'body.gateCode'),
         gate_status: _.get(req, 'body.gate_status')
     }
@@ -59,6 +61,23 @@ module.exports = (app, passport) => {
         (req, res) => {
             var new_event = createEvent(req);
             Event.forge().save(new_event)
+            .then(res.send(200))
+            .catch((e) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: e.message
+                    }
+                });
+            });
+        }); 
+
+        app.put('/events/update', 
+        [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
+        (req, res) => {
+            var new_event = createEvent(req);
+            var event_id = new_event.event_id;
+            Event.forge({"event_id":event_id}).save(new_event)
             .then(res.send(200))
             .catch((e) => {
                 res.status(500).json({

@@ -32,7 +32,18 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
         var _url = '/events/new';
         $http.post(_url, $scope.event)
         .success(function(response) {
-            alert("Event add to DB");
+            alert("Event added to DB");
+        })
+        .error(function() {
+            alert("Something went wrong");
+        });
+    }
+
+    $scope.updateEvent = function () {
+        var _url = '/events/update';
+        $http.put(_url, $scope.event)
+        .success(function(response) {
+            alert("Event updated");
         })
         .error(function() {
             alert("Something went wrong");

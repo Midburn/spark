@@ -4,7 +4,8 @@ block content
         newEvent=false;
         editEvent ={
             'created_at' : '#{event.created_at}',
-            'id': '#{event.id}',
+            'event_id': '#{event.id}',
+            'gate_code': '#{event.gate_code}',
             'previousEventId': '#{event.previousEventId}',
             'gate_code': '#{event.gate_code}',
             'event_desc_he': '#{event.event_desc_he}',
@@ -34,7 +35,7 @@ block content
                                     input.form-control(id='event_id', dir='ltr', name='event_id', ng-model='event.event_id')
                                 .col-xs-12
                                     label(for='event_id')=t('events:edit.event_code')
-                                    input.form-control(id='event_id', dir='ltr', name='event_id', ng-model='event.event_code')
+                                    input.form-control(id='event_id', dir='ltr', name='event_id', ng-model='event.gate_code')
                                 .col-xs-12
                                     label(for='event_name_he')=t('events:edit.name_he')
                                     input.form-control(id='event_name_he', dir='rtl', name='event_name_he', ng-model='event.event_name_he')
@@ -90,8 +91,8 @@ block content
                                 .col-xs-12
                                     label(for='url')=t('events:edit.url')
                                     input.form-control(id='url', dir='ltr', name='url', ng-model='event.url')
-                                
-                        .modal-footer
-                            a(href='./')
-                                button.Btn.Btn__transparent(id='create_camp_close_btn')=t('events:new.close')
-                            button.Btn.Btn__green(id='event_create_save_modal_request', ng-click="sendEvent()")=t('events:edit.send_request')           
+                            
+                    .modal-footer
+                        a(href='./')
+                            button.Btn.Btn__transparent(id='create_camp_close_btn', type='button')=t('events:new.close')
+                        button.Btn.Btn__green(id='event_create_save_modal_request', type='button', ng-click="updateEvent()")=t('events:edit.send_request')
