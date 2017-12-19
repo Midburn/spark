@@ -19,9 +19,9 @@ block content
                 start_presale_tickets: new Date('#{event.addinfo_json.start_presale_tickets}'),
                 end_presale_tickets: new Date('#{event.addinfo_json.end_presale_tickets}'),
                 tickets_info: '#{event.addinfo_json.tickets_info}',
-                community_camps: '#{event.addinfo_json.community_camps}',
-                community_art_installation: '#{event.addinfo_json.community_art_installation}',
-                community_prod_dep: '#{event.addinfo_json.community_prod_dep}',
+                community_camps: '#{event.addinfo_json.community_camps}' == 'true',
+                community_art_installation: '#{event.addinfo_json.community_art_installation}' == 'true',
+                community_prod_dep: '#{event.addinfo_json.community_prod_dep}' == 'true',
                 url: '#{event.addinfo_json.url}'                
             }
         }
