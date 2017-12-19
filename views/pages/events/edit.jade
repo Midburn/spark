@@ -10,22 +10,20 @@ block content
             gate_code: parseInt('#{event.gate_code}'),
             gate_status: '#{event.gate_status}',
             addinfo_json: {
-                
+                name_he: '#{event.addinfo_json.name_he}',
+                name_en: '#{event.addinfo_json.name_en}',
+                desc_he: '#{event.addinfo_json.desc_he}',
+                desc_en: '#{event.addinfo_json.desc_en}',
+                start_date: new Date('#{event.addinfo_json.start_date}'),
+                end_date: new Date('#{event.addinfo_json.end_date}'),
+                start_presale_tickets: new Date('#{event.addinfo_json.start_presale_tickets}'),
+                end_presale_tickets: new Date('#{event.addinfo_json.end_presale_tickets}'),
+                tickets_info: '#{event.addinfo_json.tickets_info}',
+                community_camps: '#{event.addinfo_json.community_camps}' == 'true',
+                community_art_installation: '#{event.addinfo_json.community_art_installation}' == 'true',
+                community_prod_dep: '#{event.addinfo_json.community_prod_dep}' == 'true',
+                url: '#{event.addinfo_json.url}'                
             }
-
-            //- name_he: '#{event.addinfo_json.name_he}',
-            //-     name_en: '#{event.addinfo_json.name_en}',
-            //-     desc_he: '#{event.addinfo_json.desc_he}',
-            //-     desc_en: '#{event.addinfo_json.desc_en}',
-            //-     start_date: '#{event.addinfo_json.start_date}',
-            //-     end_date: '#{event.addinfo_json.end_date}',
-            //-     start_presale_tickets: '#{event.addinfo_json.start_presale_tickets}',
-            //-     end_presale_tickets: '#{event.addinfo_json.end_presale_tickets}',
-            //-     tickets_info: '#{event.addinfo_json.tickets_info}',
-            //-     community_camps: '#{event.addinfo_json.community_camps}',
-            //-     community_art_installation: '#{event.addinfo_json.community_art_installation}',
-            //-     community_prod_dep: '#{event.addinfo_json.community_prod_dep}',
-            //-     url: '#{event.addinfo_json.url}'
         }
     .camps.camp_edit(ng-app="ngEvents", ng-controller="eventsFormController")
         .heading.card.card__shad
