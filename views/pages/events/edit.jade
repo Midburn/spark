@@ -24,7 +24,7 @@ block content
                 community_art_installation: '#{event.addinfo_json.community_art_installation}' == 'true',
                 community_prod_dep: '#{event.addinfo_json.community_prod_dep}' == 'true',
                 url: '#{event.addinfo_json.url}'
-            }            
+            }
         }
     .camps.camp_edit(ng-app="ngEvents", ng-controller="eventsFormController")
         .heading.card.card__shad
@@ -53,7 +53,7 @@ block content
                                     input.form-control(id='event_desc_he', dir='rtl', name='event_desc_he' ng-model='event.addinfo_json.desc_he')
                                 .col-xs-12
                                     label(for='start_date')=t('events:edit.start_date')
-                                    input.form-control(type='date' id='start_date', dir='ltr', name='start_date' ng-model='event.addinfo_json.start_date')
+                                    input.form-control(type='date' ng-disabled="eventStarted" id='start_date', dir='ltr', name='start_date' ng-model='event.addinfo_json.start_date')
                                 .col-xs-12
                                     label(for='start_presale_tickets')=t('events:edit.start_presale_tickets')
                                     input.form-control(type='date' id='start_presale_tickets', dir='ltr', name='start_presale_tickets' ng-model='event.addinfo_json.start_presale_tickets')
@@ -93,7 +93,7 @@ block content
                                     input.form-control(id='event_desc_en', dir='ltr', name='event_desc_en' ng-model='event.addinfo_json.desc_en')
                                 .col-xs-12
                                     label(for='end_date')=t('events:edit.end_date')
-                                    input.form-control(type='date' id='end_date', dir='ltr', name='end_date' ng-model='event.addinfo_json.end_date')
+                                    input.form-control(type='date' ng-disabled="eventStarted" id='end_date', dir='ltr', name='end_date' ng-model='event.addinfo_json.end_date')
                                 .col-xs-12
                                     label(for='end_presale_tickets')=t('events:edit.end_presale_tickets')
                                     input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.end_presale_tickets')

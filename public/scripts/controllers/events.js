@@ -27,12 +27,14 @@ events_app.controller("eventsController", ($scope, $http, $filter) => {
 events_app.controller("eventsFormController", ($scope, $http, $filter) => {
     //initiate a new event, or fetch evet details for edit.
     $scope.event = newEvent ? {addinfo_json: {created_at: new Date()}} : editEvent;
+    $scope.eventStarted = $scope.event.addinfo_json.start_date < new Date();
 
     $scope.sendEvent = function () {
         var _url = '/events/new';
         $http.post(_url, $scope.event)
         .success(function(response) {
             alert("Event added to DB");
+            document.location.href = '/he/events-admin';
         })
         .error(function() {
             alert("Something went wrong");
