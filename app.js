@@ -1,20 +1,26 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var morganLogger = require('morgan');
-var bodyParser = require('body-parser');
-var passport = require('passport');
-var session = require('express-session');
-var flash = require('connect-flash');
-var cookieParser = require('cookie-parser');
-var fileUpload = require('express-fileupload');
-var log = require('./libs/logger')(module);
-var recaptcha = require('express-recaptcha');
-var compileSass = require('express-compile-sass');
-var recaptchaConfig = require('config').get('recaptcha');
-var KnexSessionStore = require('connect-session-knex')(session);
-var knex = require('./libs/db').knex;
-const compression = require('compression');
+const express = require('express'),
+path = require('path'),
+favicon = require('serve-favicon'),
+morganLogger = require('morgan'),
+bodyParser = require('body-parser'),
+passport = require('passport'),
+session = require('express-session'),
+flash = require('connect-flash'),
+cookieParser = require('cookie-parser'),
+fileUpload = require('express-fileupload'),
+log = require('./libs/logger')(module),
+recaptcha = require('express-recaptcha'),
+compileSass = require('express-compile-sass'),
+recaptchaConfig = require('config').get('recaptcha'),
+KnexSessionStore = require('connect-session-knex')(session),
+knex = require('./libs/db').knex,
+compression = require('compression'),
+opbeat = (process.env.NODE_ENV === 'production') ?
+    require('opbeat').start({
+        appId: process.env.OPBEAT_APP_ID,
+        organizationId: process.env.OPBEAT_ORGANIZATION_ID,
+        secretToken: process.env.OPBEAT_SECRET_TOKEN
+      }) : {}
 
 log.info('Spark is starting...');
 
@@ -256,6 +262,15 @@ process.on('warning', function (warning) {
     log.warn(warning.message); // Print the warning message
     log.warn(warning.stack); // Print the stack trace
 });
+
+// ==================
+// Opbeat Integration
+// ==================
+// We want to enable Opbeat in production only,
+// so dev. errors don't obscure actual production issues
+if (process.env.NODE_ENV === 'production') {
+    app.use(opbeat.middleware.express())
+}
 
 // == Export our app ==
 module.exports = app;
