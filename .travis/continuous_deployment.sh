@@ -26,19 +26,22 @@ if [ "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" != "" ] &&\
       DEPLOYMENT_SCRIPT="
         cd $DOCKER_OPS_DIR;
           ! (
-              ./helm_update_values.sh '${HELM_UPDATE_VALUES}' '${HELM_UPDATE_COMMIT_MESSAGE}' '${GIT_REPO_TOKEN}' '${OPS_REPO_SLUG}' &&
+              ./helm_update_values.sh '${HELM_UPDATE_VALUES}' '${HELM_UPDATE_COMMIT_MESSAGE}' '${GIT_REPO_TOKEN}' '${OPS_REPO_SLUG}' &&\
               kubectl set image deployment/spark spark=${IMAGE_TAG}
-          ) && echo 'failed to update helm / k8s' && exit 1
+          ) && echo 'failed to update helm / k8s' && exit 1;
         cd $DOCKER_APP_DIR;
-          ! gcloud container builds submit --tag $IMAGE_TAG . && echo 'failed to build app image' && exit 1
+          ! gcloud container builds submit --tag $IMAGE_TAG . && echo 'failed to build app image' && exit 1;
       "
+
       ! (
         curl https://raw.githubusercontent.com/Midburn/midburn-k8s/master/run_docker_ops.sh > ./run_docker_ops.sh &&\
         chmod +x ./run_docker_ops.sh &&\
         openssl aes-256-cbc -K $encrypted_f2bd2a0d33d6_key -iv $encrypted_f2bd2a0d33d6_iv -in secret-midburn-k8s-ops.json.enc -out secret-midburn-k8s-ops.json -d
       ) && echo "Failed to prepare deployment environment" && exit 1
-      ! ./run_docker_ops.sh "" "${OPS_REPO_SLUG}" "${SECRET_JSON_FILE}" "${ENVIRONMENT_NAME}" "${DEPLOYMENT_SCRIPT}" "${OPS_DOCKER_RUN_ARGS}" \
-        && echo "failed to run docker ops" && exit 1
+
+      ! (
+        ./run_docker_ops.sh "" "${OPS_REPO_SLUG}" "${SECRET_JSON_FILE}" "${ENVIRONMENT_NAME}" "${DEPLOYMENT_SCRIPT}" "${OPS_DOCKER_RUN_ARGS}"
+      ) && echo "failed to run docker ops" && exit 1
 else
       echo "Skipping deployment"
 fi
