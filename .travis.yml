@@ -4,17 +4,17 @@ node_js:
   - "8"
 env:
   matrix:
-  - "CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME=staging"
+  - DEPLOY_ENVIRONMENT=staging
   - ""
 cache:
   directories:
     - bower_components
 install:
-  - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn install --dev --pure-lockfile; fi
+  - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn install --dev --pure-lockfile; fi
 before_script:
-  - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn run createdb && cp .travis/travis.env .env; fi
+  - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn run createdb && cp .travis/travis.env .env; fi
 script:
-  - if [ -z "${CONTINUOUS_DEPLOYMENT_ENVIRONMENT_NAME}" ]; then yarn run knex migrate:latest && yarn run test; fi
+  - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn run knex migrate:latest && yarn run test; fi
   - .travis/continuous_deployment.sh
 services:
   - mysql
