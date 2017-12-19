@@ -22,15 +22,15 @@ block content
                 community_camps: '#{event.addinfo_json.community_camps}' == 'true',
                 community_art_installation: '#{event.addinfo_json.community_art_installation}' == 'true',
                 community_prod_dep: '#{event.addinfo_json.community_prod_dep}' == 'true',
-                url: '#{event.addinfo_json.url}'                
-            }
+                url: '#{event.addinfo_json.url}'
+            }            
         }
     .camps.camp_edit(ng-app="ngEvents", ng-controller="eventsFormController")
         .heading.card.card__shad
                 if(event_name = language.includes('he') ? event.event_name_he : event.event_name_en )
                 span.label.label-info #{t(t_prefix+'edit.event')} # #{event.id}
-                h2 #{t('events:edit.title')}: #{event_name}
-                h6 #{t('events:edit.since')}: #{event.created_at}
+                h2 #{t('events:edit.title')}: #{event.name}
+                h6 #{t('events:edit.since')}: #{event.addinfo_json.created_at}
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first

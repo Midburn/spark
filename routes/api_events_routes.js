@@ -18,10 +18,11 @@ var createEvent = function(req)
         event_id: _.get(req, 'body.event_id'),
         ext_id_event_id: _.get(req, 'body.ext_id_event_id'),
         addinfo_json: JSON.stringify(req.body.addinfo_json),
-        name: _.get(req, 'body.event_name_he'), // + _.get(req, 'body.event_name_en'),
+        name: req.body.addinfo_json.name_he + " " + req.body.addinfo_json.name_en,
         gate_code: _.get(req, 'body.gate_code'),
         gate_status: _.get(req, 'body.gate_status')
     }
+    console.log(new_event);
     log.debug('Event received ' + new_event);
     return new_event;
 }
