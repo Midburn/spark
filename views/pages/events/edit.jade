@@ -5,7 +5,7 @@ block content
         editEvent ={
             //passing server edit event object to the client editEvent object and AngularJS controller.
             event_id: '#{event.event_id}',
-            ext_id_event_id: '#{event.ext_id_event_id}',
+            ext_id_event_id: parseInt('#{event.ext_id_event_id}'),
             name: '#{event.name}',
             gate_code: parseInt('#{event.gate_code}'),
             gate_status: '#{event.gate_status}',
@@ -14,6 +14,7 @@ block content
                 name_en: '#{event.addinfo_json.name_en}',
                 desc_he: '#{event.addinfo_json.desc_he}',
                 desc_en: '#{event.addinfo_json.desc_en}',
+                event_type: '#{event.addinfo_json.event_type}',
                 start_date: new Date('#{event.addinfo_json.start_date}'),
                 end_date: new Date('#{event.addinfo_json.end_date}'),
                 start_presale_tickets: new Date('#{event.addinfo_json.start_presale_tickets}'),
@@ -80,7 +81,7 @@ block content
                             .details-en.col-md-6
                                 .col-xs-12
                                     label(style="color:red" for='previous_event_id')=t('events:edit.previous_event_id')
-                                    input.form-control(id='previous_event_id', dir='ltr', name='event_id', ng-model='event.ext_id_event_id')
+                                    input.form-control(id='previous_event_id', dir='ltr', name='event_id', ng-model='event.ext_id_event_id' required type="number")
                                 .col-xs-12
                                     label(for='event_id')=t('events:edit.event_type')
                                     input.form-control(id='event_id', dir='ltr', name='event_id' ng-model='event.addinfo_json.event_type')
