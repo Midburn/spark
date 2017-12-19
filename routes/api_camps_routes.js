@@ -12,7 +12,7 @@ mailConfig = config.get('mail'),
 csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
 LOG = require('../libs/logger')(module),
-s3 = require('../libs/aws-s3');
+S3 = require('../libs/aws-s3');
 
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 const CONSTS = require('../consts');
@@ -666,9 +666,10 @@ module.exports = (app, passport) => {
         }
         let fileName = `${camp.attributes.camp_name_en}/${doc_type}_${req.files.file.name}`
 
+        let s3Client = new S3();
         // Upload the file to S3
         try {
-            await s3.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
+            await s3Client.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
         } catch (err) {
             LOG.error(err.message);
             return res.status(500).json({
@@ -678,7 +679,7 @@ module.exports = (app, passport) => {
         }
 
         // Get the URL for the file, so we can save to DB
-        let filePath = s3.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload)
+        let filePath = s3Client.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload)
 
         // Add the file to the camp_files table
         // If the file type exists, update

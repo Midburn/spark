@@ -1,8 +1,10 @@
 # Using Spark with Docker
 
+
 ## Installation
 
 Install [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/)
+
 
 ## Usage
 
@@ -23,9 +25,8 @@ Available services:
 * Spark - 
   * http://localhost:3000
 
-The DB is populated automatically on first run
+The DB is populated automatically on first run, you can log in to the populated DB using user `admin@midburn.org` and password `admin`.
 
-You can log in to the populated DB using user `admin@midburn.org` and password `admin`.
 
 ## Common Tasks
 
@@ -37,6 +38,12 @@ After making changes to the code, run the command to start the environment:
 docker-compose up -d --build
 ```
 
+Alternatively, run the following loop and press Ctrl+C to rebuild 
+
+```
+while true; do docker-compose up --build; done
+```
+
 ### Running spark management commands
 
 * DB migrations - `docker-compose exec spark knex migrate:latest`
@@ -44,7 +51,7 @@ docker-compose up -d --build
 
 ### Running Spark code locally but use docker-compose for DB
 
-You can symlink the provided `docker-compose.env` file to `.env`:
+You can symlink (or copy) the provided `docker-compose.env` file to `.env`:
 
 ```
 ln -s docker-compose.env .env
@@ -57,21 +64,38 @@ nvm install
 yarn install --dev
 ```
 
+Start a fresh environment with just the DB and adminer
+
+```
+docker-compose down -v --remove-orphans
+docker-compose up -d db adminer
+```
+
+Make sure you have the mysql client (`sudo apt-get install mysql-client`)
+
+Create and populate the DB
+
+```
+echo 'CREATE DATABASE IF NOT EXISTS spark;' | mysql --host=localhost --protocol=tcp --user=root --password=123456
+yarn run knex migrate:latest
+yarn run knex seed:run
+```
+
 Start the spark
 
 ```
 yarn run nodemon server.js
 ```
 
-Refer to the [dockerless environment installation](/docs/development/installation.md) for more details
+Spark should be available at http://localhost:3000/ and adminer at http://localhost:8080/
 
-### Recreating the DB
 
-In case you want to repopulate the DB with fresh data
+### Recreating the environment
+
+For a fresh start , or in case you want to repopulate the DB with fresh data
 
 ```
-docker-compose stop
-docker-compose rm -sfv db
+docker-compose down -v --remove-orphans
 docker-compose up -d --build
 ```
 

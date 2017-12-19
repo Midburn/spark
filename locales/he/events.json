@@ -31,8 +31,8 @@
         "name_he": "שם (עברית)",
         "desc_en": "תיאור (אנגלית)",
         "desc_he": "תיאור (עברית)",
-        "id":"מספר האירוע",
-        "previous_event_id":"מספר אירוע קודם",
+        "id":"מזהה האירוע",
+        "previous_event_id":"מזהה אירוע קודם",
         "start_date":"תאריך התחלת האירוע",
         "end_date":"תאריך סיום האירוע",
         "start_presale_tickets":"תאריך תחילת מכירת כרטיסים מוקדמת",
@@ -42,6 +42,9 @@
         "community_prod_dep": "קהילת מחלקת הפקה",
         "tickets_info":"מידע על הכרטיסים",
         "url":"קישור לאירוע",
-        "name_and_discription":"הכנס את פרטי האירוע"
+        "name_and_discription":"הכנס את פרטי האירוע",
+        "send_request":"עדכן אירוע",
+        "event_code":"קוד אירוע",
+        "event_type":"סוג אירוע"
     }
 }

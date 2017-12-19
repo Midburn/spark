@@ -32,7 +32,7 @@
         "desc_en": "Description (English)",
         "desc_he": "Description (Hebrew)",
         "id":"Event Number",
-        "previous_event_id":"Previous Event Number",
+        "previous_event_id":"Previous Event Identifier",
         "start_date":"Event Start Date",
         "end_date":"Event End Date",
         "start_presale_tickets":"Start Presale Tickets",
@@ -42,6 +42,9 @@
         "community_prod_dep": "Community Production Department",
         "tickets_info":"Tickets Info",
         "url":"Event Link",
-        "name_and_discription":"Enter the event details"
+        "name_and_discription":"Enter the event details",
+        "send_request":"Edit Event",
+        "event_code":"Event Code",
+        "event_type":"Event Type"
     }
 }

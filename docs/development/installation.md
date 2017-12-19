@@ -4,7 +4,7 @@ This is a step-by-step guide to getting you up and running with Spark so you can
 
 ### Preconditions
 
-* **NodeJS** ( https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
+* **NodeJS** ( https://nodejs.org/en/ ) (use latest version 8, we use ECMAScript 2015)
 * **MySQL** ( https://dev.mysql.com/downloads/mysql/ )
 * **GIT** ( https://git-scm.com/downloads )
 
