@@ -45,6 +45,7 @@
         "name_and_discription":"Enter the event details",
         "send_request":"Edit Event",
         "event_code":"Event Code",
-        "event_type":"Event Type"
+        "event_type":"Event Type",
+        "gate_code":"Gate Code"
     }
 }

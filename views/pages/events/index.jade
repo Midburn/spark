@@ -49,63 +49,63 @@ block content
                                     label(for='event_id')=t('events:edit.id')
                                     input.form-control(id='event_id', dir='ltr', name='event_id', ng-model='event.event_id')
                                 .col-xs-12
-                                    label(for='event_id')=t('events:edit.event_code')
-                                    input.form-control(id='event_id', dir='ltr', name='event_id', ng-model='event.gate_code')
+                                    label(for='event_id')=t('events:edit.gate_code')
+                                    input.form-control(type="number" id='event_id', dir='ltr', name='event_id', ng-model='event.gate_code')
                                 .col-xs-12
                                     label(for='event_name_he')=t('events:edit.name_he')
-                                    input.form-control(id='event_name_he', dir='rtl', name='event_name_he', ng-model='event.event_name_he')
+                                    input.form-control(id='event_name_he', dir='rtl', name='event_name_he' ng-model='event.addinfo_json.name_he')
                                 .col-xs-12
                                     label(for='event_desc_he')=t('events:edit.desc_he')
-                                    input.form-control(id='event_desc_he', dir='rtl', name='event_desc_he', ng-model='event.event_desc_he')                                
+                                    input.form-control(id='event_desc_he', dir='rtl', name='event_desc_he' ng-model='event.addinfo_json.desc_he')
                                 .col-xs-12
                                     label(for='start_date')=t('events:edit.start_date')
-                                    input.form-control(type='date' id='start_date', dir='ltr', name='start_date', ng-model='event.start_date')
+                                    input.form-control(type='date' id='start_date', dir='ltr', name='start_date' ng-model='event.addinfo_json.start_date')
                                 .col-xs-12
                                     label(for='start_presale_tickets')=t('events:edit.start_presale_tickets')
-                                    input.form-control(type='date' id='start_presale_tickets', dir='ltr', name='start_presale_tickets', ng-model='event.start_presale_tickets')
+                                    input.form-control(type='date' id='start_presale_tickets', dir='ltr', name='start_presale_tickets' ng-model='event.addinfo_json.start_presale_tickets')
                                 .col-xs-12
                                     label(for='tickets_info')=t('events:edit.tickets_info')
-                                    textarea.form-control(type='textarea' id='tickets_info', dir='ltr', name='tickets_info', ng-model='event.tickets_info')
+                                    textarea.form-control(type='textarea' id='tickets_info', dir='ltr', name='tickets_info' ng-model='event.addinfo_json.tickets_info')
                                 .col-xs-12
                                     table
                                         tbody
                                             tr
                                                 td 
-                                                    input(type="checkbox" id='community_camps', dir='ltr', name='community_camps', ng-model='event.community_camps')
+                                                    input(type="checkbox" id='community_camps', dir='ltr', name='community_camps' ng-model='event.addinfo_json.community_camps')
                                                 td 
                                                     label(for='community_camps')=t('events:edit.community_camps')
                                             tr
                                                 td 
-                                                    input(type="checkbox" id='community_art_installation', dir='ltr', name='community_art_installation', ng-model='event.community_art_installation')
+                                                    input(type="checkbox" id='community_art_installation', dir='ltr', name='community_art_installation' ng-model='event.addinfo_json.community_art_installation')
                                                 td 
                                                     label(for='community_art_installation')=t('events:edit.community_art_installation')
                                             tr
                                                 td 
-                                                    input(type="checkbox" id='community_prod_dep', dir='ltr', name='community_prod_dep', ng-model='event.community_prod_dep')
+                                                    input(type="checkbox" id='community_prod_dep', dir='ltr', name='community_prod_dep' ng-model='event.addinfo_json.community_prod_dep')
                                                 td 
                                                     label(for='community_prod_dep')=t('events:edit.community_prod_dep')
                             .details-en.col-md-6
                                 .col-xs-12
-                                    label(for='previous_event_id')=t('events:edit.previous_event_id')
-                                    input.form-control(id='previous_event_id', dir='ltr', name='event_id', ng-model='event.previous_event_id')
+                                    label(style="color:red" for='previous_event_id')=t('events:edit.previous_event_id')
+                                    input.form-control(id='previous_event_id', dir='ltr', name='event_id', ng-model='event.ext_id_event_id')
                                 .col-xs-12
                                     label(for='event_id')=t('events:edit.event_type')
-                                    input.form-control(id='event_id', dir='ltr', name='event_id', ng-model='event.event_type')
+                                    input.form-control(id='event_id', dir='ltr', name='event_id' ng-model='event.addinfo_json.event_type')
                                 .col-xs-12
                                     label(for='event_name_en')=t('events:edit.name_en')
-                                    input.form-control(id='event_name_en', dir='ltr', name='event_name_en', ng-model='event.event_name_en')
+                                    input.form-control(id='event_name_en', dir='ltr', name='event_name_en' ng-model='event.addinfo_json.name_en')
                                 .col-xs-12
                                     label(for='event_desc_en')=t('events:edit.desc_en')
-                                    input.form-control(id='event_desc_en', dir='ltr', name='event_desc_en', ng-model='event.event_desc_en')                                
+                                    input.form-control(id='event_desc_en', dir='ltr', name='event_desc_en' ng-model='event.addinfo_json.desc_en')
                                 .col-xs-12
                                     label(for='end_date')=t('events:edit.end_date')
-                                    input.form-control(type='date' id='end_date', dir='ltr', name='end_date', ng-model='event.end_date')
+                                    input.form-control(type='date' id='end_date', dir='ltr', name='end_date' ng-model='event.addinfo_json.end_date')
                                 .col-xs-12
                                     label(for='end_presale_tickets')=t('events:edit.end_presale_tickets')
-                                    input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets', ng-model='event.end_presale_tickets')
+                                    input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.end_presale_tickets')
                                 .col-xs-12
                                     label(for='url')=t('events:edit.url')
-                                    input.form-control(id='url', dir='ltr', name='url', ng-model='event.url')
+                                    input.form-control(id='url', dir='ltr', name='url' ng-model='event.addinfo_json.url')
                                 
                         .modal-footer
                             a(href='./')

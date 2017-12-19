@@ -25,10 +25,9 @@ var createEvent = function(req) {
             event_name_he: _.get(req, 'body.event_name_he'),
             event_name_en: _.get(req, 'body.event_name_en'),
             tickets_info: _.get(req, 'body.tickets_info:'),
-        }),//_.get(req,'body.addinfo_json'),
-        name: _.get(req, 'body.event_name_he'),
-        // name: _.get(req, 'body.event_name_he') + _.get(req, 'body.event_name_en'),
-        gate_code: _.get(req, 'body.gateCode'),
+        }),
+        name: _.get(req, 'body.event_name_he'), // + _.get(req, 'body.event_name_en'),
+        gate_code: _.get(req, 'body.gate_code'),
         gate_status: _.get(req, 'body.gate_status')
     }
     log.debug('Event received ' + new_event);
@@ -77,7 +76,11 @@ module.exports = (app, passport) => {
         (req, res) => {
             var new_event = createEvent(req);
             var event_id = new_event.event_id;
-            Event.forge({"event_id":event_id}).save(new_event)
+            console.log("########################")
+            console.log("trying to update event:")
+            console.log(new_event)
+            console.log("########################")
+            Event.forge({event_id: event_id}).save(new_event)
             .then(res.send(200))
             .catch((e) => {
                 res.status(500).json({
