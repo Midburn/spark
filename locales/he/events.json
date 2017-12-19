@@ -12,7 +12,7 @@
     "stats": {
         "search": "חיפוש אירוע",
         "name_en":"שם האירוע",
-        "gate_code": "קוד אירוע",
+        "gate_code": "קוד שער",
         "gate_status": "סטאטוס",
         "edit": "ערוך",
         "remove": "מחק"
@@ -45,6 +45,7 @@
         "name_and_discription":"הכנס את פרטי האירוע",
         "send_request":"עדכן אירוע",
         "event_code":"קוד אירוע",
-        "event_type":"סוג אירוע"
+        "event_type":"סוג אירוע",
+        "gate_code":"קוד שער"
     }
 }

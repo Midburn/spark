@@ -32,22 +32,13 @@ module.exports = function (app, passport) {
             .then((event) => {
                 
                 req.event = {
-                    'created_at': '01-01-2017', //TODO: need to add attribute from DB
-                    'id': req.params.id,
-                    'previousEventId': '8888888', //TODO: need to add attribute from DB
+                    'event_id': req.params.id,
+                    'ext_id_event_id': _.get(event.attributes, 'ext_id_event_id'),
+                    'name': _.get(event.attributes, 'name'),
                     'gate_code': _.get(event.attributes, 'gate_code'),
-                    'event_desc_he': _.get(event.attributes, 'name'),
-                    'event_desc_en': _.get(event.attributes, 'name'),
-                    'event_name_he': _.get(event.attributes, 'name'),
-                    'event_name_en': _.get(event.attributes, 'name'),
-                    'startDate': _.get(event.attributes, 'addinfo_json.startDate'),
-                    'endDate': _.get(event.attributes, 'addinfo_json.endDate'),
-                    'startPresaleTickets': _.get(event.attributes, 'addinfo_json.startPresaleTickets'),
-                    'endPresaleTickets': _.get(event.attributes, 'addinfo_json.endPresaleTickets'),
-                    'community_camps' : '', //TODO: need to add attribute from DB
-                    'community_art_installation': '', //TODO: need to add attribute from DB
-                    'community_prod_dep': '', //TODO: need to add attribute from DB
-                    'tickets_info': '', //TODO: need to add attribute from DB
+                    'gate_status': _.get(event.attributes, 'gate_status'),
+                    
+                    'addinfo_json': JSON.parse(_.get(event.attributes, 'addinfo_json'))
                 };
                 res.render('pages/events/edit', {
                     event: req.event,
