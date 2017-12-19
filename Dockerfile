@@ -1,6 +1,6 @@
 FROM node:8
 
-RUN apt-get update && apt-get install -y build-essential
+RUN apt-get update && apt-get install -y build-essential mysql-client
 
 RUN adduser --system spark
 COPY .bowerrc .npmrc .yarnrc bower.json package.json yarn.lock /home/spark/
