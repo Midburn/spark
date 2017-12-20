@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+
+  db:
+    image: mariadb:10.0
+    environment:
+    - MYSQL_ROOT_PASSWORD=123456
+    - MYSQL_DATABASE=spark
+    - MYSQL_USER=spark
+    - MYSQL_PASSWORD=spark
+    volumes:
+    - "mysql:/var/lib/mysql"
+    ports:
+    - "3306:3306"
+
+  adminer:
+    depends_on:
+    - db
+    image: adminer
+    ports:
+    - "8080:8080"
+
+  spark:
+    depends_on:
+    - db
+    build: .
+    image: spark
+    ports:
+    - "3000:3000"
+    environment:
+    - ALLOW_POPULATE_DB=yes
+    - SPARK_DB_CLIENT=mysql
+    - SPARK_DB_HOSTNAME=db
+    - SPARK_DB_DBNAME=spark
+    - SPARK_DB_USER=spark
+    - SPARK_DB_PASSWORD=spark
+    - SPARK_DB_DEBUG=false
+    - SPARK_SERVER_PORT=3000
+    - SPARK_SERVER_HOSTNAME=localhost
+    - SPARK_SERVER_PROTOCOL=http
+    - SPARK_SERVER_URL=http://localhost:3000
+    - SPARK_MAILSERVER_ENABLE=false
+    - SPARK_RECAPTCHA_IGNORE=true
+
+volumes:
+  mysql:

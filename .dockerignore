@@ -1,1 +1,9 @@
 mysql/data/**
+.codeship
+.git
+.travis
+docs
+vagrant
+node_modules
+bower_components
+.env
