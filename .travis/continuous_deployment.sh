@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 if [ "${DEPLOY_ENVIRONMENT}" != "" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] &&\
-   ([ "${TRAVIS_BRANCH}" == "master" ] || [ "${TRAVIS_BRANCH}" == "modernize-dockerize-kubernetize" ]) &&\
+   [ "${TRAVIS_BRANCH}" == "master" ] &&\
    [ "${TRAVIS_COMMIT_MESSAGE}" != "" ] && ! echo "${TRAVIS_COMMIT_MESSAGE}" | grep -- --no-deploy && [ "${TRAVIS_COMMIT}" != "" ]
 then
     openssl aes-256-cbc -K $encrypted_f2bd2a0d33d6_key -iv $encrypted_f2bd2a0d33d6_iv -in secret-midburn-k8s-ops.json.enc -out secret-midburn-k8s-ops.json -d
-    OPS_REPO_SLUG="OriHoch/midburn-k8s"
-    OPS_REPO_BRANCH="finalize-external-app-continuous-deployment-flow"
+    OPS_REPO_SLUG="Midburn/midburn-k8s"
+    OPS_REPO_BRANCH="master"
     wget https://raw.githubusercontent.com/${OPS_REPO_SLUG}/${OPS_REPO_BRANCH}/run_docker_ops.sh
     chmod +x run_docker_ops.sh
     IMAGE_TAG="gcr.io/uumpa123/spark:${TRAVIS_COMMIT}"
