@@ -78,8 +78,8 @@ block content
 
                             .details-en.col-md-6
                                 .col-xs-12
-                                    label(style="color:red" for='previous_event_id')=t('events:edit.previous_event_id')
-                                    input.form-control(id='previous_event_id', dir='ltr', name='event_id', ng-model='event.ext_id_event_id' required type="number")
+                                    label(for='previous_event_id')=t('events:edit.previous_event_id')
+                                    input.form-control(id='previous_event_id', dir='ltr', name='event_id', ng-model='event.ext_id_event_id')
                                     label(for='event_id')=t('events:edit.event_type')
                                     input.form-control(id='event_id', dir='ltr', name='event_id' ng-model='event.addinfo_json.event_type')
                                     label(for='event_name_en')=t('events:edit.name_en')
