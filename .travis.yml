@@ -4,7 +4,8 @@ node_js:
   - "8"
 env:
   matrix:
-  - DEPLOY_ENVIRONMENT=staging
+  - DEPLOY_ENVIRONMENT=staging DEPLOY_BRANCH=travis-staging-environment
+  - DEPLOY_ENVIRONMENT=staging DEPLOY_BRANCH=master
   - ""
 cache:
   directories:
