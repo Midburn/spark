@@ -1,21 +1,21 @@
 language: node_js
+sudo: required
 node_js:
-  - "7"
+  - "8"
+env:
+  matrix:
+  - DEPLOY_ENVIRONMENT=staging
+  - ""
 cache:
   directories:
-    # - node_modules
     - bower_components
+install:
+  - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn install --dev --pure-lockfile; fi
 before_script:
-  - npm run-script createdb
-  - cp .travis/travis.env .env
+  - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn run createdb && cp .travis/travis.env .env; fi
 script:
-  - yarn add bower
-  - ./node_modules/.bin/knex migrate:latest
-  - npm test
-after_success:
-  - .travis/deploy.sh
-  - .travis/notify.sh "1"
-after_failure:
-  - .travis/notify.sh "0"
+  - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn run knex migrate:latest && yarn run test; fi
+  - .travis/continuous_deployment.sh
 services:
   - mysql
+  - docker

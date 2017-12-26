@@ -4,7 +4,7 @@ This is a step-by-step guide to getting you up and running with Spark so you can
 
 ### Preconditions
 
-* **NodeJS** ( https://nodejs.org/en/ ) (use latest version 6.9+, we use ECMAScript 2015)
+* **NodeJS** ( https://nodejs.org/en/ ) (use latest version 8, we use ECMAScript 2015)
 * **MySQL** ( https://dev.mysql.com/downloads/mysql/ )
 * **GIT** ( https://git-scm.com/downloads )
 
@@ -29,34 +29,36 @@ To be able to sync with Midburn repository you should add it as a remote:
 git remote add midburn https://github.com/Midburn/Spark.git
 ```
 
-### Installing NVM
+### Getting Node and Yarn
 
-Optional (Linux\UNIX) - It is recommended to use [nvm](https://github.com/creationix/nvm#installation) to get the correct node version.
-If you are not planning to use nvm or running Windows and having trouble setup things, just skip these section.
+We use latest Node version 8, you can install it manually https://nodejs.org/en/ or using [nvm](https://github.com/creationix/nvm#installation)
 
-We have a .nvmrc file which will be detected automatically, so you will get the correct node version.
+If you use nvm you can run the following from project directory to get the right node version:
 
 ```shell
 nvm install
 nvm use
 ```
 
-### Installing Node modules
+We use [Yarn](https://yarnpkg.com/en/) to install dependencies, make sure you have the latest Yarn version
 
-```shell
-npm install -g nodemon knex bower
-npm install
+This command will install the latest yarn on Linux:
+
+```
+curl -o- -L https://yarnpkg.com/install.sh | bash
 ```
 
-### Installing bower dependencies
-
-[Bower](https://bower.io/) provides web static files dependencies
+### Installing dependencies
 
 ```shell
-bower install
+yarn install
 ```
+
+(If you have problems, make sure you delete the `node_moduels` and `bower_components` directories first)
 
 ### Setting up the database
+
+Hint: it can be much easier to use the docker-compose environment to get a DB prepopulated with data, see [using spark with docker](/docs/development/docker.md) for more details.
 
 Local development environment uses MySQL by default.
 
@@ -93,9 +95,8 @@ See [/docs/database.md](/docs/development/database.md) for more details about ou
 Fire up the server after installation, with `nodemon` to monitor changes and re-run the server:
 
 ```shell
-nodemon server.js
+yarn run nodemon server.js
 ```
-
 and navigate to [http://localhost:3000](http://localhost:3000).
 
 **Note** nodemon should take care of refreshing the server when you make changes.
