@@ -50,6 +50,12 @@ var functions = {
             return user_email;
         }
     },
+
+    //return if a string is an unsigend integer
+    isNormalInteger: function (str) {
+        var n = Math.floor(Number(str));
+        return String(n) === str && n >= 0;
+    },
 }
 
 // Create the model and expose it

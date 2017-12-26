@@ -176,7 +176,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     let jsonInfo;
                     try {
                         //pass the response to the process method
-                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user);
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin);
                     } catch (err) {
                         res.status(500);
                         throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -195,7 +195,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                 })
                 .catch((e) => {
                     console.log(e);
-                })
+                })       
             }
             else if (new_status) {
                 var data = {
@@ -229,7 +229,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
 here we pass the query info from the SQL 
 and check the json info, the method will throw and error if failed
 */
-function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user) {
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
     
     var userData = info;
 
@@ -238,6 +238,18 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user) {
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
+        //check if the time of the pre sale is on
+        //checking using the time constants for now
+        //unless user is admin
+        //TODO once the event table will be updated with presale ticket time, this needs to be replace
+        if (isAdmin === false) {
+            var currentTime = new Date();
+            var start=new Date(constants.PRESALE_TICKETS_START_DATE);
+            var end=new Date(constants.PRESALE_TICKETS_END_DATE);
+            if (currentTime.getTime() < start.getTime() || currentTime.getTime() > end.getTime()) {
+                throw new Error("PreSale Tickes selection is currently closed");
+            }
+        }
         //if the user is not approved yet in the
         //reject the reuest 
         if (user.member_status === 'pending') {
@@ -1313,6 +1325,33 @@ module.exports = (app, passport) => {
         Camp.forge({ id: req.params.id })
             .fetch().then((camp) => {
                 camp.save({ status: 'inactive' }).then(() => {
+                    res.status(200).end()
+                }).catch((err) => {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    });
+                });
+            });
+    })
+
+    // Delete, make camp inactive
+    app.post('/camps/:id/updatePreSaleQuota', userRole.isAdmin(), (req, res) => {
+        Camp.forge({ id: req.params.id })
+            .fetch().then((camp) => {
+                var quota = req.body.quota;
+                if (common.isNormalInteger(quota) === false) {
+                    return res.status(500).json({
+                        error: true,
+                        data: {
+                            message: "Quota must be in a number format"
+                        }
+                    });
+                }
+
+                camp.save({ pre_sale_tickets_quota: quota }).then(() => {
                     res.status(200).end()
                 }).catch((err) => {
                     res.status(500).json({
