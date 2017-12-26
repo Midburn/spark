@@ -44,6 +44,18 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
         }
     }
 
+    // update the camp pre sale quota
+    $scope.updatePreSaleQuota = (camp_id,quota) => {
+        confirm('Confirm new quota to: ' + quota);
+        $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: quota })
+           .success(function(response) {
+            window.location.reload();
+        })
+        .error(function() {
+            alert("Quota must be in a positive number format");
+        }); 
+    }
+
     $scope.changeOrderBy = function (orderByValue) {
         $scope.orderCamps = orderByValue;
     }

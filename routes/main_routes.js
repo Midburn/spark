@@ -6,6 +6,8 @@ var serverConfig = config.get('server');
 var mailConfig = config.get('mail');
 var recaptchaConfig = config.get('recaptcha');
 const breadcrumbs = require('express-breadcrumbs');
+constants = require('../models/constants.js');
+Event = require('../models/event').Event;
 
 var mail = require('../libs/mail');
 var log = require('../libs/logger.js')(module);
@@ -49,10 +51,15 @@ module.exports = function (app, passport) {
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
         });
-        res.render('pages/home', {
-            user: req.user,
-            isAdmin: req.user.isAdmins,
-            breadcrumbs: req.breadcrumbs()
+
+        //fetch all events to set in the midburn dropdown
+        Event.fetchAll().then((events) => {
+            res.render('pages/home', {
+                user: req.user,
+                events: events.toJSON(),
+                isAdmin: req.user.isAdmins,
+                breadcrumbs: req.breadcrumbs()
+            });
         });
     });
 
