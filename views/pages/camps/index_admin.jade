@@ -60,7 +60,7 @@ block content
                             //- td
                             td {{ camp.entrance_quota }}
                             td 
-                                input( type="number" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)' ng-click="hasPresaleStarted")
+                                input( type="number" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)' ng-disabled="hasPresaleStarted")
                             td                                
                                 //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
                                     span(class='glyphicon glyphicon-pencil')
