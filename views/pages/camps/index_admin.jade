@@ -3,6 +3,7 @@ block content
     .camps.camp_admin_index(ng-app="ngCamps")
         script.
             var groups_prototype="#{__groups_prototype}";
+            var presaleTickestStartTime = new Date("#{presaleTicketsStartDate}");
         .container.col-md-12
             h1=t(t_prefix+'dash.title')
             p.lead.text-muted=t(t_prefix+'dash.desc')
@@ -59,8 +60,8 @@ block content
                             //- td
                             td {{ camp.entrance_quota }}
                             td 
-                                input( type="number" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)')
-                            td
+                                input( type="number" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)' ng-click="hasPresaleStarted")
+                            td                                
                                 //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
                                     span(class='glyphicon glyphicon-pencil')
                                     span(class='sr-only' aria-hidden='true') Edit Camp
