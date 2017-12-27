@@ -20,7 +20,7 @@ then
           ! gcloud container builds submit --tag $IMAGE_TAG . \
                 && echo 'failed to build spark image' && exit 1
         exit 0
-    " "orihoch/sk8sops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "./secret-midburn-k8s-ops.json" "-v `pwd`:/spark"
+    " "orihoch/sk8sops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "./secret-midburn-k8s-ops.json" "-v `pwd`:/spark" \
         && echo 'failed to run docker ops' && exit 1
 fi
 
