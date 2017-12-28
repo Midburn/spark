@@ -1364,4 +1364,31 @@ module.exports = (app, passport) => {
             });
     })
 
+    /*
+    * API: duplicate all camp from previous event to a new event
+    * fromEvent: event to copy camps from
+    * toEvent: event to create the new camps into
+    * request => /camps/MIDBURN2017/MIDBURN2018
+    * note: will duplicate the camps table with new camps id
+    */
+    app.post('/camps/copyCommunities/:fromEvent/:toEvent',
+        [/*userRole.isLoggedIn(), userRole.isAdmin()*/],
+        (req, res) => {
+            console.log("############### here ############")
+            log.debug(`EventsAPI copyCommunities ${_.get(req, 'params.event')}`);
+            
+            let fromEvent = req.params.fromEvent;
+            let toEvent = req.params.toEvent;
+            console.log(`fromEvent: ${fromEvent} - toEvent: ${toEvent}`)
+            // sql query to duplicate all previous event camps into new camps with auto generated event id AND update date as current date.
+            let sql = `INSERT INTO camps
+                        SELECT created_at, CURDATE() as updated_at, 0 as id, ${toEvent} as event_id, __prototype, camp_name_he, camp_name_en, camp_desc_he, camp_desc_en, type, status, web_published, camp_activity_time, child_friendly, noise_level, public_activity_area_sqm, public_activity_area_desc, support_art, location_comments, camp_location_street, camp_location_street_time, camp_location_area, addinfo_json, main_contact, moop_contact, safety_contact, contact_person_name, contact_person_email, contact_person_phone, accept_families, facebook_page_url, contact_person_id, pre_sale_tickets_quota
+                        FROM camps 
+                        WHERE event_id='${fromEvent}'`;
+            knex.raw(sql).then(
+                res.send(200)
+            );
+
+        });
+
 }
