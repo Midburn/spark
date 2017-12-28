@@ -126,7 +126,14 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
+    DEFAULT_EVENT_ID: 'MIDBURN2018',
     CURRENT_EVENT_ID: 'MIDBURN2018',
+
+    //TODO move this to jsoninfo inside events table
+    //TODO also fix event.js method to extract the data
+    //currently the method first returns the constants if exists and only if not it will search the DB
+    PRESALE_TICKETS_START_DATE: "2017-12-14",
+    PRESALE_TICKETS_END_DATE: "2017-12-31",
     events,
 
     // -- table names --
