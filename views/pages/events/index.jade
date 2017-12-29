@@ -1,7 +1,7 @@
 extends ../../includes/page
 block content
     script.
-        newEvent="true";
+        var newEvent="true";
     .camps.camp_admin_index(ng-app="ngEvents")
         .container.col-md-12
             h1=t(t_prefix+'dash.title')
@@ -96,4 +96,4 @@ block content
                         .modal-footer
                             a(href='./')
                                 button.Btn.Btn__transparent(id='create_camp_close_btn')=t('events:new.close')
-                            button.Btn.Btn__green(id='event_create_save_modal_request', ng-click="sendEvent()")=t('events:new.send_request')           
+                            button.Btn.Btn__green(id='event_create_save_modal_request', ng-click="createEvent()")=t('events:new.send_request')           
