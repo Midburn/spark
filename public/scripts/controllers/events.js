@@ -28,6 +28,7 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
     //initiate a new event, or fetch evet details for edit.
     $scope.event = newEvent ? { addinfo_json: { created_at: new Date() } } : editEvent;
     $scope.eventStarted = $scope.event.addinfo_json.start_date < new Date();
+    $scope.isCommunityCampsCopied = $scope.event.addinfo_json.community_camps ? true : false;
 
     $scope.createEvent = () => {
         var _url = '/events/new';
@@ -35,7 +36,7 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
             .success((response) => {
                 var withCamps = "";
                 if ($scope.event.addinfo_json.community_camps) {
-                    await $scope.copyCommunities();
+                    $scope.copyCommunities();
                     withCamps = "with camps"
                 }
                 alert(`new event created ${withCamps}!`);
@@ -50,7 +51,13 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
         var _url = '/events/update';
         $http.put(_url, $scope.event)
             .success(function (response) {
-                alert("Event updated");
+                var withCamps = "";
+                if ($scope.event.addinfo_json.community_camps) {
+                    $scope.copyCommunities();
+                    withCamps = ",and camps added"
+                    $scope.isCommunityCampsCopied = true;
+                }
+                alert(`Event updated ${withCamps}!`);
             })
             .error(() => {
                 alert("Something went wrong");
@@ -61,7 +68,7 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
         let fromEvent = $scope.event.ext_id_event_id;
         let toEvent = $scope.event.event_id;
         let _url = `/camps/copyCommunities/${fromEvent}/${toEvent}`;
-        $http.put(_url, $scope.event)
+        $http.post(_url, $scope.event)
             .success((response) => {
                 console.log("communities copied");
             })

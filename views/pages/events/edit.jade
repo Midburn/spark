@@ -56,7 +56,7 @@ block content
                                     //- Checkboxes
                                     .col-xs-2
                                         div.row
-                                            input(type="checkbox" id='community_camps', dir='ltr', name='community_camps' ng-model='event.addinfo_json.community_camps')
+                                            input(type="checkbox" id='community_camps', dir='ltr', name='community_camps', ng-model='event.addinfo_json.community_camps', ng-disabled='isCommunityCampsCopied')
                                         div.row
                                             input(type="checkbox" id='community_art_installation', dir='ltr', name='community_art_installation' ng-model='event.addinfo_json.community_art_installation')
                                         div.row
