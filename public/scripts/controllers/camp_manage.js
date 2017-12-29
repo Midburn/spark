@@ -35,6 +35,8 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
     //     }, 500)
     // });
 
+    $scope.hasPresaleStarted = presaleTickestStartTime < new Date();
+
     $scope.removeCamp = (camp_id) => {
         var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');
         if (agree_remove) {
