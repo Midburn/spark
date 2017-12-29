@@ -3,7 +3,6 @@ var DrupalAccess = require('../libs/drupal_access').DrupalAccess;
 var log = require('../libs/logger')(module);
 var _ = require('lodash');
 
-
 async function profile_info(req, res) {
     if (!req.query.emails) {
         res.status(200).json([]);
