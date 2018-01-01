@@ -83,8 +83,8 @@ var drupal_login = function (email, password, done) {
                             serial_id: _.get(ticket, 'field_ticket_serial_id.und.0.value', '')
                         };
                         _ticket.is_mine = (_ticket.user_uid === drupal_user_id);
-                        if (constants.events[user.currentEventId].bundles.indexOf(_ticket.bundle) > -1) {
-                            _ticket.event_id = user.currentEventId;
+                        if (constants.events[drupal_user.currentEventId].bundles.indexOf(_ticket.bundle) > -1) {
+                            _ticket.event_id = drupal_user.currentEventId;
                             if (_ticket.is_mine) {
                                 current_event_tickets_count++;
                             }
@@ -207,6 +207,10 @@ module.exports = function (passport) {
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
         //add the user id and the current event id to the session
+
+        if (user.currentEventId === undefined) {
+            user.currentEventId = constants.DEFAULT_EVENT_ID;
+        }
         let userData = {user_id: user.id, currentEventId: user.currentEventId}
         done(null, userData)
     });
