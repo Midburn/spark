@@ -25,7 +25,7 @@ var __render_camp = function (camp, req, res) {
     }
     Camp.forge({
         id: camp_id,
-        event_id: constants.CURRENT_EVENT_ID,
+        event_id: req.user.currentEventId,
         __prototype: constants.prototype_camps.THEME_CAMP.id,
     }).fetch({}).then((camp) => {
         camp.getCampUsers((users) => {
@@ -152,7 +152,6 @@ module.exports = function (app, passport) {
         }]);
         Camp.forge({
             id: req.params.id,
-            // event_id: constants.CURRENT_EVENT_ID,
         })/*.related('users_groups')*/.fetch({
             withRelated: ['users_groups']
         }).then((camp) => {

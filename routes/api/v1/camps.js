@@ -30,28 +30,10 @@ module.exports = function (app) {
                     "accept_families",
                     "support_art"
                 ])
-                .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .where('event_id', '=', Event.CurrentEventId , 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
                 .whereIn('status', allowed_status)
                 .whereIn('web_published', web_published);
-        })
-            // Camp.query((q) => {
-            //     q
-            //         .select([
-            //             "camp_name_he",
-            //             "camp_name_en",
-            //             "camp_desc_he",
-            //             "camp_desc_en",
-            //             "status",
-            //             "contact_person_name",
-            //             "contact_person_phone",
-            //             "contact_person_email",
-            //             "facebook_page_url",
-            //             "accept_families",
-            //             "support_art"
-            //         ])
-            //         .where({ 'event_id': constants.CURRENT_EVENT_ID, web_published: '1', '__prototype': constants.prototype_camps.THEME_CAMP.id })
-            // })
-            .fetchAll().then((camps) => {
+        }).fetchAll().then((camps) => {
                 res.status(200).json({
                     quantity: camps.length,
                     camps: camps.toJSON()

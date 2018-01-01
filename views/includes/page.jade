@@ -38,6 +38,10 @@ block wrapper
                         li( class="#{path[2] === 'events-admin' ? 'active' : undefined }" )
                             a( href="/#{language}/events-admin" )=t('events:nav_admin')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
+                    li
+                        a( href= '/#{language}/home' )=t('events:current_event_view')  
+                            span(aria-hidden="true")
+                            |#{user.currentEventId}
                     li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
                             if (language=='he')

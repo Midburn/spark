@@ -1,5 +1,6 @@
 {
     "nav_admin": "Events Admin",
+    "current_event_view": "Current_Event:",
     "dash": {
         "title": "Events",
         "desc": "Events management dashboard"

@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 var constants = require('./constants.js');
 
 var Event = bookshelf.Model.extend({
+
     tableName: constants.EVENTS_TABLE_NAME,
     idAttribute: 'event_id',
 
@@ -14,6 +15,7 @@ var Event = bookshelf.Model.extend({
     }
 
 }, {
+    
     /**
      * Returns event by id if found in constants.events object
      * if the event does not exists it will return the database
