@@ -1,4 +1,6 @@
 var express = require('express');
+Event = require('../models/event').Event;
+
 var router = express.Router({
     mergeParams: true
 });
@@ -6,11 +8,9 @@ var router = express.Router({
 var knex = require('../libs/db').knex;
 var userRole = require('../libs/user_role');
 var Event = require('../models/event').Event;
-var constants = require('../models/constants');
 
 router.get('/', userRole.isGateManager(), function (req, res) {
-    //TODO Temp MIDBURN2018, we need to add a global current-event selector.
-    Event.forge({event_id: 'MIDBURN2018'}).fetch().then(event => {
+    Event.forge({event_id: req.user.currentEventId}).fetch().then(event => {
         return res.render('pages/gate', {
             gate_code: event.attributes.gate_code
         });
@@ -28,7 +28,7 @@ router.get('/ajax/tickets',
         }
 
         //TODO - Make this function load only the tickets of the current event dynamically, not from constant.
-        let event = await Event.forge({event_id: constants.CURRENT_EVENT_ID}).fetch();
+        let event = await Event.forge({event_id: req.user.currentEventId}).fetch();
         let gate_status = event.attributes.gate_status;
 
         knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
@@ -37,7 +37,7 @@ router.get('/ajax/tickets',
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('email', 'LIKE', '%' + req.query.search + '%')
             .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
-            .andWhere('event_id',constants.CURRENT_EVENT_ID)
+            .andWhere('event_id',req.user.currentEventId)
             //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
             .then((tickets) => {
                 res.status(200).json({rows: tickets, total: tickets.length})

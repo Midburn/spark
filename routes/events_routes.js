@@ -1,6 +1,4 @@
 const userRole = require('../libs/user_role');
-// const constants = require('../models/constants');
-// var Event = require('../models/event').Event;
 const Event = require('../models/event').Event;
 const _ = require('lodash')
 

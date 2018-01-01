@@ -353,7 +353,7 @@ module.exports = (app, passport) => {
         } else prototype = constants.prototype_camps.THEME_CAMP.id;
         group_props = Camp.prototype.__parsePrototype(prototype, req.user);
         var data = {
-            event_id: constants.CURRENT_EVENT_ID,
+            event_id: req.user.currentEventId,
             // for update or insert, need to merge with create to be the same call
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             camp_desc_he: req.body.camp_desc_he,
@@ -445,7 +445,7 @@ module.exports = (app, passport) => {
     var __camps_create_camp_obj = function (req, isNew, curCamp) {
         var data = {
             __prototype: constants.prototype_camps.THEME_CAMP.id,
-            event_id: constants.CURRENT_EVENT_ID,
+            event_id: req.user.currentEventId,
             // for update or insert, need to merge with create to be the same call
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             camp_desc_he: req.body.camp_desc_he,
@@ -851,7 +851,7 @@ module.exports = (app, passport) => {
      * request => /camps
      */
     app.get('/camps', (req, res) => {
-        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
+        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', req.user.currentEventId, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
@@ -867,12 +867,12 @@ module.exports = (app, passport) => {
         });
     });
 
-    const retrieveDataFor = group_proto => {
+    const retrieveDataFor = (group_proto,user) => {
         return Camp.query((query) => {
             query
                 .select('camps.*', 'users_groups.entrance_quota')
                 .leftJoin('users_groups', 'camps.id', 'users_groups.group_id')
-                .where({ 'camps.event_id': constants.CURRENT_EVENT_ID, 'camps.__prototype': group_proto })
+                .where({ 'camps.event_id': user.currentEventId , 'camps.__prototype': group_proto })
         })
             .orderBy('camp_name_en', 'ASC')
             .fetchAll()
@@ -905,13 +905,13 @@ module.exports = (app, passport) => {
     //  * request => /camps_open
     //  */
     app.get('/camps_all', [userRole.isCampsAdmin()],
-        (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => res.status(result.status).json(result.data)));
+        (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id,req.user).then(result => res.status(result.status).json(result.data)));
 
     app.get('/prod_dep_all', userRole.isProdDepsAdmin(),
-        (req, res) => retrieveDataFor(constants.prototype_camps.PROD_DEP.id).then(result => res.status(result.status).json(result.data)));
+        (req, res) => retrieveDataFor(constants.prototype_camps.PROD_DEP.id,req.user).then(result => res.status(result.status).json(result.data)));
 
     app.get('/art_all', userRole.isArtInstallationsAdmin(),
-        (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
+        (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id,req.user).then(result => res.status(result.status).json(result.data)));
 
     /**
      * API: (GET) return camps list csv format
@@ -936,7 +936,7 @@ module.exports = (app, passport) => {
         let web_published = [true, false];
         Camp.query((query) => {
             query
-                .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .where('event_id', '=', req.user.currentEventId , 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
                 .whereIn('status', allowed_status)
                 .whereIn('web_published', web_published);
         })
@@ -976,7 +976,7 @@ module.exports = (app, passport) => {
         req.user.getUserCamps((camps) => {
             if (req.user.isCampFree) {
                 // Fetch camp manager email address
-                Camp.forge({ id: req.params.id, event_id: constants.CURRENT_EVENT_ID, __prototype: constants.prototype_camps.THEME_CAMP.id }).fetch({
+                Camp.forge({ id: req.params.id, event_id: req.user.currentEventId , __prototype: constants.prototype_camps.THEME_CAMP.id }).fetch({
                 }).then((camp) => {
                     camp.getCampUsers((users) => {
                         if (camp.managers.length > 0) {
@@ -1183,7 +1183,7 @@ module.exports = (app, passport) => {
                 }
             }
             if (req.user.isAdmin) {
-                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='MIDBURN2018' GROUP BY __prototype;";
+                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='" + req.user.currentEventId + "' GROUP BY __prototype;";
                 let query1 = "SELECT " +
                     "count(*) AS total_tickets" +
                     ",SUM(inside_event) AS inside_event " +
@@ -1195,8 +1195,8 @@ module.exports = (app, passport) => {
                     ",SUM( IF(entrance_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_entrance " +
                     ",SUM( IF(last_exit_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_exit " +
                     "FROM tickets  " +
-                    "WHERE tickets.event_id='MIDBURN2018'  " +
-                    "GROUP BY event_id; ";
+                    "WHERE tickets.event_id='" + req.user.currentEventId +
+                    "' GROUP BY event_id; ";
                 if (req.user.isAdmin) {
                     let stat = {};
                     knex.raw(query).then((result) => {
