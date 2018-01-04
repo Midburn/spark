@@ -5,9 +5,10 @@ async function updateRoles() {
 
     //load data from csv....
     const managers = [
-        {'email' : 'krisssy193@gmail.com', 'camp_id' : 162},
-        {'email' : 'shoonami@gmail.com','camp_id' : 77},
-        {'email' : 'ittayr@gmail.com', 'camp_id' : 55}
+        { 'camp_id': 222, 'email': 'some.name3@gmail' },
+        { 'camp_id': 111, 'email': 'some.name2@gmail.com ' },
+        { 'camp_id': 333, 'email': 'some.name@gmail.com' }
+        
     ];
     //console.log(emails)
     await Promise.all(managers.map(async manager => {
