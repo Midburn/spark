@@ -70,9 +70,6 @@ var drupal_login = function (email, password, done) {
                 var current_event_tickets_count = 0;
                 var tickets_array = [];
 
-                //set a default event ID to the user
-                drupal_user.currentEventId = constants.DEFAULT_EVENT_ID
-
                 _.each(tickets, (ticket, ticket_id) => {
                     if (ticket.trid) {
                         var _ticket = {
@@ -83,8 +80,8 @@ var drupal_login = function (email, password, done) {
                             serial_id: _.get(ticket, 'field_ticket_serial_id.und.0.value', '')
                         };
                         _ticket.is_mine = (_ticket.user_uid === drupal_user_id);
-                        if (constants.events[drupal_user.currentEventId].bundles.indexOf(_ticket.bundle) > -1) {
-                            _ticket.event_id = drupal_user.currentEventId;
+                        if (constants.events[constants.DEFAULT_EVENT_ID].bundles.indexOf(_ticket.bundle) > -1) {
+                            _ticket.event_id = constants.DEFAULT_EVENT_ID;
                             if (_ticket.is_mine) {
                                 current_event_tickets_count++;
                             }
@@ -220,9 +217,12 @@ module.exports = function (passport) {
         new User({
             user_id: userData.user_id
         }).fetch().then(function (user) {
-                //restore the current event id from the session
-                user.currentEventId = userData.currentEventId
-                done(null, user)
+            if (userData.currentEventId === undefined) {
+                userData.currentEventId = constants.DEFAULT_EVENT_ID
+            }
+            //restore the current event id from the session
+            user.currentEventId = userData.currentEventId
+            done(null, user)
             })
     });
 
