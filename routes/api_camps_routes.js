@@ -1043,6 +1043,9 @@ module.exports = (app, passport) => {
     app.get('/users/:user_id/join_details', userRole.isLoggedIn(), (req, res) => {
         if (req.user.isAdmin || req.user.attributes.user_id === parseInt(req.params.user_id)) {
             User.forge({ user_id: req.params.user_id }).fetch().then((user) => {
+                //this user is not the one is logged in, so the current event Id does not exixts
+                //we need to add it from the logged user so getUserCamps will know what to search for
+                user.currentEventId = req.user.currentEventId
                 user.getUserCamps((camps) => {
                     var camp = user.attributes.camp;
                     if (user.attributes.camp) {
@@ -1256,6 +1259,9 @@ module.exports = (app, passport) => {
                 if (req.user.isManagerOfCamp(camp_id) || group_props.isAdmin) {
                     User.forge({ email: user_email }).fetch().then((user) => {
                         if (user !== null) {
+                            //this user is not the one is logged in, so the current event Id does not exixts
+                            //we need to add it from the logged user so getUserCamps will know what to search for
+                            user.currentEventId = req.user.currentEventId
                             // check that user is only at one camp!
                             user.getUserCamps((camps) => {
                                 if (camps.length === 0 || !user.attributes.camp || group_props.multiple_groups_for_user) {
