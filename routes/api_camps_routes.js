@@ -33,8 +33,8 @@ const emailDeliver = (recipient, subject, template, props) => {
     )
 };
 
-var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
-    Camp.forge({ id: camp_id }).fetch().then((camp) => {
+var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mgr, res) => {
+    Camp.forge({id: camp_id , event_id: current_event_id}).fetch().then((camp) => {
         let camp_mgr_id;
         if (camp_mgr instanceof User) {
             camp_mgr_id = camp_mgr.id;
@@ -45,7 +45,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
         group_options = camp.parsePrototype(camp_mgr);
         let isAdmin = group_options.isAdmin;
         console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
-
+        let addinfo_jason_subAction = null
         camp.getCampUsers((users) => {
             var new_status;
             var save_method = { require: true };
@@ -158,7 +158,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
             }
 
             //check if the request is to update the addinfo_json column 
-            if (addinfo_jason_subAction) {
+            if (addinfo_jason_subAction !== null) {
                 var userData = {
                     camp_id: camp.attributes.id,
                     user_id: user_id,
@@ -527,7 +527,7 @@ module.exports = (app, passport) => {
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
             Camp.forge(__camps_create_camp_obj(req, true)).save().then((camp) => {
-                __camps_update_status(camp.attributes.id, camp.attributes.main_contact, 'approve_new_mgr', req.user, res);
+                __camps_update_status(req.user.currentEventId,camp.attributes.id, camp.attributes.main_contact, 'approve_new_mgr', req.user, res);
             }).catch((e) => {
                 res.status(500).json({
                     error: true,
@@ -543,7 +543,7 @@ module.exports = (app, passport) => {
        */
     app.put('/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
         Camp
-            .forge({ id: req.params.id })
+            .forge({id: req.params.id , event_id: req.user.currentEventId})
             .fetch({ withRelated: ['users_groups'] })
             .then((camp) => {
                 camp.getCampUsers((users) => {
@@ -637,7 +637,7 @@ module.exports = (app, passport) => {
         var action = req.params.action;
         var actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket'];
         if (actions.indexOf(action) > -1) {
-            __camps_update_status(camp_id, user_id, action, req.user, res);
+            __camps_update_status(req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
             res.status(404).json({ error: true, data: { message: "illegal command (" + action + ")" } });
         }
@@ -1019,7 +1019,7 @@ module.exports = (app, passport) => {
     app.all('/camps/:id/join/deliver', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
-        __camps_update_status(camp_id, user_id, 'join', user_id, res);
+        __camps_update_status(req.user.currentEventId, camp_id, user_id, 'join', user_id, res);
     });
 
     /**
@@ -1028,7 +1028,7 @@ module.exports = (app, passport) => {
     app.get('/users/:id/join_cancel', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
-        __camps_update_status(camp_id, user_id, 'join_cancel', user_id, res);
+        __camps_update_status(req.user.currentEventId, camp_id, user_id, 'join_cancel', user_id, res);
     });
 
     /**
@@ -1037,7 +1037,7 @@ module.exports = (app, passport) => {
     app.get('/users/:id/join_approve', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
-        __camps_update_status(camp_id, user_id, 'join_mgr', user_id, res);
+        __camps_update_status(req.user.currentEventId, camp_id, user_id, 'join_mgr', user_id, res);
     });
 
     app.get('/users/:user_id/join_details', userRole.isLoggedIn(), (req, res) => {
@@ -1105,7 +1105,7 @@ module.exports = (app, passport) => {
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
-        Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+        Camp.forge({id: req.params.id , event_id: req.user.currentEventId}).fetch().then((camp) => {
             camp.getCampUsers((members) => {
                 var isCampManager = camp.isCampManager(req.user.id, req.t);
                 if (!req.user.isAdmin) {
@@ -1265,7 +1265,7 @@ module.exports = (app, passport) => {
                             // check that user is only at one camp!
                             user.getUserCamps((camps) => {
                                 if (camps.length === 0 || !user.attributes.camp || group_props.multiple_groups_for_user) {
-                                    __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
+                                    __camps_update_status(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                                 } else {
                                     let message;
                                     if (user.isUserInCamp(camp_id)) {
@@ -1283,7 +1283,7 @@ module.exports = (app, passport) => {
                                     created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                                     email: user_email
                                 }).then((user) => {
-                                    __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
+                                    __camps_update_status(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                                 });
                             } else {
                                 res.status(500).json({ error: true, data: { message: 'Cannot add new emails without profile.' } });
