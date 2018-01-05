@@ -108,8 +108,8 @@ var Camp = bookshelf.Model.extend({
             this.attributes.camp_activity_time_i18n = common.t_array('camps:new.camp_activity_time', this.attributes.camp_activity_time, t);
             this.attributes.noise_level_i18n = common.t_array('camps:new.camp_noise_level', this.attributes.noise_level, t);
             this.attributes.type_i18n = common.t_array('camps:edit', this.attributes.type, t, '.');
-            this.attributes.camp_desc_he_linkify = common.linkify(this.attributes.camp_desc_he);
-            this.attributes.camp_desc_en_linkify = common.linkify(this.attributes.camp_desc_en);
+            this.attributes.camp_desc_he_linkify = common.linkify(this.attributes.camp_desc_he || '');
+            this.attributes.camp_desc_en_linkify = common.linkify(this.attributes.camp_desc_en || '');
         }
     },
     __parsePrototype: function(prototype, user) {

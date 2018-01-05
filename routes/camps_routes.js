@@ -25,8 +25,7 @@ var __render_camp = function (camp, req, res) {
     }
     Camp.forge({
         id: camp_id,
-        event_id: req.user.currentEventId,
-        __prototype: constants.prototype_camps.THEME_CAMP.id,
+        event_id: req.user.currentEventId
     }).fetch({}).then((camp) => {
         camp.getCampUsers((users) => {
             camp.init_t(req.t);
