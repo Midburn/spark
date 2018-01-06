@@ -12,7 +12,7 @@ then
     HELM_UPDATE_COMMIT_MESSAGE="${DEPLOY_ENVIRONMENT} spark image update --no-deploy"
     wget https://raw.githubusercontent.com/OriHoch/sk8s-ops/master/run_docker_ops.sh
     chmod +x run_docker_ops.sh
-    ! run_docker_ops.sh "${K8S_ENVIRONMENT_NAME}" "
+    ! ./run_docker_ops.sh "${K8S_ENVIRONMENT_NAME}" "
        RES=0;
        ! ./helm_update_values.sh '${B64_UPDATE_VALUES}' '${HELM_UPDATE_COMMIT_MESSAGE}' '${K8S_OPS_GITHUB_REPO_TOKEN}' '${OPS_REPO_SLUG}' '${OPS_REPO_BRANCH}' \
             && echo 'failed helm update values' && RES=1;
