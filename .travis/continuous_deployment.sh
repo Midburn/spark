@@ -7,7 +7,11 @@ then
     K8S_ENVIRONMENT_NAME="${DEPLOY_ENVIRONMENT}"
     OPS_REPO_SLUG="Midburn/midburn-k8s"
     OPS_REPO_BRANCH="master"
-    IMAGE_TAG="gcr.io/midbarrn/midburn-spark-cd:${TRAVIS_COMMIT}"
+    if [ "${TRAVIS_TAG}" != "" ]; then
+        IMAGE_TAG="gcr.io/midbarrn/midburn-spark-tag:${TRAVIS_TAG}"
+    else
+        IMAGE_TAG="gcr.io/midbarrn/midburn-spark-cd:${TRAVIS_COMMIT}"
+    fi
     B64_UPDATE_VALUES=`echo '{"spark":{"image":"'${IMAGE_TAG}'"}}' | base64 -w0`
     HELM_UPDATE_COMMIT_MESSAGE="${DEPLOY_ENVIRONMENT} spark image update --no-deploy"
     wget https://raw.githubusercontent.com/OriHoch/sk8s-ops/master/run_docker_ops.sh
@@ -20,8 +24,6 @@ then
         cd /spark;
         ! gcloud container builds submit --tag $IMAGE_TAG . \
             && echo 'failed to build spark image' && RES=1;
-        [ '${TRAVIS_TAG}' != '' ] && gcloud docker -- tag $IMAGE_TAG 'gcr.io/midbarrn/midburn-spark-tag:${TRAVIS_TAG}' \
-            && gcloud docker -- push 'gcr.io/midbarrn/midburn-spark-tag:${TRAVIS_TAG}'
         exit $RES
     " "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "" "-v `pwd`:/spark" \
         && echo 'failed to run docker ops' && exit 1
