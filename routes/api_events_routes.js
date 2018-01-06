@@ -80,6 +80,20 @@ module.exports = (app, passport) => {
             });
         }); 
 
+        app.get('/events/current',
+        [userRole.isLoggedIn()],
+        (req, res) => {
+            var event_id = req.session.passport.user.currentEventId;
+            Event.forge({ "event_id": event_id }).fetch().then((event) => {
+                let props = {};
+                if (typeof event.attributes.json_data === 'string') {
+                    props = JSON.parse(event.attributes.json_data);
+                }
+                for (var prop in props) { events.attributes[prop] = props[prop]; }
+                res.json({ "event": event });
+            });    
+        });
+
     app.get('/events/:event_id',
         [userRole.isLoggedIn()],
         (req, res) => {

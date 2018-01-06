@@ -37,7 +37,12 @@ var Camp = bookshelf.Model.extend({
 
         // let _camps_members = constants.CAMP_MEMBERS_TABLE_NAME;
         // let _users = constants.USERS_TABLE_NAME;
-        let query = "SELECT users.*,camp_members.status AS member_status,SUM(IF(tickets.ticket_id>0,1,0)) AS ticket_count,SUM(tickets.inside_event) AS inside_event, camp_members.addinfo_json AS camps_members_addinfo_json FROM users INNER JOIN camp_members on users.user_id=camp_members.user_id left join tickets on tickets.holder_id=users.user_id and tickets.event_id='" + this.attributes.event_id + "' where camp_members.camp_id=" + this.attributes.id + " group by users.user_id";
+        let query = `SELECT users.*, camp_members.status AS member_status, SUM(IF(tickets.ticket_id>0,1,0)) AS ticket_count, SUM(tickets.inside_event) AS inside_event, camp_members.addinfo_json AS camps_members_addinfo_json 
+        FROM users 
+            INNER JOIN camp_members on users.user_id=camp_members.user_id 
+            LEFT JOIN tickets on tickets.holder_id=users.user_id AND tickets.event_id='${this.attributes.event_id}' 
+            WHERE camp_members.camp_id=${this.attributes.id} GROUP BY users.user_id, member_status, camps_members_addinfo_json`;
+
         return knex //(_users)
             .raw(query)
             .then((users_raw_data) => {

@@ -17,7 +17,9 @@ block content
                 event_type: '#{event.addinfo_json.event_type}',
                 start_date: new Date('#{event.addinfo_json.start_date}'),
                 end_date: new Date('#{event.addinfo_json.end_date}'),
+                start_presale_tickets_allocation: new Date('#{event.addinfo_json.start_presale_tickets_allocation}'),
                 start_presale_tickets: new Date('#{event.addinfo_json.start_presale_tickets}'),
+                end_presale_tickets_allocation: new Date('#{event.addinfo_json.end_presale_tickets_allocation}'),
                 end_presale_tickets: new Date('#{event.addinfo_json.end_presale_tickets}'),
                 tickets_info: '#{event.addinfo_json.tickets_info}',
                 community_camps: '#{event.addinfo_json.community_camps}' == 'true',
@@ -49,6 +51,8 @@ block content
                                     input.form-control(id='event_desc_he' dir='rtl' ng-model='event.addinfo_json.desc_he')
                                     label(for='start_date')=t('events:edit.start_date')
                                     input.form-control(type='date' ng-disabled="eventStarted" id='start_date' dir='ltr' ng-model='event.addinfo_json.start_date')
+                                    label(for='start_presale_tickets_allocation')=t('events:form.start_presale_tickets_allocation')
+                                    input.form-control(type='date' id='start_presale_tickets_allocation', dir='ltr' ng-model='event.addinfo_json.start_presale_tickets_allocation')
                                     label(for='start_presale_tickets')=t('events:edit.start_presale_tickets')
                                     input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-model='event.addinfo_json.start_presale_tickets')
                                     label(for='tickets_info')=t('events:edit.tickets_info')
@@ -81,6 +85,8 @@ block content
                                     input.form-control(id='event_desc_en', dir='ltr', name='event_desc_en' ng-model='event.addinfo_json.desc_en')
                                     label(for='end_date')=t('events:edit.end_date')
                                     input.form-control(type='date' ng-disabled="eventStarted" id='end_date', dir='ltr', name='end_date' ng-model='event.addinfo_json.end_date')
+                                    label(for='end_presale_tickets_allocation')=t('events:form.end_presale_tickets_allocation')
+                                    input.form-control(type='date' id='end_presale_tickets_allocation', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.end_presale_tickets_allocation')
                                     label(for='end_presale_tickets')=t('events:edit.end_presale_tickets')
                                     input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.end_presale_tickets')
                                     label(for='url')=t('events:edit.url')

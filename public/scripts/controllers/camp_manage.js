@@ -5,11 +5,11 @@ __get_camps_all = function ($http, on_success) {
     if (camps_all) {
         on_success(camps_all);
     } else {
-        var _url='/camps_all';
-        if (groups_prototype==='art_installation') {
-            _url='/art_all';
-        } else if (groups_prototype==='prod_dep') {
-            _url='/prod_dep_all';
+        var _url = '/camps_all';
+        if (groups_prototype === 'art_installation') {
+            _url = '/art_all';
+        } else if (groups_prototype === 'prod_dep') {
+            _url = '/prod_dep_all';
         }
         console.log(_url);
         $http.get(_url).then((res) => {
@@ -45,15 +45,23 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
     }
 
     // update the camp pre sale quota
-    $scope.updatePreSaleQuota = (camp_id,quota) => {
-        confirm('Confirm new quota to: ' + quota);
-        $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: quota })
-           .success(function(response) {
-            window.location.reload();
-        })
-        .error(function() {
-            alert("Quota must be in a positive number format");
-        }); 
+    $scope.updatePreSaleQuota = (camp_id, quota) => {
+        if (typeof currentEvent === 'function') {
+            currentEvent();
+        }
+
+        let current = new Date();
+        let start = new Date(currentEvent.addinfo_json.start_presale_tickets_allocation);
+        let end = new Date(currentEvent.addinfo_json.end_presale_tickets_allocation);
+        if (start < current && current < end) {
+            if (confirm('Confirm new quota to: ' + quota)) {
+                $.post('/camps/' + camp_id + '/updatePreSaleQuota', { "quota": quota })
+                    .success(() => { })
+                    .error(() => {
+                        alert("Quota must be in a positive number format");
+                    });
+            }
+        }
     }
 
     $scope.changeOrderBy = function (orderByValue) {

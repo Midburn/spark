@@ -48,5 +48,9 @@
         "event_code":"קוד אירוע",
         "event_type":"סוג אירוע",
         "gate_code":"קוד שער"
+    },
+    "form":{
+        "start_presale_tickets_allocation":"תאריך תחילת הקצאת כרטיסים",
+        "end_presale_tickets_allocation":"תאריך סיום הקצאת כרטיסים"
     }
 }

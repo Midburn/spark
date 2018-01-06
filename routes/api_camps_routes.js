@@ -165,18 +165,26 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
    
                 };
 
-                //select the addinfo_json column from the camp member table
-                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('user_id','addinfo_json')
+                // select the addinfo_json column from the camp member table
+                knex(constants.CAMP_MEMBERS_TABLE_NAME)
+                .select('user_id',`${constants.CAMP_MEMBERS_TABLE_NAME}.addinfo_json`,`${constants.EVENTS_TABLE_NAME}.addinfo_json as eventInfo`)
+                .rightJoin(constants.EVENTS_TABLE_NAME,`${constants.EVENTS_TABLE_NAME}.event_id`,`${constants.EVENTS_TABLE_NAME}.event_id`)
                 .where({
                     camp_id : userData.camp_id, 
-                    user_id : userData.user_id
+                    user_id : userData.user_id,
+                    event_id: current_event_id
                 })
                 .then(resp => {
+                    // checking that update of the pre sale ticket allocation is inside the valid time period
+                    const start = new Date(JSON.parse(resp[0].eventInfo).start_presale_tickets_allocation);
+                    const end = new Date(JSON.parse(resp[0].eventInfo).end_presale_tickets_allocation);
+                    const now = new Date();
+                    const isValidAllocationDate = start < now && now < end;
 
                     let jsonInfo;
                     try {
                         //pass the response to the process method
-                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin);
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,isValidAllocationDate);
                     } catch (err) {
                         res.status(500);
                         throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -229,7 +237,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 here we pass the query info from the SQL 
 and check the json info, the method will throw and error if failed
 */
-function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, isValidAllocationDate) {
     
     var userData = info;
 
@@ -239,16 +247,8 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
         //check if the time of the pre sale is on
-        //checking using the time constants for now
-        //unless user is admin
-        //TODO once the event table will be updated with presale ticket time, this needs to be replace
-        if (isAdmin === false) {
-            var currentTime = new Date();
-            var start=new Date(constants.PRESALE_TICKETS_START_DATE);
-            var end=new Date(constants.PRESALE_TICKETS_END_DATE);
-            if (currentTime.getTime() < start.getTime() || currentTime.getTime() > end.getTime()) {
+        if (isAdmin === false && !isValidAllocationDate) {
                 throw new Error("PreSale Tickes selection is currently closed");
-            }
         }
         //if the user is not approved yet in the
         //reject the reuest 
@@ -1217,15 +1217,15 @@ module.exports = (app, passport) => {
                         // stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
                     }).then(() => {
                         knex.raw(query1).then((result) => {
-                            stat.total_tickets = result[0][0]['total_tickets'];
-                            stat.inside_event = result[0][0]['inside_event'];
-                            stat.ticketing = result[0][0]['ticketing'];
-                            stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
-                            stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
-                            stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
-                            stat.last_24h_exit = result[0][0]['last_24h_exit'];
-                            stat.last_1h_entrance = result[0][0]['last_1h_entrance'];
-                            stat.last_1h_exit = result[0][0]['last_1h_exit'];
+                            stat.total_tickets = result[0]['total_tickets'];
+                            stat.inside_event = result[0]['inside_event'];
+                            stat.ticketing = result[0]['ticketing'];
+                            stat.last_24h_first_entrance = result[0]['last_24h_first_entrance'];
+                            stat.last_1h_first_entrance = result[0]['last_1h_first_entrance'];
+                            stat.last_24h_entrance = result[0]['last_24h_entrance'];
+                            stat.last_24h_exit = result[0]['last_24h_exit'];
+                            stat.last_1h_entrance = result[0]['last_1h_entrance'];
+                            stat.last_1h_exit = result[0]['last_1h_exit'];
                             res.status(200).json({ groups: groups, stats: stat });
 
                         });
@@ -1358,7 +1358,7 @@ module.exports = (app, passport) => {
                 }
 
                 camp.save({ pre_sale_tickets_quota: quota }).then(() => {
-                    res.status(200).end()
+                    res.sendStatus(200);
                 }).catch((err) => {
                     res.status(500).json({
                         error: true,

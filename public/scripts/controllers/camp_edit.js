@@ -186,7 +186,20 @@ app.controller("campEditController", ($scope, $http, $filter) => {
    
         angular_updateUser($http, $scope, action_type, user_rec);
     }
-});
+
+    //boolean ticket start & end allocation period
+    $scope.allocationPeriod;
+    {
+        if (typeof currentEvent === 'function') {
+            currentEvent();        
+        };
+        let now = new Date();
+        let start = new Date(currentEvent.addinfo_json.start_presale_tickets_allocation);
+        let end = new Date(currentEvent.addinfo_json.end_presale_tickets_allocation);
+
+        $scope.allocationPeriod = start < now && now < end;
+    }
+}); //end of controller
 
 app.controller("homeController", ($scope, $http, $filter) => {
     $scope.angular_getMyGroups = function ($http, $scope) {
@@ -205,4 +218,5 @@ app.controller("homeController", ($scope, $http, $filter) => {
     }
 
     $scope.angular_getMyGroups($http, $scope);
+
 });
