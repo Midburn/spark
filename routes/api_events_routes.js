@@ -102,7 +102,7 @@ module.exports = (app, passport) => {
         });
 
     //change the current event id for camps manager or admin 
-    app.post('/events/change', userRole.isCampManager(), (req, res) => {
+    app.post('/events/change', userRole.isLoggedIn(), (req, res) => {
         //set the new event id in the session 
         req.session.passport.user.currentEventId = req.body.currentEventId;
         req.session.save()
