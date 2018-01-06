@@ -24,7 +24,7 @@ then
         cd /spark;
         ! gcloud container builds submit --tag $IMAGE_TAG . \
             && echo 'failed to build spark image' && RES=1;
-        exit $RES
+        exit "'$'"RES
     " "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "" "-v `pwd`:/spark" \
         && echo 'failed to run docker ops' && exit 1
 fi
