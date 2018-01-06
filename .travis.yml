@@ -5,7 +5,7 @@ node_js:
 env:
   matrix:
   - DEPLOY_ENVIRONMENT=staging DEPLOY_BRANCH=master
-  - DEPLOY_ENVIRONMENT=production DEPLOY_BRANCH=master DEPLOY_TAGS=true
+  - DEPLOY_ENVIRONMENT=production DEPLOY_TAGS=true
   - ""
 cache:
   directories:

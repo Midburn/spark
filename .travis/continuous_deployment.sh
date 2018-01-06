@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if [ "${DEPLOY_ENVIRONMENT}" != "" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${TRAVIS_BRANCH}" == "${DEPLOY_BRANCH}" ] &&\
-   ! echo "${TRAVIS_COMMIT_MESSAGE}" | grep -- --no-deploy && ([ "${TRAVIS_COMMIT}" != "" ] || [ "${TRAVIS_TAG}" != "" ]) &&\
-   ([ "${DEPLOY_TAGS}" == "" ] || [ "${TRAVIS_TAG}" != "" ])
+if [ "${DEPLOY_ENVIRONMENT}" != "" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ] &&\
+   ([ "${TRAVIS_BRANCH}" == "${DEPLOY_BRANCH}" ] || ([ "${DEPLOY_TAGS}" == "true" ] && [ "${TRAVIS_TAG}" != "" ])) &&\
+   ! echo "${TRAVIS_COMMIT_MESSAGE}" | grep -- --no-deploy
 then
     openssl aes-256-cbc -K $encrypted_f2bd2a0d33d6_key -iv $encrypted_f2bd2a0d33d6_iv -in ./k8s-ops-secret.json.enc -out secret-k8s-ops.json -d
     K8S_ENVIRONMENT_NAME="${DEPLOY_ENVIRONMENT}"
