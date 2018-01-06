@@ -23,7 +23,7 @@ then
         [ '${TRAVIS_TAG}' != '' ] && gcloud docker -- tag $IMAGE_TAG 'gcr.io/midbarrn/midburn-spark-tag:${TRAVIS_TAG}' \
             && gcloud docker -- push 'gcr.io/midbarrn/midburn-spark-tag:${TRAVIS_TAG}'
         exit $RES
-    " "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" \
+    " "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "" "-v `pwd`:/spark" \
         && echo 'failed to run docker ops' && exit 1
 fi
 
