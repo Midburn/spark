@@ -170,7 +170,6 @@ app.controller("campEditController", ($scope, $http, $filter) => {
             camp_id: camp_id,
             user_name: user_name,
             user_id: user_id,
-            addinfo_json : parsedJsonInfo,
         }
         angular_updateUser($http, $scope, action_type, user_rec);
     }
