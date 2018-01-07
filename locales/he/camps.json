@@ -263,7 +263,8 @@
         "pre_sale_ticket_count": "סה״כ כרטיסים במכירה מוקדמת",
         "security_file": "תיק בטיחות",
         "members_header": "נהל חברי מחנה",
-        "search_member": "מצא חבר מחנה"
+        "search_member": "מצא חבר מחנה",
+        "add_member_placeholder": "הזן מייל של פרופיל מידברן"
     },
     "program": {
         "page_title": "צור פעילות חדשה",
