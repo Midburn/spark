@@ -25,6 +25,19 @@ then
         cd /spark;
         ! gcloud container builds submit --tag $IMAGE_TAG . \
             && echo 'failed to build spark image' && RES=1;
+        while ! kubectl rollout status deployment spark; do
+            echo 'waiting for spark deployment rollout';
+            sleep 60
+            for POD in "'`kubectl get pods | grep spark- | cut -d" " -f1 -`'"; do
+                POD_JSON="'`'"kubectl get -ojson pod "'$'"POD"'`'";
+                POD_STATUS="'`echo $POD_JSON | jq -r .status.phase`'";
+                if [ "'"${'"POD_STATUS"'}"'" != "'"Running"'" ]; then
+                    kubectl describe pod "'$'"POD;
+                    kubectl logs "'$'"POD -c spark;
+                    kubectl logs "'$'"POD -c migrations;
+                fi;
+            done;
+        done;
         exit "'$'"RES
     " "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "" "-v `pwd`:/spark" \
         && echo 'failed to run docker ops' && exit 1
