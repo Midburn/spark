@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "${TRAVIS_TAG}" != "" ]; then
-    IMAGE_TAG="gcr.io/midbarrn/midburn-spark-tag:${TRAVIS_TAG}"
-else
-    IMAGE_TAG="gcr.io/midbarrn/midburn-spark-cd:${TRAVIS_COMMIT}"
-fi
 HELM_UPDATE_COMMIT_MESSAGE="${K8S_ENVIRONMENT_NAME} spark image update --no-deploy"
-B64_UPDATE_VALUES=`echo '{"spark":{"image":"'${IMAGE_TAG}'"}}' | base64 -w0`
 
 RES=0
 
