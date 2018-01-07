@@ -266,6 +266,7 @@
         "security_file": "Security Documentation",
         "members_header": "Manage Camp Members",
         "search_member": "Find members",
+        "add_member_placeholder": "Type Midburn profile email",
         "early_arrival_quota": "Early Arrival Quota"
     },
     "program": {

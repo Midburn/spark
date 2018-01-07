@@ -262,7 +262,7 @@ block content
             //- Card 3 - Manage Members
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
-                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder=(language == 'en' ? 'Add new member' : 'הוסף חבר חדש'))
+                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}")
                     button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
                 .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
