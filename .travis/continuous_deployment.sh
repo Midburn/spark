@@ -11,13 +11,13 @@ then
     chmod +x run_docker_ops.sh .travis/continuos_deployment_ops.sh
     ! ./run_docker_ops.sh "${DEPLOY_ENVIRONMENT}" "/spark/.travis/continuos_deployment_ops.sh" \
                           "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "" "
-                            -v '`pwd`:/spark'
-                            -e 'B64_UPDATE_VALUES=${B64_UPDATE_VALUES}'
-                            -e 'TRAVIS_TAG=${TRAVIS_TAG}'
-                            -e 'TRAVIS_COMMIT=${TRAVIS_COMMIT}'
-                            -e 'K8S_OPS_GITHUB_REPO_TOKEN=${K8S_OPS_GITHUB_REPO_TOKEN}'
-                            -e 'OPS_REPO_SLUG=${OPS_REPO_SLUG}'
-                            -e 'OPS_REPO_BRANCH=${OPS_REPO_BRANCH}'
+                            -v `pwd`:/spark
+                            -e B64_UPDATE_VALUES=${B64_UPDATE_VALUES}
+                            -e TRAVIS_TAG=${TRAVIS_TAG}
+                            -e TRAVIS_COMMIT=${TRAVIS_COMMIT}
+                            -e K8S_OPS_GITHUB_REPO_TOKEN=${K8S_OPS_GITHUB_REPO_TOKEN}
+                            -e OPS_REPO_SLUG=${OPS_REPO_SLUG}
+                            -e OPS_REPO_BRANCH=${OPS_REPO_BRANCH}
                           " \
         && echo 'failed to run docker ops' && exit 1
 fi
