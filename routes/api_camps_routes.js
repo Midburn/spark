@@ -165,18 +165,27 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
    
                 };
 
-                //select the addinfo_json column from the camp member table
-                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('user_id','addinfo_json')
+                //select the addinfo_json column from the camp member table, and events addinfo_json
+                let campsMembersTable = constants.CAMP_MEMBERS_TABLE_NAME;
+                let eventsTable = constants.EVENTS_TABLE_NAME;
+                knex(campsMembersTable)
+                    .rightOuterJoin(eventsTable, `event_id`, constants.CURRENT_EVENT_ID ) //TODO use current event id from session
+                    .select(`${campsMembersTable}.user_id`, `${campsMembersTable}.addinfo_json`, `${eventsTable}.addinfo_json`)
                 .where({
                     camp_id : userData.camp_id, 
                     user_id : userData.user_id
                 })
                 .then(resp => {
 
+                    let userAddInfo = resp[0].camp_members.addinfo_json;
+                    let eventAddInfo = {
+                        presaleStart: new Date(resp[0].events.addinfo_json.start_presale_tickets),
+                        presaleEnd: new Date(resp[0].events.addinfo_json.end_presale_tickets)
+                        }
                     let jsonInfo;
                     try {
                         //pass the response to the process method
-                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin);
+                        jsonInfo = Modify_User_AddInfo(userAddInfo,eventAddInfo,addinfo_jason_subAction,camp,users,user,isAdmin);
                     } catch (err) {
                         res.status(500);
                         throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -229,7 +238,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 here we pass the query info from the SQL 
 and check the json info, the method will throw and error if failed
 */
-function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
+function Modify_User_AddInfo (info,eventInfo, addinfo_jason_subAction,camp, users, user, isAdmin) {
     
     var userData = info;
 
@@ -244,8 +253,8 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
         //TODO once the event table will be updated with presale ticket time, this needs to be replace
         if (isAdmin === false) {
             var currentTime = new Date();
-            var start=new Date(constants.PRESALE_TICKETS_START_DATE);
-            var end=new Date(constants.PRESALE_TICKETS_END_DATE);
+            var start = eventInfo.presaleStart;
+            var end = eventInfo.presaleEnd;
             if (currentTime.getTime() < start.getTime() || currentTime.getTime() > end.getTime()) {
                 throw new Error("PreSale Tickes selection is currently closed");
             }
