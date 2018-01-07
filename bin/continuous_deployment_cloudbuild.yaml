@@ -1,0 +1,18 @@
+steps:
+#- name: gcr.io/cloud-builders/docker
+#  args:
+#  - pull
+#  - gcr.io/midbarrn/midburn-spark-latest
+- name: gcr.io/cloud-builders/docker
+  args:
+  - build
+  - "--cache-from"
+  - gcr.io/midbarrn/midburn-spark-latest
+  - "-t"
+  - gcr.io/midbarrn/midburn-spark-latest
+  - "-t"
+  - "${_IMAGE_TAG}"
+  - "."
+images:
+- gcr.io/midbarrn/midburn-spark-latest
+- "${_IMAGE_TAG}"

@@ -10,12 +10,14 @@ cd /ops
                           "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" \
     && echo 'failed helm update values' && RES=1;
 
-! kubectl set image deployment/spark "spark=${IMAGE_TAG}" \
-    && echo 'failed to patch deployment' && RES=1;
+! kubectl set image deployment/spark "spark=${IMAGE_TAG}" "migrations=${IMAGE_TAG}" \
+    && echo 'failed to patch spark deployment' && RES=1;
 
 cd /spark;
 
-! gcloud container builds submit --tag $IMAGE_TAG . \
+! gcloud container builds submit --substitutions _IMAGE_TAG=${IMAGE_TAG} \
+                                 --config bin/continuous_deployment_cloudbuild.yaml \
+                                 . \
     && echo 'failed to build spark image' && RES=1;
 
 while ! kubectl rollout status deployment spark; do
