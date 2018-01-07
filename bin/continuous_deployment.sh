@@ -20,7 +20,7 @@ cd /spark;
                                  . \
     && echo 'failed to build spark image' && RES=1;
 
-while ! kubectl rollout status deployment spark; do
+while ! kubectl rollout status deployment spark --watch=false; do
     echo 'waiting for spark deployment rollout';
     for POD in `kubectl get pods | grep spark- | cut -d" " -f1 -`; do
         POD_JSON=`kubectl get -ojson pod $POD`;
@@ -31,7 +31,8 @@ while ! kubectl rollout status deployment spark; do
             kubectl logs --tail=100 $POD -c migrations;
         fi;
     done;
-    sleep 15;
+    echo "sleeping for 60 seconds"
+    sleep 60;
 done;
 
 exit $RES
