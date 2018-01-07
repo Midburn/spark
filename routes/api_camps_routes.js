@@ -1145,7 +1145,7 @@ module.exports = (app, passport) => {
                 result = camp.parsePrototype(req.user);
 
                 if (isCampManager || (result && result.isAdmin)) {
-                    res.status(200).json({ members: members });
+                    res.status(200).json({ members: members, pre_sale_tickets_quota: camp.attributes.pre_sale_tickets_quota });
                 } else {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });
                 }
