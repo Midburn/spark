@@ -157,18 +157,18 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 
             }
 
-            //check if the request is to update the addinfo_json column 
+            //check if the request is to update the addinfo_json column
             if (addinfo_jason_subAction !== null) {
                 var userData = {
                     camp_id: camp.attributes.id,
                     user_id: user_id,
-   
+
                 };
 
                 //select the addinfo_json column from the camp member table
                 knex(constants.CAMP_MEMBERS_TABLE_NAME).select('user_id','addinfo_json')
                 .where({
-                    camp_id : userData.camp_id, 
+                    camp_id : userData.camp_id,
                     user_id : userData.user_id
                 })
                 .then(resp => {
@@ -186,7 +186,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                     //on success go to _after_update callback
                     knex(constants.CAMP_MEMBERS_TABLE_NAME).update({addinfo_json : jsonInfo})
                         .where({
-                            camp_id : userData.camp_id, 
+                            camp_id : userData.camp_id,
                             user_id : userData.user_id
                         })
                         .then(_after_update).catch((e) => {
@@ -195,7 +195,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                 })
                 .catch((e) => {
                     console.log(e);
-                })       
+                })
             }
             else if (new_status) {
                 var data = {
@@ -209,7 +209,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                 } else {
                     query = 'UPDATE ' + constants.CAMP_MEMBERS_TABLE_NAME + ' SET status="' + data.status + '" WHERE camp_id=' + data.camp_id + ' AND user_id=' + data.user_id + ';';
                 }
-                
+
                 knex.raw(query).then(_after_update);
             } else {
                 res.status(404).json({ error: true, data: { message: "Cannot execute this command." } });
@@ -226,15 +226,15 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 }
 
 /*
-here we pass the query info from the SQL 
+here we pass the query info from the SQL
 and check the json info, the method will throw and error if failed
 */
 function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
-    
+
     var userData = info;
 
     var jsonInfo;
-    
+
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
@@ -251,9 +251,9 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
             }
         }
         //if the user is not approved yet in the
-        //reject the reuest 
+        //reject the reuest
         if (user.member_status === 'pending') {
-            throw new Error("Cannot assign Pre-sale ticket to pending user"); 
+            throw new Error("Cannot assign Pre-sale ticket to pending user");
         }
 
         //check if the json info is null
@@ -262,11 +262,11 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
             jsonInfo = {"pre_sale_ticket": "true"};
         }
         else {
-            //if the object is not null then parse it and toggle the current value 
+            //if the object is not null then parse it and toggle the current value
             jsonInfo=JSON.parse(userData);
             if (jsonInfo.pre_sale_ticket === "true") {
                 jsonInfo.pre_sale_ticket = "false";
-            } 
+            }
             else {
                 jsonInfo.pre_sale_ticket = "true";
             }
@@ -282,20 +282,20 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
                     if (addinfo_json.pre_sale_ticket === "true") {
                         preSaleTicketsCount++
                     }
-                }    
+                }
             }
 
             //if the pre sale ticket count equal or higher than the quota
-            //reject the reuest 
+            //reject the reuest
             if (preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota) {
-                throw new Error("exceed pre sale tickets quota");  
+                throw new Error("exceed pre sale tickets quota");
             }
         }
     }
 
-    jsonInfo = JSON.stringify(jsonInfo) 
+    jsonInfo = JSON.stringify(jsonInfo)
     return jsonInfo;
-}           
+}
 
 module.exports = (app, passport) => {
     /**
@@ -1114,8 +1114,7 @@ module.exports = (app, passport) => {
                             member.cell_phone = '';
                             member.name = '';
                         }
-                        
-                        delete member.email;
+
                         delete member.first_name;
                         delete member.last_name;
                         delete member.gender;
@@ -1129,7 +1128,7 @@ module.exports = (app, passport) => {
                         return member;
                     });
                 }
-                
+
                 //check eahc memebr and send to the client the jason info
                 for (var i in members) {
                     if (members[i].camps_members_addinfo_json) {
@@ -1140,7 +1139,7 @@ module.exports = (app, passport) => {
                         }
                     } else {
                         members[i].pre_sale_ticket = false;
-                    }    
+                    }
                 }
 
                 result = camp.parsePrototype(req.user);
