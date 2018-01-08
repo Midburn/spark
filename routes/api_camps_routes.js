@@ -176,15 +176,15 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                 })
                 .then(resp => {
                     // checking that update of the pre sale ticket allocation is inside the valid time period
-                    const start = new Date(JSON.parse(resp[0].eventInfo).start_presale_tickets_allocation);
-                    const end = new Date(JSON.parse(resp[0].eventInfo).end_presale_tickets_allocation);
-                    const now = new Date();
-                    const isValidAllocationDate = start < now && now < end;
+                    const allocationDates = {
+                        start : new Date(JSON.parse(resp[0].eventInfo).start_presale_tickets_allocation),
+                        end : new Date(JSON.parse(resp[0].eventInfo).end_presale_tickets_allocation)
+                    }
 
                     let jsonInfo;
                     try {
                         //pass the response to the process method
-                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,isValidAllocationDate);
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
                     } catch (err) {
                         res.status(500);
                         throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -237,7 +237,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 here we pass the query info from the SQL 
 and check the json info, the method will throw and error if failed
 */
-function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, isValidAllocationDate) {
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
     
     var userData = info;
 
@@ -246,6 +246,9 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
+        const {start, end} = allocationDates;
+        const now = new Date();
+        const isValidAllocationDate = start < now && now < end;
         //check if the time of the pre sale is on
         if (isAdmin === false && !isValidAllocationDate) {
                 throw new Error("PreSale Tickes selection is currently closed");
