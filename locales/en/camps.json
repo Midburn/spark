@@ -140,6 +140,7 @@
         "remove": "Remove",
         "edit": "Edit",
         "search": "Search Camp",
+        "dumpcampsdata": "export data",  
         "entrance_quota": "Early arrival quota"
     },
     "members": {
