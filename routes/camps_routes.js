@@ -104,7 +104,6 @@ module.exports = function (app, passport) {
         __render_camp(req.params.id, req, res);
     });
 
-
     // new camp
     app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
