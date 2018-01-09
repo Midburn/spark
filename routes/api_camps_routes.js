@@ -13,7 +13,6 @@ csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
 LOG = require('../libs/logger')(module),
 S3 = require('../libs/aws-s3');
-
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 const CONSTS = require('../consts');
 
@@ -519,6 +518,7 @@ module.exports = (app, passport) => {
         }
         return data;
     }
+
     /**
       * API: (POST) create camp
       * request => /camps/new
@@ -867,6 +867,47 @@ module.exports = (app, passport) => {
         });
     });
 
+    function getFields(input, field) {
+        var output = [];
+        for (var i=0; i < input.length; ++i) {
+            output.push(input[i][field]);
+        }
+        return output;
+    }
+
+    const retrieveDataForPresale = () => {
+        //the emails of all users with presale tickets
+        return knex(constants.USERS_TABLE_NAME).select(constants.USERS_TABLE_NAME+'.email')
+        .innerJoin(constants.CAMP_MEMBERS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.user_id', constants.USERS_TABLE_NAME+'.user_id')
+        .innerJoin(constants.CAMPS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.camp_id', constants.CAMPS_TABLE_NAME+'.id')
+        .whereRaw("camp_members.addinfo_json->'$.pre_sale_ticket'='true'").then(emails => {
+            emails_array = getFields(emails,"email")
+            console.log(emails)
+            console.log(emails_array)
+            if (!_.isUndefined(emails)) {
+                return {
+                    status: 200,
+                        data: {
+                            emails_array
+                    }
+                };
+            } else {
+                return {
+                    status: 404,
+                    data: { data: { message: 'Not found' } }
+                };
+            }
+        }).catch(err => {
+            return {
+                status: 500,
+                data: {
+                    error: true,
+                    data: { message: err.message }
+                }
+            };
+        });
+    }
+
     const retrieveDataFor = (group_proto,user) => {
         return Camp.query((query) => {
             query
@@ -917,16 +958,37 @@ module.exports = (app, passport) => {
      * API: (GET) return camps list csv format
      * request => /camps_csv
      */
-    app.get('/camps_csv', userRole.isAdmin(),
-        (req, res) => {
-            retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
-                let csvRes = csv({ data: result.data });
-                res.setHeader('Content-disposition', 'attachment; filename=camps.csv');
-                res.set('Content-Type', 'text/csv');
-                res.status(200).send(csvRes);
+    app.get('/camps_csv/:ActionType', userRole.isAdmin(), (req, res) => {
+        const csv_fields = ['email']
 
+        const actionType = req.params.ActionType
+
+        if (actionType === "theme_camps") {
+            retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
+                let csvRes = csv({ data: result.data })
+                res.setHeader('Content-Disposition', 'attachment; filename=camps.csv')
+                res.set('Content-Type', 'text/csv')
+                res.status(200).send(csvRes)
             })
-        });
+        }
+        else {
+            retrieveDataForPresale().then(result => {
+
+                try {
+                    var csv_file = csv({ data: result, fields: csv_fields })
+                  } catch (err) {
+                    // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+                    // Be sure to provide fields if it is possible that your data array will be empty.
+                    console.error(err);
+                  }
+
+                res.setHeader('Content-Disposition', 'attachment; filename=presaletickets.csv');
+                res.set('Content-Type', 'text/csv');
+                res.send(csv_file);
+                res.status(200);
+            })
+        }
+    });
     /**
      * API: (GET) return camps list which are open to new members
      * request => /camps_open
