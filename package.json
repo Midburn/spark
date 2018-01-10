@@ -32,7 +32,7 @@
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
-  "dependencies": { 
+  "dependencies": {
     "async": "^2.1.4",
     "aws-sdk": "^2.157.0",
     "babel-core": "^6.21.0",
@@ -77,7 +77,7 @@
     "morgan": "~1.9.0",
     "mysql": "^2.11.1",
     "node-cache": "^4.1.1",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "nodemon": "^1.12.7",
     "opbeat": "^4.16.0",
     "passport": "^0.3.2",
