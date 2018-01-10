@@ -32,7 +32,7 @@
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
-  "dependencies": {
+  "dependencies": { 
     "async": "^2.1.4",
     "aws-sdk": "^2.157.0",
     "babel-core": "^6.21.0",
