@@ -13,7 +13,6 @@ csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
 LOG = require('../libs/logger')(module),
 S3 = require('../libs/aws-s3');
-
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 const CONSTS = require('../consts');
 
@@ -33,8 +32,8 @@ const emailDeliver = (recipient, subject, template, props) => {
     )
 };
 
-var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
-    Camp.forge({ id: camp_id }).fetch().then((camp) => {
+var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mgr, res) => {
+    Camp.forge({id: camp_id , event_id: current_event_id}).fetch().then((camp) => {
         let camp_mgr_id;
         if (camp_mgr instanceof User) {
             camp_mgr_id = camp_mgr.id;
@@ -45,7 +44,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
         group_options = camp.parsePrototype(camp_mgr);
         let isAdmin = group_options.isAdmin;
         console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
-
+        let addinfo_jason_subAction = null
         camp.getCampUsers((users) => {
             var new_status;
             var save_method = { require: true };
@@ -157,18 +156,18 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
 
             }
 
-            //check if the request is to update the addinfo_json column 
-            if (addinfo_jason_subAction) {
+            //check if the request is to update the addinfo_json column
+            if (addinfo_jason_subAction !== null) {
                 var userData = {
                     camp_id: camp.attributes.id,
                     user_id: user_id,
-   
+
                 };
 
                 //select the addinfo_json column from the camp member table
                 knex(constants.CAMP_MEMBERS_TABLE_NAME).select('user_id','addinfo_json')
                 .where({
-                    camp_id : userData.camp_id, 
+                    camp_id : userData.camp_id,
                     user_id : userData.user_id
                 })
                 .then(resp => {
@@ -186,7 +185,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                     //on success go to _after_update callback
                     knex(constants.CAMP_MEMBERS_TABLE_NAME).update({addinfo_json : jsonInfo})
                         .where({
-                            camp_id : userData.camp_id, 
+                            camp_id : userData.camp_id,
                             user_id : userData.user_id
                         })
                         .then(_after_update).catch((e) => {
@@ -195,7 +194,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                 })
                 .catch((e) => {
                     console.log(e);
-                })       
+                })
             }
             else if (new_status) {
                 var data = {
@@ -209,7 +208,7 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
                 } else {
                     query = 'UPDATE ' + constants.CAMP_MEMBERS_TABLE_NAME + ' SET status="' + data.status + '" WHERE camp_id=' + data.camp_id + ' AND user_id=' + data.user_id + ';';
                 }
-                
+
                 knex.raw(query).then(_after_update);
             } else {
                 res.status(404).json({ error: true, data: { message: "Cannot execute this command." } });
@@ -226,15 +225,15 @@ var __camps_update_status = (camp_id, user_id, action, camp_mgr, res) => {
 }
 
 /*
-here we pass the query info from the SQL 
+here we pass the query info from the SQL
 and check the json info, the method will throw and error if failed
 */
 function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
-    
+
     var userData = info;
 
     var jsonInfo;
-    
+
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
@@ -251,9 +250,9 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
             }
         }
         //if the user is not approved yet in the
-        //reject the reuest 
+        //reject the reuest
         if (user.member_status === 'pending') {
-            throw new Error("Cannot assign Pre-sale ticket to pending user"); 
+            throw new Error("Cannot assign Pre-sale ticket to pending user");
         }
 
         //check if the json info is null
@@ -262,11 +261,11 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
             jsonInfo = {"pre_sale_ticket": "true"};
         }
         else {
-            //if the object is not null then parse it and toggle the current value 
+            //if the object is not null then parse it and toggle the current value
             jsonInfo=JSON.parse(userData);
             if (jsonInfo.pre_sale_ticket === "true") {
                 jsonInfo.pre_sale_ticket = "false";
-            } 
+            }
             else {
                 jsonInfo.pre_sale_ticket = "true";
             }
@@ -282,20 +281,20 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
                     if (addinfo_json.pre_sale_ticket === "true") {
                         preSaleTicketsCount++
                     }
-                }    
+                }
             }
 
             //if the pre sale ticket count equal or higher than the quota
-            //reject the reuest 
+            //reject the reuest
             if (preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota) {
-                throw new Error("exceed pre sale tickets quota");  
+                throw new Error("exceed pre sale tickets quota");
             }
         }
     }
 
-    jsonInfo = JSON.stringify(jsonInfo) 
+    jsonInfo = JSON.stringify(jsonInfo)
     return jsonInfo;
-}           
+}
 
 module.exports = (app, passport) => {
     /**
@@ -353,7 +352,7 @@ module.exports = (app, passport) => {
         } else prototype = constants.prototype_camps.THEME_CAMP.id;
         group_props = Camp.prototype.__parsePrototype(prototype, req.user);
         var data = {
-            event_id: constants.CURRENT_EVENT_ID,
+            event_id: req.user.currentEventId,
             // for update or insert, need to merge with create to be the same call
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             camp_desc_he: req.body.camp_desc_he,
@@ -445,7 +444,7 @@ module.exports = (app, passport) => {
     var __camps_create_camp_obj = function (req, isNew, curCamp) {
         var data = {
             __prototype: constants.prototype_camps.THEME_CAMP.id,
-            event_id: constants.CURRENT_EVENT_ID,
+            event_id: req.user.currentEventId,
             // for update or insert, need to merge with create to be the same call
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             camp_desc_he: req.body.camp_desc_he,
@@ -519,6 +518,7 @@ module.exports = (app, passport) => {
         }
         return data;
     }
+
     /**
       * API: (POST) create camp
       * request => /camps/new
@@ -527,7 +527,7 @@ module.exports = (app, passport) => {
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
             Camp.forge(__camps_create_camp_obj(req, true)).save().then((camp) => {
-                __camps_update_status(camp.attributes.id, camp.attributes.main_contact, 'approve_new_mgr', req.user, res);
+                __camps_update_status(req.user.currentEventId,camp.attributes.id, camp.attributes.main_contact, 'approve_new_mgr', req.user, res);
             }).catch((e) => {
                 res.status(500).json({
                     error: true,
@@ -543,7 +543,7 @@ module.exports = (app, passport) => {
        */
     app.put('/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
         Camp
-            .forge({ id: req.params.id })
+            .forge({id: req.params.id , event_id: req.user.currentEventId})
             .fetch({ withRelated: ['users_groups'] })
             .then((camp) => {
                 camp.getCampUsers((users) => {
@@ -637,7 +637,7 @@ module.exports = (app, passport) => {
         var action = req.params.action;
         var actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket'];
         if (actions.indexOf(action) > -1) {
-            __camps_update_status(camp_id, user_id, action, req.user, res);
+            __camps_update_status(req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
             res.status(404).json({ error: true, data: { message: "illegal command (" + action + ")" } });
         }
@@ -851,7 +851,7 @@ module.exports = (app, passport) => {
      * request => /camps
      */
     app.get('/camps', (req, res) => {
-        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
+        Camp.where('status', '=', 'open', 'AND', 'event_id', '=', req.user.currentEventId, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id).fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({ camps: camp.toJSON() })
             } else {
@@ -867,12 +867,53 @@ module.exports = (app, passport) => {
         });
     });
 
-    const retrieveDataFor = group_proto => {
+    function getFields(input, field) {
+        var output = [];
+        for (var i=0; i < input.length; ++i) {
+            output.push(input[i][field]);
+        }
+        return output;
+    }
+
+    const retrieveDataForPresale = () => {
+        //the emails of all users with presale tickets
+        return knex(constants.USERS_TABLE_NAME).select(constants.USERS_TABLE_NAME+'.email')
+        .innerJoin(constants.CAMP_MEMBERS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.user_id', constants.USERS_TABLE_NAME+'.user_id')
+        .innerJoin(constants.CAMPS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.camp_id', constants.CAMPS_TABLE_NAME+'.id')
+        .whereRaw("camp_members.addinfo_json->'$.pre_sale_ticket'='true'").then(emails => {
+            emails_array = getFields(emails,"email")
+            console.log(emails)
+            console.log(emails_array)
+            if (!_.isUndefined(emails)) {
+                return {
+                    status: 200,
+                        data: {
+                            emails_array
+                    }
+                };
+            } else {
+                return {
+                    status: 404,
+                    data: { data: { message: 'Not found' } }
+                };
+            }
+        }).catch(err => {
+            return {
+                status: 500,
+                data: {
+                    error: true,
+                    data: { message: err.message }
+                }
+            };
+        });
+    }
+
+    const retrieveDataFor = (group_proto,user) => {
         return Camp.query((query) => {
             query
                 .select('camps.*', 'users_groups.entrance_quota')
                 .leftJoin('users_groups', 'camps.id', 'users_groups.group_id')
-                .where({ 'camps.event_id': constants.CURRENT_EVENT_ID, 'camps.__prototype': group_proto })
+                .where({ 'camps.event_id': user.currentEventId , 'camps.__prototype': group_proto })
         })
             .orderBy('camp_name_en', 'ASC')
             .fetchAll()
@@ -905,28 +946,49 @@ module.exports = (app, passport) => {
     //  * request => /camps_open
     //  */
     app.get('/camps_all', [userRole.isCampsAdmin()],
-        (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => res.status(result.status).json(result.data)));
+        (req, res) => retrieveDataFor(constants.prototype_camps.THEME_CAMP.id,req.user).then(result => res.status(result.status).json(result.data)));
 
     app.get('/prod_dep_all', userRole.isProdDepsAdmin(),
-        (req, res) => retrieveDataFor(constants.prototype_camps.PROD_DEP.id).then(result => res.status(result.status).json(result.data)));
+        (req, res) => retrieveDataFor(constants.prototype_camps.PROD_DEP.id,req.user).then(result => res.status(result.status).json(result.data)));
 
     app.get('/art_all', userRole.isArtInstallationsAdmin(),
-        (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id).then(result => res.status(result.status).json(result.data)));
+        (req, res) => retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id,req.user).then(result => res.status(result.status).json(result.data)));
 
     /**
      * API: (GET) return camps list csv format
      * request => /camps_csv
      */
-    app.get('/camps_csv', userRole.isAdmin(),
-        (req, res) => {
-            retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
-                let csvRes = csv({ data: result.data });
-                res.setHeader('Content-disposition', 'attachment; filename=camps.csv');
-                res.set('Content-Type', 'text/csv');
-                res.status(200).send(csvRes);
+    app.get('/camps_csv/:ActionType', userRole.isAdmin(), (req, res) => {
+        const csv_fields = ['email']
 
+        const actionType = req.params.ActionType
+
+        if (actionType === "theme_camps") {
+            retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
+                let csvRes = csv({ data: result.data })
+                res.setHeader('Content-Disposition', 'attachment; filename=camps.csv')
+                res.set('Content-Type', 'text/csv')
+                res.status(200).send(csvRes)
             })
-        });
+        }
+        else {
+            retrieveDataForPresale().then(result => {
+
+                try {
+                    var csv_file = csv({ data: result, fields: csv_fields })
+                  } catch (err) {
+                    // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+                    // Be sure to provide fields if it is possible that your data array will be empty.
+                    console.error(err);
+                  }
+
+                res.setHeader('Content-Disposition', 'attachment; filename=presaletickets.csv');
+                res.set('Content-Type', 'text/csv');
+                res.send(csv_file);
+                res.status(200);
+            })
+        }
+    });
     /**
      * API: (GET) return camps list which are open to new members
      * request => /camps_open
@@ -936,7 +998,7 @@ module.exports = (app, passport) => {
         let web_published = [true, false];
         Camp.query((query) => {
             query
-                .where('event_id', '=', constants.CURRENT_EVENT_ID, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .where('event_id', '=', req.user.currentEventId , 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
                 .whereIn('status', allowed_status)
                 .whereIn('web_published', web_published);
         })
@@ -976,7 +1038,7 @@ module.exports = (app, passport) => {
         req.user.getUserCamps((camps) => {
             if (req.user.isCampFree) {
                 // Fetch camp manager email address
-                Camp.forge({ id: req.params.id, event_id: constants.CURRENT_EVENT_ID, __prototype: constants.prototype_camps.THEME_CAMP.id }).fetch({
+                Camp.forge({ id: req.params.id, event_id: req.user.currentEventId , __prototype: constants.prototype_camps.THEME_CAMP.id }).fetch({
                 }).then((camp) => {
                     camp.getCampUsers((users) => {
                         if (camp.managers.length > 0) {
@@ -1019,7 +1081,7 @@ module.exports = (app, passport) => {
     app.all('/camps/:id/join/deliver', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
-        __camps_update_status(camp_id, user_id, 'join', user_id, res);
+        __camps_update_status(req.user.currentEventId, camp_id, user_id, 'join', user_id, res);
     });
 
     /**
@@ -1028,7 +1090,7 @@ module.exports = (app, passport) => {
     app.get('/users/:id/join_cancel', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
-        __camps_update_status(camp_id, user_id, 'join_cancel', user_id, res);
+        __camps_update_status(req.user.currentEventId, camp_id, user_id, 'join_cancel', user_id, res);
     });
 
     /**
@@ -1037,12 +1099,15 @@ module.exports = (app, passport) => {
     app.get('/users/:id/join_approve', userRole.isLoggedIn(), (req, res) => {
         var user_id = req.user.attributes.user_id;
         var camp_id = req.params.id;
-        __camps_update_status(camp_id, user_id, 'join_mgr', user_id, res);
+        __camps_update_status(req.user.currentEventId, camp_id, user_id, 'join_mgr', user_id, res);
     });
 
     app.get('/users/:user_id/join_details', userRole.isLoggedIn(), (req, res) => {
         if (req.user.isAdmin || req.user.attributes.user_id === parseInt(req.params.user_id)) {
             User.forge({ user_id: req.params.user_id }).fetch().then((user) => {
+                //this user is not the one is logged in, so the current event Id does not exixts
+                //we need to add it from the logged user so getUserCamps will know what to search for
+                user.currentEventId = req.user.currentEventId
                 user.getUserCamps((camps) => {
                     var camp = user.attributes.camp;
                     if (user.attributes.camp) {
@@ -1102,7 +1167,7 @@ module.exports = (app, passport) => {
      * request => /camps/1/members
      */
     app.get('/camps/:id/members', userRole.isLoggedIn(), (req, res) => {
-        Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+        Camp.forge({id: req.params.id , event_id: req.user.currentEventId}).fetch().then((camp) => {
             camp.getCampUsers((members) => {
                 var isCampManager = camp.isCampManager(req.user.id, req.t);
                 if (!req.user.isAdmin) {
@@ -1111,8 +1176,7 @@ module.exports = (app, passport) => {
                             member.cell_phone = '';
                             member.name = '';
                         }
-                        
-                        delete member.email;
+
                         delete member.first_name;
                         delete member.last_name;
                         delete member.gender;
@@ -1126,7 +1190,7 @@ module.exports = (app, passport) => {
                         return member;
                     });
                 }
-                
+
                 //check eahc memebr and send to the client the jason info
                 for (var i in members) {
                     if (members[i].camps_members_addinfo_json) {
@@ -1137,13 +1201,13 @@ module.exports = (app, passport) => {
                         }
                     } else {
                         members[i].pre_sale_ticket = false;
-                    }    
+                    }
                 }
 
                 result = camp.parsePrototype(req.user);
 
                 if (isCampManager || (result && result.isAdmin)) {
-                    res.status(200).json({ members: members });
+                    res.status(200).json({ members: members, pre_sale_tickets_quota: camp.attributes.pre_sale_tickets_quota });
                 } else {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });
                 }
@@ -1183,7 +1247,7 @@ module.exports = (app, passport) => {
                 }
             }
             if (req.user.isAdmin) {
-                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='MIDBURN2018' GROUP BY __prototype;";
+                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='" + req.user.currentEventId + "' GROUP BY __prototype;";
                 let query1 = "SELECT " +
                     "count(*) AS total_tickets" +
                     ",SUM(inside_event) AS inside_event " +
@@ -1195,8 +1259,8 @@ module.exports = (app, passport) => {
                     ",SUM( IF(entrance_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_entrance " +
                     ",SUM( IF(last_exit_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_exit " +
                     "FROM tickets  " +
-                    "WHERE tickets.event_id='MIDBURN2018'  " +
-                    "GROUP BY event_id; ";
+                    "WHERE tickets.event_id='" + req.user.currentEventId +
+                    "' GROUP BY event_id; ";
                 if (req.user.isAdmin) {
                     let stat = {};
                     knex.raw(query).then((result) => {
@@ -1256,10 +1320,13 @@ module.exports = (app, passport) => {
                 if (req.user.isManagerOfCamp(camp_id) || group_props.isAdmin) {
                     User.forge({ email: user_email }).fetch().then((user) => {
                         if (user !== null) {
+                            //this user is not the one is logged in, so the current event Id does not exixts
+                            //we need to add it from the logged user so getUserCamps will know what to search for
+                            user.currentEventId = req.user.currentEventId
                             // check that user is only at one camp!
                             user.getUserCamps((camps) => {
                                 if (camps.length === 0 || !user.attributes.camp || group_props.multiple_groups_for_user) {
-                                    __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
+                                    __camps_update_status(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                                 } else {
                                     let message;
                                     if (user.isUserInCamp(camp_id)) {
@@ -1277,7 +1344,7 @@ module.exports = (app, passport) => {
                                     created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                                     email: user_email
                                 }).then((user) => {
-                                    __camps_update_status(camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
+                                    __camps_update_status(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                                 });
                             } else {
                                 res.status(500).json({ error: true, data: { message: 'Cannot add new emails without profile.' } });

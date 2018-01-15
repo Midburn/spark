@@ -26,6 +26,13 @@ block content
                 .controls.row
                   .col-xs-12.col-md-9
                         input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'stats.search')}")
+                   .col-xs-4.col-md-3
+                      a.Btn.cursor-p(ng-href='/camps_csv/pre_sale_tickets')&nbsp;
+                            button.btn.btn-xs 
+                                span=t(t_prefix+'stats.dumpcampsdata')
+                     // a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
+                        span.glyphicon.glyphicon-plus(aria-hidden="true")
+                        span=t(t_prefix+'stats.dumpcampsdata')
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers

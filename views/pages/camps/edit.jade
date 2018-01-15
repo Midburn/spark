@@ -158,7 +158,7 @@ block content
                                         input.form-control(id='entrance_quota', name='entrance_quota', value=(isNew ? 0 : (camp.entrance_quota === null ? '' : '#{camp.entrance_quota}')),readonly=(!isAdmin ? 'true' : undefined))
                                 .col-md-4
                                     .col-xs-12
-                                        label(for='pre_sale_tickets_quota')=t('camps:edit.pre_sale_tickets_quota')
+                                        label(for='pre_sale_tickets_quota')=t('camps:stats.pre_sale_tickets_quota')
                                         input.form-control(id='pre_sale_tickets_quota', name='pre_sale_tickets_quota', value=(isNew ? 0 : (camp.pre_sale_tickets_quota === null ? 0 : '#{camp.pre_sale_tickets_quota}')),readonly=(!isAdmin ? 'true' : undefined))
 
             //- Card 2
@@ -262,7 +262,7 @@ block content
             //- Card 3 - Manage Members
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
-                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder=(language == 'en' ? 'Add new member' : 'הוסף חבר חדש'))
+                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}")
                     button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
                 .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)

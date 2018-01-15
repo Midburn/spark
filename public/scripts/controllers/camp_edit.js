@@ -33,6 +33,7 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                 total_camp_tickets += parseInt(newMember.ticket_count) || 0;
             }
             $scope.preSaleTicketsCount = preSaleTicketsCount;
+            $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
             $scope.members = _members;
             $scope.approved_members = approved_members;
             $scope.all_approved_members = approved_members.length;
@@ -170,7 +171,6 @@ app.controller("campEditController", ($scope, $http, $filter) => {
             camp_id: camp_id,
             user_name: user_name,
             user_id: user_id,
-            addinfo_json : parsedJsonInfo,
         }
         angular_updateUser($http, $scope, action_type, user_rec);
     }
@@ -197,5 +197,13 @@ app.controller("homeController", ($scope, $http, $filter) => {
             $scope.stat = res.data.stats;
         });
     }
+
+    $scope.angular_ChangeCurrentEventId = function (event_id) {
+        //set new current event id 
+        $http.post('/events/change', {currentEventId: event_id}).then((res) => {
+            window.location.reload();
+        });
+    }
+
     $scope.angular_getMyGroups($http, $scope);
 });

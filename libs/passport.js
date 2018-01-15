@@ -11,7 +11,7 @@ var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var passportJWT = require("passport-jwt");
 var JwtStrategy = passportJWT.Strategy;
-
+Event = require('../models/event').Event;
 /***
  * tries to login based on drupal users table
  * once user is successfully logged-in, an automatic sign-up flow is performed which creates a corresponding spark user
@@ -69,6 +69,7 @@ var drupal_login = function (email, password, done) {
                 var tickets = drupal_user.user.data.tickets.tickets;
                 var current_event_tickets_count = 0;
                 var tickets_array = [];
+
                 _.each(tickets, (ticket, ticket_id) => {
                     if (ticket.trid) {
                         var _ticket = {
@@ -79,8 +80,8 @@ var drupal_login = function (email, password, done) {
                             serial_id: _.get(ticket, 'field_ticket_serial_id.und.0.value', '')
                         };
                         _ticket.is_mine = (_ticket.user_uid === drupal_user_id);
-                        if (constants.events[constants.CURRENT_EVENT_ID].bundles.indexOf(_ticket.bundle) > -1) {
-                            _ticket.event_id = constants.CURRENT_EVENT_ID;
+                        if (constants.events[constants.DEFAULT_EVENT_ID].bundles.indexOf(_ticket.bundle) > -1) {
+                            _ticket.event_id = constants.DEFAULT_EVENT_ID;
                             if (_ticket.is_mine) {
                                 current_event_tickets_count++;
                             }
@@ -186,9 +187,10 @@ var signup = function (email, password, user, done) {
 var generateJwtToken = function (email) {
     // from now on we'll identify the user by the email and the email
     // is the only personalized value that goes into our token
-    var payload = {email: email};
-    var token = jwt.sign(payload, apiTokensConfig.token);
-    return token;
+    let payload = {email: email};
+    let token = jwt.sign(payload, apiTokensConfig.token);
+    let userData = {token, currentEventId: constants.DEFAULT_EVENT_ID}
+    return userData;
 };
 
 // expose this function to our app using module.exports
@@ -201,15 +203,26 @@ module.exports = function (passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
-        done(null, user.id)
+        //add the user id and the current event id to the session
+
+        if (user.currentEventId === undefined) {
+            user.currentEventId = constants.DEFAULT_EVENT_ID;
+        }
+        let userData = {user_id: user.id, currentEventId: user.currentEventId}
+        done(null, userData)
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function (id, done) {
+    passport.deserializeUser(function (userData, done) {
         new User({
-            user_id: id
+            user_id: userData.user_id
         }).fetch().then(function (user) {
-                done(null, user)
+            if (userData.currentEventId === undefined) {
+                userData.currentEventId = constants.DEFAULT_EVENT_ID
+            }
+            //restore the current event id from the session
+            user.currentEventId = userData.currentEventId
+            done(null, user)
             })
     });
 
@@ -267,12 +280,14 @@ module.exports = function (passport) {
 
     passport.use(new JwtStrategy(jwtOptions, function (jwt_payload, next) {
         console.log('JWT payload received', jwt_payload);
-        var email = jwt_payload.email;
+        var email = jwt_payload.token.email;
 
         new User({
             email: email
         }).fetch().then(function (user) {
                 if (user) {
+                    //set the user the current event id from the session
+                    user.currentEventId = jwt_payload.currentEventId
                     next(null, user);
                 } else {
                     next(null, false);

@@ -5,6 +5,8 @@
  */
 require('dotenv').config();
 
+process.env.SPARK_RELEASE_URL = process.env.SPARK_RELEASE_URL || 'https://github.com/Midburn/spark/releases';
+
 /**
  * Module dependencies.
  */

@@ -25,8 +25,7 @@ var __render_camp = function (camp, req, res) {
     }
     Camp.forge({
         id: camp_id,
-        event_id: constants.CURRENT_EVENT_ID,
-        __prototype: constants.prototype_camps.THEME_CAMP.id,
+        event_id: req.user.currentEventId
     }).fetch({}).then((camp) => {
         camp.getCampUsers((users) => {
             camp.init_t(req.t);
@@ -104,6 +103,7 @@ module.exports = function (app, passport) {
         }]);
         __render_camp(req.params.id, req, res);
     });
+
     // new camp
     app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
@@ -152,7 +152,6 @@ module.exports = function (app, passport) {
         }]);
         Camp.forge({
             id: req.params.id,
-            // event_id: constants.CURRENT_EVENT_ID,
         })/*.related('users_groups')*/.fetch({
             withRelated: ['users_groups']
         }).then((camp) => {

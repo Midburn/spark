@@ -4,7 +4,8 @@ footer
             .col-xs-12.col-sm-4.text-left.text-center
                 //img(src='/images/midburn_logo_120.png')
                 p.font__mono
-                    span Spark #{process.env.version}
+                    span="Spark "
+                    a(href="#{process.env.SPARK_RELEASE_URL}") #{process.env.version}
                 p.font__mono
                     span.glyphicon.glyphicon-chevron-left
                     span.glyphicon.glyphicon-chevron-right

@@ -1,6 +1,6 @@
 
 var log = require('../libs/logger')(module);
-const Event = require('../models/event').Event
+Event = require('../models/event').Event
 const userRole = require('../libs/user_role');
 const _ = require('lodash')
 /*
@@ -100,5 +100,13 @@ module.exports = (app, passport) => {
         (req, res) => {
             log.debug('EventsAPI edit ' + _.get(req, 'params.event'));
         });
+
+    //change the current event id for camps manager or admin 
+    app.post('/events/change', userRole.isLoggedIn(), (req, res) => {
+        //set the new event id in the session 
+        req.session.passport.user.currentEventId = req.body.currentEventId;
+        req.session.save()
+        res.send(200);
+    });
 
 }

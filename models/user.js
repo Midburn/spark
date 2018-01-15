@@ -136,7 +136,7 @@ var User = bookshelf.Model.extend({
         if (!prototype) prototype = constants.prototype_camps.THEME_CAMP.id;
         let _where = {
             user_id: this.attributes.user_id,
-            'camps.event_id': constants.CURRENT_EVENT_ID,
+            'camps.event_id': this.currentEventId,
         };
         if (prototype !== 'all') _where['__prototype'] = prototype;
         knex(_camps)

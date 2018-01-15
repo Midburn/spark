@@ -3,7 +3,19 @@ block content
     h1=t('welcome_home', {user: user.attributes.first_name, context: user.attributes.gender})
     .camps.camp_edit(ng-app="ngCamps", ng-controller="homeController")
         br
-        h4=t('my_midburn')
+        h4(style="display:inline-block")
+            =t('my_midburn')
+        dropdown.Btn
+            .dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+                span
+                    | #{user.currentEventId}
+                    span.caret
+            ul.dropdown-menu(data-toggle="dropdown")
+                each val in events
+                    li
+                        a(ng-click="angular_ChangeCurrentEventId('#{val.event_id}')") #{val.event_id}
+                
+
         table.table.table-striped.table-hover
             thead
                 tr
