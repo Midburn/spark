@@ -19,7 +19,7 @@ async function profile_info(req, res) {
         res.status(200).json([]);
         return;
     }
-    let emails = _.get(req, 'body.emails').split(',');
+    let emails = _.get(req, 'body.emails');
     log.debug('Extracting details for ' + emails);
     try {
 
