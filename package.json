@@ -97,7 +97,7 @@
     "winston": "2.3.0",
     "winston-slack-transport": "^2.0.0",
     "xml2js-parser": "^1.1.1"
-  },
+  }, 
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
