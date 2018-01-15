@@ -2,13 +2,24 @@
 var DrupalAccess = require('../libs/drupal_access').DrupalAccess;
 var log = require('../libs/logger')(module);
 var _ = require('lodash');
+var config = require('config');
+var apiTokensConfig = config.get('api_tokens');
 
 async function profile_info(req, res) {
-    if (!req.query.emails) {
+    let token = _.get(req, 'headers.token')
+    if (apiTokensConfig.token !== token) {
+        res.status(401)
+            .jsonp({
+                status: 'false',
+                message: 'Invalid Token!',
+            });
+        return;
+    }
+    if (!req.body.emails) {
         res.status(200).json([]);
         return;
     }
-    let emails = _.get(req, 'query.emails').split(',');
+    let emails = _.get(req, 'body.emails').split(',');
     log.debug('Extracting details for ' + emails);
     try {
 
@@ -28,6 +39,6 @@ async function profile_info(req, res) {
 module.exports = function (app, passport) {
 
      //routes for searching users. probably should be moved...
-    app.get('/volunteers/profiles/', profile_info);
+    app.post('/volunteers/profiles/', profile_info);
 
 }
