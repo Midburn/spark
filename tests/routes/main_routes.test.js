@@ -33,7 +33,7 @@ describe('Main routes', function() {
     it('shows signup form in Hebrew', function testSlash(done) {
         request
             .get('/he/signup')
-            .expect(/הרשמה.*סיסמה/)
+            .expect(/לחץ כאן ליצירת פרופיל.*סיסמה/)
             .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=he/)
             .expect(200, done);
     });
@@ -41,7 +41,7 @@ describe('Main routes', function() {
     it('shows signup form in English', function testSlash(done) {
         request
             .get('/en/signup')
-            .expect(/Sign up.*Email.*Password/)
+            .expect(/Click here to signup.*Email.*Password/)
             .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=en/)
             .expect(200, done);
     });
