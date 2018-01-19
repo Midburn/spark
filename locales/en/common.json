@@ -19,6 +19,7 @@
     "hello": "Hello",
     "home": "Home",
     "invalid_user_password": "Invalid username or password",
+    "invalid_user_id": "Please login to your midburn profile, sorry for the inconvenience - https://profile.midburn.org/",
     "login": "Login",
     "logout": "Logout",
     "male": "Male",
