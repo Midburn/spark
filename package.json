@@ -29,7 +29,8 @@
     "createdb": "mysql -u root < migrations/create_db.sql",
     "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "angular": "^1.6.8",
@@ -101,7 +102,8 @@
     "webpack": "^3.10.0",
     "winston": "2.3.0",
     "winston-slack-transport": "^2.0.0",
-    "xml2js-parser": "^1.1.1"
+    "xml2js-parser": "^1.1.1",
+    "snyk": "^1.69.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -121,7 +123,6 @@
     "node-rsa": "^0.4.2",
     "node-sass": "^4.7.2",
     "rimraf": "2.6.1",
-    "snyk": "^1.69.1",
     "supertest": "^2.0.1"
   },
   "snyk": true,
