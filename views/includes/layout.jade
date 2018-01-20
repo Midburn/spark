@@ -17,36 +17,34 @@ head
 
     link( rel="stylesheet", href="/stylesheets/main.scss" )
     // Font-awesome
-    link(href='/bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
-    // SweetAlert
-    link(rel='stylesheet', type='text/css', href='/bower_components/sweetalert/dist/sweetalert.css')
+    link(href='/node_modules/font-awesome/css/font-awesome.min.css', rel='stylesheet')
     // ng-ui-select
-    link(rel='stylesheet', type='text/css', href='/bower_components/angular-ui-select/dist/select.min.css')
+    link(rel='stylesheet', type='text/css', href='/node_modules/angular-ui-select/select.min.css')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css')
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     block wrapper
     //- Scripts
-    script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
-    script(src="/bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
+    script(src='/node_modules/jquery/dist/jquery.min.js' )
+    script(src="/node_modules/bootstrap/dist/js/bootstrap.min.js",
     integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
     crossorigin="anonymous" )
     script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
-    script(async src='/bower_components/bootstrap-table/dist/bootstrap-table.min.js')
+    script(async src='/node_modules/bootstrap-table/dist/bootstrap-table.min.js')
     if (language === 'he')
-        script(async src='/bower_components/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
+        script(async src='/node_modules/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
 
     // External packages
     script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
-    script(src='/bower_components/sweetalert/dist/sweetalert.min.js')
-    script(src='/bower_components/js-cookie/src/js.cookie.js')
+    script(src='/node_modules/sweetalert/dist/sweetalert.min.js')
+    script(src='https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js')
 
 
     // Angular dependencies
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js")
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js')
-    script(src="/bower_components/angular-ui-select/dist/select.min.js")
+    script(src="/node_modules/angular-ui-select/dist/select.min.js")
 
     // Spark scripts
     script(src="/scripts/camps.js")
