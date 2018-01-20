@@ -7,9 +7,6 @@ env:
   - DEPLOY_ENVIRONMENT=staging DEPLOY_BRANCH=master
   - DEPLOY_ENVIRONMENT=production DEPLOY_TAGS=true
   - ""
-cache:
-  directories:
-    - bower_components
 install:
   - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn install --dev --pure-lockfile; fi
 before_script:
