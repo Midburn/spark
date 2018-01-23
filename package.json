@@ -78,7 +78,7 @@
     "mysql": "^2.11.1",
     "node-cache": "^4.1.1",
     "node-sass": "^4.7.2",
-    "nodemon": "^1.12.7",
+    "nodemon": "^1.14.11",
     "opbeat": "^4.16.0",
     "passport": "^0.3.2",
     "passport-facebook": "2.1.1",
