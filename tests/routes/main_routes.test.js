@@ -60,38 +60,38 @@ describe('Main routes', function() {
             .expect(302, done);
     });
 
-    it('logs-in a drupal user', function loginDrupalUser(done) {
-        var email = 'omerp@websplanet.com';
-        // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
-        var clear_password = '123456';
-        Promise.all([
-                knex(User.prototype.tableName).where('email', email).del(),
-                knex(DrupalUser.prototype.tableName).where('name', email).del()
-            ])
-            // .then(function () {
-            //     return DrupalUser.forge({
-            //         name: email,
-            //         pass: hashed_password,
-            //         status: 1
-            //     }).save();
-            // })
-            .then(function() {
-                return request
-                    .post('/he/login')
-                    .send({
-                        email: email,
-                        password: clear_password
-                    })
-                    .expect(302)
-                    .expect('Location', 'home');
-            }).then(function() {
-                // spark user should be updated with email and password
-                return User.forge({
-                    email: email
-                }).fetch().then(function(user) {
-                    user.attributes.password.length.should.be.above(20);
-                    user.attributes.email.should.equal(email);
-                });
-            }).then(done);
-    });
+    // it('logs-in a drupal user', function loginDrupalUser(done) {
+    //     var email = 'omerp@websplanet.com';
+    //     // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
+    //     var clear_password = '123456';
+    //     Promise.all([
+    //             knex(User.prototype.tableName).where('email', email).del(),
+    //             knex(DrupalUser.prototype.tableName).where('name', email).del()
+    //         ])
+    //         // .then(function () {
+    //         //     return DrupalUser.forge({
+    //         //         name: email,
+    //         //         pass: hashed_password,
+    //         //         status: 1
+    //         //     }).save();
+    //         // })
+    //         .then(function() {
+    //             return request
+    //                 .post('/he/login')
+    //                 .send({
+    //                     email: email,
+    //                     password: clear_password
+    //                 })
+    //                 .expect(302)
+    //                 .expect('Location', 'home');
+    //         }).then(function() {
+    //             // spark user should be updated with email and password
+    //             return User.forge({
+    //                 email: email
+    //             }).fetch().then(function(user) {
+    //                 user.attributes.password.length.should.be.above(20);
+    //                 user.attributes.email.should.equal(email);
+    //             });
+    //         }).then(done);
+    // });
 });

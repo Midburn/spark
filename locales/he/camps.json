@@ -339,6 +339,7 @@
         }
     },
     "prod_dep": {
+        "_comment":"### THIS LOCALIZATION IS DICONNTINUED, PLEASE USE `production_department` FILE INSTEAD ###",
         "nav": "המחלקה שלי",
         "nav_admin": "ניהול מחלקות הפקה",
         "dash": {

@@ -9,9 +9,16 @@ var _ = require('lodash');
 
 const ADMIN_USER_EMAIL = "omerp@websplanet.com";
 const ADMIN_USER_PASSWORD = "123456";
-const ADMIN_USER_FIRST_NAME = "Omer Hatotach";
+const ADMIN_USER_NAME = "Omer Hatotach";
 
 var adminLoggedIn = false;
+
+var createNewAdminUser = () => {
+    User.forge({
+        email: ADMIN_USER_EMAIL,
+        name: ADMIN_USER_NAME
+    }).save();
+}
 
 var givenAdminUserIsRegistered = function() {
     return User.forge({
@@ -24,7 +31,7 @@ var givenAdminUserIsRegistered = function() {
         } else {
             var newUser = new User({
                 email: ADMIN_USER_EMAIL,
-                first_name: ADMIN_USER_FIRST_NAME,
+                first_name: ADMIN_USER_NAME,
                 last_name: 'test user',
                 gender: 'female',
                 validated: true,
@@ -78,7 +85,7 @@ var adminTableAjaxShouldContainAdminUser = function() {
         _(JSON.parse(res.text).data)
             .find({
                 email: ADMIN_USER_EMAIL,
-                first_name: ADMIN_USER_FIRST_NAME
+                first_name: ADMIN_USER_NAME
             })
             .should.include.keys('user_id', 'email', 'first_name', 'last_name');
     });
@@ -98,13 +105,13 @@ var shouldShowEditAdminUserPage = function() {
             return request.get(admin_user_edit_page_url).expect(200).expect(function(res) {
                 res.text.should.contain('Edit User');
                 res.text.should.contain(ADMIN_USER_EMAIL);
-                res.text.should.contain(ADMIN_USER_FIRST_NAME);
+                res.text.should.contain(ADMIN_USER_NAME);
                 res.text.should.not.contain(ADMIN_USER_PASSWORD);
             });
         });
 };
 
-var givenAdminUserLastNameIs = function(last_name) {
+var givenAdminUserNameIs = (last_name) => {
     return User.where('email', '=', ADMIN_USER_EMAIL).save({
         last_name: last_name
     }, {
@@ -113,27 +120,32 @@ var givenAdminUserLastNameIs = function(last_name) {
     });
 };
 
-var shouldChangeAdminUserLastNameTo = function(last_name) {
+var shouldChangeAdminUserNameTo = (last_name) => {
     return givenAdminUserEditPageUrl()
-        .then(function(admin_user_edit_page_url) {
+        .then(admin_user_edit_page_url => {
             return request.post(admin_user_edit_page_url).send({
                 last_name: last_name
             }).expect(200);
         })
-        .then(function() {
+        .then(() => {
             return User.forge({
                 email: ADMIN_USER_EMAIL
             }).fetch();
-        }).then(function(user) {
+        }).then((user) =>{
             user.attributes.last_name.should.equal(last_name + "");
         });
 };
 
 describe('Admin routes', function() {
     this.timeout(5000);
-    it('should show some statistical data on admin homepage', function() {
-        return givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
+
+    it('should be able to create new Admin user', () => {
+        return createNewAdminUser();
     });
+
+    // it('should show some statistical data on admin homepage', function() {
+    //     return givenAdminUserIsLoggedIn().then(adminHomeShouldShowSomeData);
+    // });
 
     // it('should show admin user in users table', function() {
     //     return givenAdminUserIsLoggedIn().then(adminTableAjaxShouldContainAdminUser);
@@ -143,9 +155,9 @@ describe('Admin routes', function() {
     //     return givenAdminUserIsLoggedIn().then(shouldShowEditAdminUserPage);
     // });
 
-    it('should allow to edit a user', function() {
-        return givenAdminUserIsLoggedIn()
-            .then(_.partial(givenAdminUserLastNameIs, 'foobar'))
-            .then(_.partial(shouldChangeAdminUserLastNameTo, 'bazbax'));
-    })
+    // it('should allow to edit a user', function() {
+    //     return givenAdminUserIsLoggedIn()
+    //         .then(_.partial(givenAdminUserNameIs, 'foobar'))
+    //         .then(_.partial(shouldChangeAdminUserNameTo, 'bazbax'));
+    // })
 });

@@ -314,7 +314,7 @@ module.exports = function (app, passport) {
                 user: req.user,
                 breadcrumbs: req.breadcrumbs(),
                 __groups_prototype: 'prod_dep',
-                t_prefix: 'camps:prod_dep.',
+                t_prefix: 'production_department:',
                 isProd: true,
 
             });

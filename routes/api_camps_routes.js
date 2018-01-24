@@ -1278,15 +1278,15 @@ module.exports = (app, passport) => {
                         // stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
                     }).then(() => {
                         knex.raw(query1).then((result) => {
-                            stat.total_tickets = result[0][0]['total_tickets'];
-                            stat.inside_event = result[0][0]['inside_event'];
-                            stat.ticketing = result[0][0]['ticketing'];
-                            stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
-                            stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
-                            stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
-                            stat.last_24h_exit = result[0][0]['last_24h_exit'];
-                            stat.last_1h_entrance = result[0][0]['last_1h_entrance'];
-                            stat.last_1h_exit = result[0][0]['last_1h_exit'];
+                            stat.total_tickets = result[0]['total_tickets'];
+                            stat.inside_event = result[0]['inside_event'];
+                            stat.ticketing = result[0]['ticketing'];
+                            stat.last_24h_first_entrance = result[0]['last_24h_first_entrance'];
+                            stat.last_1h_first_entrance = result[0]['last_1h_first_entrance'];
+                            stat.last_24h_entrance = result[0]['last_24h_entrance'];
+                            stat.last_24h_exit = result[0]['last_24h_exit'];
+                            stat.last_1h_entrance = result[0]['last_1h_entrance'];
+                            stat.last_1h_exit = result[0]['last_1h_exit'];
                             res.status(200).json({ groups: groups, stats: stat });
 
                         });
