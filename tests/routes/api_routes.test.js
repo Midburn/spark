@@ -35,15 +35,15 @@ describe('API routes', function() {
             .expect(401)
     });
 
-    it('should login', function() {
-        return request
-            .post('/api/userlogin')
-            .send({
-                username: "omerp@websplanet.com",
-                password: "123456",
-                token: TEST_TOKEN
-            })
-            .expect(200)
-    });
+    // it('should login', function() {
+    //     return request
+    //         .post('/api/userlogin')
+    //         .send({
+    //             username: "omerp@websplanet.com",
+    //             password: "123456",
+    //             token: TEST_TOKEN
+    //         })
+    //         .expect(200)
+    // });
 
 });

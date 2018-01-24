@@ -101,8 +101,8 @@ i18next
         fallbackLng: 'en',
         load: 'languageOnly',
         debug: false,
-        //namespaces
-        ns: ['common', 'camps', 'npo', 'gate', 'events'],
+        //namespaces - Add localozation (locales) files here
+        ns: ['common', 'camps', 'npo', 'gate', 'events', 'production_department'],
         defaultNS: 'common',
         fallbackNS: 'common',
 

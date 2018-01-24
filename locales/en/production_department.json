@@ -1,0 +1,34 @@
+{
+    "nav": "My Department",
+    "nav_admin": "Manage Departments",
+    "dash": {
+        "title": "Manage Departments",
+        "desc": "Manage Departments"
+    },
+    "admin_index": {
+        "all_camps": "All Departments",
+        "all_members": "All Members",
+        "docs": "Docs",
+        "new": "New",
+        "all_camps_table": "All Departments",
+        "all_members_table": "Find Members Of Production Department"
+    },
+    "stats": {
+        "search": "search",
+        "name_en": "Name",
+        "contact_person": "Contact Person",
+        "status": "Status",
+        "last_update": "Last Update",
+        "published": "Published"
+    },
+    "members": {
+        "actions": "Actions",
+        "search": "Find members of production department by name or email"
+    },
+    "edit": {
+        "view": "View Production Department",
+        "add_info": "Department Admin Additional Information",
+        "name_and_desc": "Department Name & Description",
+        "camp": "Production Department"
+    }
+}
