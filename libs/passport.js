@@ -19,15 +19,25 @@ Event = require('../models/event').Event;
  * @param password
  * @param done
  */
-const drupal_login_request = (email, password) =>
-    request
-        // .post('https://profile-test.midburn.org/api/user/login')
-        .post('https://profile.midburn.org/api/user/login')
-        .send({'username': email, 'password': password})
-        .set('Accept', 'application/json')
-        .set('Content-Type', 'application/x-www-form-urlencoded')
-        .then(({ body }) => body, () => null);
+const drupal_login_request = (email, password) => {
 
+    let drupal_url='https://profile.midburn.org/api/user/login'
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'testing') {
+        drupal_url = 'http://localhost:3000/fake_drupal/api/user/login'
+        
+    }
+    return request
+        .post(drupal_url)
+        .send({'username': email, 'password': password})
+        .then(function (res) { 
+             console.log(res)
+             return res 
+        })
+        .catch(err => {
+            console.log(err)
+            return null
+        });
+}
 var login = function (email, password, done) {
     if (!email || !password || email.length === 0 || password.length === 0) {
         console.log('User', email, 'failed to authenticate.');

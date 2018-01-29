@@ -9,6 +9,11 @@ var knex = require('../../libs/db').knex;
 
 describe('Main routes', function() {
     this.timeout(5000);
+    // Infrastructure Routes
+    before(() => {
+        require('../../routes/fake_drupal')(app);
+    })
+
     it('responds to / with redirect to hebrew', function testSlash(done) {
         request
             .get('/')
@@ -62,28 +67,30 @@ describe('Main routes', function() {
 
     it('logs-in a drupal user', function loginDrupalUser(done) {
         var email = 'omerp@websplanet.com';
-        // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
+        var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
         var clear_password = '123456';
         Promise.all([
                 knex(User.prototype.tableName).where('email', email).del(),
                 knex(DrupalUser.prototype.tableName).where('name', email).del()
             ])
-            // .then(function () {
-            //     return DrupalUser.forge({
-            //         name: email,
-            //         pass: hashed_password,
-            //         status: 1
-            //     }).save();
-            // })
+            .then(function () {
+                 return DrupalUser.forge({
+                     name: email,
+                     pass: hashed_password,
+                     status: 1
+                 }).save();
+             })
             .then(function() {
                 return request
                     .post('/he/login')
                     .send({
                         email: email,
                         password: clear_password
+                    }, (res) => {
+                        console.log(res)
                     })
-                    .expect(302)
-                    .expect('Location', 'home');
+                    .expect(200)
+                    .expect('Location', 'home')
             }).then(function() {
                 // spark user should be updated with email and password
                 return User.forge({
