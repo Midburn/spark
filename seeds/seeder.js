@@ -9,10 +9,10 @@ const MOCK_USERS_SCHEMA = require('./gen/mockSchema/users.schema');
 const MOCK_EVENTS_SCHEMA = require('./gen/mockSchema/events.schema');
 const MOCK_CAMPS_SCHEMA = require('./gen/mockSchema/camps.schema');
 
-const seed = async () => {
+const seed = async (scale) => {
     try {
         await dropDb(knex);
-        const mockData = await generate(1);
+        const mockData = await generate(scale);
         const users = mockData[MOCK_USERS_SCHEMA.NAME];
         const events = mockData[MOCK_EVENTS_SCHEMA.NAME];
         const camps = mockData[MOCK_CAMPS_SCHEMA.NAME];

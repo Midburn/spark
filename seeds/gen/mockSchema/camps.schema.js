@@ -8,6 +8,9 @@ See https://github.com/danibram/mocker-data-generator for data-types and usage.
 const CAMP_MOCK_SCHEMA = {
     NAME: 'camp',
     STRUCTURE: {
+        id: {
+            incrementalId: 0
+        },
         created_at: {
             faker: 'date.past'
         },
@@ -89,8 +92,18 @@ const CAMP_MOCK_SCHEMA = {
             hasOne: USER_MOCK_SCHEMA.NAME,
             get: USER_MOCK_SCHEMA.PK //this populate the field with one id of a random user
         },
-        accept_families: {},
-        facebook_page_url: {},
+        accept_families: {
+            faker: 'random.boolean'
+        },
+        facebook_page_url: {
+            faker: 'internet.url'
+        },
+        contact_person_phone: {
+            function: function() {
+                const mainId = this.object.main_contact;
+                return this.db.user[mainId].cell_phone
+            }
+        },
         contact_person_email: {
             function: function() {
                 const mainId = this.object.main_contact;
