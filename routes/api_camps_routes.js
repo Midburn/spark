@@ -169,14 +169,8 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                 .select('user_id',`${constants.CAMP_MEMBERS_TABLE_NAME}.addinfo_json`,`${constants.EVENTS_TABLE_NAME}.addinfo_json as eventInfo`)
                 .rightJoin(constants.EVENTS_TABLE_NAME,`${constants.EVENTS_TABLE_NAME}.event_id`,`${constants.EVENTS_TABLE_NAME}.event_id`)
                 .where({
-<<<<<<< HEAD
-                    camp_id : userData.camp_id, 
-                    user_id : userData.user_id,
-                    event_id: current_event_id
-=======
                     camp_id : userData.camp_id,
                     user_id : userData.user_id
->>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502
                 })
                 .then(resp => {
                     // checking that update of the pre sale ticket allocation is inside the valid time period
