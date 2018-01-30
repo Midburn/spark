@@ -1,3 +1,4 @@
+
 var camps_all;
 var groups_prototype;
 
@@ -34,6 +35,30 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
     //         innerHeightChange()
     //     }, 500)
     // });
+    $scope.ExportCamps = (actionType) => {
+        //if (user.isAdmin) {
+        //alert(actionType)
+
+        //}
+        console.log("test1")
+
+        $.get('/camps_csv/' + actionType, (res) => {
+            //var presale_tickets_email = encodeURI(res);
+            //window.open(presale_tickets_email);
+            console.log("print csv")
+            var blob = new Blob([res]);
+            window.navigator.msSaveBlob(blob, "filename.csv");
+
+            //window.location.reload();
+        })
+
+        //var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');
+        //if (agree_remove) {
+        //$.post('/camps/' + camp_id + '/remove', (res) => {
+        //window.location.reload();
+        //})
+        //}
+    }
 
     $scope.removeCamp = (camp_id) => {
         var agree_remove = confirm('Remove camp\n\n\nThis action will remove camp #' + camp_id + '.\n\n\n---\n Are you sure?');

@@ -65,82 +65,86 @@ var drupal_login = function (email, password, done) {
         drupal_login_request(email, password).then(function (drupal_user) {
             if (drupal_user != null) {
                 // Drupal update information.
-                var drupal_user_id = drupal_user.user.uid;
-                var tickets = drupal_user.user.data.tickets.tickets;
-                var current_event_tickets_count = 0;
-                var tickets_array = [];
+                var drupal_user_id = _.get(drupal_user, 'user.uid');
+                if (!drupal_user_id) {
+                    done(false, i18next.t('invalid_user_id'));
+                } else {
+                    var tickets = drupal_user.user.data.tickets.tickets;
+                    var current_event_tickets_count = 0;
+                    var tickets_array = [];
 
-                _.each(tickets, (ticket, ticket_id) => {
-                    if (ticket.trid) {
-                        var _ticket = {
-                            trid: ticket.trid,
-                            user_uid: ticket.user_uid,
-                            bundle: ticket.bundle,
-                            barcode: _.get(ticket, 'field_ticket_barcode.und.0.value', ''),
-                            serial_id: _.get(ticket, 'field_ticket_serial_id.und.0.value', '')
-                        };
-                        _ticket.is_mine = (_ticket.user_uid === drupal_user_id);
-                        if (constants.events[constants.DEFAULT_EVENT_ID].bundles.indexOf(_ticket.bundle) > -1) {
-                            _ticket.event_id = constants.DEFAULT_EVENT_ID;
-                            if (_ticket.is_mine) {
-                                current_event_tickets_count++;
+                    _.each(tickets, (ticket, ticket_id) => {
+                        if (ticket.trid) {
+                            var _ticket = {
+                                trid: ticket.trid,
+                                user_uid: ticket.user_uid,
+                                bundle: ticket.bundle,
+                                barcode: _.get(ticket, 'field_ticket_barcode.und.0.value', ''),
+                                serial_id: _.get(ticket, 'field_ticket_serial_id.und.0.value', '')
+                            };
+                            _ticket.is_mine = (_ticket.user_uid === drupal_user_id);
+                            if (constants.events[constants.DEFAULT_EVENT_ID].bundles.indexOf(_ticket.bundle) > -1) {
+                                _ticket.event_id = constants.DEFAULT_EVENT_ID;
+                                if (_ticket.is_mine) {
+                                    current_event_tickets_count++;
+                                }
                             }
+                            tickets_array.push(_ticket);
                         }
-                        tickets_array.push(_ticket);
-                    }
-                });
-
-                var drupal_details = {
-                    created_at: (new Date(parseInt(_.get(drupal_user, 'user.created', 0)) * 1000)).toISOString().substring(0, 19).replace('T', ' '),
-                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                    first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
-                    last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
-                    cell_phone: _.get(drupal_user, 'user.field_profile_phone.und.0.value', ''),
-                    address: _.get(drupal_user, 'user.field_profile_address.und.0.thoroughfare', '') + ' ' + _.get(drupal_user, 'user.field_profile_address.und.0.locality', '') + ' ' + _.get(drupal_user, 'user.field_profile_address.und.0.country', ''),
-                    israeli_id: _.get(drupal_user, 'user.field_field_profile_document_id.und.0.value', ''),
-                    date_of_birth: _.get(drupal_user, 'user.field_profile_birth_date.und.0.value', ''),
-                    gender: _.get(drupal_user, 'user.field_sex.und.0.value', constants.USER_GENDERS_DEFAULT).toLowerCase(),
-                    current_event_id_ticket_count: current_event_tickets_count,
-                    validated: true
-                };
-
-                var details_json_data = {
-                    address: {
-                        first_name: _.get(drupal_user, 'user.field_profile_address.und.0.first_name', ''),
-                        last_name: _.get(drupal_user, 'user.field_profile_address.und.0.last_name', ''),
-                        street: _.get(drupal_user, 'user.field_profile_address.und.0.thoroughfare', ''),
-                        city: _.get(drupal_user, 'user.field_profile_address.und.0.locality', ''),
-                        country: _.get(drupal_user, 'user.field_profile_address.und.0.country', '')
-                    },
-                    foreign_passport: _.get(drupal_user, 'user.field_profile_address.und.0.country', '')
-                };
-
-                var addinfo_json = {};
-                if (user && typeof user.attributes.addinfo_json === 'string') {
-                    addinfo_json = JSON.parse(user.attributes.addinfo_json);
-                }
-                addinfo_json.drupal_data = details_json_data;
-                addinfo_json.tickets = tickets_array;
-                drupal_details.addinfo_json = JSON.stringify(addinfo_json);
-
-                if (user === null) {
-                    signup(email, password, drupal_details, function (newUser, error) {
-                        if (newUser) {
-                            done(newUser);
-                        } else {
-                            done(false, error);
-                        }
-                    })
-                }
-                else {
-                    // we are now updating user data every login
-                    // to fetch latest user information. very important is to know
-                    // that once spark will be the main system, this all should be removed!
-                    user.save(drupal_details).then((user) => {
-                        done(user);
                     });
 
-                    console.log('User', email, 'authenticated successfully in Drupal and synchronized to Spark.');
+                    var drupal_details = {
+                        created_at: (new Date(parseInt(_.get(drupal_user, 'user.created', 0)) * 1000)).toISOString().substring(0, 19).replace('T', ' '),
+                        updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                        first_name: _.get(drupal_user, 'user.field_profile_first.und.0.value', ''),
+                        last_name: _.get(drupal_user, 'user.field_profile_last.und.0.value', ''),
+                        cell_phone: _.get(drupal_user, 'user.field_profile_phone.und.0.value', ''),
+                        address: _.get(drupal_user, 'user.field_profile_address.und.0.thoroughfare', '') + ' ' + _.get(drupal_user, 'user.field_profile_address.und.0.locality', '') + ' ' + _.get(drupal_user, 'user.field_profile_address.und.0.country', ''),
+                        israeli_id: _.get(drupal_user, 'user.field_field_profile_document_id.und.0.value', ''),
+                        date_of_birth: _.get(drupal_user, 'user.field_profile_birth_date.und.0.value', ''),
+                        gender: _.get(drupal_user, 'user.field_sex.und.0.value', constants.USER_GENDERS_DEFAULT).toLowerCase(),
+                        current_event_id_ticket_count: current_event_tickets_count,
+                        validated: true
+                    };
+
+                    var details_json_data = {
+                        address: {
+                            first_name: _.get(drupal_user, 'user.field_profile_address.und.0.first_name', ''),
+                            last_name: _.get(drupal_user, 'user.field_profile_address.und.0.last_name', ''),
+                            street: _.get(drupal_user, 'user.field_profile_address.und.0.thoroughfare', ''),
+                            city: _.get(drupal_user, 'user.field_profile_address.und.0.locality', ''),
+                            country: _.get(drupal_user, 'user.field_profile_address.und.0.country', '')
+                        },
+                        foreign_passport: _.get(drupal_user, 'user.field_profile_address.und.0.country', '')
+                    };
+
+                    var addinfo_json = {};
+                    if (user && typeof user.attributes.addinfo_json === 'string') {
+                        addinfo_json = JSON.parse(user.attributes.addinfo_json);
+                    }
+                    addinfo_json.drupal_data = details_json_data;
+                    addinfo_json.tickets = tickets_array;
+                    drupal_details.addinfo_json = JSON.stringify(addinfo_json);
+
+                    if (user === null) {
+                        signup(email, password, drupal_details, function (newUser, error) {
+                            if (newUser) {
+                                done(newUser);
+                            } else {
+                                done(false, error);
+                            }
+                        })
+                    }
+                    else {
+                        // we are now updating user data every login
+                        // to fetch latest user information. very important is to know
+                        // that once spark will be the main system, this all should be removed!
+                        user.save(drupal_details).then((user) => {
+                            done(user);
+                        });
+
+                        console.log('User', email, 'authenticated successfully in Drupal and synchronized to Spark.');
+                    }
                 }
             }
             else {

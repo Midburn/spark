@@ -13,7 +13,6 @@ csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
 LOG = require('../libs/logger')(module),
 S3 = require('../libs/aws-s3');
-
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 const CONSTS = require('../consts');
 
@@ -157,12 +156,12 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 
             }
 
-            //check if the request is to update the addinfo_json column 
+            //check if the request is to update the addinfo_json column
             if (addinfo_jason_subAction !== null) {
                 var userData = {
                     camp_id: camp.attributes.id,
                     user_id: user_id,
-   
+
                 };
 
                 // select the addinfo_json column from the camp member table
@@ -170,9 +169,14 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                 .select('user_id',`${constants.CAMP_MEMBERS_TABLE_NAME}.addinfo_json`,`${constants.EVENTS_TABLE_NAME}.addinfo_json as eventInfo`)
                 .rightJoin(constants.EVENTS_TABLE_NAME,`${constants.EVENTS_TABLE_NAME}.event_id`,`${constants.EVENTS_TABLE_NAME}.event_id`)
                 .where({
+<<<<<<< HEAD
                     camp_id : userData.camp_id, 
                     user_id : userData.user_id,
                     event_id: current_event_id
+=======
+                    camp_id : userData.camp_id,
+                    user_id : userData.user_id
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502
                 })
                 .then(resp => {
                     // checking that update of the pre sale ticket allocation is inside the valid time period
@@ -194,7 +198,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                     //on success go to _after_update callback
                     knex(constants.CAMP_MEMBERS_TABLE_NAME).update({addinfo_json : jsonInfo})
                         .where({
-                            camp_id : userData.camp_id, 
+                            camp_id : userData.camp_id,
                             user_id : userData.user_id
                         })
                         .then(_after_update).catch((e) => {
@@ -203,7 +207,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                 })
                 .catch((e) => {
                     console.log(e);
-                })       
+                })
             }
             else if (new_status) {
                 var data = {
@@ -217,7 +221,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                 } else {
                     query = 'UPDATE ' + constants.CAMP_MEMBERS_TABLE_NAME + ' SET status="' + data.status + '" WHERE camp_id=' + data.camp_id + ' AND user_id=' + data.user_id + ';';
                 }
-                
+
                 knex.raw(query).then(_after_update);
             } else {
                 res.status(404).json({ error: true, data: { message: "Cannot execute this command." } });
@@ -234,15 +238,20 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 }
 
 /*
-here we pass the query info from the SQL 
+here we pass the query info from the SQL
 and check the json info, the method will throw and error if failed
 */
+<<<<<<< HEAD
 function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
     
+=======
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
+
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502
     var userData = info;
 
     var jsonInfo;
-    
+
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
@@ -254,9 +263,9 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
                 throw new Error("PreSale Tickes selection is currently closed");
         }
         //if the user is not approved yet in the
-        //reject the reuest 
+        //reject the reuest
         if (user.member_status === 'pending') {
-            throw new Error("Cannot assign Pre-sale ticket to pending user"); 
+            throw new Error("Cannot assign Pre-sale ticket to pending user");
         }
 
         //check if the json info is null
@@ -265,11 +274,11 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
             jsonInfo = {"pre_sale_ticket": "true"};
         }
         else {
-            //if the object is not null then parse it and toggle the current value 
+            //if the object is not null then parse it and toggle the current value
             jsonInfo=JSON.parse(userData);
             if (jsonInfo.pre_sale_ticket === "true") {
                 jsonInfo.pre_sale_ticket = "false";
-            } 
+            }
             else {
                 jsonInfo.pre_sale_ticket = "true";
             }
@@ -285,20 +294,20 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
                     if (addinfo_json.pre_sale_ticket === "true") {
                         preSaleTicketsCount++
                     }
-                }    
+                }
             }
 
             //if the pre sale ticket count equal or higher than the quota
-            //reject the reuest 
+            //reject the reuest
             if (preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota) {
-                throw new Error("exceed pre sale tickets quota");  
+                throw new Error("exceed pre sale tickets quota");
             }
         }
     }
 
-    jsonInfo = JSON.stringify(jsonInfo) 
+    jsonInfo = JSON.stringify(jsonInfo)
     return jsonInfo;
-}           
+}
 
 module.exports = (app, passport) => {
     /**
@@ -522,6 +531,7 @@ module.exports = (app, passport) => {
         }
         return data;
     }
+
     /**
       * API: (POST) create camp
       * request => /camps/new
@@ -870,6 +880,47 @@ module.exports = (app, passport) => {
         });
     });
 
+    function getFields(input, field) {
+        var output = [];
+        for (var i=0; i < input.length; ++i) {
+            output.push(input[i][field]);
+        }
+        return output;
+    }
+
+    const retrieveDataForPresale = () => {
+        //the emails of all users with presale tickets
+        return knex(constants.USERS_TABLE_NAME).select(constants.USERS_TABLE_NAME+'.email')
+        .innerJoin(constants.CAMP_MEMBERS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.user_id', constants.USERS_TABLE_NAME+'.user_id')
+        .innerJoin(constants.CAMPS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.camp_id', constants.CAMPS_TABLE_NAME+'.id')
+        .whereRaw("camp_members.addinfo_json->'$.pre_sale_ticket'='true'").then(emails => {
+            emails_array = getFields(emails,"email")
+            console.log(emails)
+            console.log(emails_array)
+            if (!_.isUndefined(emails)) {
+                return {
+                    status: 200,
+                        data: {
+                            emails_array
+                    }
+                };
+            } else {
+                return {
+                    status: 404,
+                    data: { data: { message: 'Not found' } }
+                };
+            }
+        }).catch(err => {
+            return {
+                status: 500,
+                data: {
+                    error: true,
+                    data: { message: err.message }
+                }
+            };
+        });
+    }
+
     const retrieveDataFor = (group_proto,user) => {
         return Camp.query((query) => {
             query
@@ -920,16 +971,37 @@ module.exports = (app, passport) => {
      * API: (GET) return camps list csv format
      * request => /camps_csv
      */
-    app.get('/camps_csv', userRole.isAdmin(),
-        (req, res) => {
-            retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
-                let csvRes = csv({ data: result.data });
-                res.setHeader('Content-disposition', 'attachment; filename=camps.csv');
-                res.set('Content-Type', 'text/csv');
-                res.status(200).send(csvRes);
+    app.get('/camps_csv/:ActionType', userRole.isAdmin(), (req, res) => {
+        const csv_fields = ['email']
 
+        const actionType = req.params.ActionType
+
+        if (actionType === "theme_camps") {
+            retrieveDataFor(constants.prototype_camps.THEME_CAMP.id).then(result => {
+                let csvRes = csv({ data: result.data })
+                res.setHeader('Content-Disposition', 'attachment; filename=camps.csv')
+                res.set('Content-Type', 'text/csv')
+                res.status(200).send(csvRes)
             })
-        });
+        }
+        else {
+            retrieveDataForPresale().then(result => {
+
+                try {
+                    var csv_file = csv({ data: result, fields: csv_fields })
+                  } catch (err) {
+                    // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+                    // Be sure to provide fields if it is possible that your data array will be empty.
+                    console.error(err);
+                  }
+
+                res.setHeader('Content-Disposition', 'attachment; filename=presaletickets.csv');
+                res.set('Content-Type', 'text/csv');
+                res.send(csv_file);
+                res.status(200);
+            })
+        }
+    });
     /**
      * API: (GET) return camps list which are open to new members
      * request => /camps_open
@@ -1117,8 +1189,7 @@ module.exports = (app, passport) => {
                             member.cell_phone = '';
                             member.name = '';
                         }
-                        
-                        delete member.email;
+
                         delete member.first_name;
                         delete member.last_name;
                         delete member.gender;
@@ -1132,7 +1203,7 @@ module.exports = (app, passport) => {
                         return member;
                     });
                 }
-                
+
                 //check eahc memebr and send to the client the jason info
                 for (var i in members) {
                     if (members[i].camps_members_addinfo_json) {
@@ -1143,13 +1214,13 @@ module.exports = (app, passport) => {
                         }
                     } else {
                         members[i].pre_sale_ticket = false;
-                    }    
+                    }
                 }
 
                 result = camp.parsePrototype(req.user);
 
                 if (isCampManager || (result && result.isAdmin)) {
-                    res.status(200).json({ members: members });
+                    res.status(200).json({ members: members, pre_sale_tickets_quota: camp.attributes.pre_sale_tickets_quota });
                 } else {
                     res.status(500).json({ error: true, data: { message: 'Permission denied' } });
                 }

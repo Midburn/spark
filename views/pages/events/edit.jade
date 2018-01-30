@@ -1,7 +1,9 @@
 extends ../../includes/page
+block scripts
+    script(src="/scripts/controllers/events.js")
 block content
     script.
-        var newEvent = false;
+        var isNew=false
         var editEvent ={
             //passing server edit event object to the client editEvent object and AngularJS controller.
             event_id: '#{event.event_id}',
@@ -22,13 +24,13 @@ block content
                 end_presale_tickets_allocation: new Date('#{event.addinfo_json.end_presale_tickets_allocation}'),
                 end_presale_tickets: new Date('#{event.addinfo_json.end_presale_tickets}'),
                 tickets_info: '#{event.addinfo_json.tickets_info}',
-                community_camps: '#{event.addinfo_json.community_camps}' == 'true',
-                community_art_installation: '#{event.addinfo_json.community_art_installation}' == 'true',
-                community_prod_dep: '#{event.addinfo_json.community_prod_dep}' == 'true',
+                community_camps: '#{event.addinfo_json.community_camps}' === true,
+                community_art_installation: '#{event.addinfo_json.community_art_installation}' === true,
+                community_prod_dep: '#{event.addinfo_json.community_prod_dep}' === true,
                 url: '#{event.addinfo_json.url}'
             }
         }
-    .camps.camp_edit(ng-app="ngEvents", ng-controller="eventsFormController")
+    div( ng-app="ngEvents")
         .heading.card.card__shad
                 span.label.label-info # #{event.event_id}
                 h2 #{t('events:edit.title')}: #{event.name}
@@ -39,6 +41,7 @@ block content
                 h4=t('events:edit.name_and_discription')
                     .event-info.panel
                         .panel-body
+<<<<<<< HEAD
                             .details-he.col-md-6
                                 .col-xs-12
                                     label(for='event_id')=t('events:edit.id')
@@ -96,3 +99,6 @@ block content
                         a(href='./')
                             button.Btn.Btn__transparent(id='create_camp_close_btn', type='button')=t('events:new.close')
                         button.Btn.Btn__green(id='event_create_save_modal_request', type='button', ng-click="updateEvent()")=t('events:edit.send_request')
+=======
+                            include partials/form
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502

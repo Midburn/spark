@@ -47,37 +47,64 @@ events_app.controller("eventsController", ($scope, $http, $filter) => {
             innerHeightChange()
         }, 500);
     });
-    $scope.changeOrderBy = function (orderByValue) {
+    $scope.changeOrderBy = orderByValue => {
         $scope.orderEvents = orderByValue;
     }
 })
 
 events_app.controller("eventsFormController", ($scope, $http, $filter) => {
     //initiate a new event, or fetch evet details for edit.
+<<<<<<< HEAD
     $scope.event = newEvent ? { addinfo_json: { created_at: new Date() } } : editEvent;
+=======
+    $scope.isNew = isNew;
+    $scope.event = isNew ? { addinfo_json: { created_at: new Date() } } : editEvent;
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502
     $scope.eventStarted = $scope.event.addinfo_json.start_date < new Date();
 
-    $scope.sendEvent = function () {
-        var _url = '/events/new';
+    $scope.createEvent = () => {
+        let _url = '/events/new';
         $http.post(_url, $scope.event)
+<<<<<<< HEAD
             .success(function (response) {
                 alert("Event added to DB");
                 document.location.href = '/he/events-admin';
             })
             .error(function () {
                 alert("Something went wrong");
+=======
+            .success(response => {
+                swal("Event added to DB!", `Event id:${$scope.event.event_id} added.`, "success");
+                setTimeout(() => {
+                    document.location.href = '/he/events-admin';
+                }, 1000);
+            })
+            .error(() => {
+                alert("Something went wrong with creating the event");
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502
             });
     }
 
-    $scope.updateEvent = function () {
-        var _url = '/events/update';
+    $scope.updateEvent = () => {
+        let _url = '/events/update';
         $http.put(_url, $scope.event)
+<<<<<<< HEAD
             .success(function (response) {
                 alert("Event updated");
             })
             .error(function () {
                 alert("Something went wrong");
+=======
+            .success(response => {
+                swal("Event updated!");
+            })
+            .error(() => {
+                alert("Something went wrong with updating the event");
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502
             });
     }
 
+    $scope.closeForm = () => {
+        document.location.href = '/he/events-admin';
+    }
 })// End of Angular Controller

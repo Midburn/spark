@@ -1,3 +1,17 @@
+
+.col-xs-6
+    h4=t('camps:admin_index.total_approved_members')
+        span.badge {{all_approved_members}}
+.col-xs-6
+    h4=t('camps:admin_index.total_camp_tickets')
+        span.badge {{total_camp_tickets}}
+.col-xs-6
+    h4=t(t('camps:stats.total_pre_sale_ticket_assigned'))
+        span.badge {{preSaleTicketsCount}}
+.col-xs-6
+    h4=t(t('camps:stats.pre_sale_ticket_count'))
+        span.badge {{pre_sale_tickets_quota !== null ? pre_sale_tickets_quota : 0}} 
+
 table.table.table-striped.table-hover
     thead
         tr
@@ -8,7 +22,7 @@ table.table.table-striped.table-hover
         th(ng-click='changeOrderBy("member_status_i18n")')=t('camps:members.status')
         th(ng-click='changeOrderBy("ticket_count")')=t('camps:members.ticket_count')
         th(ng-click='changeOrderBy("inside_event")')=t('camps:members.inside_event')
-        th(ng-click='changeOrderBy("pre_sale_ticket_approved")')=t('camps:members.pre_sale_ticket_approved')
+        th(ng-click='changeOrderBy("pre_sale_ticket_approved")')=t('camps:members.pre_sale_ticket_assigned')
         //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
         th()=t('camps:members.actions')
     tbody
@@ -44,6 +58,7 @@ table.table.table-striped.table-hover
                     button.btn.btn-xs 
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.remove')
+<<<<<<< HEAD
                     a.cursor-p(ng-show='allocationPeriod', ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="member.pre_sale_ticket_approved === false") &nbsp;
                         button.btn.btn-xs
                             span(class='glyphicon glyphicon-ok' )
@@ -66,3 +81,13 @@ table.table.table-striped.table-hover
 .col-xs-6
     h4=t(t('camps:edit.pre_sale_ticket_count'))
         span.badge {{preSaleTicketsCount}}
+=======
+                a.cursor-p(ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="member.pre_sale_ticket_approved === false") &nbsp;
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-ok' )
+                        =t('camps:members.pre_sale_ticket_approved')
+                a.cursor-p(ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)' ng-if="member.pre_sale_ticket_approved === true") &nbsp;
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove' )
+                        =t('camps:members.pre_sale_ticket_remove')
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502

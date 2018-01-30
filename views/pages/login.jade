@@ -36,7 +36,7 @@ block wrapper
                         input(type="hidden", name="r", value=r)
                         .col-xs-12
                             label(for='login_email')=t('email')
-                            input.form-control(id='login_email', type="text", name="email", data-error="#{t('mandatory_field')}", autofocus="true", required)
+                            input.form-control(id='login_email', placeholder=t("email_placeholder") ,type="text", name="email", data-error="#{t('mandatory_field')}", autofocus="true", required)
                             .help-block.with-errors
                         .col-xs-12
                             label(for='login_password')=t('password')
@@ -55,14 +55,14 @@ block wrapper
                     hr
                     .center-block
                         div
-                            //- ## TODO we are using dropal login / signup. old spark links are comment out for future use ##
-                            //- a(href="/#{language}/reset_password")=t('forgot_password_question')
-                            a(id='reset-password-link',href="https://profile.midburn.org/#{language}/user/password")=t('forgot_password_question')
-                        div
                             span=t('need_account')
                             //- ## TODO we are using dropal login / signup. old spark links are comment out for future use ##
                             //- a(href="signup")=t('sign_up')
                             a(href="https://profile.midburn.org/#{language}/user/register")=t('sign_up')
+                        div
+                            //- ## TODO we are using dropal login / signup. old spark links are comment out for future use ##
+                            //- a(href="/#{language}/reset_password")=t('forgot_password_question')
+                            a(id='reset-password-link',href="https://profile.midburn.org/#{language}/user/password")=t('forgot_password_question')
                         if (process.env.NODE_ENV != 'production' || process.env.DEVELOPERS_INFORMATION)
                             div(style="direction:ltr;")
                                 h4(style="color:red;") Developers information:

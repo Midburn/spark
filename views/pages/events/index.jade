@@ -1,13 +1,14 @@
 extends ../../includes/page
+block scripts
+    script(src="/scripts/controllers/events.js")
 block content
     script.
-        newEvent="true";
-    .camps.camp_admin_index(ng-app="ngEvents")
-        .container.col-md-12
+        var isNew=true
+    .camps.camp_admin_index.ng-scope(ng-app="ngEvents")
+        .container-xs-12
             h1=t(t_prefix+'dash.title')
             p.lead.text-muted=t(t_prefix+'dash.desc')
         .controls.row
-            .col-xs-12
                 div.block-center
                     div.input-group
                         a.Btn.Btn__default.card-switcher#1(href=`/${language}/events-admin/manage`, role='button')=t(t_prefix+'manage')
@@ -40,10 +41,11 @@ block content
                                         =t('events:stats.edit')
     
             //- Card 2
-            .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="eventsFormController")
+            .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive
                 h4=t('events:edit.name_and_discription')
                     .event-info.panel
                         .panel-body
+<<<<<<< HEAD
                             .details-he.col-md-6
                                 .col-xs-12
                                     label(for='event_id')=t('events:edit.id')
@@ -101,3 +103,6 @@ block content
                             a(href='./')
                                 button.Btn.Btn__transparent(id='create_camp_close_btn')=t('events:new.close')
                             button.Btn.Btn__green(id='event_create_save_modal_request', ng-click="sendEvent()")=t('events:new.send_request')           
+=======
+                            include partials/form
+>>>>>>> 0dc3eecd4d23d42e6434bd25eb0247d244598502
