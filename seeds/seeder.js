@@ -62,6 +62,7 @@ const seed = async (scale = 1) => {
             utils.saveFile(MOCK_CAMPS_SCHEMA.NAME, camps);
         }
         log.info(`Seeding process done, seeded ${users.length} users, ${camps.length} camps and ${events.length} events`);
+        process.exit(0);
         return mockData;
     } catch (err) {
         log.error(`An error occurred while seeding project - ${err}`);
