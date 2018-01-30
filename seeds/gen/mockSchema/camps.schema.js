@@ -1,7 +1,6 @@
 const EVENT_MOCK_SCHEMA = require('./events.schema');
 const USER_MOCK_SCHEMA = require('./users.schema');
 const constants = require('../../../models/constants');
-
 /*
 See https://github.com/danibram/mocker-data-generator for data-types and usage.
  */
