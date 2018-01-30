@@ -4,6 +4,7 @@
     - Add `random` for random data injection (without clearing the DB)
     - Add `replace` for replacing static data (and saving it to db)
     - Add `nosave` for data generation without saving to db (combined with `replace` for replacing static)
+    - Add `keepdb` to prevent clearing of db (use with `random` to inject more data)
     - **When using random the last arg is the scale of random data generated (use with `random`)**
     
 ### Scale

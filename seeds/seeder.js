@@ -12,6 +12,7 @@ const utils = require('./util/utils');
 const random = process.argv.includes('random');
 const replaceStatic = process.argv.includes('replace');
 const nosave = process.argv.includes('nosave');
+const keepdb = process.argv.includes('keepdb');
 const scale = Number(process.argv.pop());
 
 if (random) {
@@ -33,7 +34,7 @@ if (scale > 40) {
 }
 const seed = async (scale = 1) => {
     try {
-        if (!random) {
+        if (!keepdb) {
             await dropDb(knex);
         }
         let mockData;
