@@ -1,3 +1,6 @@
+/*
+See https://github.com/danibram/mocker-data-generator for data-types and usage.
+ */
 const EVENT_MOCK_SCHEMA = {
     NAME: 'event',
     PK: 'event_id',

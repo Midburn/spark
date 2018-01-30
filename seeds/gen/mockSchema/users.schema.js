@@ -1,3 +1,6 @@
+/*
+See https://github.com/danibram/mocker-data-generator for data-types and usage.
+ */
 const USER_MOCK_SCHEMA = {
     PK: 'user_id',
     NAME: 'user',
@@ -52,13 +55,19 @@ const USER_MOCK_SCHEMA = {
             }
         },
         cell_phone : {
-            faker: 'phone.phoneNumber'
+            function: function () {
+                // TODO - find a better method for israeli type phones (with correct char limit)
+                return this.faker.phone.phoneNumber().slice(0, 15);
+            }
         },
         extra_phone : {
-            faker: 'phone.phoneNumber'
+            function: function () {
+                // TODO - find a better method for israeli type phones (with correct char limit)
+                return this.faker.phone.phoneNumber().slice(0, 10);
+            }
         },
         npo_member : {
-            faker: 'random.number'
+            faker: 'random.boolean'
         },
         // Currently set as null
         // facebook_id : {

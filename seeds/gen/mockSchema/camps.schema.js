@@ -2,6 +2,9 @@ const EVENT_MOCK_SCHEMA = require('./events.schema');
 const USER_MOCK_SCHEMA = require('./users.schema');
 const constants = require('../../../models/constants');
 
+/*
+See https://github.com/danibram/mocker-data-generator for data-types and usage.
+ */
 const CAMP_MOCK_SCHEMA = {
     NAME: 'camp',
     STRUCTURE: {
@@ -19,10 +22,14 @@ const CAMP_MOCK_SCHEMA = {
             values: constants.CAMP_PROTOTYPE
         },
         camp_name_he: {
-            faker: 'lorem.sentence'
+            function:  function () {
+                return this.faker.lorem.sentence().slice(0, 49);
+            }
         },
-        camp_name_en: {
-            faker: 'lorem.sentence'
+        camp_name_en:{
+            function:  function () {
+                return this.faker.lorem.sentence().slice(0, 49);
+            }
         },
         camp_desc_he: {
             faker: 'lorem.sentence'

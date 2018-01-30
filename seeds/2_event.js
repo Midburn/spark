@@ -1,10 +1,15 @@
-const log = require('../libs/logger')(module),
-events = require('./dev/events')
+const log = require('../libs/logger')(module);
+const Event = require('../models/event').Event;
 
-exports.seed = (knex, Promise) => {
-    log.info('Creating event...')
+const addEventsToDb = (events) => {
+    log.info('Creating event...');
+    return Promise.all(events.map(saveEvent))
+        .catch(err => {
+            log.error(`An error occurred while saveing events - ${err}`);
+        });
+};
 
-    events.forEach(async event => {
-        await knex('events').insert(event)
-    });
+function saveEvent(event) {
+    return new Event(event).save(null, {method: 'insert'});
 }
+module.exports = addEventsToDb;
