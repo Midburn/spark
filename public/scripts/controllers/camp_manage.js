@@ -71,13 +71,10 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
 
     // update the camp pre sale quota
     $scope.updatePreSaleQuota = (camp_id, quota) => {
-        if (typeof currentEvent === 'function') {
-            currentEvent();
-        }
 
         let current = new Date();
-        let start = new Date(currentEvent.addinfo_json.start_presale_tickets_allocation);
-        let end = new Date(currentEvent.addinfo_json.end_presale_tickets_allocation);
+        let start = new Date(controllDates.appreciation_tickets_allocation_start);
+        let end = new Date(controllDates.appreciation_tickets_allocation_end);
         if (start < current && current < end) {
             if (confirm('Confirm new quota to: ' + quota)) {
                 $.post('/camps/' + camp_id + '/updatePreSaleQuota', { "quota": quota })

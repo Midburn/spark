@@ -175,6 +175,13 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         angular_updateUser($http, $scope, action_type, user_rec);
     }
 
+    const allocationPeriod = {
+        now : new Date(),
+        start : new Date(controllDates.appreciation_tickets_allocation_start),
+        end : new Date(controllDates.appreciation_tickets_allocation_end),
+    }
+    $scope.allocationPeriodisAvtive = allocationPeriod.start < allocationPeriod.now && allocationPeriod.now < allocationPeriod.end;
+    
     //when the user wants to update a pre sale ticket
     //this method is executed
     $scope.updatePreSaleTicket = (user_name, user_id,action_type,pre_sale_ticket_approved) => {
@@ -189,17 +196,7 @@ app.controller("campEditController", ($scope, $http, $filter) => {
     }
 
     //boolean ticket start & end allocation period
-    $scope.allocationPeriod;
-    {
-        if (typeof currentEvent === 'function') {
-            currentEvent();        
-        };
-        let now = new Date();
-        let start = new Date(currentEvent.addinfo_json.start_presale_tickets_allocation);
-        let end = new Date(currentEvent.addinfo_json.end_presale_tickets_allocation);
 
-        $scope.allocationPeriod = start < now && now < end;
-    }
 }); //end of controller
 
 app.controller("homeController", ($scope, $http, $filter) => {

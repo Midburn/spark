@@ -1,0 +1,2265 @@
+[33mcommit b81a31159a07a013b8b5ba4bdd81ee4aaf5f8883[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Jan 30 12:41:12 2018 +0200
+
+    git resolutions
+
+[33mcommit 4605c1e7d49c7959189387886cd75d6a36d08406[m
+Merge: 40532aa 0dc3eec
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Jan 30 12:40:28 2018 +0200
+
+    conflit resulotion
+
+[33mcommit 0dc3eecd4d23d42e6434bd25eb0247d244598502[m
+Merge: ece5cb4 a3ea77c
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Tue Jan 23 16:17:05 2018 +0200
+
+    Merge pull request #588 from Midburn/event-form-partials
+    
+    Jade partical for the event form.
+    Travis errors not relevant for commit
+
+[33mcommit a3ea77cf3cc6873c2fcfe8510639e9279bdfa23b[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Jan 23 16:11:27 2018 +0200
+
+    Jade partical for the event form
+
+[33mcommit ece5cb4cb336b92fad656473bc7f661799b88dae[m
+Author: Noam Almog <noama@wix.com>
+Date:   Tue Jan 23 12:01:46 2018 +0200
+
+    sample doc
+
+[33mcommit cfe4cc4551c8692fbdf90a26335a9b1203e1147b[m
+Merge: b917843 e7084c5
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Fri Jan 19 18:29:35 2018 +0200
+
+    Merge pull request #577 from OriHoch/fix-bad-gateway-bug-due-to-drupal-missing-checkbox
+    
+    fix for bad gateway error due to missing details on drupal - displays an error message
+
+[33mcommit b9178435374ce7eb8822f849b8751686f959854a[m
+Merge: bd49e86 3207fdd
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Wed Jan 17 15:06:52 2018 +0200
+
+    Merge pull request #576 from Midburn/create-profile-placeholders
+    
+    Adding login email placeholders, better text for new users
+
+[33mcommit 3207fdd01006c13a622b20d25f3ea730e9bd6330[m
+Merge: 37d24d3 bd49e86
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Wed Jan 17 14:46:05 2018 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/spark into create-profile-placeholders
+
+[33mcommit bd49e869d8a54a104011d3e769b8c27cbac9d67f[m
+Merge: e763c1d 3257d0c
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Wed Jan 17 13:55:50 2018 +0200
+
+    Merge pull request #580 from Midburn/2.10.15-tag
+    
+    tagging 2.10.15
+
+[33mcommit 3257d0c3ac6cc368e660140cabea95146dff819f[m
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Tue Jan 16 20:06:26 2018 +0200
+
+    Update package.json
+
+[33mcommit 37d24d34f57fb5240d1cffba38909fb053af6945[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Tue Jan 16 19:26:58 2018 +0200
+
+    fixing tests
+
+[33mcommit e7084c5a36647bb2e39ccc266ba5b3bdc68a0433[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Mon Jan 15 23:34:02 2018 +0200
+
+    fix for bad gateway error due to missing details on drupal - displays an error message
+
+[33mcommit 67b7638404520731157a4b5eb807c5028d861654[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Mon Jan 15 23:30:22 2018 +0200
+
+    Adding login email placeholders, better text for new users
+
+[33mcommit e763c1d8e3377bf9246062bb2699c4be6f1c4027[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Mon Jan 15 22:34:12 2018 +0200
+
+    fix node-sass + upgrade dependencies
+
+[33mcommit 4cfee24855b52f7ae4f36587417f26f6cc1649be[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Jan 15 22:11:58 2018 +0200
+
+    fix volunteers (#573)
+
+[33mcommit f424ffc1213332db080914985dbe9d268d4332b3[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Jan 15 21:56:07 2018 +0200
+
+    [WIP] Search profile end point for volunteers module Fixes #529 (#530)
+    
+    * removed odl apis added a new one
+    
+    * fixed lint
+    
+    * deleted tests
+    
+    * added authentication
+
+[33mcommit 4d785da17ef16e691b63c9a95b67960eef246c45[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 15 21:37:57 2018 +0200
+
+    Update package.json
+
+[33mcommit d8e7064a21284fad12f0a08a0a551538ec55d1ae[m
+Author: Elad <eladla@softimize.co>
+Date:   Wed Jan 10 17:45:09 2018 +0200
+
+    Upgraded version of failing package
+
+[33mcommit 060e056982a2a4c8776aadd8f7288d176d6cd2f9[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Wed Jan 10 16:52:45 2018 +0200
+
+    Update package.json
+    
+    Revert json2csv version
+
+[33mcommit 3a2a5c4260a1ce7f36e7a3f59cc6ca695191fbed[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Wed Jan 10 14:20:47 2018 +0200
+
+    Update package.json
+    
+    Trigger redeploy
+
+[33mcommit b183a933fcdc670109cbec41e2bacce3a6eaf09f[m
+Merge: f93b28a ee85177
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Tue Jan 9 21:42:46 2018 +0200
+
+    Merge pull request #568 from elad-lachmi/master
+    
+    Export presale ticket emails to CSV
+
+[33mcommit ee85177725f008fdde4e58997af737c46143463c[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Tue Jan 9 21:30:30 2018 +0200
+
+    Fixed eslint error
+
+[33mcommit ad086997998863dac729bcea3be652d1c8e69f51[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Tue Jan 9 21:11:50 2018 +0200
+
+    Fixed json2csv call and some lite refactoring
+
+[33mcommit cd5dc643fc494613cae1e9bc861f907542bf8de0[m
+Merge: 7e6ae8d f93b28a
+Author: nnakash <34841234+nnakash@users.noreply.github.com>
+Date:   Tue Jan 9 00:24:07 2018 +0200
+
+    Merge branch 'master' into presale_tickets_csv
+
+[33mcommit 7e6ae8dcaace13e3c73de77a0742fa15f7ab6800[m
+Author: noy <noy.nakash@gmail.com>
+Date:   Mon Jan 8 21:35:49 2018 +0200
+
+     presale ticket csv
+
+[33mcommit 40532aa3957f7840470458f75511f54b1b18752c[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Mon Jan 8 20:07:04 2018 +0200
+
+    noved dates check ito Modify_User_AddInfo func
+
+[33mcommit f93b28adcfc515c952cdec35912342696aaeebf8[m
+Merge: 2d0a38e ffaf00d
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Mon Jan 8 13:30:56 2018 +0200
+
+    Merge pull request #566 from Midburn/tag-v2-10-14
+    
+    tagging v2.10.14 before release
+
+[33mcommit ffaf00d97c0ad097abc000c4c8ff0a94cdb2d354[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Mon Jan 8 13:23:25 2018 +0200
+
+    tagging v2.10.14 before release
+
+[33mcommit 2d0a38e0ff798127e22a00b286168b7c0a6082f1[m
+Merge: 1ed85fd a74fc95
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Mon Jan 8 00:52:10 2018 +0200
+
+    Merge pull request #565 from Midburn/current_event_view
+    
+    fix null view on pre sale tickets
+
+[33mcommit a74fc95f7837104369e6073ddd24bc67f147ebca[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Mon Jan 8 00:46:05 2018 +0200
+
+    fix null view on pre sale tickets
+
+[33mcommit 1ed85fd9e3478a6cd23c147900d70dc7f332c4c4[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Jan 8 00:30:33 2018 +0200
+
+    changed placeholder text (#564)
+
+[33mcommit 55db53e1d82a11c3b136ecef67e7772879aaaf15[m
+Merge: e4e05d5 5815ff6
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Mon Jan 8 00:19:39 2018 +0200
+
+    Merge pull request #563 from Midburn/current_event_view
+    
+    View change for camps and camps members
+
+[33mcommit 5815ff68640a0ee64a35a26c73c8172a8a3427da[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Mon Jan 8 00:13:01 2018 +0200
+
+    View change for camps and camps members
+
+[33mcommit e4e05d51660a5be70d929e1e24039ed9f480f959[m
+Merge: 414c207 9f76e64
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Sun Jan 7 22:56:57 2018 +0200
+
+    Merge pull request #562 from elad-lachmi/master
+    
+    Email will now be shown to the camp manager
+
+[33mcommit 9f76e642425fad4e5fed656c221ed041a9a37c19[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Sun Jan 7 21:55:46 2018 +0200
+
+    - Email will now be shown to the camp manager
+    - Fixed SQL error
+
+[33mcommit e188239e6a6b242feba2fdab27d62c96ea5cf28b[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Sat Jan 6 11:09:23 2018 +0200
+
+    events form - presale allocation dates
+
+[33mcommit 414c207c644ba9b4b68b3d76ccb31b33848d4caa[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 13:11:07 2018 +0200
+
+    .travis
+
+[33mcommit 293c4af620b33684c40e2a77c7e14787b12396f7[m
+Merge: f1c74a0 f7fb0d9
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Sun Jan 7 13:02:24 2018 +0200
+
+    Merge pull request #558 from Midburn/bumping-to-v2.10.13
+    
+    Bumping version to v2.10.13
+
+[33mcommit f7fb0d909c02a64ffea84b4c2241d7237157f86d[m
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Sun Jan 7 12:57:49 2018 +0200
+
+    Bumping version to v2.10.13
+
+[33mcommit f1c74a0bd69ebe5e66afc801e4b7133506c832d8[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 12:49:51 2018 +0200
+
+    speed up the docker build
+
+[33mcommit 9f9f119d9312f5055f5d676ef42db31ffde54806[m
+Merge: df72386 6de5173
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Sun Jan 7 12:31:30 2018 +0200
+
+    Merge pull request #557 from Midburn/alex-fix-user-group-membership-migration
+    
+    Fix user group membership migration
+
+[33mcommit 6de5173ca12c9f0960a91237045d0f97fd72f7fe[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Sun Jan 7 12:25:32 2018 +0200
+
+    bumping version to 2.10.12
+
+[33mcommit df7238629232251472e30c27ebf865cc9284988e[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 12:23:35 2018 +0200
+
+    added cloudbuild + fix deployment of migrations
+
+[33mcommit 925795d566484aa2bb17296bd3473dc6c9a17f73[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Sun Jan 7 11:59:03 2018 +0200
+
+    adding a check against existence of status column in users_group_membership for prod env
+
+[33mcommit 4a308712f9095e9beea21cc8a3d768fb69f3a6a3[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 11:44:38 2018 +0200
+
+    .travis
+
+[33mcommit 04c58d4303440fa843f2d06b04a0cb9d028f5f0c[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 11:35:28 2018 +0200
+
+    .travis
+
+[33mcommit cbf1fcae75389ed2fe763ae0cc911304d2ef1c27[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 11:31:45 2018 +0200
+
+    .travis
+
+[33mcommit 1e28fd721dcf030712fbae1e443c777bc0f6c62b[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 10:58:28 2018 +0200
+
+    wait for deployment to complete + show logs while waiting
+
+[33mcommit 30b91d08f342e4c766e4a7c2b8ceb8641eef9542[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun Jan 7 08:51:13 2018 +0200
+
+    bump to 2.10.11
+
+[33mcommit 14b08940a6ef9d761f2d7dcf608b5ffb96169c2a[m
+Merge: 32ac83c 882e23d
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Sat Jan 6 19:29:58 2018 +0200
+
+    Merge pull request #551 from Midburn/current_event_view
+    
+    Setting real dates for pre sale
+
+[33mcommit 882e23dafb790581a01100fe4c3fef516eb846e4[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sat Jan 6 19:20:00 2018 +0200
+
+    Setting real dates fro pre sale
+
+[33mcommit 32ac83cce2b0a7522d4402c0a17417ec20842709[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 19:01:02 2018 +0200
+
+    .travis
+
+[33mcommit 89aa4ba71fd5d77adca06d1c8f51db1376740979[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 18:41:11 2018 +0200
+
+    .travis
+
+[33mcommit dcc7ebbb2f0eb215d6b4a76c3e1d6742387773ae[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 18:28:41 2018 +0200
+
+    bump version to 2.10.9
+
+[33mcommit 2cb9a3522249c579b85586c0290d0ee58abb4fac[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 18:27:01 2018 +0200
+
+    deploy to production on master branch tags (publish release in github)
+
+[33mcommit 55fc8c7bc96700ae1f28c4c718d837c07b9a51fd[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 17:57:41 2018 +0200
+
+    .travis
+
+[33mcommit 54e93564067ef374266bc2e9ac666b43ddf8979c[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 17:45:29 2018 +0200
+
+    .travis
+
+[33mcommit 717ff5c2347a139055467a6d255d3f9f8fa00d97[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 17:23:52 2018 +0200
+
+    .travis
+
+[33mcommit ff7015f62d791c5dd75cd9fdee162aa2d39c4547[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 16:51:44 2018 +0200
+
+    .travis
+
+[33mcommit 42f4935594626ff2afd8c07c85cae1abb79b3e6c[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 16:49:02 2018 +0200
+
+    .travis
+
+[33mcommit bfd5e2d385090a5e710659cdf82484911a18d8ef[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 16:43:30 2018 +0200
+
+    .travis
+
+[33mcommit e65a2dbcf943d979d81040c163f98b7131dce18f[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 16:41:37 2018 +0200
+
+    .travis
+
+[33mcommit a27515041a2ed4ae7c9783f089f537c3dad8b782[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 16:39:05 2018 +0200
+
+    update continuous deployment for production
+
+[33mcommit 8c3dcf55be751e0e0433b00b23327fce1119810f[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sat Jan 6 16:15:03 2018 +0200
+
+    allow to link to a specific release url
+
+[33mcommit ad1fe549e5477030937e5ff9b7ab70d3f76ed185[m
+Merge: 4da017a ee74ebb
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Sat Jan 6 15:13:24 2018 +0200
+
+    Merge pull request #548 from Midburn/current_event_view
+    
+    Add new column status to users_groups_memberships
+
+[33mcommit ee74ebb942fe0f1d4170fb9ee1ae3f76f218f9aa[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sat Jan 6 15:06:55 2018 +0200
+
+    Add new column status to users_groups_memberships
+
+[33mcommit 4da017ab8c2b4d17b28a280f6796f3d5bcaa58b3[m
+Merge: c5ef8a2 7e8281d
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Sat Jan 6 13:01:46 2018 +0200
+
+    Merge pull request #547 from Midburn/current_event_view
+    
+    Fix for reject/update user in camp
+
+[33mcommit 7e8281d99bf9741847e83ee58c983051aa042a45[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sat Jan 6 12:53:35 2018 +0200
+
+    Fix for reject/update user in camp
+
+[33mcommit c5ef8a20781a970d70d9a1c57ff36e5bf099c798[m
+Merge: 3bd16f0 d76abcf
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Sat Jan 6 12:31:48 2018 +0200
+
+    Merge pull request #546 from Midburn/current_event_view
+    
+    open event id change for all users
+
+[33mcommit d76abcf376aeca3a651ec66b2bffa21d01262f85[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sat Jan 6 12:18:51 2018 +0200
+
+    open event id change for all users
+
+[33mcommit 3bd16f04e4ebacd54e65f483e584ea7a30bac82e[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Jan 5 19:45:20 2018 +0200
+
+    removed the camp prototype constraint (#544)
+
+[33mcommit 60c8bcf586f929a9bb774d60f5fadcd4eb1db6ec[m
+Merge: 02d5dd1 9c02a95
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Fri Jan 5 19:13:28 2018 +0200
+
+    Merge pull request #542 from Midburn/current_event_view
+    
+    fix for camp current event id
+
+[33mcommit 9c02a95872048ebb043b9cf5984be420f1778d40[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Fri Jan 5 18:54:40 2018 +0200
+
+    fix for camp current event id
+
+[33mcommit 02d5dd182a0794c652db95ea4394d2fdeb2059ec[m
+Merge: f0038d4 9bc9268
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Fri Jan 5 18:24:18 2018 +0200
+
+    Merge pull request #540 from Midburn/current_event_view
+    
+    fix for addimg new member to camp
+
+[33mcommit 9bc92682e711c2c5c47eb3d95391e68f67f93339[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Fri Jan 5 18:17:47 2018 +0200
+
+    fix for addimg new member to camp
+
+[33mcommit f0038d49d999029c21524d0815c7df7c63220cf0[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Jan 5 17:05:28 2018 +0200
+
+    update art installation managers roles (#533)
+    
+    * initial commit
+    
+    * added setting manager as main_contact in camps
+    
+    * remove data
+
+[33mcommit 0a1df60a00a48f3874f3a98baea92c17a9641998[m
+Merge: 7ac45a9 a505161
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Fri Jan 5 16:55:24 2018 +0200
+
+    Merge pull request #535 from Midburn/current_event_view
+    
+    fix: bug- as a admin, i can't enter and view a camp #534
+
+[33mcommit a505161bc23a594efae713ed43f2d2fc9e8ad8a3[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Fri Jan 5 15:44:22 2018 +0200
+
+    fix: bug- as a admin, i can't enter and view a camp #534
+
+[33mcommit 7ac45a94667d9ce2c96beac771d0c4dfbb089029[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Tue Jan 2 00:43:29 2018 +0200
+
+    Update .travis.yml
+
+[33mcommit e8e57a8581a207fdc8867ebafb2587d1a144c212[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:57:27 2018 +0200
+
+    Update .travis.yml
+
+[33mcommit 9b5eb06322a85690bb1b3b5f6ed761536533f344[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:55:19 2018 +0200
+
+    Update .travis.yml
+
+[33mcommit f026a18d673dbfef9c9a6b5686d4274e5b6feb6d[m
+Merge: e33bcf7 6230b7b
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:51:13 2018 +0200
+
+    Merge pull request #532 from elad-lachmi/master
+    
+    Fix for bash in yml
+
+[33mcommit 6230b7b3b1fb27d650c4246a8215e7e14f1697a1[m
+Merge: 9bc4f4a d24ef14
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:50:09 2018 +0200
+
+    Merge branch 'feature/opbeat-travis'
+
+[33mcommit d24ef14094943980c21e25fa9830d299fec37d86[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:49:35 2018 +0200
+
+    yml fix
+
+[33mcommit e33bcf7e2338dee80abfc82647839feaf48ffba0[m
+Merge: c25e600 9bc4f4a
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:44:01 2018 +0200
+
+    Merge pull request #531 from elad-lachmi/master
+    
+    Added opbeat notification to travis post deploy
+
+[33mcommit 9bc4f4ad9753fa7c245926a0a445e8c6da533586[m
+Merge: c25e600 bc72e7e
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:41:39 2018 +0200
+
+    Merge branch 'feature/opbeat-travis'
+
+[33mcommit bc72e7e942f62947ca5c321ab405c5e89dd58dbd[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Jan 1 22:38:23 2018 +0200
+
+    Added opbeat notify to travis build
+
+[33mcommit c25e6008aba5e6aed9efc0dab6271eab69594b24[m
+Merge: 69a33c8 13ed5cc
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Mon Jan 1 21:58:35 2018 +0200
+
+    Merge pull request #524 from Midburn/current_event_view
+    
+    Adding new dynamic event id that is selected by the user for admins a…
+
+[33mcommit 13ed5ccef9502ba2f4b2c9e25b126c4bd8af04f6[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Mon Jan 1 21:47:31 2018 +0200
+
+    Yarn + fix for current event id
+
+[33mcommit 23f441129c38cd28c591c4be2181163ceb2779fc[m
+Merge: 69a33c8 2892891
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Mon Jan 1 21:12:53 2018 +0200
+
+    Merge branch 'current_event_view' of github.com:Midburn/spark into current_event_view
+
+[33mcommit 69a33c8848a6477f0c5b1b86df3dbdf5c94cbab4[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Thu Dec 28 16:31:28 2017 +0200
+
+    staging environment / k8s / continuous deployment (#526)
+
+[33mcommit 289289148c60bd35919cd2eecf7314ba5127e758[m
+Merge: 57fb2a5 7a4abc7
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Wed Dec 27 17:37:06 2017 +0200
+
+    Merge branch 'master' into current_event_view
+
+[33mcommit 57fb2a5ef0ab289f070ec831715becf490e4a8ea[m
+Merge: 7044b03 486509b
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Wed Dec 27 01:57:02 2017 +0200
+
+    Adding new dynamic event id that is selected by the user
+
+[33mcommit 7a4abc7a9fbae911e57e5f59186e5687a15680a0[m
+Merge: 7044b03 486509b
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Wed Dec 27 01:57:02 2017 +0200
+
+    Merge pull request #513 from Midburn/pre_sale_tickets
+    
+    presale tickets edit on main pageadd time check
+
+[33mcommit 7044b0368bbf624a0779694d7982a4859cbb1608[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Tue Dec 26 15:43:23 2017 +0200
+
+    added support for setting the login staging message - to allow showing version / other information regarding the staging environment (#523)
+
+[33mcommit ed38afdfe3418f7dbb39d5df9d8cb5a0dfd3ce0c[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Tue Dec 26 13:09:57 2017 +0200
+
+    upgrade to node 8 and yarn, added docker and continuous deployment to the midburn-k8s staging environment (#521)
+    
+    * upgrade to latest node 8, switch to yarn, add docker, docker compose
+    * prepopulate the DB for the docker-compose environment
+    * fix tests for node and dependencies upgrade
+    * kubernetize - integrate with midburn-k8s environment
+    * continuous deployment
+
+[33mcommit fd48ed14377cef2d78d9ab6dad1a75c303270fd9[m
+Merge: cc15b6f 9e05c07
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Fri Dec 22 19:32:00 2017 +0200
+
+    Merge pull request #522 from Midburn/migration-event-ext_id-toString
+    
+    events.ext_id_event_id to String
+
+[33mcommit 9e05c07cb255617a0d5a9b52c2d5f614f25b58b3[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Fri Dec 22 19:25:54 2017 +0200
+
+    events.ext_id_event_id to String
+
+[33mcommit 486509b6221576012a1441f26f54df29be63693f[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sun Dec 17 22:02:32 2017 +0200
+
+    presale tickets edit on main page + add time check
+
+[33mcommit cc15b6f217d5b9d3491b4d40906234f9f6f13d11[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 16:09:35 2017 +0200
+
+    redundancies
+
+[33mcommit 7d8090f7df40f43ff2f282aacfda9d46243a126d[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 15:14:18 2017 +0200
+
+    event start date lock handler
+
+[33mcommit 0a9b1650ee6c4de8047a77654dfdf68006634604[m
+Merge: 599752b b2c1e38
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Tue Dec 19 14:33:03 2017 +0200
+
+    Merge pull request #520 from Midburn/event-dates
+    
+    Event dates & checkbox and name
+
+[33mcommit b2c1e380b9dfaa67558e5b0569c2536b42f692f3[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 14:30:04 2017 +0200
+
+    travis fixer
+
+[33mcommit 2cee1fdf1391314baf12976f6f9fc3e6c52419d2[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 14:11:56 2017 +0200
+
+    fix event name
+
+[33mcommit 2372f17c64f83a7cf8f14bc8a3b28de0ef874fb8[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 13:56:32 2017 +0200
+
+    fix name
+
+[33mcommit 599752bf298780baea03083c11b36f1b29d79e46[m
+Merge: 19ab7b9 2545394
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Tue Dec 19 13:41:06 2017 +0200
+
+    Merge pull request #519 from Midburn/event-dates
+    
+    fixer for dates and checkbox
+
+[33mcommit 2545394f6a1ea62ca18f50105bf5eef10e2e2807[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 13:33:56 2017 +0200
+
+    fixer for checkbox
+
+[33mcommit b989f717707d03584c55296939ecac41564ceec2[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 13:30:58 2017 +0200
+
+    fixer for dates and checkbox
+
+[33mcommit 19ab7b97c97be98ed2a3973cca4115f75c2a9983[m
+Merge: a1c3d44 080e974
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Tue Dec 19 13:10:37 2017 +0200
+
+    Merge pull request #518 from Midburn/update-event-function
+    
+    Update event function
+
+[33mcommit 080e974f7c11a36315c46d7b3f874855018725de[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 12:56:18 2017 +0200
+
+    passing json
+
+[33mcommit 14b64ae09b4522cf70e4df97258311d6931a65da[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Tue Dec 19 12:35:04 2017 +0200
+
+    updates addiitional info json
+
+[33mcommit a1c3d443ffff90aa94955a8fd7b7eb03b3cea6e7[m
+Merge: 7ccf722 f3d2e27
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Tue Dec 19 03:00:42 2017 +0200
+
+    Merge pull request #517 from elad-lachmi/master
+    
+    Opbeat integration
+
+[33mcommit f3d2e279a8e55062b799345e7e3b94ea815f636a[m
+Author: Elad <eladla@softimize.co>
+Date:   Sat Dec 2 12:50:20 2017 +0200
+
+    Opbeat integration
+    
+    Added prod flag and moved credentials to env file
+
+[33mcommit 7ccf722a7bab99a3ba5d890a91ff25bc94fd889d[m
+Merge: 69900aa d414c21
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Tue Dec 19 02:29:55 2017 +0200
+
+    Merge pull request #516 from elad-lachmi/master
+    
+    Changed S3 lib to ES6 class
+
+[33mcommit d414c2121fa89cf987b7f6bc32aed384a6df7b91[m
+Author: Elad <eladla@softimize.co>
+Date:   Sat Dec 2 12:26:41 2017 +0200
+
+    Changed S3 lib to ES6 class
+
+[33mcommit 4da3ba00e1c5d6d97b75e736b7f567f3db6d343f[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Mon Dec 18 23:03:18 2017 +0200
+
+    update event function
+
+[33mcommit 69900aa66a1a32acc48116fa9fd7d31a5a0bd2ad[m
+Merge: 076b08c b667445
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Mon Dec 18 21:46:31 2017 +0200
+
+    Merge pull request #514 from Midburn/event-page
+    
+    added 2 inputs, and styles finishers
+
+[33mcommit b66744542bd6d144181fd6863caba84b11207cf7[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Mon Dec 18 21:39:01 2017 +0200
+
+    added 2 inputs, and styles finishers
+
+[33mcommit 076b08ceb89cdadf7e3ed9673e7821b410d32959[m
+Merge: 7e22de1 3c9dd3a
+Author: guyzohar1 <33843845+guyzohar1@users.noreply.github.com>
+Date:   Tue Dec 12 00:11:51 2017 +0200
+
+    Merge pull request #508 from Midburn/pre_sale_tickets
+    
+    pre sale tickets changes
+
+[33mcommit 3c9dd3a19ad16a7c92f3a281b80492395fcbb65c[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Mon Dec 11 23:44:57 2017 +0200
+
+    Bug fix doc type
+
+[33mcommit 936e439ef480e97fec96ea479a11fdee686ae555[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sat Dec 9 18:23:09 2017 +0200
+
+    Adding some cosmetics
+
+[33mcommit 69e0443d53f8235035a3b0d6247543accc21f25d[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sat Dec 2 18:26:55 2017 +0200
+
+    Setting back event ID to 2018(changed by accident)
+
+[33mcommit 4c869d2ecd2a5886070fdefeca274552141662c2[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Sat Dec 2 18:13:18 2017 +0200
+
+    Adding configurable entrance quota for admins
+
+[33mcommit 289f38b133e7447c873d8cc891bd7367b7d933d0[m
+Author: Guy Zohar <Guy@Guys-MacBook-Pro.local>
+Date:   Wed Nov 29 21:38:56 2017 +0200
+
+    pre sale tickets changes
+
+[33mcommit 7e22de1db1e057287bd06e09240a373f99703e83[m
+Author: Elad Lachmi <elad.lachmi@gmail.com>
+Date:   Mon Dec 11 21:49:35 2017 +0200
+
+    Server-side implementation for #79 (#506)
+    
+    * [WIP] Adding S3 upload and server-side handling
+    
+    * Added save to DB using Bookshelf
+    
+    * Cleanup
+    
+    * Added seeding for the Midburn 2018 event
+    
+    * Added GET method
+
+[33mcommit 808c0f194f9efa11e13d29ace1bfac971b6b1db6[m
+Merge: 3b266ce 6c9ba59
+Author: alechko <mail@alechko.net>
+Date:   Mon Dec 11 08:59:43 2017 +0000
+
+    Merge pull request #491 from alechko/master
+    
+    update real hostname if setup other then localhost
+
+[33mcommit 6c9ba5915910d01dc84c5982035856756e246c18[m
+Merge: d3f9b35 3b266ce
+Author: alechko <mail@alechko.net>
+Date:   Mon Dec 11 07:50:45 2017 +0000
+
+    Merge branch 'master' of https://github.com/Midburn/Spark
+
+[33mcommit 3b266cefa49a5fb99eeae6b22b3a820399b413d8[m
+Merge: 6fe287e c8b4abd
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Dec 8 14:41:00 2017 +0200
+
+    Merge pull request #502 from ArtyomKa/fix_api_routes
+    
+    Basic Implementation of save Event
+
+[33mcommit c8b4abd4b3d6d4fd1d8f1b5bcd6673915c07ab6a[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Dec 2 19:46:40 2017 +0200
+
+    extracted more fields from the form
+
+[33mcommit 7c49c3641a542d7b1470a369ecc4b3fdabfb9118[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Wed Nov 29 23:11:13 2017 +0200
+
+    Initial implementaion on save
+
+[33mcommit 6fe287eb5c5094dc7e20356c4341b20e0a51d0fd[m
+Merge: 69ab460 70033e8
+Author: Lior Kaplan <kaplanlior@users.noreply.github.com>
+Date:   Fri Dec 8 13:30:28 2017 +0200
+
+    Merge pull request #511 from Midburn/snyk-fix-0ad67263
+    
+    [Snyk] Fix for 6 vulnerable dependency paths
+
+[33mcommit 70033e81844a48bad9649be9e2ac238a93523ff5[m
+Author: snyk-bot <admin+snyk-bot@snyk.io>
+Date:   Wed Dec 6 09:20:12 2017 +0000
+
+    fix: package.json & .snyk to reduce vulnerabilities
+    
+    
+    The following vulnerabilities are fixed with a Snyk patch:
+    - https://snyk.io/vuln/npm:minimatch:20160620
+    - https://snyk.io/vuln/npm:uglify-js:20151024
+    
+    
+    The following vulnerabilities are ignored:
+    - https://snyk.io/vuln/npm:mime:20170907
+    - https://snyk.io/vuln/npm:tunnel-agent:20170305
+    
+    Latest report for midburn/spark:
+    https://snyk.io/test/github/midburn/spark
+    
+    Some vulnerabilities weren't fixed or ignored, and so will still fail
+    the Snyk test report.
+
+[33mcommit 69ab4604d75bee2b46575c9b53678917380ffb28[m
+Merge: 942e8e3 b1a060a
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Sun Dec 3 17:24:56 2017 +0200
+
+    Merge pull request #510 from Midburn/event-title-cleanups
+    
+    Event title cleanups and removal of dead comments
+
+[33mcommit b1a060adb8ee8f5538b5e6496400b2d95bd998be[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Sun Dec 3 17:20:48 2017 +0200
+
+    remove dead comments
+
+[33mcommit c9105f025548c1d3ea15d364a73ec40e220c5668[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Sun Dec 3 17:20:30 2017 +0200
+
+    fixed event page title
+
+[33mcommit 942e8e3c36cc0873dedcdb4debf0a5d15ad116a1[m
+Merge: a066d8e 2204848
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Sun Dec 3 16:45:25 2017 +0200
+
+    Merge pull request #509 from Midburn/event-url
+    
+    fix url and object mapping
+
+[33mcommit 220484865fdd74b0f736e7861c667b76538fc909[m
+Author: yanipo5 <[yip528@gmail.com]>
+Date:   Sun Dec 3 16:38:10 2017 +0200
+
+    fix url and object mapping
+
+[33mcommit a066d8e05c4b0dd657d03996d7cefc007fad1fa8[m
+Merge: fca04d5 78986e2
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Thu Nov 30 16:54:05 2017 +0200
+
+    Merge pull request #505 from Midburn/new-event-close-button
+    
+    fixed close button on new/edit event
+
+[33mcommit 78986e2e1d93190f194b08ef50fea5c170ea6f99[m
+Author: [yanipo5] <[yip528@gmail.com]>
+Date:   Thu Nov 30 16:50:11 2017 +0200
+
+    fixed close button new\edit event
+
+[33mcommit 0a5eb6a7d5a9986f68362912caa7f3015d3b1c55[m
+Author: [yanipo5] <[yip528@gmail.com]>
+Date:   Thu Nov 30 16:45:54 2017 +0200
+
+    fixed close event button
+
+[33mcommit fca04d516066fd9a31e29af1caa1bf4190b280ff[m
+Merge: d14e52e 14901a9
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Thu Nov 30 15:30:31 2017 +0200
+
+    Merge pull request #504 from Midburn/alex-data-fixture
+    
+    Seed promises bug
+
+[33mcommit 14901a9a6d84bf61a1ba0777cf29147883ba02fe[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Thu Nov 30 15:26:18 2017 +0200
+
+    fixing bad promises
+
+[33mcommit e3fb88f05e9bbd7ca82fc2991bae59ba84472e6f[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Thu Nov 30 15:24:22 2017 +0200
+
+    fixing bad promises
+
+[33mcommit d14e52e59560dee33f970d26d18dc8a76cc8daf8[m
+Merge: a290851 efcb5d3
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Thu Nov 30 14:03:54 2017 +0200
+
+    Merge pull request #486 from Midburn/alex-data-fixture
+    
+    Data fixture for dev environment
+
+[33mcommit efcb5d30c98ca9b789fad4e5e7488f539dd41a0c[m
+Merge: dabaa39 a290851
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Thu Nov 30 13:34:38 2017 +0200
+
+    Merge branch 'master' into alex-data-fixture
+
+[33mcommit a29085113304bbff7974129824bbe25cfcd94d56[m
+Author: [yanipo5] <[yip528@gmail.com]>
+Date:   Thu Nov 30 12:55:42 2017 +0200
+
+    Unused React packaged removed
+
+[33mcommit cd40ffdd29d83d82032199ab6b9d5ea362115e6d[m
+Merge: 6d1049a 9b9b6e6
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Thu Nov 30 12:44:17 2017 +0200
+
+    Merge pull request #503 from Midburn/travis-fixers
+    
+    Travis fixers
+
+[33mcommit 9b9b6e65ed70843a1e166cf755fa78f32fd9a921[m
+Author: [yanipo5] <[yip528@gmail.com]>
+Date:   Thu Nov 30 12:40:55 2017 +0200
+
+    travis fixer
+
+[33mcommit 1f6fe5880ac995e6b75226e95e4352b42e8f7286[m
+Author: [yanipo5] <[yip528@gmail.com]>
+Date:   Thu Nov 30 12:34:28 2017 +0200
+
+    Travis fixers
+
+[33mcommit 6d1049a015cfad321fb50116780ca0768981de37[m
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Wed Nov 29 22:53:24 2017 +0200
+
+    Update database.md
+
+[33mcommit dabaa398454dee1d69e61555d7af8763c4a1012c[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Wed Nov 29 22:45:56 2017 +0200
+
+    fixing broken travis issues
+
+[33mcommit 07e52f59ee02610fcc8faa6e740fad2ef99f7da7[m
+Author: Alex <amotenko@users.noreply.github.com>
+Date:   Wed Nov 29 22:30:35 2017 +0200
+
+    Update database.md
+
+[33mcommit b81f46f925ae0cd61ee093abe2a04d5f896fe52c[m
+Merge: 88973c8 606de49
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Wed Nov 29 22:16:55 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/Spark into alex-data-fixture
+
+[33mcommit 88973c8612726d9afe8e1cdc657124c69e2f5885[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Wed Nov 29 22:16:46 2017 +0200
+
+    seeds for users and camps
+
+[33mcommit 606de4984186162c74073bc24abf1308d52a3fd8[m
+Author: [yanipo5] <[yip528@gmail.com]>
+Date:   Tue Nov 28 01:33:02 2017 +0200
+
+    Added Angular contorol model to event edit
+
+[33mcommit fd1bec5491f3e0b40a5c19c3d8d4624f018b62d6[m
+Merge: fa458d2 3a3848a
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 27 22:06:36 2017 +0200
+
+    Merge pull request #500 from ArtyomKa/fix_api_routes
+    
+    fixed save event
+
+[33mcommit 3a3848a83aa9417870ece8ef58d43056843ee591[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 27 21:56:31 2017 +0200
+
+    fixed save event
+
+[33mcommit fa458d2c2629745317def4c41035d7928de146d9[m
+Author: Dima Grossman <dima@grossman.io>
+Date:   Mon Nov 27 21:18:32 2017 +0200
+
+    #495 added get_event method (#497)
+
+[33mcommit 06872301b94393e4ebf038a63d719934401c3dd8[m
+Merge: a66acd3 5ef1183
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 27 21:18:20 2017 +0200
+
+    Merge pull request #498 from ArtyomKa/fix_linting
+    
+    Fixed Linting errors
+
+[33mcommit 5ef11833022a878183f83d7e72796cd1ae543bce[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 27 20:50:54 2017 +0200
+
+    lint fix
+
+[33mcommit a66acd37b5ae9c18f30ed9eca1bbcaaa70bc6766[m
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Mon Nov 27 20:32:09 2017 +0200
+
+    new event form angular (#492)
+    
+    * new event form angular
+    
+    * Update events_routes.js
+
+[33mcommit 42d45b9528145bee9355329349280b70af337d45[m
+Merge: 27af9d8 17328de
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 27 19:07:53 2017 +0200
+
+    Merge pull request #493 from ArtyomKa/events_api
+    
+    Events api
+
+[33mcommit 17328de01593361efe96b66722803badac4bca18[m
+Merge: 81b3450 27af9d8
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 27 19:02:30 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/spark into events_api
+
+[33mcommit 65d4172f4bc034c0449167d9511515cc62ac9d4f[m
+Merge: bd27e48 27af9d8
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Sun Nov 26 16:37:29 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/Spark into alex-data-fixture
+
+[33mcommit 81b3450e42430fe36a8bff0303b4bbd1f25ee077[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 21:28:38 2017 +0200
+
+    connect edit event
+
+[33mcommit 27af9d8eac44b9caab13f9386efd82afa3a51180[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 21:25:13 2017 +0200
+
+    Deploy only after a successful testing
+
+[33mcommit 98178e3c115cdf9826332085abbb069fe3f4406f[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 21:15:52 2017 +0200
+
+    Remove debug messages
+
+[33mcommit 03c9484ddffc815167af22f4837f557537607723[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 21:11:52 2017 +0200
+
+    Fix typo in variable name, causing zero length key file
+
+[33mcommit d62bc5c73aa9f967434d6fa86eea439842de4f31[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 20:58:38 2017 +0200
+
+    Remove bash debug, travis doesn't like it
+
+[33mcommit 9aadefd38261896f73f67afe0aba5263fb068c1b[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 20:55:03 2017 +0200
+
+    Add bash debug
+
+[33mcommit c36ed379de32f927c2b2b47ada83dc5a41406cf4[m
+Merge: bb7b7e7 e712bc6
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 20:50:07 2017 +0200
+
+    Merge pull request #490 from Yanipo5/master
+    
+    new event fixer for #474
+
+[33mcommit bb7b7e7a625854e3bdf822de6ffc3caa956e3d9b[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 20:34:28 2017 +0200
+
+    Add debug to ssh/scp
+
+[33mcommit e712bc60a7b4a2485daebf843a46313dbda75774[m
+Author: Yanipo5 <yip528@gmail.com>
+Date:   Sat Nov 25 20:29:33 2017 +0200
+
+    event form cleanups
+
+[33mcommit 613482b5e450f31883cf058c8edb1311d63951a9[m
+Merge: cba09b2 a573917
+Author: Yanipo5 <yip528@gmail.com>
+Date:   Sat Nov 25 20:28:57 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/spark
+
+[33mcommit a5739179ecb78362417890f4d82e819895ee0b1e[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 20:11:11 2017 +0200
+
+    Add timeout after 30 seconds
+
+[33mcommit cba09b2f32090e89c6ad7a065341a131cf88f1c3[m
+Merge: 2d516ca 614f1b6
+Author: Yanipo5 <yip528@gmail.com>
+Date:   Sat Nov 25 20:04:20 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/spark
+
+[33mcommit 614f1b6b28f2c31d7aeb10054e4ed09f79b40e12[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 19:46:51 2017 +0200
+
+    Wrap key variable
+
+[33mcommit 2d516ca13e4aa33816a648b36515f5972442e61c[m
+Author: Yanipo5 <yip528@gmail.com>
+Date:   Sat Nov 25 19:16:34 2017 +0200
+
+    new event fixer
+
+[33mcommit 05517c838bfa76b00d4848fb4ca55cb3cd4df940[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 19:13:39 2017 +0200
+
+    Combine the two if clauses, fix bash syntax error
+
+[33mcommit ce529c417aa33d1c2f6b7a97a6454b898294fcb7[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 19:02:09 2017 +0200
+
+    Remove -e paramter or bash, not support by the env command
+
+[33mcommit bc25952a2b64b105200a7c784789f648d6a8ea85[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Sat Nov 25 18:54:43 2017 +0200
+
+    Deploy directly on staging server, without going though slack file upload (Closes: #480)
+
+[33mcommit 3914b7f296fbf0a16acd678223326cdeec1a426c[m
+Merge: 001aedf a0e7fe8
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 18:41:43 2017 +0200
+
+    Merge pull request #485 from ArtyomKa/add_events_tab
+    
+    [WIP] Add events tab
+
+[33mcommit a0e7fe8e9d207e8f4e3c3f86166d324eb082eecc[m
+Merge: 692157f 001aedf
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 18:41:14 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/spark into add_events_tab
+
+[33mcommit 692157ff96bf9873a468cd7ae32f78bcbd79d057[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 18:38:08 2017 +0200
+
+    Test
+
+[33mcommit 73763048db146fdad811d3d6825f8d6ecd3e55fa[m
+Merge: 0ec353e 960d5f6
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 18:34:23 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/spark into add_events_tab
+
+[33mcommit 001aedf027b47e4e08f1ee61201abd93dd2ce86f[m
+Author: Yaniv Peretz <yip528@gmail.com>
+Date:   Sat Nov 25 18:30:37 2017 +0200
+
+    event form created (#489)
+
+[33mcommit 960d5f69975da7ba78f552d8482bd8fedea54657[m
+Author: Asaf Azulay <asaf@omc.co.il>
+Date:   Sat Nov 25 18:23:09 2017 +0200
+
+    Asi hackaton changes (#488)
+    
+    * allow add new production department
+    fix for security camps_admin and art_admin and prod_admin to have thier own section access.
+    
+    * MIDBURN201
+    
+    * Changes to the events modules
+    
+    * updated initial dev installation documentaion (#484)
+    
+    * fixes
+    
+    * added api_events_routes
+
+[33mcommit 0ec353e00e3db0f264c32550e337e554b6323f2a[m
+Merge: 1f4cc54 39c06bb
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 18:17:32 2017 +0200
+
+    Merge
+
+[33mcommit 1f4cc543467dbf6aa66e73c2092665bb246513e2[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 18:14:30 2017 +0200
+
+    fixed edit tab
+
+[33mcommit 6b99367c88a5d1962ee424494fc22bcd7539524b[m
+Merge: 2f38651 825737b
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 15:30:05 2017 +0200
+
+    finished events display
+
+[33mcommit 39c06bb3dbba101489e2f7c4d750e16dbbba6744[m
+Author: Asaf Azulay <asaf@omc.co.il>
+Date:   Sat Nov 25 14:20:12 2017 +0200
+
+    Updates to events form (#487)
+    
+    * allow add new production department
+    fix for security camps_admin and art_admin and prod_admin to have thier own section access.
+    
+    * MIDBURN201
+    
+    * Changes to the events modules
+    
+    * updated initial dev installation documentaion (#484)
+    
+    * fixes
+
+[33mcommit 2f38651cdca6aa7bfd8fa1c94b6fff17ead62d7e[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Sat Nov 25 14:08:07 2017 +0200
+
+    api and routes
+
+[33mcommit bd27e48ec0b8a96aa49622c12e5d5f96ec107a17[m
+Author: Alex Motenko <tea.alex@gmail.com>
+Date:   Sat Nov 25 14:05:58 2017 +0200
+
+    adding back to dev dashboard button
+
+[33mcommit a3056d82f55640903e7bd52c151d2b24e4ae7596[m
+Merge: 2394bef 8d607fa
+Author: Lior Kaplan <kaplanlior@users.noreply.github.com>
+Date:   Fri Nov 24 22:50:54 2017 +0200
+
+    Merge pull request #483 from Yanipo5/master
+    
+    Updated initial dev installation documentation
+
+[33mcommit 57ecce2620376fa261b6d3f3db335bab8e1fa05f[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Nov 24 22:22:27 2017 +0200
+
+    added index
+
+[33mcommit 8d607fad51749bd8f9c93c195a22e4cee83dc6e3[m
+Author: Yanipo5 <yip528@gmail.com>
+Date:   Fri Nov 24 20:58:46 2017 +0200
+
+    updated initial dev installation documentaion
+
+[33mcommit 825737b136e041588062e6d8b24996602fff2b2d[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Nov 24 19:17:59 2017 +0200
+
+    index view initial layout
+
+[33mcommit 2394bef0e29b87bfcc9b3463d08a51d9bd60768e[m
+Merge: 12b0cd7 f2f072f
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Nov 24 17:17:44 2017 +0200
+
+    Merge pull request #481 from ArtyomKa/add_events_tab
+    
+    Events Tab - Partial implementation of #473
+
+[33mcommit f2f072f77719611ef6f9bc7bcd902ff033ad7346[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Nov 24 16:58:12 2017 +0200
+
+    added routes and index page
+
+[33mcommit 12b0cd7cdac1bc31482c378ca4dcd5ccf00ec29b[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Fri Nov 24 16:42:20 2017 +0200
+
+    Revert "Set bash +x to debug deployment"
+    
+    This reverts commit cc57e98f6a12e8a16bbac1ff288138cfa64a6031.
+
+[33mcommit 4ae64c34979c808990b0ca15742d4078b4cb6589[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Fri Nov 24 15:48:01 2017 +0200
+
+    Encyrpt key with base64 -w0 (so it would be a oneliner without spaces)
+
+[33mcommit 21d7ca832b098f59899413e1a4e90fcf46c27c2a[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Fri Nov 24 15:30:21 2017 +0200
+
+    Added routs
+
+[33mcommit cc57e98f6a12e8a16bbac1ff288138cfa64a6031[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Fri Nov 24 15:19:22 2017 +0200
+
+    Set bash +x to debug deployment
+
+[33mcommit d3f9b35796010527e0f2b69e5e58c2b10547356a[m
+Author: alechko <mail@alechko.net>
+Date:   Fri Nov 24 11:12:17 2017 +0000
+
+    update hostname if setup other then localhost, for example when working with VM.
+
+[33mcommit 2465aecd7a73bab7d0c6026595c0952e78916839[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Wed Nov 22 20:24:46 2017 +0200
+
+    added a tab button
+
+[33mcommit 1860ae6510fc5b4f3c3ec53ec412b606e58d4b25[m
+Merge: a041dbc f881dfa
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 20 22:33:26 2017 +0200
+
+    Merge pull request #479 from ArtyomKa/camps_table_add_presale_quota
+    
+    Fixes #477. Added pre-sale quota field to camps table.
+
+[33mcommit f881dfacbefba94a2a78f38e9b8959e114e5a1fe[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 20 22:27:07 2017 +0200
+
+    deleted docker folder
+
+[33mcommit a4cd0e60612348ef83fcdae1693a761f0b54e90e[m
+Merge: 3915374 a041dbc
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 20 22:13:28 2017 +0200
+
+    Merge branch 'master' of https://github.com/Midburn/spark
+
+[33mcommit 391537478d26733b884db8ac881ac1103e9f53fc[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 20 22:13:00 2017 +0200
+
+    added presale_quota to camps table
+
+[33mcommit a041dbca152980829bcb49a97c7456343d889339[m
+Author: Asaf Azulay <asaf@omc.co.il>
+Date:   Tue Nov 14 10:19:32 2017 +0200
+
+    Update Untitled Diagram.xml
+
+[33mcommit b15861848cfa2f4bad14b142f9d1347d27c90e77[m
+Author: Artyom Katsap <artyom.katsap@gmail.com>
+Date:   Mon Nov 13 21:44:14 2017 +0200
+
+    added script to launch dev mysqlserver  as docker container
+
+[33mcommit e3832be036965b6d396c417f58dab34a6fc13d9a[m
+Author: Netanel Ben <netanelben@users.noreply.github.com>
+Date:   Wed Nov 8 13:48:06 2017 +0200
+
+    Update README.md
+
+[33mcommit cf679536f8f4babfc86500d4f5ca271a936b0631[m
+Author: Asaf Azulay <asaf@omc.co.il>
+Date:   Mon Nov 6 19:42:57 2017 +0200
+
+    Spark Flow Diagram
+
+[33mcommit 4403882a66f3e78d6638d3ad4fa0fc6a8a3c2584[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Thu Nov 2 19:46:56 2017 +0200
+
+    update dependencies
+
+[33mcommit 23b5889388b3fd2a65e3f8b940040a1709b6ad2d[m
+Author: Lior Kaplan <kaplanlior@gmail.com>
+Date:   Mon Oct 30 20:44:03 2017 +0200
+
+    Use Apache v2.0 license (fixes #470)
+
+[33mcommit d8bef8c07208777aa563d8461d0b4459403396af[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 02:55:07 2017 +0300
+
+    Sandbox migration (#468)
+    
+    * adding sandbox change migration
+    
+    * adding winston slack logger
+    
+    * v2.10.1
+    
+    * remove wrong ticket ids
+    
+    * 2.10.2
+    
+    * disable exit and only lookup current event id
+    
+    * 2.10.3
+    
+    * Update 20171006005624_sandbox2017.js
+    
+    * Update 20171006005624_sandbox2017.js
+    
+    * update search
+    
+    * fix logger leak and disable exit
+    
+    * 2.10.4
+
+[33mcommit 2435852c108ff04f48a09dcb013ece99e49d1eed[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 02:37:26 2017 +0300
+
+    Sandbox migration (#467)
+    
+    * adding sandbox change migration
+    
+    * adding winston slack logger
+    
+    * v2.10.1
+    
+    * remove wrong ticket ids
+    
+    * 2.10.2
+    
+    * disable exit and only lookup current event id
+    
+    * 2.10.3
+    
+    * Update 20171006005624_sandbox2017.js
+    
+    * Update 20171006005624_sandbox2017.js
+    
+    * update search
+
+[33mcommit eaf3d6e9f479ade260680079c4abcd4b7e3f9a16[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 02:11:58 2017 +0300
+
+    Update 20171006005624_sandbox2017.js
+
+[33mcommit 1fe225ed259b635ac09c5779df52fb138686d872[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 02:00:18 2017 +0300
+
+    Sandbox migration (#466)
+    
+    * adding sandbox change migration
+    
+    * adding winston slack logger
+    
+    * v2.10.1
+    
+    * remove wrong ticket ids
+    
+    * 2.10.2
+    
+    * Update 20171006005624_sandbox2017.js
+    
+    * Update 20171006005624_sandbox2017.js
+
+[33mcommit 0ca07d36d77125a91b18b96d2eb58637342155ac[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 01:54:15 2017 +0300
+
+    Update logger.js
+
+[33mcommit efed73d4f5386d07c672e68d11bb24c036a4c712[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 01:53:54 2017 +0300
+
+    Update 20171006005624_sandbox2017.js
+
+[33mcommit 4953854017128e309589e830fc7c026cc6291a7c[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 01:16:24 2017 +0300
+
+    Sandbox migration (#465)
+    
+    * adding sandbox change migration
+    
+    * adding winston slack logger
+    
+    * v2.10.1
+
+[33mcommit e08c2eb3f53c391c3d4ff684f229a35682f3c1d1[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Fri Oct 6 00:04:32 2017 +0300
+
+    Sandbox 2017 (#464)
+    
+    * move to sandbox event id
+    
+    * version v2.10.0
+    
+    * Update drupal_ticket_sync.js
+    
+    * addding all ticket ids
+    
+    * disable snyk-protect
+
+[33mcommit 5a7ace34d4a02d333f0274d975b314c717499ae0[m
+Author: Snyk bot <snyk-bot@users.noreply.github.com>
+Date:   Thu Oct 5 17:42:55 2017 +0300
+
+    fix: package.json to reduce vulnerabilities (#463)
+    
+    The following vulnerabilities are fixed with an upgrade:
+    - https://snyk.io/vuln/npm:debug:20170905
+    - https://snyk.io/vuln/npm:mime:20170907
+    - https://snyk.io/vuln/npm:debug:20170905
+    
+    Latest report for midburn/spark:
+    https://snyk.io/test/github/midburn/spark
+
+[33mcommit a6c888e3e20c07b02a84f47ed0b20c9a1b470eeb[m
+Merge: 0f3be2b fd1cf9d
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu Jun 22 20:54:55 2017 +0300
+
+    Merge pull request #456 from Midburn/snyk-fix-269a95d3
+    
+    [Snyk Update] New fixes for 1 vulnerable dependency path
+
+[33mcommit 0f3be2b9597dbe5431ac0e83a7865cb22535fe0e[m
+Merge: 7465b59 5f3ad3e
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu Jun 22 20:54:41 2017 +0300
+
+    Merge pull request #455 from Midburn/snyk-fix-c85f7712
+    
+    [Snyk Update] New fixes for 2 vulnerable dependency paths
+
+[33mcommit 5f3ad3e395b8f451da9b62dad53fa7f2b7ab8067[m
+Merge: a8cfcaa 7465b59
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu Jun 22 20:54:34 2017 +0300
+
+    Merge branch 'master' into snyk-fix-c85f7712
+
+[33mcommit 7465b591e08c5f484e98122a522a5fce34281b02[m
+Merge: d11c7a2 7a0094e
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu Jun 22 20:53:51 2017 +0300
+
+    Merge pull request #454 from Midburn/snyk-fix-acb6429e
+    
+    [Snyk Update] New fixes for 2 vulnerable dependency paths
+
+[33mcommit 7a0094ef4cece72b5da98f74be70e50e80bf45b6[m
+Merge: 5c77bd4 d11c7a2
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu Jun 22 20:53:42 2017 +0300
+
+    Merge branch 'master' into snyk-fix-acb6429e
+
+[33mcommit fd1cf9dda95f07505125edc0e1c3fabec7e38463[m
+Author: snyk-bot <admin+snyk-bot@snyk.io>
+Date:   Thu Jun 22 00:24:09 2017 +0000
+
+    fix: package.json to reduce vulnerabilities
+    
+    Latest report for midburn/spark:
+    https://snyk.io/test/github/midburn/spark
+    
+    Some vulnerabilities weren't fixed or ignored, and so will still fail
+    the Snyk test report.
+
+[33mcommit d11c7a2789931c4b0cb4e128271909309cf73914[m
+Author: Snyk bot <snyk-bot@users.noreply.github.com>
+Date:   Thu Jun 15 13:33:19 2017 +0300
+
+    fix: package.json & .snyk to reduce vulnerabilities (#453)
+    
+    The following vulnerabilities are fixed with an upgrade:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    
+    The following vulnerabilities are fixed with a Snyk patch:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    Latest report for midburn/spark:
+    https://snyk.io/test/github/midburn/spark
+
+[33mcommit 5f621d37ce153e66217e55756650c582c9035a76[m
+Author: Snyk bot <snyk-bot@users.noreply.github.com>
+Date:   Thu Jun 15 13:32:36 2017 +0300
+
+    fix: package.json & .snyk to reduce vulnerabilities (#445)
+    
+    The following vulnerabilities are fixed with an upgrade:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    
+    The following vulnerabilities are fixed with a Snyk patch:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    Latest report for midburn/spark:
+    https://snyk.io/test/github/midburn/spark
+
+[33mcommit a8cfcaa0f001e1f6f5ec70cab9399a0bd2b7d9fb[m
+Author: snyk-bot <admin+snyk-bot@snyk.io>
+Date:   Thu Jun 15 00:24:14 2017 +0000
+
+    fix: package.json & .snyk to reduce vulnerabilities
+    
+    The following vulnerabilities are fixed with an upgrade:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    
+    The following vulnerabilities are fixed with a Snyk patch:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    Latest report for midburn/spark:
+    https://snyk.io/test/github/midburn/spark
+
+[33mcommit 5c77bd44582f54378625345faf9cf872ea9661cf[m
+Author: snyk-bot <support@snyk.io>
+Date:   Thu Jun 8 00:24:08 2017 +0000
+
+    fix: package.json & .snyk to reduce vulnerabilities
+    
+    The following vulnerabilities are fixed with an upgrade:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    
+    The following vulnerabilities are fixed with a Snyk patch:
+    - https://snyk.io/vuln/npm:ms:20170412
+    
+    Latest report for midburn/spark:
+    https://snyk.io/test/github/midburn/spark
+
+[33mcommit fb5f99a526d63bcfbe0f24e629949e67fb431b7a[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 28 13:33:40 2017 +0300
+
+    Gate system (#452) - v2.9.1
+    
+    * Gate system (#449)
+    
+    * Update package.json
+    
+    * Update drupal_ticket_sync.js
+    
+    * version bump v2.8.6
+    
+    * Allow exit
+    
+    * V2.8.8
+    
+    * fix lint
+    
+    * Update package.json
+    
+    * Gate Web UI fixes
+    
+    * v2.9.0
+    
+    * Update package.json
+    
+    * Gate system (#451)
+    
+    * Gate Web UI fixes
+    
+    * Gate system (#449) (#450)
+    
+    * Gate system (#449)
+    
+    * Update package.json
+    
+    * Update drupal_ticket_sync.js
+    
+    * version bump v2.8.6
+    
+    * Allow exit
+    
+    * V2.8.8
+    
+    * fix lint
+    
+    * Update package.json
+    
+    * Gate Web UI fixes
+    
+    * v2.9.0
+    
+    * bug fix
+    
+    * merge fix
+
+[33mcommit fe288cad3414eab177d135ac839a1317cbb9bdce[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 28 12:18:51 2017 +0300
+
+    Gate system (#449) (#450)
+    
+    * Gate system (#449)
+    
+    * Update package.json
+    
+    * Update drupal_ticket_sync.js
+    
+    * version bump v2.8.6
+    
+    * Allow exit
+    
+    * V2.8.8
+    
+    * fix lint
+    
+    * Update package.json
+    
+    * Gate Web UI fixes
+    
+    * v2.9.0
+
+[33mcommit 1960bf6dc3a1bf3fe2f473260a00406031ef6597[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 28 11:26:54 2017 +0300
+
+    Update package.json
+
+[33mcommit a361e889ee887451b4d9a0e30538a41e2ec8ab9b[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 28 11:23:48 2017 +0300
+
+    fix lint
+
+[33mcommit 32dea24a5f95ab469d75a1720d430e3a3b14d519[m
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Sun May 28 11:16:21 2017 +0300
+
+    V2.8.8
+
+[33mcommit 2ed53881db556f358c361cce923da6cffb3cfcda[m
+Merge: 5b73007 93cadd5
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Sun May 28 11:09:26 2017 +0300
+
+    Merge pull request #448 from roy-zahor/gate_system
+    
+    Allow exit
+
+[33mcommit 93cadd5d7f21bff2f535bed01b7fb6c56aa628c1[m
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Sun May 28 11:07:00 2017 +0300
+
+    Allow exit
+
+[33mcommit 5b7300764889d539a78158ba796e0aebdd231d91[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sat May 27 13:37:56 2017 +0300
+
+    version bump v2.8.6
+
+[33mcommit 32b99824c85b6c4b5e0bc7040fa30edbfd5e48ac[m
+Merge: e837d88 15c643d
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sat May 27 13:37:15 2017 +0300
+
+    Merge pull request #447 from Midburn/fix-sync-where-id-too-long
+    
+    Update drupal_ticket_sync.js
+
+[33mcommit 15c643dc89f0f111afcd3afb0d5ae46818283951[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sat May 27 13:33:04 2017 +0300
+
+    Update drupal_ticket_sync.js
+
+[33mcommit e837d8867779daff60ac620cfc3a5ac1d593f412[m
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu May 25 10:30:35 2017 +0300
+
+    Update package.json
+
+[33mcommit 7a4d16be98464e80f91fa8c03cca34a19e996999[m
+Merge: a464980 a109a9b
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu May 25 10:29:06 2017 +0300
+
+    Merge pull request #446 from Midburn/gate_system
+    
+    Disallow users entrance without group in early arrival mode
+
+[33mcommit a109a9b23b91380cd53d78333841e14894a5f2f4[m
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Thu May 25 10:23:03 2017 +0300
+
+    Disallow users entrance without group in early arrival mode
+
+[33mcommit a4649804952a1702a52aceccb9cf0b5f3fb824f6[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Thu May 25 00:26:43 2017 +0300
+
+    Update package.json
+
+[33mcommit 744c59371ba410c4c9c063628c789b2bd5f2ecda[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Thu May 25 00:09:48 2017 +0300
+
+    v2.8.4
+
+[33mcommit 918e2325a5625b28c6261ac37c4f60f9dc863856[m
+Merge: f7ae08c ea24301
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Thu May 25 00:09:21 2017 +0300
+
+    Merge pull request #444 from Midburn/gate_system
+    
+    Displayig group on gate
+
+[33mcommit ea24301da1e53a7f2cdf17db68f732a32ffe3f85[m
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Wed May 24 23:51:28 2017 +0300
+
+    Displayig group on gate
+
+[33mcommit f7ae08c1c88bf004c62c90e57964020bddfb865b[m
+Merge: ec1232f 99b5296
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Wed May 24 23:05:33 2017 +0300
+
+    Merge pull request #441 from roy-zahor/gate_system
+    
+    Better ticket search
+
+[33mcommit 99b52968ca1b960fc7b704a88fc301fca204ce4a[m
+Author: רועי צחור <roy.zahor@gmail.com>
+Date:   Mon May 22 10:31:32 2017 +0300
+
+    Better ticket search
+
+[33mcommit ec1232f59042c3d92d4d68eb8b2ff2f9ec760911[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Mon May 22 10:02:19 2017 +0300
+
+    v2.6.3
+
+[33mcommit 9311966a37da85d4727f25a53e937d234e0a93ab[m
+Merge: 7f9c135 9403de7
+Author: Roy Zahor <roy.zahor@gmail.com>
+Date:   Mon May 22 09:53:03 2017 +0300
+
+    Merge pull request #440 from roy-zahor/gate_system
+    
+    Gate data integrity check
+
+[33mcommit 9403de7e0a702de9f366942d3e3f5a7c6a17d443[m
+Author: רועי צחור <roy.zahor@gmail.com>
+Date:   Mon May 22 09:47:13 2017 +0300
+
+    Gate data integrity check
+
+[33mcommit 7f9c13545be11ecfcefdc6df52e7f8b61fc02160[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 22:58:25 2017 +0300
+
+    2.6.2
+
+[33mcommit f87c152f80633cb164c92b0abe4b290ccf1ffc08[m
+Merge: a2bd40c 87e88f3
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 22:43:23 2017 +0300
+
+    Merge pull request #438 from Midburn/asi-groups-latest-fixes-20-05
+    
+    Asi groups latest fixes 20 05
+
+[33mcommit 87e88f3e8e58436a1a8fbfe76e0851171936883f[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 22:40:22 2017 +0300
+
+    another lint fix
+
+[33mcommit 2c8753592955254f7821465b535652bb40f9e1f7[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 22:32:18 2017 +0300
+
+    eslint
+
+[33mcommit 5aa0d19ad0884ffa6a410a111e60727ccbeaca92[m
+Merge: a2bd40c 59c8f55
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 22:29:41 2017 +0300
+
+    Merge branch 'asi-groups-latest-fixes-20-05' of github.com:Midburn/Spark into asi-groups-latest-fixes-20-05
+
+[33mcommit a2bd40c24de9555f755b9525e67a430a56a287bb[m
+Merge: 64f045b 251708d
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 22:17:12 2017 +0300
+
+    Merge pull request #439 from roy-zahor/gate_system
+    
+    Gate statistics
+
+[33mcommit 251708d0f750a9aee5c3ba856d68113b721e094c[m
+Author: רועי צחור <roy.zahor@gmail.com>
+Date:   Sun May 21 22:11:54 2017 +0300
+
+    Gate statistics
+
+[33mcommit 59c8f55ee9dff01bd1e90d3861817a099fdcc3cf[m
+Merge: 24fa953 fb477c5
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 21:47:23 2017 +0300
+
+    Merge branch 'asi-groups-latest-fixes-20-05' of https://github.com/Midburn/Spark into asi-groups-latest-fixes-20-05
+
+[33mcommit 24fa953c00fc1d7e1bb258353294cd10734634ac[m
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 21:46:12 2017 +0300
+
+    fixed edit bug
+    added stat
+
+[33mcommit 64f045be1c1428732cb1290a7891d298e341ef7f[m
+Author: Ori Hoch <ori@uumpa.com>
+Date:   Sun May 21 18:31:00 2017 +0300
+
+    update deployment doc regarding worker instance
+
+[33mcommit 5b504e89425babd44b5502acc7ce5f176da23a43[m
+Merge: 7c0d617 fb477c5
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 15:40:40 2017 +0300
+
+    Merge pull request #434 from Midburn/asi-groups-latest-fixes-20-05
+    
+    Asi groups latest fixes 20 05
+
+[33mcommit fb477c5e23d298a81919480ba4b03f038637f408[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 15:35:26 2017 +0300
+
+    version v2.6.1
+
+[33mcommit e3b55ed2e809aab42e6d2e28734a0d6d3e2a48db[m
+Merge: bd05c51 7c0d617
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 15:34:51 2017 +0300
+
+    Merge branch 'master' into asi-groups-latest-fixes-20-05
+
+[33mcommit bd05c51bd9d576ba351943ec7a2bec9628a5e1d4[m
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 15:29:38 2017 +0300
+
+    lint
+
+[33mcommit 8fe4709682d02e22acbb0c4cf915dde7163c5fcd[m
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 15:16:49 2017 +0300
+
+    lint
+
+[33mcommit 7c0d6174eb7e9c3cf610e3d17fdef5cb0721b36c[m
+Merge: 6f19d64 666f89a
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 15:11:28 2017 +0300
+
+    Merge pull request #437 from Midburn/fix-sync
+    
+    Fix sync
+
+[33mcommit 666f89af75d09e0b7c5fb85215fec0e4c6dc9c93[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 15:09:28 2017 +0300
+
+    lets get another version rolling
+
+[33mcommit 1e41c90ac3fba46eba575f71d2f5c6e3f5b5d6f6[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 15:08:34 2017 +0300
+
+    update test-user
+
+[33mcommit 94e2ada3e9f68524060a69282e97e55803a23d9d[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 15:06:02 2017 +0300
+
+    changing test user
+
+[33mcommit 6f19d643d97df6fa0fdfcc1dc9eaaecccfa25296[m
+Merge: 46a4aa6 75d1c57
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 14:49:40 2017 +0300
+
+    Merge pull request #433 from Midburn/fix-sync
+    
+    Fix sync
+
+[33mcommit 75d1c5785102d829c321775a9c6568d0900e65b8[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 14:48:58 2017 +0300
+
+    version bump v2.5.9
+
+[33mcommit 82dd9e4da754473f972663d5970e742ffcb0971f[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 14:20:23 2017 +0300
+
+    update sync script
+
+[33mcommit bc3136bd44570d6bd27b152fe7642f568ed89ac2[m
+Merge: e980558 46a4aa6
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 13:31:40 2017 +0300
+
+    updated version
+
+[33mcommit e9805583b0b4f60c6dae15b6697c1a8ee2b197a2[m
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 13:27:35 2017 +0300
+
+    option to edit from home menu
+
+[33mcommit bcae8ec720e50952cabcb419796d015f0ba19f8f[m
+Merge: c89019e 46a4aa6
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 13:09:48 2017 +0300
+
+    Merge branch 'master' into fix-sync
+
+[33mcommit c89019e927aeeab25e1fa5ba48505fbb6998c65e[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 13:08:49 2017 +0300
+
+    update sync script
+
+[33mcommit 46a4aa6869a92cbda068e8fe5755a4c1eab38705[m
+Merge: 93962da 68ffbc5
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 12:37:59 2017 +0300
+
+    Merge pull request #432 from Midburn/fix-sync
+    
+    Fix sync and camps
+
+[33mcommit 68ffbc5b2e3ab646ce996c0ae53647b54d3b7859[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 12:37:21 2017 +0300
+
+    BUMP fixing sync and more in camps v2.5.8
+
+[33mcommit 52eea541714a9c321f57cb0feab64b287f84aa31[m
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 12:32:45 2017 +0300
+
+    Update drupal_ticket_sync.js
+
+[33mcommit 93962da69d3099ac08ed37a5e6b0b2e7f9f0edb1[m
+Author: Asaf Azulay <asaf@omc.co.il>
+Date:   Sun May 21 04:21:21 2017 +0300
+
+    Fixing adding new member bug (#431)
+    
+    * Fixing adding new member bug
+    Importing new data to production
+    
+    * making the code look nicer because of fucking lint
+
+[33mcommit 24bb02f4f8a506da7e1fbf462ed170d83a5b6f20[m
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 04:16:53 2017 +0300
+
+    making the code look nicer because of fucking lint
+
+[33mcommit e9a5e8723ed9f9bb3a63ac0dda0c8891719d6922[m
+Merge: 898a8e4 a7183f9
+Author: unknown <asi@AsiNB.omcdom.hq.omc.co.il>
+Date:   Sun May 21 04:03:03 2017 +0300
+
+    Merge branch 'master' of https://github.com/Midburn/Spark into asi-groups-latest-fixes-20-05
+
+[33mcommit 898a8e44f02b38d8013bec24c05332e2b6f15646[m
+Author: Asaf Azulay <asi@omcdom.hq.omc.co.il>
+Date:   Sun May 21 04:02:25 2017 +0300
+
+    Fixing adding new member bug
+    Importing new data to production
+
+[33mcommit a7183f9c5895c0d27a68138250bd4470ceec7eb5[m
+Merge: b613b1b 6cde2bc
+Author: Leon Fedotov <LeonFedotov@users.noreply.github.com>
+Date:   Sun May 21 02:33:52 2017 +0300
+
+    Merge pull request #430 from Midburn/gate-quota-fix
+    
+    fixing the gate quota
+
+[33mcommit 6cde2bc1bc492d2b650fac55d541b034ecc7947f[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 02:31:31 2017 +0300
+
+    v2.5.6
+
+[33mcommit 9f1f93bc6d7c0a6eba576a65b09a6df2750ddd2b[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 02:29:55 2017 +0300
+
+    fixing quota
+
+[33mcommit e0bac168c15f10faf5a11d9db6ac5cbd31073f17[m
+Author: Leon Fedotov <fedotov.leon@gmail.com>
+Date:   Sun May 21 02:17:01 2017 +0300
+
+    fixing the gate

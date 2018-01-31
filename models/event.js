@@ -23,21 +23,32 @@ var Event = bookshelf.Model.extend({
      * @param { String } id
      * @returns {Promise<any>}
      */
-    get_event: function (id) {
-        if (constants.events[id]) return Promise.resolve(constants.events[id]);
+    get_event: id => {
+        return Event.where('event_id', id).fetch()
+            .then(response => {
+                return response.attributes
+            }).then(event => {
+                event.addinfo_json = JSON.parse(event.addinfo_json);
+                return event;
+            }).catch(response => { 
+                return null;
+            })
+    },
 
-        return Event.where('event_id', id).fetch().then((response) => {
-            if (response.attributes && response.attributes.addinfo_json) {
-                constants.events[id] = {
-                    props: JSON.parse(response.attributes.addinfo_json),
-                    bundles: []
-                };
-
-                return constants.events[id];
-            }
-
-            return null;
-        });
+    get_event_controllDates: id => {
+        return Event.where('event_id', id).fetch()
+            .then(response => {
+                return JSON.parse(response.attributes.addinfo_json);
+            }).then(addinfo => {
+                const controllDates = {
+                    appreciation_tickets_allocation_start : new Date(addinfo.appreciation_tickets_allocation_start),
+                    appreciation_tickets_allocation_end : new Date(addinfo.appreciation_tickets_allocation_end),
+                    edit_camps_lastDate : new Date(addinfo.edit_camps_lastDate),
+                }
+                return controllDates;
+            }).catch(response => { 
+                return null;
+            })
     }
 });
 

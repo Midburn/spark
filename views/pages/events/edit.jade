@@ -19,26 +19,24 @@ block content
                 event_type: '#{event.addinfo_json.event_type}',
                 start_date: new Date('#{event.addinfo_json.start_date}'),
                 end_date: new Date('#{event.addinfo_json.end_date}'),
-                start_presale_tickets_allocation: new Date('#{event.addinfo_json.start_presale_tickets_allocation}'),
                 start_presale_tickets: new Date('#{event.addinfo_json.start_presale_tickets}'),
-                end_presale_tickets_allocation: new Date('#{event.addinfo_json.end_presale_tickets_allocation}'),
                 end_presale_tickets: new Date('#{event.addinfo_json.end_presale_tickets}'),
                 tickets_info: '#{event.addinfo_json.tickets_info}',
-                community_camps: '#{event.addinfo_json.community_camps}' === true,
-                community_art_installation: '#{event.addinfo_json.community_art_installation}' === true,
-                community_prod_dep: '#{event.addinfo_json.community_prod_dep}' === true,
+                community_camps: '#{event.addinfo_json.community_camps}' === 'true',
+                community_art_installation: '#{event.addinfo_json.community_art_installation}' === 'true',
+                community_prod_dep: '#{event.addinfo_json.community_prod_dep}' === 'true',
+                appreciation_tickets_allocation_start: new Date('#{event.addinfo_json.appreciation_tickets_allocation_start}'),
+                appreciation_tickets_allocation_end: new Date('#{event.addinfo_json.appreciation_tickets_allocation_end}'),
+                edit_camps_lastDate: new Date('#{event.addinfo_json.edit_camps_lastDate}'),
                 url: '#{event.addinfo_json.url}'
             }
         }
     div( ng-app="ngEvents")
         .heading.card.card__shad
                 span.label.label-info # #{event.event_id}
-                h2 #{t('events:edit.title')}: #{event.name}
-                h6 #{t('events:edit.since')}: #{event.addinfo_json.created_at}
+                h2 #{t(`${t_prefix}edit.title`)}: #{event.name}
+                h6 #{t(`${t_prefix}edit.since`)}: #{new Date(event.addinfo_json.created_at)}
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
-                h4=t('events:edit.name_and_discription')
-                    .event-info.panel
-                        .panel-body
-                            include partials/form
+                include partials/form
