@@ -1,7 +1,6 @@
 const userRole = require('../libs/user_role');
 const Event = require('../models/event').Event;
-const _ = require('lodash')
-
+    
 module.exports = function (app, passport) {
 
     app.get('/:lng/events-admin', userRole.isAdmin(), (req, res) => {
