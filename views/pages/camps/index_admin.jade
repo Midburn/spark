@@ -2,11 +2,13 @@ extends ../../includes/page
 block content
     .camps.camp_admin_index(ng-app="ngCamps")
         script.
-            var groups_prototype="#{__groups_prototype}";
-            const controllDates = {
-                appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
-                appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
-            }
+            var groups_prototype="#{__groups_prototype}";            
+        if controllDates
+            script.
+                const controllDates = {
+                    appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
+                    appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
+                }
         .container.col-md-12
             h1=t(t_prefix+'dash.title')
             p.lead.text-muted=t(t_prefix+'dash.desc')
