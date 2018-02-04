@@ -40,6 +40,7 @@ var __render_camp = function (camp, req, res) {
                 camp: camp_data,
                 breadcrumbs: req.breadcrumbs(),
                 details: camp_data,
+                isAdmin: req.user.isAdmin,
                 isUserCampMember: (camp.isUserCampMember(req.user.id) || req.user.isAdmin),
                 isUserInCamp: (camp.isUserInCamp(req.user.id) || req.user.isAdmin),
                 isCampManager: (camp.isCampManager(req.user.id) || req.user.isAdmin),
@@ -48,7 +49,8 @@ var __render_camp = function (camp, req, res) {
                 safety_contact: camp.isUserInCamp(camp.attributes.safety_contact),
             };
             Event.get_event_controllDates(req.user.currentEventId).then(controllDates => {
-                data.campslastEditDate = controllDates.edit_camps_lastDate;
+                controllDates = controllDates || {};
+                data.campslastEditDate = controllDates.edit_camps_lastDate || {};
                 res.render('pages/camps/camp', data);
             })
 
@@ -189,7 +191,7 @@ module.exports = function (app, passport) {
                     const currentEventID = req.session.passport.user.currentEventId;
                     Event.get_event_controllDates(currentEventID)
                     .then(controllDates => {
-                        _edit_rec.controllDates = controllDates
+                        _edit_rec.controllDates = controllDates || {}
                         res.render('pages/camps/edit',_edit_rec);
                         });
             } else {
@@ -281,7 +283,7 @@ module.exports = function (app, passport) {
                         __groups_prototype: 'theme_camps',
                         t_prefix: 'camps:',
                         isCamp: true,
-                        controllDates: controllDates,
+                        controllDates: controllDates || {},
                     });
                 });
             } else {

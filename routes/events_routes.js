@@ -17,7 +17,7 @@ module.exports = function (app, passport) {
             .then(json => {
                 return json.attributes
             }).then(event => {
-                event.addinfo_json = JSON.parse(event.addinfo_json);
+                event.addinfo_json = event.addinfo_json ? JSON.parse(event.addinfo_json) : {};
                 const data = {
                     t_prefix: 'events:',
                     'event': event,
