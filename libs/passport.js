@@ -21,7 +21,7 @@ Event = require('../models/event').Event;
  */
 const drupal_login_request = (email, password) => {
 
-    request
+    return request
             // .post('https://profile-test.midburn.org/api/user/login')
         .post('https://profile.midburn.org/api/user/login')
         .send({'username': email, 'password': password})
