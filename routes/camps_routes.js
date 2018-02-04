@@ -92,7 +92,7 @@ module.exports = function (app, passport) {
         }, req.t);
     });
     // Read
-    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id(\\d+)/', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -125,6 +125,10 @@ module.exports = function (app, passport) {
 
         let prototype = constants.prototype_camps.THEME_CAMP.id;
         let result = Camp.prototype.__parsePrototype(prototype, req.user);
+        let controllDates = {
+            appreciation_tickets_allocation_start: null,
+            appreciation_tickets_allocation_end: null
+        }
         res.render('pages/camps/edit', {
             user: req.user,
             camp_name_en: req.query.c,
@@ -138,6 +142,7 @@ module.exports = function (app, passport) {
             isArt: prototype === constants.prototype_camps.ART_INSTALLATION.id,
             isCamp: prototype === constants.prototype_camps.THEME_CAMP.id,
             isProd: prototype === constants.prototype_camps.PROD_DEP.id,
+            controllDates: controllDates
         });
     });
     // Edit
@@ -182,7 +187,7 @@ module.exports = function (app, passport) {
                         isProd: camp.attributes.__prototype === constants.prototype_camps.PROD_DEP.id,
                     }
                     const currentEventID = req.session.passport.user.currentEventId;
-                    Event.get_event_controllDates(currentEventID)            
+                    Event.get_event_controllDates(currentEventID)
                     .then(controllDates => {
                         _edit_rec.controllDates = controllDates
                         res.render('pages/camps/edit',_edit_rec);
@@ -268,7 +273,7 @@ module.exports = function (app, passport) {
 
         if (req.user.isAdmin || req.user.isCampsAdmin) {
             const currentEventID = req.session.passport.user.currentEventId;
-            Event.get_event_controllDates(currentEventID)            
+            Event.get_event_controllDates(currentEventID)
                 .then(controllDates => {
                     res.render('pages/camps/index_admin', {
                         user: req.user,
