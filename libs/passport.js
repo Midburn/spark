@@ -21,22 +21,13 @@ Event = require('../models/event').Event;
  */
 const drupal_login_request = (email, password) => {
 
-    let drupal_url='https://profile.midburn.org/api/user/login'
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'testing') {
-        drupal_url = 'http://localhost:3000/fake_drupal/api/user/login'
-        
-    }
-    return request
-        .post(drupal_url)
+    request
+            // .post('https://profile-test.midburn.org/api/user/login')
+        .post('https://profile.midburn.org/api/user/login')
         .send({'username': email, 'password': password})
-        .then(function (res) { 
-             console.log(res)
-             return res 
-        })
-        .catch(err => {
-            console.log(err)
-            return null
-        });
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .then(({ body }) => body, () => null);
 }
 var login = function (email, password, done) {
     if (!email || !password || email.length === 0 || password.length === 0) {
