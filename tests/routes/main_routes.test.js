@@ -65,6 +65,8 @@ describe('Main routes', function() {
             .expect(302, done);
     });
 
+    if(process.env.DEPLOY_ENVIRONMENT === 'production' ||
+        process.env.DEPLOY_ENVIRONMENT === 'staging')
     it('logs-in a drupal user', function loginDrupalUser(done) {
         var email = 'omerp@websplanet.com';
         var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
