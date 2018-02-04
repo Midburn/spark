@@ -12,41 +12,52 @@
     },
     "stats": {
         "search": "Seach",
-        "name_en":"Event Name",
+        "name_en": "Event Name",
         "gate_code": "Gate Code",
         "gate_status": "Status",
-        "edit":"Edit",
+        "edit": "Edit",
         "remove": "Remove"
     },
-    "new":{
-        "header_title":"Create an event",
-        "header_desc":"To create an event you have to provide us some information, then your new event will be reviewed",
-        "close":"Close",
-        "send_request":"Create New Event"
+    "new": {
+        "header_title": "Create an event",
+        "header_desc": "To create an event you have to provide us some information, then your new event will be reviewed",
+        "close": "Close",
+        "send_request": "Create New Event"
     },
     "edit": {
-        "title":"Edit The Event",
-        "since":"Event Creation Date",
-        "basic_info":"Event Details",
+        "title": "Edit The Event",
+        "since": "Event Creation Date",
+        "basic_info": "Event Details",
         "name_en": "Name (English)",
         "name_he": "Name (Hebrew)",
         "desc_en": "Description (English)",
         "desc_he": "Description (Hebrew)",
-        "id":"Event Number",
-        "previous_event_id":"Previous Event Identifier",
-        "start_date":"Event Start Date",
-        "end_date":"Event End Date",
-        "start_presale_tickets":"Start Presale Tickets",
-        "end_presale_tickets":"End Presale Tickets",
-        "community_camps":"Community Camps",
+        "id": "Event Number",
+        "previous_event_id": "Previous Event Identifier",
+        "start_date": "Event Start Date",
+        "end_date": "Event End Date",
+        "start_presale_tickets": "Presale Tickets Start",
+        "end_presale_tickets": "Presale Tickets End",
+        "community_camps": "Community Camps",
         "community_art_installation": "Community Art Installation",
         "community_prod_dep": "Community Production Department",
-        "tickets_info":"Tickets Info",
-        "url":"Event Link",
-        "name_and_discription":"Enter the event details",
-        "send_request":"Edit Event",
-        "event_code":"Event Code",
-        "event_type":"Event Type",
-        "gate_code":"Gate Code"
+        "tickets_info": "Tickets Info",
+        "url": "Event Link",
+        "name_and_discription": "Enter the event details",
+        "send_request": "Edit Event",
+        "event_code": "Event Code",
+        "event_type": "Event Type",
+        "gate_code": "Gate Code"
+    },
+    "form": {
+        "dates_controll":{
+            "title":"Controll Dates",
+            "description":"these dates set date controll on the system"
+        },
+        "appreciation_tickets_allocation": {
+            "start": "Start of appreciation tickets allocation",
+            "end": "End of appreciation tickets allocation"
+        },
+        "camps_edit_lastDate": "Last Date to edit camps details"
     }
 }

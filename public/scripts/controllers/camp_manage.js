@@ -70,15 +70,20 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
     }
 
     // update the camp pre sale quota
-    $scope.updatePreSaleQuota = (camp_id,quota) => {
-        confirm('Confirm new quota to: ' + quota);
-        $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: quota })
-           .success(function(response) {
-            window.location.reload();
-        })
-        .error(function() {
-            alert("Quota must be in a positive number format");
-        }); 
+    $scope.updatePreSaleQuota = (camp_id, quota) => {
+
+        let current = new Date();
+        let start = new Date(controllDates.appreciation_tickets_allocation_start);
+        let end = new Date(controllDates.appreciation_tickets_allocation_end);
+        if (start < current && current < end) {
+            if (confirm('Confirm new quota to: ' + quota)) {
+                $.post('/camps/' + camp_id + '/updatePreSaleQuota', { "quota": quota })
+                    .success(() => { })
+                    .error(() => {
+                        alert("Quota must be in a positive number format");
+                    });
+            }
+        }
     }
 
     $scope.changeOrderBy = function (orderByValue) {
