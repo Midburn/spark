@@ -40,10 +40,13 @@ var Event = bookshelf.Model.extend({
             .then(response => {
                 return JSON.parse(response.attributes.addinfo_json);
             }).then(addinfo => {
+                const allocation_start = addinfo.appreciation_tickets_allocation_start;
+                const allocation_end = addinfo.appreciation_tickets_allocation_end;
+                const campEditlastDate = addinfo.edit_camps_lastDate;
                 const controllDates = {
-                    appreciation_tickets_allocation_start : new Date(addinfo.appreciation_tickets_allocation_start),
-                    appreciation_tickets_allocation_end : new Date(addinfo.appreciation_tickets_allocation_end),
-                    edit_camps_lastDate : new Date(addinfo.edit_camps_lastDate),
+                    appreciation_tickets_allocation_start : allocation_start ? new Date(allocation_start) : null,
+                    appreciation_tickets_allocation_end : allocation_end ? new Date(allocation_end) : null,
+                    edit_camps_lastDate : campEditlastDate ? new Date(campEditlastDate) : null, 
                 }
                 return controllDates;
             }).catch(response => { 

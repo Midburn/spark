@@ -82,7 +82,7 @@ block content
                                 a(ng-href='{{camp.facebook_page_url}}', target='_blank')
                                     button.btn.btn-xs
                                         span(class='fa fa-facebook-official')
-                                if(user.isAdmin || (user.isCampsAdmin && (new Date() < controllDates.edit_camps_lastDate)))
+                                if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
                                     a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit') &nbsp;
                                         button.btn.btn-xs 
                                             span(class='glyphicon glyphicon-pencil')
