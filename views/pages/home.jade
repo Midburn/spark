@@ -14,7 +14,7 @@ block content
                 each val in events
                     li
                         a(ng-click="angular_ChangeCurrentEventId('#{val.event_id}')") #{val.event_id}
-                
+
 
         table.table.table-striped.table-hover
             thead
@@ -37,15 +37,15 @@ block content
                     td {{group.is_manager}}
                     //- td {{group.earlyArrival ? 'yes':'no'}}
                     td
-                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="group.can_edit")&nbsp;
-                            button.btn.btn-xs 
+                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="group.can_edit") &nbsp;
+                            button.btn.btn-xs
                                 span(class='glyphicon glyphicon-pencil')
                                 =t('camps:stats.edit')
-                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` ng-if="group.can_view")&nbsp;
-                            button.btn.btn-xs 
+                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` ng-if="group.can_view") &nbsp;
+                            button.btn.btn-xs
                                 span(class='glyphicon glyphicon-pencil')
                                 =t('camps:edit.view')
-                                
+
                         //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "reject")', ng-if="group.can_reject") &nbsp;
                         //-     button.btn.btn-xs
                         //-         span(class='glyphicon glyphicon-remove')
@@ -63,7 +63,7 @@ block content
                         //-         span(class='glyphicon glyphicon-king')
                         //-         =t('camps:groups.remove_manager')
                         //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove")', ng-if="group.can_remove") &nbsp;
-                        //-     button.btn.btn-xs 
+                        //-     button.btn.btn-xs
                         //-         span(class='glyphicon glyphicon-remove')
                         //-         =t('camps:groups.remove')
         //- .col-xs-6
@@ -97,7 +97,7 @@ block content
             .col-xs-12.col-sm-6.col-md-3
                 h4 יציאות 24 שעות / 1 שעה
                     span.badge {{stat.last_24h_exit}} / {{stat.last_1h_exit}}
-            .row        
+            .row
             h3 סטטיסטיקת מחנות/מחלקות/מיצבים
             .col-xs-12
                 h4 סהכ במחנות נושא מאושרים
