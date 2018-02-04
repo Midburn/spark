@@ -50,7 +50,7 @@ var __render_camp = function (camp, req, res) {
             };
             Event.get_event_controllDates(req.user.currentEventId).then(controllDates => {
                 controllDates = controllDates || {};
-                data.campslastEditDate = controllDates.edit_camps_lastDate || {};
+                data.campslastEditDate = controllDates.edit_camps_lastDate || new Date(Date.now() + 1000*60*60*24*30);
                 res.render('pages/camps/camp', data);
             })
 
