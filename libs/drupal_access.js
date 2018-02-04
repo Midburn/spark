@@ -18,7 +18,7 @@ function parseFromAnchorTag(uid_string) {
 }
 
 function parseUser(res_body) {
-    if (res_body.length === 0) {
+    if (res_body.length === 0 || !res_body[0]) {
         return undefined
     }
 

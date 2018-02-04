@@ -9,6 +9,7 @@ var knex = require('../../libs/db').knex;
 
 describe('Main routes', function() {
     this.timeout(5000);
+    // Infrastructure Routes
     it('responds to / with redirect to hebrew', function testSlash(done) {
         request
             .get('/')
@@ -33,7 +34,7 @@ describe('Main routes', function() {
     it('shows signup form in Hebrew', function testSlash(done) {
         request
             .get('/he/signup')
-            .expect(/הרשמה.*סיסמה/)
+            .expect(/לחץ כאן ליצירת פרופיל.*סיסמה/)
             .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=he/)
             .expect(200, done);
     });
@@ -41,7 +42,7 @@ describe('Main routes', function() {
     it('shows signup form in English', function testSlash(done) {
         request
             .get('/en/signup')
-            .expect(/Sign up.*Email.*Password/)
+            .expect(/Click here to signup.*Email.*Password/)
             .expect(/www\.google\.com\/recaptcha\/api\.js\?hl=en/)
             .expect(200, done);
     });
@@ -60,38 +61,43 @@ describe('Main routes', function() {
             .expect(302, done);
     });
 
-    it('logs-in a drupal user', function loginDrupalUser(done) {
-        var email = 'omerp@websplanet.com';
-        // var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
-        var clear_password = '123456';
-        Promise.all([
-                knex(User.prototype.tableName).where('email', email).del(),
-                knex(DrupalUser.prototype.tableName).where('name', email).del()
-            ])
-            // .then(function () {
-            //     return DrupalUser.forge({
-            //         name: email,
-            //         pass: hashed_password,
-            //         status: 1
-            //     }).save();
-            // })
-            .then(function() {
-                return request
-                    .post('/he/login')
-                    .send({
-                        email: email,
-                        password: clear_password
-                    })
-                    .expect(302)
-                    .expect('Location', 'home');
-            }).then(function() {
-                // spark user should be updated with email and password
-                return User.forge({
-                    email: email
-                }).fetch().then(function(user) {
-                    user.attributes.password.length.should.be.above(20);
-                    user.attributes.email.should.equal(email);
-                });
-            }).then(done);
-    });
+    if(process.env.DEPLOY_ENVIRONMENT === 'production' ||
+        process.env.DEPLOY_ENVIRONMENT === 'staging') {
+        it('logs-in a drupal user', function loginDrupalUser(done) {
+            var email = 'omerp@websplanet.com';
+            var hashed_password = '$S$DX1KmzFZtwY3VOgioPlO8vqXELOs4VisHPzMQ5mP6sYI.MJpHpXs';
+            var clear_password = '123456';
+            Promise.all([
+                    knex(User.prototype.tableName).where('email', email).del(),
+                    knex(DrupalUser.prototype.tableName).where('name', email).del()
+                ])
+                .then(function () {
+                    return DrupalUser.forge({
+                        name: email,
+                        pass: hashed_password,
+                        status: 1
+                    }).save();
+                })
+                .then(function() {
+                    return request
+                        .post('/he/login')
+                        .send({
+                            email: email,
+                            password: clear_password
+                        }, (res) => {
+                            console.log(res)
+                        })
+                        .expect(302)
+                        .expect('Location', 'home')
+                }).then(function() {
+                    // spark user should be updated with email and password
+                    return User.forge({
+                        email: email
+                    }).fetch().then(function(user) {
+                        user.attributes.password.length.should.be.above(20);
+                        user.attributes.email.should.equal(email);
+                    });
+                }).then(done);
+        });
+    }
 });
