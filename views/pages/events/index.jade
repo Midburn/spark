@@ -6,8 +6,8 @@ block content
         var isNew=true
     .camps.camp_admin_index.ng-scope(ng-app="ngEvents")
         .container-xs-12
-            h1=t(t_prefix+'dash.title')
-            p.lead.text-muted=t(t_prefix+'dash.desc')
+            h1=t(`${t_prefix}dash.title`)
+            p.lead.text-muted=t(`${t_prefix}dash.desc`)
         .controls.row
                 div.block-center
                     div.input-group
@@ -38,11 +38,8 @@ block content
                                 a.cursor-p(ng-href=`/${language}/events-admin/{{event.event_id}}`)&nbsp;
                                     button.btn.btn-xs 
                                         span(class='glyphicon glyphicon-pencil')
-                                        =t('events:stats.edit')
+                                        =t(`${t_prefix}stats.edit`)
     
             //- Card 2
             .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive
-                h4=t('events:edit.name_and_discription')
-                    .event-info.panel
-                        .panel-body
-                            include partials/form
+                include partials/form

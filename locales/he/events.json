@@ -3,7 +3,7 @@
     "current_event_view": "אירוע נוכחי:",
     "dash": {
         "title": "אירועים",
-        "desc": "תפריט ניהול אירועים"    
+        "desc": "תפריט ניהול אירועים"
     },
     "new_event": "אירוע חדש",
     "manage": "נהל",
@@ -12,41 +12,52 @@
     },
     "stats": {
         "search": "חיפוש אירוע",
-        "name_en":"שם האירוע",
+        "name_en": "שם האירוע",
         "gate_code": "קוד שער",
         "gate_status": "סטאטוס",
         "edit": "ערוך",
         "remove": "מחק"
     },
-    "new":{
-        "header_title":"יצירת אירוע חדש",
-        "header_desc":"ליצירת אירוע עליך לספק מידע אודות האירוע, לאחר מכן האירוע יועבר לבדיקה.",
-        "close":"סגור",
-        "send_request":"צור אירוע חדש"
+    "new": {
+        "header_title": "יצירת אירוע חדש",
+        "header_desc": "ליצירת אירוע עליך לספק מידע אודות האירוע, לאחר מכן האירוע יועבר לבדיקה.",
+        "close": "סגור",
+        "send_request": "צור אירוע חדש"
     },
     "edit": {
-        "title":"ערוך את האירוע",
-        "since":"תאריך יצירה",
-        "basic_info":"פרטי האירוע",        
+        "title": "ערוך את האירוע",
+        "since": "תאריך יצירה",
+        "basic_info": "פרטי האירוע",
         "name_en": "שם (אנגלית)",
         "name_he": "שם (עברית)",
         "desc_en": "תיאור (אנגלית)",
         "desc_he": "תיאור (עברית)",
-        "id":"מזהה האירוע",
-        "previous_event_id":"מזהה אירוע קודם",
-        "start_date":"תאריך התחלת האירוע",
-        "end_date":"תאריך סיום האירוע",
-        "start_presale_tickets":"תאריך תחילת מכירת כרטיסים מוקדמת",
-        "end_presale_tickets":"תאריך סיום מכירת כרטיסים מוקדמת",
-        "community_camps":"קהילות",
-        "community_art_installation":"מיצב אומנות קהילתי",
+        "id": "מזהה האירוע",
+        "previous_event_id": "מזהה אירוע קודם",
+        "start_date": "תאריך התחלת האירוע",
+        "end_date": "תאריך סיום האירוע",
+        "start_presale_tickets": "תאריך תחילת מכירת כרטיסים מוקדמת",
+        "end_presale_tickets": "תאריך סיום מכירת כרטיסים מוקדמת",
+        "community_camps": "קהילות",
+        "community_art_installation": "מיצב אומנות קהילתי",
         "community_prod_dep": "קהילת מחלקת הפקה",
-        "tickets_info":"מידע על הכרטיסים",
-        "url":"קישור לאירוע",
-        "name_and_discription":"הכנס את פרטי האירוע",
-        "send_request":"עדכן אירוע",
-        "event_code":"קוד אירוע",
-        "event_type":"סוג אירוע",
-        "gate_code":"קוד שער"
+        "tickets_info": "מידע על הכרטיסים",
+        "url": "קישור לאירוע",
+        "name_and_discription": "הכנס את פרטי האירוע",
+        "send_request": "עדכן אירוע",
+        "event_code": "קוד אירוע",
+        "event_type": "סוג אירוע",
+        "gate_code": "קוד שער"
+    },
+    "form": {
+        "dates_controll":{
+            "title":"תאריכי שליטה",
+            "description":"תאריכים אלו קובעים התנהגות מערכת"
+        },
+        "appreciation_tickets_allocation": {
+            "start": "תאריך תחילת הקצאת כרטיסי הוקרה",
+            "end": "תאריך סיום הקצאת כרטיסי הוקרה"
+        },
+        "camps_edit_lastDate": "תאריך אחרון לעדכון מחנות"
     }
 }
