@@ -95,7 +95,7 @@ module.exports = function (app, passport) {
                 } else {
                     res.cookie('authToken', passportLib.generateJwtToken(req.body.email), { httpOnly: true, domain: '.midburn.org' });
                     var r = req.body['r'];
-                    if (r) {
+                    if (r && constants.LOGIN_REDIRECT_URL_WHITELIST.indexOf(r) > 0) {
                         return res.redirect(r);
                     } else {
                         return res.redirect('home');
