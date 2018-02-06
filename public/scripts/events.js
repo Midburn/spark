@@ -44,7 +44,7 @@ function doneTyping() {
         input = $input,
         btn = $('#check_camp_name');
     if (val.length > 3) {
-        var data = $.get('../camps/' + val);
+        var data = $.get('/camps/' + val);
         data.done(function () {
             if (data.status === 204) {
                 input.removeClass('error');
