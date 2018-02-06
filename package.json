@@ -27,9 +27,10 @@
     "//lint": "runs static analysis using eslint",
     "lint": "./node_modules/.bin/eslint .",
     "//createdb": "bootstraps MySql with a clean spark database & user",
-    "createdb": "mysql -u root < migrations/create_db.sql",
+    "createdb": "mysql -u root  < migrations/create_db.sql",
     "create_test_db": "cross-env SPARK_DB_DBNAME=spark_test mysql -u root --protocol=tcp < migrations/create_test_db.sql && cross-env SPARK_DB_DBNAME=spark_test knex migrate:latest",
     "snyk-protect": "snyk protect",
+    "seed": "node ./seeds/seeder.js",
     "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
@@ -73,6 +74,7 @@
     "jsonwebtoken": "^7.3.0",
     "knex": "^0.13.0",
     "lodash": "^4.17.4",
+    "mocker-data-generator": "^2.5.2",
     "module-id": "2.0.4",
     "morgan": "~1.9.0",
     "mysql": "^2.11.1",
