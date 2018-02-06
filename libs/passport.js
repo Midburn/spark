@@ -24,7 +24,10 @@ const drupal_login_request = (email, password) => {
     return request
             // .post('https://profile-test.midburn.org/api/user/login')
         .post('https://profile.midburn.org/api/user/login')
-        .send({'username': email, 'password': password})
+        
+        // TODO: Workaround for Drupal bug, see https://github.com/Midburn/spark/pull/579 for details
+        .send({'username': email.replace('+', ''), 'password': password})
+
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .then(({ body }) => body, () => null);
