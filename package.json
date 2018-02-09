@@ -8,7 +8,7 @@
   "version": "2.10.15",
   "private": true,
   "scripts": {
-    "postinstall": "cd public; yarn",
+    "postinstall": "cd public; npm install",
     "start": "node server.js",
     "pretest": "npm run lint",
     "test": "npm run testcore",
@@ -93,7 +93,6 @@
     "serve-favicon": "~2.4.3",
     "snyk": "^1.53.0",
     "sprintf-js": "1.0.3",
-    "sqlite3": "^3.1.8",
     "superagent": "^3.5.0",
     "webpack": "^1.14.0",
     "winston": "2.3.0",
