@@ -35,7 +35,7 @@ block content
                             td {{ event.gate_code }}
                             td {{ event.gate_status }}
                             td
-                                a.cursor-p(ng-href=`/${language}/events-admin/{{event.event_id}}`)&nbsp;
+                                a.cursor-p(ng-href=`/${language}/events-admin/{{event.event_id}}`)
                                     button.btn.btn-xs 
                                         span(class='glyphicon glyphicon-pencil')
                                         =t(`${t_prefix}stats.edit`)

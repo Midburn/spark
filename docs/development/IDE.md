@@ -19,7 +19,7 @@ It will provide you with:
 This plugins will add syntax highlighting and IDE integration.
 
 * .ignore
-* Jade
+* Pug
 * Markdown Navigator
 * NodeJS
 

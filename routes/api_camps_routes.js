@@ -998,7 +998,7 @@ module.exports = (app, passport) => {
      * request => /camps_open
      */
     app.get('/camps_open', userRole.isLoggedIn(), (req, res) => {
-        let allowed_status = ['open', 'closed'];
+        let allowed_status = ['open'];
         let web_published = [true, false];
         Camp.query((query) => {
             query

@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const userRole = require('../libs/user_role');
 
 router.get('/', userRole.isLoggedIn(), function (req, res) {
-    res.redirect(process.env.VOLUNTEERS_BASE_URL);
+    res.redirect(process.env.VOLUNTEERS_BASE_URL || 'https://midburn.org/he-volunteering/');
 });
 
 module.exports = router;

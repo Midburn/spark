@@ -90,7 +90,7 @@ block content
                             strong=t('gate:reason')
                             | :&nbsp;
                             textarea( id="force_reason", rows=3, cols=50, minlength=10, maxlength=150,
-                            required, placeholder="#{t('gate:force_reason_placeholder')}" )
+                            required, placeholder=t('gate:force_reason_placeholder') )
                     .modal-footer
                         button.btn.btn-primary(type='submit', id='force_entrance_dialog_button')=t('gate:force_enter_ticket')
                         button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')

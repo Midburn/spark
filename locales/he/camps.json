@@ -317,7 +317,8 @@
             "contact_person": "איש קשר",
             "status": "סטטוס",
             "last_update": "עודכן לאחרונה",
-            "published": "פורסם בתאריך"
+            "published": "פורסם בתאריך",
+            "dumpcampsdata": "יצוא לקובץ"
         },
         "members": {
             "actions": "פעולות"
@@ -359,7 +360,8 @@
             "contact_person": "איש קשר",
             "status": "סטטוס",
             "last_update": "עודכן לאחרונה",
-            "published": "פורסם בתאריך"
+            "published": "פורסם בתאריך",
+            "dumpcampsdata": "יצוא לקובץ"
         },
         "members": {
             "actions": "פעולות",

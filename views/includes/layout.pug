@@ -24,7 +24,7 @@ head
     link(rel='stylesheet', type='text/css', href='/bower_components/angular-ui-select/dist/select.min.css')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css')
 
-body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
+body( style=`direction:${languageDir}`, lang=language, dir=`${languageDir}` )
     block wrapper
     //- Scripts
     script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
@@ -37,7 +37,7 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
         script(async src='/bower_components/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
 
     // External packages
-    script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
+    script(async src=`https://www.google.com/recaptcha/api.js?hl=${language}`)
     script(src='/bower_components/sweetalert/dist/sweetalert.min.js')
     script(src='/bower_components/js-cookie/src/js.cookie.js')
 
