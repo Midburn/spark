@@ -37,7 +37,7 @@ body( style=`direction:${languageDir}`, lang=language, dir=`${languageDir}` )
         script(async src='/bower_components/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
 
     // External packages
-    script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
+    script(async src=`https://www.google.com/recaptcha/api.js?hl=${language}`)
     script(src='/bower_components/sweetalert/dist/sweetalert.min.js')
     script(src='/bower_components/js-cookie/src/js.cookie.js')
 
