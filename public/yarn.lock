@@ -10,7 +10,11 @@ angular-sanitize@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.5.0.tgz#7b9a01dd6b5736d0d5872933f03d1cfb9c188d2a"
 
-angular@^1.4.6:
+angular-select@^0.9.12:
+  version "0.9.12"
+  resolved "https://registry.yarnpkg.com/angular-select/-/angular-select-0.9.12.tgz#335086c43a41d7f3389deca7bc84f3bf3ae824db"
+
+angular@1.4.6:
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.4.6.tgz#905d2a916157826b7f6d7c832848aa98b16a1430"
 
@@ -24,17 +28,17 @@ async@^2.6.0:
   dependencies:
     lodash "^4.14.0"
 
-bootstrap-rtl@^3.3.4:
+bootstrap-rtl@3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/bootstrap-rtl/-/bootstrap-rtl-3.3.4.tgz#4f813e6fce91aa9f47ad47f48172355af61c1b11"
   dependencies:
     bootstrap "^3.3.4"
 
-bootstrap-table@^1.11.2:
+bootstrap-table@1.11.2:
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/bootstrap-table/-/bootstrap-table-1.11.2.tgz#5f5f8414c97d95a40e56d3d364523da432b3c0b1"
 
-bootstrap-validator@^0.11.9:
+bootstrap-validator@0.11.9:
   version "0.11.9"
   resolved "https://registry.yarnpkg.com/bootstrap-validator/-/bootstrap-validator-0.11.9.tgz#fb7058eef53623e78f5aa7967026f98f875a9404"
 
@@ -65,7 +69,7 @@ esprima@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.0.0.tgz#53cf247acda77313e551c3aa2e73342d3fb4f7d9"
 
-font-awesome@^4.7.0:
+font-awesome@4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
@@ -81,7 +85,7 @@ jquery@^1.7.0:
   version "1.12.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-1.12.4.tgz#01e1dfba290fe73deba77ceeacb0f9ba2fec9e0c"
 
-js.cookie@^0.0.4:
+js.cookie@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/js.cookie/-/js.cookie-0.0.4.tgz#c581270d0403b1c5125f91d5a48295e290e2869a"
 
@@ -104,7 +108,7 @@ optimist@^0.6.1:
     minimist "~0.0.1"
     wordwrap "~0.0.2"
 
-popper.js@^1.12.9:
+popper.js@1.12.9:
   version "1.12.9"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.9.tgz#0dfbc2dff96c451bb332edcfcfaaf566d331d5b3"
 
@@ -112,7 +116,7 @@ promise-polyfill@^6.0.2:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
 
-recaptcha@^1.2.1:
+recaptcha@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/recaptcha/-/recaptcha-1.2.1.tgz#3d7a576a525aa19270d8b0ac90820ee7ca9eb8ae"
 
@@ -122,7 +126,7 @@ redeyed@~1.0.0:
   dependencies:
     esprima "~3.0.0"
 
-selectize.js@^0.12.12:
+selectize.js@0.12.12:
   version "0.12.12"
   resolved "https://registry.yarnpkg.com/selectize.js/-/selectize.js-0.12.12.tgz#67321487881a81506abe388b2995d3af3ad6edcd"
   dependencies:
@@ -140,16 +144,12 @@ sifter@^0.5.1:
     humanize "^0.0.9"
     optimist "^0.6.1"
 
-sweetalert@^2.1.0:
+sweetalert@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/sweetalert/-/sweetalert-2.1.0.tgz#d605dec840058fa8ad4a1f7c2c8c194bc72c27fa"
   dependencies:
     es6-object-assign "^1.1.0"
     promise-polyfill "^6.0.2"
-
-ui-select@^0.19.8:
-  version "0.19.8"
-  resolved "https://registry.yarnpkg.com/ui-select/-/ui-select-0.19.8.tgz#74860848a7fd8bc494d9856d2f62776ea98637c1"
 
 wordwrap@~0.0.2:
   version "0.0.3"
