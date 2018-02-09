@@ -92,6 +92,22 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+angular-animate@^1.6.9:
+  version "1.6.9"
+  resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.6.9.tgz#a0f926c1ba3190bd8929ef966a7fa79760682622"
+
+angular-sanitize@^1.6.9:
+  version "1.6.9"
+  resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.6.9.tgz#1adba33f6f513e5f93e3aca8071bef53666739ea"
+
+angular-ui-select@^0.12.100:
+  version "0.12.100"
+  resolved "https://registry.yarnpkg.com/angular-ui-select/-/angular-ui-select-0.12.100.tgz#83cb869ecaf7a3dd40463bca18eafe0d84e1b9ca"
+
+angular@^1.6.9:
+  version "1.6.9"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.6.9.tgz#bc812932e18909038412d594a5990f4bb66c0619"
+
 ansi-align@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-2.0.0.tgz#c36aeccba563b89ceb556f3690f0b1d9e3547f7f"
@@ -642,6 +658,10 @@ boom@5.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
   dependencies:
     hoek "4.x.x"
+
+bootstrap-table@^1.11.2:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/bootstrap-table/-/bootstrap-table-1.11.2.tgz#5f5f8414c97d95a40e56d3d364523da432b3c0b1"
 
 bootstrap-validator@^0.11.5:
   version "0.11.9"
@@ -1275,6 +1295,10 @@ constants-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
 
+contains@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/contains/-/contains-0.1.1.tgz#087a87e31e6acf399c9304b76c3575772fb6dca6"
+
 content-disposition@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.2.tgz#0cf68bb9ddf5f2be7961c3a85178cb85dba78cb4"
@@ -1825,6 +1849,10 @@ ert@^1.0.1:
   dependencies:
     character-parser "~1.0.0"
 
+es6-object-assign@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
+
 es6-promise@^3.0.2, es6-promise@^3.1.2:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
@@ -1833,7 +1861,7 @@ es6-promise@^4.1.1:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.2.tgz#f722d7769af88bd33bc13ec6605e1f92966b82d9"
 
-escape-html@~1.0.3:
+escape-html@^1.0.2, escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
 
@@ -2288,6 +2316,10 @@ follow-redirects@0.0.3:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-0.0.3.tgz#6ce67a24db1fe13f226c1171a72a7ef2b17b8f65"
   dependencies:
     underscore ""
+
+font-awesome@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -2775,6 +2807,10 @@ hash-base@^2.0.0:
 hashlru@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/hashlru/-/hashlru-2.2.0.tgz#793a58943f902aea578177d7b0335f13f2694b71"
+
+hasown@~1.x.x:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/hasown/-/hasown-1.0.1.tgz#b64ff1570673ba06cc5d0183c0a4f0b5b1bd6459"
 
 hawk@3.1.3, hawk@~3.1.3:
   version "3.1.3"
@@ -3361,6 +3397,10 @@ joi@^6.10.1:
     moment "2.x.x"
     topo "1.x.x"
 
+jquery@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+
 js-base64@^2.1.8:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.0.tgz#9e566fee624751a1d720c966cd6226d29d4025aa"
@@ -3382,6 +3422,10 @@ js-yaml@^3.5.3, js-yaml@^3.9.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+js.cookie@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/js.cookie/-/js.cookie-0.0.4.tgz#c581270d0403b1c5125f91d5a48295e290e2869a"
 
 jsbn@~0.1.0:
   version "0.1.1"
@@ -3828,6 +3872,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+matches-selector@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/matches-selector/-/matches-selector-1.2.0.tgz#d1814e7e8f43e69d22ac33c9af727dc884ecf12a"
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
@@ -4141,6 +4189,10 @@ nested-error-stacks@^1.0.0:
   dependencies:
     inherits "~2.0.1"
 
+newify@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/newify/-/newify-1.1.9.tgz#3f599bd1d44a4c38851a1bd25bbb6f7c4d72d8ff"
+
 nock@^9.1.4:
   version "9.1.6"
   resolved "https://registry.yarnpkg.com/nock/-/nock-9.1.6.tgz#16395af4c45b0fd84d1a4a9668154e16fa6624db"
@@ -4358,6 +4410,10 @@ oauth-sign@~0.8.1, oauth-sign@~0.8.2:
 oauth@0.9.x:
   version "0.9.15"
   resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.15.tgz#bd1fefaf686c96b75475aed5196412ff60cfb9c1"
+
+object-assign@^2.0.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-2.1.1.tgz#43c36e5d569ff8e4816c4efa8be02d26967c18aa"
 
 object-assign@^3.0.0:
   version "3.0.0"
@@ -4787,6 +4843,10 @@ pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
+popper.js@^1.12.9:
+  version "1.12.9"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.9.tgz#0dfbc2dff96c451bb332edcfcfaaf566d331d5b3"
+
 portscanner@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/portscanner/-/portscanner-2.1.1.tgz#eabb409e4de24950f5a2a516d35ae769343fbb96"
@@ -4825,6 +4885,10 @@ process@^0.11.0:
 progress@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.0.tgz#8a1be366bf8fc23db2bd23f10c6fe920b4389d1f"
+
+promise-polyfill@^6.0.2:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-6.1.0.tgz#dfa96943ea9c121fca4de9b5868cb39d3472e057"
 
 "promise@>=3.2 <8":
   version "7.3.1"
@@ -4967,6 +5031,10 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-style-normalizer@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/react-style-normalizer/-/react-style-normalizer-1.2.8.tgz#7e84b3d25cea6225545c5af68963b225885344a2"
+
 read-all-stream@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/read-all-stream/-/read-all-stream-3.1.0.tgz#35c3e177f2078ef789ee4bfafa4373074eaef4fa"
@@ -5058,6 +5126,21 @@ regex-not@^1.0.0:
   resolved "https://registry.yarnpkg.com/regex-not/-/regex-not-1.0.0.tgz#42f83e39771622df826b02af176525d6a5f157f9"
   dependencies:
     extend-shallow "^2.0.1"
+
+region-align@^2.1.2:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/region-align/-/region-align-2.1.3.tgz#7a5ebb9deff3d29c33d23598c7a003d3bfde0a5e"
+  dependencies:
+    object-assign "^4.0.1"
+    region "^2.1.2"
+
+region@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/region/-/region-2.1.2.tgz#cfd95868afbc49e4c7a053b677bc5a0985c29afa"
+  dependencies:
+    hasown "~1.x.x"
+    newify "^1.1.9"
+    object-assign "^2.0.0"
 
 registry-auth-token@^3.0.1:
   version "3.3.1"
@@ -6087,6 +6170,13 @@ supports-color@^4.0.0:
   dependencies:
     has-flag "^2.0.0"
 
+sweetalert@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/sweetalert/-/sweetalert-2.1.0.tgz#d605dec840058fa8ad4a1f7c2c8c194bc72c27fa"
+  dependencies:
+    es6-object-assign "^1.1.0"
+    promise-polyfill "^6.0.2"
+
 table@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/table/-/table-4.0.2.tgz#a33447375391e766ad34d3486e6e2aedc84d2e36"
@@ -6226,6 +6316,10 @@ to-source-code@^1.0.0:
   dependencies:
     is-nil "^1.0.0"
 
+to-style@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/to-style/-/to-style-1.3.3.tgz#63a2b70a6f4a7d4fdc2ed57a0be4e7235cb6699c"
+
 to-utf8@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/to-utf8/-/to-utf8-0.0.1.tgz#d17aea72ff2fba39b9e43601be7b3ff72e089852"
@@ -6233,6 +6327,19 @@ to-utf8@0.0.1:
 toml@^2.3.2:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/toml/-/toml-2.3.3.tgz#8d683d729577cb286231dfc7a8affe58d31728fb"
+
+tooltip@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/tooltip/-/tooltip-1.6.1.tgz#abc2b4bbab3f0859865ea325098b1262a8733d7d"
+  dependencies:
+    clone "^1.0.2"
+    contains "0.1.1"
+    escape-html "^1.0.2"
+    matches-selector "^1.0.0"
+    object-assign "^3.0.0"
+    react-style-normalizer "^1.2.8"
+    region-align "^2.1.2"
+    to-style "^1.3.3"
 
 topo@1.x.x:
   version "1.1.0"
