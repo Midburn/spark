@@ -33,7 +33,7 @@
     "seed": "node ./seeds/seeder.js",
     "prepublish": "npm run snyk-protect",
     "newDevDB": "npm run createdb; knex migrate:latest; npm run seed",
-    "hot": "browser-sync start --proxy 'http://localhost:3000/' --files 'views' 'public'",
+    "hot": "browser-sync start --proxy 'http://localhost:3000/' --files 'views' 'public' 'locales'",
     "//hot": "echo npm run hot - will open a hot reload browser updating on changes in view & public folders"
   },
   "dependencies": {
