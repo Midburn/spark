@@ -13,7 +13,7 @@ var adminRender = require('../libs/admin').adminRender;
 var sign_up = require('../libs/passport').sign_up;
 
 router.get('/', userRole.isAdmin(), function (req, res) {
-    adminRender(req, res, 'admin/home.jade', {
+    adminRender(req, res, 'admin/home', {
         tiles: [
             {top: {icon: "user", title: "Total Users"}, count: {text: "250", green: false}, bottom: {title: "Users admin", href: "/admin/users"}},
             {top: {icon: "sitemap", title: "Total Camps"}, count: {text: "5", green: false}, bottom: {title: "Camps admin", href: "/admin/camps"}}
