@@ -28,6 +28,10 @@ async@^2.6.0:
   dependencies:
     lodash "^4.14.0"
 
+bootstrap-progressbar@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-progressbar/-/bootstrap-progressbar-0.9.0.tgz#cc00fb94797111556dc9af7ea6b5cadbee30cac4"
+
 bootstrap-rtl@3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/bootstrap-rtl/-/bootstrap-rtl-3.3.4.tgz#4f813e6fce91aa9f47ad47f48172355af61c1b11"
@@ -61,6 +65,34 @@ csv-parse@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-2.0.2.tgz#9bb08dd84bb41008a03cde988c07afe0768362f3"
 
+datatables.net-bs@^1.10.15, datatables.net-bs@^1.10.16:
+  version "1.10.16"
+  resolved "https://registry.yarnpkg.com/datatables.net-bs/-/datatables.net-bs-1.10.16.tgz#b0854f5b374f713ae3db4156c7cea8a760c3de76"
+  dependencies:
+    datatables.net "1.10.16"
+    jquery ">=1.7"
+
+datatables.net-buttons-bs@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/datatables.net-buttons-bs/-/datatables.net-buttons-bs-1.5.1.tgz#6d1b02bd3403a55f773620733275bb0b874e91cc"
+  dependencies:
+    datatables.net-bs "^1.10.15"
+    datatables.net-buttons "1.5.1"
+    jquery ">=1.7"
+
+datatables.net-buttons@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/datatables.net-buttons/-/datatables.net-buttons-1.5.1.tgz#cdb35c0c8b0260cd45b0df6b39f6da815357febb"
+  dependencies:
+    datatables.net "^1.10.15"
+    jquery ">=1.7"
+
+datatables.net@1.10.16, datatables.net@^1.10.15:
+  version "1.10.16"
+  resolved "https://registry.yarnpkg.com/datatables.net/-/datatables.net-1.10.16.tgz#4b052d1082824261b68eed9d22741b711d3d2469"
+  dependencies:
+    jquery ">=1.7"
+
 es6-object-assign@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
@@ -73,13 +105,25 @@ font-awesome@4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
+gentelella@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/gentelella/-/gentelella-1.4.0.tgz#b3d15fd9c40c6ea47dc7f36290c8f89aee95efc5"
+
 humanize@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/humanize/-/humanize-0.0.9.tgz#1994ffaecdfe9c441ed2bdac7452b7bb4c9e41a4"
 
+icheck@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/icheck/-/icheck-1.0.2.tgz#06d08da3d47ae448c153b2639b86e9ad7fdf7128"
+
 jquery@2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
+
+jquery@>=1.5, jquery@>=1.7:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 jquery@^1.7.0:
   version "1.12.4"
@@ -88,6 +132,12 @@ jquery@^1.7.0:
 js.cookie@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/js.cookie/-/js.cookie-0.0.4.tgz#c581270d0403b1c5125f91d5a48295e290e2869a"
+
+jvectormap-next@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jvectormap-next/-/jvectormap-next-3.0.0.tgz#87070dab31ec7e2702de8f52265d2fe0a8fea3f5"
+  dependencies:
+    jquery ">=1.5"
 
 lodash@^4.14.0:
   version "4.17.5"
@@ -150,6 +200,10 @@ sweetalert@2.1.0:
   dependencies:
     es6-object-assign "^1.1.0"
     promise-polyfill "^6.0.2"
+
+ui-select@^0.19.8:
+  version "0.19.8"
+  resolved "https://registry.yarnpkg.com/ui-select/-/ui-select-0.19.8.tgz#74860848a7fd8bc494d9856d2f62776ea98637c1"
 
 wordwrap@~0.0.2:
   version "0.0.3"

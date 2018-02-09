@@ -51,10 +51,10 @@ curl -o- -L https://yarnpkg.com/install.sh | bash
 ### Installing dependencies
 
 ```shell
-yarn install
+yarn 
 ```
 
-(If you have problems, make sure you delete the `node_moduels` and `bower_components` directories first)
+(If you have problems, make sure you delete the `node_moduels` directories first)
 
 ### Setting up the database
 
