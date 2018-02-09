@@ -7,7 +7,7 @@ block content
                 h1.jumbotron-heading=t('camps:dash.title')
                 p.lead.text-muted=t('camps:dash.desc')
                 div.block-center
-                .cards--wrapper(style="visibility: visible; min-height: 268px;")
+                .cards--wrapper
                     if user.isCampFree
                         .join_camp.card(ng-controller="campJoinController")
                             h2=t('camps:join.header_title')
