@@ -318,7 +318,8 @@
             "contact_person": "Contact Person",
             "status": "Status",
             "last_update": "Last Update",
-            "published": "Published"
+            "published": "Published",
+            "dumpcampsdata": "export data"
         },
         "members": {
             "actions": "Actions"
