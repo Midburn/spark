@@ -147,7 +147,7 @@ app.use(middleware.handle(i18next, {
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // user roles / permissions
 var userRole = require('./libs/user_role');
@@ -217,7 +217,7 @@ if (app.get('env') === 'development') {
         // Handle CSRF token errors
         if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
-            res.render('pages/error', {
+            res.render('pages/error.pug', {
                 errorMessage: 'Illegal action. Your connection details has been logged.',
                 error: {
                     status: 'URL: ' + req.url
@@ -226,7 +226,7 @@ if (app.get('env') === 'development') {
             return;
         }
         res.status(err.status || 500);
-        res.render('pages/error', {
+        res.render('pages/error.pug', {
             errorMessage: err.message,
             error: err
         });
@@ -238,14 +238,14 @@ else {
         // Handle CSRF token errors
         if (err.code === 'EBADCSRFTOKEN') {
             res.status(403);
-            res.render('pages/error', {
+            res.render('pages/error.pug', {
                 errorMessage: 'Illegal action. Your connection details has been logged.', //TODO: log if necessary
                 error: req.url
             });
             return;
         }
         res.status(err.status || 500);
-        res.render('pages/error', {
+        res.render('pages/error.pug', {
             errorMessage: err.message,
             error: {}
         });

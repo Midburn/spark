@@ -8,31 +8,31 @@ block content
     form( action="/#{language}/npo/join", method="post", enctype="multipart/form-data", data-toggle="validator", role="form" )
         .form-group.required
             label=t('first_name')
-            input( type="text", class="form-control", name="first_name", required="true", disabled=true, value='#{user.attributes.first_name}' )
+            input( type="text", class="form-control", name="first_name", required="true", disabled=true, value= user.attributes.first_name )
 
         .form-group.required
             label=t('last_name')
-            input( type="text", class="form-control", name="last_name", required="true", disabled=true, value='#{user.attributes.last_name}' )
+            input( type="text", class="form-control", name="last_name", required="true", disabled=true, value= user.attributes.last_name )
 
         .form-group.required
             label=t('whoami.birth_date')
-            input( type="text", class="form-control", name="date_of_birth", required="true", disabled=true, value='#{user.attributes.date_of_birth}' )
+            input( type="text", class="form-control", name="date_of_birth", required="true", disabled=true, value= user.attributes.date_of_birth )
 
         .form-group.required
             label=t('whoami.id_num')
-            input( type="text", class="form-control", name="israeli_id", required="true", value='#{user.attributes.israeli_id}' )
+            input( type="text", class="form-control", name="israeli_id", required="true", value= user.attributes.israeli_id )
 
         .form-group.required
             label=t('whoami.address')
-            input( type="text", class="form-control", name="address", required="true", value='#{user.attributes.address}' )
+            input( type="text", class="form-control", name="address", required="true", value= user.attributes.address )
 
         .form-group.required
             label=t('whoami.cell_phone')
-            input( type="text", class="form-control", name="cell_phone", required="true", value='#{user.attributes.cell_phone}' )
+            input( type="text", class="form-control", name="cell_phone", required="true", value=user.attributes.cell_phone )
 
         .form-group
             label=t('whoami.extra_phone')
-            input( type="text", class="form-control", name="extra_phone", value='#{user.attributes.extra_phone}' )
+            input( type="text", class="form-control", name="extra_phone", value= user.attributes.extra_phone )
 
         label=t('npo:join.midburn_attended_q')
         // @TODO - load events from DB after adding support for events
@@ -53,15 +53,15 @@ block content
         .form-group.required
             label=t('npo:join.previous_p_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_previous_p", required="true", placeholder="#{t('npo:join.max_chars')}" )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_previous_p", required="true", placeholder=t('npo:join.max_chars') )
         .form-group.required
             label=t('npo:join.future_p_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_future_p", required="true", placeholder="#{t('npo:join.max_chars')}" )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_future_p", required="true", placeholder=t('npo:join.max_chars') )
         .form-group.required
             label=t('npo:join.why_join_title')
             br
-            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_why_join", required="true", placeholder="#{t('npo:join.max_chars')}" )
+            textarea( class="form-control", rows="5", cols="80", maxlength="300", name="form_why_join", required="true", placeholder=t('npo:join.max_chars') )
         .form-group.required
             label=t('npo:join.id_image_title')
             input( class="form-control", type="file", required="true", name="id_image", accept="image/*" )

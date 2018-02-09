@@ -40,7 +40,7 @@ block content
                     h4=t('camps:camps.publication')
                     p=t('camps:camps.publication_subtitle')
                     .col-xs-12.col-md-6
-                        .contact-person(data-camp-contact-person-id='#{camp.contact_person_id}')
+                        .contact-person(data-camp-contact-person-id=`${camp.contact_person_id}`)
                             a(href='/users/#{camp.contact_person_id}')
                                 span=t('camps:stats.contact_person')
                             ul.list-group
@@ -57,7 +57,7 @@ block content
                         .col-xs-12.col-md-6
                             span=t('camps:stats.facebook_page_url')
                             .facebook-info.Btn
-                                a(href='#{camp.facebook_page_url}', target='_blank')
+                                a(href=`${camp.facebook_page_url}`, target='_blank')
                                     i(class="fa fa-facebook-official")
                                     | &nbsp; #{t('camps:camps.facebook_page_url_link')}
             if (isUserInCamp)
@@ -68,7 +68,7 @@ block content
                         if (main_contact)
                             .contact-info.col-md-4
                                 span=t('camps:camps.main_contact')
-                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--main', data-user-id='#{camp.main_contact}')
+                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--main', data-user-id=`${camp.main_contact}`)
                                     span=t('camps:camps.main_contact')
                                 .info.type--main
                                     h6 #{t('camps:camps.name')}:
@@ -82,7 +82,7 @@ block content
                         if (moop_contact)
                             .contact-info.col-md-4
                                 span=t('camps:camps.moop_contact')
-                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--moop', data-user-id='#{camp.moop_contact}')
+                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--moop', data-user-id=`${camp.moop_contact}`)
                                     span=t('camps:camps.moop_contact')
                                 .info.type--moop
                                     h6 #{t('camps:camps.name')}:
@@ -96,7 +96,7 @@ block content
                         if (safety_contact)
                             .contact-info.col-md-4
                                 span=t('camps:camps.safety_contact')
-                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--safety', data-user-id='#{camp.safety_contact}')
+                                //- button.Btn.Btn__card.fetch_user_info(data-user-type='type--safety', data-user-id=`${camp.safety_contact}`)
                                     span=t('camps:camps.safety_contact')
                                 .info.type--safety
                                     h6 #{t('camps:camps.name')}:

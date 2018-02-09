@@ -1,4 +1,4 @@
-extends layout
+extends layout.pug
 block wrapper
     nav.navbar.navbar-default.navbar-fixed-top
         .container
@@ -12,34 +12,34 @@ block wrapper
             #navbar.navbar-collapse.collapse
                 ul.nav.navbar-nav
                     li( class="#{path[2] === 'home' ? 'active' : undefined }" )
-                        a( href="/#{language}/home" )=t('home')
+                        a( href=`/${language}/home` )=t('home')
                     li( class="#{path[2] === 'camps' ? 'active' : undefined }" )
-                        a( href="/#{language}/camps" )=t('camps:nav')
+                        a( href=`/${language}/camps` )=t('camps:nav')
                     li( class="#{path[2] === 'volunteering' ? 'active' : undefined }" )
-                        a( href="/#{language}/volunteering" )=t('volunteering')
+                        a( href=`/${language}/volunteering` )=t('volunteering')
                     li( class="#{path[2] === 'npo' ? 'active' : undefined }" )
-                        a( href="/#{language}/npo" )=t('npo:npo_name')
+                        a( href=`/${language}/npo` )=t('npo:npo_name')
                     if(user.isAdmin || user.isGateManager)
                         li( class="#{path[2] === 'gate' ? 'active' : undefined }" )
-                            a( href="/#{language}/gate" )=t('gate:gate')
+                            a( href=`/${language}/gate` )=t('gate:gate')
                     if(user.isAdmin || user.isCampsAdmin)
                         li( class="#{path[2] === 'camps-admin' ? 'active' : undefined }" )
-                            a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
+                            a( href=`/${language}/camps-admin` )=t('camps:nav_admin')
                     if(user.isAdmin || user.isArtInstallationsAdmin)
                         li( class="#{path[2] === 'art-admin' ? 'active' : undefined }" )
-                            a( href="/#{language}/art-admin" )=t('camps:art_installation.nav_admin')
+                            a( href=`/${language}/art-admin` )=t('camps:art_installation.nav_admin')
                     if(user.isAdmin || user.isProdDepsAdmin)
                         li( class="#{path[2] === 'prod-admin' ? 'active' : undefined }" )
-                            a( href="/#{language}/prod-admin" )=t('camps:prod_dep.nav_admin')
+                            a( href=`/${language}/prod-admin` )=t('camps:prod_dep.nav_admin')
                     if(user.isAdmin)
                         li( class="#{path[2] === 'npo-admin' ? 'active' : undefined }" )
-                            a( href="/#{language}/npo-admin" )=t('npo:nav_admin')
+                            a( href=`/${language}/npo-admin` )=t('npo:nav_admin')
                     if(user.isAdmin)
                         li( class="#{path[2] === 'events-admin' ? 'active' : undefined }" )
-                            a( href="/#{language}/events-admin" )=t('events:nav_admin')
+                            a( href=`/${language}/events-admin` )=t('events:nav_admin')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li
-                        a( href= '/#{language}/home' )=t('events:current_event_view')  
+                        a( href= `/${language}/home` )=t('events:current_event_view')  
                             span(aria-hidden="true")
                             |#{user.currentEventId}
                     li.dropdown
@@ -61,14 +61,14 @@ block wrapper
                                     |&nbsp;
                                     span=t('english')
                     li
-                        a(href='/#{language}/whoami', aria-label="#{user.attributes.first_name} #{user.attributes.last_name}")
+                        a(href=`/${language}/whoami`, aria-label="#{user.attributes.first_name} #{user.attributes.last_name}")
                             span.glyphicon.glyphicon-user(aria-hidden="true")
                     li
-                        a( href= '/#{language}/logout' )=t('logout')
+                        a( href= `/${language}/logout` )=t('logout')
     page.main.container
         #ajax_indicator.hide
         if (breadcrumbs !== undefined)
             include crumbs
 
         block content
-    include footer
+    include footer.pug
