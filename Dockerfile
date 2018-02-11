@@ -11,6 +11,7 @@ RUN cd /home/spark && npm rebuild node-sass --force
 USER root
 COPY . /home/spark
 WORKDIR /home/spark
+RUN cd public && npm install
 
 ENV PATH="/home/spark/node_modules/.bin:${PATH}"
 
