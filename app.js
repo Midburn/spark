@@ -154,7 +154,7 @@ var userRole = require('./libs/user_role');
 app.use(userRole.middleware());
 
 // Infrastructure Routes
-if (app.get('env') === 'development') {
+if (app.get('env') === 'development' || app.get('env') === 'testing') {
     app.use('/dev', require('./routes/dev_routes'));
     require('./routes/fake_drupal')(app);
 }
