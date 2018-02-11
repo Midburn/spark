@@ -1,4 +1,4 @@
-extends ../includes/layout
+extends ../includes/layout.pug
 block wrapper
     div.container
         .row
@@ -32,7 +32,7 @@ block wrapper
                                 else
                                     h3(style="color:red;") This system is not a production server
 
-                    form(action="/#{language}/login", method="post", data-toggle="validator", role="form")
+                    form(action=`/${language}/login`, method="post", data-toggle="validator", role="form")
                         input(type="hidden", name="r", value=r)
                         .col-xs-12
                             label(for='login_email')=t('email')

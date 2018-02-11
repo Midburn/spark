@@ -59,7 +59,7 @@ var adminRender = function(req, res, name, options) {
 var datatableAdmin = function(name, router, opts) {
 
     var _renderTablePage = function(req, res, msg) {
-        adminRender(req, res, 'admin/datatable.jade', {
+        adminRender(req, res, 'admin/datatable', {
             title: {
                 name: name,
                 text: TABLE_PAGE_TITLE_TEMPLATE.replace('{name}', name),
@@ -81,7 +81,7 @@ var datatableAdmin = function(name, router, opts) {
 
     var _renderEditPage = function(req, res, error, successMsg) {
         var _adminRender = function(titleText) {
-            adminRender(req, res, 'admin/datatable-edit.jade', {
+            adminRender(req, res, 'admin/datatable-edit', {
                 title: {
                     text: titleText,
                     small: successMsg || error,

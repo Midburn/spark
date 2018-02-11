@@ -40,15 +40,13 @@ The strings are stored in the `/locales` folder. The file name is the language c
 
 ## Templates
 
-We use Jade template engine, a language that compiles to HTML, to seperate logic from markup. No more angle brackets!
+We use Pug template engine, a language that compiles to HTML, to seperate logic from markup. No more angle brackets!
 
-Read more about [Jade Syntax Documentation](http://naltatis.github.io/jade-syntax-docs/)
-
-Greate Jade to HTML converter [Here](http://aramboyajyan.github.io/online-jade-template-editor/)
+Read more about [Pug Syntax Documentation](https://www.npmjs.com/package/pug)
 
 ## i18n & templates
 
-You can use i18n in Jade templates. To set an HTML element with a translatable data the general syntax is:
+You can use i18n in Pug templates. To set an HTML element with a translatable data the general syntax is:
 ```
 HTML_ELEMENT=t('KEY')
 ```

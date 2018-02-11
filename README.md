@@ -32,7 +32,7 @@ Spark is being developed by the Midburn Tech Team, with the purpose of utilizing
 ### Tech Stack
 - Node.js /w Express.js (web server)
 - MySQL w/ Bookshelf & Knex
-- Pug/Jade templates
+- Pug templates
 - SCSS w/ Bootstrap
 - Morgan & Winston loggers
 - Webpack /w Babel (ES6 support)
