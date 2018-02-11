@@ -17,6 +17,8 @@ exports.up = function(knex, Promise) {
             table.integer('courier_contact_phone_number').unsigned();
             table.enu('supplier_category', constants.SUPPLIER_CATEGORIES);
 
+
+            
             table.text('supplier_website_link', 'mediumtext');
             table.text('supplier_midmarket_link', 'mediumtext');
         })
