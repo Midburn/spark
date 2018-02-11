@@ -1,6 +1,7 @@
 const userRole = require('../libs/user_role');
 const constants = require('../models/constants.js');
 var Camp = require('../models/camp').Camp;
+const Event = require('../models/event').Event;
 
 // var User = require('../models/user').User;
 var __camp_data_to_json = function (camp) {
@@ -39,6 +40,7 @@ var __render_camp = function (camp, req, res) {
                 camp: camp_data,
                 breadcrumbs: req.breadcrumbs(),
                 details: camp_data,
+                isAdmin: req.user.isAdmin,
                 isUserCampMember: (camp.isUserCampMember(req.user.id) || req.user.isAdmin),
                 isUserInCamp: (camp.isUserInCamp(req.user.id) || req.user.isAdmin),
                 isCampManager: (camp.isCampManager(req.user.id) || req.user.isAdmin),
@@ -46,7 +48,11 @@ var __render_camp = function (camp, req, res) {
                 moop_contact: camp.isUserInCamp(camp.attributes.moop_contact),
                 safety_contact: camp.isUserInCamp(camp.attributes.safety_contact),
             };
-            res.render('pages/camps/camp', data);
+            Event.get_event_controllDates(req.user.currentEventId).then(controllDates => {
+                controllDates = controllDates || {};
+                data.campslastEditDate = controllDates.edit_camps_lastDate || new Date(Date.now() + 1000*60*60*24*30);
+                res.render('pages/camps/camp', data);
+            })
 
         }, req.t);
     }).catch((e) => {
@@ -88,7 +94,7 @@ module.exports = function (app, passport) {
         }, req.t);
     });
     // Read
-    app.get('/:lng/camps/:id', userRole.isLoggedIn(), (req, res) => {
+    app.get('/:lng/camps/:id(\\d+)/', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -121,6 +127,10 @@ module.exports = function (app, passport) {
 
         let prototype = constants.prototype_camps.THEME_CAMP.id;
         let result = Camp.prototype.__parsePrototype(prototype, req.user);
+        let controllDates = {
+            appreciation_tickets_allocation_start: null,
+            appreciation_tickets_allocation_end: null
+        }
         res.render('pages/camps/edit', {
             user: req.user,
             camp_name_en: req.query.c,
@@ -134,6 +144,7 @@ module.exports = function (app, passport) {
             isArt: prototype === constants.prototype_camps.ART_INSTALLATION.id,
             isCamp: prototype === constants.prototype_camps.THEME_CAMP.id,
             isProd: prototype === constants.prototype_camps.PROD_DEP.id,
+            controllDates: controllDates
         });
     });
     // Edit
@@ -177,8 +188,13 @@ module.exports = function (app, passport) {
                         isCamp: camp.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id,
                         isProd: camp.attributes.__prototype === constants.prototype_camps.PROD_DEP.id,
                     }
-                    res.render('pages/camps/edit', _edit_rec);
-                } else {
+                    const currentEventID = req.session.passport.user.currentEventId;
+                    Event.get_event_controllDates(currentEventID)
+                    .then(controllDates => {
+                        _edit_rec.controllDates = controllDates || {}
+                        res.render('pages/camps/edit',_edit_rec);
+                        });
+            } else {
                     res.status(500).json({
                         error: true,
                         data: {
@@ -256,21 +272,28 @@ module.exports = function (app, passport) {
             name: 'camps:breadcrumbs.manage',
             url: '/' + req.params.lng + '/camps-admin'
         }]);
+
         if (req.user.isAdmin || req.user.isCampsAdmin) {
-            res.render('pages/camps/index_admin', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs(),
-                __groups_prototype: 'theme_camps',
-                t_prefix: 'camps:',
-                isCamp: true,
-            });
-        } else {
-            // user not admin
-            res.render('pages/camps/index_user', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        }
+            const currentEventID = req.session.passport.user.currentEventId;
+            Event.get_event_controllDates(currentEventID)
+                .then(controllDates => {
+                    res.render('pages/camps/index_admin', {
+                        user: req.user,
+                        breadcrumbs: req.breadcrumbs(),
+                        __groups_prototype: 'theme_camps',
+                        t_prefix: 'camps:',
+                        isCamp: true,
+                        controllDates: controllDates || {},
+                    });
+                });
+            } else {
+                // user not admin
+                res.render('pages/camps/index_user', {
+                    user: req.user,
+                    breadcrumbs: req.breadcrumbs()
+                });
+            }
+
     });
 
     // art admin management panel

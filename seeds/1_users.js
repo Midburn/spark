@@ -1,16 +1,9 @@
 const User = require('../models/user').User,
 log = require('../libs/logger')(module),
-users = require('./dev/users')
 
-exports.seed = function(knex, Promise) {
+addUsersToDb = (users) => {
   log.info('Creating users...');
-
-  let userPromises = [];
-  users.forEach((user) => {
-    userPromises.push(createUser(user));
-  });
-
-  return Promise.all(userPromises)
+  return Promise.all(users.map(createUser))
   .catch((error) => {
     log.error('Spark encountered an error while seeding users:');
     log.error(error);
@@ -23,5 +16,8 @@ exports.seed = function(knex, Promise) {
 const createUser = (user) => {
   let newUser = new User(user);
   newUser.generateHash(user.password);
-  return newUser.save();
+  // Force insert (with PK)
+  return newUser.save(null, {method: 'insert'});
 };
+
+module.exports = addUsersToDb;

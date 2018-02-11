@@ -58,11 +58,11 @@ table.table.table-striped.table-hover
                     button.btn.btn-xs 
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.remove')
-                a.cursor-p(ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="member.pre_sale_ticket_approved === false") &nbsp;
+                a.cursor-p(ng-show='allocationPeriodisAvtive' ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="member.pre_sale_ticket_approved === false") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-ok' )
                         =t('camps:members.pre_sale_ticket_approved')
-                a.cursor-p(ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)' ng-if="member.pre_sale_ticket_approved === true") &nbsp;
+                a.cursor-p(ng-show='allocationPeriodisAvtive' ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)' ng-if="member.pre_sale_ticket_approved === true") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove' )
                         =t('camps:members.pre_sale_ticket_remove')

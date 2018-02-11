@@ -164,18 +164,27 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 
                 };
 
-                //select the addinfo_json column from the camp member table
-                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('user_id','addinfo_json')
+                // select the addinfo_json column from the camp member table
+                knex(constants.CAMP_MEMBERS_TABLE_NAME)
+                .select('user_id', `${constants.CAMP_MEMBERS_TABLE_NAME}.addinfo_json`, `${constants.EVENTS_TABLE_NAME}.addinfo_json as eventInfo`)
+                .rightJoin(constants.EVENTS_TABLE_NAME,`${constants.EVENTS_TABLE_NAME}.event_id`,`${constants.EVENTS_TABLE_NAME}.event_id`)
                 .where({
+                    event_id: current_event_id,
                     camp_id : userData.camp_id,
                     user_id : userData.user_id
                 })
                 .then(resp => {
-
+                    // checking that update of the pre sale ticket allocation is inside the valid time period
+                    const eventInfo = JSON.parse(resp[0].eventInfo)
+                    const allocationDates = {
+                        start : new Date(eventInfo.appreciation_tickets_allocation_start),
+                        end : new Date(eventInfo.appreciation_tickets_allocation_end)
+                    }
+                    
                     let jsonInfo;
                     try {
                         //pass the response to the process method
-                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin);
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
                     } catch (err) {
                         res.status(500);
                         throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -228,8 +237,8 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 here we pass the query info from the SQL
 and check the json info, the method will throw and error if failed
 */
-function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
-
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
+    
     var userData = info;
 
     var jsonInfo;
@@ -237,17 +246,12 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
+        const {start, end} = allocationDates;
+        const now = new Date();
+        const isValidAllocationDate = start < now && now < end;
         //check if the time of the pre sale is on
-        //checking using the time constants for now
-        //unless user is admin
-        //TODO once the event table will be updated with presale ticket time, this needs to be replace
-        if (isAdmin === false) {
-            var currentTime = new Date();
-            var start=new Date(constants.PRESALE_TICKETS_START_DATE);
-            var end=new Date(constants.PRESALE_TICKETS_END_DATE);
-            if (currentTime.getTime() < start.getTime() || currentTime.getTime() > end.getTime()) {
+        if (isAdmin === false && !isValidAllocationDate) {
                 throw new Error("PreSale Tickes selection is currently closed");
-            }
         }
         //if the user is not approved yet in the
         //reject the reuest
@@ -270,7 +274,7 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
                 jsonInfo.pre_sale_ticket = "true";
             }
         }
-
+        
         //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
         if (jsonInfo.pre_sale_ticket === "true") {
             //first count how many pre sale tickets are assinged to the camp members
@@ -1408,6 +1412,7 @@ module.exports = (app, passport) => {
 
     // Delete, make camp inactive
     app.post('/camps/:id/updatePreSaleQuota', userRole.isAdmin(), (req, res) => {
+        //should we implement dates controll here as well (as long as it is admin only)???
         Camp.forge({ id: req.params.id })
             .fetch().then((camp) => {
                 var quota = req.body.quota;
@@ -1421,7 +1426,7 @@ module.exports = (app, passport) => {
                 }
 
                 camp.save({ pre_sale_tickets_quota: quota }).then(() => {
-                    res.status(200).end()
+                    res.sendStatus(200);
                 }).catch((err) => {
                     res.status(500).json({
                         error: true,
