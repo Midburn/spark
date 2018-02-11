@@ -41,7 +41,7 @@ app.get('/foo/bar', function(req, res) {
 
 
 
-### Using roles from Jade templates
+### Using roles from Pug templates
 
 ```
 if userIs('logged in')
