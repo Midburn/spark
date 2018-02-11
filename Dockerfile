@@ -7,7 +7,6 @@ RUN chown -R spark /home/spark/
 USER spark
 RUN cd /home/spark && yarn install --ignore-scripts --pure-lockfile
 RUN cd /home/spark && npm rebuild node-sass --force
-RUN cd /home/spark && yarn
 
 USER root
 COPY . /home/spark
