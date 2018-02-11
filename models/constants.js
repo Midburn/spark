@@ -146,6 +146,7 @@ module.exports = {
     TICKETS_TABLE_NAME: 'tickets',
     CAMP_FILES_TABLE_NAME: 'camps_files',
     SUPPLIERS_TABLE_NAME: 'suppliers',
+    SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
 
     prototype_camps: prototype_camps,
 
