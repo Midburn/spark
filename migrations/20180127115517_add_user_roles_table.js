@@ -2,7 +2,7 @@ const constants = require('../models/constants');
 
 exports.up = function(knex, Promise) {
     return Promise.all([
-        knex.schema.createTable(constants.USER_ROLES, (table) => {
+        knex.schema.createTable(constants.USER_ROLES_TABLE_NAME, (table) => {
             table.integer('camp_id').unsigned();
             table.integer('user_id').unsigned();
             table.string('event_id',32);
