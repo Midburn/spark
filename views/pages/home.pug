@@ -13,7 +13,7 @@ block content
             ul.dropdown-menu(data-toggle="dropdown")
                 each val in events
                     li
-                        a(ng-click="angular_ChangeCurrentEventId('#{val.event_id}')") #{val.event_id}
+                        a(ng-click=`angular_ChangeCurrentEventId('${val.event_id}')`) #{val.event_id}
 
 
         table.table.table-striped.table-hover

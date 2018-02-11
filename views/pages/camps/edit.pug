@@ -44,14 +44,14 @@ block content
                         .details-he.col-md-6
                             .col-xs-12
                                 label(for='camp_name_he')=t('camps:edit.name_he')
-                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
+                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : camp.camp_name_he))
                             .col-xs-12
                                 label(for='camp_desc_he')=t('camps:edit.desc_he')
-                                textarea.form-control(id='camp_desc_he', dir='rtl', name='camp_desc_he') #{camp.camp_desc_he}
+                                textarea.form-control(id='camp_desc_he', dir='rtl', name='camp_desc_he') camp.camp_desc_he
                         .details-en.col-md-6
                             .col-xs-12
                                 label(for='camp_name_en')=t('camps:edit.name_en')
-                                input.form-control(id='camp_name_en', dir='ltr', name='camp_name_en', value=(isNew ? '#{camp_name_en}' : '#{camp.camp_name_en}'), readonly, autofocus)
+                                input.form-control(id='camp_name_en', dir='ltr', name='camp_name_en', value=(isNew ? camp_name_en : camp.camp_name_en), readonly, autofocus)
                             .col-xs-12
                                 label(for='camp_desc_en')=t('camps:edit.desc_en')
                                 textarea.form-control(id='camp_desc_en', dir='ltr', name='camp_desc_en') #{camp.camp_desc_en}
@@ -70,21 +70,21 @@ block content
                                     .col-md-8
                                         .col-xs-12
                                             label(for='camp_facebook_page_url')=t('camps:new.facebook_page_url')
-                                            input.form-control(id='camp_facebook_page_url', name='facebook_page_url', value=(isNew ? '' : '#{camp.facebook_page_url}'))
+                                            input.form-control(id='camp_facebook_page_url', name='facebook_page_url', value=(isNew ? '' : camp.facebook_page_url))
 
                                 .row
                                     .col-md-4
                                         .col-xs-12
                                             label(for='camp_contact_person_name')=t('camps:edit.contact_person_name')
-                                            input.form-control(id='camp_contact_person_name', name='contact_person_name', value=(isNew ? '' : '#{camp.contact_person_name}'))
+                                            input.form-control(id='camp_contact_person_name', name='contact_person_name', value=(isNew ? '' : camp.contact_person_name))
                                     .col-md-4
                                         .col-xs-12
                                             label(for='camp_contact_person_email')=t('camps:edit.contact_person_email')
-                                            input.form-control(id='camp_contact_person_email', name='contact_person_email', value=(isNew ? '' : '#{camp.contact_person_email}'))
+                                            input.form-control(id='camp_contact_person_email', name='contact_person_email', value=(isNew ? '' : camp.contact_person_email))
                                     .col-md-4
                                         .col-xs-12
                                             label(for='camp_contact_person_phone')=t('camps:edit.contact_person_phone')
-                                            input.form-control(id='camp_contact_person_phone', name='contact_person_phone', value=(isNew ? '' : '#{camp.contact_person_phone}'))
+                                            input.form-control(id='camp_contact_person_phone', name='contact_person_phone', value=(isNew ? '' : camp.contact_person_phone))
                                 .row
                                     .col-md-4
                                         .col-xs-12
@@ -144,15 +144,15 @@ block content
                                     .col-md-4
                                         .col-xs-12
                                             label(for='camp_location_street')=t('camps:edit.location_street')
-                                            input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : (details.camp_location_street===null?'':'#{details.camp_location_street}')),readonly=(!isAdmin?'true':undefined))
+                                            input.form-control(id='camp_location_street', name='camp_location_street', value=(isNew ? '' : (details.camp_location_street===null?'':details.camp_location_street)),readonly=(!isAdmin?'true':undefined))
                                     .col-md-4
                                         .col-xs-12
                                             label(for='camp_location_street_time')=t('camps:edit.location_time')
-                                            input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : (details.camp_location_street_time===null?'':'#{details.camp_location_street_time}')),readonly=(!user.isAdmin?'true':undefined))
+                                            input.form-control(id='camp_location_street_time', name='public_camp_location_street_time', value=(isNew ? '' : (details.camp_location_street_time===null?'':details.camp_location_street_time)),readonly=(!user.isAdmin?'true':undefined))
                                     .col-md-4
                                         .col-xs-12
                                             label(for='camp_location_area')=t('camps:edit.location_area')
-                                            input.form-control(id='camp_location_area', name='public_camp_location_area', value=(isNew ? '' : (details.camp_location_area === null ? '' : '#{details.camp_location_area}')),readonly=(!isAdmin ? 'true' : undefined))
+                                            input.form-control(id='camp_location_area', name='public_camp_location_area', value=(isNew ? '' : (details.camp_location_area === null ? '' : details.camp_location_area)),readonly=(!isAdmin ? 'true' : undefined))
                                     //- .col-md-4
                                     //-     .col-xs-12
                                     //-         label(for='camp_location_area')=t('camps:edit.location_area')
@@ -160,11 +160,11 @@ block content
                                 .col-md-4
                                     .col-xs-12
                                         label(for='entrance_quota')=t('camps:edit.early_arrival_quota')
-                                        input.form-control(id='entrance_quota', name='entrance_quota', value=(isNew ? 0 : (camp.entrance_quota === null ? '' : '#{camp.entrance_quota}')),readonly=(!isAdmin ? 'true' : undefined))
+                                        input.form-control(id='entrance_quota', name='entrance_quota', value=(isNew ? 0 : (camp.entrance_quota === null ? '' : camp.entrance_quota)),readonly=(!isAdmin ? 'true' : undefined))
                                 .col-md-4
                                     .col-xs-12
                                         label(for='pre_sale_tickets_quota')=t('camps:stats.pre_sale_tickets_quota')
-                                        input.form-control(id='pre_sale_tickets_quota', name='pre_sale_tickets_quota', value=(isNew ? 0 : (camp.pre_sale_tickets_quota === null ? 0 : '#{camp.pre_sale_tickets_quota}')),readonly=(!isAdmin ? 'true' : undefined))
+                                        input.form-control(id='pre_sale_tickets_quota', name='pre_sale_tickets_quota', value=(isNew ? 0 : (camp.pre_sale_tickets_quota === null ? 0 : camp.pre_sale_tickets_quota)),readonly=(!isAdmin ? 'true' : undefined))
 
             //- Card 2
             .card.card-second.card-hide
@@ -267,10 +267,10 @@ block content
             //- Card 3 - Manage Members
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
-                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}")
+                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder=t('camps:edit.add_member_placeholder'))
                     button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
                 .form-group
-                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
+                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder=t('camps:edit.search_member'), name="camps_members_search_member" autofocus)
                 .row
                     .col-xs-12
                     include partials/members_table
