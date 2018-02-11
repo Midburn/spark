@@ -60,6 +60,5 @@
                     .modal-footer
                     a(href='./')
                     button.Btn.Btn__transparent(id='create_camp_close_btn', type='button' ng-click="closeForm()")=t(`${t_prefix}new.close`)
-                    button.Btn.Btn__green(ng-disabled='eventForm.$valid' ng-hide='isNew' id='event_create_save_modal_request', type='button', ng-click="updateEvent()")=t(`${t_prefix}edit.send_request`)
-                    button.Btn.Btn__green(ng-disabled='eventForm.$valid' ng-show='isNew' id='event_create_save_modal_request', ng-click="createEvent()")=t(`${t_prefix}new.send_request`)
-                    button(ng-disabled='eventForm.$valid' id='event_create_save_modal_request')=t(`${t_prefix}new.send_request`)
+                    button.Btn.Btn__green(ng-disabled='!eventForm.$valid' ng-hide='isNew' id='event_create_save_modal_request', type='button', ng-click="updateEvent()")=t(`${t_prefix}edit.send_request`)
+                    button.Btn.Btn__green(ng-disabled='!eventForm.$valid' ng-show='isNew' id='event_create_save_modal_request', ng-click="createEvent()")=t(`${t_prefix}new.send_request`)
