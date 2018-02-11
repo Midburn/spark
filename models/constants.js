@@ -145,6 +145,7 @@ module.exports = {
     DRUPAL_USERS_TABLE_NAME: 'drupal_users',
     TICKETS_TABLE_NAME: 'tickets',
     CAMP_FILES_TABLE_NAME: 'camps_files',
+    SUPPLIERS_TABLE_NAME: 'suppliers',
 
     prototype_camps: prototype_camps,
 
@@ -204,5 +205,7 @@ module.exports = {
     // and are redirected to the senders desired location, e.g. can be used for phishing.
     // If we redirect to a new URL from login, we will need to add it here.
     LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
+
+    SUPPLIER_CATEGORIES: ['food', 'water', 'shade', 'carriage', 'other'],
 
 };
