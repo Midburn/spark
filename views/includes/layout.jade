@@ -17,6 +17,8 @@ head
         link(rel='stylesheet', href='/node_modules/selectize.js/dist/css/selectize.default.css')
         link(rel="stylesheet", href="/stylesheets/main.scss" )
 
+body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
+    block wrapper
     //-     Scripts     -//
     script(src='/node_modules/jquery/dist/jquery.min.js')
     script(src="/node_modules/bootstrap/dist/js/bootstrap.min.js")
@@ -43,6 +45,4 @@ head
     script(src="/scripts/controllers/camp_join.js")
     script(src="/scripts/events.js")
 
-    block wrapper
     block scripts
-body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
