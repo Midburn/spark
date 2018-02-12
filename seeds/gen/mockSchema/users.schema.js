@@ -6,7 +6,7 @@ const USER_MOCK_SCHEMA = {
     NAME: 'user',
     STRUCTURE: {
         user_id: {
-            incrementalId: 0
+            incrementalId: 1
         },
         created_at : {
             faker: 'date.past'
