@@ -9,7 +9,6 @@ env:
   - ""
 cache:
   directories:
-    - bower_components
 install:
   - if [ -z "${DEPLOY_ENVIRONMENT}" ]; then yarn install --dev --pure-lockfile; fi
 before_script:

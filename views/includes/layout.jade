@@ -2,59 +2,47 @@ doctype html
 head
     title Spark by Midburn
     meta( charset='utf-8' )
-    meta( http-equiv='X-UA-Compatible', content='IE=edge' )
+    meta( http-equiv='X-UA-Compatible' )
     meta( name='viewport', content='width=device-width, initial-scale=1.0' )
     meta( name='description', content='Spark by Midburn' )
-    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
-    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7",
-    crossorigin="anonymous", rel="stylesheet")
-    link( rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css",
-    integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r",
-    crossorigin="anonymous" )
 
+    //-     Styles      -//
+    block styles
+        link(rel="stylesheet", href="/node_modules/bootstrap/dist/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css")
+        if (language === 'he')
+            link(rel="stylesheet", href="/node_modules/bootstrap-rtl/dist/css/bootstrap-rtl.css")
+        link(rel='stylesheet', href='/node_modules/font-awesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/node_modules/ui-select/dist/select.min.css')
+        link(rel='stylesheet', href='/node_modules/selectize.js/dist/css/selectize.default.css')
+        link(rel="stylesheet", href="/stylesheets/main.scss" )
+
+    //-     Scripts     -//
+    script(src='/node_modules/jquery/dist/jquery.min.js')
+    script(src="/node_modules/bootstrap/dist/js/bootstrap.min.js")
+    script(src='/node_modules/bootstrap-validator/dist/validator.min.js')
+    script(src='/node_modules/bootstrap-table/dist/bootstrap-table.min.js')
     if (language === 'he')
-        link( rel="stylesheet" href="https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css")
-
-    link( rel="stylesheet", href="/stylesheets/main.scss" )
-    // Font-awesome
-    link(href='/bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css', rel='stylesheet')
-    // SweetAlert
-    link(rel='stylesheet', type='text/css', href='/bower_components/sweetalert/dist/sweetalert.css')
-    // ng-ui-select
-    link(rel='stylesheet', type='text/css', href='/bower_components/angular-ui-select/dist/select.min.css')
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css')
-
-body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
-    block wrapper
-    //- Scripts
-    script(src='/bower_components/gentelella/vendors/jquery/dist/jquery.min.js' )
-    script(src="/bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js",
-    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS",
-    crossorigin="anonymous" )
-    script(async src='https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js' )
-    script(async src='/bower_components/bootstrap-table/dist/bootstrap-table.min.js')
-    if (language === 'he')
-        script(async src='/bower_components/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
+        script(src='/node_modules/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
 
     // External packages
-    script(async src="https://www.google.com/recaptcha/api.js?hl=#{language}")
-    script(src='/bower_components/sweetalert/dist/sweetalert.min.js')
-    script(src='/bower_components/js-cookie/src/js.cookie.js')
-
+    script(src='/node_modules/sweetalert/dist/sweetalert.min.js')
 
     // Angular dependencies
-    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js")
-    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js")
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js')
-    script(src="/bower_components/angular-ui-select/dist/select.min.js")
+    script(src="/node_modules/angular/angular.min.js")
+    script(src="/node_modules/angular-animate/angular-animate.min.js")
+    script(src="/node_modules/angular-sanitize/angular-sanitize.min.js")
+    script(src="/node_modules/ui-select/dist/select.min.js")
 
     // Spark scripts
-    script(src="/scripts/camps.js")
-    script(src="/scripts/events.js")
-    script(src="/scripts/cards.js")
     script(src="/scripts/ng_app.js")
+    script(src="/scripts/cards.js")
+    script(src="/scripts/camps.js")
     script(src="/scripts/controllers/camp_manage.js")
     script(src="/scripts/controllers/camp_edit.js")
     script(src="/scripts/controllers/camp_join.js")
+    script(src="/scripts/events.js")
 
+    block wrapper
     block scripts
+body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
