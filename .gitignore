@@ -78,5 +78,14 @@ deployment.key
 # Theme camps
 public/scripts/camps_bundle.js
 
+bin/
+libs/
+scripts/
+vagrant/
+entrypoint.sh
 run_docker_ops.sh
 secret*
+.codeship/
+.travis/
+
+
