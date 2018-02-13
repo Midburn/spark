@@ -1,3 +1,4 @@
+
 # IntelliJ IDEA files
 .idea
 .idea/dataSources.local.xml
@@ -78,3 +79,5 @@ deployment.key
 # Theme camps
 public/scripts/camps_bundle.js
 
+run_docker_ops.sh
+secret*
