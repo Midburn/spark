@@ -39,3 +39,7 @@ where email in (select camp_leader_email from camps_2018)
 insert into camp_members (camp_id, user_id, status)
 select id, main_contact, 'approved_mgr' from camps where event_id='MIDBURN2018'
 ```
+* update all contact person ids to the leader user id
+```
+update camps set contact_person_id=main_contact, moop_contact=main_contact, safety_contact=main_contact where event_id='MIDBURN2018';
+```
