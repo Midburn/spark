@@ -43,3 +43,7 @@ select id, main_contact, 'approved_mgr' from camps where event_id='MIDBURN2018'
 ```
 update camps set contact_person_id=main_contact, moop_contact=main_contact, safety_contact=main_contact where event_id='MIDBURN2018';
 ```
+* update all camp status to open (if status field is null it causes problems in spark)
+```
+update camps set status='open' where event_id='MIDBURN2018';
+```
