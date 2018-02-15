@@ -49,7 +49,12 @@ var User = bookshelf.Model.extend({
       //  let roles = await this.roles().fetch();
        // console.log(roles);
        
-        return common.__hasRole(role, this.attributes.roles);
+        return common.__hasRole(role,this.currentEventId, this.related('allRoles').models.map(x => {
+            return {
+                community_id : x.attributes.camp_id, 
+                event_id : x.attributes.event_id, 
+                role: x.attributes.role
+            }}));
     },
 
     /////////////////////////// GROUPS ///////////////////////////
@@ -222,7 +227,7 @@ var User = bookshelf.Model.extend({
         isCampsAdmin: function () {
             return this.hasRole(userRole.THEME_CAMPS_ADMIN);
         },
-        isArtInstallationsAdmin: function (artInstId) {
+        isArtInstallationsAdmin: function () {
             return this.hasRole(userRole.ART_INSTALLATION_ADMIN);
         },
         isProdDepsAdmin: function (depId) {

@@ -1,6 +1,6 @@
 var functions = {
-    __hasRole: function (role, roles) {
-        return (roles && roles.split(',').indexOf(role) > -1);
+    __hasRole: function (role, currentEvent, roles) {
+        return roles.find(x => x.event_id === currentEvent && x.role === role);
     },
     __updateUserRec: function (user) {
         if (!user.name && (user.first_name || user.last_name)) {
