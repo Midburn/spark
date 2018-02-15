@@ -22,7 +22,7 @@ const generate = async (scale) => {
     return new Promise((resolve, reject) => {
         // TODO - Currently only create single event - need to think about increment with `MIDBURN` text.
         mocker
-            .schema(EVENT_MOCK_SCHEMA.NAME, EVENT_MOCK_SCHEMA.STRUCTURE, 1)
+            .schema(EVENT_MOCK_SCHEMA.NAME, EVENT_MOCK_SCHEMA.STRUCTURE, scale * 2)
             .schema(USER_MOCK_SCHEMA.NAME, USER_MOCK_SCHEMA.STRUCTURE, campCount * 25)
             .schema(CAMP_MOCK_SCHEMA.NAME, CAMP_MOCK_SCHEMA.STRUCTURE, campCount)
             .build((err, data) => {

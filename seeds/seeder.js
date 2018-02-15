@@ -14,6 +14,9 @@ const replaceStatic = process.argv.includes('replace');
 const nosave = process.argv.includes('nosave');
 const keepdb = process.argv.includes('keepdb');
 const scale = Number(process.argv.pop());
+const ADMIN = require('./static/admin').BASE_ADMIN,
+    CAMP = require('./static/admin').BASE_CAMP,
+    EVENT = require('./static/admin').BASE_EVENT;
 
 if (random) {
     log.info('Generating random data...');
@@ -32,6 +35,19 @@ if (nosave) {
 if (scale > 40) {
     log.info('Chosen scale to big... try a smaller one');
 }
+
+const correlateData = (users, camps)=> {
+    const campMembers = [];
+    for (const camp of camps) {
+        const campAdmin = users.find(user => user.user_id === camp.contact_person_id);
+        if (campAdmin) {
+            campAdmin.camp_id = camp.camp_id;
+            campMembers.push({camp_id: camp.camp_id, user_id: campAdmin.user_id});
+        }
+    }
+    return campMembers;
+};
+
 const seed = async (scale = 1) => {
     try {
         if (!keepdb) {
@@ -51,21 +67,25 @@ const seed = async (scale = 1) => {
         const users = mockData[MOCK_USERS_SCHEMA.NAME];
         const events = mockData[MOCK_EVENTS_SCHEMA.NAME];
         const camps = mockData[MOCK_CAMPS_SCHEMA.NAME];
-        if (!nosave) {
-            await addUsersToDb(users);
-            await addEventsToDb(events);
-            await addCampsToDb(camps);
-        }
+        // Create link between camps and users
+        const campMembers = correlateData(users, camps);
         if (replaceStatic) {
             utils.saveFile(MOCK_USERS_SCHEMA.NAME, users);
             utils.saveFile(MOCK_EVENTS_SCHEMA.NAME, events);
             utils.saveFile(MOCK_CAMPS_SCHEMA.NAME, camps);
+        }
+        if (!nosave) {
+            await addUsersToDb(users);
+            await addEventsToDb(events);
+            await addCampsToDb(camps);
+            await addCampMembers(campMembers);
         }
         log.info(`Seeding process done, seeded ${users.length} users, ${camps.length} camps and ${events.length} events`);
         process.exit(0);
         return mockData;
     } catch (err) {
         log.error(`An error occurred while seeding project - ${err}`);
+        process.exit(-1);
     }
 
 };

@@ -8,7 +8,7 @@ const CAMP_MOCK_SCHEMA = {
     NAME: 'camp',
     STRUCTURE: {
         id: {
-            incrementalId: 0
+            incrementalId: 2
         },
         created_at: {
             faker: 'date.past'
