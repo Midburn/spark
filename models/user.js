@@ -9,7 +9,7 @@ var knex = require('../libs/db').knex;
 var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
 var userRole = require('../libs/user_role');
-
+const Roles = require('./roles').Roles;
 /////////////////////////////////////////////////////////////
 /////////////////////////// USER  ///////////////////////////
 /////////////////////////////////////////////////////////////
@@ -46,6 +46,9 @@ var User = bookshelf.Model.extend({
         return this.attributes.password && bcrypt.compareSync(password, this.attributes.password);
     },
     hasRole: function (role) {
+      //  let roles = await this.roles().fetch();
+       // console.log(roles);
+       
         return common.__hasRole(role, this.attributes.roles);
     },
 
@@ -53,6 +56,10 @@ var User = bookshelf.Model.extend({
 
     groups: function () {
         return this.belongsToMany(UsersGroup, 'users_groups_membership', 'user_id', 'group_id', 'user_id', 'group_id');
+    },
+
+    allRoles: function() {
+        return this.hasMany(Roles, 'user_id');
     },
 
     groupsMembership: function () {
@@ -209,16 +216,16 @@ var User = bookshelf.Model.extend({
             return this.hasRole(userRole.ADMIN);
         },
 
-        isCampManager: function () {
+        isCampManager: function (campId) {
             return this.hasRole(userRole.CAMP_MANAGER);
         },
         isCampsAdmin: function () {
             return this.hasRole(userRole.THEME_CAMPS_ADMIN);
         },
-        isArtInstallationsAdmin: function () {
+        isArtInstallationsAdmin: function (artInstId) {
             return this.hasRole(userRole.ART_INSTALLATION_ADMIN);
         },
-        isProdDepsAdmin: function () {
+        isProdDepsAdmin: function (depId) {
             return this.hasRole(userRole.PROD_DEP_ADMIN);
         },
         isCampFree: function () {
