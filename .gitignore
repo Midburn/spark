@@ -80,3 +80,16 @@ public/scripts/camps_bundle.js
 
 run_docker_ops.sh
 secret*
+
+.codeship/setup.sh
+.codeship/test.sh
+.travis/continuous_deployment.sh
+bin/continuous_deployment.sh
+bin/import_camps_data.js
+entrypoint.sh
+libs/drupal_7_pw.py
+package-lock.json
+package.json
+scripts/run_migrations_and_start.sh
+scripts/wait-for-it.sh
+vagrant/provision.sh
