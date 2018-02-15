@@ -5,5 +5,4 @@ mysql/data/**
 docs
 vagrant
 node_modules
-bower_components
 .env

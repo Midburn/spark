@@ -51,10 +51,10 @@ curl -o- -L https://yarnpkg.com/install.sh | bash
 ### Installing dependencies
 
 ```shell
-yarn install
+yarn 
 ```
-
-(If you have problems, make sure you delete the `node_moduels` and `bower_components` directories first)
+this will install client dependencies as well.
+(If you have problems, make sure you delete the `node_moduels` directories first)
 
 ### Setting up the database
 
@@ -62,6 +62,15 @@ Hint: it can be much easier to use the docker-compose environment to get a DB pr
 
 Local development environment uses MySQL by default.
 
+try 
+```shell
+npm run newDevDB
+```
+which should create the DB, create a spark user, migrate to latest, and run initial seed.
+if you have a password on you'r MySQL root user, than go to package.json "createdb" and add "-p" after root. this is promet you to enter password (please remove the "-p" before pushing to git)
+
+
+it the above doesn't work, trying follwing these step-by-step guide:
 Create the spark MySQL DB
 ```shell
 npm run-script createdb
@@ -95,9 +104,16 @@ See [/docs/database.md](/docs/development/database.md) for more details about ou
 Fire up the server after installation, with `nodemon` to monitor changes and re-run the server:
 
 ```shell
-yarn run nodemon server.js
+yarn run nodemon
 ```
-and navigate to [http://localhost:3000](http://localhost:3000).
+or node server.js - no auto refresh.
+
+And then,
+Fire up the browser after installation, with `browser-snyc` to refresh on changes (at 'public' 'view' 'locals' folders):
+```shell
+yarn run hot 
+```
+or navigate to [http://localhost:3000](http://localhost:3000) - no auto refresh.
 
 **Note** nodemon should take care of refreshing the server when you make changes.
 
