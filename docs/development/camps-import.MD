@@ -15,7 +15,9 @@ The input data is an excel or google sheet with the following columns:
 
 * login to adminer, create a new table for this event's camps data
   * **set collation to UTF-8**
-* using adminer UI - import the camp data as CSV
+* using adminer UI - import the camp data as CSV (or export from existing DB which has the data)
+* remove leading/trailing whitespaces which might interefere with relation to users table
+  * `update camps_2018 set camp_leader_email=trim(camp_leader_email)`
 * Insert users for camp leaders which don't already have a spark user:
 ```
 insert into users (name, email, roles) 
