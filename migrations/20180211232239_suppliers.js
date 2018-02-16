@@ -13,8 +13,7 @@ exports.up = function(knex, Promise) {
             table.string('main_contact_name', 50);
             table.string('main_contact_position', 50);
             table.integer('main_contact_phone_number').unsigned();
-            table.string('courier_contact_name', 50);
-            table.integer('courier_contact_phone_number').unsigned();
+
             table.enu('supplier_category', constants.SUPPLIER_CATEGORIES);
 
             table.text('supplier_website_link', 'mediumtext');
@@ -27,6 +26,8 @@ exports.up = function(knex, Promise) {
             table.integer('supplier_id', 9).unsigned();
             table.integer('camp_id').unsigned();
             table.string('event_id',15)
+            table.string('courier_contact_name', 50);
+            table.integer('courier_contact_phone_number').unsigned();
 
             table.foreign('supplier_id').references('supplier_id').inTable(constants.SUPPLIERS_TABLE_NAME);
             table.foreign('camp_id').references('id').inTable(constants.CAMPS_TABLE_NAME);
