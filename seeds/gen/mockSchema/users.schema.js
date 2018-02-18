@@ -1,12 +1,20 @@
+const User = require('../../../models/user').User;
 /*
 See https://github.com/danibram/mocker-data-generator for data-types and usage.
  */
 const USER_MOCK_SCHEMA = {
     PK: 'user_id',
     NAME: 'user',
+    MODEL: User,
     STRUCTURE: {
+        id: {
+            virtual: true,
+            incrementalId: 1
+        },
         user_id: {
-            incrementalId: 2
+            function: function () {
+                return this.object.id;
+            }
         },
         created_at : {
             faker: 'date.past'
@@ -19,7 +27,12 @@ const USER_MOCK_SCHEMA = {
         //     faker:
         // },
         email : {
-            faker: 'internet.email'
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'a'
+                }
+                return this.faker.internet.email();
+            }
         },
         password : {
             static: 'a'
@@ -28,16 +41,40 @@ const USER_MOCK_SCHEMA = {
             faker: 'random.boolean'
         },
         validated : {
-            faker: 'random.boolean'
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return true;
+                }
+                return this.faker.random.boolean();
+            }
+        },
+        random_role : {
+            values: ['admin', 'camp_manager', ''],
+            virtual: true
         },
         roles : {
-            values: ['admin', 'camp_manager', '']
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'admin';
+                }
+                return this.object.random_role;
+            }
         },
         first_name : {
-            faker: 'name.firstName'
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'Admin';
+                }
+                return this.faker.name.firstName();
+            }
         },
         last_name : {
-            faker: 'name.lastName'
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'McAdmin';
+                }
+                return this.faker.name.lastName();
+            }
         },
         gender : {
             values: ['male', 'female', 'other']

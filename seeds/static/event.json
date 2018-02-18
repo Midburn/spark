@@ -1,8 +1,38 @@
 [
     {
+        "event_id": "MIDBURN2017",
+        "name": "Midbrun 2017 מידברן",
+        "gate_code": 4180,
+        "gate_status": "regular"
+    },
+    {
         "event_id": "MIDBURN2018",
         "name": "Midbrun 2018 מידברן",
-        "gate_code": 44075,
+        "gate_code": 42675,
+        "gate_status": "regular"
+    },
+    {
+        "event_id": "MIDBURN2019",
+        "name": "Midbrun 2019 מידברן",
+        "gate_code": 83693,
+        "gate_status": "regular"
+    },
+    {
+        "event_id": "MIDBURN2020",
+        "name": "Midbrun 2020 מידברן",
+        "gate_code": 71528,
+        "gate_status": "regular"
+    },
+    {
+        "event_id": "MIDBURN2021",
+        "name": "Midbrun 2021 מידברן",
+        "gate_code": 23629,
+        "gate_status": "regular"
+    },
+    {
+        "event_id": "MIDBURN2022",
+        "name": "Midbrun 2022 מידברן",
+        "gate_code": 60988,
         "gate_status": "regular"
     }
 ]
