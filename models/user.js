@@ -49,12 +49,13 @@ var User = bookshelf.Model.extend({
       //  let roles = await this.roles().fetch();
        // console.log(roles);
        
-        return common.__hasRole(role,this.currentEventId, this.related('allRoles').models.map(x => {
+        let hasRole = common.__hasRole(role,this.currentEventId, this.related('allRoles').models.map(x => {
             return {
                 community_id : x.attributes.camp_id, 
                 event_id : x.attributes.event_id, 
                 role: x.attributes.role
             }}));
+        return hasRole && hasRole.length > 0;
     },
 
     /////////////////////////// GROUPS ///////////////////////////
@@ -169,7 +170,7 @@ var User = bookshelf.Model.extend({
                     if (['open', 'closed'].indexOf(camps[i].status) > -1 && !first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if ((['open', 'closed'].indexOf(camps[i].status) > -1 || !group_props.require_group_status_open_closed) && (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
+                    if ((['open', 'closed'].indexOf(camps[i].status) > -1 || !group_props.require_group_status_open_closed) && (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.currentEventId, this.related('allRoles').models))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr'))) {
                         first_camp = camps[i];
@@ -230,7 +231,7 @@ var User = bookshelf.Model.extend({
         isArtInstallationsAdmin: function () {
             return this.hasRole(userRole.ART_INSTALLATION_ADMIN);
         },
-        isProdDepsAdmin: function (depId) {
+        isProdDepsAdmin: function () {
             return this.hasRole(userRole.PROD_DEP_ADMIN);
         },
         isCampFree: function () {
