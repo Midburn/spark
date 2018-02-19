@@ -1,6 +1,6 @@
 const log = require('../libs/logger')(module);
 
-exports.seed = async function(knex, Promise) {
+const dropDbs = async function(knex) {
     try {
         await knex('camps').del();
         await knex('users').del();
@@ -10,3 +10,5 @@ exports.seed = async function(knex, Promise) {
         log.error(error);
     }
 };
+
+module.exports = dropDbs;
