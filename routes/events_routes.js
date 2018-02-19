@@ -7,8 +7,21 @@ module.exports = function (app, passport) {
         // res.send('Events Index')
         res.render('pages/events/index', {
             t_prefix: 'events:',
-            event: {},
         })
+    });
+
+    app.get("/:lng/events-admin/new", userRole.isAdmin(), (req, res) => {
+        const data = {
+            t_prefix: "events:",
+            event: {
+                addinfo_json : {
+                    created_at : new Date()
+                },
+
+            },
+            isNew: true
+        };
+        res.render("pages/events/edit", data);
     });
 
     // Read
@@ -20,7 +33,7 @@ module.exports = function (app, passport) {
                 event.addinfo_json = event.addinfo_json ? JSON.parse(event.addinfo_json) : {};
                 const data = {
                     t_prefix: 'events:',
-                    'event': event,
+                    event: event,
                 }
                 res.render('pages/events/edit', data);
             })

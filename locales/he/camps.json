@@ -363,10 +363,10 @@
         },
         "members": {
             "actions": "פעולות",
-         "search": "חפש חבר במחלקה",
-        "remove_manager": "בטל כמנהל מחלקה",
-        "choose_camp": "בחר או חפש מחנה"
-       },
+            "search": "חפש חבר במחלקה",
+            "remove_manager": "בטל כמנהל מחלקה",
+            "choose_camp": "בחר או חפש מחנה"
+        },
         "edit": {
             "view": "צפה במחלקת הפקה",
             "name_and_desc": "שם מחלקה ותיאור",
