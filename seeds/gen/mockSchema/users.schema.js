@@ -22,14 +22,16 @@ const USER_MOCK_SCHEMA = {
         updated_at : {
             faker: 'date.past'
         },
-        // Leave name as null for now
-        // name : {
-        //     faker:
-        // },
         email : {
             function: function() {
                 if (this.object.user_id === 1) {
                     return 'a'
+                }
+                if (this.object.user_id === 2) {
+                    return 'b'
+                }
+                if (this.object.user_id === 3) {
+                    return 'c'
                 }
                 return this.faker.internet.email();
             }
@@ -38,11 +40,20 @@ const USER_MOCK_SCHEMA = {
             static: 'a'
         },
         enabled : {
-            faker: 'random.boolean'
+            function: function() {
+                if (this.object.user_id === 1 ||
+                    this.object.user_id === 2 ||
+                    this.object.user_id === 3) {
+                    return true;
+                }
+                return this.faker.random.boolean();
+            }
         },
         validated : {
             function: function() {
-                if (this.object.user_id === 1) {
+                if (this.object.user_id === 1 ||
+                    this.object.user_id === 2 ||
+                    this.object.user_id === 3) {
                     return true;
                 }
                 return this.faker.random.boolean();
@@ -57,6 +68,12 @@ const USER_MOCK_SCHEMA = {
                 if (this.object.user_id === 1) {
                     return 'admin';
                 }
+                if (this.object.user_id === 2) {
+                    return 'camp_manager';
+                }
+                if (this.object.user_id === 3) {
+                    return '';
+                }
                 return this.object.random_role;
             }
         },
@@ -64,6 +81,12 @@ const USER_MOCK_SCHEMA = {
             function: function() {
                 if (this.object.user_id === 1) {
                     return 'Admin';
+                }
+                if (this.object.user_id === 2) {
+                    return 'Camp';
+                }
+                if (this.object.user_id === 3) {
+                    return 'Normal';
                 }
                 return this.faker.name.firstName();
             }
@@ -73,7 +96,18 @@ const USER_MOCK_SCHEMA = {
                 if (this.object.user_id === 1) {
                     return 'McAdmin';
                 }
+                if (this.object.user_id === 2) {
+                    return 'Manager';
+                }
+                if (this.object.user_id === 3) {
+                    return 'User';
+                }
                 return this.faker.name.lastName();
+            }
+        },
+        name : {
+            function: function() {
+                return `${this.object.first_name} ${this.object.last_name}`;
             }
         },
         gender : {

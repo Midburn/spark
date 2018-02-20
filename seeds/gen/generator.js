@@ -8,13 +8,13 @@ const generate = async (scale) => {
     if (scale > 30) {
         return Promise.reject('This scale is not yet supported');
     }
-    const campCount = scale * 25;
+    const campCount = scale * 50;
     return new Promise(async (resolve, reject) => {
         // TODO - Currently only create single event - need to think about increment with `MIDBURN` text.
         await utils.preventPkErrors([EVENT_MOCK_SCHEMA, USER_MOCK_SCHEMA, CAMP_MOCK_SCHEMA]);
         mocker
             .schema(EVENT_MOCK_SCHEMA.NAME, EVENT_MOCK_SCHEMA.STRUCTURE, scale * 2)
-            .schema(USER_MOCK_SCHEMA.NAME, USER_MOCK_SCHEMA.STRUCTURE, campCount * 25)
+            .schema(USER_MOCK_SCHEMA.NAME, USER_MOCK_SCHEMA.STRUCTURE, campCount * 3)
             .schema(CAMP_MOCK_SCHEMA.NAME, CAMP_MOCK_SCHEMA.STRUCTURE, campCount)
             .build((err, data) => {
                 if (err) {
