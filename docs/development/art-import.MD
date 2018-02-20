@@ -46,45 +46,69 @@ update art_2018 set email=trim(email)
 Review the potential new spark users, there were some invalid emails / details - need to edit them manually
 
 ```
-select name, email, phone_number
-from art_2018 where email not in (select email from users)
+select * from art_2018 
+where lower(trim(email)) not in (select lower(trim(email)) from users)
 ```
 
-Insert users for artist emails which don't already have a spark user:
+You can fix/remove any invalid rows.
+
+Insert users for artists which don't already have a spark user (according to the email):
+
+(should be safe to re-run this query if you made updates to art_2018 table)
 
 ```
 insert into users (email, name, cell_phone) 
-select email, name, phone_number
-from art_2018 where email not in (select email from users) and email != ''
-group by email
-order by email
+select trim(email), trim(name), trim(phone_number)
+from art_2018 
+where lower(trim(email)) not in (
+  select lower(trim(email)) from users
+)
+and lower(trim(email)) != ''
+group by lower(trim(email))
+order by lower(trim(email))
 ```
 
-Insert the art camps, with relation to users
+Insert camps, with relation to users (using the first user for each art installation as the main contact)
+
 ```
-insert into camps (event_id, __prototype, camp_name_he, camp_name_en, status, main_contact)
-select 'MIDBURN2018', 'art_installation', art_2018.dream_name, concat_ws('_', 'DREAM',art_2018.dream_name), 'closed', users.user_id
+insert into camps (event_id, __prototype, camp_name_he, camp_name_en, status, main_contact, contact_person_id, moop_contact, safety_contact)
+select 'MIDBURN2018', 'art_installation', art_2018.dream_name, concat_ws('_', 'DREAM',art_2018.dream_name), 'closed', users.user_id, users.user_id, users.user_id, users.user_id
 from art_2018, users
-where art_2018.email = users.email
+where lower(trim(art_2018.email)) = lower(trim(users.email))
 group by art_2018.dream_name
 order by art_2018.dream_name
 ```
 
-update camp_id in users table
+camps has a trigger which will insert a corresponding row to `users_groups`, update the users_groups type to art 
+
 ```
-update users 
-set camp_id=(select id from camps where main_contact=users.user_id and event_id='MIDBURN2018' limit 1) 
-where email in (select distinct(email) from art_2018)
+update users_groups set event_id='MIDBURN2018', type='art_installation' where group_id in (select id from camps where event_id='MIDBURN2018' and __prototype='art_installation')
 ```
 
-* insert camp members
+insert camp members
+
 ```
 insert into camp_members (camp_id, user_id, status)
-select id, main_contact, 'approved' from camps where event_id='MIDBURN2018' and __prototype='art_installation'
+select camps.id, users.user_id, 'approved'
+from users, camps, art_2018
+where lower(trim(users.email)) = lower(trim(art_2018.email))
+and art_2018.dream_name = camps.camp_name_he
+and camps.event_id='MIDBURN2018' and camps.__prototype='art_installation'
+group by users.user_id, camps.id
+order by users.user_id, camps.id
 ```
 
-update all contact person ids to the leader user id
+## set ticket quotas
+
+**TBD** - the ticket quotas are in the art_2018 table as boolean per user
+
+
+## Get list of invalid / missing users
+
+To get a list of invalid users, repeat the import of original data but to a table called `art_2018_original`
+
+Get all rows from original data which don't have a related spark user:
 
 ```
-update camps set contact_person_id=main_contact, moop_contact=main_contact, safety_contact=main_contact where event_id='MIDBURN2018';
+select * from art_2018_original where trim(lower(email)) not in (select trim(lower(email)) from users)
 ```
