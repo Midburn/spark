@@ -101,13 +101,13 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
         }
     }).then(select => {
             if(select){
-                var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
-                $http.get(request_str).then((res) => {
-                    sweetAlert(tpl.alert_success_1, tpl.alert_success_1, "success");
+                const url = `/camps/${camp_id}/members/${user_id}/${action_type}`
+                $http.get(url).then(res => {
+                    swal(tpl.alert_success_1, tpl.alert_success_1, "success");
                     $scope.getMembers(camp_id);
                 }).catch((err) => {
-                    jsonError=err.data.data.message;
-                    sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError, "error");
+                    jsonError = err.data.data.message;
+                    swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
                 })
             }
         });
