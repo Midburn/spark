@@ -28,7 +28,7 @@ function parseUser(res_body) {
         uid: res_body[0]['uid'],
         email: parseFromAnchorTag(res_body[0]['E-mail']),
         phone: res_body[0]['Phone number'],
-        has_ticket: res_body[0]['PHP'] !== ""
+        has_ticket: res_body[0]['PHP'] !== "tickets string:[]"
     };
 }
 

@@ -14,8 +14,8 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             var preSaleTicketsCount=0;
             for (var i in members) {
                 var newMember=members[i]
-                //check if the user has a pre_sale ticket 
-                //if so the set the checkbox to true 
+                //check if the user has a pre_sale ticket
+                //if so the set the checkbox to true
                 if (members[i].pre_sale_ticket) {
                     newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
                     preSaleTicketsCount++;
@@ -108,7 +108,37 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
         });
 }
 
-app.controller("campEditController", ($scope, $http, $filter) => {
+const angular_getCampFile = function ($http, $scope, $q, camp_id) {
+    const req_path = `/camps/${camp_id}/documents/`
+    let getFilePromise = $q.defer()
+
+    $http.get(req_path).then(function (res) {
+        getFilePromise.resolve(res.data.files)
+    }).catch(function (err) {
+        const jsonError = err.data.message
+        sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
+        getFilePromise.reject(err)
+    })
+
+    return getFilePromise.promise
+}
+
+const angular_deleteCampFile = function ($http, $scope, $q, camp_id, doc_id) {
+    const req_path = `/camps/${camp_id}/documents/${doc_id}/`
+    let deleteFilePromise = $q.defer()
+
+    $http.delete(req_path).then(function (res) {
+        deleteFilePromise.resolve(res.data.files)
+    }).catch(function (err) {
+        const jsonError = err.data.message;
+        sweetAlert("Error!", "Could not delete file \n" + jsonError)
+        deleteFilePromise.reject(err)
+    })
+
+    return deleteFilePromise.promise
+}
+
+app.controller("campEditController", ($scope, $http, $filter, $q) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
     var lang = $scope.lang;
     if (lang === undefined) {
@@ -144,10 +174,6 @@ app.controller("campEditController", ($scope, $http, $filter) => {
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
     }
-    if (typeof camp_id !== 'undefined') {
-        $scope.current_camp_id = camp_id;
-        $scope.getMembers();
-    }
     $scope.lang = document.getElementById('meta__lang').value;
     // $scope.grouptype = document.getElementById('meta__grouptype').value;
     $scope.addMember = () => {
@@ -181,7 +207,7 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         end : new Date(controllDates.appreciation_tickets_allocation_end),
     }
     $scope.allocationPeriodisAvtive = allocationPeriod.start < allocationPeriod.now && allocationPeriod.now < allocationPeriod.end;
-    
+
     //when the user wants to update a pre sale ticket
     //this method is executed
     $scope.updatePreSaleTicket = (user_name, user_id,action_type,pre_sale_ticket_approved) => {
@@ -191,11 +217,35 @@ app.controller("campEditController", ($scope, $http, $filter) => {
             user_name: user_name,
             user_id: user_id,
         }
-   
+
         angular_updateUser($http, $scope, action_type, user_rec);
     }
 
-    //boolean ticket start & end allocation period
+    $scope.getFiles = () => {
+        angular_getCampFile($http, $scope, $q, camp_id)
+        .then((files) => {
+            console.log('Got camp files!')
+            $scope.files = files;
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    $scope.deleteFile = (doc_id) => {
+        angular_deleteCampFile($http, $scope, $q, camp_id, doc_id)
+        .then((files) => {
+            console.log('File deleted')
+            $scope.files = files;
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    if (typeof camp_id !== 'undefined') {
+        $scope.current_camp_id = camp_id;
+        $scope.getMembers();
+        $scope.getFiles();
+    }
 
 }); //end of controller
 
@@ -209,7 +259,7 @@ app.controller("homeController", ($scope, $http, $filter) => {
     }
 
     $scope.angular_ChangeCurrentEventId = function (event_id) {
-        //set new current event id 
+        //set new current event id
         $http.post('/events/change', {currentEventId: event_id}).then((res) => {
             window.location.reload();
         });

@@ -3,14 +3,14 @@ var router = express.Router({
     mergeParams: true
 });
 
-var userRole = require('../libs/user_role');
+var userRole = require('../../libs/user_role');
 
-var User = require('../models/user').User;
-var Camp = require('../models/camp').Camp;
+var User = require('../../models/user').User;
+var Camp = require('../../models/camp').Camp;
 
-var datatableAdmin = require('../libs/admin').datatableAdmin;
-var adminRender = require('../libs/admin').adminRender;
-var sign_up = require('../libs/passport').sign_up;
+var datatableAdmin = require('../../libs/admin').datatableAdmin;
+var adminRender = require('../../libs/admin').adminRender;
+var sign_up = require('../../libs/passport').sign_up;
 
 router.get('/', userRole.isAdmin(), function (req, res) {
     adminRender(req, res, 'admin/home.jade', {
