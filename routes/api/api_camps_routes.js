@@ -1,20 +1,20 @@
-const common = require('../libs/common').common,
+const common = require('../../libs/common').common,
 _ = require('lodash'),
-User = require('../models/user').User,
-Camp = require('../models/camp').Camp,
-CampFile = require('../models/camp').CampFile,
-constants = require('../models/constants.js'),
-knex = require('../libs/db').knex,
-userRole = require('../libs/user_role'),
+User = require('../../models/user').User,
+Camp = require('../../models/camp').Camp,
+CampFile = require('../../models/camp').CampFile,
+constants = require('../../models/constants.js'),
+knex = require('../../libs/db').knex,
+userRole = require('../../libs/user_role'),
 config = require('config'),
-mail = require('../libs/mail'),
+mail = require('../../libs/mail'),
 mailConfig = config.get('mail'),
 csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
-LOG = require('../libs/logger')(module),
-S3 = require('../libs/aws-s3');
+LOG = require('../../libs/logger')(module),
+S3 = require('../../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
-const CONSTS = require('../consts');
+const CONSTS = require('../../consts');
 
 const emailDeliver = (recipient, subject, template, props) => {
 
