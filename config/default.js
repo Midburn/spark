@@ -132,16 +132,25 @@ exports.profiles_api = {
 };
 
 /**
- * Aws Config
+ * Aws Config FIXME: This should most likely be in env variables.
  */
 let aws_config = {};
-if (process.env.NODE_ENV !== 'production') { // Dev.
+if (process.env.NODE_ENV !== 'production') { // Dev. or staging
     aws_config.defualt_region = 'eu-west-1';
     aws_config.buckets = {
         camp_file_upload: 'midburn-spark-camp-files',
     }
 } else { // Prod.
-    aws_config.region = '';
-    aws_config.camp_file_upload_bucket = '';
+    aws_config.region = 'eu-west-1';
+    aws_config.camp_file_upload_bucket = 'midburn-spark-camp-files-prod';
 }
-exports.aws_config = aws_config;
+exports.aws_config = aws_config
+
+/**
+ * Camp files config
+ */
+let camp_files_config = {
+    upload_start_date: '',
+    upload_end_date: ''
+}
+exports.camp_files_config = camp_files_config

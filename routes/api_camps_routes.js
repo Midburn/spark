@@ -11,6 +11,7 @@ mail = require('../libs/mail'),
 mailConfig = config.get('mail'),
 csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
+camp_files_config = config.get('camp_files_config'),
 LOG = require('../libs/logger')(module),
 S3 = require('../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
@@ -180,7 +181,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                         start : new Date(eventInfo.appreciation_tickets_allocation_start),
                         end : new Date(eventInfo.appreciation_tickets_allocation_end)
                     }
-                    
+
                     let jsonInfo;
                     try {
                         //pass the response to the process method
@@ -238,7 +239,7 @@ here we pass the query info from the SQL
 and check the json info, the method will throw and error if failed
 */
 function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
-    
+
     var userData = info;
 
     var jsonInfo;
@@ -274,7 +275,7 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
                 jsonInfo.pre_sale_ticket = "true";
             }
         }
-        
+
         //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
         if (jsonInfo.pre_sale_ticket === "true") {
             //first count how many pre sale tickets are assinged to the camp members
@@ -647,19 +648,48 @@ module.exports = (app, passport) => {
         }
     })
 
-    app.post('/camps/:camp_id/documents/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
+    const __can_edit_camp_file = (user) => {
+        // If the user is an Admin, he can edit files without constraints
+        if (user.isAdmin) return true;
 
-        const camp_id = req.params.camp_id,
-             doc_type = req.params.doc_type
+        const now = new Date()
+        const startDate = new Date(camp_files_config.upload_start_date)
+        const endDate = new Date(camp_files_config.upload_end_date)
 
-        // Check that the document type is valid
-        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
-            return res.status(400).json({
-                 error: true,
-                 data: {
-                     message: 'Invalid document type'
-                 }
-             })
+        if (user.isCampManager &&
+                now > startDate && now < endDate) {
+            return true
+        }
+
+        return false
+
+    }
+
+    const __prepare_camp_files = (camp, user) => {
+        let campFiles = camp.relations.files.models.map((file) => {
+            return {
+                file_id: file.attributes.file_id,
+                file_path: file.attributes.file_path,
+                canEdit: __can_edit_camp_file(user)
+            }
+        })
+
+    return campFiles;
+
+    }
+
+    app.post('/camps/:camp_id/documents/', userRole.isLoggedIn(), async (req, res) => {
+
+        const camp_id = req.params.camp_id
+
+        // Check if the user is allowed to upload the file
+        if (!__can_edit_camp_file(req.user)) {
+            return res.status(403).json({
+                error: true,
+                data: {
+                    message: 'unauthorized file upload'
+                }
+            })
         }
 
         let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
@@ -680,7 +710,7 @@ module.exports = (app, passport) => {
                 message: 'No file attached to request'
             })
         }
-        let fileName = `${camp.attributes.camp_name_en}/${doc_type}_${req.files.file.name}`
+        let fileName = `${camp.attributes.camp_name_en}/${req.files.file.name}`
 
         let s3Client = new S3();
         // Upload the file to S3
@@ -698,31 +728,14 @@ module.exports = (app, passport) => {
         let filePath = s3Client.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload)
 
         // Add the file to the camp_files table
-        // If the file type exists, update
-        // If not, insert a new file record
-        let existingFile = camp.relations.files.models.find((file) => {
-            if (file.attributes.file_type === doc_type) {
-                return file
-            }
-        })
-
         try {
-            if (!existingFile) {
-                    await new CampFile({
-                        created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                        updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                        camp_id: camp.attributes.id,
-                        uploader_id: req.user.id,
-                        file_path: filePath,
-                        file_type: doc_type
-                    }).save()
-            } else {
-                existingFile.attributes.updated_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ')
-                existingFile.attributes.uploader_id = req.user.id
-                existingFile.attributes.file_path = filePath
-
-                await existingFile.save()
-            }
+            await new CampFile({
+                created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                camp_id: camp.attributes.id,
+                uploader_id: req.user.id,
+                file_path: filePath,
+            }).save()
         } catch (err) {
             LOG.error(err.message);
             return res.status(500).json({
@@ -731,23 +744,44 @@ module.exports = (app, passport) => {
             })
         }
 
+        camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
+        let campFiles = __prepare_camp_files(camp, req.user)
         return res.status(200).json({
-            error: false
+            error: false,
+            files: campFiles
         })
     })
 
-    app.get('/camps/:camp_id/documents/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
-        const camp_id = req.params.camp_id,
-        doc_type = req.params.doc_type
+    app.get('/camps/:camp_id/documents', userRole.isLoggedIn(), async (req, res) => {
+        const camp_id = req.params.camp_id
+        let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
 
-        // Check that the document type is valid
-        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
-            return res.status(400).json({
-                 error: true,
-                 data: {
-                     message: 'Invalid document type'
-                 }
-             })
+        if (!camp) {
+            return res.status(500).json({
+                error: true,
+                message: 'Camp Id does not exist'
+            })
+        }
+
+        let campFiles = __prepare_camp_files(camp, req.user)
+
+        return res.status(200).json({
+            error: false,
+            files: campFiles
+        })
+    })
+
+    app.delete('/camps/:camp_id/documents/:doc_id/', userRole.isLoggedIn(), async (req, res) => {
+        const camp_id = req.params.camp_id,
+            doc_id = req.params.doc_id
+
+        if (!__can_edit_camp_file(req.user)) {
+            return res.status(403).json({
+                error: true,
+                data: {
+                    message: 'unauthorized file deletion'
+                }
+            })
         }
 
         let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
@@ -760,22 +794,29 @@ module.exports = (app, passport) => {
         }
 
         let existingFile = camp.relations.files.models.find((file) => {
-            if (file.attributes.file_type === doc_type) {
+            if (file.attributes.file_id === parseInt(doc_id)) {
                 return file
             }
         })
 
-        if (existingFile) {
-            return res.status(200).json({
-                error: false,
-                path: existingFile.attributes.file_path
-            })
-        } else {
-            return res.status(404).json({
+        try {
+            await existingFile.destroy()
+        } catch (err) {
+            return res.status(500).json({
                 error: true,
-                message: 'File does not exist'
+                data: {
+                    message: "Error deleting file " + err
+                }
             })
         }
+
+        camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
+        let campFiles = __prepare_camp_files(camp, req.user)
+
+        return res.status(200).json({
+            error: false,
+            files: campFiles
+        })
     })
 
     /**
