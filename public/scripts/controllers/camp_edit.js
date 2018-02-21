@@ -100,7 +100,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             cancel: action_tpl.rejectBtn,
         }
     }).then(select => {
-            if(select){
+            if (select) {
                 const url = `/camps/${camp_id}/members/${user_id}/${action_type}`
                 $http.get(url).then(res => {
                     swal(tpl.alert_success_1, tpl.alert_success_1, "success");
