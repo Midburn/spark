@@ -1,13 +1,13 @@
 var express = require('express');
-Event = require('../models/event').Event;
+Event = require('../../models/event').Event;
 
 var router = express.Router({
     mergeParams: true
 });
 
-var knex = require('../libs/db').knex;
-var userRole = require('../libs/user_role');
-var Event = require('../models/event').Event;
+var knex = require('../../libs/db').knex;
+var userRole = require('../../libs/user_role');
+var Event = require('../../models/event').Event;
 
 router.get('/', userRole.isGateManager(), function (req, res) {
     Event.forge({event_id: req.user.currentEventId}).fetch().then(event => {
