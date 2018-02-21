@@ -1,7 +1,14 @@
-const userRole = require('../libs/user_role');
-const constants = require('../models/constants.js');
-var Camp = require('../models/camp').Camp;
-const Event = require('../models/event').Event;
+const express = require('express');
+const router = express.Router({
+    mergeParams: true
+});
+const userRole = require('../../libs/user_role');
+const constants = require('../../models/constants.js');
+var Camp = require('../../models/camp').Camp;
+const Event = require('../../models/event').Event;
+const breadcrumbs = require('express-breadcrumbs');
+
+router.use(breadcrumbs.init());
 
 // var User = require('../models/user').User;
 var __camp_data_to_json = function (camp) {
@@ -65,12 +72,11 @@ var __render_camp = function (camp, req, res) {
     });
 }
 
-module.exports = function (app, passport) {
     // ==============
     // Camps Routing
     // ==============
     // camps index page, create new camp
-    app.get('/:lng/camps', userRole.isLoggedIn(), (req, res) => {
+    router.get('/camps', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -94,7 +100,7 @@ module.exports = function (app, passport) {
         }, req.t);
     });
     // Read
-    app.get('/:lng/camps/:id(\\d+)/', userRole.isLoggedIn(), (req, res) => {
+    router.get('/camps/:id(\\d+)/', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -111,7 +117,7 @@ module.exports = function (app, passport) {
     });
 
     // new camp
-    app.get('/:lng/camps/new', userRole.isAdmin(), (req, res) => {
+    router.get('/camps/new', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -148,7 +154,7 @@ module.exports = function (app, passport) {
         });
     });
     // Edit
-    app.get('/:lng/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
+    router.get('/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -206,7 +212,7 @@ module.exports = function (app, passport) {
         })
     });
     // camps statistics
-    app.get('/:lng/camps-stats', userRole.isLoggedIn(), (req, res) => {
+    router.get('/camps-stats', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -225,7 +231,7 @@ module.exports = function (app, passport) {
         });
     });
     // camps members board
-    app.get('/:lng/camps-members', userRole.isLoggedIn(), (req, res) => {
+    router.get('/camps-members', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -244,7 +250,7 @@ module.exports = function (app, passport) {
         });
     });
     // camps documents
-    app.get('/:lng/camps-docs', userRole.isLoggedIn(), (req, res) => {
+    router.get('/camps-docs', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -263,7 +269,7 @@ module.exports = function (app, passport) {
         });
     });
     // camps admin management panel
-    app.get('/:lng/camps-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
+    router.get('/camps-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -297,7 +303,7 @@ module.exports = function (app, passport) {
     });
 
     // art admin management panel
-    app.get('/:lng/art-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
+    router.get('/art-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -323,7 +329,7 @@ module.exports = function (app, passport) {
         }
     });
     // art admin management panel
-    app.get('/:lng/prod-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
+    router.get('/prod-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -351,11 +357,12 @@ module.exports = function (app, passport) {
     });
 
     // Program
-    app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {
+    router.get('/program', userRole.isLoggedIn(), (req, res) => {
         req.breadcrumbs('camps-new_program');
         res.render('pages/camps/program', {
             user: req.user,
             camp_name_en: req.query.c
         });
     });
-};
+
+    module.exports = router;
