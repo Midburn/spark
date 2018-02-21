@@ -12,8 +12,8 @@ mailConfig = config.get('mail'),
 csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
 camp_files_config = config.get('camp_files_config'),
-LOG = require('../libs/logger')(module),
-S3 = require('../libs/aws-s3');
+LOG = require('../../libs/logger')(module),
+S3 = require('../../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 
 const emailDeliver = (recipient, subject, template, props) => {
