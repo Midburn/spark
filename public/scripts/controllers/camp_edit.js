@@ -127,9 +127,9 @@ const angular_deleteCampFile = function ($http, $scope, $q, camp_id, doc_id) {
     const req_path = `/camps/${camp_id}/documents/${doc_id}/`
     let deleteFilePromise = $q.defer()
 
-    $http.delete(req_path).then( function (res) {
+    $http.delete(req_path).then(function (res) {
         deleteFilePromise.resolve(res.data.files)
-    }).catch (function (err) {
+    }).catch(function (err) {
         const jsonError = err.data.message;
         sweetAlert("Error!", "Could not delete file \n" + jsonError)
         deleteFilePromise.reject(err)

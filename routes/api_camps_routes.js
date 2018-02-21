@@ -15,7 +15,6 @@ camp_files_config = config.get('camp_files_config'),
 LOG = require('../libs/logger')(module),
 S3 = require('../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
-const CONSTS = require('../consts');
 
 const emailDeliver = (recipient, subject, template, props) => {
 
