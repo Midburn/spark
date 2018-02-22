@@ -56,8 +56,7 @@ const initStaticCamps = (camps, events) => {
                 camp_desc_he: getCampDiscription(i),
                 camp_desc_en: getCampDiscription(i, 'en')
             };
-            delete newCamp.id;
-            camps.push(newCamp);
+            newCamp.id = camps.push(newCamp);
         }
     }
     return camps;
