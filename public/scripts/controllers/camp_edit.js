@@ -51,13 +51,15 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
         lang = 'he';
     }
     var tpl, action_tpl;
-
+    
     if (lang === "he") {
         // debugger;
         action_tpl = {
             approve: 'לאשר את',
+            approveBtn: 'אשר',
             delete: 'למחוק את',
             reject: 'לדחות את',
+            rejectBtn: 'בטל',
             approve_mgr: 'להפוך למנהל את',
             remove: 'להסיר את',
             pre_sale_ticket : 'לאשר כרטיס מוקדם',
@@ -72,8 +74,10 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     } else {
         action_tpl = {
             approve: 'Approve',
+            approveBtn: 'Approve',
             delete: 'Delete',
             reject: 'Reject',
+            rejectBtn: 'Reject',
             approve_mgr: 'Set Manager',
             remove: 'Remove',
             pre_sale_ticket: 'Update Pre Sale Ticket',
@@ -86,25 +90,26 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             alert_success_3: "success",
         };
     }
-
-    sweetAlert({
+    
+    swal({
         title: tpl.alert_title,
         text: tpl.alert_text,
         type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes",
-        closeOnConfirm: false
-    },
-        () => {
-            var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
-            $http.get(request_str).then((res) => {
-                sweetAlert(tpl.alert_success_1, tpl.alert_success_1, "success");
-                $scope.getMembers(camp_id);
-            }).catch((err) => {
-                jsonError=err.data.data.message;
-                sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError, "error");
-            })
+        buttons: {
+            confirm: action_tpl.approveBtn,
+            cancel: action_tpl.rejectBtn,
+        }
+    }).then(select => {
+            if (select) {
+                const url = `/camps/${camp_id}/members/${user_id}/${action_type}`
+                $http.get(url).then(res => {
+                    swal(tpl.alert_success_1, tpl.alert_success_1, "success");
+                    $scope.getMembers(camp_id);
+                }).catch((err) => {
+                    jsonError = err.data.data.message;
+                    swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
+                })
+            }
         });
 }
 

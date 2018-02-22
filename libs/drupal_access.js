@@ -7,8 +7,8 @@ const NodeCache = require("node-cache");
 const drupalCache = new NodeCache({ stdTTL: drupalConfig.cacheTTL, checkperiod: 600 });
 
 function parseFromAnchorTag(uid_string) {
-    var re = /<a.*>(.+)<\/a>/g;
-    m = re.exec(uid_string);
+    let re = /<a.*>(.+)<\/a>/g;
+    let m = re.exec(uid_string);
     re.lastIndex = 0;
     if (m.length === 2) {
         return m[1];
@@ -17,18 +17,30 @@ function parseFromAnchorTag(uid_string) {
     }
 }
 
+function parseTicketsCount(tickets_str) {
+    let re = /tickets string:(.*)/g;
+    let m = re.exec(tickets_str);
+    re.lastIndex = 0;
+    if (m.length === 2) {
+        let ticketsArr = JSON.parse(m[1]);
+        return ticketsArr.length;
+    }
+    else return 0;
+
+}
+
 function parseUser(res_body) {
     if (res_body.length === 0 || !res_body[0]) {
         return undefined
     }
-
     return {
         last_name: res_body[0]['Last name'],
         first_name: res_body[0]['First name'],
         uid: res_body[0]['uid'],
         email: parseFromAnchorTag(res_body[0]['E-mail']),
         phone: res_body[0]['Phone number'],
-        has_ticket: res_body[0]['PHP'] !== "tickets string:[]"
+        has_ticket: res_body[0]['PHP'] !== "tickets string:[]",
+        num_of_tickets: parseTicketsCount(res_body[0]['PHP'])
     };
 }
 
