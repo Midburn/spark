@@ -1,46 +1,40 @@
 var angular_getMembers = function ($http, $scope, camp_id) {
-    if (camp_id === 'new') {
-        $http.get('/users').then((res) => {
-            $scope.members = [];
-            $scope.approved_members = res.data.users;
-        });
-    } else {
-        $http.get(`/camps/${camp_id}/members`).then((res) => {
-            var members = res.data.members;
-            var _members = [];
-            var approved_members = [];
-            var total_camp_tickets = 0;
-            var total_in_event = 0;
-            var preSaleTicketsCount=0;
-            for (var i in members) {
-                var newMember=members[i]
-                //check if the user has a pre_sale ticket 
-                //if so the set the checkbox to true 
-                if (members[i].pre_sale_ticket) {
-                    newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
-                    preSaleTicketsCount++;
-                }
-                else {
-                    newMember.pre_sale_ticket_approved = false;
-                }
-                if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(newMember.member_status) > -1) {
-                    _members.push(newMember);
-                }
-                if (['approved', 'approved_mgr'].indexOf(newMember.member_status) > -1) {
-                    approved_members.push(newMember);
-                }
-                total_in_event += parseInt(newMember.inside_event);
-                total_camp_tickets += parseInt(newMember.ticket_count) || 0;
+    
+    $http.get(`/camps/${camp_id}/members`).then((res) => {
+        var members = res.data.members;
+        var _members = [];
+        var approved_members = [];
+        var total_camp_tickets = 0;
+        var total_in_event = 0;
+        var preSaleTicketsCount=0;
+        for (var i in members) {
+            var newMember=members[i]
+            //check if the user has a pre_sale ticket 
+            //if so the set the checkbox to true 
+            if (members[i].pre_sale_ticket) {
+                newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
+                preSaleTicketsCount++;
             }
-            $scope.preSaleTicketsCount = preSaleTicketsCount;
-            $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
-            $scope.members = _members;
-            $scope.approved_members = approved_members;
-            $scope.all_approved_members = approved_members.length;
-            $scope.total_camp_tickets = total_camp_tickets;
-            $scope.total_in_event = total_in_event;
-        });
-    }
+            else {
+                newMember.pre_sale_ticket_approved = false;
+            }
+            if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(newMember.member_status) > -1) {
+                _members.push(newMember);
+            }
+            if (['approved', 'approved_mgr'].indexOf(newMember.member_status) > -1) {
+                approved_members.push(newMember);
+            }
+            total_in_event += parseInt(newMember.inside_event);
+            total_camp_tickets += parseInt(newMember.ticket_count) || 0;
+        }
+        $scope.preSaleTicketsCount = preSaleTicketsCount;
+        $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
+        $scope.members = _members;
+        $scope.approved_members = approved_members;
+        $scope.all_approved_members = approved_members.length;
+        $scope.total_camp_tickets = total_camp_tickets;
+        $scope.total_in_event = total_in_event;
+    });
 }
 var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     var camp_id = user_rec.camp_id;
