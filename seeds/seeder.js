@@ -27,6 +27,42 @@ if (scale > 40) {
     log.info('Chosen scale to big... try a smaller one');
 }
 
+const initStaticCamps = (camps, events) => {
+    function getCampDiscription(id, lang) {
+        switch (id) {
+            case 1:
+                return lang === 'en' ? 'Admin`s Camp' : 'מחנה אדמין!';
+            case 2:
+                return lang === 'en' ? 'Camp Managers`s Camp' : 'מחנה מנהל b';
+            case 3:
+                return lang === 'en' ? 'Normal User`s Camp' : 'מחנה של משתמש רגיל';
+        }
+    }
+    /**
+     * Create static camps in each events for each static user (a, b, c)
+     */
+    for (const event of events) {
+        for (let i = 1; i <= 3; i++) {
+            const newCamp = {
+                ...camps[camps.length - 1],
+                event_id: event.event_id,
+                status: 'open',
+                main_contact: i,
+                moop_contact: i,
+                safety_contact: i,
+                contact_person_id: i,
+                camp_name_he: getCampDiscription(i),
+                camp_name_en: getCampDiscription(i, 'en'),
+                camp_desc_he: getCampDiscription(i),
+                camp_desc_en: getCampDiscription(i, 'en')
+            };
+            delete newCamp.id;
+            camps.push(newCamp);
+        }
+    }
+    return camps;
+};
+
 const correlateData = (users, camps) => {
     const campMembers = [];
     for (const camp of camps) {
@@ -61,7 +97,8 @@ const seed = async (scale = 1) => {
         }
         const users = mockData[MOCK_USERS_SCHEMA.NAME];
         const events = mockData[MOCK_EVENTS_SCHEMA.NAME];
-        const camps = mockData[MOCK_CAMPS_SCHEMA.NAME];
+        let camps = mockData[MOCK_CAMPS_SCHEMA.NAME];
+        camps = initStaticCamps(camps, events);
         // Create link between camps and users
         const campMembers = correlateData(users, camps);
         if (replaceStatic) {

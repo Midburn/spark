@@ -29,57 +29,21 @@ const CAMP_MOCK_SCHEMA = {
         },
         camp_name_he: {
             function:  function () {
-                if (this.object.id === 1) {
-                    return 'מחנה אדמין!'
-                }
-                if (this.object.id === 2) {
-                    return 'מחנה מנהל המחנות'
-                }
-                if (this.object.id === 3) {
-                    return 'מחנה של משתמש רגיל'
-                }
                 return this.faker.lorem.sentence().slice(0, 49);
             }
         },
         camp_name_en:{
             function:  function () {
-                if (this.object.id === 1) {
-                    return 'Admin`s Camp'
-                }
-                if (this.object.id === 2) {
-                    return 'Camp Managers`s Camp'
-                }
-                if (this.object.id === 3) {
-                    return 'Normal User`s Camp'
-                }
                 return this.faker.lorem.sentence().slice(0, 49);
             }
         },
         camp_desc_he: {
             function:  function () {
-                if (this.object.id === 1) {
-                    return 'מחנה אדמין!'
-                }
-                if (this.object.id === 2) {
-                    return 'מחנה מנהל המחנות'
-                }
-                if (this.object.id === 3) {
-                    return 'מחנה של משתמש רגיל'
-                }
                 return this.faker.lorem.sentence().slice(0, 49);
             }
         },
         camp_desc_en: {
             function:  function () {
-                if (this.object.id === 1) {
-                    return 'Admin`s Camp'
-                }
-                if (this.object.id === 2) {
-                    return 'Camp Managers`s Camp'
-                }
-                if (this.object.id === 3) {
-                    return 'Normal User`s Camp'
-                }
                 return this.faker.lorem.sentence().slice(0, 49);
             }
         },
@@ -131,31 +95,16 @@ const CAMP_MOCK_SCHEMA = {
         // addinfo_json: {},
         main_contact: {
             function: function() {
-                if (this.object.id === 1 ||
-                    this.object.id === 2 ||
-                    this.object.id === 3) {
-                    return this.object.id;
-                }
                 return this.object.camp_contact;
             }
         },
         moop_contact: {
             function: function() {
-                if (this.object.id === 1 ||
-                    this.object.id === 2 ||
-                    this.object.id === 3) {
-                    return this.object.id;
-                }
                 return this.object.camp_contact;
             }
         },
         safety_contact: {
             function: function() {
-                if (this.object.id === 1 ||
-                    this.object.id === 2 ||
-                    this.object.id === 3) {
-                    return this.object.id;
-                }
                 return this.object.camp_contact;
             }
         },
@@ -181,11 +130,6 @@ const CAMP_MOCK_SCHEMA = {
         },
         contact_person_id: {
             function: function() {
-                if (this.object.id === 1 ||
-                    this.object.id === 2 ||
-                    this.object.id === 3) {
-                    return this.object.id;
-                }
                 return this.object.camp_contact;
             }
         }
