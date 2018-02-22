@@ -1,20 +1,23 @@
-var express = require('express');
-var router = express.Router({
+const express = require('express');
+const router = express.Router({
     mergeParams: true
 });
+const breadcrumbs = require('express-breadcrumbs');
 
-var userRole = require('../libs/user_role');
+var userRole = require('../../libs/user_role');
 var i18next = require('i18next');
-var mail = require('../libs/mail');
-var payment = require('../libs/payment');
+var mail = require('../../libs/mail');
+var payment = require('../../libs/payment');
 
-var NpoMember = require('../models/npo_member').NpoMember;
-var NpoStatus = require('../models/npo_member').NPO_STATUS;
-var log = require('../libs/logger.js')(module);
+var NpoMember = require('../../models/npo_member').NpoMember;
+var NpoStatus = require('../../models/npo_member').NPO_STATUS;
+var log = require('../../libs/logger.js')(module);
 
 var config = require('config');
 var npoConfig = config.get('npo');
 var serverConfig = config.get('server');
+
+router.use(breadcrumbs.init());
 
 var loadMember = function (user_id, next) {
     new NpoMember({

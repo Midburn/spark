@@ -12,7 +12,7 @@ block content
     input.hidden.meta(id='meta__grouptype', value='#{camp.__prototype}')
     input.hidden.meta(id='logged_user_id', value='#{user.attributes.user_id}')
     .camps.camp_edit(ng-app="ngCamps", ng-controller="campEditController")
-        
+
         .heading.card.card__shad
             .card__actions
                 if(isCamp)
@@ -282,10 +282,11 @@ block content
                 h4=t('camps:edit.upload_header')
                 .camp-members.panel
                     .panel-body
-                        .names.col-md-6
+                        .names.col-md-12
                             .col-xs-12
-                                label(for='edit_camp_upload_security_file')=t('camps:edit.security_file')
-                                input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
+                                //- label(for='edit_camp_upload_security_file')=t('camps:edit.security_file')
+                                //- input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
+                                include partials/camp_files
 
         .controls.row
             .col-xs-12
@@ -295,7 +296,7 @@ block content
                 else
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
                     button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
-                
+
                     if isCamp && camp.web_published != '1'
                         button.Btn.Btn__green(id='camp_edit_publish')=t('camps:edit.publish')
 
