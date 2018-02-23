@@ -55,7 +55,7 @@ function incrementId(inputText) {
     if (typeof inputText === 'number') {
         return inputText + 1;
     }
-    const output = inputText.replace(/\'/g, '').split(/(\d+)/).filter(Boolean);
+    const output = inputText.replace(/'/g, '').split(/(\d+)/).filter(Boolean);
     if (output && output.length > 1 && Number(output[1])) {
         return Number(output[1]) + 1;
     }
