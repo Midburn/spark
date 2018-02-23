@@ -1,7 +1,7 @@
 
-var log = require('../libs/logger')(module);
-Event = require('../models/event').Event
-const userRole = require('../libs/user_role');
+var log = require('../../libs/logger')(module);
+Event = require('../../models/event').Event
+const userRole = require('../../libs/user_role');
 const _ = require('lodash')
 /*
 .
