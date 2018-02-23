@@ -51,11 +51,10 @@ var User = bookshelf.Model.extend({
        
         let hasRole = common.__hasRole(role,this.currentEventId, this.related('allRoles').models.map(x => {
             return {
-                community_id : x.attributes.camp_id, 
                 event_id : x.attributes.event_id, 
                 role: x.attributes.role
             }}));
-        return hasRole && hasRole.length > 0;
+        return hasRole;
     },
 
     /////////////////////////// GROUPS ///////////////////////////

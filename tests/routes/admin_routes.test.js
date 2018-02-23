@@ -3,6 +3,7 @@ var app = require('../../app');
 var request = require('supertest').agent(app);
 var DrupalUser = require('../../models/user').DrupalUser;
 var User = require('../../models/user').User;
+var Roles = require('../../models/roles').Roles;
 var knex = require('../../libs/db').knex;
 var constants = require('../../models/constants');
 var _ = require('lodash');
@@ -12,6 +13,12 @@ const ADMIN_USER_PASSWORD = "123456";
 const ADMIN_USER_FIRST_NAME = "Omer Hatotach";
 
 var adminLoggedIn = false;
+
+var adminUserHasCorrectRole = function (user) {
+    let role = new Roles({user_id: user.id, event_id: "MIDBURN2017", role: "admin"});
+    return role.save();
+}
+
 
 var givenAdminUserIsRegistered = function() {
     return User.forge({
@@ -40,7 +47,9 @@ var givenAdminUserIsRegistered = function() {
 var givenAdminUserIsLoggedIn = function() {
     if (!adminLoggedIn) {
         adminLoggedIn = true;
-        return givenAdminUserIsRegistered().then(function() {
+        return givenAdminUserIsRegistered()
+        .then(adminUserHasCorrectRole)
+        .then(function() {
             return request
                 .post('/he/login')
                 .send({
