@@ -40,7 +40,9 @@ const initStaticCamps = (camps, events) => {
     }
     /**
      * Create static camps in each events for each static user (a, b, c)
+     * Unique is used to prevent unique name dups.
      */
+    let unique = 0;
     for (const event of events) {
         for (let i = 1; i <= 3; i++) {
             const newCamp = {
@@ -51,12 +53,13 @@ const initStaticCamps = (camps, events) => {
                 moop_contact: i,
                 safety_contact: i,
                 contact_person_id: i,
-                camp_name_he: getCampDiscription(i),
-                camp_name_en: getCampDiscription(i, 'en'),
-                camp_desc_he: getCampDiscription(i),
-                camp_desc_en: getCampDiscription(i, 'en')
+                camp_name_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
+                camp_name_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
+                camp_desc_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
+                camp_desc_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`
             };
             newCamp.id = camps.push(newCamp);
+            unique++;
         }
     }
     return camps;
@@ -97,7 +100,9 @@ const seed = async (scale = 1) => {
         const users = mockData[MOCK_USERS_SCHEMA.NAME];
         const events = mockData[MOCK_EVENTS_SCHEMA.NAME];
         let camps = mockData[MOCK_CAMPS_SCHEMA.NAME];
-        camps = initStaticCamps(camps, events);
+        if (random) {
+            camps = initStaticCamps(camps, events);
+        }
         // Create link between camps and users
         const campMembers = correlateData(users, camps);
         if (replaceStatic) {
