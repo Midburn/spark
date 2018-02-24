@@ -1,6 +1,7 @@
-const logger = require('../../libs/logger')(module),
+const logger = require('../../../libs/logger')(module),
     config = require('config'),
-    mail = require('../../libs/mail'),
+    _ = require('lodash'),
+    mail = require('../../../libs/mail'),
     mailConfig = config.get('mail');
 
 class HelperService {
@@ -28,6 +29,27 @@ class HelperService {
         });
     }
 
+    initForbiddenMiddleware() {
+        return (err, req, res, next) => {
+            // Handle CSRF token errors
+            const isDev = process.env.NODE_ENV === 'development';
+            if (err.code === 'EBADCSRFTOKEN') {
+                res.status(403);
+                res.render('pages/error', {
+                    errorMessage: 'Illegal action. Your connection details has been logged.',
+                    error: isDev ? {
+                        status: 'URL: ' + req.url
+                    } : err
+                });
+                return;
+            }
+            res.status(err.status || 500);
+            res.render('pages/error', {
+                errorMessage: err.message,
+                error: isDev ? err : {}
+            });
+        }
+    }
     errorMiddleware(routeName) {
         /**
          * Return error middleware to be used in each router
@@ -41,7 +63,7 @@ class HelperService {
                 }
             });
         };
-        return errorCatcher();
+        return errorCatcher;
     };
 
     updateProp(item, origin, propName, options) {

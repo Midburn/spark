@@ -1,4 +1,5 @@
-const logger = require('../../libs/logger')(module),
+const logger = require('../../../libs/logger')(module),
+    Event = require('../../../models/event').Event,
     _ = require('lodash'),
     eventsService = require('../services').eventsService;
 

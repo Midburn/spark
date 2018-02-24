@@ -1,15 +1,16 @@
 const campsService = require('../services/').campsService,
     helperService = require('../services/').helperService,
     usersService = require('../services/').usersService,
-    constants = require('../../models/constants'),
+    constants = require('../../../models/constants'),
     csv = require('json2csv'),
     config = require('config'),
-    LOG = require('../../libs/logger')(module),
-    S3 = require('../../libs/aws-s3'),
+    LOG = require('../../../libs/logger')(module),
+    S3 = require('../../../libs/aws-s3'),
     awsConfig = config.get('aws_config'),
-    CampFile = require('../../models/camp').CampFile,
-    Camp = require('../../models/camp').Camp,
-    User = require('../../models/user').User;
+    CampFile = require('../../../models/camp').CampFile,
+    Camp = require('../../../models/camp').Camp,
+    Event = require('../../../models/event').Event,
+    User = require('../../../models/user').User;
 
 class CampsController {
 

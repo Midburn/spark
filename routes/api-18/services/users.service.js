@@ -1,4 +1,7 @@
-const helperService = require('./helper.service');
+const helperService = require('./helper.service'),
+    _ = require('lodash'),
+    constants = require('../../../models/constants'),
+    knex = require('../../../libs/db').knex;
 
 class UsersService {
     /**
@@ -77,7 +80,7 @@ class UsersService {
             .innerJoin(constants.CAMP_MEMBERS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.user_id', constants.USERS_TABLE_NAME+'.user_id')
             .innerJoin(constants.CAMPS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.camp_id', constants.CAMPS_TABLE_NAME+'.id')
             .whereRaw("camp_members.addinfo_json->'$.pre_sale_ticket'='true'").then(emails => {
-                emails_array = helperService.getFields(emails,"email");
+                const emails_array = helperService.getFields(emails,"email");
                 if (!_.isUndefined(emails)) {
                     return {
                         status: 200,

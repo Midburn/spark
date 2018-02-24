@@ -203,9 +203,9 @@ module.exports = {
      * Routing and api constants
      */
     ROUTER_PREFIXES: {
-        USERS: 'users',
-        CAMPS: 'camps',
-        EVENTS: 'events'
+        USERS: '/users',
+        CAMPS: '/camps',
+        EVENTS: '/events'
     },
     // This is a list of URLs the login process is allowed to redirect to.
     // This is to make sure users are not sent spark links via e.g. email by a malicious 3rd party

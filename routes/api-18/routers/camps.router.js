@@ -1,7 +1,7 @@
 const Router = require('express').Router,
-    constants = require('../../models/constants'),
-    userRole = require('../../libs/user_role'),
-    campController = require('../controllers/camps.controller'),
+    constants = require('../../../models/constants'),
+    userRole = require('../../../libs/user_role'),
+    campController = require('../controllers').campsController,
     helperService = require('../services').helperService;
 
 class CampsRouter {

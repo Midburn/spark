@@ -1,6 +1,6 @@
 const Router = require('express').Router,
-    constants = require('../../models/constants'),
-    userRole = require('../../libs/user_role'),
+    constants = require('../../../models/constants'),
+    userRole = require('../../../libs/user_role'),
     usersController = require('../controllers').usersController,
     helperService = require('../services').helperService;
 

@@ -1,4 +1,5 @@
-const logger = require('../../libs/logger')(module);
+const logger = require('../../../libs/logger')(module),
+    _ = require('lodash');
 
 class EventsService {
     createEventFromReq(req) {

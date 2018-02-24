@@ -1,8 +1,10 @@
-const constants = require('../../models/constants'),
+const constants = require('../../../models/constants'),
     _ = require('lodash'),
-    knex = require('../../libs/db').knex,
-    User = require('../../models/user').User,
-    Camp = require('../../models/camp').Camp,
+    knex = require('../../../libs/db').knex,
+    User = require('../../../models/user').User,
+    Camp = require('../../../models/camp').Camp,
+    config = require('config'),
+    camp_files_config = config.get('camp_files_config'),
     usersService = require('./users.service'),
     helperService = require('./helper.service');
 
@@ -220,12 +222,13 @@ class CampsService {
     saveCamp(req, isNew, camp) {
         // TODO - remove req logic out of this function.
         // __prototype: constants.prototype_camps.THEME_CAMP.id,
+        let prototype;
         if (camp instanceof Camp) {
             prototype = camp.attributes.__prototype;
         } else if (typeof (camp) === 'string' && camp !== '') {
             prototype = camp;
         } else prototype = constants.prototype_camps.THEME_CAMP.id;
-        group_props = Camp.prototype.__parsePrototype(prototype, req.user);
+        const group_props = Camp.prototype.__parsePrototype(prototype, req.user);
         const data = {
             event_id: req.user.currentEventId,
             // for update or insert, need to merge with create to be the same call

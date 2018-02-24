@@ -1,7 +1,8 @@
-const User = require('../../models/user').User,
-    knex = require('../../libs/db').knex,
+const User = require('../../../models/user').User,
+    Camp = require('../../../models/camp').Camp,
+    knex = require('../../../libs/db').knex,
     helperService = require('../services').helperService,
-    common = require('../../libs/common').common;
+    common = require('../../../libs/common').common;
 
 class UsersController {
 

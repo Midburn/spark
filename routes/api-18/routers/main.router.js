@@ -1,6 +1,6 @@
 const Router = require('express').Router,
-    userRole = require('../../libs/user_role'),
-    constants = require('../../models/constants'),
+    userRole = require('../../../libs/user_role'),
+    constants = require('../../../models/constants'),
     userController = require('../controllers').usersController,
     campsController = require('../controllers').campsController,
     authController = require('../controllers').authController,
@@ -69,7 +69,12 @@ class MainRouter {
          * request => /api/v1/camps/published
          */
         this.router.route('/api/v1/camps/published').get(campsController.getPublishedCamps);
-
+        /**
+         * TODO - This should move to auth router..
+         * API: (POST) return published camps, for specific event id
+         * request => /volunteers/profiles/
+         */
+        this.router.route('/volunteers/profiles/').post(authController.getToken);
     }
     initMiddlewares() {
         this.router.use(userRole.isLoggedIn());

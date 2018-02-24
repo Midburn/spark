@@ -1,6 +1,8 @@
 const _ = require('lodash'),
     apiTokensConfig = require('config').get('api_tokens'),
+    DrupalAccess = require('../../../libs/drupal_access').DrupalAccess,
     request = require('superagent'),
+    logger = require('../../../libs/logger')(module),
     helperService = require('../services').helperService;
 
 class AuthController {
@@ -10,6 +12,7 @@ class AuthController {
          * Keep `this` reference
          */
         this.login = this.login.bind(this);
+        this.getToken = this.getToken.bind(this);
     }
 
     login(req, res, next) {
@@ -56,6 +59,34 @@ class AuthController {
                  */
                 return next(err);
             });
+    }
+
+    /**
+     * Volunteers token validation
+     */
+    async getToken(req, res, next) {
+        let token = _.get(req, 'headers.token');
+        if (apiTokensConfig.token !== token) {
+            res.status(401)
+                .jsonp({
+                    status: 'false',
+                    message: 'Invalid Token!',
+                });
+            return;
+        }
+        if (!req.body.emails) {
+            return res.status(200).json([]);
+        }
+        let emails = _.get(req, 'body.emails');
+        logger.debug('Extracting details for ' + emails);
+        try {
+
+            let users_info = await DrupalAccess.get_user_by_email(emails);
+            return res.status(200).json(users_info);
+        }
+        catch (err) {
+            return next(err);
+        }
     }
 }
 

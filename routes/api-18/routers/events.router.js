@@ -1,7 +1,7 @@
 const Router = require('express').Router,
-    constants = require('../../models/constants'),
+    constants = require('../../../models/constants'),
     eventsController = require('../controllers').eventsController,
-    userRole = require('../../libs/user_role'),
+    userRole = require('../../../libs/user_role'),
     helperService = require('../services').helperService;
 
 class EventsRouter {
@@ -22,7 +22,7 @@ class EventsRouter {
         /**
          * These routes are logged before middleware (e.g loggedIn)
          */
-        this.router.route('/events').get(eventsController.getEvents);
+        this.router.route('').get(eventsController.getEvents);
     }
 
     initMiddlewares() {
@@ -32,18 +32,18 @@ class EventsRouter {
         /**
          * Init the different paths for this router.
          */
-        this.router.route('/events/new')
+        this.router.route('/new')
             .post([userRole.isAllowNewCamp()], eventsController.addEvent);
 
-        this.router.route('/events/update')
+        this.router.route('/update')
             .put([userRole.isAllowNewCamp()], eventsController.updateEvent);
 
-        this.router.route('/events/:event_id').get(eventsController.getEvent);
+        this.router.route('/:event_id').get(eventsController.getEvent);
 
-        this.router.route('/events/:event/edit').put(eventsController.editingEvent);
+        this.router.route('/:event/edit').put(eventsController.editingEvent);
 
         //change the current event id for camps manager or admin
-        this.router.route('/events/change').post(eventsController.changeCampEventId);
+        this.router.route('/change').post(eventsController.changeCampEventId);
     }
 }
 
