@@ -2,7 +2,18 @@ require("dotenv").config();
 const agent = require("supertest").agent(require("../../app"));
 const languages = process.env.languages || ["en", "he"];
 const User = require("../../models/user").User;
-const testUser = require("./0_init.test").user;
+
+const testUser = {
+    email: "test_user",
+    password:"123456",
+    roles: "",
+    validated: true
+};
+(async () => {
+    let newUser = new User(testUser);
+    newUser.generateHash(testUser.password);
+    await newUser.save();
+})();
 
 describe("user Pages", function() {
     this.timeout(20000);
