@@ -15,6 +15,7 @@ const replaceStatic = process.argv.includes('replace');
 const nosave = process.argv.includes('nosave');
 const keepdb = process.argv.includes('keepdb');
 const scale = Number(process.argv.pop());
+const constants = require('../models/constants');
 
 if (replaceStatic) {
 
@@ -43,6 +44,9 @@ const initStaticCamps = (camps, events) => {
      * Unique is used to prevent unique name dups.
      */
     let unique = 0;
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     for (const event of events) {
         for (let i = 1; i <= 3; i++) {
             const newCamp = {
@@ -56,7 +60,8 @@ const initStaticCamps = (camps, events) => {
                 camp_name_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
                 camp_name_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
                 camp_desc_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
-                camp_desc_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`
+                camp_desc_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
+                __prototype: constants.CAMP_PROTOTYPE[getRandomInt(0, 2)]
             };
             newCamp.id = camps.push(newCamp);
             unique++;
