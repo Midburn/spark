@@ -34,6 +34,7 @@ class CampsController {
         this.getCampManager = this.getCampManager.bind(this);
         this.deleteCamp = this.deleteCamp.bind(this);
         this.updateCampPreSaleQuota = this.updateCampPreSaleQuota.bind(this);
+        this.getPublishedCamps = this.getPublishedCamps.bind(this);
     }
 
     createCamp(req, res, next) {
@@ -512,6 +513,40 @@ class CampsController {
             }).catch((err) => {
                 return next(err);
             });
+        });
+    }
+
+    getPublishedCamps(req, res, next) {
+        res.header('Access-Control-Allow-Origin', 'https://midburn-camps.firebaseapp.com');
+        res.header('Access-Control-Allow-Methods', 'GET');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
+        let allowed_status = ['open', 'closed'];
+        let web_published = [true];
+        Camp.query((query) => {
+            query
+                .select([
+                    "camp_name_he",
+                    "camp_name_en",
+                    "camp_desc_he",
+                    "camp_desc_en",
+                    "status",
+                    "contact_person_name",
+                    "contact_person_phone",
+                    "contact_person_email",
+                    "facebook_page_url",
+                    "accept_families",
+                    "support_art"
+                ])
+                .where('event_id', '=', Event.CurrentEventId, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .whereIn('status', allowed_status)
+                .whereIn('web_published', web_published);
+        }).fetchAll().then((camps) => {
+            res.status(200).json({
+                quantity: camps.length,
+                camps: camps.toJSON()
+            })
+        }).catch((err) => {
+            return next(err);
         });
     }
 }

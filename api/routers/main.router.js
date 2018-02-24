@@ -63,6 +63,12 @@ class MainRouter {
          * request => /camps_csv
          */
         this.router.route('/camps_csv/:ActionType').get(userRole.isAdmin(), campsController.getCampsCSV);
+        /**
+         * TODO - This is a good example - all api should be prefixed correctly, but until then this will be considerd as a general route.
+         * API: (GET) return published camps, for specific event id
+         * request => /api/v1/camps/published
+         */
+        this.router.route('/api/v1/camps/published').get(campsController.getPublishedCamps);
 
     }
     initMiddlewares() {
