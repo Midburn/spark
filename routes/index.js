@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const sparkApi = require('./api-18');
 
+// TODO: Wrap Pages as Router like api.
 //Pages
 app.use("/:lng?/admin", require("./pages/admin_routes"));
 app.use("/:lng/events-admin", require("./pages/events_routes"));
@@ -17,21 +18,9 @@ app.use("/api/gate", require("./api/api_gate_routes"));
 
 function mapApi(app, passport) {
 
-    //TODO: main route api & render are mixed, might need a split
+    // TODO: main route api & render are mixed, might need a split
     require("./main_routes.js")(app, passport);
     app.use('', sparkApi.router);
-    // //TODO: these api's are mapped wrong, need to extract and use router
-    // // API
-    // require("./api/api_routes")(app, passport);
-    // // Camps / API
-    // // TODO this is not the right way to register routes
-    // require("./api/api_routes.js")(app, passport);
-    // require("./api/api_events_routes")(app, passport);
-    // require("./api/api_camps_routes")(app, passport);
-    // require("./api/v1/camps")(app); // CAMPS PUBLIC API
-    // require("./api/api_camps_routes")(app, passport);
-    // require("./api/api_events_routes")(app, passport);
-    // require('./api/api_volunteers')(app, passport);
 }
 
 module.exports = {
