@@ -99,7 +99,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps', 'npo', 'gate', 'events'],
+        ns: ['common', 'camps', 'npo', 'gate', 'events','suppliers',],
         defaultNS: 'common',
         fallbackNS: 'common',
 

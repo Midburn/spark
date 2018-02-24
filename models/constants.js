@@ -160,6 +160,8 @@ module.exports = {
     DRUPAL_USERS_TABLE_NAME: 'drupal_users',
     TICKETS_TABLE_NAME: 'tickets',
     CAMP_FILES_TABLE_NAME: 'camps_files',
+    SUPPLIERS_TABLE_NAME: 'suppliers',
+    SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
 
     SUPPLIERS_TABLE_NAME: 'suppliers',
     suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
