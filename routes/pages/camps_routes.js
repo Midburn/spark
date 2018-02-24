@@ -303,7 +303,7 @@ var __render_camp = function (camp, req, res) {
     });
 
     // art admin management panel
-    router.get('/art-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
+    router.get('/art-admin/:cardId*?', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
@@ -329,7 +329,7 @@ var __render_camp = function (camp, req, res) {
         }
     });
     // art admin management panel
-    router.get('/prod-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
+    router.get('/prod-admin/:cardId*?', userRole.isAdmin(), (req, res) => {
         req.breadcrumbs([{
             name: 'breadcrumbs.home',
             url: '/' + req.params.lng + '/home'
