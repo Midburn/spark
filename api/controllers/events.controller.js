@@ -1,4 +1,6 @@
-const logger = require('../../libs/logger')(module);
+const logger = require('../../libs/logger')(module),
+    _ = require('lodash'),
+    eventsService = require('../services').eventsService;
 
 class EventsController {
 
@@ -54,7 +56,7 @@ class EventsController {
     }
 
     addEvent(req, res, next) {
-        const new_event = createEvent(req);
+        const new_event = eventsService.createEventFromReq(req);
         Event.forge().save(new_event)
             .then(res.send(200))
             .catch((err) => {
@@ -66,7 +68,7 @@ class EventsController {
     }
 
     updateEvent(req, res, next) {
-        const new_event = createEvent(req);
+        const new_event = eventsService.createEventFromReq(req);
         const event_id = new_event.event_id;
         Event.forge({event_id: event_id}).save(new_event)
             .then(res.send(200))

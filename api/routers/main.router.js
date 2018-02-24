@@ -3,11 +3,13 @@ const Router = require('express').Router,
     constants = require('../../models/constants'),
     userController = require('../controllers').usersController,
     campsController = require('../controllers').campsController,
+    authController = require('../controllers').authController,
     helperService = require('../services').helperService,
     campsService = require('../services').campsService;
 
 /**
  * This is a general router without prefix.
+ * All routes in here should probably move to correct business logic routes.
  */
 class MainRouter {
     constructor() {
@@ -25,6 +27,14 @@ class MainRouter {
         /**
          * These routes are logged before middleware (e.g loggedIn)
          */
+        /**
+         * TODO - this route should move to a deticated auth router.
+         * API: (POST)
+         * request => /api/userlogin
+         * params  => username, password, token
+         * usage sample => curl --data "username=Profile_Username&password=Profile_Password&token=Secret_Token" http://localhost:3000/api/userlogin
+         */
+        this.router.route('/api/userlogin').post(authController.login);
         /**
          * API: (GET) return camp's contact person with:
          * name_en, name_he, email, phone

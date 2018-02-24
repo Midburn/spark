@@ -5,7 +5,6 @@ const logger = require('../../libs/logger')(module),
 
 class HelperService {
     emailDeliver(recipient, subject, template, props) {
-
         /**
          * Deliver email request to camp manager
          * notifiying a user wants to join his camp
@@ -74,6 +73,16 @@ class HelperService {
         }
         return output;
     }
+
+    getUserDetailsFromDrupal(data) {
+        return {
+            uid       : _.get(data, 'uid', -1),
+            name      : _.get(data, 'name', ''),
+            firstname : _.get(data, 'field_profile_first.und.0.value', ''),
+            lastname  : _.get(data, 'field_profile_last.und.0.value', ''),
+            phone     : _.get(data, 'field_profile_phone.und.0.value', -1),
+        }
+    };
 
 }
 
