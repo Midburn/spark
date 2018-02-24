@@ -1,3 +1,5 @@
+const helperService = require('./helper.service');
+
 class UsersService {
     /**
      * formely known as Modify_User_AddInfo
@@ -67,6 +69,37 @@ class UsersService {
         }
         jsonInfo = JSON.stringify(jsonInfo);
         return jsonInfo;
+    }
+
+    retrieveDataForPresale() {
+        //the emails of all users with presale tickets
+        return knex(constants.USERS_TABLE_NAME).select(constants.USERS_TABLE_NAME+'.email')
+            .innerJoin(constants.CAMP_MEMBERS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.user_id', constants.USERS_TABLE_NAME+'.user_id')
+            .innerJoin(constants.CAMPS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.camp_id', constants.CAMPS_TABLE_NAME+'.id')
+            .whereRaw("camp_members.addinfo_json->'$.pre_sale_ticket'='true'").then(emails => {
+                emails_array = helperService.getFields(emails,"email");
+                if (!_.isUndefined(emails)) {
+                    return {
+                        status: 200,
+                        data: {
+                            emails_array
+                        }
+                    };
+                } else {
+                    return {
+                        status: 404,
+                        data: { data: { message: 'Not found' } }
+                    };
+                }
+            }).catch(err => {
+                return {
+                    status: 500,
+                    data: {
+                        error: true,
+                        data: { message: err.message }
+                    }
+                };
+            });
     }
 }
 

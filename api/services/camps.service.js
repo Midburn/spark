@@ -1,7 +1,9 @@
 const constants = require('../../models/constants'),
+    _ = require('lodash'),
     knex = require('../../libs/db').knex,
     User = require('../../models/user').User,
     Camp = require('../../models/camp').Camp,
+    usersService = require('./users.service'),
     helperService = require('./helper.service');
 
 class CampsService {
@@ -166,7 +168,7 @@ class CampsService {
                             let jsonInfo;
                             try {
                                 //pass the response to the process method
-                                jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
+                                jsonInfo = usersService.modifyUsersInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
                             } catch (err) {
                                 res.status(500);
                                 throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -213,6 +215,216 @@ class CampsService {
                 }
             })
         });
+    }
+
+    saveCamp(req, isNew, camp) {
+        // TODO - remove req logic out of this function.
+        // __prototype: constants.prototype_camps.THEME_CAMP.id,
+        if (camp instanceof Camp) {
+            prototype = camp.attributes.__prototype;
+        } else if (typeof (camp) === 'string' && camp !== '') {
+            prototype = camp;
+        } else prototype = constants.prototype_camps.THEME_CAMP.id;
+        group_props = Camp.prototype.__parsePrototype(prototype, req.user);
+        const data = {
+            event_id: req.user.currentEventId,
+            // for update or insert, need to merge with create to be the same call
+            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            camp_desc_he: req.body.camp_desc_he,
+            camp_desc_en: req.body.camp_desc_en,
+            // status: req.body.camp_status,
+            type: req.body.type,
+            facebook_page_url: req.body.facebook_page_url,
+            contact_person_name: req.body.contact_person_name,
+            contact_person_email: req.body.contact_person_email,
+            contact_person_phone: req.body.contact_person_phone,
+            accept_families: req.body.accept_families,
+            camp_activity_time: req.body.camp_activity_time,
+            child_friendly: req.body.child_friendly,
+            // noise_level: req.body.noise_level,
+            support_art: req.body.support_art,
+        };
+
+        if (isNew) {
+            data.created_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+            data.__prototype = prototype;
+        }
+        if (isNew || group_props.isAdmin) {
+            helperService.updateProp(data, req.body, 'camp_name_en');
+            helperService.updateProp(data, req.body, 'camp_name_he');
+        }
+
+        if (group_props.isAdmin) {
+            // var campAddInfoJson = { early_arrival_quota: '' };
+            // if (req.body.camp_early_arrival_quota) {
+            //     if (curCamp) {
+            //         campAddInfoJson = JSON.parse(curCamp.attributes.addinfo_json);
+            //         if (campAddInfoJson === '' || campAddInfoJson === null) {
+            //             campAddInfoJson = { early_arrival_quota: '' };
+            //         }
+            //     }
+            //     campAddInfoJson.early_arrival_quota = req.body.camp_early_arrival_quota;
+            // }
+            // data.addinfo_json = JSON.stringify(campAddInfoJson);
+        }
+        helperService.updateProp(data, req.body, 'noise_level', constants.CAMP_NOISE_LEVELS);
+        // if (req.body.camp_status)
+        helperService.updateForeignProp(data, req.body, 'main_contact_person_id');
+        helperService.updateForeignProp(data, req.body, 'main_contact');
+        helperService.updateForeignProp(data, req.body, 'moop_contact');
+        helperService.updateForeignProp(data, req.body, 'safety_contact');
+
+        let camp_statuses = ['open', 'closed'];
+        if (group_props.isAdmin) {
+            camp_statuses = constants.CAMP_STATUSES; // to include inactive
+            helperService.updateProp(data, req.body, 'public_activity_area_sqm');
+            helperService.updateProp(data, req.body, 'public_activity_area_desc');
+            helperService.updateProp(data, req.body, 'location_comments');
+            helperService.updateProp(data, req.body, 'camp_location_street');
+            helperService.updateProp(data, req.body, 'camp_location_street_time');
+            helperService.updateProp(data, req.body, 'camp_location_area');
+            helperService.updateProp(data, req.body, 'pre_sale_tickets_quota');
+        }
+        if (camp_statuses.indexOf(req.body.camp_status) > -1) {
+            data.status = req.body.camp_status;
+        }
+        // saving the data!
+        return Camp.forge({ id: req.params.id })
+            .fetch({ withRelated: ['users_groups'] })
+            .then((camp) => {
+                return camp.save(data).then(camp => {
+                    if (group_props.isAdmin) {
+                        if (req.body.entrance_quota !== 'undefined' && req.body.entrance_quota !== '') {
+                            return camp.relations.users_groups.save({ entrance_quota: parseInt(req.body.entrance_quota) });
+                        } else return camp;
+                    }
+                });
+
+            })
+    }
+
+    /**
+     * Formely known as __camps_create_camp_obj
+     * @param req
+     * @param isNew
+     * @param curCamp
+     * @returns {{__prototype: string, event_id: *, updated_at: string, camp_desc_he: (*|string|string|string|null|string), camp_desc_en: (*|string|string|string|string|string), type, facebook_page_url: (*|string|null|CAMP_MOCK_SCHEMA.STRUCTURE.facebook_page_url|{faker}), contact_person_name: *, contact_person_email: (*|string|string|string|string|string), contact_person_phone: (*|CAMP_MOCK_SCHEMA.STRUCTURE.contact_person_phone|{function}), accept_families: (*|number|null|CAMP_MOCK_SCHEMA.STRUCTURE.accept_families|{faker}), camp_activity_time: (*|CAMP_MOCK_SCHEMA.STRUCTURE.camp_activity_time|{values}|string|string|string), child_friendly: (*|number|null|CAMP_MOCK_SCHEMA.STRUCTURE.child_friendly|{faker}), support_art: (*|CAMP_MOCK_SCHEMA.STRUCTURE.support_art|{faker}|number|null)}}
+     */
+    createCampObject(req, isNew, curCamp) {
+        const data = {
+            __prototype: constants.prototype_camps.THEME_CAMP.id,
+            event_id: req.user.currentEventId,
+            // for update or insert, need to merge with create to be the same call
+            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            camp_desc_he: req.body.camp_desc_he,
+            camp_desc_en: req.body.camp_desc_en,
+            // status: req.body.camp_status,
+            type: req.body.type,
+            facebook_page_url: req.body.facebook_page_url,
+            contact_person_name: req.body.contact_person_name,
+            contact_person_email: req.body.contact_person_email,
+            contact_person_phone: req.body.contact_person_phone,
+            accept_families: req.body.accept_families,
+            camp_activity_time: req.body.camp_activity_time,
+            child_friendly: req.body.child_friendly,
+            // noise_level: req.body.noise_level,
+            support_art: req.body.support_art,
+        };
+        if (isNew) {
+            data.created_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+        }
+        if (isNew || req.user.isAdmin) {
+            helperService.updateProp(data, req.body, 'camp_name_en');
+            helperService.updateProp(data, req.body, 'camp_name_he');
+        }
+
+        if (req.user.isAdmin) {
+            let campAddInfoJson = { early_arrival_quota: '' };
+            if (req.body.camp_early_arrival_quota) {
+                if (curCamp) {
+                    campAddInfoJson = JSON.parse(curCamp.attributes.addinfo_json);
+                    if (campAddInfoJson === '' || campAddInfoJson === null) {
+                        campAddInfoJson = { early_arrival_quota: '' };
+                    }
+                }
+                campAddInfoJson.early_arrival_quota = req.body.camp_early_arrival_quota;
+            }
+            data.addinfo_json = JSON.stringify(campAddInfoJson);
+        }
+        helperService.updateProp(data, req.body, 'noise_level', constants.CAMP_NOISE_LEVELS);
+        // if (req.body.camp_status)
+        helperService.updateForeignProp(data, req.body, 'main_contact_person_id');
+        helperService.updateForeignProp(data, req.body, 'main_contact');
+        helperService.updateForeignProp(data, req.body, 'moop_contact');
+        helperService.updateForeignProp(data, req.body, 'safety_contact');
+
+        let camp_statuses = ['open', 'closed'];
+        if (req.user.isAdmin) {
+            camp_statuses = constants.CAMP_STATUSES;
+            helperService.updateProp(data, req.body, 'public_activity_area_sqm');
+            helperService.updateProp(data, req.body, 'public_activity_area_desc');
+            helperService.updateProp(data, req.body, 'location_comments');
+            helperService.updateProp(data, req.body, 'camp_location_street');
+            helperService.updateProp(data, req.body, 'camp_location_street_time');
+            helperService.updateProp(data, req.body, 'camp_location_area');
+        }
+        if (camp_statuses.indexOf(req.body.camp_status) > -1) {
+            data.status = req.body.camp_status;
+        }
+        return data;
+    }
+
+    canEditCampFile(user) {
+        // If the user is an Admin, he can edit files without constraints
+        if (user.isAdmin) return true;
+        const now = new Date();
+        const startDate = new Date(camp_files_config.upload_start_date);
+        const endDate = new Date(camp_files_config.upload_end_date);
+        return user.isCampManager && now > startDate && now < endDate;
+    }
+
+    prepareCampFiles(camp, user) {
+        return camp.relations.files.models.map((file) => {
+            return {
+                file_id: file.attributes.file_id,
+                file_path: file.attributes.file_path,
+                canEdit: this.canEditCampFile(user)
+            }
+        });
+    }
+
+    retrieveDataFor(group_proto, user) {
+        return Camp.query((query) => {
+            query
+                .select('camps.*', 'users_groups.entrance_quota')
+                .leftJoin('users_groups', 'camps.id', 'users_groups.group_id')
+                .where({ 'camps.event_id': user.currentEventId , 'camps.__prototype': group_proto })
+        })
+            .orderBy('camp_name_en', 'ASC')
+            .fetchAll()
+            .then(camp => {
+                if (!_.isUndefined(camp)) {
+                    return {
+                        status: 200,
+                        data: {
+                            camps: camp.toJSON()
+                        }
+                    };
+                } else {
+                    return {
+                        status: 404,
+                        data: { data: { message: 'Not found' } }
+                    };
+                }
+            }).catch(err => {
+                return {
+                    status: 500,
+                    data: {
+                        error: true,
+                        data: { message: err.message }
+                    }
+                };
+            });
     }
 }
 

@@ -1,5 +1,9 @@
-const usersController = require('./users.controller');
+const usersController = require('./users.controller'),
+    campsController = require('./users.controller');
+    eventsController = require('./events.controller.controller');
 
 module.exports = {
-    usersController
+    usersController,
+    campsController,
+    eventsController
 };

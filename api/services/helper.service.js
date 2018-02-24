@@ -20,6 +20,15 @@ class HelperService {
         )
     };
 
+    customError(status, msg, res, isError) {
+        return res.status(status).json({
+            error: isError,
+            data: {
+                message: msg
+            }
+        });
+    }
+
     errorMiddleware(routeName) {
         /**
          * Return error middleware to be used in each router
@@ -35,6 +44,36 @@ class HelperService {
         };
         return errorCatcher();
     };
+
+    updateProp(item, origin, propName, options) {
+        /**
+         * Add property to item.
+         */
+        if (origin[propName] !== undefined) {
+            let value = origin[propName];
+            if (!options || (options instanceof Array && options.indexOf(value) > -1)) {
+                item[propName] = value;
+            }
+            return value;
+        }
+    }
+
+    updateForeignProp(item, origin, propName) {
+        /**
+         * Add foreign key to origin. (parse int)
+         */
+        if (parseInt(origin[propName]) > 0) {
+            item[propName] = origin[propName];
+        }
+    }
+
+    getFields(input, field) {
+        const output = [];
+        for (let i = 0; i < input.length; ++i) {
+            output.push(input[i][field]);
+        }
+        return output;
+    }
 
 }
 
