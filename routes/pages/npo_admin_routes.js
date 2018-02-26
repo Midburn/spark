@@ -23,8 +23,7 @@ let getNextMemberNumber = () => {
     })
 };
 
-// TODO protect by npm_admin role
-router.get('/', userRole.isLoggedIn(), function (req, res) {
+router.get('/', userRole.isAdmin(), function (req, res) {
     res.render('pages/npo/admin');
 });
 

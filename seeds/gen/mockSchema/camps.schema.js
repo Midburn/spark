@@ -1,11 +1,15 @@
-const EVENT_MOCK_SCHEMA = require('./events.schema');
-const USER_MOCK_SCHEMA = require('./users.schema');
-const constants = require('../../../models/constants');
+const EVENT_MOCK_SCHEMA = require('./events.schema'),
+    USER_MOCK_SCHEMA = require('./users.schema'),
+    constants = require('../../../models/constants'),
+    Camp = require('../../../models/camp').Camp;
+
 /*
 See https://github.com/danibram/mocker-data-generator for data-types and usage.
  */
 const CAMP_MOCK_SCHEMA = {
     NAME: 'camp',
+    PK: 'id',
+    MODEL: Camp,
     STRUCTURE: {
         id: {
             incrementalId: 1
@@ -34,10 +38,14 @@ const CAMP_MOCK_SCHEMA = {
             }
         },
         camp_desc_he: {
-            faker: 'lorem.sentence'
+            function:  function () {
+                return this.faker.lorem.sentence().slice(0, 49);
+            }
         },
         camp_desc_en: {
-            faker: 'lorem.sentence'
+            function:  function () {
+                return this.faker.lorem.sentence().slice(0, 49);
+            }
         },
         type: {
             values: constants.CAMP_TYPES
@@ -78,18 +86,27 @@ const CAMP_MOCK_SCHEMA = {
         camp_location_area: {
             faker: 'lorem.sentence'
         },
+        camp_contact: {
+            // This is used to keep same contact as main contact
+            hasOne: USER_MOCK_SCHEMA.NAME,
+            get: USER_MOCK_SCHEMA.PK,
+            virtual: true
+        },
         // addinfo_json: {},
         main_contact: {
-            hasOne: USER_MOCK_SCHEMA.NAME,
-            get: USER_MOCK_SCHEMA.PK //this populate the field with one id of a random user
+            function: function() {
+                return this.object.camp_contact;
+            }
         },
         moop_contact: {
-            hasOne: USER_MOCK_SCHEMA.NAME,
-            get: USER_MOCK_SCHEMA.PK //this populate the field with one id of a random user
+            function: function() {
+                return this.object.camp_contact;
+            }
         },
         safety_contact: {
-            hasOne: USER_MOCK_SCHEMA.NAME,
-            get: USER_MOCK_SCHEMA.PK //this populate the field with one id of a random user
+            function: function() {
+                return this.object.camp_contact;
+            }
         },
         accept_families: {
             faker: 'random.boolean'
@@ -100,20 +117,22 @@ const CAMP_MOCK_SCHEMA = {
         contact_person_phone: {
             function: function() {
                 const mainId = this.object.main_contact;
-                return this.db.user[mainId].cell_phone
+                const user = this.db.user.find(user => user.user_id === mainId);
+                return user.cell_phone
             }
         },
         contact_person_email: {
             function: function() {
                 const mainId = this.object.main_contact;
-                return this.db.user[mainId].email
+                const user = this.db.user.find(user => user.user_id === mainId);
+                return user.email
             }
         },
         contact_person_id: {
-            hasOne: USER_MOCK_SCHEMA.NAME,
-            get: USER_MOCK_SCHEMA.PK
-        },
-        // pre_sale_tickets_quota: {}
+            function: function() {
+                return this.object.camp_contact;
+            }
+        }
     }
 };
 
