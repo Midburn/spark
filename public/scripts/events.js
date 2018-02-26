@@ -118,7 +118,7 @@ $(function () {
 //     }
 // }
 
-function extractCampData() {
+function extractEventsCampData() {
     var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var type = fetchAllCheckboxValues('camp_type');
 
