@@ -1,19 +1,25 @@
+const Event = require('../../../models/event').Event;
 /*
 See https://github.com/danibram/mocker-data-generator for data-types and usage.
  */
 const EVENT_MOCK_SCHEMA = {
     NAME: 'event',
     PK: 'event_id',
+    MODEL: Event,
     STRUCTURE: {
+        id: {
+            virtual: true,
+            incrementalId: 2017
+        },
         event_id: {
             function: function() {
-                const year = this.faker.date.future().getFullYear();
+                const year = this.object.id;
                 return `MIDBURN${year}`
             }
         },
         name: {
             function: function() {
-                const year = this.faker.date.future().getFullYear();
+                const year = this.object.id;
                 return `Midbrun ${year} מידברן`
             }
         },
@@ -22,6 +28,11 @@ const EVENT_MOCK_SCHEMA = {
         },
         gate_status: {
             values: ['regular']
+        },
+        addinfo_json: {
+            function: function() {
+                return `{"created_at": "${this.faker.date.past()}"}`;
+            }
         }
     }
 };
