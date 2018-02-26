@@ -3,15 +3,15 @@ var router = express.Router({
     mergeParams: true
 });
 
-var knex = require('../libs/db').knex;
-var userRole = require('../libs/user_role');
+var knex = require('../../libs/db').knex;
+var userRole = require('../../libs/user_role');
 var i18next = require('i18next');
-var mail = require('../libs/mail');
-var log = require('../libs/logger.js')(module);
+var mail = require('../../libs/mail');
+var log = require('../../libs/logger.js')(module);
 
-var User = require('../models/user').User;
-var NpoMember = require('../models/npo_member').NpoMember;
-var NpoStatus = require('../models/npo_member').NPO_STATUS;
+var User = require('../../models/user').User;
+var NpoMember = require('../../models/npo_member').NpoMember;
+var NpoStatus = require('../../models/npo_member').NPO_STATUS;
 
 var config = require('config');
 var npoConfig = config.get('npo');
@@ -23,8 +23,7 @@ let getNextMemberNumber = () => {
     })
 };
 
-// TODO protect by npm_admin role
-router.get('/', userRole.isLoggedIn(), function (req, res) {
+router.get('/', userRole.isAdmin(), function (req, res) {
     res.render('pages/npo/admin');
 });
 
