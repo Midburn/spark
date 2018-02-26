@@ -77,7 +77,10 @@ class MainRouter {
         this.router.route('/volunteers/profiles/').post(authController.getToken);
     }
     initMiddlewares() {
-        this.router.use(userRole.isLoggedIn());
+        /**
+         * Don't use auth middleware on this entire route
+         * Because it will catch 404 and all other (it's on the main route)
+         */
     }
 
     initRoutes() {
@@ -89,12 +92,12 @@ class MainRouter {
          * API: (GET) return camps list which are open to new members
          * request => /camps_open
          */
-        this.router.route('/camps_open').get(campsController.getOpenCamps);
+        this.router.route('/camps_open').get(userRole.isLoggedIn(), campsController.getOpenCamps);
         /**
          * TODO - this should move under users prefix - who uses these api's
          * Get users groups
          */
-        this.router.route('/my_groups').get(userController.getUsersGroups);
+        this.router.route('/my_groups').get(userRole.isLoggedIn(), userController.getUsersGroups);
     }
 }
 
