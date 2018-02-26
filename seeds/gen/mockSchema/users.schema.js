@@ -1,12 +1,20 @@
+const User = require('../../../models/user').User;
 /*
 See https://github.com/danibram/mocker-data-generator for data-types and usage.
  */
 const USER_MOCK_SCHEMA = {
     PK: 'user_id',
     NAME: 'user',
+    MODEL: User,
     STRUCTURE: {
-        user_id: {
+        id: {
+            virtual: true,
             incrementalId: 1
+        },
+        user_id: {
+            function: function () {
+                return this.object.id;
+            }
         },
         created_at : {
             faker: 'date.past'
@@ -14,30 +22,93 @@ const USER_MOCK_SCHEMA = {
         updated_at : {
             faker: 'date.past'
         },
-        // Leave name as null for now
-        // name : {
-        //     faker:
-        // },
         email : {
-            faker: 'internet.email'
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'a'
+                }
+                if (this.object.user_id === 2) {
+                    return 'b'
+                }
+                if (this.object.user_id === 3) {
+                    return 'c'
+                }
+                return this.faker.internet.email();
+            }
         },
         password : {
-            faker: 'internet.password'
+            static: 'a'
         },
         enabled : {
-            faker: 'random.boolean'
+            function: function() {
+                if (this.object.user_id === 1 ||
+                    this.object.user_id === 2 ||
+                    this.object.user_id === 3) {
+                    return true;
+                }
+                return this.faker.random.boolean();
+            }
         },
         validated : {
-            faker: 'random.boolean'
+            function: function() {
+                if (this.object.user_id === 1 ||
+                    this.object.user_id === 2 ||
+                    this.object.user_id === 3) {
+                    return true;
+                }
+                return this.faker.random.boolean();
+            }
+        },
+        random_role : {
+            values: ['admin', 'camp_manager', ''],
+            virtual: true
         },
         roles : {
-            values: ['admin', 'camp_manager', '']
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'admin';
+                }
+                if (this.object.user_id === 2) {
+                    return 'camp_manager';
+                }
+                if (this.object.user_id === 3) {
+                    return '';
+                }
+                return this.object.random_role;
+            }
         },
         first_name : {
-            faker: 'name.firstName'
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'Admin';
+                }
+                if (this.object.user_id === 2) {
+                    return 'Camp';
+                }
+                if (this.object.user_id === 3) {
+                    return 'Normal';
+                }
+                return this.faker.name.firstName();
+            }
         },
         last_name : {
-            faker: 'name.lastName'
+            function: function() {
+                if (this.object.user_id === 1) {
+                    return 'McAdmin';
+                }
+                if (this.object.user_id === 2) {
+                    return 'Manager';
+                }
+                if (this.object.user_id === 3) {
+                    return 'User';
+                }
+                return this.faker.name.lastName();
+            }
+        },
+        name : {
+            function: function() {
+                return `${this.object.first_name} ${this.object.last_name}`;
+            }
         },
         gender : {
             values: ['male', 'female', 'other']
