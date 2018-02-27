@@ -102,7 +102,7 @@ It is usually helpful for developers to work with some data in the database. Use
 **IMPORTANT**: Seeding will drop your current data.
 
 ```shell
-knex seed:run
+npm run seed
 ```
 
 You can then login into the system with the user `admin@midburn.org` and password `admin`.
