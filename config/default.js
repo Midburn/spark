@@ -136,13 +136,15 @@ exports.profiles_api = {
  */
 let aws_config = {};
 if (process.env.NODE_ENV !== 'production') { // Dev. or staging
-    aws_config.defualt_region = 'eu-west-1';
+    aws_config.defualt_region = 'eu-west-1'
     aws_config.buckets = {
         camp_file_upload: 'midburn-spark-camp-files',
     }
+    aws_config.presignedUrlExpireSeconds = 60 * 20
 } else { // Prod.
-    aws_config.region = 'eu-west-1';
-    aws_config.camp_file_upload_bucket = 'midburn-spark-camp-files-prod';
+    aws_config.region = 'eu-west-1'
+    aws_config.camp_file_upload_bucket = 'midburn-spark-camp-files-prod'
+    aws_config.presignedUrlExpireSeconds = 60 * 5
 }
 exports.aws_config = aws_config
 
