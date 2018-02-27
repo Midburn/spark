@@ -74,7 +74,7 @@ block content
                                     h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{main_contact.name}
                                     h6 #{t('camps:camps.phone')}:
-                                        span.contact_person_phone #{main_contact.cell_phone}
+                                        span.contact_person_phone #{main_contact.cell_phone ? main_contact.cell_phone : camp.contact_person_phone}
                                     h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{main_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.main_contact}')=t('camps:camps.more_info')
@@ -88,7 +88,7 @@ block content
                                     h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{moop_contact.name}
                                     h6 #{t('camps:camps.phone')}:
-                                        span.contact_person_phone #{moop_contact.cell_phone}
+                                        span.contact_person_phone #{moop_contact.cell_phone ? moop_contact.cell_phone : camp.contact_person_phone}
                                     h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{moop_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.moop_contact}')=t('camps:camps.more_info')
@@ -102,7 +102,7 @@ block content
                                     h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{safety_contact.name}
                                     h6 #{t('camps:camps.phone')}:
-                                        span.contact_person_phone #{safety_contact.cell_phone}
+                                        span.contact_person_phone #{safety_contact.cell_phone ? safety_contact.cell_phone : camp.contact_person_phone}
                                     h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{safety_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
