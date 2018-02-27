@@ -139,7 +139,7 @@ let aws_config = {
     buckets: {
         camp_file_upload: process.env.SPARK_CAMP_FILES_BUCKET
     },
-    presignedUrlExpireSeconds: process.env.SPARK_CAMP_FILES_PRESIGN_URL_EXPIRE_SECONDS
+    presignedUrlExpireSeconds: parseInt(process.env.SPARK_CAMP_FILES_PRESIGN_URL_EXPIRE_SECONDS)
 };
 exports.aws_config = aws_config
 
