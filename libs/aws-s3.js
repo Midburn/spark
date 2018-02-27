@@ -5,6 +5,8 @@ awsConfig = config.get('aws_config');
 class s3Client {
 
     constructor() {
+        const credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
+        AWS.config.credentials = credentials;
         this.s3 = new AWS.S3({region: awsConfig.defualt_region});
     }
 
