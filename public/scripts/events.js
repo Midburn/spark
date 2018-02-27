@@ -118,7 +118,7 @@ $(function () {
 //     }
 // }
 
-function extractCampData() {
+function extractEventsCampData() {
     var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var type = fetchAllCheckboxValues('camp_type');
 
@@ -159,7 +159,7 @@ function extractCampData() {
  */
 $('#camp_edit_save').click(function () {
     var camp_id = $('#camp_edit_camp_id').val();
-    var camp_data = extractCampData();
+    var camp_data = extractEventsCampData();
     var lang = document.getElementById('meta__lang').value;
 
     $.ajax({
