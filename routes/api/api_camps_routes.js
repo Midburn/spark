@@ -11,7 +11,7 @@ mail = require('../../libs/mail'),
 mailConfig = config.get('mail'),
 csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
-camp_files_config = config.get('camp_files_config'),
+//camp_files_config = config.get('camp_files_config'),
 LOG = require('../../libs/logger')(module),
 S3 = require('../../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
@@ -649,19 +649,20 @@ module.exports = (app, passport) => {
 
     const __can_edit_camp_file = (user) => {
         // If the user is an Admin, he can edit files without constraints
-        if (user.isAdmin) return true;
+        // if (user.isAdmin || user.isCampManager) return true;
 
-        const now = new Date()
-        const startDate = new Date(camp_files_config.upload_start_date)
-        const endDate = new Date(camp_files_config.upload_end_date)
+        //const now = new Date()
+        //const startDate = new Date(camp_files_config.upload_start_date)
+        //const endDate = new Date(camp_files_config.upload_end_date)
 
-        if (user.isCampManager &&
-                now > startDate && now < endDate) {
-            return true
-        }
+        //if (user.isCampManager &&
+        //        now > startDate && now < endDate) {
+        //    return true
+        //}
 
-        return false
+        //return false
 
+        return true;
     }
 
     const __prepare_camp_files = (camp, user) => {
