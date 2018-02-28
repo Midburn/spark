@@ -649,16 +649,16 @@ module.exports = (app, passport) => {
 
     const __can_edit_camp_file = (user) => {
         // If the user is an Admin, he can edit files without constraints
-        if (user.isAdmin) return true;
+        if (user.isAdmin || user.isCampManager) return true;
 
-        const now = new Date()
-        const startDate = new Date(camp_files_config.upload_start_date)
-        const endDate = new Date(camp_files_config.upload_end_date)
+        //const now = new Date()
+        //const startDate = new Date(camp_files_config.upload_start_date)
+        //const endDate = new Date(camp_files_config.upload_end_date)
 
-        if (user.isCampManager &&
-                now > startDate && now < endDate) {
-            return true
-        }
+        //if (user.isCampManager &&
+        //        now > startDate && now < endDate) {
+        //    return true
+        //}
 
         return false
 
