@@ -13,6 +13,7 @@ app.use("/:lng/", require("./pages/camps_routes"));
 
 //TODO map to api in consistant way
 app.use("/api/gate", require("./api/api_gate_routes"));
+app.use("/:lng/camp-files-admin", require('./camp_file_admin_routes'))
 
 function mapApi(app, passport) {
     //TODO: main route api & render are mixed, might need a split
@@ -28,7 +29,7 @@ function mapApi(app, passport) {
     require("./api/v1/camps")(app); // CAMPS PUBLIC API
     require("./api/api_camps_routes")(app, passport);
     require("./api/api_events_routes")(app, passport);
-    require('./api/api_volunteers')(app, passport);        
+    require('./api/api_volunteers')(app, passport);
 }
 
 module.exports = {

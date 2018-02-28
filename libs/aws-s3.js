@@ -62,6 +62,14 @@ class s3Client {
         return this.s3.deleteObject(params).promise()
     }
 
+    listBucket(bucketName, prefix, region = awsConfig.defualt_region) {
+        const params = {
+            Bucket: bucketName,
+            Prefix: prefix
+        }
+        return this.s3.listObjects(params).promise()
+    }
+
     /**
      * This function is for the off chance
      * that we need to use a different region for some reaosn.

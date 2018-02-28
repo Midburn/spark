@@ -6,12 +6,6 @@ angular-animate@1.4.8:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.4.8.tgz#2c388a066d16677aecbebbddaf27a217f7002a57"
 
-"angular-filemanager@https://github.com/joni2back/angular-filemanager.git":
-  version "1.5.1"
-  resolved "https://github.com/joni2back/angular-filemanager.git#efd049f7b9837f674fe62441f50ab232f178a6b6"
-  dependencies:
-    angular "^1.6.7"
-
 angular-sanitize@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.5.0.tgz#7b9a01dd6b5736d0d5872933f03d1cfb9c188d2a"
