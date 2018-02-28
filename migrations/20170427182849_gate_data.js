@@ -16,6 +16,24 @@ exports.up = function (knex, Promise) {
             gate_code: "171819",
             name: "Midburn 2017 מידברן",
             gate_status: "early_arrival"
+        }),
+        knex('events').insert({
+            event_id: "MIDBURN2018",
+            gate_code: "171819",
+            name: "Midburn 2018 מידברן",
+            gate_status: "early_arrival"
+        }),
+        knex('events').insert({
+            event_id: "MIDBURN2019",
+            gate_code: "171819",
+            name: "Midburn 2019 מידברן",
+            gate_status: "early_arrival"
+        }),
+        knex('events').insert({
+            event_id: "MIDBURN2020",
+            gate_code: "171819",
+            name: "Midburn 2020 מידברן",
+            gate_status: "early_arrival"
         })
     ]);
 };
