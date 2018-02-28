@@ -34,4 +34,14 @@ router.post('/', userRole.isLoggedIn(), userRole.isAdmin(), async (req, res) => 
     }
 })
 
+router.get('/zip', userRole.isLoggedIn(), userRole.isAdmin(), (req, res) => {
+    const s3Client = new S3()
+
+    return s3Client.streamZipDataTo({
+        bucket: awsConfig.buckets.camp_file_upload,
+        prefix: '',
+        pipe: res
+    })
+})
+
 module.exports = router

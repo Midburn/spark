@@ -37,6 +37,7 @@
     "//hot": "echo npm run hot - will open a hot reload browser updating on changes in view & public folders"
   },
   "dependencies": {
+    "archiver": "^2.1.1",
     "async": "^2.1.4",
     "aws-sdk": "^2.157.0",
     "babel-core": "^6.21.0",
