@@ -1,10 +1,10 @@
-<ul class="nav nav-pills nav-stacked">
-    <li ng-if="$ctrl.currentPrefix.length > 0"><a href="#" ng-click="$ctrl.home()"><i class="fa fa-home"></i> /</a></li>
-    <li ng-if="$ctrl.currentPrefix.length > 0"><a href="#" ng-click="$ctrl.close()"><i class="fa fa-arrow-up"></i> ../</a></li>
-    <li ng-repeat="obj in ($ctrl.files | filter:{type: 'folder'}:true)">
-        <a href="#" ng-click="$ctrl.open(obj.Key)"><i class="fa fa-folder fa-fw"></i> {{obj.Key}}</a>
+<ul class="nav nav-pills nav-stacked" dir="ltr">
+    <li ng-if="currentPrefix.length > 0"><a href="#" ng-click="home()"><i class="fa fa-home"></i> /</a></li>
+    <li ng-if="currentPrefix.length > 0"><a href="#" ng-click="close()"><i class="fa fa-arrow-up"></i> ../</a></li>
+    <li ng-repeat="obj in (files | filter:{type: 'folder'}:true)">
+        <a href="#" ng-click="open(obj.Key)"><i class="fa fa-folder fa-fw"></i> {{obj.Key}}</a>
     </li>
-    <li ng-repeat="obj in ($ctrl.files | filter:{type: 'file'}:true)">
+    <li ng-repeat="obj in (files | filter:{type: 'file'}:true)">
         <a href="{{obj.url}}"><i class="fa fa-file fa-fw"></i> {{obj.Key}} </a>
     </li>
 </ul>
