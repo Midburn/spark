@@ -6,6 +6,7 @@ const constants = require('../../../models/constants'),
     config = require('config'),
     camp_files_config = config.get('camp_files_config'),
     usersService = require('./users.service'),
+    S3 = require('../../libs/aws-s3'),
     helperService = require('./helper.service');
 
 class CampsService {
@@ -379,18 +380,21 @@ class CampsService {
 
     canEditCampFile(user) {
         // If the user is an Admin, he can edit files without constraints
-        if (user.isAdmin) return true;
-        const now = new Date();
-        const startDate = new Date(camp_files_config.upload_start_date);
-        const endDate = new Date(camp_files_config.upload_end_date);
-        return user.isCampManager && now > startDate && now < endDate;
+        // if (user.isAdmin) return true;
+        // const now = new Date();
+        // const startDate = new Date(camp_files_config.upload_start_date);
+        // const endDate = new Date(camp_files_config.upload_end_date);
+        // return user.isCampManager && now > startDate && now < endDate;
+        return true
     }
 
     prepareCampFiles(camp, user) {
+        const s3Client = new S3();
         return camp.relations.files.models.map((file) => {
             return {
                 file_id: file.attributes.file_id,
-                file_path: file.attributes.file_path,
+                display_name: file.attributes.file_path.split("/")[1],
+                file_path: s3Client.getPresignedUrl(file.attributes.file_path, awsConfig.buckets.camp_file_upload),
                 canEdit: this.canEditCampFile(user)
             }
         });
