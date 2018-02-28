@@ -78,7 +78,7 @@ Create and populate the DB
 ```
 echo 'CREATE DATABASE IF NOT EXISTS spark;' | mysql --host=localhost --protocol=tcp --user=root --password=123456
 yarn run knex migrate:latest
-yarn run knex seed:run
+npm run seed
 ```
 
 Start the spark

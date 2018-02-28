@@ -49,3 +49,34 @@ update camps set contact_person_id=main_contact, moop_contact=main_contact, safe
 ```
 update camps set status='open' where event_id='MIDBURN2018';
 ```
+
+
+## Importing additional camps
+
+* edit `camps_2018` table and add `import_group` column with default value of `1`
+* prepare import csv file for the additional camps with the additional `import_group` column with value of `2`
+* import the additional camps using adminer
+* continue import process, but add ` and import_group=2` to all where queries of `camps_2018` table:
+
+```
+update camps_2018 set camp_leader_email=trim(camp_leader_email) where import_group=2;
+
+insert into users (name, email, roles)
+select camp_leader_name, camp_leader_email, 'camp_manager' 
+from camps_2018 where camp_leader_email not in (select email from users) and import_group=2;
+
+insert into camps (event_id, __prototype, camp_name_he, camp_name_en, main_contact)
+select 'MIDBURN2018', 'theme_camp', camps_2018.camp_name_he, camps_2018.camp_name_en, users.user_id
+from camps_2018, users
+where camps_2018.camp_leader_email = users.email and camps_2018.import_group=2;
+
+update users set camp_id=(select id from camps where main_contact=users.user_id and event_id='MIDBURN2018') 
+where email in (select camp_leader_email from camps_2018 where import_group=2);
+
+insert into camp_members (camp_id, user_id, status)
+select id, main_contact, 'approved_mgr' from camps where event_id='MIDBURN2018' and camp_name_he in (select camp_name_he from camps_2018 where import_group=2);
+
+update camps set contact_person_id=main_contact, moop_contact=main_contact, safety_contact=main_contact where event_id='MIDBURN2018' and camp_name_he in (select camp_name_he from camps_2018 where import_group=2);
+
+update camps set status='open' where event_id='MIDBURN2018' and camp_name_he in (select camp_name_he from camps_2018 where import_group=2);
+```

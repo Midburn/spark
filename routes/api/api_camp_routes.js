@@ -1,19 +1,19 @@
 const common = require('../../libs/common').common,
-    _ = require('lodash'),
-    User = require('../../models/user').User,
-    Camp = require('../../models/camp').Camp,
-    CampFile = require('../../models/camp').CampFile,
-    constants = require('../../models/constants.js'),
-    knex = require('../../libs/db').knex,
-    userRole = require('../../libs/user_role'),
-    config = require('config'),
-    mail = require('../../libs/mail'),
-    mailConfig = config.get('mail'),
-    csv = require('json2csv'),
-    awsConfig = config.get('aws_config'),
-    camp_files_config = config.get('camp_files_config'),
-    LOG = require('../../libs/logger')(module),
-    S3 = require('../../libs/aws-s3');
+_ = require('lodash'),
+User = require('../../models/user').User,
+Camp = require('../../models/camp').Camp,
+CampFile = require('../../models/camp').CampFile,
+constants = require('../../models/constants.js'),
+knex = require('../../libs/db').knex,
+userRole = require('../../libs/user_role'),
+config = require('config'),
+mail = require('../../libs/mail'),
+mailConfig = config.get('mail'),
+csv = require('json2csv'),
+awsConfig = config.get('aws_config'),
+//camp_files_config = config.get('camp_files_config'),
+LOG = require('../../libs/logger')(module),
+S3 = require('../../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
 
 const emailDeliver = (recipient, subject, template, props) => {
@@ -166,44 +166,44 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 
                 // select the addinfo_json column from the camp member table
                 knex(constants.CAMP_MEMBERS_TABLE_NAME)
-                    .select('user_id', `${constants.CAMP_MEMBERS_TABLE_NAME}.addinfo_json`, `${constants.EVENTS_TABLE_NAME}.addinfo_json as eventInfo`)
-                    .rightJoin(constants.EVENTS_TABLE_NAME,`${constants.EVENTS_TABLE_NAME}.event_id`,`${constants.EVENTS_TABLE_NAME}.event_id`)
-                    .where({
-                        event_id: current_event_id,
-                        camp_id : userData.camp_id,
-                        user_id : userData.user_id
-                    })
-                    .then(resp => {
-                        // checking that update of the pre sale ticket allocation is inside the valid time period
-                        const eventInfo = JSON.parse(resp[0].eventInfo)
-                        const allocationDates = {
-                            start : new Date(eventInfo.appreciation_tickets_allocation_start),
-                            end : new Date(eventInfo.appreciation_tickets_allocation_end)
-                        }
+                .select('user_id', `${constants.CAMP_MEMBERS_TABLE_NAME}.addinfo_json`, `${constants.EVENTS_TABLE_NAME}.addinfo_json as eventInfo`)
+                .rightJoin(constants.EVENTS_TABLE_NAME,`${constants.EVENTS_TABLE_NAME}.event_id`,`${constants.EVENTS_TABLE_NAME}.event_id`)
+                .where({
+                    event_id: current_event_id,
+                    camp_id : userData.camp_id,
+                    user_id : userData.user_id
+                })
+                .then(resp => {
+                    // checking that update of the pre sale ticket allocation is inside the valid time period
+                    const eventInfo = JSON.parse(resp[0].eventInfo)
+                    const allocationDates = {
+                        start : new Date(eventInfo.appreciation_tickets_allocation_start),
+                        end : new Date(eventInfo.appreciation_tickets_allocation_end)
+                    }
 
-                        let jsonInfo;
-                        try {
-                            //pass the response to the process method
-                            jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
-                        } catch (err) {
-                            res.status(500);
-                            throw new Error(res.json({error: true, data: { message: err.message }}));
-                        }
+                    let jsonInfo;
+                    try {
+                        //pass the response to the process method
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
+                    } catch (err) {
+                        res.status(500);
+                        throw new Error(res.json({error: true, data: { message: err.message }}));
+                    }
 
-                        //update the table with the new value of the json info
-                        //on success go to _after_update callback
-                        knex(constants.CAMP_MEMBERS_TABLE_NAME).update({addinfo_json : jsonInfo})
-                            .where({
-                                camp_id : userData.camp_id,
-                                user_id : userData.user_id
-                            })
-                            .then(_after_update).catch((e) => {
-                            console.log(e);
+                    //update the table with the new value of the json info
+                    //on success go to _after_update callback
+                    knex(constants.CAMP_MEMBERS_TABLE_NAME).update({addinfo_json : jsonInfo})
+                        .where({
+                            camp_id : userData.camp_id,
+                            user_id : userData.user_id
                         })
-                    })
-                    .catch((e) => {
+                        .then(_after_update).catch((e) => {
                         console.log(e);
                     })
+                })
+                .catch((e) => {
+                    console.log(e);
+                })
             }
             else if (new_status) {
                 var data = {
@@ -251,7 +251,7 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
         const isValidAllocationDate = start < now && now < end;
         //check if the time of the pre sale is on
         if (isAdmin === false && !isValidAllocationDate) {
-            throw new Error("PreSale Tickes selection is currently closed");
+                throw new Error("PreSale Tickes selection is currently closed");
         }
         //if the user is not approved yet in the
         //reject the reuest
@@ -524,9 +524,9 @@ module.exports = (app, passport) => {
     }
 
     /**
-     * API: (POST) create camp
-     * request => /camps/new
-     */
+      * API: (POST) create camp
+      * request => /camps/new
+      */
     app.post('/camps/new',
         [userRole.isLoggedIn(), userRole.isAllowNewCamp()],
         (req, res) => {
@@ -542,9 +542,9 @@ module.exports = (app, passport) => {
             });
         });
     /**
-     * API: (PUT) edit camp
-     * request => /camps/1/edit
-     */
+       * API: (PUT) edit camp
+       * request => /camps/1/edit
+       */
     app.put('/camps/:id/edit', userRole.isLoggedIn(), (req, res) => {
         Camp
             .forge({id: req.params.id , event_id: req.user.currentEventId})
@@ -554,32 +554,32 @@ module.exports = (app, passport) => {
                     group_props = camp.parsePrototype(req.user);
                     if (camp.isCampManager(req.user.attributes.user_id) || group_props.isAdmin) {
                         __camps_save(req, false, camp)
-                        // Camp.forge({ id: req.params.id }).fetch().then((camp) => {
-                        // camp.save(__camps_create_camp_obj(req, false, camp))
+                            // Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+                            // camp.save(__camps_create_camp_obj(req, false, camp))
                             .then(() => {
                                 res.json({ error: false, status: 'Camp updated' });
                                 // });
                             }).catch((err) => {
-                            res.status(500).json({
-                                error: true,
-                                data: {
-                                    message: err.message
-                                }
+                                res.status(500).json({
+                                    error: true,
+                                    data: {
+                                        message: err.message
+                                    }
+                                });
                             });
-                        });
                         // });
                     } else {
                         res.status(401).json({ error: true, status: 'Cannot update camp' });
                     }
                 });
             }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
-                }
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
-        });
     });
 
     // PUBLISH
@@ -649,31 +649,34 @@ module.exports = (app, passport) => {
 
     const __can_edit_camp_file = (user) => {
         // If the user is an Admin, he can edit files without constraints
-        if (user.isAdmin) return true;
+        // if (user.isAdmin || user.isCampManager) return true;
 
-        const now = new Date()
-        const startDate = new Date(camp_files_config.upload_start_date)
-        const endDate = new Date(camp_files_config.upload_end_date)
+        //const now = new Date()
+        //const startDate = new Date(camp_files_config.upload_start_date)
+        //const endDate = new Date(camp_files_config.upload_end_date)
 
-        if (user.isCampManager &&
-            now > startDate && now < endDate) {
-            return true
-        }
+        //if (user.isCampManager &&
+        //        now > startDate && now < endDate) {
+        //    return true
+        //}
 
-        return false
+        //return false
 
+        return true;
     }
 
     const __prepare_camp_files = (camp, user) => {
+        const s3Client = new S3();
         let campFiles = camp.relations.files.models.map((file) => {
             return {
                 file_id: file.attributes.file_id,
-                file_path: file.attributes.file_path,
+                display_name: file.attributes.file_path.split("/")[1],
+                file_path: s3Client.getPresignedUrl(file.attributes.file_path, awsConfig.buckets.camp_file_upload),
                 canEdit: __can_edit_camp_file(user)
             }
         })
 
-        return campFiles;
+    return campFiles;
 
     }
 
@@ -711,7 +714,7 @@ module.exports = (app, passport) => {
         }
         let fileName = `${camp.attributes.camp_name_en}/${req.files.file.name}`
 
-        let s3Client = new S3();
+        const s3Client = new S3();
         // Upload the file to S3
         try {
             await s3Client.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
@@ -723,9 +726,6 @@ module.exports = (app, passport) => {
             })
         }
 
-        // Get the URL for the file, so we can save to DB
-        let filePath = s3Client.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload)
-
         // Add the file to the camp_files table
         try {
             await new CampFile({
@@ -733,7 +733,7 @@ module.exports = (app, passport) => {
                 updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                 camp_id: camp.attributes.id,
                 uploader_id: req.user.id,
-                file_path: filePath,
+                file_path: fileName,
             }).save()
         } catch (err) {
             LOG.error(err.message);
@@ -772,7 +772,8 @@ module.exports = (app, passport) => {
 
     app.delete('/camps/:camp_id/documents/:doc_id/', userRole.isLoggedIn(), async (req, res) => {
         const camp_id = req.params.camp_id,
-            doc_id = req.params.doc_id
+            doc_id = req.params.doc_id,
+            s3Client = new S3();
 
         if (!__can_edit_camp_file(req.user)) {
             return res.status(403).json({
@@ -799,6 +800,7 @@ module.exports = (app, passport) => {
         })
 
         try {
+            await s3Client.deleteObject(existingFile.attributes.file_path, awsConfig.buckets.camp_file_upload)
             await existingFile.destroy()
         } catch (err) {
             return res.status(500).json({
@@ -922,34 +924,34 @@ module.exports = (app, passport) => {
     const retrieveDataForPresale = () => {
         //the emails of all users with presale tickets
         return knex(constants.USERS_TABLE_NAME).select(constants.USERS_TABLE_NAME+'.email')
-            .innerJoin(constants.CAMP_MEMBERS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.user_id', constants.USERS_TABLE_NAME+'.user_id')
-            .innerJoin(constants.CAMPS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.camp_id', constants.CAMPS_TABLE_NAME+'.id')
-            .whereRaw("camp_members.addinfo_json->'$.pre_sale_ticket'='true'").then(emails => {
-                emails_array = getFields(emails,"email")
-                console.log(emails)
-                console.log(emails_array)
-                if (!_.isUndefined(emails)) {
-                    return {
-                        status: 200,
+        .innerJoin(constants.CAMP_MEMBERS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.user_id', constants.USERS_TABLE_NAME+'.user_id')
+        .innerJoin(constants.CAMPS_TABLE_NAME,constants.CAMP_MEMBERS_TABLE_NAME+'.camp_id', constants.CAMPS_TABLE_NAME+'.id')
+        .whereRaw("camp_members.addinfo_json->'$.pre_sale_ticket'='true'").then(emails => {
+            emails_array = getFields(emails,"email")
+            console.log(emails)
+            console.log(emails_array)
+            if (!_.isUndefined(emails)) {
+                return {
+                    status: 200,
                         data: {
                             emails_array
-                        }
-                    };
-                } else {
-                    return {
-                        status: 404,
-                        data: { data: { message: 'Not found' } }
-                    };
-                }
-            }).catch(err => {
-                return {
-                    status: 500,
-                    data: {
-                        error: true,
-                        data: { message: err.message }
                     }
                 };
-            });
+            } else {
+                return {
+                    status: 404,
+                    data: { data: { message: 'Not found' } }
+                };
+            }
+        }).catch(err => {
+            return {
+                status: 500,
+                data: {
+                    error: true,
+                    data: { message: err.message }
+                }
+            };
+        });
     }
 
     const retrieveDataFor = (group_proto,user) => {
@@ -1020,11 +1022,11 @@ module.exports = (app, passport) => {
 
                 try {
                     var csv_file = csv({ data: result, fields: csv_fields })
-                } catch (err) {
+                  } catch (err) {
                     // Errors are thrown for bad options, or if the data is empty and no fields are provided.
                     // Be sure to provide fields if it is possible that your data array will be empty.
                     console.error(err);
-                }
+                  }
 
                 res.setHeader('Content-Disposition', 'attachment; filename=presaletickets.csv');
                 res.set('Content-Type', 'text/csv');
@@ -1047,19 +1049,19 @@ module.exports = (app, passport) => {
                 .whereIn('web_published', web_published);
         })
             .fetchAll().then((camp) => {
-            if (camp !== null) {
-                res.status(200).json({ camps: camp.toJSON() })
-            } else {
-                res.status(404).json({ data: { message: 'Not found' } })
-            }
-        }).catch((err) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: err.message
+                if (camp !== null) {
+                    res.status(200).json({ camps: camp.toJSON() })
+                } else {
+                    res.status(404).json({ data: { message: 'Not found' } })
                 }
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
             });
-        });
     });
 
     /**
@@ -1157,15 +1159,15 @@ module.exports = (app, passport) => {
                     if (user.attributes.camp) {
                         res.status(200).json({
                             details: // camp,
-                                {
-                                    user_id: user.attributes.user_id,
-                                    camp_id: camp.id,
-                                    status: camp.member_status,
-                                    member_status: camp.member_status,
-                                    member_status_i18n: camp.member_status_i18n,
-                                    camp_name_en: camp.camp_name_en,
-                                    camp_name_he: camp.camp_name_he,
-                                }
+                            {
+                                user_id: user.attributes.user_id,
+                                camp_id: camp.id,
+                                status: camp.member_status,
+                                member_status: camp.member_status,
+                                member_status_i18n: camp.member_status_i18n,
+                                camp_name_en: camp.camp_name_en,
+                                camp_name_he: camp.camp_name_he,
+                            }
                         });
                     } else {
                         res.status(404).json({
@@ -1345,9 +1347,9 @@ module.exports = (app, passport) => {
     });
 
     /**
-     * API: (POST) camp manager send member join request
-     * request => /camps/1/members/add
-     */
+    * API: (POST) camp manager send member join request
+    * request => /camps/1/members/add
+    */
     app.post('/camps/:id/members/add', userRole.isLoggedIn(), (req, res) => {
         var user_email = req.body.user_email;
         var camp_id = req.params.id;
@@ -1407,10 +1409,10 @@ module.exports = (app, passport) => {
     })
 
     /**
-     * API: (GET) return camp manager email
-     * query user with attribute: camp_id
-     * request => /camps/1/camp_manager
-     */
+    * API: (GET) return camp manager email
+    * query user with attribute: camp_id
+    * request => /camps/1/camp_manager
+    */
     app.get('/camps/:id/manager', userRole.isLoggedIn(), (req, res) => {
         User.forge({ camp_id: req.params.id })
             .fetch({
@@ -1424,30 +1426,30 @@ module.exports = (app, passport) => {
                     res.status(404).json({ data: { message: 'Not found' } })
                 }
             }).catch((e) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: e.message
-                }
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: e.message
+                    }
+                });
             });
-        });
     })
 
     // Delete, make camp inactive
     app.post('/camps/:id/remove', userRole.isAdmin(), (req, res) => {
         Camp.forge({ id: req.params.id })
             .fetch().then((camp) => {
-            camp.save({ status: 'inactive' }).then(() => {
-                res.status(200).end()
-            }).catch((err) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
+                camp.save({ status: 'inactive' }).then(() => {
+                    res.status(200).end()
+                }).catch((err) => {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    });
                 });
             });
-        });
     })
 
     // Delete, make camp inactive
@@ -1455,27 +1457,27 @@ module.exports = (app, passport) => {
         //should we implement dates controll here as well (as long as it is admin only)???
         Camp.forge({ id: req.params.id })
             .fetch().then((camp) => {
-            var quota = req.body.quota;
-            if (common.isNormalInteger(quota) === false) {
-                return res.status(500).json({
-                    error: true,
-                    data: {
-                        message: "Quota must be in a number format"
-                    }
-                });
-            }
+                var quota = req.body.quota;
+                if (common.isNormalInteger(quota) === false) {
+                    return res.status(500).json({
+                        error: true,
+                        data: {
+                            message: "Quota must be in a number format"
+                        }
+                    });
+                }
 
-            camp.save({ pre_sale_tickets_quota: quota }).then(() => {
-                res.sendStatus(200);
-            }).catch((err) => {
-                res.status(500).json({
-                    error: true,
-                    data: {
-                        message: err.message
-                    }
+                camp.save({ pre_sale_tickets_quota: quota }).then(() => {
+                    res.sendStatus(200);
+                }).catch((err) => {
+                    res.status(500).json({
+                        error: true,
+                        data: {
+                            message: err.message
+                        }
+                    });
                 });
             });
-        });
     })
 
 }
