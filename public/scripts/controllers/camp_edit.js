@@ -137,7 +137,7 @@ const angular_deleteCampFile = function ($http, $scope, $q, camp_id, doc_id) {
     return deleteFilePromise.promise
 }
 
-app.controller("campEditController", ($scope, $http, $filter, $q) => {
+app.controller("campEditController", ($scope, $http, $filter) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
     var lang = $scope.lang;
     if (lang === undefined) {
@@ -240,7 +240,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         })
     }
 
-    if (typeof camp_id !== 'undefined') {
+    if (!_.isNil(camp_id) && _.isNumber(camp_id)) {
         $scope.current_camp_id = camp_id;
         $scope.getMembers();
         $scope.getFiles();
