@@ -1,11 +1,5 @@
 var angular_getMembers = function ($http, $scope, camp_id) {
-    if (camp_id === 'new') {
-        $http.get('/users').then((res) => {
-            $scope.members = [];
-            $scope.approved_members = res.data.users;
-        });
-    } else {
-        $http.get(`/camps/${camp_id}/members`).then((res) => {
+    $http.get(`/camps/${camp_id}/members`).then((res) => {
             var members = res.data.members;
             var _members = [];
             var approved_members = [];
@@ -41,7 +35,7 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             $scope.total_in_event = total_in_event;
         });
     }
-}
+    
 var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     var camp_id = user_rec.camp_id;
     var user_name = user_rec.user_name;
@@ -143,7 +137,7 @@ const angular_deleteCampFile = function ($http, $scope, $q, camp_id, doc_id) {
     return deleteFilePromise.promise
 }
 
-app.controller("campEditController", ($scope, $http, $filter, $q) => {
+app.controller("campEditController", ($scope, $http, $filter) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
     var lang = $scope.lang;
     if (lang === undefined) {
@@ -246,7 +240,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         })
     }
 
-    if (typeof camp_id !== 'undefined') {
+    if (!_.isNil(camp_id) && _.isNumber(camp_id)) {
         $scope.current_camp_id = camp_id;
         $scope.getMembers();
         $scope.getFiles();
