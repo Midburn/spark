@@ -11,7 +11,7 @@ mail = require('../../libs/mail'),
 mailConfig = config.get('mail'),
 csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
-camp_files_config = config.get('camp_files_config'),
+//camp_files_config = config.get('camp_files_config'),
 LOG = require('../../libs/logger')(module),
 S3 = require('../../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
@@ -649,26 +649,29 @@ module.exports = (app, passport) => {
 
     const __can_edit_camp_file = (user) => {
         // If the user is an Admin, he can edit files without constraints
-        if (user.isAdmin) return true;
+        // if (user.isAdmin || user.isCampManager) return true;
 
-        const now = new Date()
-        const startDate = new Date(camp_files_config.upload_start_date)
-        const endDate = new Date(camp_files_config.upload_end_date)
+        //const now = new Date()
+        //const startDate = new Date(camp_files_config.upload_start_date)
+        //const endDate = new Date(camp_files_config.upload_end_date)
 
-        if (user.isCampManager &&
-                now > startDate && now < endDate) {
-            return true
-        }
+        //if (user.isCampManager &&
+        //        now > startDate && now < endDate) {
+        //    return true
+        //}
 
-        return false
+        //return false
 
+        return true;
     }
 
     const __prepare_camp_files = (camp, user) => {
+        const s3Client = new S3();
         let campFiles = camp.relations.files.models.map((file) => {
             return {
                 file_id: file.attributes.file_id,
-                file_path: file.attributes.file_path,
+                display_name: file.attributes.file_path.split("/")[1],
+                file_path: s3Client.getPresignedUrl(file.attributes.file_path, awsConfig.buckets.camp_file_upload),
                 canEdit: __can_edit_camp_file(user)
             }
         })
@@ -711,7 +714,7 @@ module.exports = (app, passport) => {
         }
         let fileName = `${camp.attributes.camp_name_en}/${req.files.file.name}`
 
-        let s3Client = new S3();
+        const s3Client = new S3();
         // Upload the file to S3
         try {
             await s3Client.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
@@ -723,9 +726,6 @@ module.exports = (app, passport) => {
             })
         }
 
-        // Get the URL for the file, so we can save to DB
-        let filePath = s3Client.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload)
-
         // Add the file to the camp_files table
         try {
             await new CampFile({
@@ -733,7 +733,7 @@ module.exports = (app, passport) => {
                 updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                 camp_id: camp.attributes.id,
                 uploader_id: req.user.id,
-                file_path: filePath,
+                file_path: fileName,
             }).save()
         } catch (err) {
             LOG.error(err.message);
@@ -772,7 +772,8 @@ module.exports = (app, passport) => {
 
     app.delete('/camps/:camp_id/documents/:doc_id/', userRole.isLoggedIn(), async (req, res) => {
         const camp_id = req.params.camp_id,
-            doc_id = req.params.doc_id
+            doc_id = req.params.doc_id,
+            s3Client = new S3();
 
         if (!__can_edit_camp_file(req.user)) {
             return res.status(403).json({
@@ -799,6 +800,7 @@ module.exports = (app, passport) => {
         })
 
         try {
+            await s3Client.deleteObject(existingFile.attributes.file_path, awsConfig.buckets.camp_file_upload)
             await existingFile.destroy()
         } catch (err) {
             return res.status(500).json({
