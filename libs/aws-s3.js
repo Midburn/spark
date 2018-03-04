@@ -80,9 +80,24 @@ class s3Client {
         return this.s3.getObject(params).promise()
     }
 
+    getObjectStream(bucketName, objectKey) {
+        const params = {
+            Bucket: bucketName,
+            Key: objectKey
+        }
+
+        return this.s3.getObject(params).createReadStream()
+    }
+
     async streamZipDataTo(params, callback) {
 
         let zip = new Archiver.create('zip') //eslint-disable-line new-cap
+        zip.on('error', (err) => {
+            pipe.status(500).json({
+                error: true,
+                message: "Failed to download zip file: " + err
+            })
+        })
         if (params.pipe) zip.pipe(params.pipe)
 
         // Set response headers
@@ -96,13 +111,13 @@ class s3Client {
         let fileList = await this.listBucket(params.bucket, params.prefix)
         let fileArr = fileList.Contents.map(async (file) => {
             let fileList = []
-            let fileObj = await self.getObject(params.bucket, file.Key)
+            let fileObj = self.getObjectStream(params.bucket, file.Key)
             let name = self.calculateFileName(file)
 
             if (name === "") {
                 return file
             } else {
-                zip.append(fileObj.Body, {name: name})
+                zip.append(fileObj, {name: name})
                 fileList.push(file)
                 return file
             }
