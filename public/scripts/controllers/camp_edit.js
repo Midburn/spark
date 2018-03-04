@@ -35,7 +35,7 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             $scope.total_in_event = total_in_event;
         });
     }
-    
+
 var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     var camp_id = user_rec.camp_id;
     var user_name = user_rec.user_name;
@@ -45,7 +45,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
         lang = 'he';
     }
     var tpl, action_tpl;
-    
+
     if (lang === "he") {
         // debugger;
         action_tpl = {
@@ -84,7 +84,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             alert_success_3: "success",
         };
     }
-    
+
     swal({
         title: tpl.alert_title,
         text: tpl.alert_text,
@@ -137,7 +137,7 @@ const angular_deleteCampFile = function ($http, $scope, $q, camp_id, doc_id) {
     return deleteFilePromise.promise
 }
 
-app.controller("campEditController", ($scope, $http, $filter) => {
+app.controller("campEditController", ($scope, $http, $filter, $q) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
     var lang = $scope.lang;
     if (lang === undefined) {
@@ -240,7 +240,7 @@ app.controller("campEditController", ($scope, $http, $filter) => {
         })
     }
 
-    if (!_.isNil(camp_id) && _.isNumber(camp_id)) {
+    if (!_.isNil(camp_id) && Number(camp_id)) {
         $scope.current_camp_id = camp_id;
         $scope.getMembers();
         $scope.getFiles();
