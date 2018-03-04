@@ -37,9 +37,12 @@ block wrapper
                     if(user.isAdmin)
                         li( class="#{path[2] === 'events-admin' ? 'active' : undefined }" )
                             a( href="/#{language}/events-admin" )=t('events:nav_admin')
+                    if(user.isAdmin)
+                        li(class="#{path[2] === 'camp-files-admin' ? 'active' : undefined }")
+                            a(href="/#{language}/camp-files-admin")=t('camps:files.nav_admin')
                 ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                     li
-                        a( href= '/#{language}/home' )=t('events:current_event_view')  
+                        a( href= '/#{language}/home' )=t('events:current_event_view')
                             span(aria-hidden="true")
                             |#{user.currentEventId}
                     li.dropdown

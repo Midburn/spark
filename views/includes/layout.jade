@@ -15,6 +15,7 @@ head
         link(rel='stylesheet', href='/node_modules/font-awesome/css/font-awesome.min.css')
         link(rel='stylesheet', href='/node_modules/ui-select/dist/select.min.css')
         link(rel='stylesheet', href='/node_modules/selectize.js/dist/css/selectize.default.css')
+        link(rel='stylesheet', href='/node_modules/angular-filemanager/dist/angular-filemanager.min.css')
         link(rel="stylesheet", href="/stylesheets/main.scss" )
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
@@ -36,6 +37,7 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     script(src="/node_modules/angular-animate/angular-animate.min.js")
     script(src="/node_modules/angular-sanitize/angular-sanitize.min.js")
     script(src="/node_modules/ui-select/dist/select.min.js")
+    script(src="/node_modules/angular-filemanager/dist/angular-filemanager.min.js")
 
     // Spark scripts
     script(src="/scripts/ng_app.js")
@@ -47,5 +49,7 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     script(src="/scripts/events.js")
     script(src="/scripts/directives/file_upload_directive.js")
     script(src="/scripts/services/file_upload_service.js")
+    script(src="/scripts/services/s3-service.js")
+    script(src="/scripts/directives/BucketViewer.js")
 
     block scripts
