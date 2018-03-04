@@ -332,6 +332,9 @@
             "camp": "Art Installation"
         }
     },
+    "files": {
+        "nav_admin": "Manage Files"
+    },
     "prod_dep": {
         "nav": "My Department",
         "nav_admin": "Manage Departments",
