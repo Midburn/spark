@@ -103,7 +103,8 @@ class s3Client {
         // Set response headers
         params.pipe.writeHeader(200, {
             'Content-Type': 'application/zip',
-            "Content-disposition": 'attachment; filename=camp-files.zip'
+            "Content-disposition": 'attachment; filename=camp-files.zip',
+            "X-Accel-Buffering": "no"
         })
 
         let self = this
@@ -122,8 +123,8 @@ class s3Client {
                 return file
             }
         })
-        Promise.all(fileArr).then((files) => {
-            zip.manifest = files
+        Promise.all(fileArr).then(() => {
+            zip.pipe()
             zip.finalize()
         })
 
