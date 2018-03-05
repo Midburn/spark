@@ -102,16 +102,11 @@ class s3Client {
         zip.pipe(params.pipe)
 
         // Set response headers
-        params.pipe.writeHeader(200, {
-            'Content-Type': 'application/zip',
-            "Content-disposition": 'attachment; filename=camp-files.zip',
-            "X-Accel-Buffering": "no"
-        })
-
+        params.pipe.attachment('camp-files.zip')
         let self = this
 
         let fileList = await this.listBucket(params.bucket, params.prefix)
-        let fileArr = fileList.Contents.map(async (file) => {
+        fileList.Contents.map((file) => {
             let fileList = []
             let fileObj = self.getObjectStream(params.bucket, file.Key)
             let name = self.calculateFileName(file)
@@ -124,10 +119,8 @@ class s3Client {
                 return file
             }
         })
-        Promise.all(fileArr).then(() => {
-            zip.finalize()
-        })
-
+        
+        zip.finalize()
     }
 
     /**
