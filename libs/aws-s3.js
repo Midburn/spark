@@ -118,9 +118,9 @@ class s3Client {
                 fileList.push(file)
                 return file
             }
+        }).then(() => {
+            zip.finalize()
         })
-        
-        zip.finalize()
     }
 
     /**
