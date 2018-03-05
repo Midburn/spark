@@ -7,7 +7,7 @@ table.table.table-striped.table-hover
     tbody
         tr(ng-repeat="file in files")
             td
-                a(href="{{file.file_path}}") {{file.file_path}}
+                a(href="{{file.file_path}}") {{file.display_name}}
             td
                 a(ng-if="file.canEdit" ng-click="deleteFile(file.file_id)") Delete File
 div

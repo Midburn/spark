@@ -20,7 +20,7 @@ function mapApi(app, passport) {
 
     // TODO: main route api & render are mixed, might need a split
     require("./main_routes.js")(app, passport);
-    app.use('', sparkApi.router);
+    app.use('/', sparkApi.router);
 }
 
 module.exports = {

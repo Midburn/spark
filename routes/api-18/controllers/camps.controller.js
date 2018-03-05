@@ -147,7 +147,7 @@ class CampsController {
             return helperService.customError(400, 'unauthorized file upload', res, true);
         }
         let fileName = `${camp.attributes.camp_name_en}/${req.files.file.name}`;
-        let s3Client = new S3();
+        const s3Client = new S3();
         // Upload the file to S3
         try {
             await s3Client.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
@@ -158,8 +158,6 @@ class CampsController {
              */
             return next(new Error('S3 Error: could not put file in S3'));
         }
-        // Get the URL for the file, so we can save to DB
-        let filePath = s3Client.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload);
         // Add the file to the camp_files table
         try {
             await new CampFile({
@@ -167,7 +165,7 @@ class CampsController {
                 updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                 camp_id: camp.attributes.id,
                 uploader_id: req.user.id,
-                file_path: filePath,
+                file_path: fileName,
             }).save()
         } catch (err) {
             LOG.error(err.message);
@@ -199,7 +197,8 @@ class CampsController {
 
     async deleteCampFile(req, res, next) {
         const camp_id = req.params.camp_id,
-            doc_id = req.params.doc_id;
+            doc_id = req.params.doc_id,
+            s3Client = new S3();
         if (!campsService.canEditCampFile(req.user)) {
             return helperService.customError(403, 'unauthorized file deletion', res, true);
         }
@@ -216,6 +215,7 @@ class CampsController {
             }
         });
         try {
+            await s3Client.deleteObject(existingFile.attributes.file_path, awsConfig.buckets.camp_file_upload);
             await existingFile.destroy()
         } catch (err) {
             /**
