@@ -5,8 +5,6 @@ awsConfig = config.get('aws_config');
 class s3Client {
 
     constructor() {
-        const credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
-        AWS.config.credentials = credentials;
         this.s3 = new AWS.S3({region: awsConfig.defualt_region});
     }
 
@@ -36,10 +34,32 @@ class s3Client {
      * @param {name of bucket where the object was put} bucket
      * @param {if specified, overrides the default spark region} region
      */
-    getObjectUrl(fileName, bucket, region) {
-        if (!region) region = awsConfig.defualt_region
-
+    getObjectUrl(fileName, bucket, region = awsConfig.defualt_region) {
         return `https://s3-${region}.amazonaws.com/${bucket}/${fileName}`
+    }
+
+    /**
+     * Get a presigned Url to the object, to reuse the server-side credentials.
+     * @param {name of object in S3} fileName
+     * @param {name of bucket where object was put} bucket
+     * @param {if specified, overrides the default spark region} region
+     */
+    getPresignedUrl(fileName, bucket, region = awsConfig.defualt_region) {
+        const presignedUrl = this.s3.getSignedUrl('getObject', {
+            Bucket: bucket,
+            Key: fileName,
+            Expires: awsConfig.presignedUrlExpireSeconds
+        })
+
+        return presignedUrl
+    }
+
+    deleteObject(fileName, bucket, region = awsConfig.defualt_region) {
+        const params = {
+            Bucket: bucket,
+            Key: fileName
+        }
+        return this.s3.deleteObject(params).promise()
     }
 
     /**

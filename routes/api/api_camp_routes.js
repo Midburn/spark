@@ -1,20 +1,20 @@
-const common = require('../libs/common').common,
+const common = require('../../libs/common').common,
 _ = require('lodash'),
-User = require('../models/user').User,
-Camp = require('../models/camp').Camp,
-CampFile = require('../models/camp').CampFile,
-constants = require('../models/constants.js'),
-knex = require('../libs/db').knex,
-userRole = require('../libs/user_role'),
+User = require('../../models/user').User,
+Camp = require('../../models/camp').Camp,
+CampFile = require('../../models/camp').CampFile,
+constants = require('../../models/constants.js'),
+knex = require('../../libs/db').knex,
+userRole = require('../../libs/user_role'),
 config = require('config'),
-mail = require('../libs/mail'),
+mail = require('../../libs/mail'),
 mailConfig = config.get('mail'),
 csv = require('json2csv'),
 awsConfig = config.get('aws_config'),
-LOG = require('../libs/logger')(module),
-S3 = require('../libs/aws-s3');
+//camp_files_config = config.get('camp_files_config'),
+LOG = require('../../libs/logger')(module),
+S3 = require('../../libs/aws-s3');
 const APPROVAL_ENUM = ['approved', 'pending', 'approved_mgr'];
-const CONSTS = require('../consts');
 
 const emailDeliver = (recipient, subject, template, props) => {
 
@@ -164,18 +164,27 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 
                 };
 
-                //select the addinfo_json column from the camp member table
-                knex(constants.CAMP_MEMBERS_TABLE_NAME).select('user_id','addinfo_json')
+                // select the addinfo_json column from the camp member table
+                knex(constants.CAMP_MEMBERS_TABLE_NAME)
+                .select('user_id', `${constants.CAMP_MEMBERS_TABLE_NAME}.addinfo_json`, `${constants.EVENTS_TABLE_NAME}.addinfo_json as eventInfo`)
+                .rightJoin(constants.EVENTS_TABLE_NAME,`${constants.EVENTS_TABLE_NAME}.event_id`,`${constants.EVENTS_TABLE_NAME}.event_id`)
                 .where({
+                    event_id: current_event_id,
                     camp_id : userData.camp_id,
                     user_id : userData.user_id
                 })
                 .then(resp => {
+                    // checking that update of the pre sale ticket allocation is inside the valid time period
+                    const eventInfo = JSON.parse(resp[0].eventInfo)
+                    const allocationDates = {
+                        start : new Date(eventInfo.appreciation_tickets_allocation_start),
+                        end : new Date(eventInfo.appreciation_tickets_allocation_end)
+                    }
 
                     let jsonInfo;
                     try {
                         //pass the response to the process method
-                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin);
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
                     } catch (err) {
                         res.status(500);
                         throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -228,7 +237,7 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 here we pass the query info from the SQL
 and check the json info, the method will throw and error if failed
 */
-function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin) {
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
 
     var userData = info;
 
@@ -237,17 +246,12 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
+        const {start, end} = allocationDates;
+        const now = new Date();
+        const isValidAllocationDate = start < now && now < end;
         //check if the time of the pre sale is on
-        //checking using the time constants for now
-        //unless user is admin
-        //TODO once the event table will be updated with presale ticket time, this needs to be replace
-        if (isAdmin === false) {
-            var currentTime = new Date();
-            var start=new Date(constants.PRESALE_TICKETS_START_DATE);
-            var end=new Date(constants.PRESALE_TICKETS_END_DATE);
-            if (currentTime.getTime() < start.getTime() || currentTime.getTime() > end.getTime()) {
+        if (isAdmin === false && !isValidAllocationDate) {
                 throw new Error("PreSale Tickes selection is currently closed");
-            }
         }
         //if the user is not approved yet in the
         //reject the reuest
@@ -643,19 +647,51 @@ module.exports = (app, passport) => {
         }
     })
 
-    app.post('/camps/:camp_id/documents/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
+    const __can_edit_camp_file = (user) => {
+        // If the user is an Admin, he can edit files without constraints
+        // if (user.isAdmin || user.isCampManager) return true;
 
-        const camp_id = req.params.camp_id,
-             doc_type = req.params.doc_type
+        //const now = new Date()
+        //const startDate = new Date(camp_files_config.upload_start_date)
+        //const endDate = new Date(camp_files_config.upload_end_date)
 
-        // Check that the document type is valid
-        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
-            return res.status(400).json({
-                 error: true,
-                 data: {
-                     message: 'Invalid document type'
-                 }
-             })
+        //if (user.isCampManager &&
+        //        now > startDate && now < endDate) {
+        //    return true
+        //}
+
+        //return false
+
+        return true;
+    }
+
+    const __prepare_camp_files = (camp, user) => {
+        const s3Client = new S3();
+        let campFiles = camp.relations.files.models.map((file) => {
+            return {
+                file_id: file.attributes.file_id,
+                display_name: file.attributes.file_path.split("/")[1],
+                file_path: s3Client.getPresignedUrl(file.attributes.file_path, awsConfig.buckets.camp_file_upload),
+                canEdit: __can_edit_camp_file(user)
+            }
+        })
+
+    return campFiles;
+
+    }
+
+    app.post('/camps/:camp_id/documents/', userRole.isLoggedIn(), async (req, res) => {
+
+        const camp_id = req.params.camp_id
+
+        // Check if the user is allowed to upload the file
+        if (!__can_edit_camp_file(req.user)) {
+            return res.status(403).json({
+                error: true,
+                data: {
+                    message: 'unauthorized file upload'
+                }
+            })
         }
 
         let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
@@ -676,9 +712,9 @@ module.exports = (app, passport) => {
                 message: 'No file attached to request'
             })
         }
-        let fileName = `${camp.attributes.camp_name_en}/${doc_type}_${req.files.file.name}`
+        let fileName = `${camp.attributes.camp_name_en}/${req.files.file.name}`
 
-        let s3Client = new S3();
+        const s3Client = new S3();
         // Upload the file to S3
         try {
             await s3Client.uploadFileBuffer(fileName, data, awsConfig.buckets.camp_file_upload)
@@ -690,35 +726,15 @@ module.exports = (app, passport) => {
             })
         }
 
-        // Get the URL for the file, so we can save to DB
-        let filePath = s3Client.getObjectUrl(fileName, awsConfig.buckets.camp_file_upload)
-
         // Add the file to the camp_files table
-        // If the file type exists, update
-        // If not, insert a new file record
-        let existingFile = camp.relations.files.models.find((file) => {
-            if (file.attributes.file_type === doc_type) {
-                return file
-            }
-        })
-
         try {
-            if (!existingFile) {
-                    await new CampFile({
-                        created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                        updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                        camp_id: camp.attributes.id,
-                        uploader_id: req.user.id,
-                        file_path: filePath,
-                        file_type: doc_type
-                    }).save()
-            } else {
-                existingFile.attributes.updated_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ')
-                existingFile.attributes.uploader_id = req.user.id
-                existingFile.attributes.file_path = filePath
-
-                await existingFile.save()
-            }
+            await new CampFile({
+                created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                camp_id: camp.attributes.id,
+                uploader_id: req.user.id,
+                file_path: fileName,
+            }).save()
         } catch (err) {
             LOG.error(err.message);
             return res.status(500).json({
@@ -727,23 +743,45 @@ module.exports = (app, passport) => {
             })
         }
 
+        camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
+        let campFiles = __prepare_camp_files(camp, req.user)
         return res.status(200).json({
-            error: false
+            error: false,
+            files: campFiles
         })
     })
 
-    app.get('/camps/:camp_id/documents/:doc_type/', userRole.isLoggedIn(), async (req, res) => {
-        const camp_id = req.params.camp_id,
-        doc_type = req.params.doc_type
+    app.get('/camps/:camp_id/documents', userRole.isLoggedIn(), async (req, res) => {
+        const camp_id = req.params.camp_id
+        let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
 
-        // Check that the document type is valid
-        if (!CONSTS.CAMPS.FILE_TYPES.includes(doc_type)) {
-            return res.status(400).json({
-                 error: true,
-                 data: {
-                     message: 'Invalid document type'
-                 }
-             })
+        if (!camp) {
+            return res.status(500).json({
+                error: true,
+                message: 'Camp Id does not exist'
+            })
+        }
+
+        let campFiles = __prepare_camp_files(camp, req.user)
+
+        return res.status(200).json({
+            error: false,
+            files: campFiles
+        })
+    })
+
+    app.delete('/camps/:camp_id/documents/:doc_id/', userRole.isLoggedIn(), async (req, res) => {
+        const camp_id = req.params.camp_id,
+            doc_id = req.params.doc_id,
+            s3Client = new S3();
+
+        if (!__can_edit_camp_file(req.user)) {
+            return res.status(403).json({
+                error: true,
+                data: {
+                    message: 'unauthorized file deletion'
+                }
+            })
         }
 
         let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
@@ -756,22 +794,30 @@ module.exports = (app, passport) => {
         }
 
         let existingFile = camp.relations.files.models.find((file) => {
-            if (file.attributes.file_type === doc_type) {
+            if (file.attributes.file_id === parseInt(doc_id)) {
                 return file
             }
         })
 
-        if (existingFile) {
-            return res.status(200).json({
-                error: false,
-                path: existingFile.attributes.file_path
-            })
-        } else {
-            return res.status(404).json({
+        try {
+            await s3Client.deleteObject(existingFile.attributes.file_path, awsConfig.buckets.camp_file_upload)
+            await existingFile.destroy()
+        } catch (err) {
+            return res.status(500).json({
                 error: true,
-                message: 'File does not exist'
+                data: {
+                    message: "Error deleting file " + err
+                }
             })
         }
+
+        camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['files']})
+        let campFiles = __prepare_camp_files(camp, req.user)
+
+        return res.status(200).json({
+            error: false,
+            files: campFiles
+        })
     })
 
     /**
@@ -1278,15 +1324,17 @@ module.exports = (app, passport) => {
                         // stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
                     }).then(() => {
                         knex.raw(query1).then((result) => {
-                            stat.total_tickets = result[0][0]['total_tickets'];
-                            stat.inside_event = result[0][0]['inside_event'];
-                            stat.ticketing = result[0][0]['ticketing'];
-                            stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
-                            stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
-                            stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
-                            stat.last_24h_exit = result[0][0]['last_24h_exit'];
-                            stat.last_1h_entrance = result[0][0]['last_1h_entrance'];
-                            stat.last_1h_exit = result[0][0]['last_1h_exit'];
+                            if (result && result[0] && result[0].length > 0) {
+                                stat.total_tickets = result[0][0]['total_tickets'];
+                                stat.inside_event = result[0][0]['inside_event'];
+                                stat.ticketing = result[0][0]['ticketing'];
+                                stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
+                                stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
+                                stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
+                                stat.last_24h_exit = result[0][0]['last_24h_exit'];
+                                stat.last_1h_entrance = result[0][0]['last_1h_entrance'];
+                                stat.last_1h_exit = result[0][0]['last_1h_exit'];
+                            }
                             res.status(200).json({ groups: groups, stats: stat });
 
                         });
@@ -1406,6 +1454,7 @@ module.exports = (app, passport) => {
 
     // Delete, make camp inactive
     app.post('/camps/:id/updatePreSaleQuota', userRole.isAdmin(), (req, res) => {
+        //should we implement dates controll here as well (as long as it is admin only)???
         Camp.forge({ id: req.params.id })
             .fetch().then((camp) => {
                 var quota = req.body.quota;
@@ -1419,7 +1468,7 @@ module.exports = (app, passport) => {
                 }
 
                 camp.save({ pre_sale_tickets_quota: quota }).then(() => {
-                    res.status(200).end()
+                    res.sendStatus(200);
                 }).catch((err) => {
                     res.status(500).json({
                         error: true,

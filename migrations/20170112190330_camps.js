@@ -46,7 +46,7 @@ exports.up = function(knex, Promise) {
             // Contact person info on top id
             table.string('contact_person_name', 100);
             table.string('contact_person_email', 100);
-            table.string('contact_person_phone', 14);
+            table.string('contact_person_phone', 16);
         })
     ]);
 };

@@ -1,6 +1,6 @@
 
-var DrupalAccess = require('../libs/drupal_access').DrupalAccess;
-var log = require('../libs/logger')(module);
+var DrupalAccess = require('../../libs/drupal_access').DrupalAccess;
+var log = require('../../libs/logger')(module);
 var _ = require('lodash');
 var config = require('config');
 var apiTokensConfig = config.get('api_tokens');

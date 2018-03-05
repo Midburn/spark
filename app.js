@@ -57,9 +57,6 @@ app.use(compileSass({
     logToConsole: false // If true, will log to console.error on errors
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
-
-app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
 
 app.use(function (req, res, next) {
     res.locals.req = req;
@@ -154,103 +151,27 @@ var userRole = require('./libs/user_role');
 app.use(userRole.middleware());
 
 // Infrastructure Routes
-if (app.get('env') === 'development') {
-    app.use('/dev', require('./routes/dev_routes'));
-    require('./routes/fake_drupal')(app);
+if (app.get('env') === 'development' || app.get('env') === 'testing') {
+    app.use('/dev', require('./routes/pages/dev_routes'));
+    require('./routes/api/fake_drupal')(app);
 }
-require('./routes/main_routes.js')(app, passport);
-
-app.use('/:lng?/admin', require('./routes/admin_routes'));
-
-// Module's Routes
-app.use('/:lng/npo', require('./routes/npo_routes'));
-app.use('/:lng/npo-admin', require('./routes/npo_admin_routes'));
-app.use('/:lng/gate', require('./routes/gate_routes'));
-app.use('/:lng/volunteering', require('./routes/volunteering_routes'));
 
 // Mail
 var mail = require('./libs/mail');
 mail.setup(app);
 
-// API
-require('./routes/api_routes')(app, passport);
-app.use('/api/gate', require('./routes/api_gate_routes'));
-
-// Camps / API
-// TODO this is not the right way to register routes
-require('./routes/api_routes.js')(app, passport);
-require('./routes/api_events_routes')(app, passport);
-require('./routes/api_camps_routes')(app, passport);
-require('./routes/camps_routes')(app, passport);
-require('./routes/api/v1/camps')(app); // CAMPS PUBLIC API
-require('./routes/api_camps_routes')(app, passport);
-require('./routes/api_events_routes')(app, passport);
-
-// Camps
-require('./routes/camps_routes')(app, passport);
-
-require('./routes/volunteers_routes')(app, passport);
-
-//Events
-require('./routes/events_routes')(app, passport);
+/** #####################
+ *      Mapping Routes
+    ##################### */
+// Mapping all Api routes
+require('./routes/index.js').api(app, passport);
+// Maping all page routes
+app.use("/", require('./routes/index.js').app);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
 
 log.info('Spark environment: NODE_ENV =', process.env.NODE_ENV, ', app.env =', app.get('env'));
-
-// ==============
-// Error handlers
-// ==============
-
-// Catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found: ' + req.url);
-    err.status = 404;
-    next(err);
-});
-
-// Development error handler - will print stacktrace
-if (app.get('env') === 'development') {
-
-    app.use(function (err, req, res, next) {
-        // Handle CSRF token errors
-        if (err.code === 'EBADCSRFTOKEN') {
-            res.status(403);
-            res.render('pages/error', {
-                errorMessage: 'Illegal action. Your connection details has been logged.',
-                error: {
-                    status: 'URL: ' + req.url
-                }
-            });
-            return;
-        }
-        res.status(err.status || 500);
-        res.render('pages/error', {
-            errorMessage: err.message,
-            error: err
-        });
-    });
-}
-// Production error handler - no stacktraces leaked to user
-else {
-    app.use(function (err, req, res, next) {
-        // Handle CSRF token errors
-        if (err.code === 'EBADCSRFTOKEN') {
-            res.status(403);
-            res.render('pages/error', {
-                errorMessage: 'Illegal action. Your connection details has been logged.', //TODO: log if necessary
-                error: req.url
-            });
-            return;
-        }
-        res.status(err.status || 500);
-        res.render('pages/error', {
-            errorMessage: err.message,
-            error: {}
-        });
-    });
-}
 
 // Handler for unhandled rejections
 process.on('unhandledRejection', function (reason, p) {

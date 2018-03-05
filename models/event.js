@@ -23,21 +23,35 @@ var Event = bookshelf.Model.extend({
      * @param { String } id
      * @returns {Promise<any>}
      */
-    get_event: function (id) {
-        if (constants.events[id]) return Promise.resolve(constants.events[id]);
+    get_event: id => {
+        return Event.where('event_id', id).fetch()
+            .then(response => {
+                return response.attributes
+            }).then(event => {
+                event.addinfo_json = JSON.parse(event.addinfo_json);
+                return event;
+            }).catch(response => { 
+                return null;
+            })
+    },
 
-        return Event.where('event_id', id).fetch().then((response) => {
-            if (response.attributes && response.attributes.addinfo_json) {
-                constants.events[id] = {
-                    props: JSON.parse(response.attributes.addinfo_json),
-                    bundles: []
-                };
-
-                return constants.events[id];
-            }
-
-            return null;
-        });
+    get_event_controllDates: id => {
+        return Event.where('event_id', id).fetch()
+            .then(response => {
+                return JSON.parse(response.attributes.addinfo_json);
+            }).then(addinfo => {
+                const allocation_start = addinfo.appreciation_tickets_allocation_start;
+                const allocation_end = addinfo.appreciation_tickets_allocation_end;
+                const campEditlastDate = addinfo.edit_camps_lastDate;
+                const controllDates = {
+                    appreciation_tickets_allocation_start : allocation_start ? new Date(allocation_start) : null,
+                    appreciation_tickets_allocation_end : allocation_end ? new Date(allocation_end) : null,
+                    edit_camps_lastDate : campEditlastDate ? new Date(campEditlastDate) : null, 
+                }
+                return controllDates;
+            }).catch(response => { 
+                return null;
+            })
     }
 });
 

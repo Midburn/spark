@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
 var _ = require('lodash');
-var log = require('../libs/logger')(module);
-var knex = require('../libs/db').knex;
-var drupalSync = require('../scripts/drupal_ticket_sync');
+var log = require('../../libs/logger')(module);
+var knex = require('../../libs/db').knex;
+var drupalSync = require('../../scripts/drupal_ticket_sync');
 
-var Ticket = require('../models/ticket').Ticket;
-var Event = require('../models/event').Event;
-var UsersGroup = require('../models/user').UsersGroup;
-var UsersGroupMembership = require('../models/user').UsersGroupMembership;
+var Ticket = require('../../models/ticket').Ticket;
+var Event = require('../../models/event').Event;
+var UsersGroup = require('../../models/user').UsersGroup;
+var UsersGroupMembership = require('../../models/user').UsersGroupMembership;
 
 const ERRORS = {
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',

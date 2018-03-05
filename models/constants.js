@@ -1,22 +1,22 @@
-var get_default_enum = function (enu) {
+const get_default_enum = function (enu) {
     return enu.find(function (e) {
         return e.default;
     }).id;
 };
 
-var get_enum = function (enu) {
+const get_enum = function (enu) {
     return enu.map(function (e) {
         return e.id;
     })
 };
 
-var user_genders = [
+const user_genders = [
     {id: 'male'},
     {id: 'female'},
     {id: 'other', default: true}
 ];
 
-var npo_membership_statuses = [
+const npo_membership_statuses = [
     {id: 'not_member', default: true},
     {id: 'request_approved'},
     {id: 'member_paid'},
@@ -26,7 +26,7 @@ var npo_membership_statuses = [
     {id: 'applied_for_membership'}
 ];
 
-var gate_status = [
+const gate_status = [
     {id: 'regular', default: true},
     {id: 'early_arrival'}
 ];
@@ -78,12 +78,19 @@ const ticketType = {
     SANDBOX2018_TICKET_A: '50',
     SANDBOX2018_TICKET_B: '51',
     SANDBOX2018_TICKET_C: '52',
-    MIDBURN2018_SUPPORT_TICKET: '53',
-    MIDBURN2018_ADULT_TICKET: '54',
-    MIDBURN2018_CHILD_TICKET: '55',
-    MIDBURN2018_ADULT_DIRECT_SALE_TICKET: '56',
-    MIDBURN2018_YOUTH_TICKET: '57',
-    MIDBURN2018_LOW_INCOME_TICKET: '58',
+    MIDBURN2018_CHILD_TICKET: '54',
+    MIDBURN2018_FIELD_TICKET: '55',
+    MIDBURN2018_INTERNATIONAL_DIRECT_SALE: '56',
+    MIDBURN2018_LOW_INCOME_TICKET: '57',
+    MIDBURN2018_SUPPORT_TICKET: '58',
+    MIDBURN2018_YOUTH_TICKET: '59',
+    MIDBURN2018_ADULT_PARTICIPATION_TICKET: '60',
+    MIDBURN2018_ADULT_OMG_SALE_TICKET: '61',
+    MIDBURN2018_ADULT_OPEN_SALE_TICKET: '62',
+    MIDBURN2018_ADULT_THEME_CAMPS_TICKET: '63',
+    MIDBURN2018_ADULT_ARTISTS_TICKET: '64',
+    MIDBURN2018_ADULT_PRODUCTION_TICKET: '65',
+    MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: '66'
 };
 
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
@@ -108,15 +115,21 @@ const events = {
             ticketType.SANDBOX2017_TICKET_C
         ]
     },
-    'MIDBURN2018': {
+    MIDBURN2018: {
         bundles: [
-            ticketType.SUPPORT_TICKET,
-            ticketType.ADULT_TICKET,
-            ticketType.CHILD_TICKET,
-            ticketType.ADULT_DIRECT_SALE_TICKET,
-            ticketType.YOUTH_TICKET,
-            ticketType.LOW_INCOME_TICKET,
-            ticketType.INTERNATIONAL_DIRECT_SALE
+            ticketType.MIDBURN2018_CHILD_TICKET,
+            ticketType.MIDBURN2018_FIELD_TICKET,
+            ticketType.MIDBURN2018_INTERNATIONAL_DIRECT_SALE,
+            ticketType.MIDBURN2018_LOW_INCOME_TICKET,
+            ticketType.MIDBURN2018_SUPPORT_TICKET,
+            ticketType.MIDBURN2018_YOUTH_TICKET,
+            ticketType.MIDBURN2018_ADULT_PARTICIPATION_TICKET,
+            ticketType.MIDBURN2018_ADULT_OMG_SALE_TICKET,
+            ticketType.MIDBURN2018_ADULT_OPEN_SALE_TICKET,
+            ticketType.MIDBURN2018_ADULT_THEME_CAMPS_TICKET,
+            ticketType.MIDBURN2018_ADULT_ARTISTS_TICKET,
+            ticketType.MIDBURN2018_ADULT_PRODUCTION_TICKET,
+            ticketType.MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET
         ]
     }
 };
@@ -126,8 +139,8 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
-    DEFAULT_EVENT_ID: 'MIDBURN2017',
-  
+    DEFAULT_EVENT_ID: `MIDBURN${new Date().getFullYear()}`,
+
     //TODO move this to jsoninfo inside events table
     //TODO also fix event.js method to extract the data
     //currently the method first returns the constants if exists and only if not it will search the DB
@@ -196,7 +209,21 @@ module.exports = {
      *      supplier - member is supplier, for the supplier notification later.
      */
     CAMP_MEMBER_STATUS: ['approved', 'pending', 'pending_mgr', 'rejected', 'approved_mgr', 'supplier', 'deleted'],
+    CAMP_MEMBER_APPROVAL_ENUM: ['approved', 'pending', 'approved_mgr'],
+    EVENT_GATE_STATUS: get_enum(gate_status),
 
-    EVENT_GATE_STATUS: get_enum(gate_status)
+    /**
+     * Routing and api constants
+     */
+    ROUTER_PREFIXES: {
+        USERS: '/users',
+        CAMPS: '/camps',
+        EVENTS: '/events'
+    },
+    // This is a list of URLs the login process is allowed to redirect to.
+    // This is to make sure users are not sent spark links via e.g. email by a malicious 3rd party
+    // and are redirected to the senders desired location, e.g. can be used for phishing.
+    // If we redirect to a new URL from login, we will need to add it here.
+    LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
 
 };
