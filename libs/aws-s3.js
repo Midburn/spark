@@ -98,7 +98,6 @@ class s3Client {
                 message: "Failed to download zip file: " + err
             })
         })
-        if (params.pipe) zip.pipe(params.pipe)
 
         // Set response headers
         params.pipe.writeHeader(200, {
@@ -124,7 +123,7 @@ class s3Client {
             }
         })
         Promise.all(fileArr).then(() => {
-            zip.pipe()
+            zip.pipe(params.pipe)
             zip.finalize()
         })
 
