@@ -99,6 +99,8 @@ class s3Client {
             })
         })
 
+        zip.pipe(params.pipe)
+
         // Set response headers
         params.pipe.writeHeader(200, {
             'Content-Type': 'application/zip',
@@ -123,7 +125,6 @@ class s3Client {
             }
         })
         Promise.all(fileArr).then(() => {
-            zip.pipe(params.pipe)
             zip.finalize()
         })
 
