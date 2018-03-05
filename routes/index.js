@@ -15,6 +15,7 @@ app.use("/:lng/", require("./pages/camps_routes"));
 
 //TODO map to api in consistant way
 app.use("/api/gate", require("./api/api_gate_routes"));
+app.use("/:lng/camp-files-admin", require('./camp_file_admin_routes'))
 
 function mapApi(app, passport) {
 

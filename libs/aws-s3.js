@@ -1,11 +1,12 @@
 const AWS = require('aws-sdk'),
 config = require('config'),
-awsConfig = config.get('aws_config');
+awsConfig = config.get('aws_config'),
+Archiver = require('archiver')
 
 class s3Client {
 
     constructor() {
-        this.s3 = new AWS.S3({region: awsConfig.defualt_region});
+        this.s3 = new AWS.S3({region: awsConfig.defualt_region})
     }
 
     /**
@@ -62,6 +63,66 @@ class s3Client {
         return this.s3.deleteObject(params).promise()
     }
 
+    listBucket(bucketName, prefix, region = awsConfig.defualt_region) {
+        const params = {
+            Bucket: bucketName,
+            Prefix: prefix
+        }
+        return this.s3.listObjects(params).promise()
+    }
+
+    getObject(bucketName, objectKey) {
+        const params = {
+            Bucket: bucketName,
+            Key: objectKey
+        }
+
+        return this.s3.getObject(params).promise()
+    }
+
+    getObjectStream(bucketName, objectKey) {
+        const params = {
+            Bucket: bucketName,
+            Key: objectKey
+        }
+
+        return this.s3.getObject(params).createReadStream()
+    }
+
+    async streamZipDataTo(params, callback) {
+
+        let zip = new Archiver.create('zip') //eslint-disable-line new-cap
+        zip.on('error', (err) => {
+            pipe.status(500).json({
+                error: true,
+                message: "Failed to download zip file: " + err
+            })
+        })
+
+        zip.pipe(params.pipe)
+
+        // Set response headers
+        params.pipe.attachment('camp-files.zip')
+        let self = this
+
+        let fileList = await this.listBucket(params.bucket, params.prefix)
+        fileList.Contents.map((file) => {
+            let fileList = []
+            let fileObj = self.getObjectStream(params.bucket, file.Key)
+            let name = self.calculateFileName(file)
+
+            if (name === "") {
+                return file
+            } else {
+                zip.append(fileObj, {name: name})
+                fileList.push(file)
+                return file
+            }
+        })
+        
+        zip.finalize()
+    }
+
     /**
      * This function is for the off chance
      * that we need to use a different region for some reaosn.
@@ -70,6 +131,13 @@ class s3Client {
      */
     _createS3ClientForNonDefaultRegion (region) {
         return new AWS.S3({region: region})
+    }
+
+    calculateFileName(file) {
+        let name = file.Key.split('/')
+        name.shift()
+        name = name.join('/')
+        return name
     }
 }
 

@@ -29,6 +29,7 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
 
     // External packages
     script(src='/node_modules/sweetalert/dist/sweetalert.min.js')
+    script(src='/node_modules/lodash/lodash.js')
 
     // Angular dependencies
     script(src="/node_modules/angular/angular.min.js")
@@ -46,5 +47,7 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}' )
     script(src="/scripts/events.js")
     script(src="/scripts/directives/file_upload_directive.js")
     script(src="/scripts/services/file_upload_service.js")
+    script(src="/scripts/services/s3-service.js")
+    script(src="/scripts/directives/BucketViewer.js")
 
     block scripts
