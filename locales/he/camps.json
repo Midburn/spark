@@ -45,7 +45,7 @@
         "all_camps_table": "מחנות",
         "all_members_table": "חברי מחנות",
         "total_approved_members": "סה\"כ חברי מחנה",
-        "total_camp_tickets": "סה\"כ כרטיסים",
+        "total_camp_tickets": "סה\"כ כרטיסים במחנה",
         "docs_table": "מסמכים וקבצים"
     },
     "new": {
@@ -140,8 +140,8 @@
         "dumpcampsdata": "יצוא לקובץ",
         "entrance_quota": "מכסת הגעה מוקדמת",
         "pre_sale_tickets_quota": "מכסת מכירה מוקדמת",
-        "pre_sale_ticket_count": "סה״כ הקצאה לכרטיסים במכירה מוקדמת למחנה",
-        "total_pre_sale_ticket_assigned": "סה״כ כרטיסים במכירה מוקדמת שהוקצו לחברי המחנה"
+        "pre_sale_ticket_count": "סה״כ הכרטיסים שהוקצו",
+        "total_pre_sale_ticket_assigned": "סה״כ מספר הכרטיסים שניתן להקצות"
     },
     "members": {
         "title": "משתתפים במחנה",
@@ -169,7 +169,7 @@
         "status_approved_mgr": "מנהלת מחנה מאושרת",
         "inside_event": "בתוך האירוע",
         "pre_sale_ticket_approved": "אשר כרטיס במכירה מוקדמת",
-        "pre_sale_ticket_assigned": "הוקצה כרטיס במכירה מוקדמת",
+        "pre_sale_ticket_assigned": "הוקצה כרטיס?",
         "pre_sale_ticket_remove": "הסר כרטיס ממכירה מוקדמת",
         "status_supplier": "מאושר כספק"
     },
