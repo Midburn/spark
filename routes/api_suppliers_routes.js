@@ -26,10 +26,36 @@ module.exports = (app, passport) => {
         try {
             let supplier_id = req.params.supplier_id
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
-            res.status(200).json({supplier: supplier.toJSON()})
+            if (supplier) {
+                res.status(200).json({supplier: supplier.toJSON()})
+            }
+            else {
+                res.status(204).json({message:"id doesnt exist"});
+            }
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})
         }
+
+
+        var req_camp_name_en = req.params.camp_name_en;
+        Camp.forge({ camp_name_en: req_camp_name_en }).fetch().then((camp) => {
+            if (camp === null) {
+                // camp name is available
+                res.status(204).end();
+            } else {
+                res.status(200).end();
+            }
+        }).catch((e) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: e.message
+                }
+            });
+        });
+
+
+
    });
 
     /**
@@ -39,6 +65,8 @@ module.exports = (app, passport) => {
     app.post('/suppliers/new', async (req, res) => {
         try {
             let data = supplier_data_update_(req,"new")
+            console.log("bennnnnnnnnnn",data)
+
             let supplier = await Suppliers.forge().save(data)
             res.status(200).json({supplier: supplier.toJSON()})
         } catch (err) {
@@ -55,7 +83,7 @@ module.exports = (app, passport) => {
             let supplier_id = req.params.supplier_id;
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
             if (supplier !== null) {
-                let data = supplier_data_update_(req,"update") 
+                let data = supplier_data_update_(req,"update")
                 supplier = await supplier.save(data)
                 res.status(200).json({supplier: supplier.toJSON()})
             } else {
@@ -163,7 +191,7 @@ module.exports = (app, passport) => {
     function supplier_data_update_(req,action) {
         let data = {
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-            supplier_id: req.body.supplier_id,
+            supplier_id: req.params.supplier_id || req.body.supplier_id,
             supplier_name_en: req.body.supplier_name_en,
             supplier_name_he: req.body.supplier_name_he,
             main_contact_name: req.body.main_contact_name,

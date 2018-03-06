@@ -186,6 +186,8 @@ require('./routes/api_suppliers_routes')(app, passport);
 
 // Camps
 require('./routes/camps_routes')(app, passport);
+// Suppliers
+require('./routes/suppliers_routes')(app, passport);
 
 require('./routes/volunteers_routes')(app, passport);
 

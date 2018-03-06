@@ -1,0 +1,32 @@
+extends ../../includes/page
+block content 
+    h1= title
+    p Welcome to #{title}
+    a.btn.btn-success(href='/he/suppliers/new') New
+    - const suppliersArray = data.suppliers
+    - const defaultVal = 'empty'
+    div
+        table.table.table-hover
+            thead
+                tr 
+                    th Name
+                    th Id
+                    th contact name
+                    th contact position
+                    th contact phone
+                    th category
+                    th website link
+                    th midmarket link
+                    th comments
+            tbody
+                each suppliers in suppliersArray
+                    tr
+                        td= suppliers.supplier_name_en || defaultVal
+                        td= suppliers.supplier_id || defaultVal
+                        td= suppliers.main_contact_name || defaultVal
+                        td= suppliers.main_contact_position || defaultVal
+                        td= suppliers.main_contact_phone_number || defaultVal
+                        td= suppliers.supplier_category || defaultVal
+                        td= suppliers.supplier_website_link || defaultVal
+                        td= suppliers.supplier_midmarket_link || defaultVal
+                        td= suppliers.comments || defaultVal
