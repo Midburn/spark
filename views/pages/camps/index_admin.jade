@@ -56,7 +56,11 @@ block content
                             //- th.admin-edit=t(t_prefix+'stats.edit')
                             //- th.admin-remove=t(t_prefix+'stats.remove')
                     tbody
+<<<<<<< HEAD
                         tr(ng-repeat="camp in camps | filter: searchCamp | filter: {__prototype: 'art_installation'} | orderBy: orderCamps")
+=======
+                        tr(ng-repeat="camp in camps | filter:{__prototype: 'art_installation'} | orderBy: orderCamps")
+>>>>>>> 432c896e2552e0416fdc3b5a7a883de805dc9c63
                             td {{ camp.id }}
                             td 
                                 a(ng-href=`/${language}/camps/{{camp.id}}`)
