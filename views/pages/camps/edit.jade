@@ -100,15 +100,7 @@ block content
                                                 // set checkbox status
                                                 var checkbox = document.getElementById("camp_accept_families");
                                                 checkbox.checked = checkbox.attributes.checked.value == "1" ? true:false
-                                    if(!isNew)
-                                        .col-md-4
-                                            .col-xs-12
-                                                label(for='edit_camp_web_published') #{t('camps:edit.publication')}:
-                                                if camp.web_published == '1'
-                                                    span.badge.bg__green=t('camps:camps.yes')
-                                                    button.Btn.Btn__sm.bg__teal(id='camp_edit_unpublish')=t('camps:edit.unpublish')
-                                                else
-                                                    span.badge.bg__red=t('camps:camps.no')
+
                 if (!isNew)
                     h4=t('camps:edit.contact_title')
                     .camp-leaders.panel
