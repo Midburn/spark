@@ -8,13 +8,14 @@ var request = require('request');
 var dateFormat = require('dateformat');
 var _ = require('lodash');
 var log = require('../libs/logger')(module);
+const constants = require('../models/constants')
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
 const STATUS_COMPLETED = 'Completed';
 
-const EVENT_ID = "MIDBURN2018";
-const TICKETS_TYPE_IDS = [54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66];
+const EVENT_ID = constants.DEFAULT_EVENT_ID
+const TICKETS_TYPE_IDS = [...constants.events[constants.DEFAULT_EVENT_ID].bundles]
 var globalMinutesDelta = 0;
 
 function r(options) {
@@ -89,7 +90,6 @@ async function dumpDrupalTickets(session, date, page) {
             return null;
         }
         log.info("got " + tickets.length + " tickets");
-
         var utickets = [];
 
         for (var ticket of tickets) {
