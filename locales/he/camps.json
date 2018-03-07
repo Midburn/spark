@@ -313,7 +313,8 @@
             "all_members": "כל המציגים",
             "docs": "מסמכים",
             "new": "חדש",
-            "all_camps_table": "כל המיצבים"
+            "all_camps_table": "כל המיצבים",
+            "all_members_table": "כל החברים"
         },
         "stats": {
             "search": "חיפוש",
@@ -321,10 +322,13 @@
             "contact_person": "איש קשר",
             "status": "סטטוס",
             "last_update": "עודכן לאחרונה",
-            "published": "פורסם בתאריך"
+            "published": "פורסם בתאריך",
+            "dumpcampsdata": "יצוא לקובץ"
         },
         "members": {
-            "actions": "פעולות"
+            "actions": "פעולות",
+            "search": "חפש חבר במחנה",
+            "choose_camp": "בחר מחנה"
         },
         "edit": {
             "view": "צפה במיצב",
