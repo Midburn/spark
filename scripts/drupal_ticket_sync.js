@@ -11,10 +11,10 @@ var log = require('../libs/logger')(module);
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-const TICKETS_TYPE_IDS = [49, 50, 51, 52];
 const STATUS_COMPLETED = 'Completed';
 
 const EVENT_ID = "MIDBURN2018";
+const TICKETS_TYPE_IDS = [54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66];
 var globalMinutesDelta = 0;
 
 function r(options) {
