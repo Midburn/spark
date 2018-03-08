@@ -1,0 +1,36 @@
+.row
+    .col-xs-3
+        .circle-tile
+            .circle-tile-heading.green
+                i.fa.fa-users.fa-fw.fa-3x
+            .circle-tile-content.green
+                .circle-tile-description.text-faded
+                    h5=t('camps:admin_index.total_approved_members')
+                .circle-tile-number.text-faded {{all_approved_members}}
+    .col-xs-3
+        .circle-tile
+            .circle-tile-heading.blue
+                i.fa.fa-ticket.fa-fw.fa-3x
+            .circle-tile-content.blue
+                .circle-tile-description.text-faded
+                    h5=t('camps:admin_index.total_camp_tickets')
+                .circle-tile-number.text-faded {{total_camp_tickets}}
+
+    .col-xs-3
+        .circle-tile
+            .circle-tile-heading.orange
+                i.fa.fa-ticket.fa-fw.fa-3x
+            .circle-tile-content.orange
+                .circle-tile-description.text-faded
+                    h5=t(t('camps:stats.total_pre_sale_ticket_assigned'))
+                .circle-tile-number.text-faded {{preSaleTicketsCount}}
+
+    .col-xs-3
+        .circle-tile
+            .circle-tile-heading.purple
+                i.fa.fa-ticket.fa-fw.fa-3x
+            .circle-tile-content.purple
+                .circle-tile-description.text-faded
+                    h5=t(t('camps:stats.pre_sale_ticket_count'))
+                .circle-tile-number.text-faded {{pre_sale_tickets_quota !== null ? pre_sale_tickets_quota : 0}}
+

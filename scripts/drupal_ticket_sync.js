@@ -8,13 +8,14 @@ var request = require('request');
 var dateFormat = require('dateformat');
 var _ = require('lodash');
 var log = require('../libs/logger')(module);
+const constants = require('../models/constants')
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-const TICKETS_TYPE_IDS = [49, 50, 51, 52];
 const STATUS_COMPLETED = 'Completed';
 
-const EVENT_ID = "MIDBURN2018";
+const EVENT_ID = constants.DEFAULT_EVENT_ID
+const TICKETS_TYPE_IDS = [...constants.events[constants.DEFAULT_EVENT_ID].bundles]
 var globalMinutesDelta = 0;
 
 function r(options) {
@@ -89,7 +90,6 @@ async function dumpDrupalTickets(session, date, page) {
             return null;
         }
         log.info("got " + tickets.length + " tickets");
-
         var utickets = [];
 
         for (var ticket of tickets) {
@@ -147,12 +147,7 @@ async function updateTicket(ticket) {
         ticket_type
     } = ticket;
 
-    if (typeof barcode !== 'string' || barcode.length === 0) {
-        log.info('No barcode for ticket', ticket_id, 'user ', holder_email);
-        return;
-    } else {
-        log.info('Updating ticket', ticket_id, 'user ', holder_email);
-    }
+    log.info('Updating ticket', ticket_id, 'user ', holder_email);
 
     try {
         var user = await User.forge({email: holder_email}).fetch();
@@ -198,7 +193,7 @@ async function updateTicket(ticket) {
         sparkTicket = Ticket.forge({
             event_id: EVENT_ID,
             holder_id: holder_id,
-            barcode: barcode,
+            barcode: (typeof barcode !== 'string' || barcode.length === 0) ? null : barcode,
             order_id: order_id,
             ticket_id: ticket_id,
             type: ticket_type,

@@ -12,6 +12,11 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
 
+// bind Twitter Bootstrap tooltips to dynamically created elements
+$("body").tooltip({
+    selector: '[data-toggle="tooltip"]'
+});
+
 /**
  * Scroll to top - footer button
  */
@@ -118,24 +123,25 @@ $(function () {
 //     }
 // }
 
-function extractCampData() {
+function extractCampData(isNew) {
     var activity_time = fetchAllCheckboxValues('camp_activity_time');
     var type = fetchAllCheckboxValues('camp_type');
+    const loggedInUser = $('#logged_user_id').val();
 
     return {
         camp_name_he: $('#camp_name_he').val() || 'camp' + (+new Date()),
         camp_name_en: $('#camp_name_en').val(),
         camp_desc_he: $('#camp_desc_he').val() || '',
         camp_desc_en: $('#camp_desc_en').val() || '',
-        contact_person_id: $('#camp_contact_person_id option:selected').val() || '',
+        contact_person_id: isNew ? loggedInUser : $('#camp_contact_person_id option:selected').val() || '',
         facebook_page_url: $('#camp_facebook_page_url').val() || '',
         contact_person_name: $('#camp_contact_person_name').val() || '',
         contact_person_email: $('#camp_contact_person_email').val() || '',
         contact_person_phone: $('#camp_contact_person_phone').val() || '',
         accept_families: $('#camp_accept_families:checked').length,
-        main_contact: $('#camp_main_contact option:selected').val() || '',
-        moop_contact: $('#camp_moop_contact option:selected').val() || '',
-        safety_contact: $('#camp_safety_contact option:selected').val() || '',
+        main_contact: isNew ? loggedInUser : $('#camp_main_contact option:selected').val() || '',
+        moop_contact: isNew ? loggedInUser : $('#camp_moop_contact option:selected').val() || '',
+        safety_contact: isNew ? loggedInUser : $('#camp_safety_contact option:selected').val() || '',
         type: type || '',
         camp_status: $('#camp_status option:selected').val() || '',
         camp_activity_time: activity_time || '',
@@ -159,7 +165,7 @@ function extractCampData() {
  */
 $('#camp_edit_save').click(function () {
     var camp_id = $('#camp_edit_camp_id').val();
-    var camp_data = extractCampData();
+    var camp_data = extractCampData(true);
     var lang = document.getElementById('meta__lang').value;
 
     $.ajax({
