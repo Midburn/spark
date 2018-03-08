@@ -1,9 +1,11 @@
 var angular_getCamps = function ($http, $scope, supplier_id) {
-  
+  let isNew = $("#isNew").val();
+  if (isNew === "false") {
     $http.get(`/suppliers/${supplier_id}/camps`).then((res) => {
         $scope.canDelete = true; //TODO check if the user can delete the camp
         $scope.relatedCamps = res.data.camps;
     });
+  }
 }
 var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     var camp_id = user_rec.camp_id;

@@ -4,7 +4,6 @@ var Supplier = require('../models/suppliers').Suppliers;
 const Event = require('../models/event').Event;
 
 var __supplier_data_to_json = function (supplier) {
-    console.log(supplier);
     let supplier_data = supplier.toJSON();
     let supplier_check_null = [
         'updated_at', 'supplier_id', 'supplier_name_en', 'supplier_name_he', 'main_contact_name',
@@ -33,7 +32,6 @@ var __render_supplier = function (supplier, req, res) {
             // if user is camp_member, we can show all
             // let _user = camp.isUserCampMember(req.user.id);
             let supplier_data = __supplier_data_to_json(supplier);
-            console.log("sdfsdf",supplier_data)
             let data = {
                 user: req.user,
                 userLoggedIn: req.user.hasRole('logged in'),
@@ -132,9 +130,8 @@ module.exports = function (app, passport) {
         }
         res.render('pages/suppliers/edit', {
             user: req.user,
-            supplier_id: req.query.c,
             breadcrumbs: req.breadcrumbs(),
-            supplier: { type: '', id: 'new' },
+            supplier: { supplier_id: req.query.c },
             details: {},
             isAdmin: req.user.isAdmin,
             isNew: true,
@@ -282,59 +279,6 @@ module.exports = function (app, passport) {
 
     });
 
-    // art admin management panel
-    app.get('/:lng/art-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs([{
-            name: 'breadcrumbs.home',
-            url: '/' + req.params.lng + '/home'
-        },
-        {
-            name: 'suppliers:breadcrumbs.manage',
-            url: '/' + req.params.lng + '/art-admin'
-        }]);
-        if (req.user.isAdmin || req.user.isArtInstallationsAdmin) {
-            res.render('pages/suppliers/index_admin', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs(),
-                __groups_prototype: 'art_installation',
-                t_prefix: 'suppliers:art_installation.',
-                isArt: true,
-            });
-        } else {
-            // user not admin
-            res.render('pages/suppliers/index_user', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        }
-    });
-    // art admin management panel
-    app.get('/:lng/prod-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
-        req.breadcrumbs([{
-            name: 'breadcrumbs.home',
-            url: '/' + req.params.lng + '/home'
-        },
-        {
-            name: 'suppliers:breadcrumbs.manage',
-            url: '/' + req.params.lng + '/prod-admin'
-        }]);
-        if (req.user.isAdmin || req.user.isProdDepsAdmin) {
-            res.render('pages/suppliers/index_admin', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs(),
-                __groups_prototype: 'prod_dep',
-                t_prefix: 'suppliers:prod_dep.',
-                isProd: true,
-
-            });
-        } else {
-            // user not admin
-            res.render('pages/suppliers/index_user', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        }
-    });
 
     // Program
     app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {

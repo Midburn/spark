@@ -6,6 +6,7 @@ block content
     input.hidden.meta(id='meta__lang', value='#{language}')
     //input.hidden.meta(id='meta__camp_name_en', value='#{supplier.supplier_name_en}')
     input.hidden.meta(id='meta__supplier_id', value='#{supplier.supplier_id}')
+    input.hidden.meta(id='isNew', value='#{isNew}')
     //input.hidden.meta(id='meta__grouptype', value='#{supplier.__prototype}')
     .camps.camp_edit(ng-app="ngSuppliers", ng-controller="supllierEditController")
         
@@ -17,7 +18,6 @@ block content
             if(isNew)
                 h2=t('suppliers:edit_new.new_supplier')
                 h4=t('suppliers:edit_new.header_desc')
-                input(type='hidden',id='supplier_id' value='#{supplier_id}')
             else
                 span.label.label-info #{t(t_prefix+'edit_new.supplier')} # #{supplier.supplier_id}
                 h2 #{t('suppliers:edit_new.editing')}: #{supplier.supplier_name_en}
@@ -60,8 +60,8 @@ block content
                                     label(for='main_contact_name')=t('suppliers:edit_new.contact_person')
                                     input.form-control(id='main_contact_name', dir='rtl', name='main_contact_name', value=(isNew ? '' : '#{supplier.main_contact_name}'))
                                 .col-xs-12
-                                    label(for='main_contact_position')=t('suppliers:edit_new.main_contact_position')
-                                    input.form-control(id='main_contact_position', dir='rtl', name='main_contact_position', value=(isNew ? '' : '#{supplier.main_contact_position}'))
+                                    label(for='main_contact_position')=t('suppliers:edit_new.position')
+                                    input.form-control(id='main_contact_position', dir='rtl', name='main_contact_position', value=(isNew ? '' : '#{supplier.position}'))
                             .details-he.col-md-6
                                 .col-xs-12
                                     label(for='main_contact_phone_number')=t('suppliers:edit_new.main_contact_phone_number')
@@ -100,15 +100,15 @@ block content
         .controls.row
             .col-xs-12
                 if(isNew)
-                    a.Btn.Btn__default.card-switcher#3(href='#')=t('suppliers:edit_new.btn_continue')
+                    //- a.Btn.Btn__default.card-switcher#3(href='#')=t('suppliers:edit_new.btn_continue')
                     button(type="submit", id='supplier_create_save', class="Btn Btn__green")=t('suppliers:edit_new.btn_save_camp')
 
                 else
                     input(id='supplier_edit_supplier_id', type='hidden', value='#{supplier.supplier_id}')
                     button.Btn.Btn__default(id='supplier_edit_save')=t('suppliers:edit_new.btn_save_camp')
-                
-                    if isCamp && supplier.web_published != '1'
-                        button.Btn.Btn__green(id='camp_edit_publish')=t('suppliers:edit_new.publish')
+            
+                if isCamp && supplier.web_published != '1'
+                    button.Btn.Btn__green(id='camp_edit_publish')=t('suppliers:edit_new.publish')
 
         //- Camp create request modal
         .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
@@ -117,61 +117,31 @@ block content
                     .modal-header
                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
-                        h4.modal-title=t('suppliers:new.create_camp_request')
+                        h4.modal-title=t('suppliers:edit_new.confirmation')
                     .modal-body
-                        p=t('suppliers:new.create_camp_request_text')
+                        p=t('suppliers:edit_new.create_supplier_text')
                         .camp_details
-                            ul
-                                li.camp_name_he=t('suppliers:new.name_he')
+                            ul(id='modal')
+                                li.supplier_id=t(t_prefix+'edit_new.id')
+                                    span {{modalData.supplier_id}}
+                                li.supplier_name_en=t(t_prefix+'edit_new.name')
+                                    span {{modalData.supplier_name_en}}
+                                li.main_contact_name=t(t_prefix+'edit_new.contact_person')
                                     span
-                                li.camp_name_en=t('suppliers:new.name_en')
+                                li.main_contact_position=t(t_prefix+'edit_new.position')
                                     span
-                                li.camp_desc_he=t('suppliers:new.desc_he')
+                                li.main_contact_phone_number= t(t_prefix+'edit_new.contact_number')
                                     span
-                                li.camp_desc_en=t('suppliers:new.desc_en')
+                                li.supplier_website_link=t(t_prefix+'edit_new.website_link')
                                     span
-                                li.contact_person_id=t('suppliers:new.contact_person_id')
+                                li.supplier_midmarket_link=t(t_prefix+'edit_new.midmarket_link')
                                     span
-                                li.facebook_page_url=t('suppliers:new.facebook_page_url')
+                                li.comments=t(t_prefix+'edit_new.comments')
                                     span
-                                li.accept_families=t('suppliers:camps.accept_families')
+                                li.supplier_category=t(t_prefix+'edit_new.category')
                                     span
-                                li.contact_person_name=t('suppliers:new.contact_person_name')
-                                    span
-                                li.contact_person_email=t('suppliers:new.contact_person_email')
-                                    span
-                                li.contact_person_phone=t('suppliers:new.contact_person_phone')
-                                    span
-                                li.main_contact=t('suppliers:new.main_contact')
-                                    span
-                                li.moop_contact=t('suppliers:new.moop_contact')
-                                    span
-                                li.safety_contact=t('suppliers:new.safety_contact')
-                                    span
-                                li.type=t('suppliers:new.type')
-                                    span
-                                li.camp_status=t('suppliers:edit.status')
-                                    span
-                                li.camp_activity_time=t('suppliers:new.camp_activity_time')
-                                    span
-                                li.child_friendly=t('suppliers:new.camp_child_friendly')
-                                    span
-                                li.noise_level=t('suppliers:new.camp_noise_level')
-                                    span
-                                li.public_activity_area_sqm=t('suppliers:new.public_activity_area_sqm')
-                                    span
-                                li.public_activity_area_desc=t('suppliers:new.public_activity_area_desc')
-                                    span
-                                li.support_art=t('suppliers:new.support_art')
-                                    span
-                                li.location_comments=t('suppliers:new.location_comments')
-                                    span
-                                li.camp_location_street=t('suppliers:new.camp_location_street')
-                                    span
-                                li.camp_location_street_time=t('suppliers:new.camp_location_street_time')
-                                    span
-                                li.camp_location_area=t('suppliers:new.camp_location_area')
-                                    span
+
+                           
                     .modal-footer
-                        button.Btn.Btn__transparent(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('suppliers:new.close')
-                        button.Btn.Btn__green(id='supplier_create_save_modal_request', type='button')=t('suppliers:new.send_request')
+                        button.Btn.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
+                        button.Btn.Btn__green(id='supplier_create_save_modal_request', type='button')=t('suppliers:edit_new.save')

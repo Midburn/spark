@@ -45,8 +45,8 @@ block content
                             th.status(ng-click='changeOrderBy("status")')=t(t_prefix+'edit_new.position')
                             th.number= t(t_prefix+'edit_new.contact_number')
                             th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'edit_new.last_update')
-                            th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'edit_new.website')
-                            th.midmarked(ng-click='changeOrderBy(".midmarked")')=t(t_prefix+'edit_new.midmarked')
+                            th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'edit_new.website_link')
+                            th.midmarket(ng-click='changeOrderBy(".midmarket")')=t(t_prefix+'edit_new.midmarket_link')
                             th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t(t_prefix+'edit_new.comments')
                             th.categories(ng-click='changeOrderBy("categories")')=t(t_prefix+'edit_new.category')
                             //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
@@ -57,10 +57,15 @@ block content
                         tr(ng-repeat="supplier in suppliers | filter: searchCamp | orderBy: orderCamps")
                             td {{ supplier.supplier_id }}
                             td 
-                                a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
+                                //- a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
+                                //-     span {{supplier.supplier_name_en}}
+                                //- br 
+                                //- a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
+                                //- TODO link name to supplier page
+                                a(ng-href="#") 
                                     span {{supplier.supplier_name_en}}
                                 br 
-                                a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
+                                a(ng-href="#")
                                     span {{supplier.supplier_name_he}}
                             td {{ supplier.main_contact_name }}
                             td {{ supplier.main_contact_position }}
@@ -108,7 +113,7 @@ block content
             //- Card 4
             .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
                 h2=t(t_prefix+'edit_new.new_supplier')
-                h4=t(t_prefix+'edit_new.name_choosing_title')
+                h4=t(t_prefix+'edit_new.id_choosing_title')
                 .col-sm-8.col-xs-12
                     .pos-r
                         label=t(t_prefix+'edit_new.id')
@@ -116,4 +121,4 @@ block content
                         span.indicator
                             span.glyphicon
                 .col-sm-4.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t(t_prefix+'edit_new.btn_continue')
+                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_supplier_id", role='button')=t(t_prefix+'edit_new.btn_continue')

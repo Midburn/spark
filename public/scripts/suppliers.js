@@ -43,7 +43,7 @@ function doneTyping_(event) {
         lang = $('body').attr('lang'),
         status = $(".choose_name span.indicator span.glyphicon"),
         input = $input,
-        btn = $('#check_camp_name');
+        btn = $('#check_supplier_id');
         var data = $.get('/suppliers/' + val);
         
         data.done(function () {
@@ -108,7 +108,7 @@ function extractSupplierData() {
         supplier_name_he: $('#supplier_name_he').val()|| "empty",
         main_contact_name:$('#main_contact_name').val()|| "empty",
         main_contact_position:$('#main_contact_position').val()|| "empty",
-        main_contact_phone_number:$('#main_contact_phone_number').val()|| "empty",
+        main_contact_phone_number:$('#main_contact_phone_number').val()|| 0,
         supplier_category:$('#supplier_category').val()|| "empty",
         supplier_website_link:$('#supplier_website_link').val()|| "empty",
         supplier_midmarket_link: $('#supplier_midmarket_link').val()|| "empty",
@@ -124,16 +124,16 @@ $('#supplier_edit_save').click(function () {
     var supplier_id = $('#supplier_edit_supplier_id').val();
     var supplier_data = extractSupplierData();
     var lang = document.getElementById('meta__lang').value;
-    console.log(supplier_data)
+    //console.log(supplier_data)
     $.ajax({
         url: '/suppliers/' + supplier_id + '/edit',
         type: 'PUT',
         data: supplier_data,
         success: function (result) {
             if (lang === 'he') {
-                sweetAlert("כל הכבוד", "המחנה עודכן, על מנת לראות את השינויים יש לרענן את העמוד", "success");
+                sweetAlert("כל הכבוד", "הספק עודכן, על מנת לראות את השינויים יש לרענן את העמוד", "success");
             } else {
-                sweetAlert("You good...", "Camp details updated! reload the page.", "success");
+                sweetAlert("You good...", "Supplier details updated! reload the page.", "success");
             }
         }
     });
@@ -177,6 +177,7 @@ $('#edit_type_other').click(function () {
  */
 $('#supplier_create_save').click(function () {
     var supplier_data = extractSupplierData();
+   //$scope.modalData = supplier_data;
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
     _supplierAppendData();
@@ -186,6 +187,8 @@ $('#supplier_create_save').click(function () {
     });
 
     function _supplierAppendData() {
+        var supplier_id = $('#meta__supplier_id').val();
+        $('.supplier_id span').text(': ' + supplier_id).css('font-weight', 'bold');
         $.each(supplier_data, function (label, data) {
             if (data) {
                 $('.' + label).show();
@@ -198,9 +201,8 @@ $('#supplier_create_save').click(function () {
     }
 
     function _sendSuppliersRequest() {
-        var supplier_id = $('#supplier_id').val();
+        var supplier_id = $('#meta__supplier_id').val();
         supplier_data.supplier_id = supplier_id;
-        console.log("hi",supplier_data)
         $.ajax({
             url: '/suppliers/new',
             type: 'POST',
@@ -208,7 +210,7 @@ $('#supplier_create_save').click(function () {
             success: function (result) {
                 var supplier_id = result.supplier.supplier_id;
                 $('#create_camp_request_modal').find('.modal-body').html('<h4>Supplier created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin, $('body').attr('lang')].join('/') + '/suppliers/' + supplier_id + '/edit">here</a><span></h4>');
-                $('#create_camp_request_modal').find('#camp_create_save_modal_request').hide();
+                $('#create_camp_request_modal').find('#supplier_create_save_modal_request').hide();
                 // 10 sec countdown to close modal
                 var sec = 10;
                 setInterval(function () {
