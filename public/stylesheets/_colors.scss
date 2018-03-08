@@ -1,0 +1,74 @@
+
+// colors
+$dark-gray: #7F8C8D;
+$gray: #95A5A6;
+$light-gray: #BDC3C7;
+$dark-blue: #34495E;
+$blue: #2980B9;
+$green: #16A085;
+$yellow: #F1C40F;;
+$orange: #F39C12;
+$red:  #E74C3C;
+$purple:  #8E44AD;
+$pink: #d6569d;
+.dark-blue {
+    background-color: $dark-blue
+}
+.green {
+    background-color: $green
+}
+.blue {
+    background-color: $blue;
+}
+.yellow {
+    background-color: $yellow;
+}
+.orange {
+    background-color: $orange;
+}
+.red {
+    background-color: $red;
+}
+.purple {
+    background-color: $purple;
+}
+.pink {
+    background-color: $pink;
+}
+.dark-gray {
+    background-color: $dark-gray;
+}
+.gray {
+    background-color: $gray;
+}
+.light-gray {
+    background-color: $light-gray;
+}
+
+.text-dark-blue {
+    color: $dark-blue;
+}
+.text-green {
+    color: $green;
+}
+.text-blue {
+    color: $blue;
+}
+.text-orange {
+    color: $orange;
+}
+.text-yellow {
+    color: $yellow
+}
+.text-red {
+    color: $red;
+}
+.text-purple {
+    color: $purple
+}
+.text-pink {
+    color: $pink;
+}
+.text-faded {
+    color: rgba(255, 255, 255, 0.7);
+}

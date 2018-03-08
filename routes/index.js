@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+// Use locals
+app.locals.moment = require('moment');
+
 //Pages
 app.use("/:lng?/admin", require("./pages/admin_routes"));
 app.use("/:lng/events-admin", require("./pages/events_routes"));

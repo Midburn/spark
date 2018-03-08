@@ -5,7 +5,7 @@
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
-  "version": "2.10.24",
+  "version": "2.10.27",
   "private": true,
   "scripts": {
     "postinstall": "cd public; npm install",
@@ -77,6 +77,7 @@
     "lodash": "^4.17.4",
     "mocker-data-generator": "^2.5.2",
     "module-id": "2.0.4",
+    "moment": "^2.21.0",
     "morgan": "~1.9.0",
     "mysql": "^2.11.1",
     "node-cache": "^4.1.1",

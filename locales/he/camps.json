@@ -44,8 +44,8 @@
         "new": "צור מחנה חדש",
         "all_camps_table": "מחנות",
         "all_members_table": "חברי מחנות",
-        "total_approved_members": "סה\"כ חברי מחנה",
-        "total_camp_tickets": "סה\"כ כרטיסים במחנה",
+        "total_approved_members": "חברי מחנה",
+        "total_camp_tickets": "כרטיסים במחנה",
         "docs_table": "מסמכים וקבצים"
     },
     "new": {
@@ -98,6 +98,7 @@
         "send_request": "שלח בקשה",
         "close": "סגור",
         "website_publication": "פרסום באתר",
+        "midburn_website_publication": "פרסום המחנה באתר מידבן",
         "contact_person_id": "איש קשר",
         "contact_person_name": "שם איש קשר",
         "contact_person_email": "אימייל איש קשר",
@@ -137,11 +138,11 @@
         "facebook_page_url": "דף פייסבוק",
         "remove": "הסרה",
         "search": "חפש מחנה",
-        "dumpcampsdata": "יצוא לקובץ",
+        "dumpcampsdata": "יצוא טבלה לקובץ",
         "entrance_quota": "מכסת הגעה מוקדמת",
         "pre_sale_tickets_quota": "הקצאת כרטיסים",
-        "pre_sale_ticket_count": "סה״כ הכרטיסים שהוקצו",
-        "total_pre_sale_ticket_assigned": "סה״כ מספר הכרטיסים שניתן להקצות"
+        "pre_sale_ticket_count": "כרטיסים שהוקצו",
+        "total_pre_sale_ticket_assigned": "כרטיסים שניתן להקצות"
     },
     "members": {
         "title": "משתתפים במחנה",
@@ -191,6 +192,7 @@
         "edit": "ערוך מחנה",
         "published": "פורסם",
         "draft": "טיוטא",
+        "accept_new_members": "פתוח/סגור למצטרפים חדשים?",
         "status": "סטטוס",
         "status_open": "פתוח",
         "status_closed": "סגור",
@@ -311,7 +313,8 @@
             "all_members": "כל המציגים",
             "docs": "מסמכים",
             "new": "חדש",
-            "all_camps_table": "כל המיצבים"
+            "all_camps_table": "כל המיצבים",
+            "all_members_table": "כל החברים"
         },
         "stats": {
             "search": "חיפוש",
@@ -319,10 +322,13 @@
             "contact_person": "איש קשר",
             "status": "סטטוס",
             "last_update": "עודכן לאחרונה",
-            "published": "פורסם בתאריך"
+            "published": "פורסם בתאריך",
+            "dumpcampsdata": "יצוא טבלה לקובץ"
         },
         "members": {
-            "actions": "פעולות"
+            "actions": "פעולות",
+            "search": "חפש חבר במחנה",
+            "choose_camp": "בחר מחנה"
         },
         "edit": {
             "view": "צפה במיצב",
