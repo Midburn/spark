@@ -58,7 +58,8 @@ block content
                             //- th.admin-edit=t(t_prefix+'stats.edit')
                             //- th.admin-remove=t(t_prefix+'stats.remove')
                     tbody
-                        tr(ng-repeat="camp in camps | filter: searchCamp | orderBy: orderCamps")
+
+                        tr(ng-repeat="camp in camps | filter: searchCamp | filter: {__prototype: 'art_installation'} | orderBy: orderCamps")
                             td {{ camp.id }}
                             td
                                 a(ng-href=`/${language}/camps/{{camp.id}}`)
