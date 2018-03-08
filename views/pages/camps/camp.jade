@@ -16,7 +16,7 @@ block content
                 .style
                     h5 #{t('camps:camps.style')}
                     each type in camp.type_i18n.split(',')
-                        span.label.label-primary #{type}
+                        span.label.label-primary #{type.replace('edit.', '')}
                 h5
                 //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
