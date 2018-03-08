@@ -147,12 +147,7 @@ async function updateTicket(ticket) {
         ticket_type
     } = ticket;
 
-    if (typeof barcode !== 'string' || barcode.length === 0) {
-        log.info('No barcode for ticket', ticket_id, 'user ', holder_email);
-        return;
-    } else {
-        log.info('Updating ticket', ticket_id, 'user ', holder_email);
-    }
+    log.info('Updating ticket', ticket_id, 'user ', holder_email);
 
     try {
         var user = await User.forge({email: holder_email}).fetch();
@@ -198,7 +193,7 @@ async function updateTicket(ticket) {
         sparkTicket = Ticket.forge({
             event_id: EVENT_ID,
             holder_id: holder_id,
-            barcode: barcode,
+            barcode: (typeof barcode !== 'string' || barcode.length === 0) ? null : barcode,
             order_id: order_id,
             ticket_id: ticket_id,
             type: ticket_type,
