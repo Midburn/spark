@@ -273,7 +273,7 @@ function fetchAllCheckboxValues(className) {
     $('.' + className + ':checked').each(function (i) {
         val[i] = $(this).val();
         if (val[i] === 'other') {
-            val[i] += '=' + $('#' + className + '_other_text').val()
+            val[i] = $('#' + className + '_other_text').val()
         }
     });
     return val.toString();
