@@ -2,7 +2,7 @@ extends ../../includes/page
 block content
     .camps.camp_admin_index(ng-app="ngCamps")
         script.
-            var groups_prototype="#{__groups_prototype}";            
+            var groups_prototype="#{__groups_prototype}";
         if controllDates
             script.
                 const controllDates = {
@@ -20,22 +20,24 @@ block content
                         a.Btn.Btn__transparent.card-switcher#2(href=`/${language}/camps-admin/members`, role='button')=t(t_prefix+'admin_index.all_members')
                         if isCamp
                             a.Btn.Btn__transparent.card-switcher#3(href=`/${language}/camps-admin/docs`, role='button')=t(t_prefix+'admin_index.docs')
-                        if isCamp || isProd                            
+                        if isCamp || isProd
                             a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'admin_index.new')
-            
+
         .cards--wrapper.card__shad
-            //- Card 1
+            //- Card 1 : Manage All Camps
             .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageCampsController")
-                h4=t(t_prefix+'admin_index.all_camps_table')
-                .controls.row
-                  .col-xs-12.col-md-9
-                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'stats.search')}")
-                   .col-xs-4.col-md-3
+                h2=t(t_prefix+'admin_index.all_camps')
+                .controls.row.m-0
+                    .col-xs-12.col-md-9.p-0
+                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix + 'stats.search')}")
+                    .col-xs-12.col-md-3
                         a.Btn.cursor-p(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
-                            button.btn.btn-xs 
-                                span=t(t_prefix+'stats.dumpcampsdata')
+                            button.btn.btn-xs
+                                span=t(t_prefix + 'stats.dumpcampsdata')
+
+
                      // a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
                         span.glyphicon.glyphicon-plus(aria-hidden="true")
                         span=t(t_prefix+'stats.dumpcampsdata')
@@ -65,8 +67,12 @@ block content
                                 a(ng-href=`/${language}/camps/{{camp.id}}`)
                                     span {{camp.camp_name_he}}
                             td {{ camp.contact_person_name }}
-                            td {{ camp.status }}
-                            td {{camp.updated_at | date: "dd/mm/yyyy, HH:mm" }}
+                            td(class="text-center")
+                                span(ng-if="camp.status == 'open'", class='glyphicon glyphicon-ok text-success', data-toggle="tooltip" data-placement="right" title="open")
+                                span(ng-if="camp.status == 'closed'", class='glyphicon glyphicon-remove text-warning', data-toggle="tooltip" data-placement="right" title="closed")
+                                span(ng-if="camp.status == 'deleted'", class='glyphicon glyphicon-trash text-danger', data-toggle="tooltip" data-placement="right" title="deleted")
+                                span(ng-if="camp.status != 'open' && camp.status != 'closed' && camp.status != 'deleted' ") {{camp.status}}
+                            td {{camp.updated_at | date: "dd/MM/yyyy, HH:mm" }}
                             td {{ camp.web_published }}
                             td {{ camp.entrance_quota }}
                             td
@@ -84,20 +90,20 @@ block content
                                         span(class='fa fa-facebook-official')
                                 if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
                                     a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit') &nbsp;
-                                        button.btn.btn-xs 
+                                        button.btn.btn-xs
                                             span(class='glyphicon glyphicon-pencil')
                                             =t('camps:stats.edit')
                                 a.cursor-p(ng-click='removeCamp(camp.id)') &nbsp;
-                                    button.btn.btn-xs 
+                                    button.btn.btn-xs
                                         span(class='glyphicon glyphicon-trash')
                                         =t('camps:stats.remove')
                             //- td
 
-            //- Card 2
+            //- Card 2: Manage Members
             .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
-                h4=t(t_prefix+'admin_index.all_members_table')
+                include partials/members_table_statistics
                 .controls.row
-                    .col-xs-12.col-md-3
+                    .col-xs-12.col-md-5
                         ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
                             if(language === 'en')
                                 ui-select-match(placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_en}}
@@ -109,19 +115,20 @@ block content
                                 ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
                                     small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
                                     span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
-                    .col-xs-12.col-md-9
+                    .col-xs-12.col-md-7
                         input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t(t_prefix+'members.search')}")
                 include partials/members_table
-                
-            //- Card 3
+
+            //- Card 3: Files
             .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive
                 h4=t(t_prefix+'admin_index.docs_table')
-                    
-            //- Card 4
+                // TODO: where is the docs table ?
+
+            //- Card 4: Create New Camp
             .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
                 h2=t(t_prefix+'new.header_title')
                 h4=t(t_prefix+'new.name_choosing_title')
-                .col-sm-8.col-xs-12
+                .col-sm-8.col-xs-12.p-0
                     .pos-r
                         label=t(t_prefix+'new.name_en')
                         input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)

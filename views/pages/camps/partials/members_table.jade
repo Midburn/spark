@@ -1,17 +1,3 @@
-
-.col-xs-6
-    h4=t('camps:admin_index.total_approved_members')
-        span.badge {{all_approved_members}}
-.col-xs-6
-    h4=t('camps:admin_index.total_camp_tickets')
-        span.badge {{total_camp_tickets}}
-.col-xs-6
-    h4=t(t('camps:stats.total_pre_sale_ticket_assigned'))
-        span.badge {{preSaleTicketsCount}}
-.col-xs-6
-    h4=t(t('camps:stats.pre_sale_ticket_count'))
-        span.badge {{pre_sale_tickets_quota !== null ? pre_sale_tickets_quota : 0}} 
-
 table.table.table-striped.table-hover
     thead
         tr
@@ -34,7 +20,7 @@ table.table.table-striped.table-hover
             td {{member.member_status_i18n}}
             td {{member.current_event_id_ticket_count}}
             td {{member.inside_event}}
-            td 
+            td
                 input(id='pre_sale_ticket_approved' type="checkbox" name="ticket_approved" ng-checked="{{member.pre_sale_ticket_approved}}" ng-model="member.pre_sale_ticket_approved" disabled)
             //- td {{member.earlyArrival ? 'yes':'no'}}
             td
@@ -55,7 +41,7 @@ table.table.table-striped.table-hover
                         span(class='glyphicon glyphicon-king')
                         =t('camps:members.remove_manager')
                 a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove") &nbsp;
-                    button.btn.btn-xs 
+                    button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.remove')
                 a.cursor-p(ng-show='allocationPeriodisAvtive' ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="member.pre_sale_ticket_approved === false") &nbsp;
