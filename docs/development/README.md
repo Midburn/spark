@@ -64,7 +64,17 @@ Example:
 ```
 input( data-error="#{t('bad_email')}" )
 ```
+## Date formatting in templates
+You can use [moment.js](https://momentjs.com/) function inside jade template like this:
+```
+p #{moment(created_at).format('DD/MM/YYYY, HH:mm')}
+```
+where `created_at` is jade variable containing date string.
 
+If you want to do date formatting on angular variable, just use [angular.js date pipe](https://docs.angularjs.org/api/ng/filter/date) like this:
+```
+td {{camp.updated_at | date: "dd/mm/yyyy, HH:mm" }}
+```
 ## Email
 
 Spark emails by default are **not being sent**. If you wish the emails from Spark to go through, set the `enable` property in your **local** config file.

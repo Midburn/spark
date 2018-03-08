@@ -12,7 +12,7 @@ __get_camps_all = function ($http, on_success) {
         } else if (groups_prototype === 'prod_dep') {
             _url = '/prod_dep_all';
         }
-        console.log(_url);
+        //console.log(_url);
         $http.get(_url).then((res) => {
             camps_all = res;
             on_success(res);

@@ -24,7 +24,7 @@ block content
             else
                 span.label.label-info #{t(t_prefix+'edit.camp')} # #{camp.id}
                 h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
-                h6 #{t('camps:edit.since')}: #{camp.created_at}
+                h6 #{t('camps:edit.since')}: #{moment(camp.created_at).format('DD/MM/YYYY, HH:mm')}
         .controls.row
             .col-xs-12
                 //- Card switcher
@@ -258,10 +258,13 @@ block content
 
             //- BEGIN Card 3:  Manage Members
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
-                .form-inline
-                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}")
-                    button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
-                .form-group
+                include partials/members_table_statistics
+                .row
+                    .col-xs-12
+                        .form-inline
+                            input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}")
+                            button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
+                        .form-group
                     input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
                 .row
                     .col-xs-12

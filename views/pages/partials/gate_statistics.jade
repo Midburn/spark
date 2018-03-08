@@ -1,0 +1,78 @@
+.row.m-2
+    .col-md-12.text-center
+        h3=t('common:homepage.stats.gate')
+.row
+    .col-xs-15
+        .circle-tile
+            .circle-tile-heading.pink
+                i.fa.fa-ticket.fa-fw.fa-3x
+            .circle-tile-content.pink
+                .circle-tile-description.text-faded
+                    h5=t('common:homepage.stats.total_tickets')
+                .circle-tile-number.text-faded {{stat.total_tickets}}
+    .col-xs-15
+        .circle-tile
+            .circle-tile-heading.blue
+                i.fa.fa-users.fa-fw.fa-3x
+            .circle-tile-content.blue
+                .circle-tile-description.text-faded
+                    h5=t('common:homepage.stats.inside_event')
+                .circle-tile-number.text-faded {{stat.inside_event}}
+
+    .col-xs-15
+        .circle-tile
+            .circle-tile-heading.orange
+                i.fa.fa-ticket.fa-fw.fa-3x
+            .circle-tile-content.orange
+                .circle-tile-description.text-faded
+                    h5=t('common:homepage.stats.ticketing')
+                .circle-tile-number.text-faded {{stat.ticketing}}
+
+    .col-xs-15
+        .circle-tile
+            .circle-tile-heading.purple
+                i.fa.fa-ticket.fa-fw.fa-3x
+            .circle-tile-content.purple
+                .circle-tile-description.text-faded
+                    h5=t('common:homepage.stats.last_24h_first_entrance')
+                .circle-tile-number.text-faded {{stat.last_24h_first_entrance}}
+
+    .col-xs-15
+        .circle-tile
+            .circle-tile-heading.dark-blue
+                i.fa.fa-ticket.fa-fw.fa-3x
+            .circle-tile-content.dark-blue
+                .circle-tile-description.text-faded
+                    h5=t('common:homepage.stats.last_1h_first_entrance')
+                .circle-tile-number.text-faded {{stat.last_1h_first_entrance}}
+
+.row
+    .col-xs-6
+        .circle-tile
+            .circle-tile-heading.green
+                i.fa.fa-sign-in.fa-fw.fa-3x
+            .circle-tile-content.green
+                .circle-tile-number.text-faded
+                    h4=t('common:homepage.stats.entrances')
+                .row
+                    .col-xs-6
+                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
+                        .circle-tile-number.text-faded {{stat.last_24h_entrance}}
+                    .col-xs-6
+                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
+                        .circle-tile-number.text-faded {{stat.last_1h_entrance}}
+    .col-xs-6
+        .circle-tile
+            .circle-tile-heading.red
+                i.fa.fa-sign-in.fa-rotate-180.fa-fw.fa-3x
+            .circle-tile-content.red
+                .circle-tile-number.text-faded
+                    h4=t('common:homepage.stats.exits')
+                .row
+                    .col-xs-6
+                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
+                        .circle-tile-number.text-faded {{stat.last_24h_exit}}
+                    .col-xs-6
+                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
+                        .circle-tile-number.text-faded {{stat.last_1h_exit}}
+
