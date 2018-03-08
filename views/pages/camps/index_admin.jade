@@ -58,20 +58,18 @@ block content
                     tbody
                         tr(ng-repeat="camp in camps | filter: searchCamp | orderBy: orderCamps")
                             td {{ camp.id }}
-                            td 
+                            td
                                 a(ng-href=`/${language}/camps/{{camp.id}}`)
                                     span {{camp.camp_name_en}}
-                                br 
+                                br
                                 a(ng-href=`/${language}/camps/{{camp.id}}`)
                                     span {{camp.camp_name_he}}
                             td {{ camp.contact_person_name }}
                             td {{ camp.status }}
-                            td {{ camp.updated_at.split('GMT')[0] }}
-                            //- td {{ camp.created_at.split('GMT')[0] }}
+                            td {{camp.updated_at | date: "dd/mm/yyyy, HH:mm" }}
                             td {{ camp.web_published }}
-                            //- td
                             td {{ camp.entrance_quota }}
-                            td 
+                            td
                                 input( type="number" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)')
                             td
                                 //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')

@@ -24,7 +24,7 @@ block content
             else
                 span.label.label-info #{t(t_prefix+'edit.camp')} # #{camp.id}
                 h2 #{t('camps:edit.title')}: #{camp.camp_name_en}
-                h6 #{t('camps:edit.since')}: #{camp.created_at}
+                h6 #{t('camps:edit.since')}: #{moment(camp.created_at).format('DD/MM/YYYY, HH:mm')}
         .controls.row
             .col-xs-12
                 //- Card switcher
