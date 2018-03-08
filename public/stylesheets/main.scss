@@ -40,6 +40,10 @@ span {
     background-position: 10px 15px;
 }
 
+.navbar-nav>li>a {
+    line-height: 22px;
+}
+
 li.dropdown > ul > li > a > img,
 li.dropdown > ul > li > a > span {
     float: right;
