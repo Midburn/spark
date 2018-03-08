@@ -1,47 +1,10 @@
-// var angular_getMembers = function ($http, $scope, camp_id) {
-//     if (camp_id === 'new') {
-//         $http.get('/users').then((res) => {
-//             $scope.members = [];
-//             $scope.approved_members = res.data.users;
-//         });
-//     } else {
-//         $http.get(`/camps/${camp_id}/members`).then((res) => {
-//             var members = res.data.members;
-//             var _members = [];
-//             var approved_members = [];
-//             var total_camp_tickets = 0;
-//             var total_in_event = 0;
-//             var preSaleTicketsCount=0;
-//             for (var i in members) {
-//                 var newMember=members[i]
-//                 //check if the user has a pre_sale ticket 
-//                 //if so the set the checkbox to true 
-//                 if (members[i].pre_sale_ticket) {
-//                     newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
-//                     preSaleTicketsCount++;
-//                 }
-//                 else {
-//                     newMember.pre_sale_ticket_approved = false;
-//                 }
-//                 if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(newMember.member_status) > -1) {
-//                     _members.push(newMember);
-//                 }
-//                 if (['approved', 'approved_mgr'].indexOf(newMember.member_status) > -1) {
-//                     approved_members.push(newMember);
-//                 }
-//                 total_in_event += parseInt(newMember.inside_event);
-//                 total_camp_tickets += parseInt(newMember.ticket_count) || 0;
-//             }
-//             $scope.preSaleTicketsCount = preSaleTicketsCount;
-//             $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
-//             $scope.members = _members;
-//             $scope.approved_members = approved_members;
-//             $scope.all_approved_members = approved_members.length;
-//             $scope.total_camp_tickets = total_camp_tickets;
-//             $scope.total_in_event = total_in_event;
-//         });
-//     }
-// }
+var angular_getCamps = function ($http, $scope, supplier_id) {
+  
+    $http.get(`/suppliers/${supplier_id}/camps`).then((res) => {
+        $scope.canDelete = true; //TODO check if the user can delete the camp
+        $scope.relatedCamps = res.data.camps;
+    });
+}
 var angular_updateUser = function ($http, $scope, action_type, user_rec) {
     var camp_id = user_rec.camp_id;
     var user_name = user_rec.user_name;
@@ -100,7 +63,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
             $http.get(request_str).then((res) => {
                 sweetAlert(tpl.alert_success_1, tpl.alert_success_1, "success");
-                $scope.getMembers(camp_id);
+                $scope.getCamps(camp_id);
             }).catch((err) => {
                 jsonError=err.data.data.message;
                 sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError, "error");
@@ -109,7 +72,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
 }
 
 suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
-    var supllier_id = document.querySelector('#meta__camp_id').value;
+    var supplier_id = document.querySelector('#meta__supplier_id').value;
     var lang = $scope.lang;
     if (lang === undefined) {
         lang = 'he';
@@ -122,19 +85,25 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
             { id: 'carriage', value: 'הובלה' },
             { id: 'other', value: 'אחר' }]
     } else {
-        $scope.status_options = ['Opened to new member', 'Closed to new members'];
         $scope.status_options = [
-            { id: 'open', value: 'Opened to new member' },
-            { id: 'closed', value: 'Closed to new members' }];
-        $scope.noise_level_options = [
-            { id: 'quiet', value: 'Quiet' },
-            { id: 'medium', value: 'Medium' },
-            { id: 'noisy', value: 'Noisy' },
-            { id: 'very noisy', value: 'Very Noisy' }];
+            { id: 'food', value: 'food' },
+            { id: 'water', value: 'water' },
+            { id: 'shade', value: 'shade' },
+            { id: 'carriage', value: 'carriage' },
+            { id: 'other', value: 'other' }]
     }
+    $http.get(`/camps_all`).then((res) => {
+        $scope.allCamps = res.data.camps;
+    });
+    $scope.removeCamp = (campId) => {
+        $http.delete(`/suppliers/${supplier_id}/camps/${campId}`).then((res) => {
+         //TODO check if the user can delete the camp
+        });
 
-    $scope.getMembers = () => {
-        //angular_getMembers($http, $scope, camp_id);
+        $scope.getCamps();
+    }
+    $scope.getCamps = () => {
+        angular_getCamps($http, $scope, supplier_id);
         setTimeout(() => {
             innerHeightChange();
         }, 500)
@@ -142,25 +111,22 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
     }
-    if (typeof camp_id !== 'undefined') {
-        $scope.current_camp_id = camp_id;
-        $scope.getMembers();
+    if (typeof supplier_id !== 'undefined') {
+        $scope.current_supplier_id = supplier_id;
+        $scope.getCamps();
     }
     $scope.lang = document.getElementById('meta__lang').value;
     // $scope.grouptype = document.getElementById('meta__grouptype').value;
-    $scope.addMember = () => {
-        var camp_id = $scope.current_camp_id;
-        var new_user_email = $scope.camps_members_add_member
-        var data = {
-            user_email: new_user_email,
-            camp_id: camp_id,
-        }
-        $http.post(`/camps/${camp_id}/members/add`, data).then(function (res) {
-            // update table with new data
-            $scope.getMembers();
-            $scope.camps_members_add_member = '';
+    $scope.addCamp= () => {
+        var supplier_id = $scope.current_supplier_id;
+        const camp_id = $scope.add_camp_id;
+        $http.put(`/suppliers/${supplier_id}/camps/${camp_id}`)
+            .then(function (res) {
+                // update table with new data
+                $scope.getCamps();
+                $scope.add_camp_id = '';
         }).catch((err) => {
-            sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
+            sweetAlert("Error!", "Add new camp error: " + err.data.data.message, "error");
         });
     }
     $scope.updateUser = (user_name, user_id,action_type) => {
@@ -172,28 +138,6 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
         }
         angular_updateUser($http, $scope, action_type, user_rec);
     }
-
-    // const allocationPeriod = {
-    //     now : new Date(),
-    //     start : new Date(controllDates.appreciation_tickets_allocation_start),
-    //     end : new Date(controllDates.appreciation_tickets_allocation_end),
-    // }
-    // $scope.allocationPeriodisAvtive = allocationPeriod.start < allocationPeriod.now && allocationPeriod.now < allocationPeriod.end;
-    
-    //when the user wants to update a pre sale ticket
-    //this method is executed
-    $scope.updatePreSaleTicket = (user_name, user_id,action_type,pre_sale_ticket_approved) => {
-        var camp_id = $scope.current_camp_id;
-        var user_rec = {
-            camp_id: camp_id,
-            user_name: user_name,
-            user_id: user_id,
-        }
-   
-        angular_updateUser($http, $scope, action_type, user_rec);
-    }
-
-    //boolean ticket start & end allocation period
 
 }); //end of controller
 

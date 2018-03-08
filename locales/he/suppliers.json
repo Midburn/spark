@@ -1,4 +1,54 @@
 {
+
+
+    "edit_new": {
+        "name": "שם החברה",
+        "search": "חפש ספק",
+        "suppliers": "ספקים",
+        "new_supplier": "יצירת ספק חדש ",
+        "desc": "תפריט ניהול ספקים, ניתן לערוך את פרטי הספק, ועוד..",
+        "supplier": "ספק",
+        "editing": "עורך את",
+        "edit": "עריכה",
+        "since": "מאז",
+        "info": "פרטים",
+        "camps_edit": "עריכת מחנות",
+        "name_and_desc": "שם ספק והערות",
+        "name_he": "שם החברה (עברית)",
+        "name_en": "שם החברה (אנגלית)",
+        "camp_name_he": "שם המחנה (עברית)",
+        "camp_name_en": "שם המחנה (אנגלית)",
+        "comments": "הערות",
+        "contact_details": "פרטי התקשרות",
+        "add_info": "מידע נוסף",
+        "main_contact_phone_number": "טלפון",
+        "main_contact_position": "תפקיד",
+        "website_link": "אתר",
+        "midmarket_link": "מידמרקט",
+        "choose_camp": "בחר מחנה",
+        "add_camp": "הוסף מחנה לספק",
+        "btn_continue": "המשך",
+        "btn_save_camp": "שמור",
+        "header_desc": ".ליצירת ספק עליך להזין מידע אודות הספק, ולקשר אותו למחנה",
+        "publish": "פרסם",
+        "name_choosing_title": "הכנס מספר ח.פ או ת.ז למחנה, המספר חייב להיות ייחודי ולכן המערכת תוודא את הבחירה שלך. היעזר בסבלנות.",
+        "id": "ח.פ \\ ת.ז",
+        "suppliers_management": "ניהול ספקים",
+        "category": "קטגוריה",
+        "midmarked": "מידמרקט",
+        "contact_person": "איש קשר",
+        "position": "תפקיד",
+        "last_update": "עדכון אחרון",
+        "website": "אתר",
+        "id_choosing_title": "הכנס מספר ח.פ או ת.ז למחנה, המספר חייב להיות ייחודי ולכן המערכת תוודא את הבחירה שלך. היעזר בסבלנות.",
+        "camps_sum": "סה'כ מחנות מקושרים לספק",
+        "camp_id": "מזהה מחנה",
+        "actions": "פעולות",
+        "dumpcampsdata":"יצוא לקובץ",
+        "remove": "הסר מחנה מעבודה עם ספק",
+        "contact_number":"טלפון" 
+
+    },
     "nav_admin": "ניהול ספקים",
 
 
@@ -39,11 +89,11 @@
         "join_camp": "הצטרף למחנה"
     },
     "admin_index": {
+        "all_camps_table": "ספקים",
         "all_camps": "ניהול ספקים",
         "all_members": "ניהול חברים",
         "docs": "מסמכים שהועלו",
         "new": "צור ספק חדש",
-        "all_camps_table": "ספקים",
         "all_members_table": "חברי מחנות",
         "total_approved_members": "סה\"כ חברי מחנה",
         "total_camp_tickets": "סה\"כ כרטיסים",
@@ -60,8 +110,7 @@
         "details": "פרטי מחנה",
         "files": "קבצים וטפסים",
         "name_card_header": "שם מחנה ותיאור",
-        "name_he": "שם מחנה (עברית)",
-        "name_en": "שם מחנה (אנגלית)",
+       
         "desc_he": "תיאור מחנה (עברית)",
         "desc_en": "תיאור מחנה (אנגלית)",
         "contact_card_header": "אנשי קשר למחנה",
@@ -128,17 +177,21 @@
         "manage_a_camp": "נהל מחנות"
     },
     "stats": {
-        "categories": "קטגוריה",
-        "midmarked": "מידמרקט",
+       
         "title": "נתוני מחנה",
         "name_en": "שם (אנגלית)",
         "name_he": "שם (עברית)",
+        
+        "categories": "קטגוריה",
+        "midmarked": "מידמרקט",
         "contact_person": "איש קשר",
         "status": "תפקיד",
         "last_update": "עדכון אחרון",
+        "published": "אתר",
+        "entrance_quota": "הערות",
+
         "created_at": "נוצר בתאריך",
         "edit": "עריכה",
-        "published": "אתר",
         "facebook_page_url": "דף פייסבוק",
         "remove": "הסרה",
         "search": "חפש ספק",

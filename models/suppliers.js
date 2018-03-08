@@ -15,7 +15,10 @@ let Suppliers = bookshelf.Model.extend({
             .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
             .innerJoin(constants.CAMPS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', constants.CAMPS_TABLE_NAME + '.id')
             .where(constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.supplier_id', this.attributes.supplier_id)
-            done(camps)
+            if (typeof done === 'function') {
+                done(camps);
+            }
+            return camps;
         } catch (err) {
             throw err;
         }

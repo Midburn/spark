@@ -65,8 +65,6 @@ module.exports = (app, passport) => {
     app.post('/suppliers/new', async (req, res) => {
         try {
             let data = supplier_data_update_(req,"new")
-            console.log("bennnnnnnnnnn",data)
-
             let supplier = await Suppliers.forge().save(data)
             res.status(200).json({supplier: supplier.toJSON()})
         } catch (err) {
@@ -126,9 +124,9 @@ module.exports = (app, passport) => {
             let camps = await supplier.getSupplierCamps()
 
             if (camps !== null) {
-                res.status(200).json({camps: camps.toJSON()})
+                res.status(200).json({camps: camps})
             } else {
-                res.status(500).json({error: true,data: { message : "No camps found for current supplier" }})
+                res.status(204).json({camps: ["empty"]})
             }
 
         } catch (err) {

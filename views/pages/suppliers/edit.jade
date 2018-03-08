@@ -5,7 +5,7 @@ block content
     
     input.hidden.meta(id='meta__lang', value='#{language}')
     //input.hidden.meta(id='meta__camp_name_en', value='#{supplier.supplier_name_en}')
-    input.hidden.meta(id='meta__camp_id', value='#{supplier.supplier_id}')
+    input.hidden.meta(id='meta__supplier_id', value='#{supplier.supplier_id}')
     //input.hidden.meta(id='meta__grouptype', value='#{supplier.__prototype}')
     .camps.camp_edit(ng-app="ngSuppliers", ng-controller="supllierEditController")
         
@@ -15,110 +15,102 @@ block content
                     .dropdown
                         a.Btn.btn-default(href='/#{language}/suppliers/#{supplier.supplier_id}')=t('suppliers:edit.view')
             if(isNew)
-                h2=t('suppliers:new.header_title')
-                h4=t('suppliers:new.header_desc')
+                h2=t('suppliers:edit_new.new_supplier')
+                h4=t('suppliers:edit_new.header_desc')
                 input(type='hidden',id='supplier_id' value='#{supplier_id}')
             else
-                span.label.label-info #{t(t_prefix+'edit.camp')} # #{supplier.supplier_id}
-                h2 #{t('suppliers:edit.title')}: #{supplier.supplier_name_en}
-                h6 #{t('suppliers:edit.since')}: #{supplier.created_at}
+                span.label.label-info #{t(t_prefix+'edit_new.supplier')} # #{supplier.supplier_id}
+                h2 #{t('suppliers:edit_new.editing')}: #{supplier.supplier_name_en}
+                h6 #{t('suppliers:edit_new.since')}: #{supplier.created_at}
         .controls.row
             .col-xs-12
                 //- Card switcher
-                button.Btn.Btn__default.card-switcher#1=t('suppliers:edit.basic_info')
-                if(isCamp)
-                    button.Btn.Btn__transparent.card-switcher#2=t('suppliers:edit.details')
+                button.Btn.Btn__default.card-switcher#1=t('suppliers:edit_new.info')
+                //- if(isCamp)
+                //-     button.Btn.Btn__transparent.card-switcher#2=t('suppliers:edit.details')
                 //- TODO - test is user is camp manager of this camp
                 if(!isNew)
-                    button.Btn.Btn__transparent.card-switcher#3=t('suppliers:edit.members')
-                    if(isCamp)
-                        button.Btn.Btn__transparent.card-switcher#4=t('suppliers:edit.upload')
+                    button.Btn.Btn__transparent.card-switcher#3=t('suppliers:edit_new.camps_edit')
+                    //- if(isCamp)
+                    //-     button.Btn.Btn__transparent.card-switcher#4=t('suppliers:edit.upload')
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
-                h4=t(t_prefix+'edit.name_and_desc')
+                h4=t(t_prefix+'edit_new.name_and_desc')
                 .camp-info.panel
                     .panel-body
                         .details-he.col-md-6
                             .col-xs-12
-                                label(for='supplier_name_he')=t('suppliers:edit.name_he')
-                                input.form-control(id='supplier_name_he', dir='rtl', name='supplier_name_he', value=(isNew ? '' : '#{supplier.supplier_name_he}'))
+                                label(for='supplier_name_he')=t('suppliers:edit_new.name_he')
+                                input.form-control(id='supplier_name_he', dir='rtl', name='supplier_name_he', value=(isNew ? '' : '#{supplier.supplier_name_he}'),requierd)
                             .col-xs-12
-                                label(for='comments')=t('suppliers:edit.comments')
+                                label(for='comments')=t('suppliers:edit_new.comments')
                                 textarea.form-control(id='comments', dir='rtl', name='comments')= isNew ? '' : supplier.comments
                         .details-en.col-md-6
                             .col-xs-12
-                                label(for='supplier_name_en')=t('suppliers:edit.name_en')
+                                label(for='supplier_name_en')=t('suppliers:edit_new.name_en')
                                 input.form-control(id='supplier_name_en', dir='ltr', name='supplier_name_en', value=(isNew ? '' : '#{supplier.supplier_name_en}'), autofocus)
                 
-                h4=t('suppliers:edit.contact_title')
+                h4=t('suppliers:edit_new.contact_details')
                 .camp-leaders.panel
                     .panel-body
                         .personnel
                             .details-he.col-md-6
                                 .col-xs-12
-                                    label(for='main_contact_name')=t('suppliers:edit.main_contact')
+                                    label(for='main_contact_name')=t('suppliers:edit_new.contact_person')
                                     input.form-control(id='main_contact_name', dir='rtl', name='main_contact_name', value=(isNew ? '' : '#{supplier.main_contact_name}'))
                                 .col-xs-12
-                                    label(for='main_contact_position')=t('suppliers:edit.main_contact_position')
+                                    label(for='main_contact_position')=t('suppliers:edit_new.main_contact_position')
                                     input.form-control(id='main_contact_position', dir='rtl', name='main_contact_position', value=(isNew ? '' : '#{supplier.main_contact_position}'))
                             .details-he.col-md-6
                                 .col-xs-12
-                                    label(for='main_contact_phone_number')=t('suppliers:edit.main_contact_phone_number')
+                                    label(for='main_contact_phone_number')=t('suppliers:edit_new.main_contact_phone_number')
                                     input.form-control(type='number',id='main_contact_phone_number', dir='rtl', name='main_contact_phone_number', value=(isNew ? '' : '#{supplier.main_contact_phone_number}'))
 
-                h4=t(t_prefix+'edit.add_info')
+                h4=t(t_prefix+'edit_new.add_info')
                 .camp-details.panel
                     .panel-body
                         .camp-location
                             .col-md-4
                                 .col-xs-12
-                                    label(for='supplier_website_link')=t('suppliers:edit.website_link')
+                                    label(for='supplier_website_link')=t('suppliers:edit_new.website_link')
                                     input.form-control(id='supplier_website_link', name='supplier_website_link', value=(isNew ? '' : '#{supplier.supplier_website_link}'))
                             .col-md-4
                                 .col-xs-12
-                                    label(for='supplier_midmarket_link')=t('suppliers:edit.midmarket_link')
+                                    label(for='supplier_midmarket_link')=t('suppliers:edit_new.midmarket_link')
                                     input.form-control(id='supplier_midmarket_link', name='supplier_midmarket_link', value=(isNew ? '' : '#{supplier.supplier_midmarket_link}'))
                             .col-md-4
                                 .col-xs-12
-                                    label(for='supplier_category')=t('suppliers:edit.category')
+                                    label(for='supplier_category')=t('suppliers:edit_new.category')
                                     select.form-control(id='supplier_category', name='supplier_category')
                                         option(ng-repeat="option in status_options", ng-selected="option.id == '#{supplier.supplier_category}'", value="{{option.id}}") {{option.value}}
 
             //- Card 3 - Manage Members
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
-                    input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('suppliers:edit.add_member_placeholder')}")
-                    button.Btn.Btn__sm(ng-click="addMember()") + #{t('suppliers:members.add_member')}
-                .form-group
-                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('suppliers:edit.search_member')}", name="camps_members_search_member" autofocus)
+                    select.form-control(ng-model='add_camp_id', type="text")
+                        option(value="" ,disabled ,selected)=t('suppliers:edit_new.choose_camp') 
+                        option(ng-repeat="camp in allCamps", value="{{camp.id}}") {{camp.camp_name_he}}
+                    
+                    button.Btn.Btn__sm(ng-click="addCamp()") + #{t('suppliers:edit_new.add_camp')}
                 .row
                     .col-xs-12
                     include partials/members_table
-            //- Card 4
-            .card.card-forth.card-hide
-                h4=t('suppliers:edit.upload_header')
-                .camp-members.panel
-                    .panel-body
-                        .names.col-md-6
-                            .col-xs-12
-                                label(for='edit_camp_upload_security_file')=t('suppliers:edit.security_file')
-                                input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
-
+          
         .controls.row
             .col-xs-12
                 if(isNew)
-                    a.Btn.Btn__default.card-switcher#2(href='#')=t('suppliers:btn_continue')
-                    button(type="submit", id='supplier_create_save', class="Btn Btn__green")=t('suppliers:btn_save_camp')
+                    a.Btn.Btn__default.card-switcher#3(href='#')=t('suppliers:edit_new.btn_continue')
+                    button(type="submit", id='supplier_create_save', class="Btn Btn__green")=t('suppliers:edit_new.btn_save_camp')
 
                 else
                     input(id='supplier_edit_supplier_id', type='hidden', value='#{supplier.supplier_id}')
-                    button.Btn.Btn__default(id='supplier_edit_save')=t('suppliers:btn_save_camp')
+                    button.Btn.Btn__default(id='supplier_edit_save')=t('suppliers:edit_new.btn_save_camp')
                 
                     if isCamp && supplier.web_published != '1'
-                        button.Btn.Btn__green(id='camp_edit_publish')=t('suppliers:edit.publish')
+                        button.Btn.Btn__green(id='camp_edit_publish')=t('suppliers:edit_new.publish')
 
-        // Camp create request modal
+        //- Camp create request modal
         .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
             .modal-dialog.card.card__padding--even.card__shad(role='document')
                 div
