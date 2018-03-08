@@ -35,7 +35,7 @@ block content
                     .col-xs-12.col-md-3
                         a.Btn.cursor-p(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
                             button.btn.btn-xs
-                                span=t(t_prefix + 'stats.dumpcampsdata')
+                                span=t('camps:stats.dumpcampsdata')
 
 
                      // a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
@@ -69,9 +69,10 @@ block content
                             td {{ camp.contact_person_name }}
                             td(class="text-center")
                                 span(ng-if="camp.status == 'open'", class='glyphicon glyphicon-ok text-success', data-toggle="tooltip" data-placement="right" title="open")
-                                span(ng-if="camp.status == 'closed'", class='glyphicon glyphicon-remove text-warning', data-toggle="tooltip" data-placement="right" title="closed")
+                                span(ng-if="camp.status == 'closed'", class='glyphicon glyphicon-remove text-danger', data-toggle="tooltip" data-placement="right" title="closed")
                                 span(ng-if="camp.status == 'deleted'", class='glyphicon glyphicon-trash text-danger', data-toggle="tooltip" data-placement="right" title="deleted")
-                                span(ng-if="camp.status != 'open' && camp.status != 'closed' && camp.status != 'deleted' ") {{camp.status}}
+                                span(ng-if="camp.status == 'inactive'", class='glyphicon glyphicon-exclamation-sign text-yellow', data-toggle="tooltip" data-placement="right" title="inactive")
+                                span(ng-if="camp.status != 'open' && camp.status != 'closed' && camp.status != 'deleted' && camp.status != 'inactive' ") {{camp.status}}
                             td {{camp.updated_at | date: "dd/MM/yyyy, HH:mm" }}
                             td {{ camp.web_published }}
                             td {{ camp.entrance_quota }}
