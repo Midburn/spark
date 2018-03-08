@@ -28,6 +28,10 @@ span {
     content: " *";
     font-size: larger;
 }
+
+.form-control {
+    margin-bottom: 6px;
+}
 /*NAVIGATION*/
 .navbar-brand {
     padding-left: 30px;
@@ -75,11 +79,16 @@ li.dropdown > ul > li > a > span {
         display: table;
     }
 }
+
+// center modal buttons
+.swal-footer {
+    text-align: center;
+}
 // bootstrap overrides
 
 .checkbox input[type=checkbox],
 .checkbox-inline input[type=checkbox],
 .radio input[type=radio],
 .radio-inline input[type=radio] {
-    margin: 0;
+    margin: 4px;
 }
