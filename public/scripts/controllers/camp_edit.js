@@ -4,22 +4,22 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             var _members = [];
             var approved_members = [];
             var total_in_event = 0;
-            var preSaleTicketsCount=0;
-            var dgsTicketsCount=0;
+            var allocatedPreSaleTicketsCount=0;
+            var allocatedDgsTicketsCount=0;
             for (var i in members) {
                 var newMember=members[i]
                 //check if the user has a pre_sale ticket
                 //if so the set the checkbox to true
                 if (members[i].pre_sale_ticket) {
                     newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
-                    preSaleTicketsCount++;
+                    allocatedPreSaleTicketsCount++;
                 }
                 else {
                     newMember.pre_sale_ticket_approved = false;
                 }
                 if (members[i].dgs_ticket) {
                     newMember.dgs_ticket_approved=members[i].dgs_ticket;
-                    dgsTicketsCount++;
+                    allocatedDgsTicketsCount++;
                 }
                 else {
                     newMember.dgs_ticket_approved = false;
@@ -32,8 +32,9 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                 }
                 total_in_event += parseInt(newMember.inside_event);
             }
-            $scope.preSaleTicketsCount = preSaleTicketsCount;
-            $scope.dgsTicketsCount = dgsTicketsCount;
+            $scope.preSaleTicketsCount = preSaleTicketCount;
+            $scope.dgsTicketsCount = dgsTicketCount;
+            $scope.allocatedTickets = allocatedPreSaleTicketsCount + allocatedDgsTicketsCount;
             $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
             $scope.dgs_tickets_quota = res.data.dgs_tickets_quota;
             $scope.members = _members;
