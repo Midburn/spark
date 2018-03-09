@@ -1457,7 +1457,7 @@ module.exports = (app, passport) => {
         //should we implement dates controll here as well (as long as it is admin only)???
         Camp.forge({ id: req.params.id })
             .fetch().then((camp) => {
-                var quota = req.body.quota;
+                const quota = req.body.quota;
                 if (common.isNormalInteger(quota) === false) {
                     return res.status(500).json({
                         error: true,
@@ -1466,8 +1466,8 @@ module.exports = (app, passport) => {
                         }
                     });
                 }
-
-                camp.save({ pre_sale_tickets_quota: quota }).then(() => {
+                const campUpdate = req.body.isDgs ? { dgs_tickets_quota: quota } : { pre_sale_tickets_quota: quota };
+                camp.save(campUpdate).then(() => {
                     res.sendStatus(200);
                 }).catch((err) => {
                     res.status(500).json({

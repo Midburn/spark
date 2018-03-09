@@ -61,8 +61,8 @@
                         .details-en.col-md-6
                             label(for='end_presale_tickets')=t(`${t_prefix}form.appreciation_tickets_allocation.end`)
                             input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.appreciation_tickets_allocation_end')
-                            label(for='start_presale_tickets')=t(`${t_prefix}form.camps_edit_lastDate`)
-                            input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-model='event.addinfo_json.edit_camps_lastDate')
+                            label(for='camps_edit_lastDate')=t(`${t_prefix}form.camps_edit_lastDate`)
+                            input.form-control(type='date' id='camps_edit_lastDate', dir='ltr' ng-model='event.addinfo_json.edit_camps_lastDate')
                     .modal-footer
                     a(href='./')
                     button.Btn.Btn__transparent(id='create_camp_close_btn', type='button' ng-click="closeForm()")=t(`${t_prefix}new.close`)
