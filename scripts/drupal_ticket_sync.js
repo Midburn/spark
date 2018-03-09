@@ -113,7 +113,7 @@ async function dumpDrupalTickets(session, date, page) {
                 });
             }
         }
-        return [utickets, tickets.length];
+        return utickets;
     }
     else {
         log.warn('Ticket dump failed');
@@ -189,7 +189,7 @@ async function updateTicket(ticket) {
             saveOptions = {method: 'insert'};
         }
 
-        var holder_id = user.attributes.user_id;
+        let holder_id = user.attributes.user_id;
         sparkTicket = Ticket.forge({
             event_id: EVENT_ID,
             holder_id: holder_id,
@@ -210,14 +210,14 @@ async function updateTicket(ticket) {
 }
 
 function sendPassTicketRequest(session, barcode) {
-    var headers = {
+    const headers = {
         'cache-control': 'no-cache',
         'x-csrf-token': session['sessid'],
         'Accept': '*/*',
         'cookie': session["session_name"] + "=" + session["sessid"]
     };
 
-    var options = {
+    const options = {
         url: process.env.DRUPAL_PROFILE_API_URL + '/en/api/ticket/' + barcode + '/pass',
         method: 'POST',
         headers: headers
@@ -232,22 +232,22 @@ function sendPassTicketRequest(session, barcode) {
 }
 
 async function passTicket(barcode) {
-    var session = await getDrupalSession();
+    let session = await getDrupalSession();
     sendPassTicketRequest(session, barcode);
 }
 
 async function syncTickets(fromDate, callback) {
     try {
         log.info('Starting Tickets Update Process...');
-        var session = await getDrupalSession();
+        let session = await getDrupalSession();
         if (session) {
             log.info('Got Drupal session...');
-            var page = 0;
-            var running = true;
+            let page = 0;
+            let running = true;
             while (running) {
                 log.info("Page:", page);
-                var [tickets, resultCount] = await dumpDrupalTickets(session, fromDate, page);
-                if (resultCount > 0) {
+                let tickets = await dumpDrupalTickets(session, fromDate, page);
+                if (tickets.length > 0) {
                     await updateAllTickets(tickets);
                     page++;
                 }
@@ -267,12 +267,12 @@ async function syncTickets(fromDate, callback) {
 }
 
 function syncTicketsLoop() {
-    var timeoutMillis = globalMinutesDelta * 60 * 1000;
-    var nextDate = new Date();
+    let timeoutMillis = globalMinutesDelta * 60 * 1000;
+    let nextDate = new Date();
     nextDate.setMilliseconds(timeoutMillis);
     log.info("Next ticket sync scheduled to", dateFormat(nextDate, "yyyy-mm-dd hh:MM:ss"));
     setTimeout(() => {
-        var now = new Date();
+        let now = new Date();
         fromDate = now.setMinutes(-globalMinutesDelta);
         fromDate = now.setSeconds(-10); // A few seconds overlap is always good.
         syncTickets(fromDate, syncTicketsLoop);
@@ -282,9 +282,9 @@ function syncTicketsLoop() {
 function runSyncTicketsLoop(minutesDelta) {
     log.info('First run, updating all tickets');
     globalMinutesDelta = minutesDelta;
-    var now = new Date();
+    let now = new Date();
     const ONE_YEAR_IN_SECONDS = 525948;
-    var fromDate = now.setMinutes(-ONE_YEAR_IN_SECONDS);
+    let fromDate = now.setMinutes(-ONE_YEAR_IN_SECONDS);
     syncTickets(fromDate, syncTicketsLoop);
 }
 
