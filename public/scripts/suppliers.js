@@ -108,7 +108,7 @@ function extractSupplierData() {
         supplier_name_he: $('#supplier_name_he').val()|| "empty",
         main_contact_name:$('#main_contact_name').val()|| "empty",
         main_contact_position:$('#main_contact_position').val()|| "empty",
-        main_contact_phone_number:$('#main_contact_phone_number').val()|| 0,
+        main_contact_phone_number:$('#main_contact_phone_number').val()|| "0",
         supplier_category:$('#supplier_category').val()|| "empty",
         supplier_website_link:$('#supplier_website_link').val()|| "empty",
         supplier_midmarket_link: $('#supplier_midmarket_link').val()|| "empty",

@@ -25,7 +25,8 @@ exports.up = function(knex, Promise) {
         knex.schema.createTable(constants.SUPPLIERS_RELATIONS_TABLE_NAME, function(table) {
             table.integer('supplier_id', 9).unsigned();
             table.integer('camp_id').unsigned();
-            table.string('event_id',15)
+            table.string('event_id',15);
+            table.unique(['supplier_id', 'camp_id','event_id']);
             table.string('courier_contact_name', 50);
             table.integer('courier_contact_phone_number').unsigned();
 

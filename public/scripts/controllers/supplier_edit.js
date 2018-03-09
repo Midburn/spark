@@ -128,7 +128,12 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
                 $scope.getCamps();
                 $scope.add_camp_id = '';
         }).catch((err) => {
-            sweetAlert("Error!", "Add new camp error: " + err.data.data.message, "error");
+            if (err.data.data.message.indexOf("Duplicate entry")) {
+                sweetAlert("!oops","You are trying to add a camp that is already exist","warning");
+            }
+            else {
+                sweetAlert("Error!", "Add new camp error: " + err.data.data.message, "error");
+            }
         });
     }
     $scope.updateUser = (user_name, user_id,action_type) => {

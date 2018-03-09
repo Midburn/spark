@@ -35,27 +35,6 @@ module.exports = (app, passport) => {
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})
         }
-
-
-        var req_camp_name_en = req.params.camp_name_en;
-        Camp.forge({ camp_name_en: req_camp_name_en }).fetch().then((camp) => {
-            if (camp === null) {
-                // camp name is available
-                res.status(204).end();
-            } else {
-                res.status(200).end();
-            }
-        }).catch((e) => {
-            res.status(500).json({
-                error: true,
-                data: {
-                    message: e.message
-                }
-            });
-        });
-
-
-
    });
 
     /**
@@ -139,7 +118,7 @@ module.exports = (app, passport) => {
     * request => /suppliers/:supplier_id/camps
     */
    app.put('/suppliers/:supplier_id/camps/:camp_id', async (req, res) => {
-        try {
+    try {
             let supplier_id = req.params.supplier_id;
             let data = {
                 camp_id : req.params.camp_id,
@@ -154,7 +133,7 @@ module.exports = (app, passport) => {
             if (camp !== 0) {
                 res.status(200).send("Camp supplier updated")
             } else {
-                res.status(500).json({error: true,data: { message : "Set supplier falied to camp" }})
+                res.status(400).json({error: true,data: { message : "Set supplier falied to camp" }})
             }
 
         } catch (err) {

@@ -76,7 +76,7 @@ module.exports = function (app, passport) {
             name: 'suppliers:breadcrumbs.join_camp',
             url: '/' + req.params.lng + '/suppliers'
         }]);
-        Supplier.getUserCamps((suppliers) => {
+        Supplier.getSupplierCamps((suppliers) => {
             if (suppliers.length === 0 || !req.user.attributes.camp || !req.user.attributes.camp_manager) {
                 // if (req.user.attributes.suppliers.length === 0 || !req.user.attributes.camp_manager) {
                 camp = req.user.attributes.camp;
