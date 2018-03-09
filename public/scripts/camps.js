@@ -12,6 +12,11 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
 
+// bind Twitter Bootstrap tooltips to dynamically created elements
+$("body").tooltip({
+    selector: '[data-toggle="tooltip"]'
+});
+
 /**
  * Scroll to top - footer button
  */

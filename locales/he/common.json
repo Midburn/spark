@@ -102,5 +102,24 @@
         "MIDBURN2014": "2014 - בראשית",
         "MIDBURN2015": "2015 - התעלות",
         "MIDBURN2016": "2016 – אבראכאדברא"
+    },
+    "homepage": {
+        "stats": {
+            "gate": "סטטיסטיקות שער",
+            "total_tickets":"כרטיסים לאירוע",
+            "inside_event": "כרגע בתוך האירוע",
+            "ticketing": "כירטוסים",
+            "last_24h_first_entrance": "כירטוסים ב-24 שעות אחרונות",
+            "last_1h_first_entrance": "כירטוסים בשעה אחרונה",
+            "entrances": "כניסות",
+            "exits": "יציאות",
+            "last_24_hours": "24 שעות אחרונות",
+            "last_1h": "שעה אחרונה",
+            "other_stats" : "סטטיסטיקת מחנות, מחלקות ומיצבים",
+            "members_in_camps": "חברים במחנות נושא",
+            "participants_in_art_installations": "משתתפים במיצבי אומנות",
+            "volunteers_in_production_departments": "מתנדבים במחלקות הפקה"
+        }
+
     }
 }
