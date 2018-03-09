@@ -30,6 +30,14 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
     $scope.event = isNew ? { addinfo_json: { created_at: new Date() } } : editEvent;
     $scope.eventStarted = $scope.event.addinfo_json.start_date < new Date();
 
+    $scope.getDateString = (date) => {
+        const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+        if (typeof date === 'string' && !dateFormat.test(value)) {
+            return;
+        }
+        return moment(date).format('YYYY-MM-DD');
+    };
+
     $scope.createEvent = () => {
         let _url = '/events/new';
         $http.post(_url, $scope.event)

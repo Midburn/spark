@@ -50,19 +50,19 @@
                         h3=t(`${t_prefix}form.dates_controll.title`)
                         p=t(`${t_prefix}form.dates_controll.description`)
                         .details-en.col-md-6
-                            label(for='end_dgs_tickets')=t(`${t_prefix}form.dgs_tickets_allocation.end`)
-                            input.form-control(type='date' id='end_dgs_tickets', dir='ltr', name='end_dgs_tickets' ng-model='event.addinfo_json.dgs_tickets_allocation_end')
-                        .details-en.col-md-6
                             label(for='start_dgs_tickets')=t(`${t_prefix}form.dgs_tickets_allocation.start`)
-                            input.form-control(type='date' id='start_dgs_tickets', dir='ltr', name='start_dgs_tickets' ng-model='event.addinfo_json.dgs_tickets_allocation_start')
+                            input.form-control(type='date' id='start_dgs_tickets', dir='ltr', name='start_dgs_tickets' ng-value="getDateString(event.addinfo_json.dgs_tickets_allocation_start)" ng-model='event.addinfo_json.dgs_tickets_allocation_start')
+                        .details-en.col-md-6
+                            label(for='end_dgs_tickets')=t(`${t_prefix}form.dgs_tickets_allocation.end`)
+                            input.form-control(type='date' id='end_dgs_tickets', dir='ltr', name='end_dgs_tickets' ng-value="getDateString(event.addinfo_json.dgs_tickets_allocation_end)" ng-model='event.addinfo_json.dgs_tickets_allocation_end')
                         .details-en.col-md-6
                             label(for='start_presale_tickets')=t(`${t_prefix}form.appreciation_tickets_allocation.start`)
-                            input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-model='event.addinfo_json.appreciation_tickets_allocation_start')
+                            input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-value="getDateString(event.addinfo_json.appreciation_tickets_allocation_start)" ng-model='event.addinfo_json.appreciation_tickets_allocation_start')
                         .details-en.col-md-6
                             label(for='end_presale_tickets')=t(`${t_prefix}form.appreciation_tickets_allocation.end`)
-                            input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.appreciation_tickets_allocation_end')
+                            input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-value="getDateString(event.addinfo_json.appreciation_tickets_allocation_end)" ng-model='event.addinfo_json.appreciation_tickets_allocation_end')
                             label(for='camps_edit_lastDate')=t(`${t_prefix}form.camps_edit_lastDate`)
-                            input.form-control(type='date' id='camps_edit_lastDate', dir='ltr' ng-model='event.addinfo_json.edit_camps_lastDate')
+                            input.form-control(type='date' id='camps_edit_lastDate', dir='ltr' ng-value="getDateString(event.addinfo_json.edit_camps_lastDate)" ng-model='event.addinfo_json.edit_camps_lastDate')
                     .modal-footer
                     a(href='./')
                     button.Btn.Btn__transparent(id='create_camp_close_btn', type='button' ng-click="closeForm()")=t(`${t_prefix}new.close`)
