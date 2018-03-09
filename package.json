@@ -5,7 +5,7 @@
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
-  "version": "2.10.27",
+  "version": "2.10.30",
   "private": true,
   "scripts": {
     "postinstall": "cd public; npm install",
