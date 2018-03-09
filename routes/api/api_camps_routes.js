@@ -267,7 +267,7 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
         //check if the json info is null
         //if so then set it the value as this is the first init of the data
         if (userData === null) {
-            jsonInfo = { [ticketKey]: "true"};
+            jsonInfo = { [ticketKey]: "true" };
         }
         else {
             //if the object is not null then parse it and toggle the current value
