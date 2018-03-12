@@ -26,7 +26,7 @@ block wrapper
                         li( class="#{path[2] === 'camps-admin' ? 'active' : undefined }" )
                             a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
                     if(user.isAdmin || user.isCampsAdmin)
-                        li( class="#{path[2] === 'suppliers-admin\\' ? 'active' : undefined }" )
+                        li( class="#{path[2] === 'suppliers-admin' ? 'active' : undefined }" )
                             a( href="/#{language}/suppliers-admin" )=t('suppliers:nav_admin')                    
                     if(user.isAdmin || user.isArtInstallationsAdmin)
                         li( class="#{path[2] === 'art-admin' ? 'active' : undefined }" )
