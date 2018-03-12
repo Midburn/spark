@@ -58,6 +58,7 @@
             "start": "Start of appreciation tickets allocation",
             "end": "End of appreciation tickets allocation"
         },
-        "camps_edit_lastDate": "Last Date to edit camps details"
+        "camps_edit_disabled": "Disable camp editing",
+        "art_edit_disabled": "Disable art installations editing"
     }
 }

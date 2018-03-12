@@ -15,7 +15,7 @@ var Event = bookshelf.Model.extend({
     }
 
 }, {
-    
+
     /**
      * Returns event by id if found in constants.events object
      * if the event does not exists it will return the database
@@ -30,7 +30,7 @@ var Event = bookshelf.Model.extend({
             }).then(event => {
                 event.addinfo_json = JSON.parse(event.addinfo_json);
                 return event;
-            }).catch(response => { 
+            }).catch(response => {
                 return null;
             })
     },
@@ -42,14 +42,16 @@ var Event = bookshelf.Model.extend({
             }).then(addinfo => {
                 const allocation_start = addinfo.appreciation_tickets_allocation_start;
                 const allocation_end = addinfo.appreciation_tickets_allocation_end;
-                const campEditlastDate = addinfo.edit_camps_lastDate;
+                const campEditDisabled = addinfo.edit_camps_disabled;
+                const campArtDisabled = addinfo.edit_art_disabled;
                 const controllDates = {
                     appreciation_tickets_allocation_start : allocation_start ? new Date(allocation_start) : null,
                     appreciation_tickets_allocation_end : allocation_end ? new Date(allocation_end) : null,
-                    edit_camps_lastDate : campEditlastDate ? new Date(campEditlastDate) : null, 
-                }
+                    edit_camps_disabled : campEditDisabled,
+                    edit_art_disabled : campArtDisabled
+                };
                 return controllDates;
-            }).catch(response => { 
+            }).catch(response => {
                 return null;
             })
     }

@@ -41,7 +41,7 @@ block content
                             button.btn.btn-xs
                                 span(class='glyphicon glyphicon-pencil')
                                 =t('camps:stats.edit')
-                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` ng-if="group.can_view") &nbsp;
+                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` ng-if="isGroupEditable()") &nbsp;
                             button.btn.btn-xs
                                 span(class='glyphicon glyphicon-pencil')
                                 =t('camps:edit.view')

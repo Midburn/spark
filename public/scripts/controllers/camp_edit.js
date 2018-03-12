@@ -255,14 +255,21 @@ app.controller("homeController", ($scope, $http, $filter) => {
             $scope.groups = res.data.groups;
             $scope.stat = res.data.stats;
         });
-    }
+    };
 
     $scope.angular_ChangeCurrentEventId = function (event_id) {
         //set new current event id
         $http.post('/events/change', {currentEventId: event_id}).then((res) => {
             window.location.reload();
         });
-    }
+    };
+
+    $scope.isGroupEditable = function (group) {
+        if (!group.can_view) {
+            return false;
+        }
+
+    };
 
     $scope.angular_getMyGroups($http, $scope);
 

@@ -54,9 +54,11 @@ module.exports = function (app, passport) {
 
         //fetch all events to set in the midburn dropdown
         Event.fetchAll().then((events) => {
+            const currentEvent = events.find(event => event.event_id === req.user.currentEventId);
             res.render('pages/home', {
                 user: req.user,
                 events: events.toJSON(),
+                currentEvent: currentEvent,
                 isAdmin: req.user.isAdmins,
                 breadcrumbs: req.breadcrumbs()
             });
