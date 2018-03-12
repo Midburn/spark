@@ -53,7 +53,7 @@ module.exports = function (app, passport) {
         });
         //fetch all events to set in the midburn dropdown
         Event.fetchAll().then(async (events) => {
-            const currentEventRules = await Event.get_event_controllDates(req.user.currentEventId);
+            const currentEventRules = await Event.get_event_controllDates(req.user.currentEventId) || {};
             res.render('pages/home', {
                 user: req.user,
                 events: events.toJSON(),
