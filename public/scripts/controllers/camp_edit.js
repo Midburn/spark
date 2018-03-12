@@ -265,8 +265,16 @@ app.controller("homeController", ($scope, $http, $filter) => {
     };
 
     $scope.isGroupEditable = function (group) {
-        if (!group.can_view) {
+        const edit_camp_disabled = currentEventRules.edit_camp_disabled;
+        const edit_art_disabled = currentEventRules.edit_art_disabled;
+        if (!group.can_edit) {
             return false;
+        }
+        switch (group.group_type) {
+            case 'Art Installation':
+                return !edit_art_disabled;
+            default:
+                return !edit_camp_disabled;
         }
 
     };
