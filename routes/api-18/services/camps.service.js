@@ -6,7 +6,7 @@ const constants = require('../../../models/constants'),
     // config = require('config'),
     // camp_files_config = config.get('camp_files_config'),
     usersService = require('./users.service'),
-    S3 = require('../../libs/aws-s3'),
+    S3 = require('../../../libs/aws-s3'),
     helperService = require('./helper.service');
 
 class CampsService {

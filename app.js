@@ -163,11 +163,13 @@ mail.setup(app);
 /** #####################
  *      Mapping Routes
     ##################### */
+console.log('Starting to map routes')
 // Mapping all Api routes
 require('./routes/index.js').api(app, passport);
 // Maping all page routes
+console.log('Middle to map routes')
 app.use("/", require('./routes/index.js').app);
-
+console.log('Ended to map routes')
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
 
