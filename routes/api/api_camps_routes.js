@@ -1357,6 +1357,7 @@ module.exports = (app, passport) => {
             res.status(500).json({ error: true, data: { message: 'Bad email entered!' } });
             return;
         }
+        debugger;
         Camp.forge({ id: camp_id }).fetch().then((camp) => {
             if (!camp) {
                 res.status(404).end();
@@ -1374,8 +1375,10 @@ module.exports = (app, passport) => {
                             // check that user is only at one camp!
                             user.getUserCamps((camps) => {
                                 if (camps.length === 0 || !user.attributes.camp || group_props.multiple_groups_for_user) {
+                                    console.log('in if')
                                     __camps_update_status(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                                 } else {
+                                    console.log('in else')
                                     let message;
                                     if (user.isUserInCamp(camp_id)) {
                                         message = 'Already applied to this camp';
@@ -1386,18 +1389,7 @@ module.exports = (app, passport) => {
                                 }
                             }, null, camp.attributes.__prototype);
                         } else {
-                            if (constants.prototype_camps.by_prototype(camp.attributes.__prototype).allow_new_users) {
-                                User.forge().save({
-                                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    email: user_email
-                                }).then((user) => {
-                                    __camps_update_status(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
-                                });
-                            } else {
-                                res.status(500).json({ error: true, data: { message: 'Cannot add new emails without profile.' } });
-                            }
-
+                            res.status(500).json({ error: true, data: { message: 'Cannot add new emails without profile.' } });
                         }
                     });
 
