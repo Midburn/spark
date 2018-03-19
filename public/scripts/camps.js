@@ -12,6 +12,11 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
 
+// bind Twitter Bootstrap tooltips to dynamically created elements
+$("body").tooltip({
+    selector: '[data-toggle="tooltip"]'
+});
+
 /**
  * Scroll to top - footer button
  */
@@ -274,7 +279,7 @@ function fetchAllCheckboxValues(className) {
     $('.' + className + ':checked').each(function (i) {
         val[i] = $(this).val();
         if (val[i] === 'other') {
-            val[i] += '=' + $('#' + className + '_other_text').val()
+            val[i] = $('#' + className + '_other_text').val()
         }
     });
     return val.toString();

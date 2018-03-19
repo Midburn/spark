@@ -44,8 +44,8 @@
         "new": "צור מחנה חדש",
         "all_camps_table": "מחנות",
         "all_members_table": "חברי מחנות",
-        "total_approved_members": "סה\"כ חברי מחנה",
-        "total_camp_tickets": "סה\"כ כרטיסים",
+        "total_approved_members": "חברי מחנה",
+        "total_camp_tickets": "כרטיסים במחנה",
         "docs_table": "מסמכים וקבצים"
     },
     "new": {
@@ -98,6 +98,7 @@
         "send_request": "שלח בקשה",
         "close": "סגור",
         "website_publication": "פרסום באתר",
+        "midburn_website_publication": "פרסום המחנה באתר מידבן",
         "contact_person_id": "איש קשר",
         "contact_person_name": "שם איש קשר",
         "contact_person_email": "אימייל איש קשר",
@@ -137,11 +138,11 @@
         "facebook_page_url": "דף פייסבוק",
         "remove": "הסרה",
         "search": "חפש מחנה",
-        "dumpcampsdata": "יצוא לקובץ",
+        "dumpcampsdata": "יצוא טבלה לקובץ",
         "entrance_quota": "מכסת הגעה מוקדמת",
-        "pre_sale_tickets_quota": "מכסת מכירה מוקדמת",
-        "pre_sale_ticket_count": "סה״כ הקצאה לכרטיסים במכירה מוקדמת למחנה",
-        "total_pre_sale_ticket_assigned": "סה״כ כרטיסים במכירה מוקדמת שהוקצו לחברי המחנה"
+        "pre_sale_tickets_quota": "הקצאת כרטיסים",
+        "pre_sale_ticket_count": "כרטיסים שהוקצו",
+        "total_pre_sale_ticket_assigned": "כרטיסים שניתן להקצות"
     },
     "members": {
         "title": "משתתפים במחנה",
@@ -168,9 +169,9 @@
         "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
         "status_approved_mgr": "מנהלת מחנה מאושרת",
         "inside_event": "בתוך האירוע",
-        "pre_sale_ticket_approved": "אשר כרטיס במכירה מוקדמת",
-        "pre_sale_ticket_assigned": "הוקצה כרטיס במכירה מוקדמת",
-        "pre_sale_ticket_remove": "הסר כרטיס ממכירה מוקדמת",
+        "pre_sale_ticket_approved": "הקצה כרטיס",
+        "pre_sale_ticket_assigned": "הוקצה כרטיס?",
+        "pre_sale_ticket_remove": "הסר כרטיס",
         "status_supplier": "מאושר כספק"
     },
     "camps": {
@@ -191,6 +192,7 @@
         "edit": "ערוך מחנה",
         "published": "פורסם",
         "draft": "טיוטא",
+        "accept_new_members": "פתוח/סגור למצטרפים חדשים?",
         "status": "סטטוס",
         "status_open": "פתוח",
         "status_closed": "סגור",
@@ -262,8 +264,8 @@
         "contact_person_email": "אימייל איש קשר",
         "contact_person_phone": "טלפון אישר קשר",
         "early_arrival_quota": "כמות מגיעים מוקדם",
-        "pre_sale_tickets_quota": "מכסת כרטיסים במכירה מוקדמת",
-        "pre_sale_ticket_count": "סה״כ כרטיסים במכירה מוקדמת",
+        "pre_sale_tickets_quota": "מכסת כרטיסים במכירה",
+        "pre_sale_ticket_count": "סה״כ כרטיסים במכירה",
         "security_file": "תיק בטיחות",
         "members_header": "נהל חברי מחנה",
         "search_member": "מצא חבר מחנה",
@@ -311,7 +313,8 @@
             "all_members": "כל המציגים",
             "docs": "מסמכים",
             "new": "חדש",
-            "all_camps_table": "כל המיצבים"
+            "all_camps_table": "כל המיצבים",
+            "all_members_table": "כל החברים"
         },
         "stats": {
             "search": "חיפוש",
@@ -319,10 +322,13 @@
             "contact_person": "איש קשר",
             "status": "סטטוס",
             "last_update": "עודכן לאחרונה",
-            "published": "פורסם בתאריך"
+            "published": "פורסם בתאריך",
+            "dumpcampsdata": "יצוא טבלה לקובץ"
         },
         "members": {
-            "actions": "פעולות"
+            "actions": "פעולות",
+            "search": "חפש חבר במחנה",
+            "choose_camp": "בחר מחנה"
         },
         "edit": {
             "view": "צפה במיצב",

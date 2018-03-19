@@ -3,6 +3,9 @@ const app = express();
 const sparkApi = require('./api-18');
 
 // TODO: Wrap Pages as Router like api.
+// Use locals
+app.locals.moment = require('moment');
+
 //Pages
 app.use("/:lng?/admin", require("./pages/admin_routes"));
 app.use("/:lng/events-admin", require("./pages/events_routes"));
