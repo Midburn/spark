@@ -100,8 +100,23 @@ order by users.user_id, camps.id
 
 ## set ticket quotas
 
-**TBD** - the ticket quotas are in the art_2018 table as boolean per user
-
+* Google sheet with the following columns: id, name, leader_name, leader_email, open_in_spark, num_tickets
+* Import to adminer table - `art_2018_quotas`
+* check how many valid dreams with quotas
+```
+select count(1) from art_2018_quotas aq where aq.num_tickets is not null  and cast(aq.num_tickets as integer) > 0  
+and not (aq.id is null and aq.leader_name is null and aq.leader_email is null and aq.name is null)
+```
+* update pre sale tickets quota, matching based on camp name
+```
+update camps set pre_sale_tickets_quota=(
+select num_tickets from art_2018_quotas aq
+where aq.num_tickets is not null  and cast(aq.num_tickets as integer) > 0  
+and not (aq.id is null and aq.leader_name is null and aq.leader_email is null and aq.name is null)
+and trim(lower(camps.camp_name_he)) = trim(lower(aq.name))
+and camps.event_id='MIDBURN2018' and camps.__prototype='art_installation'
+) where camps.event_id='MIDBURN2018' and camps.__prototype='art_installation' and (camps.pre_sale_tickets_quota is null or pre_sale_tickets_quota < 1)
+```
 
 ## Get list of invalid / missing users
 

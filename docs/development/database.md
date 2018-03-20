@@ -102,7 +102,29 @@ It is usually helpful for developers to work with some data in the database. Use
 **IMPORTANT**: Seeding will drop your current data.
 
 ```shell
-knex seed:run
+npm run seed
 ```
 
 You can then login into the system with the user `admin@midburn.org` and password `admin`.
+
+### Running a local DB from production/staging DB data
+
+This procedure requires you to have permissions to `midbarrn` project on google cloud. You will also need to install the [Google Cloud SDK](https://cloud.google.com/sdk/downloads)
+
+Delete the existing environment and start a new fresh DB
+
+```
+docker-compose down -v; docker-compose up -d db
+```
+
+Get a url to existing DB backup, the URL should look like this - 
+
+`gs://midburn-k8s-backups/sparkdb-staging-dump-2018-03-02-00-00.sql`
+
+Import the URL directly to the DB
+
+```
+! gsutil cat gs://midburn-k8s-backups/sparkdb-staging-dump-2018-03-02-00-00.sql | \
+    mysql --host=localhost --port=3306 --protocol=tcp --user=root --password=123456 \
+    && echo failed to import data
+```

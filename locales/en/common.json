@@ -101,5 +101,24 @@
         "MIDBURN2014": "2014 - Genesis",
         "MIDBURN2015": "2015 - Awakeness",
         "MIDBURN2016": "2016 - Abrakadabra"
+    },
+    "homepage": {
+        "stats": {
+            "gate": "Gate Statistics",
+            "total_tickets":"Event Tickets",
+            "inside_event": "Currently Inside",
+            "ticketing": "Ticketing",
+            "last_24h_first_entrance": "Last 24h entrance",
+            "last_1h_first_entrance": "Last hour entrance",
+            "entrances": "Entrances",
+            "exits": "Exits",
+            "last_24_hours": "Last 24 hours",
+            "last_1h": "Last hour",
+            "other_stats" : "Other Statistics",
+            "members_in_camps": "Members in camps",
+            "participants_in_art_installations": "Participants in art installations",
+            "volunteers_in_production_departments": "Volunteers in production departments"
+        }
+
     }
 }

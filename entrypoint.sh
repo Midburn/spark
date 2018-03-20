@@ -33,7 +33,7 @@ if [ "${ALLOW_POPULATE_DB}" == "yes" ]; then
 
         ! node_modules/.bin/knex migrate:latest && echo "Failed migrations" && exit 1
 
-        ! node_modules/.bin/knex seed:run && echo "Failed seed" && exit 1
+        ! npm run seed && echo "Failed seed" && exit 1
     else
         echo "DB Already has data, will not overwrite"
     fi
