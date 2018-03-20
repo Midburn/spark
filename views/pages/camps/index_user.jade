@@ -1,7 +1,7 @@
 extends ../../includes/page
 block content
     input.hidden.meta(id='meta__lang', value='#{language}')
-    .camps.camp_index(ng-app="ngCamps")
+        .camps.camp_index(ng-app="ngCamps")
         section
             .container
                 h1.jumbotron-heading=t('camps:dash.title')
@@ -13,16 +13,20 @@ block content
                             h2=t('camps:join.header_title')
                             h4=t('camps:join.camp_choosing_title')
                             .col-sm-8.col-xs-12
+                                .script
+                                    var filteredCamps = ['art_installation'];
                                 if(language === 'en')
                                     label=t('camps:new.name_en')
                                     input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
                                     select(type="text", id='join_camp_request_camp_id', class="form-control", name="camp_name_en", autofocus="true", required)
-                                        option(ng-repeat="camp in camps | orderBy:'camp_name_en'", value="{{camp.id}}") {{camp.camp_name_en}}
+
+                                        option(ng-repeat="camp in camps | filter: inArray:filteredCamps:'__prototype'" | orderBy:'camp_name_en'", value="{{camp.id}}") {{camp.camp_name_en}}
                                 else
                                     label=t('camps:new.name_he')
                                     input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
                                     select(type="text", id='join_camp_request_camp_id', class="form-control", name="camp_name_he", autofocus="true", required)
-                                        option(ng-repeat="camp in camps| orderBy:'camp_name_he'", value="{{camp.id}}") {{camp.camp_name_he}}
+
+                                        option(ng-repeat="camp in camps | filter: inArray:filteredCamps:'__prototype'" orderBy:'camp_name_he'", value="{{camp.id}}") {{camp.camp_name_he}}
                             .col-sm-4.col-xs-12
                                 a.Btn.Btn__green.Btn__inline(ng-click="joinRequest()", role='button')=t('camps:join.request')
                     else
