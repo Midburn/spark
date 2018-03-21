@@ -62,6 +62,7 @@
             "start": "Start of DGS tickets allocation",
             "end": "End of DGS tickets allocation"
         },
-        "camps_edit_lastDate": "Last Date to edit camps details"
+        "camps_edit_disabled": "Disable camp editing",
+        "art_edit_disabled": "Disable art installations editing"
     }
 }

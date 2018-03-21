@@ -267,14 +267,29 @@ app.controller("homeController", ($scope, $http, $filter) => {
             $scope.groups = res.data.groups;
             $scope.stat = res.data.stats;
         });
-    }
+    };
 
     $scope.angular_ChangeCurrentEventId = function (event_id) {
         //set new current event id
         $http.post('/events/change', {currentEventId: event_id}).then((res) => {
             window.location.reload();
         });
-    }
+    };
+
+    $scope.isGroupEditable = function (group) {
+        const edit_camp_disabled = currentEventRules.edit_camp_disabled;
+        const edit_art_disabled = currentEventRules.edit_art_disabled;
+        if (!group.can_edit) {
+            return false;
+        }
+        switch (group.group_type) {
+            case 'Art Installation':
+                return !edit_art_disabled;
+            default:
+                return !edit_camp_disabled;
+        }
+
+    };
 
     $scope.angular_getMyGroups($http, $scope);
 
