@@ -1,5 +1,10 @@
 extends ../includes/page
 block content
+    script.
+        const currentEventRules = {
+            edit_camp_disabled: #{!!currentEventRules.edit_camp_disabled},
+            edit_art_disabled: #{!!currentEventRules.edit_art_disabled}
+        };
     h1=t('welcome_home', {user: user.attributes.first_name, context: user.attributes.gender})
     .camps.camp_edit(ng-app="ngCamps", ng-controller="homeController")
         br
@@ -37,7 +42,7 @@ block content
                     td {{group.is_manager}}
                     //- td {{group.earlyArrival ? 'yes':'no'}}
                     td
-                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="group.can_edit") &nbsp;
+                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="isGroupEditable(group, currentEventRules)") &nbsp;
                             button.btn.btn-xs
                                 span(class='glyphicon glyphicon-pencil')
                                 =t('camps:stats.edit')

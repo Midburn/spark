@@ -29,7 +29,8 @@ block content
                     community_prod_dep: '#{event.addinfo_json.community_prod_dep}' === 'true',
                     appreciation_tickets_allocation_start: new Date('#{event.addinfo_json.appreciation_tickets_allocation_start}'),
                     appreciation_tickets_allocation_end: new Date('#{event.addinfo_json.appreciation_tickets_allocation_end}'),
-                    edit_camps_lastDate: new Date('#{event.addinfo_json.edit_camps_lastDate}'),
+                    edit_art_disabled: #{event.addinfo_json.edit_art_disabled},
+                    edit_camp_disabled: #{event.addinfo_json.edit_camp_disabled},
                     url: '#{event.addinfo_json.url}'
                 }
             }
