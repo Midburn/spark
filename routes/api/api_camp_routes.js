@@ -1462,7 +1462,6 @@ module.exports = (app, passport) => {
             });
     })
 
-    // Delete, make camp inactive
     app.post('/camps/:id/updatePreSaleQuota', userRole.isAdmin(), (req, res) => {
         //should we implement dates controll here as well (as long as it is admin only)???
         Camp.forge({ id: req.params.id })
