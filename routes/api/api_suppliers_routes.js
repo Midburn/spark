@@ -1,7 +1,4 @@
-Suppliers = require('../models/suppliers').Suppliers
-const common = require('../libs/common').common
-constants = require('../models/constants.js')
-const userRole = require('../libs/user_role')
+const Suppliers = require('../../models/suppliers').Suppliers;
 
 module.exports = (app, passport) => {
 
@@ -11,12 +8,12 @@ module.exports = (app, passport) => {
     */
    app.get('/suppliers', async (req, res) => {
         try {
-            let suppliers = await Suppliers.fetchAll()
+            let suppliers = await Suppliers.fetchAll();
             res.status(200).json({suppliers: suppliers.toJSON()})
         } catch (err) {
             res.status(500).json({error: true,data: {message: err.message}})
         }
-    })
+    });
 
     /**
     * API: (GET) get spesific supplire by id
@@ -24,8 +21,8 @@ module.exports = (app, passport) => {
     */
     app.get('/suppliers/:supplier_id', async (req, res) => {
         try {
-            let supplier_id = req.params.supplier_id
-            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            let supplier_id = req.params.supplier_id;
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch();
             if (supplier) {
                 res.status(200).json({supplier: supplier.toJSON()})
             }
@@ -43,8 +40,8 @@ module.exports = (app, passport) => {
     */
     app.post('/suppliers/new', async (req, res) => {
         try {
-            let data = supplier_data_update_(req,"new")
-            let supplier = await Suppliers.forge().save(data)
+            let data = supplier_data_update_(req,"new");
+            let supplier = await Suppliers.forge().save(data);
             res.status(200).json({supplier: supplier.toJSON()})
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})
@@ -58,10 +55,10 @@ module.exports = (app, passport) => {
    app.put('/suppliers/:supplier_id/edit', async (req, res) => {
        try {
             let supplier_id = req.params.supplier_id;
-            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch();
             if (supplier !== null) {
-                let data = supplier_data_update_(req,"update")
-                supplier = await supplier.save(data)
+                let data = supplier_data_update_(req,"update");
+                supplier = await supplier.save(data);
                 res.status(200).json({supplier: supplier.toJSON()})
             } else {
                 res.status(500).json({error: true,data: { message : "Supplier does not exist" }})
@@ -79,10 +76,10 @@ module.exports = (app, passport) => {
    app.delete('/suppliers/:supplier_id/delete', async (req, res) => {
         try {
             let supplier_id = req.params.supplier_id;
-            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch();
 
             if (supplier !== null) {
-                supplier = await supplier.destroy()
+                await supplier.destroy();
                 res.status(200).send("Supplier deleted")
             } else {
                 res.status(500).json({error: true,data: { message : "Supplier does not exist" }})
@@ -99,8 +96,8 @@ module.exports = (app, passport) => {
    app.get('/suppliers/:supplier_id/camps', async (req, res) => {
         try {
             let supplier_id = req.params.supplier_id;
-            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
-            let camps = await supplier.getSupplierCamps()
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch();
+            let camps = await supplier.getSupplierCamps();
 
             if (camps !== null) {
                 res.status(200).json({camps: camps})
@@ -125,10 +122,10 @@ module.exports = (app, passport) => {
                 event_id : 'MIDBURN2018',//req.user.currentEventId
                 courier_contact_name : req.body.courier_contact_name,
                 courier_contact_phone_number : req.body.courier_contact_phone_number,
-            } 
-            
-            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
-            let camp = await supplier.setSupplierCamp(data)
+            };
+
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch();
+            let camp = await supplier.setSupplierCamp(data);
 
             if (camp !== 0) {
                 res.status(200).send("Camp supplier updated")
@@ -142,7 +139,7 @@ module.exports = (app, passport) => {
     });
 
     /**
-    * API: (DELETE) delete selected camp from  supplire 
+    * API: (DELETE) delete selected camp from  supplire
     * request => /suppliers/:supplier_id/camps/:camp_id
     */
    app.delete('/suppliers/:supplier_id/camps/:camp_id', async (req, res) => {
@@ -150,10 +147,10 @@ module.exports = (app, passport) => {
         let data = {
             camp_id: req.params.camp_id,
             event_id: 'MIDBURN2018'//req.user.currentEventId,
-        }
+        };
         let supplier_id = req.params.supplier_id;
-        let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
-        let camp = await supplier.removeSupplierCamp(data)
+        let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch();
+        let camp = await supplier.removeSupplierCamp(data);
 
         if (camp !== 0) {
             res.status(200).send("Camp supplier deleted")
@@ -178,7 +175,7 @@ module.exports = (app, passport) => {
             supplier_website_link: req.body.supplier_website_link,
             supplier_midmarket_link: req.body.supplier_midmarket_link,
             comments: req.body.comments
-        }
+        };
 
         if (action === "new")
         {
@@ -187,4 +184,4 @@ module.exports = (app, passport) => {
 
         return data;
     }
-}
+};

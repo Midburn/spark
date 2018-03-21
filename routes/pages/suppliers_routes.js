@@ -1,9 +1,10 @@
-const userRole = require('../libs/user_role');
+const userRole = require('../../libs/user_role');
+const express = require('express');
 const router = express.Router({
     mergeParams: true
 });
-const Supplier = require('../models/suppliers').Suppliers;
-const Event = require('../models/event').Event;
+const Supplier = require('../../models/suppliers').Suppliers;
+const Event = require('../../models/event').Event;
 const breadcrumbs = require('express-breadcrumbs');
 
 router.use(breadcrumbs.init());
@@ -22,7 +23,7 @@ const __supplier_data_to_json = function (supplier) {
     return supplier_data;
 };
 const __render_supplier = function (supplier, req, res) {
-    var supplier_id;
+    let supplier_id;
     if (['int', 'string'].indexOf(typeof supplier) > -1) {
         supplier_id = parseInt(supplier);
     } else {
@@ -65,7 +66,7 @@ const __render_supplier = function (supplier, req, res) {
             }
         });
     });
-}
+};
 
 // ==============
 // suppliers Routing
@@ -83,7 +84,7 @@ router.get('/suppliers', userRole.isLoggedIn(), (req, res) => {
     Supplier.getSupplierCamps((suppliers) => {
         if (suppliers.length === 0 || !req.user.attributes.camp || !req.user.attributes.camp_manager) {
             // if (req.user.attributes.suppliers.length === 0 || !req.user.attributes.camp_manager) {
-            camp = req.user.attributes.camp;
+            const camp = req.user.attributes.camp;
             res.render('pages/suppliers/index_user', {
                 user: req.user,
                 camp: camp,
@@ -131,7 +132,7 @@ router.get('/suppliers/new', userRole.isAdmin(), (req, res) => {
     let controllDates = {
         appreciation_tickets_allocation_start: null,
         appreciation_tickets_allocation_end: null
-    }
+    };
     res.render('pages/suppliers/edit', {
         user: req.user,
         breadcrumbs: req.breadcrumbs(),
@@ -181,11 +182,11 @@ router.get('/suppliers/:id/edit', userRole.isLoggedIn(), (req, res) => {
              //   isArt: supplier.attributes.__prototype === constants.prototype_suppliers.ART_INSTALLATION.id,
              //   isCamp: supplier.attributes.__prototype === constants.prototype_suppliers.THEME_CAMP.id,
              //   isProd: supplier.attributes.__prototype === constants.prototype_suppliers.PROD_DEP.id,
-            }
+            };
             const currentEventID = req.session.passport.user.currentEventId;
             Event.get_event_controllDates(currentEventID)
             .then(controllDates => {
-                _edit_rec.controllDates = controllDates || {}
+                _edit_rec.controllDates = controllDates || {};
                 res.render('pages/suppliers/edit',_edit_rec);
                 });
 
