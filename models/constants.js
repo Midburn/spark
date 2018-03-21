@@ -93,7 +93,6 @@ const ticketType = {
     MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: 66
 };
 
-
 const SUPPLIERS_TABLE_NAME_FIELDS = {
     supplier_id: 'supplier_id',
     supplier_name_en: 'supplier_name_en',
@@ -148,7 +147,6 @@ const events = {
     }
 };
 
-
 module.exports = {
 
     // -- system constant --
@@ -175,11 +173,7 @@ module.exports = {
     CAMP_FILES_TABLE_NAME: 'camps_files',
     SUPPLIERS_TABLE_NAME: 'suppliers',
     SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
-
-    SUPPLIERS_TABLE_NAME: 'suppliers',
     suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
-
-    SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
 
     prototype_camps: prototype_camps,
 

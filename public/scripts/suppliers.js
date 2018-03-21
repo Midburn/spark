@@ -38,14 +38,14 @@ $input.keydown(function () {
 });
 
 function doneTyping_(event) {
-  
+
     var val = event.target.value,
         lang = $('body').attr('lang'),
         status = $(".choose_name span.indicator span.glyphicon"),
         input = $input,
         btn = $('#check_supplier_id');
         var data = $.get('/suppliers/' + val);
-        
+
         data.done(function () {
             if (data.status === 204) {
                 input.removeClass('error');
@@ -59,7 +59,7 @@ function doneTyping_(event) {
         });
         btn.addClass('disabled btn').removeAttr('href');
         status.removeClass('glyphicon-ok')
-    
+
 }
 
 function getUserTemplate(data) {
@@ -234,17 +234,6 @@ $('#camp_type_other_checkbox').click(function () {
     }
 })
 
-// Collect all checkbox values
-function fetchAllCheckboxValues(className) {
-    var val = [];
-    $('.' + className + ':checked').each(function (i) {
-        val[i] = $(this).val();
-        if (val[i] === 'other') {
-            val[i] += '=' + $('#' + className + '_other_text').val()
-        }
-    });
-    return val.toString();
-}
 /*
  * Component: view camp details
  */
