@@ -1,15 +1,27 @@
+@import './colors';
 @import './ui';
 @import './camps';
 @import './footer';
-@import './colors';
+
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-image: url("https://midburn.org/wp-content/uploads/2017/01/poicamp.jpg");
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-attachment: fixed;
+    background-size: cover;
 }
-
-a:hover {
-    text-decoration: none;
+a {
+    color: $primary-color;
+    &:hover {
+        color: $primary-color-muted;
+        text-decoration: none;
+    }
+}
+*:focus {
+    outline: none;
 }
 
 span {
@@ -18,6 +30,16 @@ span {
 
 .main {
     padding-top: 90px;
+    color: white;
+}
+
+.card {
+    background: $card-bg;
+    color: $card-text;
+}
+
+.text-muted {
+    color: $primary-color-muted;
 }
 
 .midburn_logo {
@@ -51,6 +73,14 @@ span {
 .navbar-nav>li>a {
     line-height: 22px;
 }
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+    background-color: $primary-color !important;
+    background-image: -webkit-linear-gradient(top, $primary-color 0, $primary-color 100%) !important;
+    background-image: -o-linear-gradient(top, $primary-color 0, $primary-color 100%) !important;
+    background-image: -webkit-gradient(linear, left top, left bottom, from($primary-color), to($primary-color)) !important;
+    background-image: linear-gradient(to bottom, $primary-color 0, $primary-color 100%) !important;
+}
+
 
 li.dropdown > ul > li > a > img,
 li.dropdown > ul > li > a > span {
