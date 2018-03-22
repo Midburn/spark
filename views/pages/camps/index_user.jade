@@ -3,59 +3,58 @@ block content
     input.hidden.meta(id='meta__lang', value='#{language}')
     .camps.camp_index(ng-app="ngCamps")
         section
-            .container
-                h1.jumbotron-heading=t('camps:dash.title')
-                p.lead.text-muted=t('camps:dash.desc')
-                div.block-center
-                .cards--wrapper(style="visibility: visible; min-height: 268px;")
-                    if user.isCampFree
-                        .join_camp.card(ng-controller="campJoinController")
-                            h2=t('camps:join.header_title')
-                            h4=t('camps:join.camp_choosing_title')
-                            .col-sm-8.col-xs-12
-                                if(language === 'en')
-                                    label=t('camps:new.name_en')
-                                    input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
-                                    select(type="text", id='join_camp_request_camp_id', class="form-control", name="camp_name_en", autofocus="true", required)
-                                        option(ng-repeat="camp in camps", value="{{camp.id}}") {{camp.camp_name_en}}
-                                else
-                                    label=t('camps:new.name_he')
-                                    input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
-                                    select(type="text", id='join_camp_request_camp_id', class="form-control", name="camp_name_he", autofocus="true", required)
-                                        option(ng-repeat="camp in camps", value="{{camp.id}}") {{camp.camp_name_he}}
-                            .col-sm-4.col-xs-12
-                                a.Btn.Btn__green.Btn__inline(ng-click="joinRequest()", role='button')=t('camps:join.request')
-                    else
-                      .join_camp_pending.card(ng-controller="joinPendingController")
-                          input.hidden(id='pending_request_user_id', type='hidden', value='#{user.id}')
-                          h2=t('camps:pending.header_title')
-                          h4=t('camps:pending.subtitle')
-                          ul.list-group.col-md-4
-                            li.list-group-item
-                              span=t('camps:camps.title')
-                              span.badge.badge-info
-                                  a(ng-href="camps/{{camp.camp_id}}")=(`{{camp.camp_id}} {{camp.camp_name_he}}`)
-                            li.list-group-item
-                              span=t('camps:stats.status')
-                              span.badge.badge-info=(`{{camp.member_status_i18n}}`)
-                          .controls.col-xs-12
-                              a.Btn.Btn__sm(ng-click='approveRequest()' ng-if="camp.status=='pending_mgr'")=t('camps:pending.approve_request')
-                              a.Btn.Btn__sm(ng-click='cancelRequest()')=t('camps:pending.cancel_request')
-                              //- a.Btn.Btn__sm(ng-click='resendRequest()') Resend request
-                          
-        // Camp join request modal
-        .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')
-            .modal-dialog.card.card__padding--even.card__shad(role='document')
-                div
-                    .modal-header
-                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                        h4.modal-title=t('camps:dash.join_request')
-                    .modal-body
-                        u=t('camps:dash.join_request_desc')
-                        p
-                            .user_details
-                        strong=t('camps:dash.join_request_note')
-                    .modal-footer
-                        button.Btn.Btn__transparent(id='join_camp_close_btn', type='button', data-dismiss='modal')=t('camps:dash.join_close')
-                        button.Btn.Btn__green(id='join_camp_send_request_btn', type='button')=t('camps:dash.join_send')
+            h1.jumbotron-heading=t('camps:dash.title')
+            p.lead.text-muted=t('camps:dash.desc')
+            div.block-center
+            .cards--wrapper(style="visibility: visible; min-height: 268px;")
+                if user.isCampFree
+                    .join_camp.card(ng-controller="campJoinController")
+                        h2=t('camps:join.header_title')
+                        h4=t('camps:join.camp_choosing_title')
+                        .col-sm-8.col-xs-12
+                            if(language === 'en')
+                                label=t('camps:new.name_en')
+                                input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
+                                select(type="text", id='join_camp_request_camp_id', class="form-control", name="camp_name_en", autofocus="true", required)
+                                    option(ng-repeat="camp in camps", value="{{camp.id}}") {{camp.camp_name_en}}
+                            else
+                                label=t('camps:new.name_he')
+                                input.hidden(id='join_camp_request_join_user_id', type='hidden', value='#{user.attributes.user_id}')
+                                select(type="text", id='join_camp_request_camp_id', class="form-control", name="camp_name_he", autofocus="true", required)
+                                    option(ng-repeat="camp in camps", value="{{camp.id}}") {{camp.camp_name_he}}
+                        .col-sm-4.col-xs-12
+                            a.Btn.Btn__green.Btn__inline(ng-click="joinRequest()", role='button')=t('camps:join.request')
+                else
+                  .join_camp_pending.card(ng-controller="joinPendingController")
+                      input.hidden(id='pending_request_user_id', type='hidden', value='#{user.id}')
+                      h2=t('camps:pending.header_title')
+                      h4=t('camps:pending.subtitle')
+                      ul.list-group.col-md-4
+                        li.list-group-item
+                          span=t('camps:camps.title')
+                          span.badge.badge-info
+                              a(ng-href="camps/{{camp.camp_id}}")=(`{{camp.camp_id}} {{camp.camp_name_he}}`)
+                        li.list-group-item
+                          span=t('camps:stats.status')
+                          span.badge.badge-info=(`{{camp.member_status_i18n}}`)
+                      .controls.col-xs-12
+                          a.Btn.Btn__sm(ng-click='approveRequest()' ng-if="camp.status=='pending_mgr'")=t('camps:pending.approve_request')
+                          a.Btn.Btn__sm(ng-click='cancelRequest()')=t('camps:pending.cancel_request')
+                          //- a.Btn.Btn__sm(ng-click='resendRequest()') Resend request
+
+    // Camp join request modal
+    .modal.fade(id='join_camp_request_modal', tabindex='-1', role='dialog')
+        .modal-dialog.card.card__padding--even.card__shad(role='document')
+            div
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    h4.modal-title=t('camps:dash.join_request')
+                .modal-body
+                    u=t('camps:dash.join_request_desc')
+                    p
+                        .user_details
+                    strong=t('camps:dash.join_request_note')
+                .modal-footer
+                    button.Btn.Btn__transparent(id='join_camp_close_btn', type='button', data-dismiss='modal')=t('camps:dash.join_close')
+                    button.Btn.Btn__green(id='join_camp_send_request_btn', type='button')=t('camps:dash.join_send')
