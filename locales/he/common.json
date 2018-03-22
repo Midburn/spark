@@ -74,6 +74,9 @@
         "npo_join": "הצטרפות לעמותה",
         "whoami": "עריכת פרופיל"
     },
+    "top-nav": {
+        "manage": "ניהול"
+    },
     "footer": {
         "scrolltop": "חזרה למעלה",
         "visit_homepage": "בקרו באתר מידברן",

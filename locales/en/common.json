@@ -73,6 +73,9 @@
         "npo_join": "Join NPO",
         "whoami": "Manage Profile"
     },
+    "top-nav": {
+      "manage": "Manage"
+    },
     "footer": {
         "scrolltop": "Back to top",
         "visit_homepage": "Visit Midburn website",
