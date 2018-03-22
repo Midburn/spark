@@ -111,3 +111,11 @@ where camp_members_2018.approved_text='מאושרים כחבר מחנה'
 and camp_members_2018.email = users.email
 and users.user_id not in (select user_id from camp_members where camp_id in (select id from camps where event_id='MIDBURN2018'))
 ```
+
+
+## Importing pre sale ticket allocations
+
+* sheet file with columns: `camp_id`, `num_tickets`
+* add a forumla field, something like: `="update camps set pre_sale_tickets_quota="&B107&" where id='"&A107&"';"`
+* duplicate to all rows, paste and run in adminer
+

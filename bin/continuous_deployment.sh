@@ -13,6 +13,9 @@ cd /ops
 ! kubectl set image deployment/spark "spark=${IMAGE_TAG}" "migrations=${IMAGE_TAG}" \
     && echo 'failed to patch spark deployment' && RES=1;
 
+! kubectl set image deployment/spark-drupal-sync "spark=${IMAGE_TAG}" \
+    && echo 'failed to patch spark-drupal-sync deployment' && RES=1;
+
 cd /spark;
 
 ! gcloud container builds submit --substitutions _IMAGE_TAG=${IMAGE_TAG} \

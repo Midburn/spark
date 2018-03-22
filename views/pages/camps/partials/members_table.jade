@@ -18,7 +18,7 @@ table.table.table-striped.table-hover
             td {{member.email}}
             td {{member.cell_phone}}
             td {{member.member_status_i18n}}
-            td {{member.current_event_id_ticket_count}}
+            td {{member.ticket_count}}
             td {{member.inside_event}}
             td
                 input(id='pre_sale_ticket_approved' type="checkbox" name="ticket_approved" ng-checked="{{member.pre_sale_ticket_approved}}" ng-model="member.pre_sale_ticket_approved" disabled)
