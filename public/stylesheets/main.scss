@@ -3,6 +3,11 @@
 @import './camps';
 @import './footer';
 @import './colors';
+@import './light-theme';
+
+// hide this after getting theme from session storage and page load (public/scripts/camps.js)
+#cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #ffffff; z-index:9999;}
+
 body {
     display: flex;
     flex-direction: column;
@@ -21,7 +26,8 @@ a {
     }
 }
 *:focus {
-    outline: none;
+    outline: none !important;
+    color: inherit !important;
 }
 
 span {
@@ -64,10 +70,12 @@ span {
 }
 
 .navbar-brand {
+    background-size: 50px;
     padding-left: 30px;
-    background-image: url("../images/spark_logo.png");
+    background-image: url("../images/midburn_logo.svg");
     background-repeat: no-repeat;
-    background-position: 10px 15px;
+    background-position: -9px 12px;
+    color: black !important;
 }
 
 .navbar-nav>li>a {

@@ -87,7 +87,8 @@
         "open_source": "Open Source",
         "want_to_help": "Want to help us code?",
         "toc": "Terms of Use and Privacy Policy",
-        "toc_link": "http://midburn.org/en/en-terms-and-privacy/"
+        "toc_link": "http://midburn.org/en/en-terms-and-privacy/",
+        "change_theme": "Change theme"
     },
     "whoami": {
         "gender": "Gender",
