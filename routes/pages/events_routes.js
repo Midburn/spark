@@ -4,7 +4,16 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", userRole.isAdmin(), (req, res) => {
+    req.breadcrumbs([{
+        name: 'breadcrumbs.home',
+        url: '/' + req.params.lng + '/home'
+    },
+    {
+        name: 'events:nav_admin',
+        url: '/' + req.params.lng + '/events-admin'
+    }]);
     res.render("pages/events/index", {
+        breadcrumbs: req.breadcrumbs(),
         t_prefix: "events:"
     });
 });
