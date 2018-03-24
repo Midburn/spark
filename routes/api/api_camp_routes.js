@@ -33,6 +33,11 @@ const emailDeliver = (recipient, subject, template, props) => {
 };
 
 var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mgr, res) => {
+    let isDgs;
+    if (action === 'dgs_ticket') {
+        action = 'pre_sale_ticket';
+        isDgs = true;
+    }
     Camp.forge({id: camp_id , event_id: current_event_id}).fetch().then((camp) => {
         let camp_mgr_id;
         if (camp_mgr instanceof User) {
@@ -177,14 +182,14 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
                     // checking that update of the pre sale ticket allocation is inside the valid time period
                     const eventInfo = JSON.parse(resp[0].eventInfo)
                     const allocationDates = {
-                        start : new Date(eventInfo.appreciation_tickets_allocation_start),
-                        end : new Date(eventInfo.appreciation_tickets_allocation_end)
+                        start : isDgs ? new Date(eventInfo.dgs_tickets_allocation_start) : new Date(eventInfo.appreciation_tickets_allocation_start),
+                        end : isDgs ? new Date(eventInfo.dgs_tickets_allocation_end) : new Date(eventInfo.appreciation_tickets_allocation_end)
                     }
 
                     let jsonInfo;
                     try {
                         //pass the response to the process method
-                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
+                        jsonInfo = Modify_User_AddInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates, isDgs);
                     } catch (err) {
                         res.status(500);
                         throw new Error(res.json({error: true, data: { message: err.message }}));
@@ -237,12 +242,12 @@ var __camps_update_status = (current_event_id, camp_id, user_id, action, camp_mg
 here we pass the query info from the SQL
 and check the json info, the method will throw and error if failed
 */
-function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
+function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates, isDgs) {
 
     var userData = info;
-
     var jsonInfo;
-
+    const ticketKey = isDgs ? 'dgs_ticket' : 'pre_sale_ticket';
+    let campQuotaKey;
     //check for the sub action in the json info
     if (addinfo_jason_subAction === "pre_sale_ticket") {
 
@@ -262,41 +267,42 @@ function Modify_User_AddInfo (info, addinfo_jason_subAction,camp, users, user, i
         //check if the json info is null
         //if so then set it the value as this is the first init of the data
         if (userData === null) {
-            jsonInfo = {"pre_sale_ticket": "true"};
+            jsonInfo = { [ticketKey]: "true" };
         }
         else {
             //if the object is not null then parse it and toggle the current value
             jsonInfo=JSON.parse(userData);
-            if (jsonInfo.pre_sale_ticket === "true") {
-                jsonInfo.pre_sale_ticket = "false";
+            if (jsonInfo[ticketKey] === "true") {
+                jsonInfo[ticketKey] = "false";
             }
             else {
-                jsonInfo.pre_sale_ticket = "true";
+                jsonInfo[ticketKey] = "true";
             }
         }
 
         //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
-        if (jsonInfo.pre_sale_ticket === "true") {
+        if (jsonInfo[ticketKey] === "true") {
             //first count how many pre sale tickets are assinged to the camp members
-            var preSaleTicketsCount=0;
+            var preSaleTicketsCount = 0;
             for (var i in users) {
                 if (users[i].camps_members_addinfo_json) {
                     var addinfo_json = JSON.parse(users[i].camps_members_addinfo_json);
-                    if (addinfo_json.pre_sale_ticket === "true") {
+                    if (addinfo_json[ticketKey] === "true") {
                         preSaleTicketsCount++
                     }
                 }
             }
 
             //if the pre sale ticket count equal or higher than the quota
-            //reject the reuest
-            if (preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota) {
+            //reject the reuestdgs
+            campQuotaKey = isDgs ? 'dgs_tickets_quota' : 'pre_sale_tickets_quota';
+            if (preSaleTicketsCount >= camp.attributes[campQuotaKey]) {
                 throw new Error("exceed pre sale tickets quota");
             }
         }
     }
 
-    jsonInfo = JSON.stringify(jsonInfo)
+    jsonInfo = JSON.stringify(jsonInfo);
     return jsonInfo;
 }
 
@@ -639,7 +645,7 @@ module.exports = (app, passport) => {
         var user_id = req.params.user_id;
         var camp_id = req.params.camp_id;
         var action = req.params.action;
-        var actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket'];
+        var actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'dgs_ticket'];
         if (actions.indexOf(action) > -1) {
             __camps_update_status(req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
@@ -1245,8 +1251,12 @@ module.exports = (app, passport) => {
                         if (addinfo_json.pre_sale_ticket === "true") {
                             members[i].pre_sale_ticket = true;
                         }
+                        if (addinfo_json.dgs_ticket === "true") {
+                            members[i].dgs_ticket = true;
+                        }
                     } else {
                         members[i].pre_sale_ticket = false;
+                        members[i].dgs_ticket = false;
                     }
                 }
 
@@ -1456,7 +1466,7 @@ module.exports = (app, passport) => {
         //should we implement dates controll here as well (as long as it is admin only)???
         Camp.forge({ id: req.params.id })
             .fetch().then((camp) => {
-                var quota = req.body.quota;
+                const quota = req.body.quota;
                 if (common.isNormalInteger(quota) === false) {
                     return res.status(500).json({
                         error: true,
@@ -1465,8 +1475,8 @@ module.exports = (app, passport) => {
                         }
                     });
                 }
-
-                camp.save({ pre_sale_tickets_quota: quota }).then(() => {
+                const campUpdate = req.body.isDgs ? { dgs_tickets_quota: quota } : { pre_sale_tickets_quota: quota };
+                camp.save(campUpdate).then(() => {
                     res.sendStatus(200);
                 }).catch((err) => {
                     res.status(500).json({

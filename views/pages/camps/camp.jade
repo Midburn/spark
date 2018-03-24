@@ -3,7 +3,7 @@ block content
     .camps.camp_details
         .heading.card.card__shad
             .card__actions
-                if isAdmin || (isCampManager && ( new Date() < campslastEditDate))
+                if isAdmin || (isCampManager && camp_protoype !== 'art_installation' && !edit_camp_disabled) || (isCampManager && camp_protoype !== 'art_installation' && !edit_art_disabled)
                     .dropdown
                         a.Btn.btn-default(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
             .card__details

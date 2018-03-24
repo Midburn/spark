@@ -167,6 +167,7 @@ mail.setup(app);
 require('./routes/index.js').api(app, passport);
 // Maping all page routes
 app.use("/", require('./routes/index.js').app);
+
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);
 

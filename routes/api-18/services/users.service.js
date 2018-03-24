@@ -20,6 +20,8 @@ class UsersService {
     modifyUsersInfo(info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
         const userData = info;
         let jsonInfo;
+        const ticketKey = isDgs ? 'dgs_ticket' : 'pre_sale_ticket';
+        let campQuotaKey;
         //check for the sub action in the json info
         if (addinfo_jason_subAction === "pre_sale_ticket") {
             const {start, end} = allocationDates;
@@ -37,35 +39,36 @@ class UsersService {
             //check if the json info is null
             //if so then set it the value as this is the first init of the data
             if (userData === null) {
-                jsonInfo = {"pre_sale_ticket": "true"};
+                jsonInfo = { [ticketKey]: "true" };
             }
             else {
                 //if the object is not null then parse it and toggle the current value
                 jsonInfo=JSON.parse(userData);
-                if (jsonInfo.pre_sale_ticket === "true") {
-                    jsonInfo.pre_sale_ticket = "false";
+                if (jsonInfo[ticketKey] === "true") {
+                    jsonInfo[ticketKey] = "false";
                 }
                 else {
-                    jsonInfo.pre_sale_ticket = "true";
+                    jsonInfo[ticketKey] = "true";
                 }
             }
             //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
-            if (jsonInfo.pre_sale_ticket === "true") {
+            if (jsonInfo[ticketKey] === "true") {
                 //first count how many pre sale tickets are assinged to the camp members
-                let preSaleTicketsCount=0;
+                let preSaleTicketsCount = 0;
                 for (const i in users) {
                     if (users.hasOwnProperty(i)) {
                         if (users[i].camps_members_addinfo_json) {
                             const addinfo_json = JSON.parse(users[i].camps_members_addinfo_json);
-                            if (addinfo_json.pre_sale_ticket === "true") {
+                            if (addinfo_json[ticketKey] === "true") {
                                 preSaleTicketsCount++
                             }
                         }
                     }
                 }
                 //if the pre sale ticket count equal or higher than the quota
-                //reject the reuest
-                if (preSaleTicketsCount >= camp.attributes.pre_sale_tickets_quota) {
+                //reject the reuestdgs
+                campQuotaKey = isDgs ? 'dgs_tickets_quota' : 'pre_sale_tickets_quota';
+                if (preSaleTicketsCount >= camp.attributes[campQuotaKey]) {
                     throw new Error("exceed pre sale tickets quota");
                 }
             }
