@@ -19,6 +19,10 @@ footer
                         a(href="#{t('footer.toc_link')}" target='_blank')=t('footer.toc')
                     li
                         a(href='//www.midburn.org')=t('footer.visit_homepage')
+                    li
+                        a(href="#" id="toggleTheme")
+                            i.fa.fa-paint-brush.m-1(aria-hidden='true')
+                            =t('common:footer.change_theme')
 
             .col-xs-12.col-sm-4
                 ul.footer__links

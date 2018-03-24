@@ -74,6 +74,9 @@
         "npo_join": "הצטרפות לעמותה",
         "whoami": "עריכת פרופיל"
     },
+    "top-nav": {
+        "manage": "ניהול"
+    },
     "footer": {
         "scrolltop": "חזרה למעלה",
         "visit_homepage": "בקרו באתר מידברן",
@@ -85,7 +88,8 @@
         "open_source": "קוד פתוח",
         "want_to_help": "רוצה לעזור לנו לקודד?",
         "toc": "תנאי השימוש באתר ומדיניות פרטיות",
-        "toc_link": "http://midburn.org/he-terms-and-privacy/"
+        "toc_link": "http://midburn.org/he-terms-and-privacy/",
+        "change_theme": "החלף צבע"
     },
     "whoami": {
         "gender": "מגדר",
