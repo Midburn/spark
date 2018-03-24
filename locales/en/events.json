@@ -1,6 +1,6 @@
 {
     "nav_admin": "Events Admin",
-    "current_event_view": "Current_Event:",
+    "current_event_view": "Current Event:",
     "dash": {
         "title": "Events",
         "desc": "Events management dashboard"
@@ -11,7 +11,7 @@
         "all_events_table": "Events Table"
     },
     "stats": {
-        "search": "Seach",
+        "search": "Search",
         "name_en": "Event Name",
         "gate_code": "Gate Code",
         "gate_status": "Status",

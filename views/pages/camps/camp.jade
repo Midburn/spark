@@ -16,7 +16,7 @@ block content
                 .style
                     h5 #{t('camps:camps.style')}
                     each type in camp.type_i18n.split(',')
-                        span.label.label-primary #{type}
+                        span.label.label-primary #{type.replace('edit.', '')}
                 h5
                 //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
@@ -74,7 +74,7 @@ block content
                                     h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{main_contact.name}
                                     h6 #{t('camps:camps.phone')}:
-                                        span.contact_person_phone #{main_contact.cell_phone}
+                                        span.contact_person_phone #{main_contact.cell_phone ? main_contact.cell_phone : camp.contact_person_phone}
                                     h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{main_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.main_contact}')=t('camps:camps.more_info')
@@ -88,7 +88,7 @@ block content
                                     h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{moop_contact.name}
                                     h6 #{t('camps:camps.phone')}:
-                                        span.contact_person_phone #{moop_contact.cell_phone}
+                                        span.contact_person_phone #{moop_contact.cell_phone ? moop_contact.cell_phone : camp.contact_person_phone}
                                     h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{moop_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.moop_contact}')=t('camps:camps.more_info')
@@ -102,7 +102,7 @@ block content
                                     h6 #{t('camps:camps.name')}:
                                         span.contact_person_name #{safety_contact.name}
                                     h6 #{t('camps:camps.phone')}:
-                                        span.contact_person_phone #{safety_contact.cell_phone}
+                                        span.contact_person_phone #{safety_contact.cell_phone ? safety_contact.cell_phone : camp.contact_person_phone}
                                     h6 #{t('camps:camps.email')}:
                                         span.contact_person_email #{safety_contact.email}
                                     //- a.details.hidden(href='/users/#{camp.safety_contact}')=t('camps:camps.more_info')
@@ -112,13 +112,7 @@ block content
                     .col-xs-12.col-md-6
                         ul.list-group
                             li.list-group-item
-                                span=t('camps:edit.publication')
-                                if camp.web_published
-                                    span.badge.bg__green=t('camps:camps.yes')
-                                else
-                                    span.badge.bg__red=t('camps:camps.no')
-                            li.list-group-item
-                                span=t('camps:camps.status')
+                                span=t('camps:camps.accept_new_members')
                                 if camp.status == 'open'
                                     span.badge.bg__teal=t('camps:camps.status_open')
                                 else if camp.status == 'closed'

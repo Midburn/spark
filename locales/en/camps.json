@@ -137,8 +137,8 @@
         "remove": "Remove",
         "edit": "Edit",
         "search": "Search Camp",
-        "dumpcampsdata": "export data",  
-        "entrance_quota": "Early arrival quota"
+        "dumpcampsdata": "export data",
+        "entrance_quota": "Early arrival quota",
         "pre_sale_tickets_quota": "Pre-Sale Tickets Quota",
         "pre_sale_ticket_count": "Total Pre-Sale Tickets Assigned To Camp",
         "total_pre_sale_ticket_assigned": "Pre-Sale Tickets Assigned To Camp Members"
@@ -268,7 +268,9 @@
         "members_header": "Manage Camp Members",
         "search_member": "Find members",
         "add_member_placeholder": "Type Midburn profile email",
-        "early_arrival_quota": "Early Arrival Quota"
+        "early_arrival_quota": "Early Arrival Quota",
+        "camp_file_url": "File Path",
+        "camp_file_actions": "Actions"
     },
     "program": {
         "page_title": "Create new Program",
@@ -329,6 +331,9 @@
             "add_info": "Art Admin Additional Information",
             "camp": "Art Installation"
         }
+    },
+    "files": {
+        "nav_admin": "Manage Files"
     },
     "prod_dep": {
         "nav": "My Department",
