@@ -1,7 +1,4 @@
-Suppliers = require('../models/suppliers').Suppliers
-const common = require('../libs/common').common
-constants = require('../models/constants.js')
-const userRole = require('../libs/user_role')
+const Suppliers = require('../../models/suppliers').Suppliers;
 
 module.exports = (app, passport) => {
 
@@ -125,8 +122,8 @@ module.exports = (app, passport) => {
                 event_id : 'MIDBURN2018',//req.user.currentEventId
                 courier_contact_name : req.body.courier_contact_name,
                 courier_contact_phone_number : req.body.courier_contact_phone_number,
-            } 
-            
+            }
+
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
             let camp = await supplier.setSupplierCamp(data)
 
@@ -142,7 +139,7 @@ module.exports = (app, passport) => {
     });
 
     /**
-    * API: (DELETE) delete selected camp from  supplire 
+    * API: (DELETE) delete selected camp from  supplire
     * request => /suppliers/:supplier_id/camps/:camp_id
     */
    app.delete('/suppliers/:supplier_id/camps/:camp_id', async (req, res) => {

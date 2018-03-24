@@ -1,9 +1,8 @@
-const userRole = require('../libs/user_role');
-const constants = require('../models/constants.js');
-var Supplier = require('../models/suppliers').Suppliers;
-const Event = require('../models/event').Event;
+const userRole = require('../../libs/user_role');
+const Supplier = require('../../models/suppliers').Suppliers;
+const Event = require('../../models/event').Event;
 
-var __supplier_data_to_json = function (supplier) {
+const __supplier_data_to_json = function (supplier) {
     let supplier_data = supplier.toJSON();
     let supplier_check_null = [
         'updated_at', 'supplier_id', 'supplier_name_en', 'supplier_name_he', 'main_contact_name',
@@ -15,9 +14,9 @@ var __supplier_data_to_json = function (supplier) {
         }
     }
     return supplier_data;
-}
-var __render_supplier = function (supplier, req, res) {
-    var supplier_id;
+};
+const __render_supplier = function (supplier, req, res) {
+    let supplier_id;
     if (['int', 'string'].indexOf(typeof supplier) > -1) {
         supplier_id = parseInt(supplier);
     } else {
@@ -60,7 +59,7 @@ var __render_supplier = function (supplier, req, res) {
             }
         });
     });
-}
+};
 
 module.exports = function (app, passport) {
     // ==============
@@ -121,7 +120,7 @@ module.exports = function (app, passport) {
             name: 'suppliers:breadcrumbs.new',
             url: '/' + req.params.lng + '/suppliers/new/?c=' + req.query.c
         }]);
-        
+
         // let prototype = constants.prototype_camps.THEME_CAMP.id;
         // let result = Camp.prototype.__parsePrototype(prototype, req.user);
         let controllDates = {
@@ -184,7 +183,7 @@ module.exports = function (app, passport) {
                     _edit_rec.controllDates = controllDates || {}
                     res.render('pages/suppliers/edit',_edit_rec);
                     });
-        
+
             },req,req.params.id);
         })
     });
@@ -278,7 +277,6 @@ module.exports = function (app, passport) {
             }
 
     });
-
 
     // Program
     app.get('/:lng/program', userRole.isLoggedIn(), (req, res) => {

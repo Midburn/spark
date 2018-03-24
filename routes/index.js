@@ -32,6 +32,7 @@ function mapApi(app, passport) {
     require("./api/v1/camps")(app); // CAMPS PUBLIC API
     require("./api/api_camps_routes")(app, passport);
     require("./api/api_events_routes")(app, passport);
+    require("./api/api_suppliers_routes")(app, passport);
     require('./api/api_volunteers')(app, passport);
 }
 
