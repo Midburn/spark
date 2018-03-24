@@ -277,7 +277,7 @@ var __render_camp = function (camp, req, res) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.manage',
+            name: 'camps:nav_admin',
             url: '/' + req.params.lng + '/camps-admin'
         }]);
 
@@ -311,7 +311,7 @@ var __render_camp = function (camp, req, res) {
             url: '/' + req.params.lng + '/home'
         },
         {
-            name: 'camps:breadcrumbs.manage',
+            name: 'camps:art_installation.nav_admin',
             url: '/' + req.params.lng + '/art-admin'
         }]);
         if (req.user.isAdmin || req.user.isArtInstallationsAdmin) {
