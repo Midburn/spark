@@ -1,0 +1,147 @@
+extends ../../includes/page
+block content
+    script.
+        var groups_prototype="#{__groups_prototype}";
+    
+    input.hidden.meta(id='meta__lang', value='#{language}')
+    //input.hidden.meta(id='meta__camp_name_en', value='#{supplier.supplier_name_en}')
+    input.hidden.meta(id='meta__supplier_id', value='#{supplier.supplier_id}')
+    input.hidden.meta(id='isNew', value='#{isNew}')
+    //input.hidden.meta(id='meta__grouptype', value='#{supplier.__prototype}')
+    .camps.camp_edit(ng-app="ngSuppliers", ng-controller="supllierEditController")
+        
+        .heading.card.card__shad
+            .card__actions
+                if(isCamp)
+                    .dropdown
+                        a.Btn.btn-default(href='/#{language}/suppliers/#{supplier.supplier_id}')=t('suppliers:edit.view')
+            if(isNew)
+                h2=t('suppliers:edit_new.new_supplier')
+                h4=t('suppliers:edit_new.header_desc')
+            else
+                span.label.label-info #{t(t_prefix+'edit_new.supplier')} # #{supplier.supplier_id}
+                h2 #{t('suppliers:edit_new.editing')}: #{supplier.supplier_name_en}
+                h6 #{t('suppliers:edit_new.since')}: #{supplier.created_at}
+        .controls.row
+            .col-xs-12
+                //- Card switcher
+                button.Btn.Btn__default.card-switcher#1=t('suppliers:edit_new.info')
+                //- if(isCamp)
+                //-     button.Btn.Btn__transparent.card-switcher#2=t('suppliers:edit.details')
+                //- TODO - test is user is camp manager of this camp
+                if(!isNew)
+                    button.Btn.Btn__transparent.card-switcher#3=t('suppliers:edit_new.camps_edit')
+                    //- if(isCamp)
+                    //-     button.Btn.Btn__transparent.card-switcher#4=t('suppliers:edit.upload')
+        .cards--wrapper.card__shad
+            //- Card 1
+            .card.card-first
+                h4=t(t_prefix+'edit_new.name_and_desc')
+                .camp-info.panel
+                    .panel-body
+                        .details-he.col-md-6
+                            .col-xs-12
+                                label(for='supplier_name_he')=t('suppliers:edit_new.name_he')
+                                input.form-control(id='supplier_name_he', dir='rtl', name='supplier_name_he', value=(isNew ? '' : '#{supplier.supplier_name_he}'),requierd)
+                            .col-xs-12
+                                label(for='comments')=t('suppliers:edit_new.comments')
+                                textarea.form-control(id='comments', dir='rtl', name='comments')= isNew ? '' : supplier.comments
+                        .details-en.col-md-6
+                            .col-xs-12
+                                label(for='supplier_name_en')=t('suppliers:edit_new.name_en')
+                                input.form-control(id='supplier_name_en', dir='ltr', name='supplier_name_en', value=(isNew ? '' : '#{supplier.supplier_name_en}'), autofocus)
+                
+                h4=t('suppliers:edit_new.contact_details')
+                .camp-leaders.panel
+                    .panel-body
+                        .personnel
+                            .details-he.col-md-6
+                                .col-xs-12
+                                    label(for='main_contact_name')=t('suppliers:edit_new.contact_person')
+                                    input.form-control(id='main_contact_name', dir='rtl', name='main_contact_name', value=(isNew ? '' : '#{supplier.main_contact_name}'))
+                                .col-xs-12
+                                    label(for='main_contact_position')=t('suppliers:edit_new.position')
+                                    input.form-control(id='main_contact_position', dir='rtl', name='main_contact_position', value=(isNew ? '' : '#{supplier.position}'))
+                            .details-he.col-md-6
+                                .col-xs-12
+                                    label(for='main_contact_phone_number')=t('suppliers:edit_new.main_contact_phone_number')
+                                    input.form-control(type='number',id='main_contact_phone_number', dir='rtl', name='main_contact_phone_number', value=(isNew ? '' : '#{supplier.main_contact_phone_number}'))
+
+                h4=t(t_prefix+'edit_new.add_info')
+                .camp-details.panel
+                    .panel-body
+                        .camp-location
+                            .col-md-4
+                                .col-xs-12
+                                    label(for='supplier_website_link')=t('suppliers:edit_new.website_link')
+                                    input.form-control(id='supplier_website_link', name='supplier_website_link', value=(isNew ? '' : '#{supplier.supplier_website_link}'))
+                            .col-md-4
+                                .col-xs-12
+                                    label(for='supplier_midmarket_link')=t('suppliers:edit_new.midmarket_link')
+                                    input.form-control(id='supplier_midmarket_link', name='supplier_midmarket_link', value=(isNew ? '' : '#{supplier.supplier_midmarket_link}'))
+                            .col-md-4
+                                .col-xs-12
+                                    label(for='supplier_category')=t('suppliers:edit_new.category')
+                                    select.form-control(id='supplier_category', name='supplier_category')
+                                        option(ng-repeat="option in status_options", ng-selected="option.id == '#{supplier.supplier_category}'", value="{{option.id}}") {{option.value}}
+
+            //- Card 3 - Manage Members
+            .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
+                .form-inline
+                    select.form-control(ng-model='add_camp_id', type="text")
+                        option(value="" ,disabled ,selected)=t('suppliers:edit_new.choose_camp') 
+                        option(ng-repeat="camp in allCamps", value="{{camp.id}}") {{camp.camp_name_he}}
+                    
+                    button.Btn.Btn__sm(ng-click="addCamp()") + #{t('suppliers:edit_new.add_camp')}
+                .row
+                    .col-xs-12
+                    include partials/members_table
+          
+        .controls.row
+            .col-xs-12
+                if(isNew)
+                    //- a.Btn.Btn__default.card-switcher#3(href='#')=t('suppliers:edit_new.btn_continue')
+                    button(type="submit", id='supplier_create_save', class="Btn Btn__green")=t('suppliers:edit_new.btn_save_camp')
+
+                else
+                    input(id='supplier_edit_supplier_id', type='hidden', value='#{supplier.supplier_id}')
+                    button.Btn.Btn__default(id='supplier_edit_save')=t('suppliers:edit_new.btn_save_camp')
+            
+                if isCamp && supplier.web_published != '1'
+                    button.Btn.Btn__green(id='camp_edit_publish')=t('suppliers:edit_new.publish')
+
+        //- Camp create request modal
+        .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
+            .modal-dialog.card.card__padding--even.card__shad(role='document')
+                div
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        h4.modal-title=t('suppliers:edit_new.confirmation')
+                    .modal-body
+                        p=t('suppliers:edit_new.create_supplier_text')
+                        .camp_details
+                            ul(id='modal')
+                                li.supplier_id=t(t_prefix+'edit_new.id')
+                                    span
+                                li.supplier_name_en=t(t_prefix+'edit_new.name')
+                                    span
+                                li.main_contact_name=t(t_prefix+'edit_new.contact_person')
+                                    span
+                                li.main_contact_position=t(t_prefix+'edit_new.position')
+                                    span
+                                li.main_contact_phone_number= t(t_prefix+'edit_new.contact_number')
+                                    span
+                                li.supplier_website_link=t(t_prefix+'edit_new.website_link')
+                                    span
+                                li.supplier_midmarket_link=t(t_prefix+'edit_new.midmarket_link')
+                                    span
+                                li.comments=t(t_prefix+'edit_new.comments')
+                                    span
+                                li.supplier_category=t(t_prefix+'edit_new.category')
+                                    span
+
+                           
+                    .modal-footer
+                        button.Btn.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
+                        button.Btn.Btn__green(id='supplier_create_save_modal_request', type='button')=t('suppliers:edit_new.save')

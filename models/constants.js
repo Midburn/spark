@@ -93,6 +93,19 @@ const ticketType = {
     MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: 66
 };
 
+const SUPPLIERS_TABLE_NAME_FIELDS = {
+    supplier_id: 'supplier_id',
+    supplier_name_en: 'supplier_name_en',
+    supplier_name_he: 'supplier_name_he',
+    main_contact_name: 'main_contact_name',
+    main_contact_position: 'main_contact_position',
+    main_contact_phone_number: 'main_contact_phone_number',
+    supplier_category: 'supplier_category',
+    supplier_website_link: 'supplier_website_link',
+    supplier_midmarket_link: 'supplier_midmarket_link',
+    comments: 'comments'
+};
+
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
 // TODO This object should be loaded from db for all events
 const events = {
@@ -158,6 +171,10 @@ module.exports = {
     DRUPAL_USERS_TABLE_NAME: 'drupal_users',
     TICKETS_TABLE_NAME: 'tickets',
     CAMP_FILES_TABLE_NAME: 'camps_files',
+    SUPPLIERS_TABLE_NAME: 'suppliers',
+    SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
+
+    suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
 
     prototype_camps: prototype_camps,
 
@@ -225,5 +242,7 @@ module.exports = {
     // and are redirected to the senders desired location, e.g. can be used for phishing.
     // If we redirect to a new URL from login, we will need to add it here.
     LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
+
+    SUPPLIER_CATEGORIES: ['food', 'water', 'shade', 'carriage', 'other'],
 
 };

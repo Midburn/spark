@@ -1,0 +1,23 @@
+
+.col-xs-6
+    h4=t('suppliers:edit_new.camps_sum')
+        span.badge {{relatedCamps.length}}
+
+table.table.table-striped.table-hover
+    thead
+        tr
+            th(ng-click='changeOrderBy("id")')=t('suppliers:edit_new.camp_id')
+            th(ng-click='changeOrderBy("name")')=t('suppliers:edit_new.camp_name_he')
+            th(ng-click='changeOrderBy("name")')=t('suppliers:edit_new.camp_name_en')
+            th(ng-click='changeOrderBy("name")')=t('suppliers:edit_new.actions')
+
+    tbody
+        tr(ng-repeat="camp in relatedCamps | filter: searchMembers | orderBy: orderMembers")
+            td {{camp.id}}
+            td {{camp.camp_name_he}}
+            td {{camp.camp_name_en}}
+            td
+                a.cursor-p(ng-click='removeCamp(camp.id)') &nbsp;
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove' )
+                        =t('suppliers:edit_new.remove')
