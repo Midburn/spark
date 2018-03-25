@@ -114,8 +114,8 @@ and users.user_id not in (select user_id from camp_members where camp_id in (sel
 
 
 ## Importing pre sale ticket allocations
-
+* Backup - `select id, pre_sale_tickets_quota from camps where event_id='MIDBURN2018' and __prototype='theme_camp'`
 * sheet file with columns: `camp_id`, `num_tickets`
-* add a forumla field, something like: `="update camps set pre_sale_tickets_quota="&B107&" where id='"&A107&"';"`
+* add a forumla field, something like: `="update camps set pre_sale_tickets_quota="&B107&" where id='"&A107&"' and event_id='MIDBURN2018' and __prototype='theme_camp';"`
 * duplicate to all rows, paste and run in adminer
 
