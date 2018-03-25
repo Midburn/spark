@@ -2,7 +2,7 @@ extends ../includes/layout
 block wrapper
     div.container
         .row
-            .center-block(style="max-width:320px")
+            .center-block(style="max-width:320px; margin-top: 20px;")
                 .login__errors.text-left
                     if (errorMessage && errorMessage.length > 0)
                         .alert.alert-danger
@@ -16,7 +16,7 @@ block wrapper
                         .alert.alert-success
                             p=t(successMessageResource)
 
-                .well
+                .card
                     .col-xs-6
                         .midburn_logo
                     .col-xs-6
@@ -34,18 +34,19 @@ block wrapper
 
                     form(action="/#{language}/login", method="post", data-toggle="validator", role="form")
                         input(type="hidden", name="r", value=r)
-                        .col-xs-12
-                            label(for='login_email')=t('email')
-                            input.form-control(id='login_email', placeholder=t("email_placeholder") ,type="text", name="email", data-error="#{t('mandatory_field')}", autofocus="true", required)
-                            .help-block.with-errors
-                        .col-xs-12
-                            label(for='login_password')=t('password')
-                            input.form-control(id='login_password', type="password", name="password",data-error="#{t('mandatory_field')}", required)
-                            .help-block.with-errors
-                        .col-xs-12
-                            .checkbox
-                                input(type="checkbox", id="remember", name="remember")
-                                label(for="remember")=t('remember_me')
+                        .row
+                            .col-xs-12
+                                label(for='login_email')=t('email')
+                                input.form-control(id='login_email', placeholder=t("email_placeholder") ,type="text", name="email", data-error="#{t('mandatory_field')}", autofocus="true", required)
+                                .help-block.with-errors
+                            .col-xs-12
+                                label(for='login_password')=t('password')
+                                input.form-control(id='login_password', type="password", name="password",data-error="#{t('mandatory_field')}", required)
+                                .help-block.with-errors
+                            .col-xs-12
+                                .checkbox
+                                    input(type="checkbox", id="remember", name="remember")
+                                    label(for="remember")=t('remember_me')
                         .center-block
                             button.btn.btn-info.btn-block(type="submit")=t('login')
                             //- ## TODO we are using dropal login / signup. old spark links are comment out for future use ##
