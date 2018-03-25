@@ -21,6 +21,8 @@ nav.navbar.navbar-default.navbar-fixed-top
                 if(user.isCampsAdmin)
                     li( class="#{path[2] === 'camps-admin' ? 'active' : '' }" )
                         a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
+                    li( class="#{path[2] === 'suppliers-admin' ? 'active' : '' }" )
+                        a( href="/#{language}/suppliers-admin" )=t('suppliers:nav_admin')
                 if(user.isArtInstallationsAdmin)
                     li( class="#{path[2] === 'art-admin' ? 'active' : '' }" )
                         a( href="/#{language}/art-admin" )=t('camps:art_installation.nav_admin')
@@ -34,6 +36,8 @@ nav.navbar.navbar-default.navbar-fixed-top
                         ul.dropdown-menu
                             li( class="#{path[2] === 'camps-admin' ? 'active' : '' }" )
                                 a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
+                            li( class="#{path[2] === 'suppliers-admin' ? 'active' : '' }" )
+                                a( href="/#{language}/suppliers-admin" )=t('suppliers:nav_admin')
                             li( class="#{path[2] === 'art-admin' ? 'active' : '' }" )
                                 a( href="/#{language}/art-admin" )=t('camps:art_installation.nav_admin')
                             li(class="#{path[2] === 'camp-files-admin' ? 'active' : '' }")
