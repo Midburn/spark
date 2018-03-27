@@ -37,7 +37,7 @@ block content
         .heading.card.card__shad
                 span.label.label-info # #{event.event_id}
                 h2 #{t(`${t_prefix}edit.title`)}: #{event.name}
-                h6 #{t(`${t_prefix}edit.since`)}: #{moment(event.addinfo_json.created_at).format('DD/MM/YYYY, HH:mm')}
+                h6 #{t(`${t_prefix}edit.since`)}: #{moment(event.created_at).format('DD/MM/YYYY, HH:mm')}
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
