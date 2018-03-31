@@ -236,6 +236,10 @@ module.exports = (app, passport) => {
 
     app.post('/suppliers/:supplier_id/contract', userRole.isLoggedIn(), async (req, res) => {
         const supplierId = req.params.supplier_id;
+        let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch();
+        if (!supplier) {
+            res.status(500).json({error: true,data: { message : "Unknown supplier id" }})
+        }
         let data;
         try {
             data = req.files.file.data;
@@ -259,25 +263,43 @@ module.exports = (app, passport) => {
             })
         }
 
-        // Add the file to the suppliers_contracts table
-        try {
-            await new SupplierContract({
-            created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-            contract_name: fileName,
-            supplier_id: supplierId
-            }).save()
-        } catch (err) {
-            LOG.error(err.message);
-            return res.status(500).json({
-                error: true,
-                message: 'DB Error: could not connect or fetch data'
-            })
+        // Upsert the contract row to the suppliers_contracts table
+        let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
+        if (!supplier_contract) {
+            data = {
+                created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                contract_name: fileName,
+                supplier_id: supplierId
+            }
+            try {
+                supplier_contract = await SupplierContract.forge().save(data)
+            } catch (err) {
+                LOG.error(err.message);
+                return res.status(500).json({
+                    error: true,
+                    message: 'DB Error: could not connect or save data'
+                })
+            }
+        } else {
+            data = {
+                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                contract_name: fileName,
+            }
+            try {
+                supplier_contract = await supplier_contract.save(data)
+            } catch (err) {
+                LOG.error(err.message);
+                return res.status(500).json({
+                    error: true,
+                    message: 'DB Error: could not connect or save data'
+                })
+            }
         }
 
         return res.status(200).json({
             error: false,
-            contract: SupplierContract
+            contract: supplier_contract
         })
     })
 
