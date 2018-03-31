@@ -48,6 +48,7 @@
 
     },
     "nav_admin": "ניהול ספקים",
+    "nav_entries": "ניהול כניסות ספקים",
     "breadcrumbs": {
         "root": "דף בית",
         "manage": "נהל ספקים ",
@@ -57,5 +58,21 @@
         "docs": "מסמכים וטפסים",
         "edit": "עריכת מחנה"
       
+    },
+    "entries": {
+        "supplier_entrance": "כניסת ספק",
+        "search": "חפש ספק",
+        "desc": "תפריט ניהול כניסת ספקים.",
+        "suppliers": "ספקים",
+        "id": "ח.פ \\ ת.ז",
+        "name": "שם החברה",
+        "vehicle_plate_number": "לוחית רישוי",
+        "num_people_in_vehicle": "מס' אנשים ברכב",
+        "contact_number": "טלפון",
+        "visa_duration": "משך ויזה (בשעות)",
+        "entrance_time": "שעת כניסה",
+        "departure_time": "שעת יציאה",
+        "status": "סטאטוס",
+        "actions": "פעולות"
     }
 }

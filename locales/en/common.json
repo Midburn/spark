@@ -74,7 +74,8 @@
         "whoami": "Manage Profile"
     },
     "top-nav": {
-      "manage": "Manage"
+      "manage": "Manage",
+      "gate": "Gate"
     },
     "footer": {
         "scrolltop": "Back to top",

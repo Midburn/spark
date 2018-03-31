@@ -59,5 +59,21 @@
         "camp_stat": "פרופיל מחנה",
         "my_camp": "המחנה שלי",
         "join_camp": "הצטרף למחנה"
+    },
+    "entries": {
+        "supplier_entrance": "Supplier Entrance",
+        "search": "Search Supplier",
+        "desc": "Manage supplier entrance.",
+        "suppliers": "Suppliers",
+        "id": "ID",
+        "name": "Supplier Name",
+        "vehicle_plate_number": "Vehicle Plate Number",
+        "num_people_in_vehicle": "Number Of People In Vehicle",
+        "contact_number": "Contact Number",
+        "visa_duration": "Visa Duration",
+        "entrance_time": "Entrance Time",
+        "departure_time": "Departure Time",
+        "status": "Status",
+        "actions": "Actions"
     }
 }

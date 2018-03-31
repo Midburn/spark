@@ -16,8 +16,15 @@ nav.navbar.navbar-default.navbar-fixed-top
                 li( class="#{path[2] === 'volunteering' ? 'active' : '' }" )
                     a( href="/#{language}/volunteering" )=t('volunteering')
                 if(user.isAdmin || user.isGateManager)
-                    li( class="#{path[2] === 'gate' ? 'active' : '' }" )
-                        a( href="/#{language}/gate" )=t('gate:gate')
+                    li.dropdown
+                        a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')
+                            span.caret
+                        ul.dropdown-menu
+                            li( class="#{path[2] === 'gate' ? 'active' : '' }" )
+                                a( href="/#{language}/gate" )=t('gate:gate')
+                            li( class="#{path[2] === 'supplier-entries' ? 'active' : '' }" )
+                                a( href="/#{language}/supplier-entries" )=t('suppliers:nav_entries')
+                    
                 if(user.isCampsAdmin)
                     li( class="#{path[2] === 'camps-admin' ? 'active' : '' }" )
                         a( href="/#{language}/camps-admin" )=t('camps:nav_admin')

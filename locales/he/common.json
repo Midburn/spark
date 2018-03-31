@@ -75,7 +75,8 @@
         "whoami": "עריכת פרופיל"
     },
     "top-nav": {
-        "manage": "ניהול"
+        "manage": "ניהול",
+        "gate": "שער"
     },
     "footer": {
         "scrolltop": "חזרה למעלה",
