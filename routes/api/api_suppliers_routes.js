@@ -327,6 +327,29 @@ module.exports = (app, passport) => {
         }
     });
 
+   app.delete('/suppliers/:supplier_id/contract', userRole.isLoggedIn(), async (req, res) => {
+        const s3Client = new S3();
+        try {
+            let supplierId = req.params.supplier_id;
+            let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch()
+            if (!supplier) {
+                res.status(500).json({error: true,data: { message : "Unknown supplier id" }})
+            }
+            let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
+            if (!supplier_contract) {
+                res.status(404).json({error: true, message: 'No contract found for supplier'})
+            } else {
+                  key = supplier_contract.attributes.contract_name
+                  bucket = awsConfig.buckets.supplier_contract_upload
+                  await s3Client.deleteObject(key, bucket)
+                  await supplier_contract.destroy()
+                  res.status(200).json({error: false, message: 'Contract deleted'})
+            }
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
     function supplier_data_update_(req,action) {
         let data = {
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
