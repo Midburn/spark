@@ -28,7 +28,6 @@ router.get('/ajax/tickets',
     }
 
 
-    //TODO - Make this function load only the tickets of the current event dynamically, not from constant.
     let event = await Event.forge({event_id: req.user.currentEventId}).fetch();
     let gate_status = event.attributes.gate_status;
 
