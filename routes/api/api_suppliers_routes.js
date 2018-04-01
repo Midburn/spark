@@ -1,4 +1,5 @@
 const Suppliers = require('../../models/suppliers').Suppliers;
+knex = require('../../libs/db').knex
 
 module.exports = (app, passport) => {
 
@@ -167,18 +168,14 @@ module.exports = (app, passport) => {
     * API: (GET) GET all supplire related camp fo the current event
     * request => /suppliers/:supplier_id/camps
     */
-   app.get('/suppliers/:supplier_id/gate_info', async (req, res) => {
+   app.get('/suppliers/suppliers_gate_info/:status', async (req, res) => {
         try {
-            let supplier_id = req.params.supplier_id;
-            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
-            let gateInfo = await supplier.getSupplierGateInfo()
+            let info = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
+            .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
+            .where(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".supplier_status", req.params.status)
+            .andWhere(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".event_id" ,'MIDBURN2018')
 
-            if (gateInfo !== null) {
-                res.status(200).json({gateInfo: gateInfo})
-            } else {
-                res.status(204).json({gateInfo: ["empty"]})
-            }
-
+            res.status(200).json({suppliers: info})
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})
         }
@@ -188,19 +185,22 @@ module.exports = (app, passport) => {
     * API: (POST) create supplire
     * request => /supplires/new
     */
-   app.post('/suppliers/:supplier_id/add_gate_record_info/:action', async (req, res) => {
+   app.post('/suppliers/:supplier_id/add_gate_record_info/:status', async (req, res) => {
         try {
-            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
             let data
-            if (req.params.action === constants.SUPPLIER_STATUS_CATEGORIES[0]) {
+            let gateInfo
+            if (req.params.status === constants.SUPPLIER_STATUS_CATEGORIES[0]) {
                 data = supplier_entrance_info_(req)
+                gateInfo = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).insert(data)
             }
-            else if (req.params.action === constants.SUPPLIER_STATUS_CATEGORIES[1]) {
-                data = supplier_departure_info_()
+            else if (req.params.status === constants.SUPPLIER_STATUS_CATEGORIES[1]) {
+                data = supplier_departure_info_(req)
+                gateInfo = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).update(data).where('record_id', data.record_id)
             }
-            
-            let gateInfo = await supplier.setSupplierGateInfo(data)
-            res.status(200).json({supplier: gateInfo.toJSON()})
+            else {
+                res.status(400).json({message: "Status is undefined"})
+            }   
+            res.status(200).json({record_id: gateInfo[0]})
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})
         }

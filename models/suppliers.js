@@ -43,35 +43,7 @@ let Suppliers = bookshelf.Model.extend({
         } catch (err) {
             throw err;
         }
-    },
-
-    getSupplierGateInfo: async function (done, req) {
-
-        try {
-            let info = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
-            .innerJoin(constants.EVENTS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.event_id', constants.EVENTS_TABLE_NAME + '.event_id')
-            .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
-            .innerJoin(constants.CAMPS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', constants.CAMPS_TABLE_NAME + '.id')
-            .where(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', this.attributes.supplier_id);
-            if (typeof done === 'function') {
-                done(info);
-            }
-            return info;
-        } catch (err) {
-            throw err;
-        }
-
-    },
-    
-    setSupplierGateInfo: async function (data) {
-
-        try {
-            data.supplier_id = this.attributes.supplier_id;
-            return await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).insert(data)
-        } catch (err) {
-            throw err;
-        }
-    },
+    }
 });
 
 module.exports = {
