@@ -31,7 +31,7 @@ const EVENT_MOCK_SCHEMA = {
         },
         created_at: {
             faker: 'date.past',
-        }
+        },
     }
 };
 

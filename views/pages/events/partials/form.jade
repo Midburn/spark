@@ -13,7 +13,7 @@
                             label(for='event_desc_he')=t(`${t_prefix}edit.desc_he`)
                             input.form-control(id='event_desc_he' dir='rtl' ng-model='event.addinfo_json.desc_he')
                             label(for='start_date')=t(`${t_prefix}edit.start_date`)
-                            input.form-control(type='date' ng-disabled="eventStarted" id='start_date' dir='ltr' ng-model='event.addinfo_json.start_date')
+                            input.form-control(type='date' ng-disabled="eventStarted" id='start_date' dir='ltr' ng-model='event.start_date')
                             label(for='tickets_info')=t(`${t_prefix}edit.tickets_info`)
                             textarea.form-control(id='tickets_info' dir='ltr' ng-model='event.addinfo_json.tickets_info')
                             //- Checkboxes
@@ -42,7 +42,7 @@
                             label(for='event_desc_en')=t(`${t_prefix}edit.desc_en`)
                             input.form-control(id='event_desc_en', dir='ltr', name='event_desc_en' ng-model='event.addinfo_json.desc_en')
                             label(for='end_date')=t(`${t_prefix}edit.end_date`)
-                            input.form-control(type='date' ng-disabled="eventStarted" id='end_date', dir='ltr', name='end_date' ng-model='event.addinfo_json.end_date')            
+                            input.form-control(type='date' ng-disabled="eventStarted" id='end_date', dir='ltr', name='end_date' ng-model='event.end_date')
                             label(for='url')=t(`${t_prefix}edit.url`)
                             input.form-control(id='url', dir='ltr', name='url' ng-model='event.addinfo_json.url')
 

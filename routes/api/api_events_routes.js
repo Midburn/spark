@@ -21,6 +21,8 @@ var createEvent = function(req)
         gate_code: _.get(req, 'body.gate_code'),
         gate_status: _.get(req, 'body.gate_status'),
         created_at: _.get(req, 'body.created_at'),
+        start_date: _.get(req, 'body.start_date'),
+        end_date: _.get(req, 'body.end_date'),
         addinfo_json: JSON.stringify(_.get(req, 'body.addinfo_json')),
     }
     log.debug('Event received ' + new_event);
