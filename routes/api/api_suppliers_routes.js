@@ -112,6 +112,29 @@ module.exports = (app, passport) => {
     });
 
     /**
+    * API: (GET) GET all supplire related camp for the current event
+    * request => /suppliers/:camp_id/suppliers
+    */
+   app.get('/suppliers/:camp_id/suppliers', async (req, res) => {
+    try {
+        let camp_id = req.params.camp_id;
+        let suppliers = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).select()
+            .innerJoin(constants.EVENTS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.event_id', constants.EVENTS_TABLE_NAME + '.event_id')
+            .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
+            .innerJoin(constants.CAMPS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', constants.CAMPS_TABLE_NAME + '.id')
+            .where(constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', camp_id);
+
+        if (camps !== null) {
+            res.status(200).json({suppliers: suppliers})
+        } else {
+            res.status(204).json({suppliers: ["empty"]})
+        }
+    } catch (err) {
+        res.status(500).json({error: true,data: { message: err.message }})
+    }
+});
+
+    /**
     * API: (PUT) set camp for supplire in the current event
     * request => /suppliers/:supplier_id/camps
     */
@@ -165,7 +188,7 @@ module.exports = (app, passport) => {
     });
 
      /**
-    * API: (GET) GET all supplire related camp fo the current event
+    * API: (GET) GET all supplire in the gate with the requested status
     * request => /suppliers/:supplier_id/camps
     */
    app.get('/suppliers/suppliers_gate_info/:status', async (req, res) => {
@@ -182,7 +205,7 @@ module.exports = (app, passport) => {
     });
 
     /**
-    * API: (POST) create supplire
+    * API: (POST) create supplire enterance record id
     * request => /supplires/new
     */
    app.post('/suppliers/:supplier_id/add_gate_record_info/:status', async (req, res) => {
