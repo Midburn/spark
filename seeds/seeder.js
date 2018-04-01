@@ -49,8 +49,7 @@ const initStaticCamps = (camps, events) => {
     }
     for (const event of events) {
         for (let i = 1; i <= 3; i++) {
-            const newCamp = {
-                ...camps[camps.length - 1],
+            const newCamp = Object.assign({}, camps[camps.length - 1], {
                 event_id: event.event_id,
                 status: 'open',
                 main_contact: i,
@@ -62,7 +61,7 @@ const initStaticCamps = (camps, events) => {
                 camp_desc_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
                 camp_desc_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
                 __prototype: constants.CAMP_PROTOTYPE[getRandomInt(0, 2)]
-            };
+            });
             newCamp.id = camps.push(newCamp);
             unique++;
         }
