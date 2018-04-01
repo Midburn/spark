@@ -148,6 +148,16 @@ body[lang="en"] {
         }
     }
 
+    &__red {
+        color: #fff;
+        background: $red;
+
+        &:hover {
+            color: #fff;
+            background: $light-red;
+        }
+    }
+
     &__transparent {
         &:hover {
             color: #7795f8;
