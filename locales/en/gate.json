@@ -1,5 +1,6 @@
 {
     "gate" : "Gate",
+    "desc": "Manage gate entrance",
     "search": "Search by ticket number / person name / email / id",
     "enter_ticket": "Enter ticket",
     "force_enter_ticket": "Force entrance",

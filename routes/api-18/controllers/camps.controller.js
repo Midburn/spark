@@ -119,7 +119,7 @@ class CampsController {
         const user_id = req.params.user_id;
         const camp_id = req.params.camp_id;
         const action = req.params.action;
-        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket'];
+        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'dgs_ticket'];
         if (actions.indexOf(action) > -1) {
             campsService.updateCampStatus(req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
@@ -395,8 +395,12 @@ class CampsController {
                         if (addinfo_json.pre_sale_ticket === "true") {
                             members[i].pre_sale_ticket = true;
                         }
+                        if (addinfo_json.dgs_ticket === "true") {
+                            members[i].dgs_ticket = true;
+                        }
                     } else {
                         members[i].pre_sale_ticket = false;
+                        members[i].dgs_ticket = false;
                     }
                 }
                 result = camp.parsePrototype(req.user);
@@ -507,9 +511,15 @@ class CampsController {
             .fetch().then((camp) => {
             const quota = req.body.quota;
             if (common.isNormalInteger(quota) === false) {
-                return next(new Error('Quota must be in a number format'));
+                return res.status(500).json({
+                    error: true,
+                    data: {
+                        message: "Quota must be in a number format"
+                    }
+                });
             }
-            camp.save({pre_sale_tickets_quota: quota}).then(() => {
+            const campUpdate = req.body.isDgs ? { dgs_tickets_quota: quota } : { pre_sale_tickets_quota: quota };
+            camp.save(campUpdate).then(() => {
                 return res.sendStatus(200);
             }).catch((err) => {
                 return next(err);

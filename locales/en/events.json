@@ -58,6 +58,11 @@
             "start": "Start of appreciation tickets allocation",
             "end": "End of appreciation tickets allocation"
         },
-        "camps_edit_lastDate": "Last Date to edit camps details"
+        "dgs_tickets_allocation": {
+            "start": "Start of DGS tickets allocation",
+            "end": "End of DGS tickets allocation"
+        },
+        "camps_edit_disabled": "Disable camp editing",
+        "art_edit_disabled": "Disable art installations editing"
     }
 }

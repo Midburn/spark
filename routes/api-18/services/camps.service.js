@@ -6,7 +6,7 @@ const constants = require('../../../models/constants'),
     // config = require('config'),
     // camp_files_config = config.get('camp_files_config'),
     usersService = require('./users.service'),
-    S3 = require('../../libs/aws-s3'),
+    S3 = require('../../../libs/aws-s3'),
     helperService = require('./helper.service');
 
 class CampsService {
@@ -20,6 +20,11 @@ class CampsService {
      * @param res
      */
     updateCampStatus(current_event_id, camp_id, user_id, action, camp_mgr, res) {
+        let isDgs;
+        if (action === 'dgs_ticket') {
+            action = 'pre_sale_ticket';
+                isDgs = true;
+        }
         Camp.forge({id: camp_id , event_id: current_event_id}).fetch().then((camp) => {
             let camp_mgr_id;
             if (camp_mgr instanceof User) {
@@ -164,14 +169,14 @@ class CampsService {
                             // checking that update of the pre sale ticket allocation is inside the valid time period
                             const eventInfo = JSON.parse(resp[0].eventInfo);
                             const allocationDates = {
-                                start : new Date(eventInfo.appreciation_tickets_allocation_start),
-                                end : new Date(eventInfo.appreciation_tickets_allocation_end)
-                            };
+                                start : isDgs ? new Date(eventInfo.dgs_tickets_allocation_start) : new Date(eventInfo.appreciation_tickets_allocation_start),
+                                end : isDgs ? new Date(eventInfo.dgs_tickets_allocation_end) : new Date(eventInfo.appreciation_tickets_allocation_end)
+                            }
 
                             let jsonInfo;
                             try {
                                 //pass the response to the process method
-                                jsonInfo = usersService.modifyUsersInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates);
+                                jsonInfo = usersService.modifyUsersInfo(resp[0].addinfo_json,addinfo_jason_subAction,camp,users,user,isAdmin,allocationDates, isDgs);
                             } catch (err) {
                                 res.status(500);
                                 throw new Error(res.json({error: true, data: { message: err.message }}));

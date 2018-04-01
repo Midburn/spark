@@ -140,8 +140,9 @@
         "dumpcampsdata": "export data",
         "entrance_quota": "Early arrival quota",
         "pre_sale_tickets_quota": "Pre-Sale Tickets Quota",
-        "pre_sale_ticket_count": "Total Pre-Sale Tickets Assigned To Camp",
-        "total_pre_sale_ticket_assigned": "Pre-Sale Tickets Assigned To Camp Members"
+        "assigned_ticket_count": "Total Tickets Assigned",
+        "total_pre_sale_ticket_assigned": "Pre-Sale Tickets",
+        "total_pre_sale_ticket_assigned": "DGS Tickets"
     },
     "members": {
         "title": "Members Boards",
@@ -168,8 +169,11 @@
         "status_pending_mgr": "Waiting for member acceptance",
         "inside_event": "Inside Event",
         "pre_sale_ticket_approved": "Approve Pre-sale Ticket",
+        "dgs_ticket_approved": "Approve DGS Ticket",
         "pre_sale_ticket_assigned": "Pre-sale Ticket Assigned",
+        "dgs_ticket_assigned": "DGS Ticket Assigned",
         "pre_sale_ticket_remove": "Remove Pre-sale Ticket",
+        "dgs_sale_ticket_remove": "Remove DGS Ticket",
         "status_approved_mgr": "Approved as Manager",
         "status_supplier": "Supplier"
     },

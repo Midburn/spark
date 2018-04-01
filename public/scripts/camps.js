@@ -1,6 +1,13 @@
 /**
  * GLOBALS
  */
+$(window).load(function () {
+    var isLight = sessionStorage.getItem("theme");
+    $('body').toggleClass('light', isLight === 'light');
+    $("#cover").fadeOut(200);
+    toggleTheme();
+});
+
 $(document).ajaxStart(function () {
     $('#ajax_indicator').removeClass('done').removeClass('hide').fadeIn('fast');
 });
@@ -9,7 +16,12 @@ $(document).ajaxComplete(function () {
 });
 $(function () {
     // tooltips
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
+// bind Twitter Bootstrap tooltips to dynamically created elements
+$("body").tooltip({
+    selector: '[data-toggle="tooltip"]'
 });
 
 /**
@@ -36,6 +48,16 @@ $input.keyup(function () {
 $input.keydown(function () {
     clearTimeout(typingTimer);
 });
+
+// toggleTheme (default or light)
+function toggleTheme() {
+    $('#toggleTheme').on('click', function() {
+        isLight = sessionStorage.getItem("theme");
+        isLight = isLight === '' ? 'light' : '';
+        $('body').toggleClass('light', isLight === 'light');
+        sessionStorage.setItem("theme", isLight);
+    });
+}
 
 function doneTyping() {
     var val = $input.val(),
@@ -274,7 +296,7 @@ function fetchAllCheckboxValues(className) {
     $('.' + className + ':checked').each(function (i) {
         val[i] = $(this).val();
         if (val[i] === 'other') {
-            val[i] += '=' + $('#' + className + '_other_text').val()
+            val[i] = $('#' + className + '_other_text').val()
         }
     });
     return val.toString();

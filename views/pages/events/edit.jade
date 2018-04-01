@@ -29,7 +29,11 @@ block content
                     community_prod_dep: '#{event.addinfo_json.community_prod_dep}' === 'true',
                     appreciation_tickets_allocation_start: new Date('#{event.addinfo_json.appreciation_tickets_allocation_start}'),
                     appreciation_tickets_allocation_end: new Date('#{event.addinfo_json.appreciation_tickets_allocation_end}'),
+                    dgs_tickets_allocation_start: new Date('#{event.addinfo_json.dgs_tickets_allocation_start}'),
+                    dgs_tickets_allocation_end: new Date('#{event.addinfo_json.dgs_tickets_allocation_end}'),
                     edit_camps_lastDate: new Date('#{event.addinfo_json.edit_camps_lastDate}'),
+                    edit_art_disabled: #{event.addinfo_json.edit_art_disabled},
+                    edit_camp_disabled: #{event.addinfo_json.edit_camp_disabled},
                     url: '#{event.addinfo_json.url}'
                 }
             }
@@ -37,7 +41,7 @@ block content
         .heading.card.card__shad
                 span.label.label-info # #{event.event_id}
                 h2 #{t(`${t_prefix}edit.title`)}: #{event.name}
-                h6 #{t(`${t_prefix}edit.since`)}: #{new Date(event.addinfo_json.created_at)}
+                h6 #{t(`${t_prefix}edit.since`)}: #{moment(event.addinfo_json.created_at).format('DD/MM/YYYY, HH:mm')}
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first

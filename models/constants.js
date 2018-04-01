@@ -67,30 +67,43 @@ const prototype_camps = {
 };
 
 const ticketType = {
-    MIDBURN2017_SUPPORT_TICKET: '39',
-    MIDBURN2017_ADULT_TICKET: '40',
-    MIDBURN2017_CHILD_TICKET: '41',
-    MIDBURN2017_ADULT_DIRECT_SALE_TICKET: '43',
-    MIDBURN2017_YOUTH_TICKET: '44',
-    MIDBURN2017_LOW_INCOME_TICKET: '45',
-    INTERNATIONAL_DIRECT_SALE: '46',
-    SANDBOX2018_ADULT_TICKET: '49',
-    SANDBOX2018_TICKET_A: '50',
-    SANDBOX2018_TICKET_B: '51',
-    SANDBOX2018_TICKET_C: '52',
-    MIDBURN2018_CHILD_TICKET: '54',
-    MIDBURN2018_FIELD_TICKET: '55',
-    MIDBURN2018_INTERNATIONAL_DIRECT_SALE: '56',
-    MIDBURN2018_LOW_INCOME_TICKET: '57',
-    MIDBURN2018_SUPPORT_TICKET: '58',
-    MIDBURN2018_YOUTH_TICKET: '59',
-    MIDBURN2018_ADULT_PARTICIPATION_TICKET: '60',
-    MIDBURN2018_ADULT_OMG_SALE_TICKET: '61',
-    MIDBURN2018_ADULT_OPEN_SALE_TICKET: '62',
-    MIDBURN2018_ADULT_THEME_CAMPS_TICKET: '63',
-    MIDBURN2018_ADULT_ARTISTS_TICKET: '64',
-    MIDBURN2018_ADULT_PRODUCTION_TICKET: '65',
-    MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: '66'
+    MIDBURN2017_SUPPORT_TICKET: 39,
+    MIDBURN2017_ADULT_TICKET: 40,
+    MIDBURN2017_CHILD_TICKET: 41,
+    MIDBURN2017_ADULT_DIRECT_SALE_TICKET: 43,
+    MIDBURN2017_YOUTH_TICKET: 44,
+    MIDBURN2017_LOW_INCOME_TICKET: 45,
+    INTERNATIONAL_DIRECT_SALE: 46,
+    SANDBOX2018_ADULT_TICKET: 49,
+    SANDBOX2018_TICKET_A: 50,
+    SANDBOX2018_TICKET_B: 51,
+    SANDBOX2018_TICKET_C: 52,
+    MIDBURN2018_CHILD_TICKET: 54,
+    MIDBURN2018_FIELD_TICKET: 55,
+    MIDBURN2018_INTERNATIONAL_DIRECT_SALE: 56,
+    MIDBURN2018_LOW_INCOME_TICKET: 57,
+    MIDBURN2018_SUPPORT_TICKET: 58,
+    MIDBURN2018_YOUTH_TICKET: 59,
+    MIDBURN2018_ADULT_PARTICIPATION_TICKET: 60,
+    MIDBURN2018_ADULT_OMG_SALE_TICKET: 61,
+    MIDBURN2018_ADULT_OPEN_SALE_TICKET: 62,
+    MIDBURN2018_ADULT_THEME_CAMPS_TICKET: 63,
+    MIDBURN2018_ADULT_ARTISTS_TICKET: 64,
+    MIDBURN2018_ADULT_PRODUCTION_TICKET: 65,
+    MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: 66
+};
+
+const SUPPLIERS_TABLE_NAME_FIELDS = {
+    supplier_id: 'supplier_id',
+    supplier_name_en: 'supplier_name_en',
+    supplier_name_he: 'supplier_name_he',
+    main_contact_name: 'main_contact_name',
+    main_contact_position: 'main_contact_position',
+    main_contact_phone_number: 'main_contact_phone_number',
+    supplier_category: 'supplier_category',
+    supplier_website_link: 'supplier_website_link',
+    supplier_midmarket_link: 'supplier_midmarket_link',
+    comments: 'comments'
 };
 
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
@@ -158,6 +171,10 @@ module.exports = {
     DRUPAL_USERS_TABLE_NAME: 'drupal_users',
     TICKETS_TABLE_NAME: 'tickets',
     CAMP_FILES_TABLE_NAME: 'camps_files',
+    SUPPLIERS_TABLE_NAME: 'suppliers',
+    SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
+
+    suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
 
     prototype_camps: prototype_camps,
 
@@ -225,5 +242,7 @@ module.exports = {
     // and are redirected to the senders desired location, e.g. can be used for phishing.
     // If we redirect to a new URL from login, we will need to add it here.
     LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
+
+    SUPPLIER_CATEGORIES: ['food', 'water', 'shade', 'carriage', 'other'],
 
 };

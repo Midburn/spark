@@ -3,6 +3,9 @@ const app = express();
 const sparkApi = require('./api-18');
 
 // TODO: Wrap Pages as Router like api.
+// Use locals
+app.locals.moment = require('moment');
+
 //Pages
 app.use("/:lng?/admin", require("./pages/admin_routes"));
 app.use("/:lng/events-admin", require("./pages/events_routes"));
@@ -10,17 +13,19 @@ app.use("/:lng/npo", require("./pages/npo_routes"));
 app.use("/:lng/npo-admin", require("./pages/npo_admin_routes"));
 app.use("/:lng/gate", require("./pages/gate_routes"));
 app.use("/:lng/volunteering", require("./pages/volunteering_routes"));
+app.use('/:lng/', require('./pages/suppliers_routes'));
 //TODO: refactor camps routes
 app.use("/:lng/", require("./pages/camps_routes"));
 
 //TODO map to api in consistant way
 app.use("/api/gate", require("./api/api_gate_routes"));
-app.use("/:lng/camp-files-admin", require('./camp_file_admin_routes'))
+app.use("/:lng/camp-files-admin", require('./camp_file_admin_routes'));
 
 function mapApi(app, passport) {
 
     // TODO: main route api & render are mixed, might need a split
     require("./main_routes.js")(app, passport);
+    require("./api/api_suppliers_routes")(app, passport);
     app.use('/', sparkApi.router);
 }
 

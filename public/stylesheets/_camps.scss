@@ -1,9 +1,5 @@
 @import url( 'https://fonts.googleapis.com/css?family=Cabin|Rubik');
 @import './camps_mobile';
-$card-bg: #fafafa;
-$green: #24b47e;
-$red: #D50000;
-$teal: #26A69A;
 
 body {
     font-family: 'Cabin', sans-serif;
@@ -50,7 +46,7 @@ body[lang="en"] {
 
     &:focus,
     &:hover {
-        color: inherit;
+        text-decoration: none;
         transform: translateY(-3px);
         box-shadow: 0 7px 14px rgba(50,50,93,.1),0 3px 6px rgba(0,0,0,.08);
     }
@@ -137,6 +133,7 @@ body[lang="en"] {
         background: #6772e5;
 
         &:hover {
+            color: #fff;
             background: #7795f8;
         }
     }
@@ -146,7 +143,8 @@ body[lang="en"] {
         background: $green;
 
         &:hover {
-            background: #24b41e;
+            color: #fff;
+            background: $light-green;
         }
     }
 
@@ -202,7 +200,7 @@ body[lang="en"] .dash-panel a:after {
 }
 
 .card {
-    padding: 40px 40px 40px 120px;
+    padding: 40px;
     margin-bottom: 2em;
     background-color: $card-bg;
     border-radius: 2px;
@@ -360,9 +358,11 @@ body[lang="en"] {
 .camps {
     // Card transition
     .cards--wrapper {
+        border-radius: 4px;
         display: block;
         visibility: hidden;
         background: $card-bg;
+        color: $card-text;
         margin-bottom: 2em;
         position: relative;
         overflow: hidden;
@@ -471,4 +471,7 @@ input.checkbox {
 
 .cursor-p {
     cursor: pointer;
+    &:hover {
+        text-decoration: none;
+    }
 }

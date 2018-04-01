@@ -3,7 +3,7 @@ block content
     .camps.camp_details
         .heading.card.card__shad
             .card__actions
-                if isAdmin || (isCampManager && ( new Date() < campslastEditDate))
+                if isAdmin || (isCampManager && camp_protoype !== 'art_installation' && !edit_camp_disabled) || (isCampManager && camp_protoype !== 'art_installation' && !edit_art_disabled)
                     .dropdown
                         a.Btn.btn-default(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
             .card__details
@@ -16,7 +16,7 @@ block content
                 .style
                     h5 #{t('camps:camps.style')}
                     each type in camp.type_i18n.split(',')
-                        span.label.label-primary #{type}
+                        span.label.label-primary #{type.replace('edit.', '')}
                 h5
                 //- #{t('camps:camps.since')}: #{camp.created_at} // removed requested by lilach!
             .clearfix
@@ -112,13 +112,7 @@ block content
                     .col-xs-12.col-md-6
                         ul.list-group
                             li.list-group-item
-                                span=t('camps:edit.publication')
-                                if camp.web_published
-                                    span.badge.bg__green=t('camps:camps.yes')
-                                else
-                                    span.badge.bg__red=t('camps:camps.no')
-                            li.list-group-item
-                                span=t('camps:camps.status')
+                                span=t('camps:camps.accept_new_members')
                                 if camp.status == 'open'
                                     span.badge.bg__teal=t('camps:camps.status_open')
                                 else if camp.status == 'closed'

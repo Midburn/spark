@@ -6,6 +6,7 @@ env:
   matrix:
   - DEPLOY_ENVIRONMENT=staging DEPLOY_BRANCH=master
   - DEPLOY_ENVIRONMENT=production DEPLOY_TAGS=true
+  - DEPLOY_ENVIRONMENT=sparktesting DEPLOY_BRANCH=api-refactor-feb-2018
   - ""
 cache:
   directories:

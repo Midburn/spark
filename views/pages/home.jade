@@ -1,9 +1,14 @@
 extends ../includes/page
 block content
+    script.
+        const currentEventRules = {
+            edit_camp_disabled: #{!!currentEventRules.edit_camp_disabled},
+            edit_art_disabled: #{!!currentEventRules.edit_art_disabled}
+        };
     h1=t('welcome_home', {user: user.attributes.first_name, context: user.attributes.gender})
     .camps.camp_edit(ng-app="ngCamps", ng-controller="homeController")
         br
-        h4(style="display:inline-block")
+        h4.text-muted(style="display:inline-block")
             =t('my_midburn')
         dropdown.Btn
             .dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
@@ -16,97 +21,66 @@ block content
                         a(ng-click="angular_ChangeCurrentEventId('#{val.event_id}')") #{val.event_id}
 
 
-        table.table.table-striped.table-hover
-            thead
-                tr
-                th(ng-click='changeOrderBy("id")') #
-                th(ng-click='changeOrderBy("name")') סוג הקבוצה
-                th(ng-click='changeOrderBy("email")') שם הקבוצה
-                th(ng-click='changeOrderBy("cell_phone")') סטאטוס
-                th() מנהל
-                th()=t('camps:members.actions')
-                //- th(ng-click='changeOrderBy("member_status_i18n")') פעולות
-                //- th(ng-click='changeOrderBy("ticket_count")')
-                //- th(ng-click='changeOrderBy("inside_event")')
-            tbody
-                tr(ng-repeat="group in groups ")
-                    td {{group.user_id}}
-                    td {{group.group_type}}
-                    td {{group.camp_desc_i18n}}
-                    td {{group.member_status_i18n}}
-                    td {{group.is_manager}}
-                    //- td {{group.earlyArrival ? 'yes':'no'}}
-                    td
-                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="group.can_edit") &nbsp;
-                            button.btn.btn-xs
-                                span(class='glyphicon glyphicon-pencil')
-                                =t('camps:stats.edit')
-                        a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` ng-if="group.can_view") &nbsp;
-                            button.btn.btn-xs
-                                span(class='glyphicon glyphicon-pencil')
-                                =t('camps:edit.view')
+        div.card(style="position: inherit")
+            table.table.table-striped.table-hover
+                thead
+                    tr
+                    th(ng-click='changeOrderBy("id")') #
+                    th(ng-click='changeOrderBy("name")') סוג הקבוצה
+                    th(ng-click='changeOrderBy("email")') שם הקבוצה
+                    th(ng-click='changeOrderBy("cell_phone")') סטאטוס
+                    th() מנהל
+                    th()=t('camps:members.actions')
+                    //- th(ng-click='changeOrderBy("member_status_i18n")') פעולות
+                    //- th(ng-click='changeOrderBy("ticket_count")')
+                    //- th(ng-click='changeOrderBy("inside_event")')
+                tbody
+                    tr(ng-repeat="group in groups ")
+                        td {{group.user_id}}
+                        td {{group.group_type}}
+                        td {{group.camp_desc_i18n}}
+                        td {{group.member_status_i18n}}
+                        td {{group.is_manager}}
+                        //- td {{group.earlyArrival ? 'yes':'no'}}
+                        td
+                            a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="isGroupEditable(group, currentEventRules)") &nbsp;
+                                button.btn.btn-xs
+                                    span(class='glyphicon glyphicon-pencil')
+                                    =t('camps:stats.edit')
+                            a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` ng-if="group.can_view") &nbsp;
+                                button.btn.btn-xs
+                                    span(class='glyphicon glyphicon-pencil')
+                                    =t('camps:edit.view')
 
-                        //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "reject")', ng-if="group.can_reject") &nbsp;
-                        //-     button.btn.btn-xs
-                        //-         span(class='glyphicon glyphicon-remove')
-                        //-         =t('camps:groups.reject')
-                        //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve")', ng-if="group.can_approve") &nbsp;
-                        //-     button.btn.btn-xs
-                        //-         span(class='glyphicon glyphicon-ok')
-                        //-         =t('camps:groups.approve')
-                        //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve_mgr")', ng-if="group.can_approve_mgr") &nbsp;
-                        //-     button.btn.btn-xs
-                        //-         span(class='glyphicon glyphicon-king')
-                        //-         =t('camps:groups.approve_as_manager')
-                        //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove_mgr")', ng-if="group.can_remove_mgr") &nbsp;
-                        //-     button.btn.btn-xs
-                        //-         span(class='glyphicon glyphicon-king')
-                        //-         =t('camps:groups.remove_manager')
-                        //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove")', ng-if="group.can_remove") &nbsp;
-                        //-     button.btn.btn-xs
-                        //-         span(class='glyphicon glyphicon-remove')
-                        //-         =t('camps:groups.remove')
-        //- .col-xs-6
-            h4=t('camps:admin_index.total_approved_groups')
-                span.badge {{all_approved_members}}
-        //- .col-xs-6
-            h4=t('camps:admin_index.total_camp_tickets')
-                span.badge {{total_camp_tickets}}
-                        //- h4=סטטיסטיקת אדמין
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "reject")', ng-if="group.can_reject") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-remove')
+                                //-         =t('camps:groups.reject')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve")', ng-if="group.can_approve") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-ok')
+                                //-         =t('camps:groups.approve')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve_mgr")', ng-if="group.can_approve_mgr") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-king')
+                                //-         =t('camps:groups.approve_as_manager')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove_mgr")', ng-if="group.can_remove_mgr") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-king')
+                                //-         =t('camps:groups.remove_manager')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove")', ng-if="group.can_remove") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-remove')
+                                //-         =t('camps:groups.remove')
+                //- .col-xs-6
+                    h4=t('camps:admin_index.total_approved_groups')
+                        span.badge {{all_approved_members}}
+                //- .col-xs-6
+                    h4=t('camps:admin_index.total_camp_tickets')
+                        span.badge {{total_camp_tickets}}
+                                //- h4=סטטיסטיקת אדמין
         if user.isAdmin
-            br
-            h3 סטטיסטיקות שער
-            .col-xs-12.col-sm-6.col-md-3
-                h4 סהכ כרטיסים לאירוע
-                    span.badge {{stat.total_tickets}}
-            .col-xs-12.col-sm-6.col-md-3
-                h4 כרגע בתוך הארוע
-                    span.badge {{stat.inside_event}}
-            .col-xs-12.col-sm-6.col-md-3
-                h4 מספר כירטוסים
-                    span.badge {{stat.ticketing}}
-            .col-xs-12.col-sm-6.col-md-3
-                h4 מספר כירטוסים ב-24 שעות אחרונות
-                    span.badge {{stat.last_24h_first_entrance}}
-            .col-xs-12.col-sm-6.col-md-3
-                h4 מספר כירטוסים בשעה אחרונה
-                    span.badge {{stat.last_1h_first_entrance}}
-            .col-xs-12.col-sm-6.col-md-3
-                h4 כניסות 24 שעות / 1 שעה
-                    span.badge {{stat.last_24h_entrance}} / {{stat.last_1h_entrance}}
-            .col-xs-12.col-sm-6.col-md-3
-                h4 יציאות 24 שעות / 1 שעה
-                    span.badge {{stat.last_24h_exit}} / {{stat.last_1h_exit}}
-            .row
-            h3 סטטיסטיקת מחנות/מחלקות/מיצבים
-            .col-xs-12
-                h4 סהכ במחנות נושא מאושרים
-                    span.badge {{stat.groups.theme_camp.total}}
-            .col-xs-12
-                h4 סהכ במיצבי אומנות
-                    span.badge {{stat.groups.art_installation.total}}
-            .col-xs-12
-                h4 סהכ מחלקות הפקה
-                    span.badge {{stat.groups.prod_dep.total}}
+            include partials/gate_statistics
+            include partials/other_statistics
 
 

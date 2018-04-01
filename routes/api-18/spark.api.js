@@ -1,7 +1,8 @@
 const Router = require('express').Router,
     routers = require('./routers'),
-    constants = require('../../models/constants');
+    constants = require('../../models/constants'),
     helperService = require('./services').helperService;
+
 /**
  * Main Router for entire api.
  */
@@ -25,6 +26,7 @@ class SparkApi {
     }
 
     initRouters() {
+        console.log('Starting all routers')
         /**
          * Init the different routers.
          * Prefixs and order are important
