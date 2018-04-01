@@ -94,6 +94,14 @@ mysql -u root -p
 Create a new MySql user with all privileges to spark DB.
 ```shell
 CREATE USER 'spark'@'localhost' IDENTIFIED BY 'spark';
+```
+If this fails, you might want to
+```shell```
+delete from mysql.db where user = 'spark';
+FLUSH PRIVILEGES;
+```
+and then - 
+```shell
 GRANT ALL PRIVILEGES ON spark . * TO 'spark'@'localhost';
 ```
 
