@@ -1386,18 +1386,7 @@ module.exports = (app, passport) => {
                                 }
                             }, null, camp.attributes.__prototype);
                         } else {
-                            if (constants.prototype_camps.by_prototype(camp.attributes.__prototype).allow_new_users) {
-                                User.forge().save({
-                                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    email: user_email
-                                }).then((user) => {
-                                    __camps_update_status(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
-                                });
-                            } else {
-                                res.status(500).json({ error: true, data: { message: 'Cannot add new emails without profile.' } });
-                            }
-
+                            res.status(500).json({ error: true, data: { message: 'Cannot add new emails without profile.' } });
                         }
                     });
 
@@ -1478,5 +1467,32 @@ module.exports = (app, passport) => {
                 });
             });
     })
+
+    /**
+     * API: (GET) return camp suppliers
+     * query camp with attribute: camp_id
+     * request => /camps/camp_id/suppliers
+     */
+    app.get('/camps/:id/suppliers', userRole.isLoggedIn(), (req, res) => {
+        Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+            camp.getCampSuppliers((suppliers) => {
+                res.status(200).json({ suppliers: suppliers });
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
 
 }
