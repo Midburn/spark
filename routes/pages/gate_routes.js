@@ -33,11 +33,11 @@ router.get('/ajax/tickets',
 
         knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
             .where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))
+            .andWhere('event_id', req.user.currentEventId)
             .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
             .orWhere('email', 'LIKE', '%' + req.query.search + '%')
             .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
-            .andWhere('event_id',req.user.currentEventId)
             //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
             .then((tickets) => {
                 res.status(200).json({rows: tickets, total: tickets.length})
