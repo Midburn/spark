@@ -27,18 +27,19 @@ router.get('/ajax/tickets',
         return res.status(200).json({rows: [], total: 0});
     }
 
-
     let event = await Event.forge({event_id: req.user.currentEventId}).fetch();
     let gate_status = event.attributes.gate_status;
 
     knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
-        .where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))
-        .andWhere('event_id', req.user.currentEventId)
-        .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
-        .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
-        .orWhere('email', 'LIKE', '%' + req.query.search + '%')
-        .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
-        //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
+        .where('event_id', req.user.currentEventId)
+        .andWhere(function () {
+            this.where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))
+            .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('last_name', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('email', 'LIKE', '%' + req.query.search + '%')
+            .orWhere('israeli_id', 'LIKE', '%' + req.query.search + '%')
+            //.limit(parseInt(req.query.limit)).offset(parseInt(req.query.offset))
+        })
         .then((tickets) => {
             res.status(200).json({rows: tickets, total: tickets.length})
         }).catch((err) => {
