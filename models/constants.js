@@ -158,7 +158,7 @@ module.exports = {
     DRUPAL_USERS_TABLE_NAME: 'drupal_users',
     TICKETS_TABLE_NAME: 'tickets',
     CAMP_FILES_TABLE_NAME: 'camps_files',
-
+    USER_ROLES_TABLE_NAME: 'user_roles',
     prototype_camps: prototype_camps,
 
     VOL_DEPARTMENTS_TABLE_NAME: 'vol_departments',

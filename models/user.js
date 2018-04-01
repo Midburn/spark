@@ -9,7 +9,7 @@ var knex = require('../libs/db').knex;
 var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
 var userRole = require('../libs/user_role');
-
+const Roles = require('./roles').Roles;
 /////////////////////////////////////////////////////////////
 /////////////////////////// USER  ///////////////////////////
 /////////////////////////////////////////////////////////////
@@ -46,13 +46,25 @@ var User = bookshelf.Model.extend({
         return this.attributes.password && bcrypt.compareSync(password, this.attributes.password);
     },
     hasRole: function (role) {
-        return common.__hasRole(role, this.attributes.roles);
+      //  let roles = await this.roles().fetch();
+       // console.log(roles);
+       
+        let hasRole = common.__hasRole(role,this.currentEventId, this.related('allRoles').models.map(x => {
+            return {
+                event_id : x.attributes.event_id, 
+                role: x.attributes.role
+            }}));
+        return hasRole;
     },
 
     /////////////////////////// GROUPS ///////////////////////////
 
     groups: function () {
         return this.belongsToMany(UsersGroup, 'users_groups_membership', 'user_id', 'group_id', 'user_id', 'group_id');
+    },
+
+    allRoles: function() {
+        return this.hasMany(Roles, 'user_id');
     },
 
     groupsMembership: function () {
@@ -157,7 +169,7 @@ var User = bookshelf.Model.extend({
                     if (['open', 'closed'].indexOf(camps[i].status) > -1 && !first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
                     }
-                    if ((['open', 'closed'].indexOf(camps[i].status) > -1 || !group_props.require_group_status_open_closed) && (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.attributes.roles))
+                    if ((['open', 'closed'].indexOf(camps[i].status) > -1 || !group_props.require_group_status_open_closed) && (((camps[i].main_contact === this.attributes.user_id || common.__hasRole('camp_manager', this.currentEventId, this.related('allRoles').models))
                         && camps[i].member_status === 'approved')
                         || (camps[i].member_status === 'approved_mgr'))) {
                         first_camp = camps[i];
@@ -209,7 +221,7 @@ var User = bookshelf.Model.extend({
             return this.hasRole(userRole.ADMIN);
         },
 
-        isCampManager: function () {
+        isCampManager: function (campId) {
             return this.hasRole(userRole.CAMP_MANAGER);
         },
         isCampsAdmin: function () {

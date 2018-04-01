@@ -41,7 +41,7 @@ var login = function (email, password, done) {
     }
 
     // Loading user from DB.
-    User.forge({email: email}).fetch().then(function (user) {
+    User.forge({email: email}).fetch({withRelated: ['allRoles']}).then(function (user) {
         if (user) {
             // User found in DB, now checking everything:
             if (!user.attributes.enabled) {
@@ -224,7 +224,7 @@ module.exports = function (passport) {
     passport.deserializeUser(function (userData, done) {
         new User({
             user_id: userData.user_id
-        }).fetch().then(function (user) {
+        }).fetch({withRelated: ['allRoles']}).then(function (user) {
             if (userData.currentEventId === undefined) {
                 userData.currentEventId = constants.DEFAULT_EVENT_ID
             }

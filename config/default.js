@@ -128,7 +128,7 @@ exports.profiles_api = {
     username: process.env.DRUPAL_PROFILE_API_USER || 'dummy',
     password: process.env.DRUPAL_PROFILE_API_PASSWORD || 'dummy',
     useCache: process.env.USE_DRUPAL_CACHE || false,
-    cacheTTL: process.env.USE_DRUPAL_CACHE_TTL || 3600*24,
+    cacheTTL: process.env.USE_DRUPAL_CACHE_TTL || 3600 * 24,
 };
 
 /**
