@@ -143,25 +143,70 @@ module.exports = (app, passport) => {
     * request => /suppliers/:supplier_id/camps/:camp_id
     */
    app.delete('/suppliers/:supplier_id/camps/:camp_id', async (req, res) => {
-    try {
-        let data = {
-            camp_id: req.params.camp_id,
-            event_id: 'MIDBURN2018'//req.user.currentEventId,
-        }
-        let supplier_id = req.params.supplier_id;
-        let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
-        let camp = await supplier.removeSupplierCamp(data)
+        try {
+            let data = {
+                camp_id: req.params.camp_id,
+                event_id: 'MIDBURN2018'//req.user.currentEventId,
+            }
+            let supplier_id = req.params.supplier_id;
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            let camp = await supplier.removeSupplierCamp(data)
 
-        if (camp !== 0) {
-            res.status(200).send("Camp supplier deleted")
-        } else {
-            res.status(500).json({error: true,data: { message : "No camps found for current supplier" }})
-        }
+            if (camp !== 0) {
+                res.status(200).send("Camp supplier deleted")
+            } else {
+                res.status(500).json({error: true,data: { message : "No camps found for current supplier" }})
+            }
 
-    } catch (err) {
-        res.status(500).json({error: true,data: { message: err.message }})
-    }
-});
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+     /**
+    * API: (GET) GET all supplire related camp fo the current event
+    * request => /suppliers/:supplier_id/camps
+    */
+   app.get('/suppliers/:supplier_id/gate_info', async (req, res) => {
+        try {
+            let supplier_id = req.params.supplier_id;
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            let gateInfo = await supplier.getSupplierGateInfo()
+
+            if (gateInfo !== null) {
+                res.status(200).json({gateInfo: gateInfo})
+            } else {
+                res.status(204).json({gateInfo: ["empty"]})
+            }
+
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
+    * API: (POST) create supplire
+    * request => /supplires/new
+    */
+   app.post('/suppliers/:supplier_id/add_gate_record_info/:action', async (req, res) => {
+        try {
+            let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            let data
+            if (req.params.action === constants.SUPPLIER_STATUS_CATEGORIES[0]) {
+                data = supplier_entrance_info_(req)
+            }
+            else if (req.params.action === constants.SUPPLIER_STATUS_CATEGORIES[1]) {
+                data = supplier_departure_info_()
+            }
+            
+            let gateInfo = await supplier.setSupplierGateInfo(data)
+            res.status(200).json({supplier: gateInfo.toJSON()})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    //sets supplier main information
     function supplier_data_update_(req,action) {
         let data = {
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
@@ -180,6 +225,32 @@ module.exports = (app, passport) => {
         if (action === "new")
         {
             data.created_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ')
+        }
+
+        return data;
+    }
+
+    function supplier_entrance_info_(req) {
+
+        let data = {
+            supplier_id: req.params.supplier_id || req.body.supplier_id,
+            event_id : 'MIDBURN2018',
+            vehicle_plate_number: req.body.vehicle_plate_number,
+            number_of_people_entered: req.body.number_of_people_entered,
+            allowed_visa_hours: req.body.allowed_visa_hours,
+            enterance_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[0],
+        }
+
+        return data;
+    }
+
+    function supplier_departure_info_(req) {
+
+        let data = {
+            record_id: req.body.record_id,
+            departure_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[1],
         }
 
         return data;
