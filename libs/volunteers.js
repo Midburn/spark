@@ -1,22 +1,25 @@
 const request = require('superagent');
 const log = require('./logger.js')(module);
-const default_config = {api_url : 'localhost'}
+const default_config = {api_url : 'http://localhost:3500'}
 const { URL } = require('url')
-module.exports = function(config_) {
+
+module.exports = function(config_ = undefined) {
     const config = config_ || default_config;
     let VOLUNTEERS_API_URL = config.api_url;
-    const EARLY_ENTRY_URL = new URL('/early_entry', VOLUNTEERS_API_URL);
+    const EARLY_ENTRY_URL = new URL('/api/v1/public/volunteers/getEarlyEntrance', VOLUNTEERS_API_URL);
     return { 
         
-        hasEarlyEntry: async email => {
+        hasEarlyEntry: async userEmail => {
             try {
                 let response = await request
                     .get(EARLY_ENTRY_URL)
-                    .query({email});
-                return response.body;
+                    .query({userEmail});
+                let early_arrival_time = Date.parse(response.body);
+                return (!isNaN(early_arrival_time)) && early_arrival_time < Date.now();
             }
             catch (err) {
                 log.error(`Volunteers API hasEarlyEntry for {email} failed. {err}`)
+                return false;
             }
         },
 
