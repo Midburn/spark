@@ -4,10 +4,8 @@ block content
         var groups_prototype="#{__groups_prototype}";
     
     input.hidden.meta(id='meta__lang', value='#{language}')
-    //input.hidden.meta(id='meta__camp_name_en', value='#{supplier.supplier_name_en}')
     input.hidden.meta(id='meta__supplier_id', value='#{supplier.supplier_id}')
     input.hidden.meta(id='isNew', value='#{isNew}')
-    //input.hidden.meta(id='meta__grouptype', value='#{supplier.__prototype}')
     .camps.camp_edit(ng-app="ngSuppliers", ng-controller="supllierEditController")
         
         .heading.card.card__shad
@@ -26,13 +24,9 @@ block content
             .col-xs-12
                 //- Card switcher
                 button.Btn.Btn__default.card-switcher#1=t('suppliers:edit_new.info')
-                //- if(isCamp)
-                //-     button.Btn.Btn__transparent.card-switcher#2=t('suppliers:edit.details')
-                //- TODO - test is user is camp manager of this camp
+                //- TODO - test if user is camp manager of this camp?
                 if(!isNew)
                     button.Btn.Btn__transparent.card-switcher#3=t('suppliers:edit_new.camps_edit')
-                    //- if(isCamp)
-                    //-     button.Btn.Btn__transparent.card-switcher#4=t('suppliers:edit.upload')
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first

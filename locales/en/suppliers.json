@@ -10,7 +10,7 @@
         "edit": "Edit",
         "since": "Since",
         "info": "Info",
-        "camps_edit": "Camps edit",
+        "camps_edit": "Related Camps edit",
         "name_and_desc": "Supplier name and comments",
         "name_he": "Company name (Hebrew)",
         "name_en": "Company name (English)",
@@ -51,13 +51,8 @@
     "breadcrumbs": {
         "root": "Home",
         "manage": "Manage Suppliers ",
-        "new": "מחנה חדש",
-        "stats": "נתוני מחנה",
-        "members": "חברי מחנה",
-        "docs": "מסמכים וטפסים",
-        "edit": "עריכת מחנה",
-        "camp_stat": "פרופיל מחנה",
-        "my_camp": "המחנה שלי",
-        "join_camp": "הצטרף למחנה"
+        "new": "New Supplier",
+        "docs": "Docs",
+        "edit": "Edit Supplier"
     }
 }
