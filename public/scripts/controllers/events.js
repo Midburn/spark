@@ -27,8 +27,8 @@ events_app.controller("eventsController", ($scope, $http, $filter) => {
 events_app.controller("eventsFormController", ($scope, $http, $filter) => {
     //initiate a new event, or fetch evet details for edit.
     $scope.isNew = isNew;
-    $scope.event = isNew ? { addinfo_json: { created_at: new Date() } } : editEvent;
-    $scope.eventStarted = $scope.event.addinfo_json.start_date < new Date();
+    $scope.event = isNew ? {created_at: new Date(), addinfo_json: {}} : editEvent;
+    $scope.eventStarted = $scope.event.start_date < new Date();
 
     $scope.createEvent = () => {
         let _url = '/events/new';
