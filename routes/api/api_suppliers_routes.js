@@ -1,8 +1,13 @@
-const Suppliers = require('../../models/suppliers').Suppliers;
+const Suppliers = require('../../models/suppliers').Suppliers,
+SupplierContract = require('../../models/suppliers').SupplierContract,
+config = require('config'),
+awsConfig = config.get('aws_config'),
+userRole = require('../../libs/user_role'),
+LOG = require('../../libs/logger')(module),
+S3 = require('../../libs/aws-s3');
 knex = require('../../libs/db').knex
 
 module.exports = (app, passport) => {
-
     /**
     * API: (GET) get all supplires
     * request => /supplires
@@ -228,6 +233,53 @@ module.exports = (app, passport) => {
             res.status(500).json({error: true,data: { message: err.message }})
         }
     });
+
+    app.post('/suppliers/:supplier_id/contract', userRole.isLoggedIn(), async (req, res) => {
+        const supplierId = req.params.supplier_id;
+        let data;
+        try {
+            data = req.files.file.data;
+        } catch (err) {
+            return res.status(400).json({
+                error: true,
+                message: 'No file attached to request'
+            })
+        }
+        let fileName = req.files.file.name;
+
+        const s3Client = new S3();
+        // Upload the file to S3
+        try {
+            await s3Client.uploadFileBuffer(fileName, data, awsConfig.buckets.supplier_contract_upload)
+        } catch (err) {
+            LOG.error(err.message);
+            return res.status(500).json({
+                error: true,
+                message: 'S3 Error: could not put file in S3'
+            })
+        }
+
+        // Add the file to the suppliers_contracts table
+        try {
+            await new SupplierContract({
+            created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            contract_name: fileName,
+            supplier_id: supplierId
+            }).save()
+        } catch (err) {
+            LOG.error(err.message);
+            return res.status(500).json({
+                error: true,
+                message: 'DB Error: could not connect or fetch data'
+            })
+        }
+
+        return res.status(200).json({
+            error: false,
+            contract: SupplierContract
+        })
+    })
 
     //sets supplier main information
     function supplier_data_update_(req,action) {
