@@ -281,7 +281,6 @@ module.exports = (app, passport) => {
         })
     })
 
-    //sets supplier main information
     function supplier_data_update_(req,action) {
         let data = {
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
