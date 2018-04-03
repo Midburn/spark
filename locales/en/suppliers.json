@@ -44,7 +44,9 @@
         "create_supplier_text": "Creating a supplier with the next details",
         "confirmation": "Verify details",
         "save": "Save",
-        "back": "Back"
+        "back": "Back",
+        "created": "Created at"
+
 
     },
     "nav_admin": "Supplier management",
@@ -53,6 +55,7 @@
         "manage": "Manage Suppliers ",
         "new": "New Supplier",
         "docs": "Docs",
-        "edit": "Edit Supplier"
+        "edit": "Edit Supplier",
+        "supplier_details": "Supplier details"
     }
 }

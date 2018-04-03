@@ -33,32 +33,28 @@ block content
                         a.Btn.cursor-p(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
                             button.btn.btn-xs 
                                 span=t(t_prefix+'edit_new.dumpcampsdata')
-                     // a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
-                        span.glyphicon.glyphicon-plus(aria-hidden="true")
-                        span=t(t_prefix+'stats.dumpcampsdata')
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
-                        tr.headers
-                            th(ng-click='changeOrderBy("id")')=t(t_prefix+'edit_new.id')
-                            th.camp_name_en(ng-click='changeOrderBy("name")')=t(t_prefix+'edit_new.name')
-                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t(t_prefix+'edit_new.contact_person')
-                            th.status(ng-click='changeOrderBy("status")')=t(t_prefix+'edit_new.position')
-                            th.number= t(t_prefix+'edit_new.contact_number')
-                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'edit_new.last_update')
-                            th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'edit_new.website_link')
-                            th.midmarket(ng-click='changeOrderBy(".midmarket")')=t(t_prefix+'edit_new.midmarket_link')
-                            th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t(t_prefix+'edit_new.comments')
-                            th.categories(ng-click='changeOrderBy("categories")')=t(t_prefix+'edit_new.category')
+                        tr.headers.cursor-pointer-children
+                            th(ng-click='changeOrderBy("supplier_id")')=t(t_prefix+'edit_new.id')
+                            th(ng-click='changeOrderBy("supplier_name_he")')=t(t_prefix+'edit_new.name')
+                            th(ng-click='changeOrderBy("main_contact_name")')=t(t_prefix+'edit_new.contact_person')
+                            th(ng-click='changeOrderBy("main_contact_position")')=t(t_prefix+'edit_new.position')
+                            th(ng-click='changeOrderBy("main_contact_phone_number")')= t(t_prefix+'edit_new.contact_number')
+                            th(ng-click='changeOrderBy("updated_at")')=t(t_prefix+'edit_new.last_update')
+                            th(ng-click='changeOrderBy("supplier_website_link")')=t(t_prefix+'edit_new.website_link')
+                            th(ng-click='changeOrderBy("supplier_midmarket_link")')=t(t_prefix+'edit_new.midmarket_link')
+                            th(ng-click='changeOrderBy("comments")')=t(t_prefix+'edit_new.comments')
+                            th(ng-click='changeOrderBy("supplier_category")')=t(t_prefix+'edit_new.category')
                             th()=t(t_prefix+'edit_new.actions')
                     tbody
-                        tr(ng-repeat="supplier in suppliers | filter: searchCamp | orderBy: orderCamps")
+                        tr(ng-repeat="supplier in suppliers | filter: searchCamp | orderBy: orderSupppliers")
                             td {{ supplier.supplier_id }}
                             td 
-                                //- TODO link name to supplier page
-                                a(ng-href="#") 
+                                a(ng-href=`/${language}/suppliers/{{ supplier.supplier_id }}`) 
                                     span {{supplier.supplier_name_en}}
                                 br 
-                                a(ng-href="#")
+                                a(ng-href=`/${language}/suppliers/{{ supplier.supplier_id }}`) 
                                     span {{supplier.supplier_name_he}}
                             td {{ supplier.main_contact_name }}
                             td {{ supplier.main_contact_position }}

@@ -28,7 +28,7 @@ block content
                 if(!isNew)
                     button.Btn.Btn__transparent.card-switcher#3=t('suppliers:edit_new.camps_edit')
         .cards--wrapper.card__shad
-            //- Card 1
+            //- Card 1 - Details
             .card.card-first
                 h4=t(t_prefix+'edit_new.name_and_desc')
                 .camp-info.panel
@@ -79,7 +79,7 @@ block content
                                     select.form-control(id='supplier_category', name='supplier_category')
                                         option(ng-repeat="option in status_options", ng-selected="option.id == '#{supplier.supplier_category}'", value="{{option.id}}") {{option.value}}
 
-            //- Card 3 - Manage Members
+            //- Card 2 - Related camps
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
                     select.form-control(ng-model='add_camp_id', type="text")
@@ -94,7 +94,6 @@ block content
         .controls.row
             .col-xs-12
                 if(isNew)
-                    //- a.Btn.Btn__default.card-switcher#3(href='#')=t('suppliers:edit_new.btn_continue')
                     button(type="submit", id='supplier_create_save', class="Btn Btn__green")=t('suppliers:edit_new.btn_save_camp')
 
                 else

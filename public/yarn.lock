@@ -18,10 +18,6 @@ angular@1.4.6:
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.4.6.tgz#905d2a916157826b7f6d7c832848aa98b16a1430"
 
-angular@^1.6.7:
-  version "1.6.9"
-  resolved "https://registry.yarnpkg.com/angular/-/angular-1.6.9.tgz#bc812932e18909038412d594a5990f4bb66c0619"
-
 ansicolors@~0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/ansicolors/-/ansicolors-0.2.1.tgz#be089599097b74a5c9c4a84a0cdbcdb62bd87aef"

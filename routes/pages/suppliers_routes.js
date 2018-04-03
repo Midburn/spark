@@ -19,8 +19,78 @@ const __supplier_data_to_json = function (supplier) {
     }
     return supplier;
  };
+// INDEX
+router.get('/suppliers-admin', userRole.isLoggedIn(), (req, res) => {
+    const lang = req.params.lng || 'he';
+    req.breadcrumbs([{
+        name: 'breadcrumbs.home',
+        url: '/' + req.params.lng + '/home'
+    },
+    {
+        name: 'suppliers:breadcrumbs.manage',
+        url: '/' + req.params.lng + '/suppliers-admin'
+    }]);
 
-// new suppliers
+    if (req.user.isAdmin || req.user.issuppliersAdmin) {
+        const currentEventID = req.session.passport.user.currentEventId;
+        Event.get_event_controllDates(currentEventID)
+            .then(controllDates => {
+                res.render('pages/suppliers/index_admin', {
+                    user: req.user,
+                    breadcrumbs: req.breadcrumbs(),
+                    __groups_prototype: 'theme_suppliers',
+                    t_prefix: 'suppliers:',
+                    isCamp: true,
+                    controllDates: controllDates || {},
+                    language: lang
+                });
+            });
+        } else {
+            res.redirect(`${lang}/home`);
+        }
+});
+
+// SHOW
+router.get('/suppliers/:id', userRole.isLoggedIn(), (req, res) => {
+    const supplier_id = req.params.id;
+    const event_id = req.user.currentEventId;
+    const lang = req.params.lng || 'he';
+
+    superagent
+    .get(`${process.env.SPARK_SERVER_URL}/suppliers/${supplier_id}`)
+    .then((response) => {
+        req.breadcrumbs([{
+            name: 'breadcrumbs.home',
+            url: '/' + lang + '/home'
+        },
+        {
+            name: 'suppliers:breadcrumbs.manage',
+            url: '/' + lang + '/suppliers-admin'
+        },
+        {
+            name: 'suppliers:breadcrumbs.supplier_details',
+            url: '/' + lang + '/suppliers/' + supplier_id
+        }]);
+        supplier = JSON.parse(response.text) || {}
+        const currentEventID = req.session.passport.user.currentEventId;
+        const supplier_data = __supplier_data_to_json(supplier.supplier);
+        const params = {
+            user: req.user,
+            breadcrumbs: req.breadcrumbs(),
+            supplier: supplier_data,
+            details: {},
+            isNew: false,
+            isAdmin: req.user.isAdmin,
+            t_prefix: "suppliers:edit_new",
+            language: lang
+        };   
+        res.render('pages/suppliers/supplier',params);    
+    }).catch((err) => {
+        console.log(`get(${process.env.SPARK_SERVER_URL}/suppliers/${supplier_id}) error:`,err);
+        res.render('pages/error',{errorMessage: err.message,error: err});  
+    });
+});
+// NEW
 router.get('/suppliers/new', userRole.isAdmin(), (req, res) => {
     const lang = req.params.lng || 'he';
     req.breadcrumbs([{
@@ -51,7 +121,7 @@ router.get('/suppliers/new', userRole.isAdmin(), (req, res) => {
         language: lang
     });
 });
-// Edit
+// EDIT
 router.get('/suppliers/:id/edit', userRole.isLoggedIn(), (req, res) => {
     const supplier_id = req.params.id;
     const lang = req.params.lng || 'he';
@@ -72,7 +142,6 @@ router.get('/suppliers/:id/edit', userRole.isLoggedIn(), (req, res) => {
                 url: '/' + lang + '/suppliers/' + supplier_id + '/edit'
             }]);
             supplier = JSON.parse(response.text) || {}
-            const currentEventID = req.session.passport.user.currentEventId;
             const supplier_data = __supplier_data_to_json(supplier.supplier);
             const params = {
                 user: req.user,
@@ -110,38 +179,7 @@ router.get('/suppliers-docs', userRole.isLoggedIn(), (req, res) => {
         breadcrumbs: req.breadcrumbs()
     });
 });
-// suppliers admin management panel
-router.get('/suppliers-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
-    req.breadcrumbs([{
-        name: 'breadcrumbs.home',
-        url: '/' + req.params.lng + '/home'
-    },
-    {
-        name: 'suppliers:breadcrumbs.manage',
-        url: '/' + req.params.lng + '/suppliers-admin'
-    }]);
 
-    if (req.user.isAdmin || req.user.issuppliersAdmin) {
-        const currentEventID = req.session.passport.user.currentEventId;
-        Event.get_event_controllDates(currentEventID)
-            .then(controllDates => {
-                res.render('pages/suppliers/index_admin', {
-                    user: req.user,
-                    breadcrumbs: req.breadcrumbs(),
-                    __groups_prototype: 'theme_suppliers',
-                    t_prefix: 'suppliers:',
-                    isCamp: true,
-                    controllDates: controllDates || {},
-                });
-            });
-        } else {
-            // user not admin
-            res.render('pages/suppliers/index_user', {
-                user: req.user,
-                breadcrumbs: req.breadcrumbs()
-            });
-        }
 
-});
 
 module.exports = router;
