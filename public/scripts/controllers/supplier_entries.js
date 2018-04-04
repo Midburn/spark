@@ -2,15 +2,12 @@ var suplliers_all;
 var groups_prototype;
 
 suppliers_app.controller("supplierEntriesController", function ($scope, $http, $filter) {
-    getAllSuppliers = function ($http, on_success) {
+    getAllSuppliers = function (on_success) {
         if (suplliers_all) {
             on_success(suplliers_all);
         } else {
-            let _url = '/suppliers';
-            if (groups_prototype === 'prod_dep') {
-                _url = '/prod_dep_all';
-            }
-            $http.get(_url)
+            const url = '/suppliers';
+            $http.get(url)
                 .then((res) => {
                     suplliers_all = res;
                     on_success(res);
@@ -20,15 +17,12 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
                 });
         }
     };
-    getAllEntries = function ($http, on_success) {
+    getEntriesByStatus = function (status, on_success) {
         if (suplliers_all) {
             on_success(suplliers_all);
         } else {
-            let _url = '/suppliers';
-            if (groups_prototype === 'prod_dep') {
-                _url = '/prod_dep_all';
-            }
-            $http.get(_url)
+            const url = '/suppliers/suppliers_gate_info/' + status;
+            $http.get(url)
                 .then((res) => {
                     suplliers_all = res;
                     on_success(res);
@@ -39,15 +33,16 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
         }
     };
 
-    getAllSuppliers($http, (res) => {
+    // Get suppliers for entry list
+    getAllSuppliers((res) => {
         $scope.suppliers = res.data.suppliers;
         setTimeout(() => {
             innerHeightChange()
         }, 500)
     });
 
-    getAllEntries($http, (res) => {
-        $scope.entries = res.data.entries;
+    getEntriesByStatus('Inside', (res) => {
+        $scope.entries = res.data.suppliers;
         setTimeout(() => {
             innerHeightChange()
         }, 500)
