@@ -21,7 +21,7 @@ block content
             else
                 span.label.label-info #{t(t_prefix+'edit_new.supplier')} # #{supplier.supplier_id}
                 h2 #{t('suppliers:edit_new.editing')}: #{supplier.supplier_name_en}
-                h6 #{t('suppliers:edit_new.since')}: #{supplier.created_at}
+                h6 #{t('suppliers:edit_new.since')}: #{moment(supplier.created_at).format('DD/MM/YYYY, HH:mm')}
         .controls.row
             .col-xs-12
                 //- Card switcher

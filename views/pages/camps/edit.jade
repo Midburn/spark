@@ -270,10 +270,10 @@ block content
                             input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}")
                             button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
                         .form-group
-                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
+                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
                 .row
                     .col-xs-12
-                    include partials/members_table
+                        include partials/members_table
 
             //- END Card 3:  Manage Members
 
