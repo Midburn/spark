@@ -74,6 +74,7 @@
         "entrance_time": "Entrance Time",
         "departure_time": "Departure Time",
         "status": "Status",
-        "actions": "Actions"
+        "actions": "Actions",
+        "cancel": "Cancel"
     }
 }

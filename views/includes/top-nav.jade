@@ -21,10 +21,10 @@ nav.navbar.navbar-default.navbar-fixed-top
                             span.caret
                         ul.dropdown-menu
                             li( class="#{path[2] === 'gate' ? 'active' : '' }" )
-                                a( href="/#{language}/gate" )=t('gate:gate')
+                                a( href="/#{language}/gate" )=t('gate:entries')
                             li( class="#{path[2] === 'supplier-entries' ? 'active' : '' }" )
-                                a( href="/#{language}/supplier-entries" )=t('suppliers:nav_entries')
-                    
+                                a( href="/#{language}/gate/suppliers" )=t('suppliers:nav_entries')
+
                 if(user.isCampsAdmin)
                     li( class="#{path[2] === 'camps-admin' ? 'active' : '' }" )
                         a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
@@ -54,7 +54,7 @@ nav.navbar.navbar-default.navbar-fixed-top
             ul.nav.navbar-nav.navbar-right(style="#{language === 'he' ? 'float:left!important' : ''}")
                 li
                     a( href= '/#{language}/home' )=t('events:current_event_view')
-                        span(aria-hidden="true")| #{user.currentEventId}
+                        span(aria-hidden="true") | #{user.currentEventId}
                 li.dropdown
                     a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
                         if (language == 'he')

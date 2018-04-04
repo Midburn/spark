@@ -57,7 +57,7 @@
         "members": "חברי מחנה",
         "docs": "מסמכים וטפסים",
         "edit": "עריכת מחנה"
-      
+
     },
     "entries": {
         "supplier_entrance": "כניסת ספק",
@@ -73,6 +73,7 @@
         "entrance_time": "שעת כניסה",
         "departure_time": "שעת יציאה",
         "status": "סטאטוס",
-        "actions": "פעולות"
+        "actions": "פעולות",
+        "cancel": "חזור"
     }
 }
