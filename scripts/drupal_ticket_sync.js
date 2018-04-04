@@ -157,15 +157,11 @@ async function updateTicket(ticket) {
             if (passport_id.length === 0) {
                 ticket['passport_id'] = '';
             }
-            else if (ticket['passport_id'].length > 9) {
-                log.error('Israeli ID is too long for user', holder_email, ' ID:', ticket['passport_id']);
-                //return;
-            }
             user = await User.forge({
                 first_name: ''+first_name,
                 last_name: ''+last_name,
                 email: holder_email,
-                israeli_id: ''+ticket['passport_id'].slice(0, 9)
+                israeli_id: ''+ticket['passport_id']
             }).save();
 
             log.info(`User ${ticket['holder_email']} created!`);
