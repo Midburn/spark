@@ -62,6 +62,7 @@
     },
     "entries": {
         "supplier_entrance": "Supplier Entrance",
+        "new": ""
         "search": "Search Supplier",
         "desc": "Manage supplier entrance.",
         "suppliers": "Suppliers",
