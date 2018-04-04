@@ -1,7 +1,5 @@
 extends ../../includes/page
 block content
-    datalist(id="supplierList")
-        option(ng-repeat="supplier in suppliers", label="{{supplier.courier_contact_name}}", value="{{supplier.supplier_id}}")
     .camps.camp_admin_index(ng-app="ngSuppliers")
         .container.col-md-12
             h1=t(t_prefix+'entries.suppliers')
@@ -15,9 +13,11 @@ block content
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'entries.supplier_entrance')
 
-        .cards--wrapper.card__shad
-            //- Card 1
-            .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="supplierEntriesController")
+        .cards--wrapper.card__shad(ng-controller="supplierEntriesController")
+            .card.card-first.card__padding--even.col-xs-12.table-responsive
+                datalist(id="supplierList")
+                    option(ng-repeat="supplier in suppliers", label="{{supplier.main_contact_name}}", value="{{supplier.supplier_id}}") {{supplier}}
+                //- Card 1
                 h4=t(t_prefix+'edit_new.suppliers')
                 .controls.row
                   .col-xs-12.col-md-12
@@ -25,60 +25,46 @@ block content
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers
-                            th(ng-click='changeOrderBy("id")')=t(t_prefix+'entries.id')
-                            th.camp_name_en(ng-click='changeOrderBy("name")')=t(t_prefix+'entries.name')
-                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t(t_prefix+'entries.vehicle_plate_number')
-                            th.status(ng-click='changeOrderBy("status")')=t(t_prefix+'entries.num_people_in_vehicle')
-                            th.number= t(t_prefix+'entries.contact_number')
-                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'entries.visa_duration')
-                            th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'entries.entrance_time')
-                            th.midmarket(ng-click='changeOrderBy(".midmarket")')=t(t_prefix+'entries.departure_time')
-                            th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t(t_prefix+'entries.status')
+                            th(ng-click='changeOrderBy("supplier_id")')=t(t_prefix+'entries.id')
+                            th.camp_name_en(ng-click='changeOrderBy("main_contact_name")')=t(t_prefix+'entries.name')
+                            th.contact_person(ng-click='changeOrderBy("vehicle_plate_number")')=t(t_prefix+'entries.vehicle_plate_number')
+                            th.status(ng-click='changeOrderBy("number_of_people_entered")')=t(t_prefix+'entries.num_people_in_vehicle')
+                            th.number(ng-click='changeOrderBy("main_contact_phone_number")')=t(t_prefix+'entries.contact_number')
+                            th.hidden-xs(ng-click='changeOrderBy("allowed_visa_hours\n")')=t(t_prefix+'entries.visa_duration')
+                            th.published(ng-click='changeOrderBy("enterance_time")')=t(t_prefix+'entries.entrance_time')
+                            th.midmarket(ng-click='changeOrderBy("enterance_time")')=t(t_prefix+'entries.departure_time')
+                            th.entrance_quota(ng-click='changeOrderBy("supplier_status")')=t(t_prefix+'entries.status')
                     tbody
-                        tr(ng-repeat="supplier in suppliers | filter: searchCamp | orderBy: orderCamps")
-                            td {{ supplier.supplier_id }}
+                        tr(ng-repeat="entry in entries | filter: searchCamp | orderBy: orderCamps")
+                            td {{ entry.supplier_id }}
+                            td {{ entry.main_contact_name }}
+                            td {{ entry.vehicle_plate_number }}
+                            td {{ entry.number_of_people_entered }}
+                            td {{ entry.main_contact_phone_number }}
+                            td {{ entry.allowed_visa_hours}}
+                            td {{ entry.enterance_time | date : 'medium' }}
+                            td {{ entry.departure_time | date : 'medium' }}
+                            td {{ entry.supplier_status }}
                             td
-                                //- a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
-                                //-     span {{supplier.supplier_name_en}}
-                                //- br
-                                //- a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
-                                //- TODO link name to supplier page
-                                a(ng-href="#")
-                                    span {{supplier.supplier_name_en}}
-                                br
-                                a(ng-href="#")
-                                    span {{supplier.supplier_name_he}}
-                            td {{ supplier.main_contact_name }}
-                            td {{ supplier.main_contact_position }}
-                            td {{ supplier.main_contact_phone_number }}
-                            td {{ supplier.updated_at }}
-                            td {{ supplier.supplier_website_link }}
-                            td {{ supplier.supplier_midmarket_link }}
-                            td {{ supplier.comments }}
-                            td {{ supplier.supplier_category }}
-                            td
-                                if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
-                                    a.cursor-p(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}` + '/edit') &nbsp;
-                                        button.btn.btn-xs
-                                            span(class='glyphicon glyphicon-pencil')
-                                            =t(t_prefix+'edit_new.edit')
+                                button.btn.btn-xs(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
+                                    span(class='glyphicon glyphicon-glyphicon-remove')
+                                    =t(t_prefix+'entries.exit')
             .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
                 h2=t(t_prefix+'entries.new')
                 .col-sm-6.col-xs-12
                     .pos-r
                         label=t(t_prefix+'edit_new.id')
-                        input(list="supplierList", id='new-supplier-entry-vat', type="text", class="form-control", name="supplier_id", autofocus="true", required)
+                        input(list="supplierList", id='new-supplier-entry-vat', type="text", class="form-control", name="supplier_id", autofocus="true", ng-model="newEntry.supplier_id", required)
                         label=t(t_prefix+'entries.vehicle_plate_number')
-                        input(id='new-supplier-entry-plate', type="text", class="form-control", name="supplier_plate", autofocus="true", required)
-                        label=t(t_prefix+'entries.num_people_in_vehicle')
-                        input(id='new-supplier-entry-people', type="text", class="form-control", name="supplier_people", autofocus="true", required)
+                        input(id='new-supplier-entry-plate', type="text", class="form-control", name="supplier_plate", autofocus="true", ng-model="newEntry.vehicle_plate_number", required)
                 .col-sm-6.col-xs-12
                     .pos-r
-                        label=t(t_prefix + 'entries.contact_number')
-                        input(id='new-supplier-entry-phone', type="text", class="form-control", name="supplier_phone", autofocus="true", required)
+                        label=t(t_prefix + 'entries.num_people_in_vehicle')
+                        input(id='new-supplier-entry-people', type="text", class="form-control", name="supplier_people", autofocus="true", ng-model="newEntry.number_of_people_entered", required)
                         label=t(t_prefix + 'entries.visa_duration')
-                        input(id='new-supplier-entry-hours', type="text", class="form-control", name="supplier_hours", autofocus="true", required)
+                        input(id='new-supplier-entry-hours', type="text", class="form-control", name="supplier_hours", autofocus="true", ng-model="newEntry.allowed_visa_hours", required)
                 .col-sm-12.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_supplier_id", role='button')=t(t_prefix+'edit_new.btn_continue')
+                    a.Btn.Btn__green.Btn__inline.btn(role='button', ng-click="addEntry()")=t(t_prefix+'entries.add_entry')
                     a.Btn.Btn__red.Btn__inline.btn.card-switcher#1(role='button')
                         span=t(t_prefix+'entries.cancel')
+

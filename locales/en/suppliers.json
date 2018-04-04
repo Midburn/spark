@@ -62,7 +62,8 @@
     },
     "entries": {
         "supplier_entrance": "Supplier Entrance",
-        "new": ""
+        "new": "Add Supplier Entry",
+        "add_entry": "Add Entry",
         "search": "Search Supplier",
         "desc": "Manage supplier entrance.",
         "suppliers": "Suppliers",
@@ -76,6 +77,7 @@
         "departure_time": "Departure Time",
         "status": "Status",
         "actions": "Actions",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "exit": "Supplier left"
     }
 }

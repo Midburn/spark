@@ -62,6 +62,8 @@
     "entries": {
         "supplier_entrance": "כניסת ספק",
         "search": "חפש ספק",
+        "new": "הוסף כניסת ספק",
+        "add_entry": "הוסף",
         "desc": "תפריט ניהול כניסת ספקים.",
         "suppliers": "ספקים",
         "id": "ח.פ \\ ת.ז",
@@ -74,6 +76,7 @@
         "departure_time": "שעת יציאה",
         "status": "סטאטוס",
         "actions": "פעולות",
-        "cancel": "חזור"
+        "cancel": "חזור",
+        "exit": "הוצא ספק"
     }
 }
