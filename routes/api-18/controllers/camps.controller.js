@@ -1,6 +1,7 @@
 const campsService = require('../services/').campsService,
     helperService = require('../services/').helperService,
     usersService = require('../services/').usersService,
+    common = require('../../../libs/common').common,
     constants = require('../../../models/constants'),
     csv = require('json2csv'),
     config = require('config'),
@@ -403,7 +404,7 @@ class CampsController {
                         members[i].dgs_ticket = false;
                     }
                 }
-                result = camp.parsePrototype(req.user);
+                const result = camp.parsePrototype(req.user);
                 if (isCampManager || (result && result.isAdmin)) {
                     res.status(200).json({
                         members: members,

@@ -95,14 +95,20 @@ class CampsRouter {
          * params: camp_id
          * request => /camps/2/join
          */
-        this.router.route('/camps/:id/join')
+        this.router.route('/:id/join')
             .get(campController.joinCampRequest);
+        /**
+         * API: (GET) return indication if camp exist, provide camp_name_en
+         * request => /camps/<camp_name_en>
+         */
+        this.router.route('/:camp_name_en')
+            .get(campController.isCampNameAvailable);
 
         /**
          * Deliver join request email to camp manager
          * @type {[type]}
          */
-        this.router.route('/camps/:id/join/deliver').all(campController.handleCampJoinProcess('join'));
+        this.router.route('/:id/join/deliver').all(campController.handleCampJoinProcess('join'));
 
         /**
          * User request to cancel camp-join request 'join_cancel'

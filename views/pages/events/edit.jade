@@ -3,7 +3,7 @@ block scripts
     script(src="/scripts/controllers/events.js")
 block content
     script.
-        const isNew = '#{isNew}' === 'true';
+        var isNew = #{!!isNew};
         var editEvent = {};
         if (!isNew)
             editEvent = {
@@ -13,14 +13,14 @@ block content
                 name: '#{event.name}',
                 gate_code: parseInt('#{event.gate_code}'),
                 gate_status: '#{event.gate_status}',
+                start_date: new Date('#{event.start_date}'),
+                end_date: new Date('#{event.end_date}'),
                 addinfo_json: {
                     name_he: '#{event.addinfo_json.name_he}',
                     name_en: '#{event.addinfo_json.name_en}',
                     desc_he: '#{event.addinfo_json.desc_he}',
                     desc_en: '#{event.addinfo_json.desc_en}',
                     event_type: '#{event.addinfo_json.event_type}',
-                    start_date: new Date('#{event.addinfo_json.start_date}'),
-                    end_date: new Date('#{event.addinfo_json.end_date}'),
                     start_presale_tickets: new Date('#{event.addinfo_json.start_presale_tickets}'),
                     end_presale_tickets: new Date('#{event.addinfo_json.end_presale_tickets}'),
                     tickets_info: '#{event.addinfo_json.tickets_info}',
@@ -32,16 +32,17 @@ block content
                     dgs_tickets_allocation_start: new Date('#{event.addinfo_json.dgs_tickets_allocation_start}'),
                     dgs_tickets_allocation_end: new Date('#{event.addinfo_json.dgs_tickets_allocation_end}'),
                     edit_camps_lastDate: new Date('#{event.addinfo_json.edit_camps_lastDate}'),
-                    edit_art_disabled: #{event.addinfo_json.edit_art_disabled},
-                    edit_camp_disabled: #{event.addinfo_json.edit_camp_disabled},
+                    edit_art_disabled: #{!!event.addinfo_json.edit_art_disabled},
+                    edit_camp_disabled: #{!!event.addinfo_json.edit_camp_disabled},
                     url: '#{event.addinfo_json.url}'
+
                 }
             }
     div( ng-app="ngEvents")
         .heading.card.card__shad
                 span.label.label-info # #{event.event_id}
                 h2 #{t(`${t_prefix}edit.title`)}: #{event.name}
-                h6 #{t(`${t_prefix}edit.since`)}: #{moment(event.addinfo_json.created_at).format('DD/MM/YYYY, HH:mm')}
+                h6 #{t(`${t_prefix}edit.since`)}: #{moment(event.created_at).format('DD/MM/YYYY, HH:mm')}
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first

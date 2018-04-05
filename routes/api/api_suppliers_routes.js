@@ -263,7 +263,7 @@ module.exports = (app, passport) => {
             allowed_visa_hours: req.body.allowed_visa_hours,
             enterance_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[0],
-        }
+        };
 
         return data;
     }
@@ -274,8 +274,8 @@ module.exports = (app, passport) => {
             record_id: req.body.record_id,
             departure_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[1],
-        }
+        };
 
         return data;
     }
-}
+};

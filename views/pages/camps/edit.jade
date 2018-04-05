@@ -50,7 +50,7 @@ block content
                         .details-he.col-md-6
                             .col-xs-12
                                 label(for='camp_name_he')=t('camps:edit.name_he')
-                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
+                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'), readonly, autofocus)
                             .col-xs-12
                                 label(for='camp_desc_he')=t('camps:edit.desc_he')
                                 textarea.form-control(id='camp_desc_he', dir='rtl', name='camp_desc_he') #{camp.camp_desc_he}

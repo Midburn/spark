@@ -29,11 +29,9 @@ const EVENT_MOCK_SCHEMA = {
         gate_status: {
             values: ['regular']
         },
-        addinfo_json: {
-            function: function() {
-                return `{"created_at": "${this.faker.date.past()}"}`;
-            }
-        }
+        created_at: {
+            faker: 'date.past',
+        },
     }
 };
 
