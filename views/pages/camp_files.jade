@@ -1,6 +1,6 @@
 extends ../includes/page
 block content
-    div(ng-app="ngCamps" style="margin-top: 40px" dir="ltr")
-        a(href="/en/camp-files-admin/zip") Download all
+    div.card(ng-app="ngCamps" style="margin-top: 40px" dir="ltr")
+        a.Btn.btn-default(href="/en/camp-files-admin/zip") Download all
         bucket-viewer(base-prefix="")
 

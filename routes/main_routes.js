@@ -19,6 +19,8 @@ var async = require('async');
 var crypto = require('crypto');
 
 module.exports = function (app, passport) {
+    // Use locals
+    app.locals.moment = require('moment');
     // Breadcrumbs
     app.use(breadcrumbs.init());
 

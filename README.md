@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Midburn/Spark.svg?branch=master)](https://travis-ci.org/Midburn/Spark)
+[![Build Status](https://travis-ci.org/Midburn/spark.svg?branch=master)](https://travis-ci.org/Midburn/spark)
 [![Code Climate](https://codeclimate.com/github/Midburn/Spark/badges/gpa.svg)](https://codeclimate.com/github/Midburn/Spark)
 [![Known Vulnerabilities](https://snyk.io/test/github/Midburn/Spark/badge.svg)](https://snyk.io/test/github/Midburn/Spark)
 [![Dependencies Status](https://david-dm.org/Midburn/Spark/status.svg)](https://david-dm.org/Midburn/Spark)
@@ -27,7 +27,7 @@ Spark is being developed by the Midburn Tech Team, with the purpose of utilizing
 - [Spark Staging](http://sparkstaging.midburn.org/)
 - [Development guide](/docs/development/README.md) - how to work on the development of the Spark project.
 - [Usage guide](/docs/usage/README.md) - how to use the Spark system and description of what it provides.
-- [Slack](https://midburnos.slack.com/)
+- [Join our Slack](https://join.slack.com/t/midburnos/shared_invite/enQtMzM4NzExMjg5MDI1LTcxNTE5NGM1MzRmMzVkZjFlNDU5ODlmYTI3NjQ2ZTI0YjQwYWViZjU1YTFlZThhYTg1OTQ2NzdhYTM3YzE3MDA)
 
 ### Tech Stack
 - Node.js /w Express.js (web server)

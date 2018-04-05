@@ -18,7 +18,7 @@ block content
                             li.list-group-item
                                 span=t('whoami.gender')
                                 span.badge #{user.gender_i18n}
-                            if camp.member_status=="approved_mgr" || camp.member_status=="approved"
+                            if camp && (camp.member_status=="approved_mgr" || camp.member_status=="approved")
                                 li.list-group-item
                                     span=t('whoami.camp')
                                     span.badge
@@ -31,7 +31,7 @@ block content
                                 span.badge #{user.attributes.cell_phone}
                             li.list-group-item
                                 span=t('whoami.birth_date')
-                                span.badge #{user.attributes.date_of_birth}
+                                span.badge #{moment(user.attributes.date_of_birth).format('DD/MM/YYYY')}
                             //- li.list-group-item
                                 span=t('whoami.socials')
                                 span.badge

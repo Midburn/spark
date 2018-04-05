@@ -19,7 +19,7 @@
     "hello": "Hello",
     "home": "Home",
     "invalid_user_password": "Invalid username or password",
-    "invalid_user_id": "Please login to your midburn profile, sorry for the inconvenience - https://profile.midburn.org/",
+    "invalid_user_id": "Please login to your midburn profile and complete registration, sorry for the inconvenience - https://profile.midburn.org/",
     "login": "Login",
     "logout": "Logout",
     "male": "Male",
@@ -73,6 +73,9 @@
         "npo_join": "Join NPO",
         "whoami": "Manage Profile"
     },
+    "top-nav": {
+      "manage": "Manage"
+    },
     "footer": {
         "scrolltop": "Back to top",
         "visit_homepage": "Visit Midburn website",
@@ -84,7 +87,8 @@
         "open_source": "Open Source",
         "want_to_help": "Want to help us code?",
         "toc": "Terms of Use and Privacy Policy",
-        "toc_link": "http://midburn.org/en/en-terms-and-privacy/"
+        "toc_link": "http://midburn.org/en/en-terms-and-privacy/",
+        "change_theme": "Change theme"
     },
     "whoami": {
         "gender": "Gender",
