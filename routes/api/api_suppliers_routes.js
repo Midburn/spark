@@ -222,7 +222,7 @@ module.exports = (app, passport) => {
             }
             else {
                 res.status(400).json({message: "Status is undefined"})
-            }   
+            }
             res.status(200).json({record_id: gateInfo[0]})
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})

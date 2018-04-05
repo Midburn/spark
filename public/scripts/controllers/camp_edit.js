@@ -3,19 +3,26 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             var members = res.data.members;
             var _members = [];
             var approved_members = [];
-            var total_camp_tickets = 0;
             var total_in_event = 0;
-            var preSaleTicketsCount=0;
+            var allocatedPreSaleTicketsCount=0;
+            var allocatedDgsTicketsCount=0;
             for (var i in members) {
                 var newMember=members[i]
                 //check if the user has a pre_sale ticket
                 //if so the set the checkbox to true
                 if (members[i].pre_sale_ticket) {
                     newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
-                    preSaleTicketsCount++;
+                    allocatedPreSaleTicketsCount++;
                 }
                 else {
                     newMember.pre_sale_ticket_approved = false;
+                }
+                if (members[i].dgs_ticket) {
+                    newMember.dgs_ticket_approved=members[i].dgs_ticket;
+                    allocatedDgsTicketsCount++;
+                }
+                else {
+                    newMember.dgs_ticket_approved = false;
                 }
                 if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(newMember.member_status) > -1) {
                     _members.push(newMember);
@@ -24,14 +31,16 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                     approved_members.push(newMember);
                 }
                 total_in_event += parseInt(newMember.inside_event);
-                total_camp_tickets += parseInt(newMember.ticket_count) || 0;
             }
-            $scope.preSaleTicketsCount = preSaleTicketsCount;
+            $scope.preSaleTicketsCount = preSaleTicketCount;
+            $scope.dgsTicketsCount = dgsTicketCount;
+            $scope.allocatedTickets = allocatedPreSaleTicketsCount + allocatedDgsTicketsCount;
             $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
+            $scope.dgs_tickets_quota = res.data.dgs_tickets_quota;
             $scope.members = _members;
             $scope.approved_members = approved_members;
             $scope.all_approved_members = approved_members.length;
-            $scope.total_camp_tickets = total_camp_tickets;
+            $scope.total_camp_tickets = totalTicketCount;
             $scope.total_in_event = total_in_event;
         });
     }
@@ -57,10 +66,11 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             approve_mgr: 'להפוך למנהל את',
             remove: 'להסיר את',
             pre_sale_ticket : 'לאשר כרטיס מוקדם',
+            dgs_ticket : 'לאשר כרטיס קבוצה',
         };
         tpl = {
             alert_title: "האם את/ה בטוח?",
-            alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " משתמש " + user_name + "?",
+            alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " למשתמש " + user_name + "?",
             alert_success_1: action_type + "!",
             alert_success_2: "משתמש " + user_name + action_type,
             alert_success_3: " בהצלחה",
@@ -196,16 +206,18 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             camp_id: camp_id,
             user_name: user_name,
             user_id: user_id,
-        }
+        };
         angular_updateUser($http, $scope, action_type, user_rec);
-    }
+    };
 
-    const allocationPeriod = {
-        now : new Date(),
-        start : new Date(controllDates.appreciation_tickets_allocation_start),
-        end : new Date(controllDates.appreciation_tickets_allocation_end),
-    }
-    $scope.allocationPeriodisAvtive = allocationPeriod.start < allocationPeriod.now && allocationPeriod.now < allocationPeriod.end;
+    $scope.allocationPeriodisActive = (isDgs) => {
+        const now = new Date();
+        const allocationPeriod = {
+            start : isDgs ? new Date(controllDates.dgs_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start),
+            end : isDgs ? new Date(controllDates.dgs_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end),
+        };
+        return allocationPeriod.start < now && now < allocationPeriod.end;
+    };
 
     //when the user wants to update a pre sale ticket
     //this method is executed
@@ -255,14 +267,29 @@ app.controller("homeController", ($scope, $http, $filter) => {
             $scope.groups = res.data.groups;
             $scope.stat = res.data.stats;
         });
-    }
+    };
 
     $scope.angular_ChangeCurrentEventId = function (event_id) {
         //set new current event id
         $http.post('/events/change', {currentEventId: event_id}).then((res) => {
             window.location.reload();
         });
-    }
+    };
+
+    $scope.isGroupEditable = function (group) {
+        const edit_camp_disabled = currentEventRules.edit_camp_disabled;
+        const edit_art_disabled = currentEventRules.edit_art_disabled;
+        if (!group.can_edit) {
+            return false;
+        }
+        switch (group.group_type) {
+            case 'Art Installation':
+                return !edit_art_disabled;
+            default:
+                return !edit_camp_disabled;
+        }
+
+    };
 
     $scope.angular_getMyGroups($http, $scope);
 
