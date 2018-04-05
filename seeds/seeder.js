@@ -6,6 +6,7 @@ const addUsersToDb = require('./1_users');
 const addEventsToDb = require('./2_event');
 const addCampsToDb = require('./3_camps');
 const addCampMembers = require('./4_campMembers');
+const addTickets = require('./5_tickets');
 const MOCK_USERS_SCHEMA = require('./gen/mockSchema/users.schema');
 const MOCK_EVENTS_SCHEMA = require('./gen/mockSchema/events.schema');
 const MOCK_CAMPS_SCHEMA = require('./gen/mockSchema/camps.schema');
@@ -16,6 +17,7 @@ const nosave = process.argv.includes('nosave');
 const keepdb = process.argv.includes('keepdb');
 const scale = Number(process.argv.pop());
 const constants = require('../models/constants');
+const uuidv4 = require('uuid/v4');
 
 if (replaceStatic) {
 
@@ -26,6 +28,10 @@ if (nosave) {
 
 if (scale > 40) {
     log.info('Chosen scale to big... try a smaller one');
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 const initStaticCamps = (camps, events) => {
@@ -44,9 +50,7 @@ const initStaticCamps = (camps, events) => {
      * Unique is used to prevent unique name dups.
      */
     let unique = 0;
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+
     for (const event of events) {
         for (let i = 1; i <= 3; i++) {
             const newCamp = Object.assign({}, camps[camps.length - 1], {
@@ -80,6 +84,29 @@ const correlateData = (users, camps) => {
     return campMembers;
 };
 
+const allocateTickets = (events) => {
+    const tickets = [];
+    for (const event of events) {
+        for (let i = 1; i <= 3; i++) {
+            const ticketId = getRandomInt(0, 43634);
+            const ticket = {
+                ticket_id: ticketId,
+                ticket_number: ticketId,
+                barcode: uuidv4().slice(0, 32),
+                type: `${event.event_id} Adult (Production) Ticket - כרטיס מבוגר (הפקה)`,
+                buyer_id: i,
+                holder_id: i,
+                order_id: getRandomInt(0, 43634),
+                event_id: event.event_id,
+                disabled_parking: 0,
+                forced_entrance: 0,
+            };
+            tickets.push(ticket);
+        }
+    }
+    return tickets;
+};
+
 const seed = async (scale = 1) => {
     try {
         if (!keepdb) {
@@ -109,6 +136,7 @@ const seed = async (scale = 1) => {
         }
         // Create link between camps and users
         const campMembers = correlateData(users, camps);
+        const tickets = allocateTickets(events);
         if (replaceStatic) {
             log.info('Replacing static data...');
             utils.saveFile(MOCK_USERS_SCHEMA.NAME, users);
@@ -120,6 +148,7 @@ const seed = async (scale = 1) => {
             await addUsersToDb(users);
             await addCampsToDb(camps);
             await addCampMembers(campMembers);
+            await addTickets(tickets);
         }
         log.info(`Seeding process done, seeded ${users.length} users, ${camps.length} camps and ${events.length} events`);
         process.exit(0);
