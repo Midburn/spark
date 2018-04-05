@@ -47,6 +47,7 @@
         "back": "Back"
 
     },
+    "nav_entries": "Suppliers entries",
     "nav_admin": "Supplier management",
     "breadcrumbs": {
         "root": "Home",
