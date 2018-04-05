@@ -13,10 +13,9 @@ app.use("/:lng/npo", require("./pages/npo_routes"));
 app.use("/:lng/npo-admin", require("./pages/npo_admin_routes"));
 app.use("/:lng/gate", require("./pages/gate_routes"));
 app.use("/:lng/volunteering", require("./pages/volunteering_routes"));
+app.use('/:lng/', require('./pages/suppliers_routes'));
 //TODO: refactor camps routes
-app.use("/:lng/", require('./pages/suppliers_routes'));
 app.use("/:lng/", require("./pages/camps_routes"));
-// Suppliers
 
 //TODO map to api in consistant way
 app.use("/api/gate", require("./api/api_gate_routes"));
@@ -26,7 +25,7 @@ function mapApi(app, passport) {
 
     // TODO: main route api & render are mixed, might need a split
     require("./main_routes.js")(app, passport);
-    require('./api/api_suppliers_routes')(app, passport);
+    require("./api/api_suppliers_routes")(app, passport);
     app.use('/', sparkApi.router);
 }
 

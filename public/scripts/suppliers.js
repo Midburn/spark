@@ -234,6 +234,18 @@ $('#camp_type_other_checkbox').click(function () {
     }
 })
 
+// TODO - This was not used, thus breaking lint tests.
+// // Collect all checkbox values
+// function fetchAllCheckboxValues(className) {
+//     var val = [];
+//     $('.' + className + ':checked').each(function (i) {
+//         val[i] = $(this).val();
+//         if (val[i] === 'other') {
+//             val[i] += '=' + $('#' + className + '_other_text').val()
+//         }
+//     });
+//     return val.toString();
+// }
 /*
  * Component: view camp details
  */

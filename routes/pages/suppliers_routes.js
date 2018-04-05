@@ -1,13 +1,10 @@
 const userRole = require('../../libs/user_role');
+const Supplier = require('../../models/suppliers').Suppliers;
+const Event = require('../../models/event').Event;
 const express = require('express');
 const router = express.Router({
     mergeParams: true
 });
-const Supplier = require('../../models/suppliers').Suppliers;
-const Event = require('../../models/event').Event;
-const breadcrumbs = require('express-breadcrumbs');
-
-router.use(breadcrumbs.init());
 
 const __supplier_data_to_json = function (supplier) {
     let supplier_data = supplier.toJSON();
@@ -67,7 +64,6 @@ const __render_supplier = function (supplier, req, res) {
         });
     });
 };
-
 // ==============
 // suppliers Routing
 // ==============
@@ -283,7 +279,6 @@ router.get('/suppliers-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
         }
 
 });
-
 // Program
 router.get('/program', userRole.isLoggedIn(), (req, res) => {
     req.breadcrumbs('suppliers-new_program');

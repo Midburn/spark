@@ -33,7 +33,7 @@ class CampsService {
             } else {
                 camp_mgr_id = parseInt(camp_mgr);
             }
-            group_options = camp.parsePrototype(camp_mgr);
+            const group_options = camp.parsePrototype(camp_mgr);
             let isAdmin = group_options.isAdmin;
             console.log(action + " from camp " + camp_id + " of user " + user_id + " / mgr id: " + camp_mgr_id);
             let addinfo_jason_subAction = null;
