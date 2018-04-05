@@ -196,7 +196,7 @@ module.exports = (app, passport) => {
             let info = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
             .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
             .where(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".supplier_status", req.params.status)
-            .andWhere(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".event_id" ,req.user.currentEventId)
+            .andWhere(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".event_id" ,req.user.currentEventId);
 
             res.status(200).json({suppliers: info})
         } catch (err) {
