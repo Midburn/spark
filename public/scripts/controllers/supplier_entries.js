@@ -7,7 +7,7 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
                 on_success(res);
             })
             .catch(err => {
-                sweetAlert('Could not get supplier list: ' + err.message);s
+                sweetAlert('Could not get supplier list: ' + err.message);
             });
     }
 
