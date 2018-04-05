@@ -1,0 +1,124 @@
+extends ../../includes/page
+block content
+    .camps.camp_admin_index(ng-app="ngSuppliers")
+        script.
+            var groups_prototype="#{__groups_prototype}";            
+        if controllDates
+            script.
+                const controllDates = {
+                    appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
+                    appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
+                }
+        .container.col-md-12
+            h1=t(t_prefix+'edit_new.suppliers')
+            p.lead.text-muted=t(t_prefix+'edit_new.desc')
+        .controls.row
+            .col-xs-12
+                div.block-center
+                    div.input-group
+                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/suppliers-admin/manage`, role='button')=t(t_prefix+'edit_new.suppliers_management')
+                        if isCamp || isProd                            
+                            a.Btn.Btn__green.card-switcher#4(href=`/${language}/suppliers-admin/new`, role='button')
+                                span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                span=t(t_prefix+'edit_new.new_supplier')
+            
+        .cards--wrapper.card__shad
+            //- Card 1
+            .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageSuppliersController")
+                h4=t(t_prefix+'edit_new.suppliers')
+                .controls.row
+                  .col-xs-12.col-md-9
+                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'edit_new.search')}")
+                   .col-xs-4.col-md-3
+                        a.Btn.cursor-p(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
+                            button.btn.btn-xs 
+                                span=t(t_prefix+'edit_new.dumpcampsdata')
+                     // a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
+                        span.glyphicon.glyphicon-plus(aria-hidden="true")
+                        span=t(t_prefix+'stats.dumpcampsdata')
+                table.table.table-stats.table-striped.table-hover#admin_camps
+                    thead
+                        tr.headers
+                            th(ng-click='changeOrderBy("id")')=t(t_prefix+'edit_new.id')
+                            th.camp_name_en(ng-click='changeOrderBy("name")')=t(t_prefix+'edit_new.name')
+                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t(t_prefix+'edit_new.contact_person')
+                            th.status(ng-click='changeOrderBy("status")')=t(t_prefix+'edit_new.position')
+                            th.number= t(t_prefix+'edit_new.contact_number')
+                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'edit_new.last_update')
+                            th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'edit_new.website_link')
+                            th.midmarket(ng-click='changeOrderBy(".midmarket")')=t(t_prefix+'edit_new.midmarket_link')
+                            th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t(t_prefix+'edit_new.comments')
+                            th.categories(ng-click='changeOrderBy("categories")')=t(t_prefix+'edit_new.category')
+                            //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
+                            th()=t(t_prefix+'edit_new.actions')
+                            //- th.admin-edit=t(t_prefix+'stats.edit')
+                            //- th.admin-remove=t(t_prefix+'stats.remove')
+                    tbody
+                        tr(ng-repeat="supplier in suppliers | filter: searchCamp | orderBy: orderCamps")
+                            td {{ supplier.supplier_id }}
+                            td 
+                                //- a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
+                                //-     span {{supplier.supplier_name_en}}
+                                //- br 
+                                //- a(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}`)
+                                //- TODO link name to supplier page
+                                a(ng-href="#") 
+                                    span {{supplier.supplier_name_en}}
+                                br 
+                                a(ng-href="#")
+                                    span {{supplier.supplier_name_he}}
+                            td {{ supplier.main_contact_name }}
+                            td {{ supplier.main_contact_position }}
+                            td {{ supplier.main_contact_phone_number }}
+                            td {{ supplier.updated_at }}
+                            td {{ supplier.supplier_website_link }}                            
+                            td {{ supplier.supplier_midmarket_link }}
+                            td {{ supplier.comments }}
+                            td {{ supplier.supplier_category }}
+                            td
+                                //- a(ng-href='{{camp.facebook_page_url}}', target='_blank')
+                                //-     button.btn.btn-xs
+                                //-         span(class='fa fa-facebook-official')
+                                if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
+                                    a.cursor-p(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}` + '/edit') &nbsp;
+                                        button.btn.btn-xs 
+                                            span(class='glyphicon glyphicon-pencil')
+                                            =t(t_prefix+'edit_new.edit')
+                              
+
+            //- Card 2
+            //- .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
+            //-     h4=t(t_prefix+'admin_index.all_members_table')
+            //-     .controls.row
+            //-         .col-xs-12.col-md-3
+            //-             ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
+            //-                 if(language === 'en')
+            //-                     ui-select-match(placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_en}}
+            //-                     ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
+            //-                         small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+            //-                         span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
+            //-                 else
+            //-                     ui-select-match(dir='rtl', placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_he}}
+            //-                     ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
+            //-                         small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+            //-                         span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
+            //-         .col-xs-12.col-md-9
+            //-             input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t(t_prefix+'members.search')}")
+            //-     include partials/members_table
+                
+            //- Card 3
+            //- .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive
+            //-     h4=t(t_prefix+'admin_index.docs_table')
+                    
+            //- Card 4
+            .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
+                h2=t(t_prefix+'edit_new.new_supplier')
+                h4=t(t_prefix+'edit_new.id_choosing_title')
+                .col-sm-8.col-xs-12
+                    .pos-r
+                        label=t(t_prefix+'edit_new.id')
+                        input(id='new-supplier-button' type="number", class="form-control", name="supplier_id", autofocus="true", required)
+                        span.indicator
+                            span.glyphicon
+                .col-sm-4.col-xs-12
+                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_supplier_id", role='button')=t(t_prefix+'edit_new.btn_continue')

@@ -99,7 +99,7 @@ i18next
         load: 'languageOnly',
         debug: false,
         //namespaces
-        ns: ['common', 'camps', 'npo', 'gate', 'events'],
+        ns: ['common', 'camps', 'npo', 'gate', 'events','suppliers'],
         defaultNS: 'common',
         fallbackNS: 'common',
 
@@ -162,11 +162,11 @@ mail.setup(app);
 
 /** #####################
  *      Mapping Routes
-    ##################### */ 
+    ##################### */
 // Mapping all Api routes
-require('./routes/index.js').api(app, passport)
+require('./routes/index.js').api(app, passport);
 // Maping all page routes
-app.use("/", require('./routes/index.js').app)
+app.use("/", require('./routes/index.js').app);
 
 // Recaptcha setup with siteId & secret
 recaptcha.init(recaptchaConfig.sitekey, recaptchaConfig.secretkey);

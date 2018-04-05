@@ -1,22 +1,22 @@
-var get_default_enum = function (enu) {
+const get_default_enum = function (enu) {
     return enu.find(function (e) {
         return e.default;
     }).id;
 };
 
-var get_enum = function (enu) {
+const get_enum = function (enu) {
     return enu.map(function (e) {
         return e.id;
     })
 };
 
-var user_genders = [
+const user_genders = [
     {id: 'male'},
     {id: 'female'},
     {id: 'other', default: true}
 ];
 
-var npo_membership_statuses = [
+const npo_membership_statuses = [
     {id: 'not_member', default: true},
     {id: 'request_approved'},
     {id: 'member_paid'},
@@ -26,7 +26,7 @@ var npo_membership_statuses = [
     {id: 'applied_for_membership'}
 ];
 
-var gate_status = [
+const gate_status = [
     {id: 'regular', default: true},
     {id: 'early_arrival'}
 ];
@@ -91,6 +91,19 @@ const ticketType = {
     MIDBURN2018_ADULT_ARTISTS_TICKET: 64,
     MIDBURN2018_ADULT_PRODUCTION_TICKET: 65,
     MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: 66
+};
+
+const SUPPLIERS_TABLE_NAME_FIELDS = {
+    supplier_id: 'supplier_id',
+    supplier_name_en: 'supplier_name_en',
+    supplier_name_he: 'supplier_name_he',
+    main_contact_name: 'main_contact_name',
+    main_contact_position: 'main_contact_position',
+    main_contact_phone_number: 'main_contact_phone_number',
+    supplier_category: 'supplier_category',
+    supplier_website_link: 'supplier_website_link',
+    supplier_midmarket_link: 'supplier_midmarket_link',
+    comments: 'comments'
 };
 
 // TODO We should not use enums like this at all!! Add ticket_types table to DB
@@ -158,6 +171,10 @@ module.exports = {
     DRUPAL_USERS_TABLE_NAME: 'drupal_users',
     TICKETS_TABLE_NAME: 'tickets',
     CAMP_FILES_TABLE_NAME: 'camps_files',
+    SUPPLIERS_TABLE_NAME: 'suppliers',
+    SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
+
+    suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
 
     prototype_camps: prototype_camps,
 
@@ -209,13 +226,23 @@ module.exports = {
      *      supplier - member is supplier, for the supplier notification later.
      */
     CAMP_MEMBER_STATUS: ['approved', 'pending', 'pending_mgr', 'rejected', 'approved_mgr', 'supplier', 'deleted'],
-
+    CAMP_MEMBER_APPROVAL_ENUM: ['approved', 'pending', 'approved_mgr'],
     EVENT_GATE_STATUS: get_enum(gate_status),
 
+    /**
+     * Routing and api constants
+     */
+    ROUTER_PREFIXES: {
+        USERS: '/users',
+        CAMPS: '/camps',
+        EVENTS: '/events'
+    },
     // This is a list of URLs the login process is allowed to redirect to.
     // This is to make sure users are not sent spark links via e.g. email by a malicious 3rd party
     // and are redirected to the senders desired location, e.g. can be used for phishing.
     // If we redirect to a new URL from login, we will need to add it here.
     LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
+
+    SUPPLIER_CATEGORIES: ['food', 'water', 'shade', 'carriage', 'other'],
 
 };
