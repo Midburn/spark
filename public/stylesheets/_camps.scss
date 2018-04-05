@@ -382,7 +382,9 @@ body[lang="en"] {
             display: block;
             visibility: hidden;
         }
-
+        .overdue {
+            background: $light-red;
+        }
         .card {
             width: 100%;
             transition: 300ms;
@@ -417,6 +419,10 @@ body[lang="en"] {
             }
         }
     }
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 button.card--close {
