@@ -234,7 +234,11 @@ module.exports = (app, passport) => {
         }
     });
 
-    app.post('/suppliers/:supplier_id/contract', userRole.isLoggedIn(), async (req, res) => {
+    /**
+    * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
+    * request => /suppliers/:supplier_id/contract
+    */
+    app.post('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
         const supplierId = req.params.supplier_id;
         let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch();
         if (!supplier) {
@@ -269,7 +273,7 @@ module.exports = (app, passport) => {
             data = {
                 created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                 updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                contract_name: fileName,
+                file_name: fileName,
                 supplier_id: supplierId
             }
             try {
@@ -284,7 +288,7 @@ module.exports = (app, passport) => {
         } else {
             data = {
                 updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                contract_name: fileName,
+                file_name: fileName,
             }
             try {
                 supplier_contract = await supplier_contract.save(data)
@@ -303,7 +307,12 @@ module.exports = (app, passport) => {
         })
     })
 
-   app.get('/suppliers/:supplier_id/contract', async (req, res) => {
+   /**
+   * API: (GET) GET a link to supplier's contract file in S3.
+   * The link is signed and valid for `awsConfig.presignedUrlExpireSeconds`, default is 900 (15 minutes) 
+   * request => /suppliers/:supplier_id/contract
+   */
+   app.get('/suppliers/:supplier_id/contract',userRole.isCampsAdmin(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;
@@ -315,7 +324,7 @@ module.exports = (app, passport) => {
             if (!supplier_contract) {
                 res.status(404).json({error: true, message: 'No contract found for supplier'})
             } else {
-                  key = supplier_contract.attributes.contract_name
+                  key = supplier_contract.attributes.file_name
                   bucket = awsConfig.buckets.supplier_contract_upload
                   res.status(200).json({
                       error: false,
@@ -327,7 +336,11 @@ module.exports = (app, passport) => {
         }
     });
 
-   app.delete('/suppliers/:supplier_id/contract', userRole.isLoggedIn(), async (req, res) => {
+   /**
+   * API: (DELETE) delete supplier's contract file in S3 and its record in `suppliers_contracts` table
+   * request => /suppliers/:supplier_id/contract
+   */
+   app.delete('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;
@@ -339,7 +352,7 @@ module.exports = (app, passport) => {
             if (!supplier_contract) {
                 res.status(404).json({error: true, message: 'No contract found for supplier'})
             } else {
-                  key = supplier_contract.attributes.contract_name
+                  key = supplier_contract.attributes.file_name
                   bucket = awsConfig.buckets.supplier_contract_upload
                   await s3Client.deleteObject(key, bucket)
                   await supplier_contract.destroy()
