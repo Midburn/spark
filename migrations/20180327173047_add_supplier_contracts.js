@@ -5,8 +5,8 @@ exports.up = function(knex, Promise) {
         // Suppliers table
         knex.schema.createTable(constants.SUPPLIERS_CONTRACTS_TABLE_NAME, function(table) {
             table.timestamps();
-            table.integer('supplier_id', 9).unsigned().primary();
-            table.string('contract_name', 100);
+            table.string('supplier_id', 9).primary();
+            table.string('file_name', 100);
         }),
     ]);
 };
