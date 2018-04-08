@@ -7,71 +7,6 @@ var angular_getCamps = function ($http, $scope, supplier_id) {
     });
   }
 }
-var angular_updateUser = function ($http, $scope, action_type, user_rec) {
-    var camp_id = user_rec.camp_id;
-    var user_name = user_rec.user_name;
-    var user_id = user_rec.user_id;
-    var lang = $scope.lang;
-    if (lang === undefined) {
-        lang = 'he';
-    }
-    var tpl, action_tpl;
-
-    if (lang === "he") {
-        // debugger;
-        action_tpl = {
-            approve: 'לאשר את',
-            delete: 'למחוק את',
-            reject: 'לדחות את',
-            approve_mgr: 'להפוך למנהל את',
-            remove: 'להסיר את',
-            pre_sale_ticket : 'לאשר כרטיס מוקדם',
-        };
-        tpl = {
-            alert_title: "האם את/ה בטוח?",
-            alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " משתמש " + user_name + "?",
-            alert_success_1: action_type + "!",
-            alert_success_2: "משתמש " + user_name + action_type,
-            alert_success_3: " בהצלחה",
-        };
-    } else {
-        action_tpl = {
-            approve: 'Approve',
-            delete: 'Delete',
-            reject: 'Reject',
-            approve_mgr: 'Set Manager',
-            remove: 'Remove',
-            pre_sale_ticket: 'Update Pre Sale Ticket',
-        };
-        tpl = {
-            alert_title: "Are you sure?",
-            alert_text: "Are you sure you would like to " + action_tpl[action_type] + " " + user_name + "?",
-            alert_success_1: action_type + "!",
-            alert_success_2: user_name + "has been " + action_type,
-            alert_success_3: "success",
-        };
-    }
-
-    sweetAlert({
-        title: tpl.alert_title,
-        text: tpl.alert_text,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes",
-        closeOnConfirm: false
-    },
-        () => {
-            var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
-            $http.get(request_str).then((res) => {
-                sweetAlert(tpl.alert_success_1, tpl.alert_success_1, "success");
-                $scope.getCamps(camp_id);
-            }).catch((err) => {
-                jsonError=err.data.data.message;
-                sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError, "error");
-            })
-        });
-}
 
 suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
     var supplier_id = document.querySelector('#meta__supplier_id').value;
@@ -146,6 +81,71 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
         angular_updateUser($http, $scope, action_type, user_rec);
     }
 
+    var angular_updateUser = function ($http, $scope, action_type, user_rec) {
+        var camp_id = user_rec.camp_id;
+        var user_name = user_rec.user_name;
+        var user_id = user_rec.user_id;
+        var lang = $scope.lang;
+        if (lang === undefined) {
+            lang = 'he';
+        }
+        var tpl, action_tpl;
+
+        if (lang === "he") {
+            // debugger;
+            action_tpl = {
+                approve: 'לאשר את',
+                delete: 'למחוק את',
+                reject: 'לדחות את',
+                approve_mgr: 'להפוך למנהל את',
+                remove: 'להסיר את',
+                pre_sale_ticket : 'לאשר כרטיס מוקדם',
+            };
+            tpl = {
+                alert_title: "האם את/ה בטוח?",
+                alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " משתמש " + user_name + "?",
+                alert_success_1: action_type + "!",
+                alert_success_2: "משתמש " + user_name + action_type,
+                alert_success_3: " בהצלחה",
+            };
+        } else {
+            action_tpl = {
+                approve: 'Approve',
+                delete: 'Delete',
+                reject: 'Reject',
+                approve_mgr: 'Set Manager',
+                remove: 'Remove',
+                pre_sale_ticket: 'Update Pre Sale Ticket',
+            };
+            tpl = {
+                alert_title: "Are you sure?",
+                alert_text: "Are you sure you would like to " + action_tpl[action_type] + " " + user_name + "?",
+                alert_success_1: action_type + "!",
+                alert_success_2: user_name + "has been " + action_type,
+                alert_success_3: "success",
+            };
+        }
+
+        sweetAlert({
+            title: tpl.alert_title,
+            text: tpl.alert_text,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: false
+        }).then(() => {
+            var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
+            $http.get(request_str).then((res) => {
+                sweetAlert(tpl.alert_success_1, tpl.alert_success_1, "success");
+                $scope.getCamps(camp_id);
+            }).catch((err) => {
+                jsonError=err.data.data.message;
+                sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError, "error");
+            })
+        });
+    }
+
 }); //end of controller
 
 suppliers_app.controller("homeController", ($scope, $http, $filter) => {
@@ -158,7 +158,7 @@ suppliers_app.controller("homeController", ($scope, $http, $filter) => {
     }
 
     $scope.angular_ChangeCurrentEventId = function (event_id) {
-        //set new current event id 
+        //set new current event id
         $http.post('/events/change', {currentEventId: event_id}).then((res) => {
             window.location.reload();
         });
