@@ -124,7 +124,6 @@ $('#supplier_edit_save').click(function () {
     var supplier_id = $('#supplier_edit_supplier_id').val();
     var supplier_data = extractSupplierData();
     var lang = document.getElementById('meta__lang').value;
-    //console.log(supplier_data)
     $.ajax({
         url: '/suppliers/' + supplier_id + '/edit',
         type: 'PUT',

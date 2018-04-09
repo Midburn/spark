@@ -10,7 +10,6 @@ __get_suppliers_all = function ($http, on_success) {
         if (groups_prototype === 'prod_dep') {
             _url = '/prod_dep_all';
         }
-        console.log(_url);
         $http.get(_url).then((res) => {
             suplliers_all = res;
             on_success(res);
@@ -27,7 +26,6 @@ suppliers_app.controller("manageSuppliersController", function ($scope, $http, $
     });
     $scope.ExportCamps = (actionType) => {
         $.get('/camps_csv/' + actionType, (res) => {
-            console.log("print csv")
             var blob = new Blob([res]);
             window.navigator.msSaveBlob(blob, "filename.csv");
         })

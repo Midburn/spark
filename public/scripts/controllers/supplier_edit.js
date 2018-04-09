@@ -1,4 +1,4 @@
-var angular_getCamps = function ($http, $scope, supplier_id) {
+const angular_getCamps = function ($http, $scope, supplier_id) {
   const isNew = $("#isNew").val();
   if (isNew === "false") {
     $http.get(`/suppliers/${supplier_id}/camps`).then((res) => {
@@ -7,24 +7,33 @@ var angular_getCamps = function ($http, $scope, supplier_id) {
     });
   }
 }
+const angular_getSupplierById = ($http, $scope, supplier_id) => {
+    $http.get(`/suppliers/${supplier_id}`).then((res) => {
+        $scope.supplier = res.data.supplier;
+    });
+}
 suppliers_app.controller("supllierShowController", ($scope, $http, $filter) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
     angular_getCamps($http, $scope, supplier_id);
-    $scope.changeOrderBy = function (orderByValue) {
+    angular_getSupplierById($http, $scope, supplier_id)
+    $scope.changeOrderBy = (orderByValue) => {
         $scope.orderCamps = orderByValue;
     }
 });
 suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
-    const lang = document.getElementById('meta__lang').value || 'he';  
+    const lang = document.getElementById('meta__lang').value || 'he'; 
+    angular_getSupplierById($http, $scope, supplier_id)
     if (lang === "he") {
         $scope.status_options = [
             { id: 'carriage', value: 'הובלה' },
-            { id: 'other', value: 'אחר' }]
+            { id: 'other', value: 'אחר' }
+        ]
     } else {
         $scope.status_options = [
             { id: 'carriage', value: 'Carriage' },
-            { id: 'other', value: 'Other' }]
+            { id: 'other', value: 'Other' }
+        ]
     }
     $http.get(`/camps_all`).then((res) => {
         $scope.allCamps = res.data.camps;
