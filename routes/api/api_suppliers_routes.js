@@ -1,9 +1,13 @@
-const Suppliers = require('../../models/suppliers').Suppliers;
-const knex = require('../../libs/db').knex;
-userRole = require('../../libs/user_role')
+const Suppliers = require('../../models/suppliers').Suppliers,
+SupplierContract = require('../../models/suppliers').SupplierContract,
+config = require('config'),
+awsConfig = config.get('aws_config'),
+LOG = require('../../libs/logger')(module),
+S3 = require('../../libs/aws-s3'),
+knex = require('../../libs/db').knex,
+userRole = require('../../libs/user_role');
 
 module.exports = (app, passport) => {
-
     /**
     * API: (GET) get all supplires
     * request => /supplires
@@ -230,7 +234,135 @@ module.exports = (app, passport) => {
         }
     });
 
-    //sets supplier main information
+    /**
+    * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
+    * request => /suppliers/:supplier_id/contract
+    */
+    app.post('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+        const supplierId = req.params.supplier_id;
+        let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch();
+        if (!supplier) {
+            res.status(500).json({error: true,data: { message : "Unknown supplier id" }})
+        }
+        let data;
+        try {
+            data = req.files.file.data;
+        } catch (err) {
+            return res.status(400).json({
+                error: true,
+                message: 'No file attached to request'
+            })
+        }
+        let fileName = req.files.file.name;
+
+        const s3Client = new S3();
+        // Upload the file to S3
+        try {
+            await s3Client.uploadFileBuffer(fileName, data, awsConfig.buckets.supplier_contract_upload)
+        } catch (err) {
+            LOG.error(err.message);
+            return res.status(500).json({
+                error: true,
+                message: 'S3 Error: could not put file in S3'
+            })
+        }
+
+        // Upsert the contract row to the suppliers_contracts table
+        let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
+        if (!supplier_contract) {
+            data = {
+                created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                file_name: fileName,
+                supplier_id: supplierId
+            }
+            try {
+                supplier_contract = await SupplierContract.forge().save(data)
+            } catch (err) {
+                LOG.error(err.message);
+                return res.status(500).json({
+                    error: true,
+                    message: 'DB Error: could not connect or save data'
+                })
+            }
+        } else {
+            data = {
+                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                file_name: fileName,
+            }
+            try {
+                supplier_contract = await supplier_contract.save(data)
+            } catch (err) {
+                LOG.error(err.message);
+                return res.status(500).json({
+                    error: true,
+                    message: 'DB Error: could not connect or save data'
+                })
+            }
+        }
+
+        return res.status(200).json({
+            error: false,
+            contract: supplier_contract
+        })
+    })
+
+   /**
+   * API: (GET) GET a link to supplier's contract file in S3.
+   * The link is signed and valid for `awsConfig.presignedUrlExpireSeconds`, default is 900 (15 minutes) 
+   * request => /suppliers/:supplier_id/contract
+   */
+   app.get('/suppliers/:supplier_id/contract',userRole.isCampsAdmin(), async (req, res) => {
+        const s3Client = new S3();
+        try {
+            let supplierId = req.params.supplier_id;
+            let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch()
+            if (!supplier) {
+                res.status(500).json({error: true,data: { message : "Unknown supplier id" }})
+            }
+            let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
+            if (!supplier_contract) {
+                res.status(404).json({error: true, message: 'No contract found for supplier'})
+            } else {
+                  key = supplier_contract.attributes.file_name
+                  bucket = awsConfig.buckets.supplier_contract_upload
+                  res.status(200).json({
+                      error: false,
+                      path: s3Client.getPresignedUrl(key, bucket)
+                })
+            }
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+   /**
+   * API: (DELETE) delete supplier's contract file in S3 and its record in `suppliers_contracts` table
+   * request => /suppliers/:supplier_id/contract
+   */
+   app.delete('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+        const s3Client = new S3();
+        try {
+            let supplierId = req.params.supplier_id;
+            let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch()
+            if (!supplier) {
+                res.status(500).json({error: true,data: { message : "Unknown supplier id" }})
+            }
+            let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
+            if (!supplier_contract) {
+                res.status(404).json({error: true, message: 'No contract found for supplier'})
+            } else {
+                  key = supplier_contract.attributes.file_name
+                  bucket = awsConfig.buckets.supplier_contract_upload
+                  await s3Client.deleteObject(key, bucket)
+                  await supplier_contract.destroy()
+                  res.status(200).json({error: false, message: 'Contract deleted'})
+            }
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
     function supplier_data_update_(req,action) {
         let data = {
             updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),

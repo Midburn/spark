@@ -173,6 +173,7 @@ module.exports = {
     CAMP_FILES_TABLE_NAME: 'camps_files',
     SUPPLIERS_TABLE_NAME: 'suppliers',
     SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
+    SUPPLIERS_CONTRACTS_TABLE_NAME: 'suppliers_contracts',
     SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME: 'suppliers_gate_entrance_info',
     suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
 
