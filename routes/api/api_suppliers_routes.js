@@ -1,5 +1,5 @@
 const Suppliers = require('../../models/suppliers').Suppliers;
-knex = require('../../libs/db').knex
+const knex = require('../../libs/db').knex;
 
 module.exports = (app, passport) => {
 
@@ -143,7 +143,7 @@ module.exports = (app, passport) => {
             let supplier_id = req.params.supplier_id;
             let data = {
                 camp_id : req.params.camp_id,
-                event_id : 'MIDBURN2018',//req.user.currentEventId
+                event_id : req.user.currentEventId,//req.user.currentEventId
                 courier_contact_name : req.body.courier_contact_name,
                 courier_contact_phone_number : req.body.courier_contact_phone_number,
             }
@@ -170,7 +170,7 @@ module.exports = (app, passport) => {
         try {
             let data = {
                 camp_id: req.params.camp_id,
-                event_id: 'MIDBURN2018'//req.user.currentEventId,
+                event_id: req.user.currentEventId//req.user.currentEventId,
             }
             let supplier_id = req.params.supplier_id;
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
@@ -196,7 +196,7 @@ module.exports = (app, passport) => {
             let info = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
             .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
             .where(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".supplier_status", req.params.status)
-            .andWhere(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".event_id" ,'MIDBURN2018')
+            .andWhere(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".event_id" ,req.user.currentEventId);
 
             res.status(200).json({suppliers: info})
         } catch (err) {
@@ -210,14 +210,14 @@ module.exports = (app, passport) => {
     */
    app.post('/suppliers/:supplier_id/add_gate_record_info/:status', async (req, res) => {
         try {
-            let data
-            let gateInfo
+            let data;
+            let gateInfo;
             if (req.params.status === constants.SUPPLIER_STATUS_CATEGORIES[0]) {
-                data = supplier_entrance_info_(req)
+                data = supplier_entrance_info_(req);
                 gateInfo = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).insert(data)
             }
             else if (req.params.status === constants.SUPPLIER_STATUS_CATEGORIES[1]) {
-                data = supplier_departure_info_(req)
+                data = supplier_departure_info_(req);
                 gateInfo = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).update(data).where('record_id', data.record_id)
             }
             else {
@@ -257,13 +257,13 @@ module.exports = (app, passport) => {
 
         let data = {
             supplier_id: req.params.supplier_id || req.body.supplier_id,
-            event_id : 'MIDBURN2018',
+            event_id : req.user.currentEventId,
             vehicle_plate_number: req.body.vehicle_plate_number,
             number_of_people_entered: req.body.number_of_people_entered,
             allowed_visa_hours: req.body.allowed_visa_hours,
             enterance_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[0],
-        }
+        };
 
         return data;
     }
@@ -274,8 +274,8 @@ module.exports = (app, passport) => {
             record_id: req.body.record_id,
             departure_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
             supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[1],
-        }
+        };
 
         return data;
     }
-}
+};
