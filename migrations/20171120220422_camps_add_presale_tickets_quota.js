@@ -1,4 +1,4 @@
-const constants = require('../models/constants')
+const constants = require('../models/constants');
 
 exports.up = function(knex, Promise) {
     return Promise.all([
@@ -9,5 +9,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  
+
 };

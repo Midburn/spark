@@ -39,9 +39,12 @@ span {
     color: white;
 }
 
+.card, .modal {
+    color: $card-text;
+}
+
 .card {
     background: $card-bg;
-    color: $card-text;
 }
 
 .text-muted {

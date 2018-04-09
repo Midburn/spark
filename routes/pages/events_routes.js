@@ -22,9 +22,8 @@ router.get("/new", userRole.isAdmin(), (req, res) => {
     const data = {
         t_prefix: "events:",
         event: {
-            addinfo_json: {
-                created_at: new Date()
-            }
+            created_at: new Date(),
+            addinfo_json: {}
         },
         isNew: true
     };

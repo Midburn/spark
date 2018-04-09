@@ -5,7 +5,7 @@
                 .panel-body
                     .details-he.col-md-6
                             label(for='event_id')=t(t_prefix+'edit.id')
-                            input.form-control(ng-disabled='!isNew' id='event_id' dir='ltr' ng-model='event.event_id' required) 
+                            input.form-control(ng-disabled='!isNew' id='event_id' dir='ltr' ng-model='event.event_id' required)
                             label(for='gate_code')=t(`${t_prefix}edit.gate_code`)
                             input.form-control(type="number" id='gate_code', dir='ltr' ng-model='event.gate_code')
                             label(for='event_name_he')=t(`${t_prefix}edit.name_he`)
@@ -13,7 +13,7 @@
                             label(for='event_desc_he')=t(`${t_prefix}edit.desc_he`)
                             input.form-control(id='event_desc_he' dir='rtl' ng-model='event.addinfo_json.desc_he')
                             label(for='start_date')=t(`${t_prefix}edit.start_date`)
-                            input.form-control(type='date' ng-disabled="eventStarted" id='start_date' dir='ltr' ng-model='event.addinfo_json.start_date')
+                            input.form-control(type='date' ng-disabled="eventStarted" id='start_date' dir='ltr' ng-model='event.start_date')
                             label(for='tickets_info')=t(`${t_prefix}edit.tickets_info`)
                             textarea.form-control(id='tickets_info' dir='ltr' ng-model='event.addinfo_json.tickets_info')
                             //- Checkboxes
@@ -24,14 +24,21 @@
                                     input(type="checkbox" id='community_art_installation', dir='ltr', name='community_art_installation' ng-model='event.addinfo_json.community_art_installation')
                                 div.row
                                     input(type="checkbox" id='community_prod_dep', dir='ltr', name='community_prod_dep' ng-model='event.addinfo_json.community_prod_dep')
+                                div.row
+                                    input(type="checkbox" id='edit_camps_disabled', dir='ltr', name='edit_camps_disabled' ng-model='event.addinfo_json.edit_camp_disabled')
+                                div.row
+                                    input(type="checkbox" id='edit_art_disabled', dir='ltr', name='edit_art_disabled' ng-model='event.addinfo_json.edit_art_disabled')
                             .col-xs-10
                                 div.row
-                                    label(for='community_camps')=t(`${t_prefix}edit.community_camps`)                                    
+                                    label(for='community_camps')=t(`${t_prefix}edit.community_camps`)
                                 div.row
-                                    label(for='community_art_installation')=t(`${t_prefix}edit.community_art_installation`)                                    
+                                    label(for='community_art_installation')=t(`${t_prefix}edit.community_art_installation`)
                                 div.row
                                     label(for='community_prod_dep')=t(`${t_prefix}edit.community_prod_dep`)
-
+                                div.row
+                                    label(for='edit_camps_disabled')=t(`${t_prefix}form.camps_edit_disabled`)
+                                div.row
+                                    label(for='edit_art_disabled')=t(`${t_prefix}form.art_edit_disabled`)
                     .details-en.col-md-6
                             label(for='previous_event_id')=t(`${t_prefix}edit.previous_event_id`)
                             input.form-control(id='previous_event_id', dir='ltr', name='event_id', ng-model='event.ext_id_event_id')
@@ -42,7 +49,7 @@
                             label(for='event_desc_en')=t(`${t_prefix}edit.desc_en`)
                             input.form-control(id='event_desc_en', dir='ltr', name='event_desc_en' ng-model='event.addinfo_json.desc_en')
                             label(for='end_date')=t(`${t_prefix}edit.end_date`)
-                            input.form-control(type='date' ng-disabled="eventStarted" id='end_date', dir='ltr', name='end_date' ng-model='event.addinfo_json.end_date')            
+                            input.form-control(type='date' ng-disabled="eventStarted" id='end_date', dir='ltr', name='end_date' ng-model='event.end_date')
                             label(for='url')=t(`${t_prefix}edit.url`)
                             input.form-control(id='url', dir='ltr', name='url' ng-model='event.addinfo_json.url')
 
@@ -50,13 +57,17 @@
                         h3=t(`${t_prefix}form.dates_controll.title`)
                         p=t(`${t_prefix}form.dates_controll.description`)
                         .details-en.col-md-6
+                            label(for='start_dgs_tickets')=t(`${t_prefix}form.dgs_tickets_allocation.start`)
+                            input.form-control(type='date' id='start_dgs_tickets', dir='ltr', name='start_dgs_tickets' ng-value="getDateString(event.addinfo_json.dgs_tickets_allocation_start)" ng-model='event.addinfo_json.dgs_tickets_allocation_start')
+                        .details-en.col-md-6
+                            label(for='end_dgs_tickets')=t(`${t_prefix}form.dgs_tickets_allocation.end`)
+                            input.form-control(type='date' id='end_dgs_tickets', dir='ltr', name='end_dgs_tickets' ng-value="getDateString(event.addinfo_json.dgs_tickets_allocation_end)" ng-model='event.addinfo_json.dgs_tickets_allocation_end')
+                        .details-en.col-md-6
                             label(for='start_presale_tickets')=t(`${t_prefix}form.appreciation_tickets_allocation.start`)
-                            input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-model='event.addinfo_json.appreciation_tickets_allocation_start')
+                            input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-value="getDateString(event.addinfo_json.appreciation_tickets_allocation_start)" ng-model='event.addinfo_json.appreciation_tickets_allocation_start')
                         .details-en.col-md-6
                             label(for='end_presale_tickets')=t(`${t_prefix}form.appreciation_tickets_allocation.end`)
                             input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.appreciation_tickets_allocation_end')
-                            label(for='start_presale_tickets')=t(`${t_prefix}form.camps_edit_lastDate`)
-                            input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-model='event.addinfo_json.edit_camps_lastDate')
                     .modal-footer
                     a(href='./')
                     button.Btn.Btn__transparent(id='create_camp_close_btn', type='button' ng-click="closeForm()")=t(`${t_prefix}new.close`)

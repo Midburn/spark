@@ -2,9 +2,14 @@ extends ../../includes/page
 block content
     script.
         var groups_prototype="#{__groups_prototype}";
+        var totalTicketCount = "#{parseInt(camp.dgs_tickets_quota || 0) + parseInt(camp.pre_sale_tickets_quota || 0)}";
+        var dgsTicketCount = "#{parseInt(camp.dgs_tickets_quota || 0)}";
+        var preSaleTicketCount = "#{parseInt(camp.pre_sale_tickets_quota || 0)}";
         const controllDates = {
             appreciation_tickets_allocation_start : '#{new Date(controllDates.appreciation_tickets_allocation_start)}',
             appreciation_tickets_allocation_end : '#{new Date(controllDates.appreciation_tickets_allocation_end)}',
+            dgs_tickets_allocation_start: '#{new Date(controllDates.dgs_tickets_allocation_start)}',
+            dgs_tickets_allocation_end: '#{new Date(controllDates.dgs_tickets_allocation_end)}',
         }
     input.hidden.meta(id='meta__lang', value='#{language}')
     input.hidden.meta(id='meta__camp_name_en', value='#{camp.camp_name_en}')
@@ -45,7 +50,7 @@ block content
                         .details-he.col-md-6
                             .col-xs-12
                                 label(for='camp_name_he')=t('camps:edit.name_he')
-                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'))
+                                input.form-control(id='camp_name_he', dir='rtl', name='camp_name_he', value=(isNew ? '' : '#{camp.camp_name_he}'), readonly, autofocus)
                             .col-xs-12
                                 label(for='camp_desc_he')=t('camps:edit.desc_he')
                                 textarea.form-control(id='camp_desc_he', dir='rtl', name='camp_desc_he') #{camp.camp_desc_he}

@@ -1,5 +1,10 @@
 extends ../includes/page
 block content
+    script.
+        const currentEventRules = {
+            edit_camp_disabled: #{!!currentEventRules.edit_camp_disabled},
+            edit_art_disabled: #{!!currentEventRules.edit_art_disabled}
+        };
     h1=t('welcome_home', {user: user.attributes.first_name, context: user.attributes.gender})
     .camps.camp_edit(ng-app="ngCamps", ng-controller="homeController")
         br
@@ -14,6 +19,7 @@ block content
                 each val in events
                     li
                         a(ng-click="angular_ChangeCurrentEventId('#{val.event_id}')") #{val.event_id}
+
 
         div.card(style="position: inherit")
             table.table.table-striped.table-hover
@@ -37,7 +43,7 @@ block content
                         td {{group.is_manager}}
                         //- td {{group.earlyArrival ? 'yes':'no'}}
                         td
-                            a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="group.can_edit") &nbsp;
+                            a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="isGroupEditable(group, currentEventRules)") &nbsp;
                                 button.btn.btn-xs
                                     span(class='glyphicon glyphicon-pencil')
                                     =t('camps:stats.edit')
@@ -46,33 +52,33 @@ block content
                                     span(class='glyphicon glyphicon-pencil')
                                     =t('camps:edit.view')
 
-                            //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "reject")', ng-if="group.can_reject") &nbsp;
-                            //-     button.btn.btn-xs
-                            //-         span(class='glyphicon glyphicon-remove')
-                            //-         =t('camps:groups.reject')
-                            //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve")', ng-if="group.can_approve") &nbsp;
-                            //-     button.btn.btn-xs
-                            //-         span(class='glyphicon glyphicon-ok')
-                            //-         =t('camps:groups.approve')
-                            //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve_mgr")', ng-if="group.can_approve_mgr") &nbsp;
-                            //-     button.btn.btn-xs
-                            //-         span(class='glyphicon glyphicon-king')
-                            //-         =t('camps:groups.approve_as_manager')
-                            //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove_mgr")', ng-if="group.can_remove_mgr") &nbsp;
-                            //-     button.btn.btn-xs
-                            //-         span(class='glyphicon glyphicon-king')
-                            //-         =t('camps:groups.remove_manager')
-                            //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove")', ng-if="group.can_remove") &nbsp;
-                            //-     button.btn.btn-xs
-                            //-         span(class='glyphicon glyphicon-remove')
-                            //-         =t('camps:groups.remove')
-            //- .col-xs-6
-                h4=t('camps:admin_index.total_approved_groups')
-                    span.badge {{all_approved_members}}
-            //- .col-xs-6
-                h4=t('camps:admin_index.total_camp_tickets')
-                    span.badge {{total_camp_tickets}}
-                            //- h4=סטטיסטיקת אדמין
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "reject")', ng-if="group.can_reject") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-remove')
+                                //-         =t('camps:groups.reject')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve")', ng-if="group.can_approve") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-ok')
+                                //-         =t('camps:groups.approve')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "approve_mgr")', ng-if="group.can_approve_mgr") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-king')
+                                //-         =t('camps:groups.approve_as_manager')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove_mgr")', ng-if="group.can_remove_mgr") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-king')
+                                //-         =t('camps:groups.remove_manager')
+                                //- a.cursor-p(ng-click='updateUser(group.name, group.user_id, "remove")', ng-if="group.can_remove") &nbsp;
+                                //-     button.btn.btn-xs
+                                //-         span(class='glyphicon glyphicon-remove')
+                                //-         =t('camps:groups.remove')
+                //- .col-xs-6
+                    h4=t('camps:admin_index.total_approved_groups')
+                        span.badge {{all_approved_members}}
+                //- .col-xs-6
+                    h4=t('camps:admin_index.total_camp_tickets')
+                        span.badge {{total_camp_tickets}}
+                                //- h4=סטטיסטיקת אדמין
         if user.isAdmin
             include partials/gate_statistics
             include partials/other_statistics
