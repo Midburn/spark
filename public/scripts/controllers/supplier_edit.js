@@ -68,7 +68,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
                 $scope.add_camp_id = '';
              }).catch((err) => {
                 if (err.data.data.message.indexOf("Duplicate entry")) {
-                    sweetAlert("!oops","You are trying to add a camp that is already exist","warning");
+                    sweetAlert("!oops","You are trying to add a camp that already exists","warning");
                 }
                 else {
                     sweetAlert("Error!", "Add new camp error: " + err.data.data.message, "error");

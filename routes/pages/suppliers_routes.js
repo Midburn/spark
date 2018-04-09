@@ -99,7 +99,6 @@ router.get('/suppliers/:id', userRole.isLoggedIn(), (req, res) => {
 router.get('/suppliers/:id/edit', userRole.isLoggedIn(), (req, res) => {
     const supplier_id = req.params.id;
     const lang = req.params.lng || 'he';
-    let supplier;
     req.breadcrumbs([{
         name: 'breadcrumbs.home',
         url: '/' + lang + '/home'
