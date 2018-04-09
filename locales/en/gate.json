@@ -1,10 +1,12 @@
 {
     "gate" : "Gate",
+    "entries": "Entry management",
     "desc": "Manage gate entrance",
     "search": "Search by ticket number / person name / email / id",
     "enter_ticket": "Enter ticket",
     "force_enter_ticket": "Force entrance",
     "exit_ticket": "Exit ticket",
+    "more_details": "More details",
     "entrance_instructions" : "Please verify all the details of the ticket against a valid user ID card.",
     "inside_event": "Inside event",
     "ticket_group": "Ticket group",

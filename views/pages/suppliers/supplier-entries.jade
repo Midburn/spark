@@ -1,0 +1,79 @@
+extends ../../includes/page
+block content
+    .camps.camp_admin_index(ng-app="ngSuppliers")
+        .container.col-md-12
+            h1=t(t_prefix+'entries.suppliers')
+            p.lead.text-muted=t(t_prefix+'entries.desc')
+        .controls.row
+            .col-xs-12
+                div.block-center
+                    div.input-group
+                        if isAdmin
+                            a.Btn.Btn__green.card-switcher#4(role='button')
+                                span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                span=t(t_prefix+'entries.supplier_entrance')
+
+        .cards--wrapper.card__shad(ng-controller="supplierEntriesController")
+            .card.card-first.card__padding--even.col-xs-12.table-responsive
+                datalist(id="supplierList")
+                    option(ng-repeat="supplier in suppliers", label="{{supplier.main_contact_name}}", value="{{supplier.supplier_id}}") {{supplier}}
+                //- Card 1
+                h4=t(t_prefix+'edit_new.suppliers')
+                .controls.row
+                  .col-xs-12.col-md-12
+                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'entries.search')}")
+                table.table.table-stats.table-striped.table-hover#admin_camps
+                    thead
+                        tr.headers
+                            th(ng-click='changeOrderBy("supplier_id")', class="clickable")=t(t_prefix+'entries.id')
+                                span(ng-hide="'supplier_id' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.camp_name_en(ng-click='changeOrderBy("main_contact_name")', class="clickable")=t(t_prefix+'entries.name')
+                                span(ng-hide="'main_contact_name' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.contact_person(ng-click='changeOrderBy("vehicle_plate_number")', class="clickable")=t(t_prefix+'entries.vehicle_plate_number')
+                                span(ng-hide="'vehicle_plate_number' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.status(ng-click='changeOrderBy("number_of_people_entered")', class="clickable")=t(t_prefix+'entries.num_people_in_vehicle')
+                                span(ng-hide="'number_of_people_entered' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.number(ng-click='changeOrderBy("main_contact_phone_number")', class="clickable")=t(t_prefix+'entries.contact_number')
+                                span(ng-hide="'main_contact_phone_number' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.hidden-xs(ng-click='changeOrderBy("allowed_visa_hours")', class="clickable")=t(t_prefix+'entries.visa_duration')
+                                span(ng-hide="'allowed_visa_hours' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.published(ng-click='changeOrderBy("enterance_time")', class="clickable")=t(t_prefix+'entries.entrance_time')
+                                span(ng-hide="'enterance_time' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.midmarket(ng-click='changeOrderBy("departure_time")', class="clickable")=t(t_prefix+'entries.departure_time')
+                                span(ng-hide="'departure_time' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.entrance_quota(ng-click='changeOrderBy("supplier_status")', class="clickable")=t(t_prefix+'entries.status')
+                                span(ng-hide="'supplier_status' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                    tbody
+                        tr(ng-repeat="entry in entries | filter: searchCamp | orderBy: orderEntries : isReverseOrder", ng-class="{'overdue': checkOverdue(entry)}")
+                            td {{ entry.supplier_id }}
+                            td {{ entry.main_contact_name }}
+                            td {{ entry.vehicle_plate_number }}
+                            td {{ entry.number_of_people_entered }}
+                            td {{ entry.main_contact_phone_number }}
+                            td {{ entry.allowed_visa_hours}}
+                            td {{ entry.enterance_time | date : 'medium' }}
+                            td {{ entry.departure_time | date : 'medium' }}
+                            td {{ entry.supplier_status }}
+                            td
+                                button.btn.btn-xs(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
+                                    span(class='glyphicon glyphicon-remove')
+                                    =t(t_prefix+'entries.exit')
+            .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
+                h2=t(t_prefix+'entries.new')
+                .col-sm-6.col-xs-12
+                    .pos-r
+                        label=t(t_prefix+'edit_new.id')
+                        input(list="supplierList", id='new-supplier-entry-vat', type="text", class="form-control", name="supplier_id", autofocus="true", ng-model="newEntry.supplier_id", required)
+                        label=t(t_prefix+'entries.vehicle_plate_number')
+                        input(id='new-supplier-entry-plate', type="text", class="form-control", name="supplier_plate", autofocus="true", ng-model="newEntry.vehicle_plate_number", required)
+                .col-sm-6.col-xs-12
+                    .pos-r
+                        label=t(t_prefix + 'entries.num_people_in_vehicle')
+                        input(id='new-supplier-entry-people', type="number", class="form-control", name="supplier_people", autofocus="true", ng-model="newEntry.number_of_people_entered", required)
+                        label=t(t_prefix + 'entries.visa_duration')
+                        input(id='new-supplier-entry-hours', type="number", class="form-control", name="supplier_hours", autofocus="true", ng-model="newEntry.allowed_visa_hours", required)
+                .col-sm-12.col-xs-12
+                    a.Btn.Btn__green.Btn__inline.btn(role='button', ng-click="addEntry()")=t(t_prefix+'entries.add_entry')
+                    a.Btn.Btn__red.Btn__inline.btn.card-switcher#1(role='button')
+                        span=t(t_prefix+'entries.cancel')
+

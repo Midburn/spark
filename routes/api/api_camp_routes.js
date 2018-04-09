@@ -1478,4 +1478,31 @@ module.exports = (app, passport) => {
             });
     })
 
+    /**
+     * API: (GET) return camp suppliers
+     * query camp with attribute: camp_id
+     * request => /camps/camp_id/suppliers
+     */
+    app.get('/camps/:id/suppliers', userRole.isLoggedIn(), (req, res) => {
+        Camp.forge({ id: req.params.id }).fetch().then((camp) => {
+            camp.getCampSuppliers((suppliers) => {
+                res.status(200).json({ suppliers: suppliers });
+            }).catch((err) => {
+                res.status(500).json({
+                    error: true,
+                    data: {
+                        message: err.message
+                    }
+                });
+            });
+        }).catch((err) => {
+            res.status(500).json({
+                error: true,
+                data: {
+                    message: err.message
+                }
+            });
+        });
+    });
+
 }

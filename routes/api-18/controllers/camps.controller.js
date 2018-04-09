@@ -64,7 +64,7 @@ class CampsController {
             .fetch({withRelated: ['users_groups']})
             .then((camp) => {
                 camp.getCampUsers((users) => {
-                    group_props = camp.parsePrototype(req.user);
+                    let group_props = camp.parsePrototype(req.user);
                     if (camp.isCampManager(req.user.attributes.user_id) || group_props.isAdmin) {
                         campsService.saveCamp(req, false, camp)
                         // Camp.forge({ id: req.params.id }).fetch().then((camp) => {
