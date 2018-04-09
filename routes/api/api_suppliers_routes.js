@@ -124,7 +124,7 @@ module.exports = (app, passport) => {
             .innerJoin(constants.CAMPS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', constants.CAMPS_TABLE_NAME + '.id')
             .where(constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', camp_id);
 
-        if (camps !== null) {
+        if (suppliers !== null) {
             res.status(200).json({suppliers: suppliers})
         } else {
             res.status(204).json({suppliers: ["empty"]})
