@@ -24,7 +24,7 @@ Spark is being developed by the Midburn Tech Team, with the purpose of utilizing
 
 ### Quickstart
 
-- [Spark Staging](http://sparkstaging.midburn.org/)
+- [Spark Staging](https://spark.staging.midburn.org)
 - [Development guide](/docs/development/README.md) - how to work on the development of the Spark project.
 - [Usage guide](/docs/usage/README.md) - how to use the Spark system and description of what it provides.
 - [Join our Slack](https://join.slack.com/t/midburnos/shared_invite/enQtMzM4NzExMjg5MDI1LTcxNTE5NGM1MzRmMzVkZjFlNDU5ODlmYTI3NjQ2ZTI0YjQwYWViZjU1YTFlZThhYTg1OTQ2NzdhYTM3YzE3MDA)

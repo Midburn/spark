@@ -54,17 +54,17 @@ const initStaticCamps = (camps, events) => {
     for (const event of events) {
         for (let i = 1; i <= 3; i++) {
             const newCamp = Object.assign({}, camps[camps.length - 1], {
-                event_id: event.event_id,
-                status: 'open',
-                main_contact: i,
-                moop_contact: i,
-                safety_contact: i,
-                contact_person_id: i,
-                camp_name_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
-                camp_name_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
-                camp_desc_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
-                camp_desc_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
-                __prototype: constants.CAMP_PROTOTYPE[getRandomInt(0, 2)]
+                    event_id: event.event_id,
+                    status: 'open',
+                    main_contact: i,
+                    moop_contact: i,
+                    safety_contact: i,
+                    contact_person_id: i,
+                    camp_name_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
+                    camp_name_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
+                    camp_desc_he: getCampDiscription(i) + ' ' + event.event_id + ` ${unique}`,
+                    camp_desc_en: getCampDiscription(i, 'en') + ' ' + event.event_id + ` ${unique}`,
+                    __prototype: constants.CAMP_PROTOTYPE[getRandomInt(0, 2)]
             });
             newCamp.id = camps.push(newCamp);
             unique++;

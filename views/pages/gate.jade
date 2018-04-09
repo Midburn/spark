@@ -21,16 +21,9 @@ block content
                     th( data-field="last_name" )=t('last_name')
                     th( data-field="email" )=t('email')
                     th( data-field="type" )=t('ticket_type')
-                    th( data-field="disabled_parking" data-formatter="parkingFormat")=t('disabled_parking')
-                    th( data-field="first_entrance_timestamp" data-formatter="dateFormat" )=t('first_entrance_timestamp')
-                    th( data-field="entrance_timestamp" data-formatter="dateFormat")=t('entrance_timestamp')
-                    th( data-field="last_exit_timestamp" data-formatter="dateFormat")=t('last_exit_timestamp')
                     th( data-formatter="insideEventFormatter" )=t('gate:inside_event')
-                    th( data-field="name" )=t('gate:entrance_group')
                     th( data-formatter="tableActionsFormatter" )=t('operations')
 
-
-    //a( href="gate/gate-statistics" ) סטטיסטיקות אירוע
 
     #myModal.modal.fade(role='dialog')
         .modal-dialog
@@ -46,34 +39,56 @@ block content
                     p
                         b=t('ticket_number')
                         | :&nbsp;
-                        span( id='modal_ticket_number' )
+                        span( id='modal_ticket_number')
                     p
                         b=t('full_name')
                         | :&nbsp;
-                        span( id='modal_name' )
+                        span( id='modal_name')
                     p
                         b=t('israeli_id')
                         | :&nbsp;
-                        span( id='modal_israeli_id' )
+                        span( id='modal_israeli_id')
                     p
                         b=t('email')
                         | :&nbsp;
-                        span( id='modal_email' )
+                        span( id='modal_email')
                     p
                         b=t('gate:ticket_type')
                         | :&nbsp;
-                        span( id='modal_type' )
+                        span( id='modal_type')
                     P( id="ticket_groups")
                         b=t('gate:ticket_group')
                         | :&nbsp;
                         .list-group(id="ticket_groups_list")
 
                 .modal-footer
-                    button.btn.btn-primary(type='button', data-dismiss='modal', id='entrance_button')
-                    button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')
+                    button.Btn.Btn__green(type='button', data-dismiss='modal', id='entrance_button')=t('gate:enter_ticket')
+                    button.Btn(type='button', data-dismiss='modal')=t('cancel')
                     .pull-right
-                        button.btn.btn-danger(type='button', data-dismiss='modal', id='force_entrance_button')
+                        button.Btn.Btn__red(type='button', data-dismiss='modal', id='force_entrance_button')
                             =t('gate:force_enter_ticket')
+
+    #detailsModal.modal.fade(role='dialog')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal') ×
+                    h4.modal-title(id='modal_full_name')
+                .modal-body
+                    p
+                        b=t('first_entrance_timestamp')
+                        | :&nbsp;
+                        span( id='modal_first_entrance_timestamp')
+                    p
+                        b=t('entrance_timestamp')
+                        | :&nbsp;
+                        span( id='modal_entrance_timestamp')
+                    p
+                        b=t('last_exit_timestamp')
+                        | :&nbsp;
+                        span( id='modal_last_exit_timestamp')
+                    p( id='modal_disabled_parking')
+
 
     #forceDialog.modal.fade(role='dialog')
         .modal-dialog
@@ -99,19 +114,20 @@ block scripts
     script.
 
         function tableActionsFormatter(value, row, index) {
+            var res = '<a class="detailsAction " id="' + row.barcode + '" ' +
+                'data-toggle="modal" href="#detailsModal" data-id="" title="More Details">' +
+                '<button class="btn btn-xs"> <span class="glyphicon glyphicon-search"></span>#{t("gate:more_details")}</button></a> ';
             if (!row.inside_event) {
-                return '<a class="entranceAction" id="' + row.barcode + '" ' +
-                    'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:enter_ticket")}</a> ';
-            } else {
-                return 'יציאה עם צמיד';
-                return '<a class="exitAction" id="' + row.barcode + '" ' +
-                    'data-toggle="modal" href="#myModal" data-id="" title="Enter">#{t("gate:exit_ticket")}</a> ';
+                res += '<a class="entranceAction " id="' + row.barcode + '" ' +
+                    'data-toggle="modal" href="#myModal" data-id="" title="Enter">' +
+                    '<button class="btn btn-xs"> <span class="glyphicon glyphicon-log-in"></span>#{t("gate:enter_ticket")}</button></a> ';
             }
+            return res;
         };
 
         function insideEventFormatter(value, row, index) {
             if (row.inside_event) {
-                return '<span class="glyphicon glyphicon-ok" />';
+                return '<span class="glyphicon glyphicon-ok text-green" data-toggle="tooltip" data-placement="top" title="יציאה עם צמיד"/>';
             }
             return "";
         };
@@ -119,13 +135,13 @@ block scripts
         function dateFormat(value) {
             if (value) {
                 var d = new Date(value);
-                return ("0" + d.getDate()).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
-                    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+                return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" +
+                    d.getFullYear() + ", " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             }
         };
 
         function parkingFormat(value) {
-            return parseInt(value, 10) === 1 ? '<i class="fa fa-wheelchair"></i>' : '';
+            return parseInt(value, 10) === 1 ? '<i class="fa fa-wheelchair"></i> #{t("disabled_parking")}' : '';
         };
 
         $(document).ready(function () {
@@ -173,6 +189,24 @@ block scripts
                         else {
                             let groupsElement = $("#ticket_groups_list")[0];
                             groupsElement.innerHTML = "";
+                        }
+                    });
+            });
+
+            $(document).on("click", ".detailsAction", function () {
+                clearModal();
+                $.post("/api/gate/get-ticket", {
+                        barcode: this.id,
+                        gate_code: "#{gate_code}"
+                    },
+                    function (data, status) {
+                        console.log(data);
+                        if (data) {
+                            $("#modal_full_name")[0].innerHTML = "#{t('gate:more_details')} - " + data.ticket.holder_name;
+                            $("#modal_first_entrance_timestamp")[0].innerHTML = dateFormat(data.ticket.first_entrance_timestamp);
+                            $("#modal_entrance_timestamp")[0].innerHTML = dateFormat(data.ticket.entrance_timestamp);
+                            $("#modal_last_exit_timestamp")[0].innerHTML = dateFormat(data.ticket.last_exit_timestamp);
+                            $("#modal_disabled_parking")[0].innerHTML = parkingFormat(data.ticket.disabled_parking);
                         }
                     });
             });

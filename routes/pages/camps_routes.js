@@ -35,7 +35,7 @@ var __render_camp = function (camp, req, res) {
         id: camp_id,
         event_id: req.user.currentEventId
     }).fetch({}).then((camp) => {
-        camp.getCampUsers((users) => {
+        camp.getCampSuppliers((suppliers) => {
             camp.init_t(req.t);
             // if user is camp_member, we can show all
             // let _user = camp.isUserCampMember(req.user.id);
@@ -45,6 +45,7 @@ var __render_camp = function (camp, req, res) {
                 userLoggedIn: req.user.hasRole('logged in'), //
                 id: camp_id, //
                 camp: camp_data,
+                suppliers: suppliers,
                 breadcrumbs: req.breadcrumbs(),
                 details: camp_data,
                 isAdmin: req.user.isAdmin,

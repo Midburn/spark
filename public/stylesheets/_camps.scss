@@ -148,6 +148,16 @@ body[lang="en"] {
         }
     }
 
+    &__red {
+        color: #fff;
+        background: $red;
+
+        &:hover {
+            color: #fff;
+            background: $light-red;
+        }
+    }
+
     &__transparent {
         &:hover {
             color: #7795f8;
@@ -372,7 +382,9 @@ body[lang="en"] {
             display: block;
             visibility: hidden;
         }
-
+        .overdue {
+            background: $light-red;
+        }
         .card {
             width: 100%;
             transition: 300ms;
@@ -407,6 +419,20 @@ body[lang="en"] {
             }
         }
     }
+}
+
+.clickable {
+    cursor: pointer;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+th .glyphicon {
+    font-size: 10px;
 }
 
 button.card--close {
