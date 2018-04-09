@@ -9,7 +9,6 @@ var angular_getCamps = function ($http, $scope, supplier_id) {
 }
 suppliers_app.controller("supllierShowController", ($scope, $http, $filter) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
-    const lang = document.getElementById('meta__lang').value || 'he';
     angular_getCamps($http, $scope, supplier_id);
     $scope.changeOrderBy = function (orderByValue) {
         $scope.orderCamps = orderByValue;

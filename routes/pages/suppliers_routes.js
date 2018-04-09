@@ -53,7 +53,6 @@ router.get('/suppliers-admin', userRole.isLoggedIn(), (req, res) => {
 // SHOW
 router.get('/suppliers/:id', userRole.isLoggedIn(), (req, res) => {
     const supplier_id = req.params.id;
-    const event_id = req.user.currentEventId;
     const lang = req.params.lng || 'he';
 
     superagent
@@ -82,7 +81,8 @@ router.get('/suppliers/:id', userRole.isLoggedIn(), (req, res) => {
             isNew: false,
             isAdmin: req.user.isAdmin,
             t_prefix: "suppliers:edit_new",
-            language: lang
+            language: lang,
+            currentEventID: currentEventID
         };   
         res.render('pages/suppliers/supplier',params);    
     }).catch((err) => {
@@ -179,7 +179,4 @@ router.get('/suppliers-docs', userRole.isLoggedIn(), (req, res) => {
         breadcrumbs: req.breadcrumbs()
     });
 });
-
-
-
 module.exports = router;
