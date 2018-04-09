@@ -55,10 +55,12 @@ var __render_camp = function (camp, req, res) {
                 main_contact: camp.isUserInCamp(camp.attributes.main_contact),
                 moop_contact: camp.isUserInCamp(camp.attributes.moop_contact),
                 safety_contact: camp.isUserInCamp(camp.attributes.safety_contact),
+                camp_protoype: camp.parsePrototype(req.user).id
             };
             Event.get_event_controllDates(req.user.currentEventId).then(controllDates => {
                 controllDates = controllDates || {};
-                data.campslastEditDate = controllDates.edit_camps_lastDate || new Date(Date.now() + 1000*60*60*24*30);
+                data.edit_camp_disabled = controllDates.edit_camp_disabled;
+                data.edit_art_disabled = controllDates.edit_art_disabled;
                 res.render('pages/camps/camp', data);
             })
 

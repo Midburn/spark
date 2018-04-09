@@ -24,7 +24,7 @@ let Suppliers = bookshelf.Model.extend({
         }
 
     },
-    
+
     setSupplierCamp: async function (data) {
 
         try {

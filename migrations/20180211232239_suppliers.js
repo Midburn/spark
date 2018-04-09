@@ -47,7 +47,7 @@ exports.up = function(knex, Promise) {
             table.dateTime('enterance_time');
             table.dateTime('departure_time');
             table.enu('supplier_status', constants.SUPPLIER_STATUS_CATEGORIES);
-     
+
         })
     ]);
 };

@@ -15,31 +15,31 @@ block content
                         a.Btn.Btn__green.card-switcher#2(href=`/${language}/events-admin/new`, role='button')
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'new_event')
-            
+
         .cards--wrapper.card__shad
-            //- Card 1    
+            //- Card 1
             .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="eventsController")
-                h4=t(t_prefix+'admin.all_events_table')                
+                h4=t(t_prefix+'admin.all_events_table')
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers
                             th #
-                            th.event_name_en=t(t_prefix+'stats.name_en')                            
+                            th.event_name_en=t(t_prefix+'stats.name_en')
                             th.gate_code=t(t_prefix+'stats.gate_code')
                             th.gate_status=t(t_prefix+'stats.gate_status')
                             th
                     tbody
                         tr(ng-repeat="event in events | orderBy: event_id")
-                            td {{ event.event_id }}                        
+                            td {{ event.event_id }}
                             td {{ event.name }}
                             td {{ event.gate_code }}
                             td {{ event.gate_status }}
                             td
-                                a.cursor-p(ng-href=`/${language}/events-admin/{{event.event_id}}`)&nbsp;
-                                    button.btn.btn-xs 
+                                a.cursor-p(ng-href=`/${language}/events-admin/{{event.event_id}}`) &nbsp;
+                                    button.btn.btn-xs
                                         span(class='glyphicon glyphicon-pencil')
                                         =t(`${t_prefix}stats.edit`)
-    
+
             //- Card 2
             .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive
                 include partials/form

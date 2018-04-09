@@ -2,14 +2,14 @@ extends ../../includes/page
 block content
     script.
         var groups_prototype="#{__groups_prototype}";
-    
+
     input.hidden.meta(id='meta__lang', value='#{language}')
     //input.hidden.meta(id='meta__camp_name_en', value='#{supplier.supplier_name_en}')
     input.hidden.meta(id='meta__supplier_id', value='#{supplier.supplier_id}')
     input.hidden.meta(id='isNew', value='#{isNew}')
     //input.hidden.meta(id='meta__grouptype', value='#{supplier.__prototype}')
     .camps.camp_edit(ng-app="ngSuppliers", ng-controller="supllierEditController")
-        
+
         .heading.card.card__shad
             .card__actions
                 if(isCamp)
@@ -50,7 +50,7 @@ block content
                             .col-xs-12
                                 label(for='supplier_name_en')=t('suppliers:edit_new.name_en')
                                 input.form-control(id='supplier_name_en', dir='ltr', name='supplier_name_en', value=(isNew ? '' : '#{supplier.supplier_name_en}'), autofocus)
-                
+
                 h4=t('suppliers:edit_new.contact_details')
                 .camp-leaders.panel
                     .panel-body
@@ -89,14 +89,14 @@ block content
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
                     select.form-control(ng-model='add_camp_id', type="text")
-                        option(value="" ,disabled ,selected)=t('suppliers:edit_new.choose_camp') 
+                        option(value="" ,disabled ,selected)=t('suppliers:edit_new.choose_camp')
                         option(ng-repeat="camp in allCamps", value="{{camp.id}}") {{camp.camp_name_he}}
-                    
+
                     button.Btn.Btn__sm(ng-click="addCamp()") + #{t('suppliers:edit_new.add_camp')}
                 .row
                     .col-xs-12
                     include partials/members_table
-          
+
         .controls.row
             .col-xs-12
                 if(isNew)
@@ -106,7 +106,7 @@ block content
                 else
                     input(id='supplier_edit_supplier_id', type='hidden', value='#{supplier.supplier_id}')
                     button.Btn.Btn__default(id='supplier_edit_save')=t('suppliers:edit_new.btn_save_camp')
-            
+
                 if isCamp && supplier.web_published != '1'
                     button.Btn.Btn__green(id='camp_edit_publish')=t('suppliers:edit_new.publish')
 
@@ -141,7 +141,7 @@ block content
                                 li.supplier_category=t(t_prefix+'edit_new.category')
                                     span
 
-                           
+
                     .modal-footer
                         button.Btn.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
                         button.Btn.Btn__green(id='supplier_create_save_modal_request', type='button')=t('suppliers:edit_new.save')
