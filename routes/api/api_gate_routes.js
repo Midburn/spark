@@ -156,27 +156,34 @@ router.post('/gate-enter', async function (req, res) {
         ticket.attributes.forced_entrance_reason = req.body.force_reason;
     }
     else {
+        let holder = ticket.relations.holder;        
+        if (gate_status === "early_arrival")
         // Finding the right users group and updating it.
-        if (req.body.group_id && gate_status === "early_arrival") {
-            let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
-
-            if (!group) {
-                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
-            }
-
-            let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
-
-            if (!groupMembership) {
-                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
-            }
-
-            if (await group.quotaReached) {
-                return sendError(res, 500, "QUOTA_REACHED");
-            }
-        }
-        else if (!req.body.group_id && gate_status === "early_arrival")
         {
-            return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+            let production_early_arrival = false;
+            production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
+            log.debug(`get-ticket - user {holder.attributes.email} is a production volunteer`);
+            if (req.body.group_id) {
+                let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
+
+                if (!group) {
+                    return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                }
+
+                let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
+
+                if (!groupMembership) {
+                    return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                }
+
+                if (await group.quotaReached) {
+                    return sendError(res, 500, "QUOTA_REACHED");
+                }
+            }
+            else if (!production_early_arrival) 
+            {
+                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+            }
         }
     }
 
