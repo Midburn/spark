@@ -210,11 +210,11 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         angular_updateUser($http, $scope, action_type, user_rec);
     };
 
-    $scope.allocationPeriodisActive = (isDgs) => {
+    $scope.allocationPeriodisActive = (isGroupSale) => {
         const now = new Date();
         const allocationPeriod = {
-            start : isDgs ? new Date(controllDates.dgs_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start),
-            end : isDgs ? new Date(controllDates.dgs_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end),
+            start : isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start),
+            end : isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end),
         };
         return allocationPeriod.start < now && now < allocationPeriod.end;
     };

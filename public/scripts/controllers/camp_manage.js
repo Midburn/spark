@@ -65,10 +65,10 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
         }
     };
     // Test if you can allocate tickets based on event settings.
-    $scope.isInDateRange = (isDgs) => {
+    $scope.isInDateRange = (isGroupSale) => {
         let current = new Date();
-        let start = isDgs ? new Date(controllDates.dgs_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start);
-        let end = isDgs ? new Date(controllDates.dgs_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end);
+        let start = isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start);
+        let end = isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end);
         return start < current && current < end;
     };
 
