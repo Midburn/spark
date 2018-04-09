@@ -267,8 +267,9 @@ block content
                 .row
                     .col-xs-12
                         .form-inline
-                            input.form-control(ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}")
-                            button.Btn.Btn__sm(ng-click="addMember()") + #{t('camps:members.add_member')}
+                            form(name="add_member_form")
+                                input.form-control(name = 'user_email', ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}", required)
+                                button.Btn.Btn__sm(ng-click="addMember()", ng-disabled="add_member_form.user_email.$invalid") + #{t('camps:members.add_member')}
                         .form-group
                         input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
                 .row
