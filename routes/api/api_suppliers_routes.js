@@ -300,7 +300,7 @@ module.exports = (app, passport) => {
                 })
             }
         }
-
+    
         return res.status(200).json({
             error: false,
             contract: supplier_contract
