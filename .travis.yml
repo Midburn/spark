@@ -6,7 +6,7 @@ env:
   matrix:
   - DEPLOY_ENVIRONMENT=staging DEPLOY_BRANCH=master
   - DEPLOY_ENVIRONMENT=production DEPLOY_TAGS=true
-  - DEPLOY_ENVIRONMENT=sparktesting DEPLOY_BRANCH=fix-supplier-migrations
+  - DEPLOY_ENVIRONMENT=sparktesting DEPLOY_BRANCH=suppliers
   - ""
 cache:
   directories:
