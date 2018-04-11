@@ -82,10 +82,9 @@ block content
             //- Card 2 - Related camps
             .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
-                    select.form-control(ng-model='add_camp_id', type="text")
-                        option(value="" ,disabled ,selected)=t('suppliers:edit_new.choose_camp')
-                        option(ng-repeat="camp in allCamps", value="{{ camp.id }}") {{ camp.camp_name_he }}
-
+                    input.form-control(list="campList", name="" ng-model='add_camp_display_name', type="text", placeholder="#{t('suppliers:edit_new.choose_camp')}")
+                    datalist(id="campList")
+                        option(ng-repeat="camp in allCamps", data-id="{{ camp.id }}" value="{{ camp.camp_name_he }}")
                     button.Btn.Btn__sm(ng-click="addCamp()") + #{t('suppliers:edit_new.add_camp')}
                 .row
                     .col-xs-12

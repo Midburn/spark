@@ -16,7 +16,7 @@ block content
         .cards--wrapper.card__shad(ng-controller="supplierEntriesController")
             .card.card-first.card__padding--even.col-xs-12.table-responsive
                 datalist(id="supplierList")
-                    option(ng-repeat="supplier in suppliers", label="{{supplier.main_contact_name}}", value="{{supplier.supplier_id}}") {{supplier}}
+                    option(ng-repeat="supplier in suppliers", label="{{supplier.main_contact_name}}", value="{{supplier.supplier_id}}")
                 //- Card 1
                 h4=t(t_prefix+'edit_new.suppliers')
                 .controls.row
@@ -51,8 +51,8 @@ block content
                             td {{ entry.number_of_people_entered }}
                             td {{ entry.main_contact_phone_number }}
                             td {{ entry.allowed_visa_hours}}
-                            td {{ entry.enterance_time | date : 'medium' }}
-                            td {{ entry.departure_time | date : 'medium' }}
+                            td {{ entry.enterance_time | date : 'dd/MM/yy HH:mm' }}
+                            td {{ entry.departure_time | date : 'dd/MM/yy HH:mm' }}
                             td {{ entry.supplier_status }}
                             td
                                 button.btn.btn-xs(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
