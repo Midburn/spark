@@ -175,7 +175,7 @@ module.exports = {
     SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
     SUPPLIERS_CONTRACTS_TABLE_NAME: 'suppliers_contracts',
     SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME: 'suppliers_gate_entrance_info',
-    SUPPLIERS_COMMENTS_TABLE :'suppliers_comments'
+    SUPPLIERS_COMMENTS_TABLE :'suppliers_comments',
     suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
 
     prototype_camps: prototype_camps,

@@ -238,7 +238,7 @@ module.exports = (app, passport) => {
     * API: (GET) get supplire comment return record id
     * request => /suppliers/:supplier_id/add_supplier_comment
     */
-   app.get('/suppliers/:supplier_id/supplier_comments', async (req, res) => {
+   app.get('/suppliers/:supplier_id/supplier_comments', userRole.isCampManager(), async (req, res) => {
         try {
             let supplier_id = req.params.supplier_id
             let supplier_comments = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).select().where('supplier_id', supplier_id)
@@ -250,9 +250,9 @@ module.exports = (app, passport) => {
 
     /**
     * API: (POST) edit supplire comment return record id
-    * request => /suppliers/:supplier_id/supplier_comments
+    * request => /suppliers/:supplier_id/add_supplier_comment
     */
-   app.post('/suppliers/:supplier_id/supplier_comments', async (req, res) => {
+   app.post('/suppliers/:supplier_id/supplier_comments', userRole.isCampManager(), async (req, res) => {
     try {
 
         let data = {
@@ -273,7 +273,7 @@ module.exports = (app, passport) => {
     * API: (PUT) edit supplire comment
     * request => /suppliers/:supplier_id/add_supplier_comment
     */
-   app.put('/suppliers/:supplier_id/supplier_comments', async (req, res) => {
+   app.put('/suppliers/:supplier_id/supplier_comments', userRole.isCampManager(), async (req, res) => {
     try {
         let record_id = req.body.record_id
         let data = {
