@@ -248,7 +248,7 @@ router.post('/tickets-counter', async function (req, res) {
 router.post(
     '/vehicle-action/:direction',
      async function (req, res) {
-        if (!constants.includes(req.params.direction)) {
+        if (!constants.VEHICLE_ENTRY_DIRECTION.includes(req.params.direction)) {
             return sendError(res, 500, "INVALID_VEHICLE_DIRECTION");
         }
         try {
