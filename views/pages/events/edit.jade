@@ -23,6 +23,8 @@ block content
                     event_type: '#{event.addinfo_json.event_type}',
                     start_presale_tickets: new Date('#{event.addinfo_json.start_presale_tickets}'),
                     end_presale_tickets: new Date('#{event.addinfo_json.end_presale_tickets}'),
+                    early_arrivals_start: new Date('#{event.addinfo_json.early_arrivals_start}'),
+                    early_arrivals_end: new Date('#{event.addinfo_json.early_arrivals_end}'),
                     tickets_info: '#{event.addinfo_json.tickets_info}',
                     community_camps: '#{event.addinfo_json.community_camps}' === 'true',
                     community_art_installation: '#{event.addinfo_json.community_art_installation}' === 'true',

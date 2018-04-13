@@ -68,6 +68,12 @@
                         .details-en.col-md-6
                             label(for='end_presale_tickets')=t(`${t_prefix}form.appreciation_tickets_allocation.end`)
                             input.form-control(type='date' id='end_presale_tickets', dir='ltr', name='end_presale_tickets' ng-model='event.addinfo_json.appreciation_tickets_allocation_end')
+                        .details-en.col-md-6
+                            label(for='start_early_arrival')=t(`${t_prefix}form.early_arrivals.start`)
+                            input.form-control(type='date' id='start_early_arrival', dir='ltr' ng-value="getDateString(event.addinfo_json.early_arrivals_start)" ng-model='event.addinfo_json.early_arrivals_start')
+                        .details-en.col-md-6
+                            label(for='end_early_arrival')=t(`${t_prefix}form.early_arrivals.end`)
+                            input.form-control(type='date' id='end_early_arrival', dir='ltr', name='end_early_arrival' ng-model='event.addinfo_json.early_arrivals_end')
                     .modal-footer
                     a(href='./')
                     button.Btn.Btn__transparent(id='create_camp_close_btn', type='button' ng-click="closeForm()")=t(`${t_prefix}new.close`)

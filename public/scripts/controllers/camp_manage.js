@@ -72,11 +72,29 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
         return start < current && current < end;
     };
 
+    $scope.isInEarlyArrivalRange = () => {
+        let current = new Date();
+        let start = new Date(controllDates.early_arrivals_start);
+        let end = new Date(controllDates.early_arrivals_end);
+        return start < current && current < end;
+    };
+
     // update the camp pre sale quota
     $scope.updatePreSaleQuota = (camp_id, quota, isGroupSale) => {
         if ($scope.isInDateRange(isGroupSale)) {
             if (confirm('Confirm new quota to: ' + quota)) {
                 $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: Number(quota), isGroupSale: isGroupSale })
+                    .success(() => { })
+                    .error(() => {
+                        alert("Quota must be in a positive number format");
+                    });
+            }
+        }
+    };
+    $scope.updateEarlyArrivalQuota = (camp_id, quota, isGroupSale) => {
+        if ($scope.isInEarlyArrivalRange()) {
+            if (confirm('Confirm new quota to: ' + quota)) {
+                $.post('/camps/' + camp_id + '/updateEarlyArrivalQuota', { quota: Number(quota), isGroupSale: isGroupSale })
                     .success(() => { })
                     .error(() => {
                         alert("Quota must be in a positive number format");

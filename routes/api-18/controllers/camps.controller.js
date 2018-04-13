@@ -36,6 +36,7 @@ class CampsController {
         this.getCampManager = this.getCampManager.bind(this);
         this.deleteCamp = this.deleteCamp.bind(this);
         this.updateCampPreSaleQuota = this.updateCampPreSaleQuota.bind(this);
+        this.updateEarlyArrivalQuota = this.updateEarlyArrivalQuota.bind(this);
         this.getPublishedCamps = this.getPublishedCamps.bind(this);
     }
 
@@ -526,6 +527,28 @@ class CampsController {
                 return next(err);
             });
         });
+    }
+
+    updateEarlyArrivalQuota(req, res) {
+        Camp.forge({id: req.params.id})
+            .fetch({withRelated: ['users_groups']})
+            .then((camp) => {
+                const quota = req.body.quota;
+                if (common.isNormalInteger(quota) === false) {
+                    return res.status(500).json({
+                        error: true,
+                        data: {
+                            message: "Quota must be in a number format"
+                        }
+                    });
+                }
+                let group_props = camp.parsePrototype(req.user);
+                if (group_props.isAdmin) {
+                    if (quota !== 'undefined' && quota !== '') {
+                        return camp.relations.users_groups.save({entrance_quota: parseInt(quota)});
+                    } else return camp;
+                }
+            });
     }
 
     getPublishedCamps(req, res, next) {

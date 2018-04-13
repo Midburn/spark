@@ -44,6 +44,8 @@ var Event = bookshelf.Model.extend({
                 const allocation_end = addinfo.appreciation_tickets_allocation_end;
                 const group_sale_allocation_start = addinfo.group_sale_tickets_allocation_start;
                 const group_sale_allocation_end = addinfo.group_sale_tickets_allocation_end;
+                const early_arrivals_start = addinfo.early_arrivals_start;
+                const early_arrivals_end = addinfo.early_arrivals_end;
                 const campEditDisabled = addinfo.edit_camp_disabled;
                 const campArtDisabled = addinfo.edit_art_disabled;
                 const controllDates = {
@@ -51,6 +53,8 @@ var Event = bookshelf.Model.extend({
                     appreciation_tickets_allocation_end : allocation_end ? new Date(allocation_end) : null,
                     edit_camp_disabled : campEditDisabled,
                     edit_art_disabled : campArtDisabled,
+                    early_arrivals_start: early_arrivals_start ? new Date(early_arrivals_start) : null,
+                    early_arrivals_end: early_arrivals_start ? new Date(early_arrivals_end) : null,
                     group_sale_tickets_allocation_start : group_sale_allocation_start ? new Date(group_sale_allocation_start) : null,
                     group_sale_tickets_allocation_end : group_sale_allocation_end ? new Date(group_sale_allocation_end) : null,
                 };
