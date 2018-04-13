@@ -56,7 +56,7 @@
         "new": "ספק חדש",
         "docs": "מסמכים וטפסים",
         "edit": "עריכת ספק",
-        "supplier_details": "פרטי ספק" 
+        "supplier_details": "פרטי ספק"
     },
     "entries": {
         "supplier_entrance": "כניסת ספק",
@@ -76,6 +76,7 @@
         "status": "סטאטוס",
         "actions": "פעולות",
         "cancel": "חזור",
-        "exit": "הוצא ספק"
+        "exit": "הוצא ספק",
+        "edit": "ערוך כניסת ספק"
     }
 }
