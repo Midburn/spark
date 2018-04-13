@@ -235,6 +235,83 @@ module.exports = (app, passport) => {
     });
 
     /**
+    * API: (POST) create supplire comment return record id
+    * request => /suppliers/:supplier_id/add_supplier_comment
+    */
+   app.post('/suppliers/:supplier_id/add_supplier_comment', userRole.isCampManager(), async (req, res) => {
+    try {
+
+        let data = {
+            supplier_id: req.params.supplier_id,
+            user_id: req.user.attributes.user_id,
+            comment_time: new Date(),
+            supplier_comment: req.body.comment,
+        };
+
+        let record_info = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).insert(data)
+        res.status(200).json({record_id: record_info[0]})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
+    * API: (GET) get supplire comment return record id
+    * request => /suppliers/:supplier_id/add_supplier_comment
+    */
+   app.get('/suppliers/:supplier_id/supplier_comments', async (req, res) => {
+        try {
+            let supplier_id = req.params.supplier_id
+            let supplier_comments = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).select().where('supplier_id', supplier_id)
+            res.status(200).json({supplier_comment: supplier_comments})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
+    * API: (POST) edit supplire comment return record id
+    * request => /suppliers/:supplier_id/supplier_comments
+    */
+   app.post('/suppliers/:supplier_id/supplier_comments', async (req, res) => {
+    try {
+
+        let data = {
+            supplier_id: req.params.supplier_id,
+            user_id: req.user.attributes.user_id,
+            comment_time: new Date(),
+            supplier_comment: req.body.comment,
+        };
+
+        let record_info = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).insert(data)
+        res.status(200).json({record_id: record_info[0]})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
+    * API: (PUT) edit supplire comment
+    * request => /suppliers/:supplier_id/add_supplier_comment
+    */
+   app.put('/suppliers/:supplier_id/supplier_comments', async (req, res) => {
+    try {
+        let record_id = req.body.record_id
+        let data = {
+            supplier_id: req.params.supplier_id,
+            user_id: req.user.attributes.user_id,
+            comment_time: new Date(),
+            supplier_comment: req.body.comment,
+        };
+
+        let record_info = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).update(data).where('record_id',record_id)
+        res.status(200).json({record_id: record_info[0]})
+
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+    /**
     * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
     * request => /suppliers/:supplier_id/contract
     */
