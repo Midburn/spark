@@ -266,7 +266,7 @@ router.post(
             return sendError(res, 500, "INVALID_VEHICLE_DIRECTION");
         }
         try {
-            const direction = req.params.direction === 'arrival' ? 1 : 0;
+            const direction = req.params.direction === 'arrival' ? 1 : 2;
             await knex('vehicle_entries').insert({timestamp: new Date(), direction: direction, event_id: req.params.event_id});
             return res.status(200).json({
                 message: "Vehicle action completed"
