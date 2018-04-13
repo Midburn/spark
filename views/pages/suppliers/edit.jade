@@ -61,6 +61,11 @@ block content
                                     label(for='main_contact_phone_number')=t('suppliers:edit_new.main_contact_phone_number')
                                     input.form-control(type='number',id='main_contact_phone_number', dir='rtl', name='main_contact_phone_number', value=(isNew ? '' : '{{ supplier.main_contact_phone_number }}'))
 
+                            .details-he.col-md-6
+                                .col-xs-12
+                                    //label(for='main_contact_phone_number')=t('suppliers:edit_new.main_contact_phone_number')
+                                    //input.form-control(type='number',id='main_contact_phone_number', dir='rtl', name='main_contact_phone_number', value=(isNew ? '' : '{{ supplier.main_contact_phone_number }}'))
+                                    include partials/supplier_files.jade
                 h4=t(t_prefix+'edit_new.add_info')
                 .camp-details.panel
                     .panel-body

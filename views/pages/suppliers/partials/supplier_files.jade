@@ -1,0 +1,14 @@
+h5(ng-if="files.length == 0") No file found
+table.table.table-striped.table-hover
+    thead
+        tr
+            th=t('camps:edit.camp_file_url')
+            th=t('camps:edit.camp_file_actions')
+    tbody
+        tr(ng-repeat="file in files")
+            td
+                a(href="{{file.file_path}}") {{file.display_name}}
+            td
+                a(ng-if="file.canEdit" ng-click="deleteFile(file.file_id)") Delete File
+div
+    input.form-control(type="file" ng-file-upload)
