@@ -124,7 +124,6 @@ $('#supplier_edit_save').click(function () {
     var supplier_id = $('#supplier_edit_supplier_id').val();
     var supplier_data = extractSupplierData();
     var lang = document.getElementById('meta__lang').value;
-    //console.log(supplier_data)
     $.ajax({
         url: '/suppliers/' + supplier_id + '/edit',
         type: 'PUT',
@@ -177,7 +176,6 @@ $('#edit_type_other').click(function () {
  */
 $('#supplier_create_save').click(function () {
     var supplier_data = extractSupplierData();
-   //$scope.modalData = supplier_data;
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
     _supplierAppendData();
@@ -234,21 +232,6 @@ $('#camp_type_other_checkbox').click(function () {
     }
 })
 
-// TODO - This was not used, thus breaking lint tests.
-// // Collect all checkbox values
-// function fetchAllCheckboxValues(className) {
-//     var val = [];
-//     $('.' + className + ':checked').each(function (i) {
-//         val[i] = $(this).val();
-//         if (val[i] === 'other') {
-//             val[i] += '=' + $('#' + className + '_other_text').val()
-//         }
-//     });
-//     return val.toString();
-// }
-/*
- * Component: view camp details
- */
 // Fetch & inject user data
 var user_type;
 function _fetchUserData(user_id) {

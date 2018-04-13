@@ -456,18 +456,7 @@ class CampsController {
                                 }
                             }, null, camp.attributes.__prototype);
                         } else {
-                            if (constants.prototype_camps.by_prototype(camp.attributes.__prototype).allow_new_users) {
-                                User.forge().save({
-                                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    email: user_email
-                                }).then((user) => {
-                                    campsService.updateCampStatus(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
-                                });
-                            } else {
-                                return next(new Error('Cannot add new emails without profile.'));
-                            }
-
+                            return next(new Error('Cannot add new emails without profile.'));
                         }
                     });
 
