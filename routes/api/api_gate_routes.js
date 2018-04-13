@@ -10,7 +10,8 @@ var Event = require('../../models/event').Event;
 var UsersGroup = require('../../models/user').UsersGroup;
 var UsersGroupMembership = require('../../models/user').UsersGroupMembership;
 
-// const constants = require('../../models/constants');
+const constants = require('../../models/constants');
+// const volunteersAPI = require('../../libs/volunteers')();
 
 const ERRORS = {
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',
@@ -246,8 +247,8 @@ router.post('/tickets-counter', async function (req, res) {
 
 router.post(
     '/vehicle-action/:direction',
-    async function (req, res) {
-        if (!constants..includes(req.params.direction)) {
+     async function (req, res) {
+        if (!constants.includes(req.params.direction)) {
             return sendError(res, 500, "INVALID_VEHICLE_DIRECTION");
         }
         try {
@@ -259,8 +260,8 @@ router.post(
         } catch (errorObj) {
             return sendError(res, 500, errorObj);
         }
-    }
-});
+   }
+);
 
 router.get(
     '/vehicle-counter',
@@ -278,7 +279,7 @@ router.get(
 );
 
 router.get(
-    'all-vehicle-actions/:dateFrom/:dateTo',
+    '/all-vehicle-actions/:dateFrom/:dateTo',
     async function (req, res) {
         try {
             let vehicleTimestamps = await knex('vehicle_entries').where('timestamp', '>', req.params.dateFrom).where('timestamp', '<', req.params.dateTo);
