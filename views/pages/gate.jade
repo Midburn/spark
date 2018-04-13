@@ -31,6 +31,7 @@ block content
                 .modal-header
                     button.close(type='button', data-dismiss='modal') ×
                     h4.modal-title=t("gate:enter_ticket")
+                    h5(style="visibility:hidden;")#modal_status=t('gate:early_arrival')
                 .modal-body
                     h3=t('gate:entrance_instructions')
                     span( id='modal_barcode' style="visibility:hidden;")
@@ -159,6 +160,7 @@ block scripts
                         gate_code: "#{gate_code}"
                     },
                     function (data, status) {
+                        $("#modal_status")[0].style = "visibility: visible";
                         $("#modal_mode")[0].innerHTML = "enter";
                         $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
                         $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
@@ -171,20 +173,23 @@ block scripts
 
                         let entranceButton = $("#entrance_button")[0];
                         entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
-                        if (data.ticket.groups && data.ticket.groups.length > 0 && data.gate_status === "early_arrival") {
-                            entranceButton.disabled = true;
-                            let groupsElement = $("#ticket_groups_list")[0];
-                            groupsElement.innerHTML = "";
-                            for (let group in data.ticket.groups) {
-                                let groupData = data.ticket.groups[group];
-                                groupsElement.innerHTML += "<a class='list-group-item' id='g_" + groupData.id + "'>" + groupData.name + "</a>"
+                        if (data.gate_status === "early_arrival"){
+                            
+                            if ( !data.ticket.production_early_arrival && (data.ticket.groups && data.ticket.groups.length > 0)) {
+                                entranceButton.disabled = true;
+                                let groupsElement = $("#ticket_groups_list")[0];
+                                groupsElement.innerHTML = "";
+                                for (let group in data.ticket.groups) {
+                                    let groupData = data.ticket.groups[group];
+                                    groupsElement.innerHTML += "<a class='list-group-item' id='g_" + groupData.id + "'>" + groupData.name + "</a>"
+                                }
+                                $(".list-group-item").click(function () {
+                                    $(".list-group-item").removeClass("active");
+                                    $(this).addClass("active");
+                                    entranceButton.disabled = false
+                                    $("#modal_group_id")[0].innerHTML = $(this)[0].id;
+                                });
                             }
-                            $(".list-group-item").click(function () {
-                                $(".list-group-item").removeClass("active");
-                                $(this).addClass("active");
-                                entranceButton.disabled = false
-                                $("#modal_group_id")[0].innerHTML = $(this)[0].id;
-                            });
                         }
                         else {
                             let groupsElement = $("#ticket_groups_list")[0];

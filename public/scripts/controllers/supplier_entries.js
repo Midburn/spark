@@ -27,6 +27,9 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
     $scope.orderEntries = 'enterance_time';
     $scope.isReverseOrder = true;
 
+    // Init empty edited entry
+    $scope.editedEntry = {};
+
     // Get suppliers for entry list
     getAllSuppliers((res) => {
         $scope.suppliers = res.data.suppliers;
@@ -96,5 +99,36 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
             }, 500)
         });
     }
+
+    $scope.editEntry = function(entry) {
+        $scope.editedEntry = {...entry};
+        // show modal
+        $('#edit_entry_request_modal').modal('show');
+    };
+
+    $scope.cancelEditedEntry = function() {
+        $scope.editedEntry = {};
+    };
+
+    $scope.saveEditedEntry = function() {
+        // show modal
+        $('#edit_entry_request_modal').modal('hide');
+        $http.put('/suppliers/edit-entry', $scope.editedEntry)
+            .then(response => {
+                sweetAlert(`Supplier entry edited!`);
+                $scope.editedEntry = {};
+                // Update view.
+                const newData = response.data;
+                $scope.entries = $scope.entries.map(entry => {
+                    if (entry.record_id === newData.record_id) {
+                        entry = newData;
+                    }
+                    return entry;
+                });
+            })
+            .catch(err => {
+                sweetAlert(`An error occurred while updating supplier entry ${err.data.data.message}`);
+            });
+    };
 
 });

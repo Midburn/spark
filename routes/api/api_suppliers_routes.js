@@ -235,6 +235,28 @@ module.exports = (app, passport) => {
     });
 
     /**
+     * API: (PUT) update supplir enterance
+     * request => /supplires/new
+     */
+    app.put('/suppliers/edit-entry', userRole.isGateManager(), async (req, res) => {
+        try {
+            const data = {
+                record_id: req.body.record_id,
+                number_of_people_entered: req.body.number_of_people_entered,
+                allowed_visa_hours: req.body.allowed_visa_hours,
+                vehicle_plate_number: req.body.vehicle_plate_number
+            };
+            await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).update(data).where('record_id', data.record_id);
+            const updated = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
+                .where(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.record_id', data.record_id)
+                .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id');
+            res.status(200).json(updated[0])
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
     * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
     * request => /suppliers/:supplier_id/contract
     */
@@ -271,8 +293,8 @@ module.exports = (app, passport) => {
         let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
         if (!supplier_contract) {
             data = {
-                created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                created_at: new Date(),
+                updated_at: new Date(),
                 file_name: fileName,
                 supplier_id: supplierId
             }
@@ -287,7 +309,7 @@ module.exports = (app, passport) => {
             }
         } else {
             data = {
-                updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                updated_at: new Date(),
                 file_name: fileName,
             }
             try {
@@ -309,7 +331,7 @@ module.exports = (app, passport) => {
 
    /**
    * API: (GET) GET a link to supplier's contract file in S3.
-   * The link is signed and valid for `awsConfig.presignedUrlExpireSeconds`, default is 900 (15 minutes) 
+   * The link is signed and valid for `awsConfig.presignedUrlExpireSeconds`, default is 900 (15 minutes)
    * request => /suppliers/:supplier_id/contract
    */
    app.get('/suppliers/:supplier_id/contract',userRole.isCampsAdmin(), async (req, res) => {
@@ -365,7 +387,7 @@ module.exports = (app, passport) => {
 
     function supplier_data_update_(req,action) {
         let data = {
-            updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            updated_at: new Date(),
             supplier_id: req.params.supplier_id || req.body.supplier_id,
             supplier_name_en: req.body.supplier_name_en,
             supplier_name_he: req.body.supplier_name_he,
@@ -380,7 +402,7 @@ module.exports = (app, passport) => {
 
         if (action === "new")
         {
-            data.created_at = (new Date()).toISOString().substring(0, 19).replace('T', ' ')
+            data.created_at = new Date()
         }
 
         return data;
@@ -394,7 +416,7 @@ module.exports = (app, passport) => {
             vehicle_plate_number: req.body.vehicle_plate_number,
             number_of_people_entered: req.body.number_of_people_entered,
             allowed_visa_hours: req.body.allowed_visa_hours,
-            enterance_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            enterance_time: new Date(),
             supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[0],
         };
 
@@ -405,7 +427,7 @@ module.exports = (app, passport) => {
 
         let data = {
             record_id: req.body.record_id,
-            departure_time: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+            departure_time: new Date(),
             supplier_status: constants.SUPPLIER_STATUS_CATEGORIES[1],
         };
 

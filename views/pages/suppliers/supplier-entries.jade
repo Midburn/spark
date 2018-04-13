@@ -1,7 +1,7 @@
 extends ../../includes/page
 block content
-    .camps.camp_admin_index(ng-app="ngSuppliers")
-        .container.col-md-12
+    .camps.camp_admin_index(ng-app="ngSuppliers", ng-controller="supplierEntriesController")
+        .container.col-md-12()
             h1=t(t_prefix+'entries.suppliers')
             p.lead.text-muted=t(t_prefix+'entries.desc')
         .controls.row
@@ -12,11 +12,14 @@ block content
                             a.Btn.Btn__green.card-switcher#4(role='button')
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'entries.supplier_entrance')
+                            a.Btn.Btn__green(href=`/${language}/suppliers-admin/new`, role='button')
+                                span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                span=t(t_prefix + 'edit_new.new_supplier')
 
-        .cards--wrapper.card__shad(ng-controller="supplierEntriesController")
+        .cards--wrapper.card__shad
             .card.card-first.card__padding--even.col-xs-12.table-responsive
                 datalist(id="supplierList")
-                    option(ng-repeat="supplier in suppliers", label="{{supplier.main_contact_name}}", value="{{supplier.supplier_id}}") {{supplier}}
+                    option(ng-repeat="supplier in suppliers", label="{{supplier.main_contact_name}}", value="{{supplier.supplier_id}}")
                 //- Card 1
                 h4=t(t_prefix+'edit_new.suppliers')
                 .controls.row
@@ -51,13 +54,16 @@ block content
                             td {{ entry.number_of_people_entered }}
                             td {{ entry.main_contact_phone_number }}
                             td {{ entry.allowed_visa_hours}}
-                            td {{ entry.enterance_time | date : 'medium' }}
-                            td {{ entry.departure_time | date : 'medium' }}
+                            td {{ entry.enterance_time | date : 'dd/MM/yy HH:mm' }}
+                            td {{ entry.departure_time | date : 'dd/MM/yy HH:mm' }}
                             td {{ entry.supplier_status }}
                             td
                                 button.btn.btn-xs(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
                                     span(class='glyphicon glyphicon-remove')
                                     =t(t_prefix+'entries.exit')
+                                button.btn.btn-xs(ng-click="editEntry(entry)")
+                                    span(class='glyphicon glyphicon-pencil')
+                                    =t(t_prefix + 'entries.edit')
             .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
                 h2=t(t_prefix+'entries.new')
                 .col-sm-6.col-xs-12
@@ -76,4 +82,25 @@ block content
                     a.Btn.Btn__green.Btn__inline.btn(role='button', ng-click="addEntry()")=t(t_prefix+'entries.add_entry')
                     a.Btn.Btn__red.Btn__inline.btn.card-switcher#1(role='button')
                         span=t(t_prefix+'entries.cancel')
+        //- Camp create request modal
+        .modal.fade(id='edit_entry_request_modal', role='dialog')
+            .modal-dialog.card.card__padding--even.card__shad(role='document')
+                div
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        h4.modal-title=t('suppliers:entries.edit')
+                        h6.modal-scondery-title {{ editedEntry.supplier_id }} - {{ editedEntry.supplier_name_he }}
+                    .modal-body
+                        .col-sm-12.col-xs-12
+                            .pos-r
+                                label=t(t_prefix + 'entries.vehicle_plate_number')
+                                input(id='edit-supplier-entry-plate', type="text", class="form-control", name="supplier_plate", autofocus="true", ng-model="editedEntry.vehicle_plate_number", required)
+                                label=t(t_prefix + 'entries.num_people_in_vehicle')
+                                input(id='edit-supplier-entry-people', type="number", class="form-control", name="supplier_people", autofocus="true", ng-model="editedEntry.number_of_people_entered", required)
+                                label=t(t_prefix + 'entries.visa_duration')
+                                input(id='edit-supplier-entry-hours', type="number", class="form-control", name="supplier_hours", autofocus="true", ng-model="editedEntry.allowed_visa_hours", required)
+                    .modal-footer
+                        button.Btn.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', ng-click="cancelEditedEntry()", data-dismiss='modal')=t('suppliers:edit_new.back')
+                        button.Btn.Btn__green(id='supplier_create_save_modal_request', type='button', ng-click="saveEditedEntry()")=t('suppliers:edit_new.save')
 
