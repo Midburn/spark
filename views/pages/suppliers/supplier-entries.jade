@@ -12,6 +12,9 @@ block content
                             a.Btn.Btn__green.card-switcher#4(role='button')
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'entries.supplier_entrance')
+                            a.Btn.Btn__green(href=`/${language}/suppliers-admin/new`, role='button')
+                                span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                span=t(t_prefix + 'edit_new.new_supplier')
 
         .cards--wrapper.card__shad(ng-controller="supplierEntriesController")
             .card.card-first.card__padding--even.col-xs-12.table-responsive
