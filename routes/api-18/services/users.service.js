@@ -20,7 +20,7 @@ class UsersService {
     modifyUsersInfo(info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
         const userData = info;
         let jsonInfo;
-        const ticketKey = isDgs ? 'dgs_ticket' : 'pre_sale_ticket';
+        const ticketKey = isGroupSale ? 'group_sale_ticket' : 'pre_sale_ticket';
         let campQuotaKey;
         //check for the sub action in the json info
         if (addinfo_jason_subAction === "pre_sale_ticket") {
@@ -67,7 +67,7 @@ class UsersService {
                 }
                 //if the pre sale ticket count equal or higher than the quota
                 //reject the reuestdgs
-                campQuotaKey = isDgs ? 'dgs_tickets_quota' : 'pre_sale_tickets_quota';
+                campQuotaKey = isGroupSale ? 'group_sale_tickets_quota' : 'pre_sale_tickets_quota';
                 if (preSaleTicketsCount >= camp.attributes[campQuotaKey]) {
                     throw new Error("exceed pre sale tickets quota");
                 }

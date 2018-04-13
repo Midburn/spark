@@ -57,11 +57,11 @@
                         h3=t(`${t_prefix}form.dates_controll.title`)
                         p=t(`${t_prefix}form.dates_controll.description`)
                         .details-en.col-md-6
-                            label(for='start_dgs_tickets')=t(`${t_prefix}form.dgs_tickets_allocation.start`)
-                            input.form-control(type='date' id='start_dgs_tickets', dir='ltr', name='start_dgs_tickets' ng-value="getDateString(event.addinfo_json.dgs_tickets_allocation_start)" ng-model='event.addinfo_json.dgs_tickets_allocation_start')
+                            label(for='start_group_sale_tickets')=t(`${t_prefix}form.group_sale_tickets_allocation.start`)
+                            input.form-control(type='date' id='start_group_sale_tickets', dir='ltr', name='start_group_sale_tickets' ng-value="getDateString(event.addinfo_json.group_sale_tickets_allocation_start)" ng-model='event.addinfo_json.group_sale_tickets_allocation_start')
                         .details-en.col-md-6
-                            label(for='end_dgs_tickets')=t(`${t_prefix}form.dgs_tickets_allocation.end`)
-                            input.form-control(type='date' id='end_dgs_tickets', dir='ltr', name='end_dgs_tickets' ng-value="getDateString(event.addinfo_json.dgs_tickets_allocation_end)" ng-model='event.addinfo_json.dgs_tickets_allocation_end')
+                            label(for='end_group_sale_tickets')=t(`${t_prefix}form.group_sale_tickets_allocation.end`)
+                            input.form-control(type='date' id='end_group_sale_tickets', dir='ltr', name='end_group_sale_tickets' ng-value="getDateString(event.addinfo_json.group_sale_tickets_allocation_end)" ng-model='event.addinfo_json.group_sale_tickets_allocation_end')
                         .details-en.col-md-6
                             label(for='start_presale_tickets')=t(`${t_prefix}form.appreciation_tickets_allocation.start`)
                             input.form-control(type='date' id='start_presale_tickets', dir='ltr' ng-value="getDateString(event.addinfo_json.appreciation_tickets_allocation_start)" ng-model='event.addinfo_json.appreciation_tickets_allocation_start')
