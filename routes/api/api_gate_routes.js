@@ -81,7 +81,7 @@ router.post('/get-ticket/', async function (req, res) {
         let groups = [];
         let holder = ticket.relations.holder;
         // await holder.fetch({withRelated: ['groups', 'groupsMembership']});
-        await holder.fetch({withRelated: ['groups']});
+        await holder.fetch({withRelated: ['groups', 'camp_memberships']});
         // if (holder.relations.groupsMembership) {
         //     _.each(holder.relations.groupsMembership.models, groupMembership => {
         //         if (groupMembership.attributes.status === 'approved' ||
@@ -101,6 +101,17 @@ router.post('/get-ticket/', async function (req, res) {
                 // }
             });
         }
+
+        if (holder.relations.camp_memberships) {
+            _.each(holder.relations.camp_memberships.models, camp_membership => {
+                let addinfo = JSON.parse(camp_membership.attributes.addinfo_json);
+                let group = _.find(groups, g => g.id === camp_membership.attributes.camp_id);
+                if (group && (addinfo && addinfo.early_arrival)) {
+                    group.early_arrival = true;
+                }
+            });
+        }
+
         let production_early_arrival = false;
         if (gate_status === 'early_arrival') {
             production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
