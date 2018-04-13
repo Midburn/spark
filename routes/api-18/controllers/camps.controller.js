@@ -120,7 +120,7 @@ class CampsController {
         const user_id = req.params.user_id;
         const camp_id = req.params.camp_id;
         const action = req.params.action;
-        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'dgs_ticket'];
+        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'group_sale_ticket'];
         if (actions.indexOf(action) > -1) {
             campsService.updateCampStatus(req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
@@ -396,12 +396,12 @@ class CampsController {
                         if (addinfo_json.pre_sale_ticket === "true") {
                             members[i].pre_sale_ticket = true;
                         }
-                        if (addinfo_json.dgs_ticket === "true") {
-                            members[i].dgs_ticket = true;
+                        if (addinfo_json.group_sale_ticket === "true") {
+                            members[i].group_sale_ticket = true;
                         }
                     } else {
                         members[i].pre_sale_ticket = false;
-                        members[i].dgs_ticket = false;
+                        members[i].group_sale_ticket = false;
                     }
                 }
                 const result = camp.parsePrototype(req.user);
@@ -519,7 +519,7 @@ class CampsController {
                     }
                 });
             }
-            const campUpdate = req.body.isDgs ? { dgs_tickets_quota: quota } : { pre_sale_tickets_quota: quota };
+            const campUpdate = req.body.isGroupSale ? { group_sale_tickets_quota: quota } : { pre_sale_tickets_quota: quota };
             camp.save(campUpdate).then(() => {
                 return res.sendStatus(200);
             }).catch((err) => {

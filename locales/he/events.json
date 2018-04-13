@@ -60,7 +60,7 @@
         },
         "camps_edit_disabled": "חסימת עריכת מחנות",
         "art_edit_disabled": "חסימת עריכת מיצגי אומנות",
-        "dgs_tickets_allocation": {
+        "group_sale_tickets_allocation": {
             "start": "תאריך תחילת הקצאת כרטיסי קבוצה",
             "end": "תאריך סיום הקצאת כרטיסי קבוצה"
         }

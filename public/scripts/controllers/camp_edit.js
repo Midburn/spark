@@ -5,7 +5,7 @@ var angular_getMembers = function ($http, $scope, camp_id) {
             var approved_members = [];
             var total_in_event = 0;
             var allocatedPreSaleTicketsCount=0;
-            var allocatedDgsTicketsCount=0;
+            var allocatedGroupSaleTicketsCount=0;
             for (var i in members) {
                 var newMember=members[i]
                 //check if the user has a pre_sale ticket
@@ -17,12 +17,12 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                 else {
                     newMember.pre_sale_ticket_approved = false;
                 }
-                if (members[i].dgs_ticket) {
-                    newMember.dgs_ticket_approved=members[i].dgs_ticket;
-                    allocatedDgsTicketsCount++;
+                if (members[i].group_sale_ticket) {
+                    newMember.group_sale_ticket_approved=members[i].group_sale_ticket;
+                    allocatedGroupSaleTicketsCount++;
                 }
                 else {
-                    newMember.dgs_ticket_approved = false;
+                    newMember.group_sale_ticket_approved = false;
                 }
                 if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(newMember.member_status) > -1) {
                     _members.push(newMember);
@@ -33,10 +33,10 @@ var angular_getMembers = function ($http, $scope, camp_id) {
                 total_in_event += parseInt(newMember.inside_event);
             }
             $scope.preSaleTicketsCount = preSaleTicketCount;
-            $scope.dgsTicketsCount = dgsTicketCount;
-            $scope.allocatedTickets = allocatedPreSaleTicketsCount + allocatedDgsTicketsCount;
+            $scope.groupSaleTicketsCount = groupSaleTicketCount;
+            $scope.allocatedTickets = allocatedPreSaleTicketsCount + allocatedGroupSaleTicketsCount;
             $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
-            $scope.dgs_tickets_quota = res.data.dgs_tickets_quota;
+            $scope.group_sale_tickets_quota = res.data.group_sale_tickets_quota;
             $scope.members = _members;
             $scope.approved_members = approved_members;
             $scope.all_approved_members = approved_members.length;
@@ -66,7 +66,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             approve_mgr: 'להפוך למנהל את',
             remove: 'להסיר את',
             pre_sale_ticket : 'לאשר כרטיס מוקדם',
-            dgs_ticket : 'לאשר כרטיס קבוצה',
+            group_sale_ticket : 'לאשר כרטיס קבוצה',
         };
         tpl = {
             alert_title: "האם את/ה בטוח?",

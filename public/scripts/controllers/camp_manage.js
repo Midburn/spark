@@ -73,10 +73,10 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
     };
 
     // update the camp pre sale quota
-    $scope.updatePreSaleQuota = (camp_id, quota, isDgs) => {
-        if ($scope.isInDateRange(isDgs)) {
+    $scope.updatePreSaleQuota = (camp_id, quota, isGroupSale) => {
+        if ($scope.isInDateRange(isGroupSale)) {
             if (confirm('Confirm new quota to: ' + quota)) {
-                $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: quota, isDgs: isDgs })
+                $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: Number(quota), isGroupSale: isGroupSale })
                     .success(() => { })
                     .error(() => {
                         alert("Quota must be in a positive number format");
