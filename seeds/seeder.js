@@ -7,9 +7,11 @@ const addEventsToDb = require('./2_event');
 const addCampsToDb = require('./3_camps');
 const addCampMembers = require('./4_campMembers');
 const addTickets = require('./5_tickets');
+const addSuppliers = require('./6_suppliers');
 const MOCK_USERS_SCHEMA = require('./gen/mockSchema/users.schema');
 const MOCK_EVENTS_SCHEMA = require('./gen/mockSchema/events.schema');
 const MOCK_CAMPS_SCHEMA = require('./gen/mockSchema/camps.schema');
+const MOCK_SUPPLIERS_SCHEMA = require('./gen/mockSchema/suppliers.schema');
 const utils = require('./util/utils');
 const random = process.argv.includes('random');
 const replaceStatic = process.argv.includes('replace');
@@ -125,23 +127,28 @@ const seed = async (scale = 1) => {
             mockData = utils.getFromFiles([
                 MOCK_USERS_SCHEMA.NAME,
                 MOCK_EVENTS_SCHEMA.NAME,
-                MOCK_CAMPS_SCHEMA.NAME
+                MOCK_CAMPS_SCHEMA.NAME,
+                MOCK_SUPPLIERS_SCHEMA.NAME,
             ]);
         }
         const users = mockData[MOCK_USERS_SCHEMA.NAME];
         const events = mockData[MOCK_EVENTS_SCHEMA.NAME];
         let camps = mockData[MOCK_CAMPS_SCHEMA.NAME];
+        let suppliers = mockData[MOCK_SUPPLIERS_SCHEMA.NAME];
+
         if (random) {
             camps = initStaticCamps(camps, events);
         }
         // Create link between camps and users
         const campMembers = correlateData(users, camps);
         const tickets = allocateTickets(events);
+
         if (replaceStatic) {
             log.info('Replacing static data...');
             utils.saveFile(MOCK_USERS_SCHEMA.NAME, users);
             utils.saveFile(MOCK_EVENTS_SCHEMA.NAME, events);
             utils.saveFile(MOCK_CAMPS_SCHEMA.NAME, camps);
+            utils.saveFile(MOCK_SUPPLIERS_SCHEMA.NAME, suppliers);
         }
         if (!nosave) {
             await addEventsToDb(events);
@@ -149,8 +156,10 @@ const seed = async (scale = 1) => {
             await addCampsToDb(camps);
             await addCampMembers(campMembers);
             await addTickets(tickets);
+            await addSuppliers(suppliers);
         }
-        log.info(`Seeding process done, seeded ${users.length} users, ${camps.length} camps and ${events.length} events`);
+        log.info(`Seeding process done, seeded ${users.length} users, ` + 
+            `${camps.length} camps ${events.length} events, and ${suppliers.length} suppliers`);
         process.exit(0);
         return mockData;
     } catch (err) {
@@ -159,5 +168,6 @@ const seed = async (scale = 1) => {
     }
 
 };
+
 // Activate the function
 seed(scale);

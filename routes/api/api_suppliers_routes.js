@@ -235,6 +235,28 @@ module.exports = (app, passport) => {
     });
 
     /**
+     * API: (PUT) update supplir enterance
+     * request => /supplires/new
+     */
+    app.put('/suppliers/edit-entry', userRole.isGateManager(), async (req, res) => {
+        try {
+            const data = {
+                record_id: req.body.record_id,
+                number_of_people_entered: req.body.number_of_people_entered,
+                allowed_visa_hours: req.body.allowed_visa_hours,
+                vehicle_plate_number: req.body.vehicle_plate_number
+            };
+            await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).update(data).where('record_id', data.record_id);
+            const updated = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
+                .where(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.record_id', data.record_id)
+                .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id');
+            res.status(200).json(updated[0])
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
     * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
     * request => /suppliers/:supplier_id/contract
     */
