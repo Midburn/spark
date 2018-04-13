@@ -266,7 +266,7 @@ router.post(
             return sendError(res, 500, "INVALID_VEHICLE_DIRECTION");
         }
         try {
-            const direction = 'arrival' === req.params.direction ? 1 : 0;
+            const direction = req.params.direction === 'arrival' ? 1 : 0;
             await knex('vehicle_entries').insert({timestamp: new Date(), direction: direction, event_id: req.params.event_id});
             return res.status(200).json({
                 message: "Vehicle action completed"
@@ -281,7 +281,7 @@ router.get(
     '/vehicle-counter/:event_id',
     async function (req, res) {
         try {
-            let vehicleEntries  = (await knex('vehicle_entries').count().where('direction', '=', 1))[0]['count(*)'];
+            let vehicleEntries = (await knex('vehicle_entries').count().where('direction', '=', 1))[0]['count(*)'];
             let vehicleExits = (await knex('vehicle_entries').count().where('direction', '=', 0))[0]['count(*)'];
             return res.status(200).json({
                 vehicleCount: vehicleEntries - vehicleExits
