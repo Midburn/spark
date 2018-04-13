@@ -10,7 +10,8 @@ var Event = require('../../models/event').Event;
 var UsersGroup = require('../../models/user').UsersGroup;
 var UsersGroupMembership = require('../../models/user').UsersGroupMembership;
 
-// const constants = require('../../models/constants');
+const constants = require('../../models/constants');
+// const volunteersAPI = require('../../libs/volunteers')();
 
 const ERRORS = {
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',
@@ -245,29 +246,29 @@ router.post('/tickets-counter', async function (req, res) {
 });
 
 router.post(
-    '/vehicle-action/:direction',
-    async function (req, res) {
-        if (!constants..includes(req.params.direction)) {
+    '/vehicle-action/:event_id/:direction',
+     async function (req, res) {
+        if (!constants.VEHICLE_ENTRY_DIRECTION.includes(req.params.direction)) {
             return sendError(res, 500, "INVALID_VEHICLE_DIRECTION");
         }
         try {
-            let direction = 'arrival' === req.params.direction ? 1 : 0;
-            await knex('vehicle_entries').insert({timestamp: new Date().getTime(), direction: direction});
+            const direction = 'arrival' === req.params.direction ? 1 : 0;
+            await knex('vehicle_entries').insert({timestamp: new Date(), direction: direction, event_id: req.params.event_id});
             return res.status(200).json({
                 message: "Vehicle action completed"
             });
         } catch (errorObj) {
             return sendError(res, 500, errorObj);
         }
-    }
-});
+   }
+);
 
 router.get(
-    '/vehicle-counter',
+    '/vehicle-counter/:event_id',
     async function (req, res) {
         try {
-            let vehicleEntries  = await knex('vehicle_entries').count().where('direction', '=', 1);
-            let vehicleExits = await knex('vehicle_entries').count().where('direction', '=', 0);
+            let vehicleEntries  = (await knex('vehicle_entries').count().where('direction', '=', 1))[0]['count(*)'];
+            let vehicleExits = (await knex('vehicle_entries').count().where('direction', '=', 0))[0]['count(*)'];
             return res.status(200).json({
                 vehicleCount: vehicleEntries - vehicleExits
             });
@@ -278,10 +279,13 @@ router.get(
 );
 
 router.get(
-    'all-vehicle-actions/:dateFrom/:dateTo',
+    '/all-vehicle-actions/:event_id/:dateFrom/:dateTo',
     async function (req, res) {
         try {
-            let vehicleTimestamps = await knex('vehicle_entries').where('timestamp', '>', req.params.dateFrom).where('timestamp', '<', req.params.dateTo);
+            let vehicleTimestamps = await knex('vehicle_entries')
+                .where('event_id', '=', req.params.event_id)
+                .where('timestamp', '>', new Date(parseInt(req.params.dateFrom)))
+                .where('timestamp', '<', new Date(parseInt(req.params.dateTo)));
             return res.status(200).json({
                 vehicleTimestamps: vehicleTimestamps
             });
