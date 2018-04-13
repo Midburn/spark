@@ -246,4 +246,6 @@ module.exports = {
 
     SUPPLIER_CATEGORIES: ['food', 'water', 'shade', 'carriage', 'other'],
     SUPPLIER_STATUS_CATEGORIES: ['Inside','Outside'],
+
+    VEHICLE_ENTRY_DIRECTION: ['arrival', 'departure'],
 };
