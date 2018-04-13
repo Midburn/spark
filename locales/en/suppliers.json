@@ -58,7 +58,7 @@
         "docs": "Docs",
         "edit": "Edit Supplier",
         "supplier_details": "Supplier details"
-       
+
     },
     "entries": {
         "supplier_entrance": "Supplier Entrance",
@@ -78,6 +78,7 @@
         "status": "Status",
         "actions": "Actions",
         "cancel": "Cancel",
-        "exit": "Supplier left"
+        "exit": "Supplier left",
+        "edit": "Edit supplier entry"
     }
 }
