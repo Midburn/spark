@@ -120,7 +120,7 @@ class CampsController {
         const user_id = req.params.user_id;
         const camp_id = req.params.camp_id;
         const action = req.params.action;
-        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'dgs_ticket'];
+        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'dgs_ticket', 'early_arrival'];
         if (actions.indexOf(action) > -1) {
             campsService.updateCampStatus(req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
@@ -399,6 +399,7 @@ class CampsController {
                         if (addinfo_json.dgs_ticket === "true") {
                             members[i].dgs_ticket = true;
                         }
+                        members[i].early_arrival = addinfo_json.early_arrival
                     } else {
                         members[i].pre_sale_ticket = false;
                         members[i].dgs_ticket = false;
