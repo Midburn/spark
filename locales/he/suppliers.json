@@ -3,7 +3,7 @@
         "name": "שם החברה",
         "search": "חפש ספק",
         "suppliers": "ספקים",
-        "new_supplier": "יצירת ספק חדש ",
+        "new_supplier": "הזנת ספק למערכת",
         "desc": "תפריט ניהול ספקים, ניתן לערוך את פרטי הספק, ועוד..",
         "supplier": "ספק",
         "editing": "עורך את",
@@ -59,7 +59,7 @@
         "supplier_details": "פרטי ספק"
     },
     "entries": {
-        "supplier_entrance": "כניסת ספק",
+        "supplier_entrance": "הכנסת ספק לתוך העיר",
         "search": "חפש ספק",
         "new": "הוסף כניסת ספק",
         "add_entry": "הוסף",
