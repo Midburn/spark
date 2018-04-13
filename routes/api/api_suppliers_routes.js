@@ -235,27 +235,6 @@ module.exports = (app, passport) => {
     });
 
     /**
-    * API: (POST) create supplire comment return record id
-    * request => /suppliers/:supplier_id/add_supplier_comment
-    */
-   app.post('/suppliers/:supplier_id/add_supplier_comment', userRole.isCampManager(), async (req, res) => {
-    try {
-
-        let data = {
-            supplier_id: req.params.supplier_id,
-            user_id: req.user.attributes.user_id,
-            comment_time: new Date(),
-            supplier_comment: req.body.comment,
-        };
-
-        let record_info = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).insert(data)
-        res.status(200).json({record_id: record_info[0]})
-        } catch (err) {
-            res.status(500).json({error: true,data: { message: err.message }})
-        }
-    });
-
-    /**
     * API: (GET) get supplire comment return record id
     * request => /suppliers/:supplier_id/add_supplier_comment
     */
