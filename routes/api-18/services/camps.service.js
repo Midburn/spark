@@ -20,7 +20,7 @@ class CampsService {
      * @param res
      */
     updateCampStatus(current_event_id, camp_id, user_id, action, camp_mgr, res) {
-        let isDgs;
+        let isDgs = false;
         if (action === 'dgs_ticket') {
             action = 'pre_sale_ticket';
                 isDgs = true;
@@ -75,6 +75,8 @@ class CampsService {
                         new_status = 'pending';
                     } else if (user && action === "pre_sale_ticket") {
                         addinfo_jason_subAction ="pre_sale_ticket";
+                    } else if (user && action === "early_arrival") {
+                        addinfo_jason_subAction ="early_arrival";
                     } else if (action === "request_mgr") {
                         if (group_options.auto_approve_new_members) {
                             new_status = 'approved';
