@@ -7,7 +7,7 @@ const router = express.Router({
 });
 
 // INDEX
-router.get('/suppliers-admin', userRole.isLoggedIn(), (req, res) => {
+router.get('/suppliers-admin/:cardId*?', userRole.isLoggedIn(), (req, res) => {
     const lang = req.params.lng || 'he';
     req.breadcrumbs([{
         name: 'breadcrumbs.home',
@@ -91,8 +91,8 @@ router.get('/suppliers/:id', userRole.isLoggedIn(), (req, res) => {
         t_prefix: "suppliers:edit_new",
         language: lang,
         currentEventID: currentEventID
-    };   
-    res.render('pages/suppliers/supplier',params);    
+    };
+    res.render('pages/suppliers/supplier',params);
 });
 
 // EDIT
@@ -120,8 +120,8 @@ router.get('/suppliers/:id/edit', userRole.isLoggedIn(), (req, res) => {
         t_prefix: "suppliers:",
         language: lang,
         supplier_id: supplier_id
-    };   
-    res.render('pages/suppliers/edit',params);    
+    };
+    res.render('pages/suppliers/edit',params);
 });
 
 // suppliers documents
