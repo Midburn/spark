@@ -34,13 +34,14 @@ exports.up = function(knex, Promise) {
             table.foreign('camp_id').references('id').inTable(constants.CAMPS_TABLE_NAME);
             table.foreign('event_id').references('event_id').inTable(constants.EVENTS_TABLE_NAME);
 
-        })
+        }),
+
     ]);
 };
 
 exports.down = function(knex, Promise) {
     return Promise.all([
         knex.schema.dropTable(constants.SUPPLIERS_TABLE_NAME),
-        knex.schema.dropTable(constants.SUPPLIERS_RELATIONS_TABLE_NAME)
+        knex.schema.dropTable(constants.SUPPLIERS_RELATIONS_TABLE_NAME),
     ])
 };

@@ -39,9 +39,12 @@ span {
     color: white;
 }
 
+.card, .modal {
+    color: $card-text;
+}
+
 .card {
     background: $card-bg;
-    color: $card-text;
 }
 
 .text-muted {
@@ -278,5 +281,6 @@ div.selectize-input > div > span > span {
 .tile-img {
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.9);
 }
-
-
+.cursor-pointer-children:nth-child(n)  {
+    cursor: pointer;
+}

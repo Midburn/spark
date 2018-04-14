@@ -9,6 +9,7 @@ const dropDbs = async function(knex) {
         await knex(constants.CAMPS_TABLE_NAME).del();
         await knex(constants.USERS_TABLE_NAME).del();
         await knex(constants.EVENTS_TABLE_NAME).del();
+        await knex(constants.SUPPLIERS_TABLE_NAME).del();
     } catch (error) {
         log.error('Spark encountered an error while seeding and droping tables:');
         log.error(error);

@@ -1,15 +1,16 @@
-var express = require('express');
-var router = express.Router({mergeParams: true});
-var _ = require('lodash');
-var log = require('../../libs/logger')(module);
-var knex = require('../../libs/db').knex;
-var drupalSync = require('../../scripts/drupal_ticket_sync');
+const express = require('express');
+const router = express.Router({mergeParams: true});
+const _ = require('lodash');
+const log = require('../../libs/logger')(module);   
+const knex = require('../../libs/db').knex;
+const drupalSync = require('../../scripts/drupal_ticket_sync');
 
-var Ticket = require('../../models/ticket').Ticket;
-var Event = require('../../models/event').Event;
-var UsersGroup = require('../../models/user').UsersGroup;
-var UsersGroupMembership = require('../../models/user').UsersGroupMembership;
+const Ticket = require('../../models/ticket').Ticket;
+const Event = require('../../models/event').Event;
+const UsersGroup = require('../../models/user').UsersGroup;
+const UsersGroupMembership = require('../../models/user').UsersGroupMembership;
 
+const volunteersAPI = require('../../libs/volunteers')();
 const ERRORS = {
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',
     BAD_SEARCH_PARAMETERS: 'Search parameters are missing or incorrect. Please provide barcode or (ticket and order)',
@@ -80,7 +81,7 @@ router.post('/get-ticket/', async function (req, res) {
         let groups = [];
         let holder = ticket.relations.holder;
         // await holder.fetch({withRelated: ['groups', 'groupsMembership']});
-        await holder.fetch({withRelated: ['groups']});
+        await holder.fetch({withRelated: ['groups', 'camp_memberships']});
         // if (holder.relations.groupsMembership) {
         //     _.each(holder.relations.groupsMembership.models, groupMembership => {
         //         if (groupMembership.attributes.status === 'approved' ||
@@ -101,6 +102,21 @@ router.post('/get-ticket/', async function (req, res) {
             });
         }
 
+        if (holder.relations.camp_memberships) {
+            _.each(holder.relations.camp_memberships.models, camp_membership => {
+                let addinfo = JSON.parse(camp_membership.attributes.addinfo_json);
+                let group = _.find(groups, g => g.id === camp_membership.attributes.camp_id);
+                if (group && (addinfo && addinfo.early_arrival)) {
+                    group.early_arrival = true;
+                }
+            });
+        }
+
+        let production_early_arrival = false;
+        if (gate_status === 'early_arrival') {
+            production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
+            log.debug(`get-ticket - user {holder.attributes.email} is a production volunteer`);
+        }
         // Preparing result.
         let result = {
             ticket_number: ticket.attributes.ticket_number,
@@ -117,7 +133,9 @@ router.post('/get-ticket/', async function (req, res) {
             first_entrance_timestamp: ticket.attributes.first_entrance_timestamp ? ticket.attributes.first_entrance_timestamp.getTime() : null,
             last_exit_timestamp: ticket.attributes.last_exit_timestamp ? ticket.attributes.last_exit_timestamp.getTime() : null,
             entrance_group_id: ticket.attributes.entrance_group_id,
-            groups: groups
+            groups: groups,
+            production_early_arrival: production_early_arrival
+
         };
 
         // All done, sending the result.
@@ -149,27 +167,34 @@ router.post('/gate-enter', async function (req, res) {
         ticket.attributes.forced_entrance_reason = req.body.force_reason;
     }
     else {
+        let holder = ticket.relations.holder;        
+        if (gate_status === "early_arrival")
         // Finding the right users group and updating it.
-        if (req.body.group_id && gate_status === "early_arrival") {
-            let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
-
-            if (!group) {
-                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
-            }
-
-            let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
-
-            if (!groupMembership) {
-                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
-            }
-
-            if (await group.quotaReached) {
-                return sendError(res, 500, "QUOTA_REACHED");
-            }
-        }
-        else if (!req.body.group_id && gate_status === "early_arrival")
         {
-            return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+            let production_early_arrival = false;
+            production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
+            log.debug(`get-ticket - user {holder.attributes.email} is a production volunteer`);
+            if (req.body.group_id) {
+                let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
+
+                if (!group) {
+                    return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                }
+
+                let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
+
+                if (!groupMembership) {
+                    return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                }
+
+                if (await group.quotaReached) {
+                    return sendError(res, 500, "QUOTA_REACHED");
+                }
+            }
+            else if (!production_early_arrival) 
+            {
+                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+            }
         }
     }
 
