@@ -181,11 +181,49 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             innerHeightChange();
         }, 500)
     }
+
+    $scope.getSuppliers = () => {
+        const promise = $q.defer();
+        const camp_id = $scope.current_camp_id;
+        $http.get(`/suppliers/${camp_id}/suppliers`).then(s => {
+            $scope.camp_suppliers = s.data.suppliers;
+            return $http.get('/suppliers').then(s => {
+                $scope.all_suppliers = s.data.suppliers.filter(
+                    supplier => !$scope.camp_suppliers.find(s => s.supplier_id === supplier.supplier_id));
+                promise.resolve();
+            })
+        }).catch(e => promise.reject(e));
+    }
+
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
     }
     $scope.lang = document.getElementById('meta__lang').value;
     // $scope.grouptype = document.getElementById('meta__grouptype').value;
+
+    $scope.removeSupplier = supplier_id => {
+        const promise = $q.defer();
+        const camp_id = $scope.current_camp_id;
+        $http.delete(`/suppliers/${supplier_id}/camps/${camp_id}`).then(() => {
+            $scope.getSuppliers();
+            promise.resolve();
+        }).catch(e => {
+            const jsonError = e.data.message;
+            sweetAlert("Error!", "Could not remove supplier \n" + jsonError);
+            promise.reject(e);
+        });
+    };
+
+    $scope.addSupplier = () => {
+        const promise = $q.defer();
+        const camp_id = $scope.current_camp_id;
+        const {add_supplier_id} = $scope;
+        $http.put(`/suppliers/${add_supplier_id}/camps/${camp_id}`).then(() => {
+            $scope.getSuppliers();
+            promise.resolve();
+        }).catch(e => promise.reject(e));
+    }
+
     $scope.addMember = () => {
         var camp_id = $scope.current_camp_id;
         var new_user_email = $scope.camps_members_add_member
@@ -201,6 +239,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
         });
     }
+        
     $scope.updateUser = (user_name, user_id,action_type) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
@@ -221,14 +260,14 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
     };
 
     $scope.updateEarlyArrival = (user_name, user_id, action_type) => {
-       var camp_id = $scope.current_camp_id;
-       var user_rec = {
-           camp_id: camp_id,
-           user_name: user_name,
-           user_id: user_id,
-       }
+        var camp_id = $scope.current_camp_id;
+        var user_rec = {
+            camp_id: camp_id,
+            user_name: user_name,
+            user_id: user_id,
+        }
 
-       angular_updateUser($http, $scope, action_type, user_rec);
+        angular_updateUser($http, $scope, action_type, user_rec);
     }
 
     //when the user wants to update a pre sale ticket
@@ -268,6 +307,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         $scope.current_camp_id = camp_id;
         $scope.getMembers();
         $scope.getFiles();
+        $scope.getSuppliers();
     }
 
 }); //end of controller
