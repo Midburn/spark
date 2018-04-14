@@ -9,7 +9,7 @@ var knex = require('../libs/db').knex;
 var NpoMember = require('./npo_member').NpoMember;
 var constants = require('./constants.js');
 var userRole = require('../libs/user_role');
-
+const CampMember = require('../models/camp').CampMember;
 /////////////////////////////////////////////////////////////
 /////////////////////////// USER  ///////////////////////////
 /////////////////////////////////////////////////////////////
@@ -49,6 +49,9 @@ var User = bookshelf.Model.extend({
         return common.__hasRole(role, this.attributes.roles);
     },
 
+    camp_memberships: function() {
+        return this.hasMany(CampMember, 'user_id');
+    },
     /////////////////////////// GROUPS ///////////////////////////
 
     groups: function () {
