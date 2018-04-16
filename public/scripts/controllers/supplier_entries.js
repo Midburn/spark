@@ -69,6 +69,29 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
                 sweetAlert(`An error occurred while editing supplier entry ${err.data.data.message}`);
             });
     };
+    /* post a comment */
+    $scope.addComment = function() {
+        const supplierId = $scope.currentSupplierId;
+        const body = {
+            comment: $scope.newComment
+        };
+        $http.post(`/suppliers/${supplierId}/supplier_comments`, body)
+            .then((res) => {
+               loadComments(supplierId);
+            })
+            .catch((err)=>{
+                sweetAlert(`An error occurred while adding supplier entry ${err.data.data.message}`);
+            });
+
+        console.log($scope.newComment)
+    }
+    /* show the comment modal*/
+    $scope.showComments = function(supplierId) {
+        loadComments(supplierId);
+        $scope.currentSupplierId = supplierId;
+        const modal = $("#comments_modal");
+        modal.modal('show');
+    }
 
     // Test if entry is past it's exit time;
     $scope.checkOverdue = function (entry) {
@@ -87,7 +110,16 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
         }
         $scope.orderEntries = orderString;
     };
-
+    /* get supplier comments*/
+    function loadComments(supplierId) {
+        $http.get(`/suppliers/${supplierId}/supplier_comments`)
+        .then((res) => {
+            $scope.supplierComment = res.data.supplier_comment;
+        })
+        .catch((error) => {
+            sweetAlert(`An error occurred while adding supplier entry ${err.data.data.message}`);
+        });
+    }
     function refreshCurrentEntries() {
         getEntriesByStatus('Inside', (res) => {
             $scope.entries = res.data.suppliers;

@@ -78,6 +78,10 @@
         "status": "Status",
         "actions": "Actions",
         "cancel": "Cancel",
-        "exit": "Supplier left"
+        "exit": "Supplier left",
+        "comments": "Comments",
+        "burner": "Burner",
+        "time": "Time",
+        "comment": "Comment" 
     }
 }

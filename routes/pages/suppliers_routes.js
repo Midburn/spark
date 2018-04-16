@@ -7,7 +7,7 @@ const router = express.Router({
 });
 
 // INDEX
-router.get('/suppliers-admin', userRole.isLoggedIn(), (req, res) => {
+router.get('/suppliers-admin', userRole.isCampsAdmin(), (req, res) => {
     const lang = req.params.lng || 'he';
     req.breadcrumbs([{
         name: 'breadcrumbs.home',
@@ -38,7 +38,7 @@ router.get('/suppliers-admin', userRole.isLoggedIn(), (req, res) => {
 });
 
 // NEW
-router.get('/suppliers/new', userRole.isAdmin(), (req, res) => {
+router.get('/suppliers/new', userRole.isCampsAdmin(), (req, res) => {
     const lang = req.params.lng || 'he';
     req.breadcrumbs([{
         name: 'breadcrumbs.home',
@@ -65,7 +65,7 @@ router.get('/suppliers/new', userRole.isAdmin(), (req, res) => {
 });
 
 // SHOW
-router.get('/suppliers/:id', userRole.isLoggedIn(), (req, res) => {
+router.get('/suppliers/:id', userRole.isCampsAdmin(), (req, res) => {
     const supplier_id = req.params.id;
     const lang = req.params.lng || 'he';
     req.breadcrumbs([{
@@ -96,7 +96,7 @@ router.get('/suppliers/:id', userRole.isLoggedIn(), (req, res) => {
 });
 
 // EDIT
-router.get('/suppliers/:id/edit', userRole.isLoggedIn(), (req, res) => {
+router.get('/suppliers/:id/edit', userRole.isCampsAdmin(), (req, res) => {
     const supplier_id = req.params.id;
     const lang = req.params.lng || 'he';
     req.breadcrumbs([{
@@ -125,7 +125,7 @@ router.get('/suppliers/:id/edit', userRole.isLoggedIn(), (req, res) => {
 });
 
 // suppliers documents
-router.get('/suppliers-docs', userRole.isLoggedIn(), (req, res) => {
+router.get('/suppliers-docs', userRole.isCampsAdmin(), (req, res) => {
     req.breadcrumbs([{
         name: 'breadcrumbs.home',
         url: '/' + req.params.lng + '/home'

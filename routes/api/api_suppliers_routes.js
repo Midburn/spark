@@ -256,7 +256,6 @@ module.exports = (app, passport) => {
     */
    app.post('/suppliers/:supplier_id/supplier_comments', userRole.isCampManager(), async (req, res) => {
     try {
-
         let data = {
             supplier_id: req.params.supplier_id,
             user_id: req.user.attributes.user_id,

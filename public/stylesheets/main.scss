@@ -162,6 +162,10 @@ div.selectize-input > div > span > span {
 .p-0 {
     padding: 0 !important;
 }
+.px-2 {
+    padding-left: 20px !important;
+    padding-right: 20px !important; 
+}
 
 .m-0 {
     margin: 0 !important;
@@ -283,4 +287,16 @@ div.selectize-input > div > span > span {
 }
 .cursor-pointer-children:nth-child(n)  {
     cursor: pointer;
+}
+.no-transition {
+    transition: none;
+}
+.h-80 {
+    height: 80vh;
+    overflow: auto;
+}
+
+.h-90 {
+    height: 90vh;
+    overflow: auto;
 }
