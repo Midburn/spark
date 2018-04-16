@@ -111,7 +111,7 @@ class UsersController {
     }
 
     getUsersGroups(req, res) {
-        req.user.getUserCamps( async (camps) => {
+        req.user.getUserCamps(async (camps) => {
             let groups = [];
             let group = {};
             let group_props;
