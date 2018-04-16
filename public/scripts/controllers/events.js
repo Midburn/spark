@@ -39,6 +39,14 @@ events_app.controller("eventsFormController", ($scope, $http, $filter) => {
         return moment(date).format('YYYY-MM-DD');
     };
 
+    $scope.getDateString = (date) => {
+        const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+        if (typeof date === 'string' && !dateFormat.test(value)) {
+            return;
+        }
+        return moment(date).format('YYYY-MM-DD');
+    };
+
     $scope.createEvent = () => {
         let _url = '/events/new';
         $http.post(_url, $scope.event)

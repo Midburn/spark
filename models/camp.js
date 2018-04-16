@@ -79,6 +79,20 @@ var Camp = bookshelf.Model.extend({
                 done(users);
             });
     },
+    getCampSuppliers: async function(done) {
+        try {
+            let suppliers = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).select()
+                .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
+                .where(constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', this.attributes.id);
+            if (typeof done === 'function') {
+                done(suppliers);
+            }
+            return suppliers;
+        } catch (err) {
+            throw err;
+        }
+
+    },
     isCampManager: function (user_id) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.managers) {

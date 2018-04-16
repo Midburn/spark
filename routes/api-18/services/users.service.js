@@ -17,13 +17,29 @@ class UsersService {
      * @param allocationDates
      * @returns {*}
      */
-    modifyUsersInfo(info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
+    modifyUsersInfo(info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates, isDgs) {
         const userData = info;
         let jsonInfo;
-        const ticketKey = isGroupSale ? 'group_sale_ticket' : 'pre_sale_ticket';
+        let ticketKey = isGroupSale ? 'group_sale_ticket' : 'pre_sale_ticket';
         let campQuotaKey;
         //check for the sub action in the json info
-        if (addinfo_jason_subAction === "pre_sale_ticket") {
+        if (addinfo_jason_subAction === "early_arrival") {
+            ticketKey = 'early_arrival'
+            if (userData === null) {
+                jsonInfo = { [ticketKey]: true };
+            }
+            else {
+                //if the object is not null then parse it and toggle the current value
+                jsonInfo=JSON.parse(userData);
+                if (jsonInfo[ticketKey] === true) {
+                    jsonInfo[ticketKey] = false;
+                }
+                else {
+                    jsonInfo[ticketKey] = true;
+                }
+            }
+        }
+        else if (addinfo_jason_subAction === "pre_sale_ticket") {
             const {start, end} = allocationDates;
             const now = new Date();
             const isValidAllocationDate = start < now && now < end;

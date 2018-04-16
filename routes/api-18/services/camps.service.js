@@ -75,6 +75,8 @@ class CampsService {
                         new_status = 'pending';
                     } else if (user && action === "pre_sale_ticket") {
                         addinfo_jason_subAction ="pre_sale_ticket";
+                    } else if (user && action === "early_arrival") {
+                        addinfo_jason_subAction ="early_arrival";
                     } else if (action === "request_mgr") {
                         if (group_options.auto_approve_new_members) {
                             new_status = 'approved';

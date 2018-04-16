@@ -82,6 +82,14 @@ class CampsRouter {
          */
         this.router.route('/:camp_id/documents/:doc_id/')
             .delete(campController.deleteCampFile);
+
+        /**
+         * API: (GET) return indication if camp exist, provide camp_name_en
+         * request => /camps/<camp_name_en>
+         */
+        this.router.route('/:camp_name_en')
+            .get(campController.isCampNameAvailable);
+
         /**
          * API: (GET) camp join request
          * params: camp_id

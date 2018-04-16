@@ -121,7 +121,7 @@ class CampsController {
         const user_id = req.params.user_id;
         const camp_id = req.params.camp_id;
         const action = req.params.action;
-        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'group_sale_ticket'];
+        const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'group_sale_ticket', 'early_arrival'];
         if (actions.indexOf(action) > -1) {
             campsService.updateCampStatus(req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
@@ -400,6 +400,7 @@ class CampsController {
                         if (addinfo_json.group_sale_ticket === "true") {
                             members[i].group_sale_ticket = true;
                         }
+                        members[i].early_arrival = addinfo_json.early_arrival
                     } else {
                         members[i].pre_sale_ticket = false;
                         members[i].group_sale_ticket = false;
@@ -457,18 +458,7 @@ class CampsController {
                                 }
                             }, null, camp.attributes.__prototype);
                         } else {
-                            if (constants.prototype_camps.by_prototype(camp.attributes.__prototype).allow_new_users) {
-                                User.forge().save({
-                                    updated_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    created_at: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                                    email: user_email
-                                }).then((user) => {
-                                    campsService.updateCampStatus(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
-                                });
-                            } else {
-                                return next(new Error('Cannot add new emails without profile.'));
-                            }
-
+                            return next(new Error('Cannot add new emails without profile.'));
                         }
                     });
 

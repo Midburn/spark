@@ -67,6 +67,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
             remove: 'להסיר את',
             pre_sale_ticket : 'לאשר כרטיס מוקדם',
             group_sale_ticket : 'לאשר כרטיס קבוצה',
+            early_arrival : 'לאשר הגעה מוקדמת',
         };
         tpl = {
             alert_title: "האם את/ה בטוח?",
@@ -218,6 +219,17 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         };
         return allocationPeriod.start < now && now < allocationPeriod.end;
     };
+
+    $scope.updateEarlyArrival = (user_name, user_id, action_type) => {
+       var camp_id = $scope.current_camp_id;
+       var user_rec = {
+           camp_id: camp_id,
+           user_name: user_name,
+           user_id: user_id,
+       }
+
+       angular_updateUser($http, $scope, action_type, user_rec);
+    }
 
     //when the user wants to update a pre sale ticket
     //this method is executed
