@@ -236,12 +236,14 @@ module.exports = (app, passport) => {
 
     /**
     * API: (GET) get supplire comment return record id
-    * request => /suppliers/:supplier_id/add_supplier_comment
+    * request => /suppliers/:supplier_id/supplier_comments
     */
    app.get('/suppliers/:supplier_id/supplier_comments', userRole.isCampManager(), async (req, res) => {
         try {
             let supplier_id = req.params.supplier_id
-            let supplier_comments = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).select().where('supplier_id', supplier_id)
+            let supplier_comments = await knex(constants.SUPPLIERS_COMMENTS_TABLE).select(constants.SUPPLIERS_COMMENTS_TABLE + '.*', constants.USERS_TABLE_NAME + '.first_name',constants.USERS_TABLE_NAME + '.last_name')
+            .innerJoin(constants.USERS_TABLE_NAME, constants.SUPPLIERS_COMMENTS_TABLE + '.user_id', constants.USERS_TABLE_NAME + '.user_id')
+            .where('supplier_id', supplier_id)
             res.status(200).json({supplier_comment: supplier_comments})
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})
@@ -250,7 +252,7 @@ module.exports = (app, passport) => {
 
     /**
     * API: (POST) edit supplire comment return record id
-    * request => /suppliers/:supplier_id/add_supplier_comment
+    * request => /suppliers/:supplier_id/supplier_comments
     */
    app.post('/suppliers/:supplier_id/supplier_comments', userRole.isCampManager(), async (req, res) => {
     try {
@@ -262,7 +264,7 @@ module.exports = (app, passport) => {
             supplier_comment: req.body.comment,
         };
 
-        let record_info = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).insert(data)
+        let record_info = await knex(constants.SUPPLIERS_COMMENTS_TABLE).insert(data)
         res.status(200).json({record_id: record_info[0]})
         } catch (err) {
             res.status(500).json({error: true,data: { message: err.message }})
@@ -271,7 +273,7 @@ module.exports = (app, passport) => {
 
     /**
     * API: (PUT) edit supplire comment
-    * request => /suppliers/:supplier_id/add_supplier_comment
+    * request => /suppliers/:supplier_id/supplier_comments
     */
    app.put('/suppliers/:supplier_id/supplier_comments', userRole.isCampManager(), async (req, res) => {
     try {
@@ -283,7 +285,7 @@ module.exports = (app, passport) => {
             supplier_comment: req.body.comment,
         };
 
-        let record_info = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).update(data).where('record_id',record_id)
+        let record_info = await knex(constants.SUPPLIERS_COMMENTS_TABLE).update(data).where('record_id',record_id)
         res.status(200).json({record_id: record_info[0]})
 
         } catch (err) {
