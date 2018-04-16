@@ -46,18 +46,19 @@ function doneTyping_(event) {
         btn = $('#check_supplier_id'),
         phoneREGX = /^\d{1,9}$/;
 
-        if((phoneREGX.test(val))){
+        if ((phoneREGX.test(val))) {
             const data = $.get('/suppliers/' + val)
                 .done(function() {
                     if (data.status === 204) {
                         input.removeClass('error');
                         status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
                         btn.removeClass('disabled btn').attr('href', '/' + lang + '/suppliers/new?c=' + val);
-                    }                 })
-              .fail(function(error) {
-                jsonError = error.data.data.message;
-                swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
-              })    
+                    }                 
+                })
+                .fail(function(error) {
+                    jsonError = error.data.data.message;
+                    swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
+                })    
         }
         input.addClass('error');
         status.removeClass('glyphicon-ok').addClass('glyphicon-remove');

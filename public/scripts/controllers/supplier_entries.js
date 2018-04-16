@@ -79,7 +79,7 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
             .then((res) => {
                loadComments(supplierId);
             })
-            .catch((err)=>{
+            .catch((err) => {
                 sweetAlert(`An error occurred while adding supplier entry ${err.data.data.message}`);
             });
 
@@ -117,7 +117,7 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
             $scope.supplierComment = res.data.supplier_comment;
         })
         .catch((error) => {
-            sweetAlert(`An error occurred while adding supplier entry ${err.data.data.message}`);
+            sweetAlert(`An error occurred while adding supplier entry ${error.data.data.message}`);
         });
     }
     function refreshCurrentEntries() {
