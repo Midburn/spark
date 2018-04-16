@@ -13,19 +13,19 @@
     .col-xs-4
         .circle-tile
             .circle-tile-heading.purple
-                i.fa.fa-car.fa-fw.fa-3x
+                i.fa.fa-users.fa-fw.fa-3x
             .circle-tile-content.purple
                 .circle-tile-description.text-faded
-                    h5=t('common:homepage.stats.cars_inside_event')
-                .circle-tile-number.text-faded {{stat.cars_inside_event}}
+                    h5=t('common:homepage.stats.inside_event')
+                    .circle-tile-number.text-faded {{stat.inside_event}}
     .col-xs-4
         .circle-tile
             .circle-tile-heading.blue
-                i.fa.fa-users.fa-fw.fa-3x
+                i.fa.fa-car.fa-fw.fa-3x
             .circle-tile-content.blue
                 .circle-tile-description.text-faded
-                    h5=t('common:homepage.stats.inside_event')
-                .circle-tile-number.text-faded {{stat.inside_event}}
+                    h5=t('common:homepage.stats.cars_inside_event')
+                    .circle-tile-number.text-faded {{stat.cars_inside_event}}
 
 .row
     .col-xs-6
@@ -68,9 +68,9 @@
                 .circle-tile-number.text-faded {{stat.ticketing}}
                 .row
                     .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24h_first_entrance')
+                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
                         .circle-tile-number.text-faded {{stat.last_24h_entrance}}
                     .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h_first_entrance')
+                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
                         .circle-tile-number.text-faded {{stat.last_1h_entrance}}
 
