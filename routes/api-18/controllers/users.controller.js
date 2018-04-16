@@ -111,7 +111,7 @@ class UsersController {
     }
 
     getUsersGroups(req, res) {
-        req.user.getUserCamps((camps) => {
+        req.user.getUserCamps( async (camps) => {
             let groups = [];
             let group = {};
             let group_props;
@@ -149,39 +149,38 @@ class UsersController {
                     "FROM tickets  " +
                     "WHERE tickets.event_id='" + req.user.currentEventId +
                     "' GROUP BY event_id; ";
-                if (req.user.isAdmin) {
-                    let stat = {};
-                    knex.raw(query).then((result) => {
-                        stat.groups = {};
-                        for (let i in result[0]) {
-                            stat.groups[result[0][i]['__prototype']] = {
-                                total: result[0][i].total
-                            };
-                        }
-                        // stat.total_tickets = result[0][0]['total_tickets'];
-                        // stat.inside_event = result[0][0]['inside_event'];
-                        // stat.ticketing = result[0][0]['ticketing'];
-                        // stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
-                        // stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
-                        // stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
-                    }).then(() => {
-                        knex.raw(query1).then((result) => {
-                            if (result && result[0] && result[0].length > 0) {
-                                stat.total_tickets = result[0][0]['total_tickets'];
-                                stat.inside_event = result[0][0]['inside_event'];
-                                stat.ticketing = result[0][0]['ticketing'];
-                                stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
-                                stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
-                                stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
-                                stat.last_24h_exit = result[0][0]['last_24h_exit'];
-                                stat.last_1h_entrance = result[0][0]['last_1h_entrance'];
-                                stat.last_1h_exit = result[0][0]['last_1h_exit'];
-                            }
-                            res.status(200).json({groups: groups, stats: stat});
 
-                        });
-                    });
+                let stat = {};
+
+                const groupStats = await knex.raw(query);
+                stat.groups = {};
+                for (let i in groupStats[0]) {
+                    stat.groups[groupStats[0][i]['__prototype']] = {
+                        total: groupStats[0][i].total
+                    };
                 }
+
+                // stat.total_tickets = result[0][0]['total_tickets'];
+                // stat.inside_event = result[0][0]['inside_event'];
+                // stat.ticketing = result[0][0]['ticketing'];
+                // stat.last_24h_first_entrance = result[0][0]['last_24h_first_entrance'];
+                // stat.last_1h_first_entrance = result[0][0]['last_1h_first_entrance'];
+                // stat.last_24h_entrance = result[0][0]['last_24h_entrance'];
+                const ticketStats = await knex.raw(query1);
+
+                if (ticketStats && ticketStats[0] && ticketStats[0].length > 0) {
+                    stat.total_tickets = ticketStats[0][0]['total_tickets'];
+                    stat.inside_event = ticketStats[0][0]['inside_event'];
+                    stat.ticketing = ticketStats[0][0]['ticketing'];
+                    stat.last_24h_first_entrance = ticketStats[0][0]['last_24h_first_entrance'];
+                    stat.last_1h_first_entrance = ticketStats[0][0]['last_1h_first_entrance'];
+                    stat.last_24h_entrance = ticketStats[0][0]['last_24h_entrance'];
+                    stat.last_24h_exit = ticketStats[0][0]['last_24h_exit'];
+                    stat.last_1h_entrance = ticketStats[0][0]['last_1h_entrance'];
+                    stat.last_1h_exit = ticketStats[0][0]['last_1h_exit'];
+                }
+
+                res.status(200).json({groups: groups, stats: stat});
             } else {
                 res.status(200).json({groups: groups});
             }
