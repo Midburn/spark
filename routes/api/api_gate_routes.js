@@ -286,8 +286,17 @@ router.get(
     '/vehicle-counter/:event_id',
     async function (req, res) {
         try {
-            let vehicleEntries = (await knex('vehicle_entries').count().where('direction', '=', 'arrival'))[0]['count(*)'];
-            let vehicleExits = (await knex('vehicle_entries').count().where('direction', '=', 'departure'))[0]['count(*)'];
+            let vehicleEntries = (await knex('vehicle_entries')
+                .where('direction', '=', 'arrival')
+                .where('event_id', '=', req.params.event_id)
+                .count()
+                )[0]['count(*)'];
+
+            let vehicleExits = (await knex('vehicle_entries')
+                .where('direction', '=', 'departure')
+                .where('event_id', '=', req.params.event_id)
+                .count()
+                )[0]['count(*)'];
             return res.status(200).json({
                 vehicleCount: vehicleEntries - vehicleExits,
             });
