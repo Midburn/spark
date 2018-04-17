@@ -80,7 +80,7 @@ block content
                         label=t(t_prefix + 'entries.visa_duration')
                         input(id='new-supplier-entry-hours', type="number", class="form-control", name="supplier_hours", autofocus="true", ng-model="newEntry.allowed_visa_hours", required)
                 .col-sm-12.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn(role='button', ng-click="addEntry()")=t(t_prefix+'entries.add_entry')
+                    a.Btn.Btn__green.Btn__inline.btn.card-switcher#1(role='button', ng-click="addEntry()")=t(t_prefix+'entries.add_entry')
                     a.Btn.Btn__red.Btn__inline.btn.card-switcher#1(role='button')
                         span=t(t_prefix+'entries.cancel')
         //- Camp create request modal

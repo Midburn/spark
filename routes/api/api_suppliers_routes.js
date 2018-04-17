@@ -260,7 +260,7 @@ module.exports = (app, passport) => {
     * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
     * request => /suppliers/:supplier_id/contract
     */
-    app.post('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+    app.post('/suppliers/:supplier_id/contract', userRole.isCampManager(), async (req, res) => {
         const supplierId = req.params.supplier_id;
         let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch();
         if (!supplier) {
@@ -334,7 +334,7 @@ module.exports = (app, passport) => {
    * The link is signed and valid for `awsConfig.presignedUrlExpireSeconds`, default is 900 (15 minutes)
    * request => /suppliers/:supplier_id/contract
    */
-   app.get('/suppliers/:supplier_id/contract',userRole.isCampsAdmin(), async (req, res) => {
+   app.get('/suppliers/:supplier_id/contract',userRole.isCampManager(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;
@@ -362,7 +362,7 @@ module.exports = (app, passport) => {
    * API: (DELETE) delete supplier's contract file in S3 and its record in `suppliers_contracts` table
    * request => /suppliers/:supplier_id/contract
    */
-   app.delete('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+   app.delete('/suppliers/:supplier_id/contract', userRole.isCampManager(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;

@@ -113,6 +113,7 @@
             "gate": "סטטיסטיקות שער",
             "total_tickets":"כרטיסים לאירוע",
             "inside_event": "כרגע בתוך האירוע",
+            "cars_inside_event": "רכבים בתוך האירוע",
             "ticketing": "כירטוסים",
             "last_24h_first_entrance": "כירטוסים ב-24 שעות אחרונות",
             "last_1h_first_entrance": "כירטוסים בשעה אחרונה",

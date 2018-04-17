@@ -143,7 +143,9 @@ let aws_config = {
     presignedUrlExpireSeconds: parseInt(process.env.SPARK_CAMP_FILES_PRESIGN_URL_EXPIRE_SECONDS)
 };
 exports.aws_config = aws_config
-
+exports.volunteers_config = {
+    api_url: process.env.VOLUNTEERS_BASE_URL || 'http://localhost:3500'
+}
 /**
  * Camp files config
  */
