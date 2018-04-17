@@ -1,6 +1,6 @@
 const request = require('superagent');
 const log = require('./logger.js')(module);
-const default_config = {api_url : 'http://localhost:3500'}
+const default_config = require('config').get('volunteers_config');
 const apiTokensConfig = require('config').get('api_tokens');
 const { URL } = require('url')
 
