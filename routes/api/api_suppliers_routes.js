@@ -233,7 +233,27 @@ module.exports = (app, passport) => {
             res.status(500).json({error: true,data: { message: err.message }})
         }
     });
-
+    /*
+    API: (PUT) update supplir enterance
+    request => /supplires/new
+    */
+    app.put('/suppliers/edit-entry', userRole.isGateManager(), async (req, res) => {
+        try {
+            const data = {
+                record_id: req.body.record_id,
+                number_of_people_entered: req.body.number_of_people_entered,
+                allowed_visa_hours: req.body.allowed_visa_hours,
+                vehicle_plate_number: req.body.vehicle_plate_number
+            };
+            await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).update(data).where('record_id', data.record_id);
+            const updated = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
+                .where(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.record_id', data.record_id)
+                .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id');
+            res.status(200).json(updated[0])
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
     /**
     * API: (GET) get supplire comment return record id
     * request => /suppliers/:supplier_id/supplier_comments
@@ -251,6 +271,7 @@ module.exports = (app, passport) => {
     });
 
     /**
+<<<<<<< HEAD
     * API: (POST) edit supplire comment return record id
     * request => /suppliers/:supplier_id/supplier_comments
     */
@@ -292,10 +313,12 @@ module.exports = (app, passport) => {
         }
     });
     /**
+=======
+>>>>>>> a5abc211a6d6a9d71e4cfb4fdf6e194bfc09c195
     * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
     * request => /suppliers/:supplier_id/contract
     */
-    app.post('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+    app.post('/suppliers/:supplier_id/contract', userRole.isCampManager(), async (req, res) => {
         const supplierId = req.params.supplier_id;
         let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch();
         if (!supplier) {
@@ -369,7 +392,7 @@ module.exports = (app, passport) => {
    * The link is signed and valid for `awsConfig.presignedUrlExpireSeconds`, default is 900 (15 minutes)
    * request => /suppliers/:supplier_id/contract
    */
-   app.get('/suppliers/:supplier_id/contract',userRole.isCampsAdmin(), async (req, res) => {
+   app.get('/suppliers/:supplier_id/contract',userRole.isCampManager(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;
@@ -397,7 +420,7 @@ module.exports = (app, passport) => {
    * API: (DELETE) delete supplier's contract file in S3 and its record in `suppliers_contracts` table
    * request => /suppliers/:supplier_id/contract
    */
-   app.delete('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+   app.delete('/suppliers/:supplier_id/contract', userRole.isCampManager(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;

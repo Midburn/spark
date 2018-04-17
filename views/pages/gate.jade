@@ -157,10 +157,12 @@ block scripts
                 clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
-                        gate_code: "#{gate_code}"
+                        event_id: "#{event_id}"
                     },
                     function (data, status) {
-                        $("#modal_status")[0].style = "visibility: visible";
+                        if (data.gate_status === "early_arrival"){
+                            $("#modal_status")[0].style = "visibility: visible";
+                        }
                         $("#modal_mode")[0].innerHTML = "enter";
                         $("#modal_barcode")[0].innerHTML = data.ticket.barcode;
                         $("#modal_ticket_number")[0].innerHTML = data.ticket.ticket_number;
@@ -173,6 +175,7 @@ block scripts
 
                         let entranceButton = $("#entrance_button")[0];
                         entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
+                        
                         if (data.gate_status === "early_arrival"){
                             
                             if ( !data.ticket.production_early_arrival && (data.ticket.groups && data.ticket.groups.length > 0)) {
@@ -181,7 +184,9 @@ block scripts
                                 groupsElement.innerHTML = "";
                                 for (let group in data.ticket.groups) {
                                     let groupData = data.ticket.groups[group];
-                                    groupsElement.innerHTML += "<a class='list-group-item' id='g_" + groupData.id + "'>" + groupData.name + "</a>"
+                                    if (groupData.early_arrival) {
+                                        groupsElement.innerHTML += "<a class='list-group-item' id='g_" + groupData.id + "'>" + groupData.name + "</a>"
+                                    }
                                 }
                                 $(".list-group-item").click(function () {
                                     $(".list-group-item").removeClass("active");
@@ -202,7 +207,7 @@ block scripts
                 clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
-                        gate_code: "#{gate_code}"
+                        event_id: "#{event_id}"
                     },
                     function (data, status) {
                         console.log(data);
@@ -220,7 +225,7 @@ block scripts
                 clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
-                        gate_code: "#{gate_code}"
+                        event_id: "#{event_id}"
                     },
                     function (data, status) {
                         $("#modal_mode")[0].innerHTML = "exit";
@@ -259,7 +264,7 @@ block scripts
             function enter(force, force_reason) {
                 let parameters = {
                     barcode: $("#modal_barcode")[0].innerHTML,
-                    gate_code: "#{gate_code}",
+                    event_id: "#{event_id}",
                     group_id: $("#modal_group_id")[0].innerHTML.substring(2),
                     force: force,
                     force_reason: force_reason

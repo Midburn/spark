@@ -58,7 +58,7 @@
         "docs": "Docs",
         "edit": "Edit Supplier",
         "supplier_details": "Supplier details"
-       
+
     },
     "entries": {
         "supplier_entrance": "Supplier Entrance",
@@ -82,6 +82,7 @@
         "comments": "Comments",
         "burner": "Burner",
         "time": "Time",
-        "comment": "Comment" 
+        "comment": "Comment",
+        "edit": "Edit supplier entry"
     }
 }

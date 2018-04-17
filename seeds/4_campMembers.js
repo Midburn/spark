@@ -1,5 +1,5 @@
 const log = require('../libs/logger')(module);
-const CampMember = require('../models/camp').CampMember;
+const CampMember = require('../models/user').CampMember;
 
 addCampMembers = function(campMembers) {
     log.info('Creating camps...');

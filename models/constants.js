@@ -247,4 +247,6 @@ module.exports = {
    
     SUPPLIER_CATEGORIES: ['permanent', 'temporary', 'carriage', 'other'],
     SUPPLIER_STATUS_CATEGORIES: ['Inside','Outside'],
+
+    VEHICLE_ENTRY_DIRECTION: ['arrival', 'departure'],
 };
