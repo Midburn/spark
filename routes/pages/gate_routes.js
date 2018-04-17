@@ -9,7 +9,8 @@ const Event = require('../../models/event').Event;
 router.get('/', userRole.isGateManager(), function (req, res) {
     Event.forge({event_id: req.user.currentEventId}).fetch().then(event => {
         return res.render('pages/gate', {
-            gate_code: event.attributes.gate_code
+            gate_code: event.attributes.gate_code,
+            event_id: event.attributes.event_id
         });
     });
 });

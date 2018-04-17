@@ -157,7 +157,7 @@ block scripts
                 clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
-                        gate_code: "#{gate_code}"
+                        event_id: "#{event_id}"
                     },
                     function (data, status) {
                         if (data.gate_status === "early_arrival"){
@@ -207,7 +207,7 @@ block scripts
                 clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
-                        gate_code: "#{gate_code}"
+                        event_id: "#{event_id}"
                     },
                     function (data, status) {
                         console.log(data);
@@ -225,7 +225,7 @@ block scripts
                 clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
-                        gate_code: "#{gate_code}"
+                        event_id: "#{event_id}"
                     },
                     function (data, status) {
                         $("#modal_mode")[0].innerHTML = "exit";
@@ -264,7 +264,7 @@ block scripts
             function enter(force, force_reason) {
                 let parameters = {
                     barcode: $("#modal_barcode")[0].innerHTML,
-                    gate_code: "#{gate_code}",
+                    event_id: "#{event_id}",
                     group_id: $("#modal_group_id")[0].innerHTML.substring(2),
                     force: force,
                     force_reason: force_reason
