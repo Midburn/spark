@@ -15,6 +15,7 @@ const constants = require('../../models/constants');
 
 const volunteersAPI = require('../../libs/volunteers')();
 const ERRORS = {
+    EVENT_ID_IS_MISSING: 'Missing Event ID',
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',
     BAD_SEARCH_PARAMETERS: 'Search parameters are missing or incorrect. Please provide barcode or (ticket and order)',
     TICKET_NOT_FOUND: 'Ticket not found',
@@ -37,18 +38,16 @@ function sendError(res, httpCode, errorCode, errorObj) {
 }
 
 async function getTicketBySearchTerms(req, res) {
-
-    // Loading event and checking that gate_code is valid.
     let event = null;
     let event_id = null;
     let gate_status = null;
-    if (req.body.gate_code) {
-        event = await Event.forge({gate_code: req.body.gate_code}).fetch();
+    if (req.body.event_id) {
+        event = await Event.forge({event_id: req.body.event_id}).fetch();
         event_id = event.attributes.event_id;
         gate_status = event.attributes.gate_status;
     }
-    if (!req.body.gate_code || !event) {
-        return sendError(res, 500, "GATE_CODE_MISSING");
+    if (!req.body.event_id || !event) {
+        return sendError(res, 500, "EVENT_ID_IS_MISSING");
     }
 
     // Setting the search terms for the ticket.
@@ -256,15 +255,10 @@ router.post('/gate-exit', async function (req, res) {
 
 router.post('/tickets-counter', async function (req, res) {
 
-    // Loading event and checking that gate_code is valid.
-    let event_id = null;
-    if (req.body.gate_code) {
-        let event = await Event.forge({gate_code: req.body.gate_code}).fetch();
-        event_id = event.attributes.event_id;
+    if (!req.body.event_id) {
+        return sendError(res, 500, "EVENT_ID_IS_MISSING");
     }
-    if (!req.body.gate_code || !event_id) {
-        return sendError(res, 500, "GATE_CODE_MISSING");
-    }
+    let event_id = req.body.event_id;
 
     let count = await knex('tickets').count('inside_event').where('event_id', '=', event_id);
     return res.status(200).json(count);
