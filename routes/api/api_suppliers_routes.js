@@ -148,7 +148,7 @@ module.exports = (app, passport) => {
             let supplier_id = req.params.supplier_id;
             let data = {
                 camp_id : req.params.camp_id,
-                event_id : req.user.currentEventId,//req.user.currentEventId
+                event_id : req.user.currentEventId,
                 courier_contact_name : req.body.courier_contact_name,
                 courier_contact_phone_number : req.body.courier_contact_phone_number,
             }
@@ -175,7 +175,7 @@ module.exports = (app, passport) => {
         try {
             let data = {
                 camp_id: req.params.camp_id,
-                event_id: req.user.currentEventId//req.user.currentEventId,
+                event_id: req.user.currentEventId
             }
             let supplier_id = req.params.supplier_id;
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()

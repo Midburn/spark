@@ -213,10 +213,11 @@ $('#supplier_create_save').click(function () {
             success: function (result) {
                 $('#create_camp_request_modal').find('.modal-body').html('<h4>Supplier created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin, $('body').attr('lang')].join('/') + '/suppliers/' + supplier_id + '/edit">here</a><span></h4>');
                 $('#create_camp_request_modal').find('#supplier_create_save_modal_request').hide();
+                $('#create_camp_request_modal').find('#create_camp_close_btn').hide();
                 // 10 sec countdown to close modal
-                var sec = 10;
+                let sec = 10;
                 setInterval(function () {
-                    $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
+                    $('#create_camp_request_modal').find('#link_to_supplier').removeClass('hide').text('close '+sec);
                     sec -= 1;
                 }, 1000);
                 setTimeout(function () {

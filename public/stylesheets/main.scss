@@ -285,18 +285,32 @@ div.selectize-input > div > span > span {
 .tile-img {
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.9);
 }
-.cursor-pointer-children:nth-child(n)  {
+.cursor-pointer-children:nth-child(n), .cursor-pointer  {
     cursor: pointer;
 }
 .no-transition {
     transition: none;
 }
-.h-80 {
-    height: 80vh;
+.h-50-scrollable {
+    height: 50vh;
     overflow: auto;
+    margin: 0;
 }
-
-.h-90 {
-    height: 90vh;
-    overflow: auto;
+#comments_modal .modal-body *{
+    display: inline-block;
+}
+.w-20 {
+    width: 20%;
+}
+.w-31 {
+    width: 31%;
+}
+.w-49 {
+    width: 49%;
+}
+.w-100 {
+    width: 100%;
+}
+td {
+    word-wrap: break-word;
 }

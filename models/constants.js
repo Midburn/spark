@@ -244,7 +244,7 @@ module.exports = {
     // and are redirected to the senders desired location, e.g. can be used for phishing.
     // If we redirect to a new URL from login, we will need to add it here.
     LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
-
-    SUPPLIER_CATEGORIES: ['food', 'water', 'shade', 'carriage', 'other'],
+   
+    SUPPLIER_CATEGORIES: ['permanent', 'temporary', 'carriage', 'other'],
     SUPPLIER_STATUS_CATEGORIES: ['Inside','Outside'],
 };

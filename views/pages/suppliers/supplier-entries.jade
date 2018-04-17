@@ -83,26 +83,26 @@ block content
             //- Comments modal
             .modal.fade(id='comments_modal', tabindex='-1', role='dialog')
                 .modal-dialog(role='document')
-                    .modal-content.h-90
+                    .modal-content
                         .modal-header.card-header
                             button.close(type='button', data-dismiss='modal', aria-label='Close')
                                 span(aria-hidden='true')='×'
                             h4.modal-title=t(t_prefix+ 'entries.comments')
                         .modal-body
-                            table.table.d-inline-block.h-80.px-2 
-                                thead
-                                    tr
-                                        th=t(t_prefix+ 'entries.burner')
-                                        th=t(t_prefix+ 'entries.time')
-                                        th=t(t_prefix+ 'entries.comment')
-                                tbody
-                                    tr(ng-repeat="commentObj in supplierComment")
-                                        td {{ commentObj.user_id }}
-                                        td {{ commentObj.comment_time | date:'medium' }}
-                                        td {{ commentObj.supplier_comment }}
+                            table.table.h-50-scrollable
+                                thead.w-100
+                                    tr.w-100
+                                        th.w-20=t(t_prefix+ 'entries.burner')
+                                        th.w-31=t(t_prefix+ 'entries.time')
+                                        th.w-49=t(t_prefix+ 'entries.comment')
+                                tbody.w-100
+                                    tr.w-100(ng-repeat="commentObj in supplierComment")
+                                        td.w-20 {{ commentObj.user_id }}
+                                        td.w-31 {{ commentObj.comment_time | date:'medium' }}
+                                        td.w-49 {{ commentObj.supplier_comment }}
                         .modal-footer
                             input.form-control(ng-model="newComment" placeholder="Add a new comment",ng-keydown="$event.keyCode === 13 && addComment()")          
-                            button.Btn.no-transition.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
+                            button.Btn.no-transition.Btn__transparent.pull-right(type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
                             button.Btn.no-transition.Btn__green(id='supplier_create_save_modal_request', type='button', ng-click="addComment()")=t('suppliers:edit_new.save')
 
         
