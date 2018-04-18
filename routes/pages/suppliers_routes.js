@@ -65,7 +65,7 @@ router.get('/suppliers/new', userRole.isAllowedToViewSuppliers(), (req, res) => 
 });
 
 // SHOW
-router.get('/suppliers/:id', uuserRole.isAllowedToViewSuppliers(), (req, res) => {
+router.get('/suppliers/:id', userRole.isAllowedToViewSuppliers(), (req, res) => {
     const supplier_id = req.params.id;
     const lang = req.params.lng || 'he';
     req.breadcrumbs([{

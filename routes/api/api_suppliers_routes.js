@@ -271,7 +271,6 @@ module.exports = (app, passport) => {
     });
 
     /**
-<<<<<<< HEAD
     * API: (POST) edit supplire comment return record id
     * request => /suppliers/:supplier_id/supplier_comments
     */
@@ -313,8 +312,6 @@ module.exports = (app, passport) => {
         }
     });
     /**
-=======
->>>>>>> a5abc211a6d6a9d71e4cfb4fdf6e194bfc09c195
     * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
     * request => /suppliers/:supplier_id/contract
     */

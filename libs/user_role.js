@@ -41,7 +41,7 @@ userRole.isGateManager = function () {
 };
 
 userRole.isAllowedToViewSuppliers = function () {
-    return userRole.is(userRole.userRole.GATE_MANAGER) 
+    return userRole.is(userRole.GATE_MANAGER) 
     || userRole.is(userRole.ADMIN) || userRole.is(userRole.CAMP_MANAGER) || userRole.is(userRole.THEME_CAMPS_ADMIN);
 };
 
