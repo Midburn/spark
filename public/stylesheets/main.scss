@@ -162,6 +162,10 @@ div.selectize-input > div > span > span {
 .p-0 {
     padding: 0 !important;
 }
+.px-2 {
+    padding-left: 20px !important;
+    padding-right: 20px !important; 
+}
 
 .m-0 {
     margin: 0 !important;
@@ -281,6 +285,32 @@ div.selectize-input > div > span > span {
 .tile-img {
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.9);
 }
-.cursor-pointer-children:nth-child(n)  {
+.cursor-pointer-children:nth-child(n), .cursor-pointer  {
     cursor: pointer;
+}
+.no-transition {
+    transition: none;
+}
+.h-50-scrollable {
+    height: 50vh;
+    overflow: auto;
+    margin: 0;
+}
+#comments_modal .modal-body *{
+    display: inline-block;
+}
+.w-20 {
+    width: 20%;
+}
+.w-31 {
+    width: 31%;
+}
+.w-49 {
+    width: 49%;
+}
+.w-100 {
+    width: 100%;
+}
+td {
+    word-wrap: break-word;
 }

@@ -40,6 +40,11 @@ userRole.isGateManager = function () {
     return userRole.is(userRole.GATE_MANAGER);
 };
 
+userRole.isAllowedToViewSuppliers = function () {
+    return userRole.is(userRole.GATE_MANAGER) 
+    || userRole.is(userRole.ADMIN) || userRole.is(userRole.CAMP_MANAGER) || userRole.is(userRole.THEME_CAMPS_ADMIN);
+};
+
 userRole.isAllowedToViewUser = function () {
     return (req, res, next) => {
         if (req.user && (req.user.isAdmin || req.params.id === req.user.id)) {

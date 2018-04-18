@@ -39,27 +39,30 @@ $input.keydown(function () {
 
 function doneTyping_(event) {
 
-    var val = event.target.value,
+    const val = event.target.value,
         lang = $('body').attr('lang'),
         status = $(".choose_name span.indicator span.glyphicon"),
         input = $input,
-        btn = $('#check_supplier_id');
-        var data = $.get('/suppliers/' + val);
+        btn = $('#check_supplier_id'),
+        phoneREGX = /^\d{1,9}$/;
 
-        data.done(function () {
-            if (data.status === 204) {
-                input.removeClass('error');
-                status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                btn.removeClass('disabled btn').attr('href', '/' + lang + '/suppliers/new?c=' + val);
-            } else {
-                input.addClass('error');
-                status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                btn.addClass('disabled btn').removeAttr('href');
-            }
-        });
+        if ((phoneREGX.test(val))) {
+            const data = $.get('/suppliers/' + val)
+                .done(function() {
+                    if (data.status === 204) {
+                        input.removeClass('error');
+                        status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                        btn.removeClass('disabled btn').attr('href', '/' + lang + '/suppliers/new?c=' + val);
+                    }                 
+                })
+                .fail(function(error) {
+                    jsonError = error.data.data.message;
+                    swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
+                })    
+        }
+        input.addClass('error');
+        status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
         btn.addClass('disabled btn').removeAttr('href');
-        status.removeClass('glyphicon-ok')
-
 }
 
 function getUserTemplate(data) {
@@ -198,25 +201,27 @@ $('#supplier_create_save').click(function () {
         })
     }
 
-    function _sendSuppliersRequest() {
-        var supplier_id = $('#meta__supplier_id').val();
+    function _sendSuppliersRequest($location) {
+        const supplier_id = $('#meta__supplier_id').val();
+        const lang = document.getElementById('meta__lang').value || 'he';
+        
         supplier_data.supplier_id = supplier_id;
         $.ajax({
             url: '/suppliers/new',
             type: 'POST',
             data: supplier_data,
             success: function (result) {
-                var supplier_id = result.supplier.supplier_id;
                 $('#create_camp_request_modal').find('.modal-body').html('<h4>Supplier created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin, $('body').attr('lang')].join('/') + '/suppliers/' + supplier_id + '/edit">here</a><span></h4>');
                 $('#create_camp_request_modal').find('#supplier_create_save_modal_request').hide();
+                $('#create_camp_request_modal').find('#create_camp_close_btn').hide();
                 // 10 sec countdown to close modal
-                var sec = 10;
+                let sec = 10;
                 setInterval(function () {
-                    $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
+                    $('#create_camp_request_modal').find('#link_to_supplier').removeClass('hide').text('close '+sec);
                     sec -= 1;
                 }, 1000);
                 setTimeout(function () {
-                    $('#create_camp_request_modal').modal('hide');
+                    window.location = `/${lang}/suppliers/${supplier_id}`;
                 }, sec * 1000);
             }
         });

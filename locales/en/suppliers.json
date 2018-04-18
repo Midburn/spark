@@ -79,6 +79,10 @@
         "actions": "Actions",
         "cancel": "Cancel",
         "exit": "Supplier left",
+        "comments": "Comments",
+        "burner": "Burner",
+        "time": "Time",
+        "comment": "Comment",
         "edit": "Edit supplier entry"
     }
 }

@@ -27,11 +27,15 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
     if (lang === "he") {
         $scope.status_options = [
             { id: 'carriage', value: 'הובלה' },
+            { id: 'permanent', value: 'ספקים קבועים' },
+            { id: 'temporary', value: 'ספקים זמניים' },
             { id: 'other', value: 'אחר' }
         ]
     } else {
         $scope.status_options = [
             { id: 'carriage', value: 'Carriage' },
+            { id: 'permanent', value: 'Permanent suppliers' },
+            { id: 'temporary', value: 'Temporary suppliers' },
             { id: 'other', value: 'Other' }
         ]
     }

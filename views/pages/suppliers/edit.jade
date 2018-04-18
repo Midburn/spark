@@ -84,7 +84,7 @@ block content
                 .form-inline
                     input.form-control(list="campList", name="" ng-model='add_camp_display_name', type="text", placeholder="#{t('suppliers:edit_new.choose_camp')}")
                     datalist(id="campList")
-                        option(ng-repeat="camp in allCamps", data-id="{{ camp.id }}" value="{{ camp.camp_name_he }}")
+                        option(ng-repeat="camp in allCamps | orderBy: camp_name_en", data-id="{{ camp.id }}" value="{{ camp.camp_name_he }}")
                     button.Btn.Btn__sm(ng-click="addCamp()") + #{t('suppliers:edit_new.add_camp')}
                 .row
                     .col-xs-12
@@ -133,5 +133,6 @@ block content
                                 li.supplier_category=t(t_prefix+'edit_new.category')
                                     span
                     .modal-footer
-                        button.Btn.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
+                        a.Btn.Btn__transparent.pull-right.hide(id='link_to_supplier', href=`/${language}/suppliers/${supplier_id}`)
+                        a.cursor-pointer.Btn.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
                         button.Btn.Btn__green(id='supplier_create_save_modal_request', type='button')=t('suppliers:edit_new.save')
