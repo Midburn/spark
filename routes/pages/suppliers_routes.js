@@ -18,7 +18,7 @@ router.get('/suppliers-admin/:cardId*?', userRole.isAllowedToViewSuppliers(), (r
         url: '/' + req.params.lng + '/suppliers-admin'
     }]);
 
-    if (req.user.isAdmin || req.user.issuppliersAdmin) {
+    if (req.user.isAdmin || req.user.isAllowedToViewSuppliers) {
         const currentEventID = req.session.passport.user.currentEventId;
         Event.get_event_controllDates(currentEventID)
             .then(controllDates => {
