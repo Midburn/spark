@@ -208,7 +208,9 @@ const User = bookshelf.Model.extend({
         isAdmin: function () {
             return this.hasRole(userRole.ADMIN);
         },
-
+        isGateManager: function () {
+            return this.hasRole(userRole.GATE_MANAGER);
+        },
         isCampManager: function () {
             return this.hasRole(userRole.CAMP_MANAGER);
         },
@@ -223,6 +225,11 @@ const User = bookshelf.Model.extend({
         },
         isCampFree: function () {
             return (!this.attributes.camp);
+        },
+
+        isAllowedToViewSuppliers: function () {
+            return this.hasRole(userRole.ADMIN)
+                || this.hasRole(userRole.GATE_MANAGER) || this.hasRole(userRole.CAMP_MANAGER) || this.hasRole(userRole.THEME_CAMPS_ADMIN);
         },
 
         isCampJoinPending: function () {

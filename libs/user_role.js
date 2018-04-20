@@ -1,4 +1,4 @@
-var userRole = new (require('connect-roles'))();
+const userRole = new (require('connect-roles'))();
 
 // pre-defined roles constants / shortcuts - to allow autocompletion and prevent unexpected errors
 
@@ -38,6 +38,17 @@ userRole.isNpoManager = function () {
 userRole.GATE_MANAGER = 'gate_manager';
 userRole.isGateManager = function () {
     return userRole.is(userRole.GATE_MANAGER);
+};
+
+userRole.isAllowedToViewSuppliers = function () {
+    return (req, res, next) => {
+        const user = req.user;
+        if (user.isAdmin || user.isCampManager || user.isGateManager || user.isCampsAdmin) {
+            next();
+        } else {
+            next('route'); //TODO: set redirect route
+        }
+    }
 };
 
 userRole.isAllowedToViewUser = function () {
