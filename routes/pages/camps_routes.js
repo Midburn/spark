@@ -197,6 +197,7 @@ var __render_camp = function (camp, req, res) {
                         isCamp: camp.attributes.__prototype === constants.prototype_camps.THEME_CAMP.id,
                         isProd: camp.attributes.__prototype === constants.prototype_camps.PROD_DEP.id,
                     }
+                    
                     const currentEventID = req.session.passport.user.currentEventId;
                     Event.get_event_controllDates(currentEventID)
                     .then(controllDates => {
