@@ -20,9 +20,9 @@ nav.navbar.navbar-default.navbar-fixed-top
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')
                             span.caret
                         ul.dropdown-menu
-                            li( class="#{path[2] === 'gate' ? 'active' : '' }" )
+                            li( class="#{path.slice(2).join('-') === 'gate' ? 'active' : '' }" )
                                 a( href="/#{language}/gate" )=t('gate:entries')
-                            li( class="#{path[2] === 'supplier-entries' ? 'active' : '' }" )
+                            li( class="#{path.slice(2).join('-') === 'gate-suppliers' ? 'active' : '' }" )
                                 a( href="/#{language}/gate/suppliers" )=t('suppliers:nav_entries')
 
                 if(user.isCampsAdmin)

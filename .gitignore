@@ -78,5 +78,9 @@ deployment.key
 # Theme camps
 public/scripts/camps_bundle.js
 
+#.DS_Store for mac users
+.DS_Store
+
 run_docker_ops.sh
 secret*
+
