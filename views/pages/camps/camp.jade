@@ -5,7 +5,7 @@ block content
             .card__actions
                 if isAdmin || (isCampManager && camp_protoype !== 'art_installation' && !edit_camp_disabled) || (isCampManager && camp_protoype !== 'art_installation' && !edit_art_disabled)
                     .dropdown
-                        a.Btn.btn-default(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
+                        a.Btn.Btn__default(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
             .card__details
                 //- span.label.label-info #{t('camps:camps.title')} # #{id}
                 h2
@@ -115,28 +115,28 @@ block content
                         li.list-group-item
                             span=t('camps:camps.accept_new_members')
                             if camp.status == 'open'
-                                span.badge.bg__teal=t('camps:camps.status_open')
+                                span.badge.green=t('camps:camps.status_open')
                             else if camp.status == 'closed'
-                                span.badge.bg__red=t('camps:camps.status_closed')
+                                span.badge.green=t('camps:camps.status_closed')
                             else
-                                span.badge.bg__teal=t('camps:edit.inactive')
+                                span.badge.green=t('camps:edit.inactive')
                         li.list-group-item
                             span=t('camps:camps.accept_families')
-                            span.badge #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
+                            span.badge(class="#{details.accept_families ? 'green' : 'red' }") #{camp.accept_families ? t('camps:camps.yes'):t('camps:camps.no')}
+                        li.list-group-item
+                            span #{t('camps:camps.child_friendly')}
+                            span.badge(class="#{details.child_friendly ? 'green' : 'red' }") #{details.child_friendly ? t('camps:camps.yes') : t('camps:camps.no')}
+                        li.list-group-item
+                            span #{t('camps:camps.art')}
+                            span.badge(class="#{details.support_art ? 'green' : 'red' }") #{details.support_art ? t('camps:camps.yes') : t('camps:camps.no')}
                 .col-xs-12.col-md-4
                     ul.list-group
                         li.list-group-item
                             span=t('camps:camps.time_active')
-                            span.badge #{details.camp_activity_time_i18n}
-                        li.list-group-item
-                            span #{t('camps:camps.child_friendly')}
-                            span.badge #{details.child_friendly ? t('camps:camps.yes'):t('camps:camps.no')}
+                            span.badge.blue #{details.camp_activity_time_i18n}
                         li.list-group-item
                             span #{t('camps:new.camp_noise_level')}
-                            span.badge #{details.noise_level_i18n}
-                        li.list-group-item
-                            span #{t('camps:camps.art')}
-                            span.badge #{details.support_art ? t('camps:camps.yes'):t('camps:camps.no')}
+                            span.badge.blue #{details.noise_level_i18n}
                 .col-xs-12.col-md-4
                     ul.list-group
                         li.list-group-item
@@ -149,12 +149,12 @@ block content
                 if suppliers.length > 0
                     .col-xs-12
                         h4=t('suppliers:edit_new.suppliers')
-                    .col-xs-12.col-md-4
+                    .col-xs-12.col-md-6
                         ul.list-group
                         each supplier in suppliers
                             li.list-group-item
                                 span #{supplier.supplier_name_he} / #{supplier.supplier_name_en}
-                                span.badge #{supplier.supplier_category}
+                                span.badge(class={blue:supplier.supplier_category === 'water', purple:supplier.supplier_category === 'carriage', orange:supplier.supplier_category === 'food'}) #{supplier.supplier_category}
 
             .documents.hidden
                 h4=t('camps:camps.docs')
