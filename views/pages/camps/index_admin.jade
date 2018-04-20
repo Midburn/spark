@@ -72,9 +72,9 @@ block content
                                     span {{camp.camp_name_he}}
                             td {{ camp.contact_person_name }}
                             td(class="text-center")
-                                span(ng-if="camp.status == 'open'", class='glyphicon glyphicon-ok text-success', data-toggle="tooltip" data-placement="right" title="open")
-                                span(ng-if="camp.status == 'closed'", class='glyphicon glyphicon-remove text-danger', data-toggle="tooltip" data-placement="right" title="closed")
-                                span(ng-if="camp.status == 'deleted'", class='glyphicon glyphicon-trash text-danger', data-toggle="tooltip" data-placement="right" title="deleted")
+                                span(ng-if="camp.status == 'open'", class='glyphicon glyphicon-ok text-green', data-toggle="tooltip" data-placement="right" title="open")
+                                span(ng-if="camp.status == 'closed'", class='glyphicon glyphicon-remove text-red', data-toggle="tooltip" data-placement="right" title="closed")
+                                span(ng-if="camp.status == 'deleted'", class='glyphicon glyphicon-trash text-red', data-toggle="tooltip" data-placement="right" title="deleted")
                                 span(ng-if="camp.status == 'inactive'", class='glyphicon glyphicon-exclamation-sign text-yellow', data-toggle="tooltip" data-placement="right" title="inactive")
                                 span(ng-if="camp.status != 'open' && camp.status != 'closed' && camp.status != 'deleted' && camp.status != 'inactive' ") {{camp.status}}
                             td {{camp.updated_at | date: "dd/MM/yyyy, HH:mm" }}
