@@ -211,7 +211,7 @@ block content
                                             label(for="type_food")
                                                 | #{t('camps:edit.food')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type ? (camp.type.indexOf('other') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type && (camp.type.slice(camp.type.indexOf('other') + 6)).length > 0 ? "checked" : undefined)
                                             label(for="camp_type_other_checkbox")
                                                 | #{t('camps:edit.other')}
                                             input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
