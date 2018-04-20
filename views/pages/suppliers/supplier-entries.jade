@@ -61,13 +61,15 @@ block content
                             td {{ entry.departure_time | date : 'dd/MM/yy HH:mm' }}
                             td {{ entry.supplier_status }}
                             td
-                                button.btn.btn-xs.btn-danger(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
-                                    span(class='glyphicon glyphicon-remove')=' '+t(t_prefix+'entries.exit')
-                                button.btn.btn-xs.btn-info(ng-click="editEntry(entry)")
+                                button.btn.btn-xs.Btn__red(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
+                                    span(class='glyphicon glyphicon-remove')
+                                    =t(t_prefix+'entries.exit')
+                                button.btn.btn-xs.Btn__default(ng-click="editEntry(entry)")
                                     span(class='glyphicon glyphicon-pencil')
                                     =t(t_prefix + 'entries.edit')
-                                button.btn.btn-xs.btn-primary(ng-click="showComments(entry.supplier_id)")
-                                    span(class='glyphicon glyphicon-info-sign')=' '+t(t_prefix+'entries.comments')
+                                button.btn.btn-xs.Btn__blue(ng-click="showComments(entry.supplier_id)")
+                                    span(class='glyphicon glyphicon-comment')
+                                    =t(t_prefix+'entries.comments')
             .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
                 h2=t(t_prefix+'entries.new')
                 .col-sm-6.col-xs-12
@@ -107,7 +109,7 @@ block content
                                         td.w-31 {{ commentObj.comment_time | date:'medium' }}
                                         td.w-49 {{ commentObj.supplier_comment }}
                         .modal-footer
-                            input.form-control(ng-model="newComment" placeholder="Add a new comment",ng-keydown="$event.keyCode === 13 && addComment()")          
+                            input.form-control(ng-model="newComment" placeholder="Add a new comment",ng-keydown="$event.keyCode === 13 && addComment()")
                             button.Btn.no-transition.Btn__transparent.pull-right(type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
                             button.Btn.no-transition.Btn__green(id='supplier_create_save_modal_request', type='button', ng-click="addComment()")=t('suppliers:edit_new.save')
         //- Camp create request modal
@@ -132,4 +134,3 @@ block content
                         button.Btn.Btn__transparent.pull-right(id='create_camp_close_btn', type='button', ng-click="cancelEditedEntry()", data-dismiss='modal')=t('suppliers:edit_new.back')
                         button.Btn.Btn__green(id='supplier_create_save_modal_request', type='button', ng-click="saveEditedEntry()")=t('suppliers:edit_new.save')
 
-        

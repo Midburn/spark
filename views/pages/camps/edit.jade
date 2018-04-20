@@ -22,7 +22,7 @@ block content
             .card__actions
                 if(isCamp)
                     .dropdown
-                        a.Btn.btn-default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
+                        a.Btn.Btn__default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             if(isNew)
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
@@ -212,10 +212,10 @@ block content
                                             label(for="type_food")
                                                 | #{t('camps:edit.food')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type ? (camp.type.indexOf('other') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type && (camp.type.slice(camp.type.indexOf('other') + 6)).length > 0 ? "checked" : undefined)
                                             label(for="camp_type_other_checkbox")
                                                 | #{t('camps:edit.other')}
-                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="type_other_text", value=(camp.type.slice(camp.type.lastIndexOf(',') + 1)))
                             .col-md-4
                                     label(for='camp_child_friendly') #{t('camps:edit.camp_child_friendly')}
                                     input.checkbox(id='camp_child_friendly', checked='#{camp.child_friendly}', type="checkbox", name='child_friendly')
@@ -333,7 +333,7 @@ block content
                     button(type="submit", id='camp_create_save', class="Btn Btn__green")=t('camps:btn_save_camp')
                 else
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
-                    button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
+                    button.Btn.Btn__green(id='camp_edit_save')=t('camps:btn_save_camp')
         //END Continue & Save buttons
 
 

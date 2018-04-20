@@ -1,8 +1,8 @@
 @import './colors';
+@import './buttons';
 @import './ui';
 @import './camps';
 @import './footer';
-@import './colors';
 @import './light-theme';
 
 // hide this after getting theme from session storage and page load (public/scripts/camps.js)
@@ -72,6 +72,10 @@ span {
     padding: 0 10px 0 10px;
 }
 
+.navbar {
+    border: 0;
+}
+
 .navbar-brand {
     background-size: 50px;
     padding-left: 30px;
@@ -138,6 +142,15 @@ li.dropdown > ul > li > a > span {
     text-align: center;
 }
 // bootstrap overrides
+.list-group-item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    .badge {
+        white-space: inherit;
+        text-align: left;
+    }
+}
 .checkbox input[type=checkbox],
 .checkbox-inline input[type=checkbox],
 .radio input[type=radio],
@@ -146,7 +159,7 @@ li.dropdown > ul > li > a > span {
 }
 
 .btn-xs {
-    margin-bottom: 5px;
+    margin: 4px;
 }
 
 // fix position of select dropdown arrow
@@ -164,7 +177,7 @@ div.selectize-input > div > span > span {
 }
 .px-2 {
     padding-left: 20px !important;
-    padding-right: 20px !important; 
+    padding-right: 20px !important;
 }
 
 .m-0 {
