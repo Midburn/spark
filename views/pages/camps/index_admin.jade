@@ -96,11 +96,11 @@ block content
                                     button.btn.btn-xs
                                         span(class='fa fa-facebook-official')
                                 if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
-                                    a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
+                                    a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit') &nbsp;
                                         button.btn.btn-xs
                                             span(class='glyphicon glyphicon-pencil')
                                             =t('camps:stats.edit')
-                                a.cursor-p(ng-click='removeCamp(camp.id)')
+                                a.cursor-p(ng-click='removeCamp(camp.id)') &nbsp;
                                     button.btn.btn-xs
                                         span(class='glyphicon glyphicon-trash')
                                         =t('camps:stats.remove')
