@@ -41,8 +41,9 @@ block content
                     p=t('camps:camps.publication_subtitle')
                 .col-xs-12.col-md-6
                     .contact-person(data-camp-contact-person-id='#{camp.contact_person_id}')
-                        a(href='/users/#{camp.contact_person_id}')
-                            span=t('camps:stats.contact_person')
+                        //a(href='/users/#{camp.contact_person_id}')
+                        span
+                            strong=t('camps:stats.contact_person')
                         ul.list-group
                           li.list-group-item
                             span #{t('camps:camps.name')}:
@@ -145,14 +146,15 @@ block content
                             span #{t('camps:edit.location_time')}
                             span.badge #{details.camp_location_street_time}
             .modifications.row
-                .col-xs-12
-                    h4=t('suppliers:edit_new.suppliers')
-                .col-xs-12.col-md-4
-                    ul.list-group
-                    each supplier in suppliers
-                        li.list-group-item
-                            span #{supplier.supplier_name_he} / #{supplier.supplier_name_en}
-                            span.badge #{supplier.supplier_category}
+                if suppliers.length > 0
+                    .col-xs-12
+                        h4=t('suppliers:edit_new.suppliers')
+                    .col-xs-12.col-md-4
+                        ul.list-group
+                        each supplier in suppliers
+                            li.list-group-item
+                                span #{supplier.supplier_name_he} / #{supplier.supplier_name_en}
+                                span.badge #{supplier.supplier_category}
 
             .documents.hidden
                 h4=t('camps:camps.docs')
