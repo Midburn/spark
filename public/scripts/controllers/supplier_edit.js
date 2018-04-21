@@ -18,7 +18,7 @@ const angular_getSupplierFile = function ($http, $scope, $q, supplier_id) {
     let getFilePromise = $q.defer()
 
     $http.get(req_path).then(function (res) {
-        getFilePromise.resolve(res.data.files)
+        getFilePromise.resolve(res.data)
     }).catch(function (err) {
         const jsonError = err.data.message
         sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
@@ -119,9 +119,9 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
     
     $scope.getFiles = () => {
         angular_getSupplierFile($http, $scope, $q, supplier_id)
-        .then((files) => {
+        .then((file) => {
             console.log('Got supplier files!')
-            $scope.files = files;
+            $scope.file = file;
         }).catch((err) => {
             console.log("getFiles error: ", err)
         })
