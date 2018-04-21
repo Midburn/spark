@@ -340,7 +340,7 @@ module.exports = (app, passport) => {
             LOG.error(err.message);
             return res.status(500).json({
                 error: true,
-                message: 'S3 Error: could not put file in S3'
+                message: err.message
             })
         }
 
@@ -399,7 +399,7 @@ module.exports = (app, passport) => {
             }
             let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
             if (!supplier_contract) {
-                res.status(404).json({error: true, message: 'No contract found for supplier'})
+                res.status(204).json({error: true, message: 'No contract found for supplier'})
             } else {
                   key = supplier_contract.attributes.file_name
                   bucket = awsConfig.buckets.supplier_contract_upload

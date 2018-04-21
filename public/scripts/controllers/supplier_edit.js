@@ -12,6 +12,34 @@ const angular_getSupplierById = ($http, $scope, supplier_id) => {
         $scope.supplier = res.data.supplier;
     });
 }
+
+const angular_getSupplierFile = function ($http, $scope, $q, supplier_id) {
+    const req_path = `/suppliers/${supplier_id}/contract`
+    let getFilePromise = $q.defer()
+
+    $http.get(req_path).then(function (res) {
+        getFilePromise.resolve(res.data.files)
+    }).catch(function (err) {
+        const jsonError = err.data.message
+        sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
+        getFilePromise.reject(err)
+    })
+
+    return getFilePromise.promise
+}
+const angular_deleteSupplierFile = function ($http, $scope, $q, supplier_id) {
+    const req_path = `/suppliers/${supplier_id}/contract/`;
+    let deleteFilePromise = $q.defer()
+    $http.delete(req_path).then(function (res) {
+        deleteFilePromise.resolve(res.data.files)
+    }).catch(function (err) {
+        const jsonError = err.data.message;
+        sweetAlert("Error!", "Could not delete file \n" + jsonError)
+        deleteFilePromise.reject(err)
+    })
+
+    return deleteFilePromise.promise
+}
 suppliers_app.controller("supllierShowController", ($scope, $http, $filter) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
     angular_getCamps($http, $scope, supplier_id);
@@ -20,7 +48,7 @@ suppliers_app.controller("supllierShowController", ($scope, $http, $filter) => {
         $scope.orderCamps = orderByValue;
     }
 });
-suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
+suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
     const lang = document.getElementById('meta__lang').value || 'he';
     angular_getSupplierById($http, $scope, supplier_id)
@@ -88,5 +116,29 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
                 }
         });
     };
+    
+    $scope.getFiles = () => {
+        angular_getSupplierFile($http, $scope, $q, supplier_id)
+        .then((files) => {
+            console.log('Got supplier files!')
+            $scope.files = files;
+        }).catch((err) => {
+            console.log("getFiles error: ", err)
+        })
+    }
+    $scope.deleteFile = () => {
+        angular_deleteSupplierFile($http, $scope, $q, supplier_id)
+        .then((files) => {
+            console.log('File deleted')
+            $scope.files = files;
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    if (!_.isNil(supplier_id) && Number(supplier_id)) {
+        $scope.current_supplier_id = supplier_id;
+        $scope.getFiles();
+    }
+
 
 }); //end of controller

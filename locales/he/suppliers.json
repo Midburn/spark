@@ -45,8 +45,11 @@
         "confirmation": "וידוא פרטים",
         "save": "שמור",
         "back": "חזור",
-        "created": "תאריך היווצרות"
-
+        "created": "תאריך היווצרות",
+        "upload_header": "העלאת קבצים",
+        "camp_file_url": "נתיב הקובץ",
+        "delete_file": "מחק קובץ",
+        "no_files": "לא נמצאו קבצים"
     },
     "nav_admin": "ניהול ספקים",
     "nav_entries": "ניהול כניסות ספקים",

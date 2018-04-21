@@ -45,8 +45,11 @@
         "confirmation": "Verify details",
         "save": "Save",
         "back": "Back",
-        "created": "Created at"
-
+        "created": "Created at",
+        "upload_header": "Upload Files",
+        "camp_file_url": "File Path",
+        "delete_file": "Delete file",
+        "no_files": "No files found"
 
     },
     "nav_entries": "Suppliers entries",
