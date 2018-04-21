@@ -139,12 +139,12 @@
         "remove": "הסרה",
         "search": "חפש מחנה",
         "dumpcampsdata": "יצוא טבלה לקובץ",
-        "entrance_quota": "מכסת הגעה מוקדמת",
+        "entrance_quota": "הקצאת הגעה מוקדמת",
         "pre_sale_tickets_quota": "הקצאת כרטיסי מכירה מוקדמת",
-        "dgs_tickets_quota": "הקצאת כרטיסי קבוצה",
+        "group_sale_tickets_quota": "הקצאת כרטיסי קבוצה",
         "assigned_ticket_count": "כרטיסים שהוקצו",
         "total_pre_sale_ticket_assigned": "כרטיסי מכירה מוקדמת",
-        "total_dgs_ticket_assigned": "כרטיסי קבוצה"
+        "total_group_sale_ticket_assigned": "כרטיסי קבוצה"
     },
     "members": {
         "title": "משתתפים במחנה",
@@ -172,12 +172,13 @@
         "status_approved_mgr": "מנהלת מחנה מאושרת",
         "inside_event": "בתוך האירוע",
         "pre_sale_ticket_approved": "הקצה כרטיס מכירה מוקדמת",
-        "dgs_ticket_approved": "הקצה כרטיס קבוצה",
+        "group_sale_ticket_approved": "הקצה כרטיס קבוצה",
         "pre_sale_ticket_assigned": "הוקצה כרטיס מכירה מוקדמת?",
-        "dgs_ticket_assigned": "הוקצה כרטיס קבוצה?",
+        "group_sale_ticket_assigned": "הוקצה כרטיס קבוצה?",
         "pre_sale_ticket_remove": "הסר כרטיס מכירה מוקדמת",
-        "dgs_ticket_remove": "הסר כרטיס קבוצה",
+        "group_sale_ticket_remove": "הסר כרטיס קבוצה",
         "set_early_arrival": "הקצה כניסה מוקדמת",
+        "remove_early_arrival": "הסר כניסה מוקדמת",
         "status_supplier": "מאושר כספק"
     },
     "camps": {
@@ -273,7 +274,7 @@
         "contact_person_name": "שם איש קשר",
         "contact_person_email": "אימייל איש קשר",
         "contact_person_phone": "טלפון אישר קשר",
-        "early_arrival_quota": "כמות מגיעים מוקדם",
+        "early_arrival_quota": "הקצאת הגעה מוקדמת",
         "pre_sale_tickets_quota": "מכסת כרטיסים במכירה",
         "pre_sale_ticket_count": "סה״כ כרטיסים במכירה",
         "security_file": "תיק בטיחות",

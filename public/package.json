@@ -21,7 +21,7 @@
     "jquery": "2.2.4",
     "js.cookie": "0.0.4",
     "jvectormap-next": "^3.0.0",
-    "moment": "^2.21.0",
+    "moment": "^2.22.0",
     "popper.js": "1.12.9",
     "recaptcha": "1.2.1",
     "selectize.js": "0.12.12",

@@ -8,8 +8,10 @@ block content
                 const controllDates = {
                     appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
                     appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
-                    dgs_tickets_allocation_start: '#{controllDates.dgs_tickets_allocation_start}',
-                    dgs_tickets_allocation_end: '#{controllDates.dgs_tickets_allocation_end}'
+                    group_sale_tickets_allocation_start: '#{controllDates.group_sale_tickets_allocation_start}',
+                    group_sale_tickets_allocation_end: '#{controllDates.group_sale_tickets_allocation_end}',
+                    early_arrivals_start: '#{controllDates.early_arrivals_start}',
+                    early_arrivals_end: '#{controllDates.early_arrivals_end}'
                 }
         .container.col-md-12
             h1=t(t_prefix+'dash.title')
@@ -55,7 +57,7 @@ block content
                             th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'stats.published')
                             th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t('camps:stats.entrance_quota')
                             th.pre_sale_tickets_quota(ng-click='changeOrderBy("pre_sale_tickets_quota")')=t('camps:stats.pre_sale_tickets_quota')
-                            th.dgs_tickets_quota(ng-click='changeOrderBy("dgs_tickets_quota")')=t('camps:stats.dgs_tickets_quota')
+                            th.group_sale_tickets_quota(ng-click='changeOrderBy("group_sale_tickets_quota")')=t('camps:stats.group_sale_tickets_quota')
                             //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
                             th()=t(t_prefix+'members.actions')
                             //- th.admin-edit=t(t_prefix+'stats.edit')
@@ -79,11 +81,12 @@ block content
                                 span(ng-if="camp.status != 'open' && camp.status != 'closed' && camp.status != 'deleted' && camp.status != 'inactive' ") {{camp.status}}
                             td {{camp.updated_at | date: "dd/MM/yyyy, HH:mm" }}
                             td {{ camp.web_published }}
-                            td {{ camp.entrance_quota }}
+                            td
+                                input( type="number" ng-disabled="!isInEarlyArrivalRange()" name="entrance_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.entrance_quota !== null ? camp.entrance_quota : 0" ng-model="camp.entrance_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updateEarlyArrivalQuota(camp.id,camp.entrance_quota_input)')
                             td
                                 input( type="number" ng-disabled="!isInDateRange()" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)')
                             td
-                                input( type="number" ng-disabled="!isInDateRange(true)" name="gds_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.dgs_tickets_quota !== null ? camp.dgs_tickets_quota : 0" ng-model="camp.dgs_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id, camp.dgs_tickets_quota_input, true)')
+                                input( type="number" ng-disabled="!isInDateRange(true)" name="gds_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.group_sale_tickets_quota !== null ? camp.group_sale_tickets_quota : 0" ng-model="camp.group_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id, camp.group_sale_tickets_quota_input, true)')
                             td
                                 //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
                                     span(class='glyphicon glyphicon-pencil')
