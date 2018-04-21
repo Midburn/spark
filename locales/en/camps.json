@@ -175,6 +175,7 @@
         "pre_sale_ticket_remove": "Remove Pre-sale Ticket",
         "group_sale_sale_ticket_remove": "Remove Group Sale Ticket",
         "set_early_arrival": "Set Early Arrival",
+        "remove_early_arrival": "Remove Early Arrival",
         "status_approved_mgr": "Approved as Manager",
         "status_supplier": "Supplier"
     },
