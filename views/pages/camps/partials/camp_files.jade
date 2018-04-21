@@ -11,4 +11,4 @@ table.table.table-striped.table-hover
             td
                 a(ng-if="file.canEdit" ng-click="deleteFile(file.file_id)") Delete File
 div
-    input.form-control(type="file" ng-file-upload)
+    input.form-control(type="file", id="camp_file_input", ng-file-upload)

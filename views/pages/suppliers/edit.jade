@@ -24,9 +24,9 @@ block content
             .col-xs-12
                 //- Card switcher
                 button.Btn.Btn__default.card-switcher#1=t('suppliers:edit_new.info')
-                //- TODO - test if user is camp manager of this camp?
                 if(!isNew)
-                    button.Btn.Btn__transparent.card-switcher#3=t('suppliers:edit_new.camps_edit')
+                    button.Btn.Btn__transparent.card-switcher#2=t('suppliers:edit_new.camps_edit')
+                button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')    
         .cards--wrapper.card__shad
             //- Card 1 - Details
             .card.card-first
@@ -80,7 +80,7 @@ block content
                                         option(ng-repeat="option in status_options", ng-selected="option.id == supplier.supplier_category", value="{{ option.id }}") {{ option.value }}
 
             //- Card 2 - Related camps
-            .card.card-third.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
+            .card.card-second.card__shad.card__padding--even.card-hide.col-xs-12.table-responsive
                 .form-inline
                     input.form-control(list="campList", name="" ng-model='add_camp_display_name', type="text", placeholder="#{t('suppliers:edit_new.choose_camp')}")
                     datalist(id="campList")
@@ -89,7 +89,16 @@ block content
                 .row
                     .col-xs-12
                     include partials/members_table
-
+            //- BEGIN Card 3: Upload Docs & Files
+            .card.card-third.card-hide
+                h4=t('suppliers:edit_new.upload_header')
+                .panel
+                    .panel-body
+                        .names.col-md-12
+                            .col-xs-12
+                                include partials/supplier_files
+            //- END Card 3: Upload Docs & Files
+        //- END all cards
         .controls.row
             .col-xs-12
                 if(isNew)
@@ -98,9 +107,6 @@ block content
                 else
                     input(id='supplier_edit_supplier_id', type='hidden', value='#{supplier_id}')
                     button.Btn.Btn__default(id='supplier_edit_save')=t('suppliers:edit_new.btn_save_camp')
-
-                if isCamp && supplier.web_published != '1'
-                    button.Btn.Btn__green(id='camp_edit_publish')=t('suppliers:edit_new.publish')
 
         //- Camp create request modal
         .modal.fade(id='create_camp_request_modal', tabindex='-1', role='dialog')
