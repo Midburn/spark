@@ -405,7 +405,10 @@ module.exports = (app, passport) => {
                   bucket = awsConfig.buckets.supplier_contract_upload
                   res.status(200).json({
                       error: false,
-                      path: s3Client.getPresignedUrl(key, bucket)
+                      data: {
+                        path: s3Client.getPresignedUrl(key, bucket),
+                        fileName: key
+                      }
                 })
             }
         } catch (err) {
