@@ -140,5 +140,4 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
         $scope.getFiles();
     }
 
-
 }); //end of controller
