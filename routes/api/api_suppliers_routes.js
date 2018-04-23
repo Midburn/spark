@@ -154,6 +154,10 @@ module.exports = (app, passport) => {
             }
 
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            let supplierContract = await SupplierContract.forge({supplier_id: supplier_id}).fetch();
+            if (!supplierContract) {
+              res.status(403).json({error: true,data: { message : "Adding suppliers without contract is forbidden" }})
+            }
             let camp = await supplier.setSupplierCamp(data)
 
             if (camp !== 0) {
