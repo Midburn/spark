@@ -47,7 +47,13 @@
         "send_request": "Edit Event",
         "event_code": "Event Code",
         "event_type": "Event Type",
-        "gate_code": "Gate Code"
+        "gate_code": "Gate Code",
+        "gate_status": "Gate Status",
+        "status": {
+            "early_arrival": "Early Arrival",
+            "regular": "Regular",
+            "closed": "Closed"
+        }
     },
     "form": {
         "dates_controll":{
