@@ -330,7 +330,7 @@ module.exports = (app, passport) => {
                 message: 'No file attached to request'
             })
         }
-        let fileName = req.files.file.name;
+        let fileName = supplierId + '/' + req.files.file.name;
 
         const s3Client = new S3();
         // Upload the file to S3
@@ -399,15 +399,23 @@ module.exports = (app, passport) => {
             }
             let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
             if (!supplier_contract) {
-                res.status(204).json({error: true, message: 'No contract found for supplier'})
+                res.status(200).json({error: true,
+                                      message: 'No contract found for supplier',
+                                      data: {
+                                        path: null,
+                                        fileName: null
+                                      }
+                                    }
+               )
             } else {
-                  key = supplier_contract.attributes.file_name
+                  var key = supplier_contract.attributes.file_name;
+                  var fileName = key.split("/")[1];
                   bucket = awsConfig.buckets.supplier_contract_upload
                   res.status(200).json({
                       error: false,
                       data: {
                         path: s3Client.getPresignedUrl(key, bucket),
-                        fileName: key
+                        fileName: fileName
                       }
                 })
             }
