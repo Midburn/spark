@@ -392,6 +392,12 @@ body[lang="en"] {
             top: 0;
             left: 0;
         }
+        #admin_camps td{
+            max-width: 40px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
         .card.card-hide {
             left: 3000px;
