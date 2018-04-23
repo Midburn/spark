@@ -1,20 +1,17 @@
-var _ = require('lodash');
-var i18next = require('i18next');
-var bcrypt = require('bcrypt-nodejs');
-var randtoken = require('rand-token');
-
-var common = require('../libs/common').common;
-var bookshelf = require('../libs/db').bookshelf;
-var knex = require('../libs/db').knex;
-var NpoMember = require('./npo_member').NpoMember;
-var constants = require('./constants.js');
-var userRole = require('../libs/user_role');
-
+const _ = require('lodash');
+const i18next = require('i18next');
+const bcrypt = require('bcrypt-nodejs');
+const randtoken = require('rand-token');
+const common = require('../libs/common').common;
+const bookshelf = require('../libs/db').bookshelf;
+const knex = require('../libs/db').knex;
+const NpoMember = require('./npo_member').NpoMember;
+const constants = require('./constants.js');
+const userRole = require('../libs/user_role');
 /////////////////////////////////////////////////////////////
 /////////////////////////// USER  ///////////////////////////
 /////////////////////////////////////////////////////////////
-
-var User = bookshelf.Model.extend({
+const User = bookshelf.Model.extend({
     tableName: constants.USERS_TABLE_NAME,
     idAttribute: 'user_id',
 
@@ -49,6 +46,9 @@ var User = bookshelf.Model.extend({
         return common.__hasRole(role, this.attributes.roles);
     },
 
+    camp_memberships: function() {
+        return this.hasMany(CampMember, 'user_id');
+    },
     /////////////////////////// GROUPS ///////////////////////////
 
     groups: function () {
@@ -208,7 +208,9 @@ var User = bookshelf.Model.extend({
         isAdmin: function () {
             return this.hasRole(userRole.ADMIN);
         },
-
+        isGateManager: function () {
+            return this.hasRole(userRole.GATE_MANAGER);
+        },
         isCampManager: function () {
             return this.hasRole(userRole.CAMP_MANAGER);
         },
@@ -223,6 +225,11 @@ var User = bookshelf.Model.extend({
         },
         isCampFree: function () {
             return (!this.attributes.camp);
+        },
+
+        isAllowedToViewSuppliers: function () {
+            return this.hasRole(userRole.ADMIN)
+                || this.hasRole(userRole.GATE_MANAGER) || this.hasRole(userRole.CAMP_MANAGER) || this.hasRole(userRole.THEME_CAMPS_ADMIN);
         },
 
         isCampJoinPending: function () {
@@ -295,6 +302,18 @@ var UsersGroupMemberShip = bookshelf.Model.extend({
     }
 });
 
+// Why here? to prevent circular dependency
+const CampMember = bookshelf.Model.extend({
+    tableName: constants.CAMP_MEMBERS_TABLE_NAME,
+    idAttribute: 'user_id,camp_id',
+    users: function () {
+        return this.hasMany(User, 'user_id')
+    },
+    camps: function () {
+        return this.belongsTo(Camp, 'camp_id')
+    }
+
+});
 ////////////////////////////////////////////////////////////////
 /////////////////////////// EXPORTS  ///////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -303,5 +322,6 @@ module.exports = {
     User: User,
     UsersGroup: UsersGroup,
     UsersGroupMembership: UsersGroupMemberShip,
+    CampMember: CampMember,
     DrupalUser: DrupalUser
 };

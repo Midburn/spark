@@ -1,0 +1,16 @@
+h5(ng-if="!file")=t('suppliers:edit_new.no_files')
+table.table.table-striped.table-hover(ng-if="file")
+    thead
+        tr
+            th=t('suppliers:edit_new.supplier_file_url')
+            th=t('suppliers:edit_new.actions')
+    tbody
+        tr
+            td
+                a(href="{{file.file_path}}")
+                    span.glyphicon.glyphicon-file {{file.fileName}}
+
+            td
+                a(ng-click="deleteFile()")=t('suppliers:edit_new.delete_file')
+div
+    input.form-control(type="file", id="supplier_file_input", ng-file-upload)

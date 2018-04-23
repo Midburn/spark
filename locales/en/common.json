@@ -74,7 +74,8 @@
         "whoami": "Manage Profile"
     },
     "top-nav": {
-      "manage": "Manage"
+      "manage": "Manage",
+      "gate": "Gate"
     },
     "footer": {
         "scrolltop": "Back to top",
@@ -111,6 +112,7 @@
             "gate": "Gate Statistics",
             "total_tickets":"Event Tickets",
             "inside_event": "Currently Inside",
+            "cars_inside_event": "Cars Currently Inside",
             "ticketing": "Ticketing",
             "last_24h_first_entrance": "Last 24h entrance",
             "last_1h_first_entrance": "Last hour entrance",

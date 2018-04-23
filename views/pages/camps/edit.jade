@@ -2,14 +2,16 @@ extends ../../includes/page
 block content
     script.
         var groups_prototype="#{__groups_prototype}";
-        var totalTicketCount = "#{parseInt(camp.dgs_tickets_quota || 0) + parseInt(camp.pre_sale_tickets_quota || 0)}";
-        var dgsTicketCount = "#{parseInt(camp.dgs_tickets_quota || 0)}";
+        var totalTicketCount = "#{parseInt(camp.group_sale_tickets_quota || 0) + parseInt(camp.pre_sale_tickets_quota || 0)}";
+        var groupSaleTicketCount = "#{parseInt(camp.group_sale_tickets_quota || 0)}";
         var preSaleTicketCount = "#{parseInt(camp.pre_sale_tickets_quota || 0)}";
         const controllDates = {
             appreciation_tickets_allocation_start : '#{new Date(controllDates.appreciation_tickets_allocation_start)}',
             appreciation_tickets_allocation_end : '#{new Date(controllDates.appreciation_tickets_allocation_end)}',
-            dgs_tickets_allocation_start: '#{new Date(controllDates.dgs_tickets_allocation_start)}',
-            dgs_tickets_allocation_end: '#{new Date(controllDates.dgs_tickets_allocation_end)}',
+            group_sale_tickets_allocation_start: '#{new Date(controllDates.group_sale_tickets_allocation_start)}',
+            group_sale_tickets_allocation_end: '#{new Date(controllDates.group_sale_tickets_allocation_end)}',
+            early_arrivals_start: '#{new Date(controllDates.early_arrivals_start)}',
+            early_arrivals_end: '#{new Date(controllDates.early_arrivals_end)}'
         }
     input.hidden.meta(id='meta__lang', value='#{language}')
     input.hidden.meta(id='meta__camp_name_en', value='#{camp.camp_name_en}')
@@ -22,7 +24,7 @@ block content
             .card__actions
                 if(isCamp)
                     .dropdown
-                        a.Btn.btn-default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
+                        a.Btn.Btn__default(href='/#{language}/camps/#{camp.id}')=t('camps:edit.view')
             if(isNew)
                 h2=t('camps:new.header_title')
                 h4=t('camps:new.header_desc')
@@ -41,6 +43,7 @@ block content
                     button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.members')
                     if(isCamp)
                         button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.upload')
+                        button.Btn.Btn__transparent.card-switcher#5=t('camps:edit.suppliers')
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
@@ -211,10 +214,10 @@ block content
                                             label(for="type_food")
                                                 | #{t('camps:edit.food')}
                                         .checkbox
-                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type ? (camp.type.indexOf('other') > -1 ? "checked" : undefined) : undefined)
+                                            input(type="checkbox", class='camp_type', id="camp_type_other_checkbox", name="type_other", value="other", checked=camp.type && (camp.type.slice(camp.type.indexOf('other') + 6)).length > 0 ? "checked" : undefined)
                                             label(for="camp_type_other_checkbox")
                                                 | #{t('camps:edit.other')}
-                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="type_other_text", value=(camp.type.slice(camp.type.indexOf('other') + 6)))
+                                            input(id='camp_type_other_text', type="text", class="form-control checkbox-other", name="type_other_text", value=(camp.type.slice(camp.type.lastIndexOf(',') + 1)))
                             .col-md-4
                                     label(for='camp_child_friendly') #{t('camps:edit.camp_child_friendly')}
                                     input.checkbox(id='camp_child_friendly', checked='#{camp.child_friendly}', type="checkbox", name='child_friendly')
@@ -271,10 +274,10 @@ block content
                                 input.form-control(name = 'user_email', ng-model='camps_members_add_member', type="text", placeholder="#{t('camps:edit.add_member_placeholder')}", required)
                                 button.Btn.Btn__sm(ng-click="addMember()", ng-disabled="add_member_form.user_email.$invalid") + #{t('camps:members.add_member')}
                         .form-group
-                    input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
+                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t('camps:edit.search_member')}", name="camps_members_search_member" autofocus)
                 .row
                     .col-xs-12
-                    include partials/members_table
+                        include partials/members_table
 
             //- END Card 3:  Manage Members
 
@@ -291,6 +294,37 @@ block content
                                 //- input.form-control(type="file" id='edit_camp_upload_security_file', name='security_file')
                                 include partials/camp_files
             //- END Card 4: Upload Docs & Files
+            //- BEGIN Card 5:  Manage Suppliers
+            .card.card-fifth.card__shad.card-hide
+                .camp-info.panel
+                    .panel-body
+                        h4=t('camps:edit.suppliers')
+                        .form-inline
+                            input.form-control(list="campSupplierList", name="" ng-model='add_supplier_id', type="text", placeholder="#{t('camps:edit.choose_supplier')}")
+                            datalist(id="campSupplierList")
+                                option(ng-repeat="supplier in all_suppliers | filter: add_supplier_id", data-id="{{ supplier.supplier_id }}" value="{{ supplier.supplier_id }}")
+                                    {{ supplier.supplier_name_he }} | {{ supplier.supplier_name_en }}
+                            button.Btn.Btn__sm(ng-click="addSupplier()") + #{t('camps:edit.add_supplier')}
+                        .col-xs-12
+                            table.table.table-striped.table-hover
+                                tr.row(ng-repeat="supplier in camp_suppliers")
+                                    td.col
+                                        {{supplier.supplier_id}}
+                                    td.col
+                                        {{lang === 'he' ? supplier.supplier_name_he : supplier.supplier_name_en}}
+                                    td.col
+                                        {{supplier.main_contact_phone_number}}
+                                    td.col
+                                        {{supplier.category}}
+                                    td.col
+                                        span 
+                                            a.cursor-p(ng-click='removeSupplier(supplier.supplier_id)') &nbsp;
+                                                button.btn.btn-xs
+                                                    span(class='glyphicon glyphicon-trash')
+                                                    =t('camps:edit.remove_supplier')
+
+            //- END Card 5:  Manage Suppliers
+
 
 
         //BEGIN Continue & Save buttons
@@ -301,7 +335,7 @@ block content
                     button(type="submit", id='camp_create_save', class="Btn Btn__green")=t('camps:btn_save_camp')
                 else
                     input(id='camp_edit_camp_id', type='hidden', value='#{camp.id}')
-                    button.Btn.Btn__default(id='camp_edit_save')=t('camps:btn_save_camp')
+                    button.Btn.Btn__green(id='camp_edit_save')=t('camps:btn_save_camp')
         //END Continue & Save buttons
 
 

@@ -65,18 +65,36 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
         }
     };
     // Test if you can allocate tickets based on event settings.
-    $scope.isInDateRange = (isDgs) => {
+    $scope.isInDateRange = (isGroupSale) => {
         let current = new Date();
-        let start = isDgs ? new Date(controllDates.dgs_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start);
-        let end = isDgs ? new Date(controllDates.dgs_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end);
+        let start = isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start);
+        let end = isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end);
+        return start < current && current < end;
+    };
+
+    $scope.isInEarlyArrivalRange = () => {
+        let current = new Date();
+        let start = new Date(controllDates.early_arrivals_start);
+        let end = new Date(controllDates.early_arrivals_end);
         return start < current && current < end;
     };
 
     // update the camp pre sale quota
-    $scope.updatePreSaleQuota = (camp_id, quota, isDgs) => {
-        if ($scope.isInDateRange(isDgs)) {
+    $scope.updatePreSaleQuota = (camp_id, quota, isGroupSale) => {
+        if ($scope.isInDateRange(isGroupSale)) {
             if (confirm('Confirm new quota to: ' + quota)) {
-                $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: quota, isDgs: isDgs })
+                $.post('/camps/' + camp_id + '/updatePreSaleQuota', { quota: Number(quota), isGroupSale: isGroupSale })
+                    .success(() => { })
+                    .error(() => {
+                        alert("Quota must be in a positive number format");
+                    });
+            }
+        }
+    };
+    $scope.updateEarlyArrivalQuota = (camp_id, quota, isGroupSale) => {
+        if ($scope.isInEarlyArrivalRange()) {
+            if (confirm('Confirm new quota to: ' + quota)) {
+                $.post('/camps/' + camp_id + '/updateEarlyArrivalQuota', { quota: Number(quota), isGroupSale: isGroupSale })
                     .success(() => { })
                     .error(() => {
                         alert("Quota must be in a positive number format");

@@ -1,4 +1,4 @@
-app.factory('fileUploadService', ['$http', '$q', function ($http, $q) {
+function files_upload($http, $q) {
     return {
         uploadFile: function (file, uploadUrl) {
             var uploadPromise = $q.defer()
@@ -21,4 +21,6 @@ app.factory('fileUploadService', ['$http', '$q', function ($http, $q) {
             return uploadPromise.promise;
         }
     }
-}])
+}
+app.factory('fileUploadService', ['$http', '$q', files_upload])
+suppliers_app.factory('fileUploadService', ['$http', '$q', files_upload])

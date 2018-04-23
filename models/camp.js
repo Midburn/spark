@@ -1,12 +1,13 @@
 const common = require('../libs/common').common;
-var bookshelf = require('../libs/db').bookshelf;
-var constants = require('./constants.js');
-var models = require('../models/user');
-var User = models.User;
-var UsersGroup = models.UsersGroup;
+const bookshelf = require('../libs/db').bookshelf;
+const constants = require('./constants.js');
+const models = require('./user');
+const User = models.User;
+const UsersGroup = models.UsersGroup;
+const CampMember = models.CampMember;
 const knex = require('../libs/db').knex;
 
-var Camp = bookshelf.Model.extend({
+const Camp = bookshelf.Model.extend({
     tableName: constants.CAMPS_TABLE_NAME,
     idAttribute: 'id',
     members: function () {
@@ -79,6 +80,20 @@ var Camp = bookshelf.Model.extend({
                 done(users);
             });
     },
+    getCampSuppliers: async function(done) {
+        try {
+            let suppliers = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).select()
+                .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
+                .where(constants.SUPPLIERS_RELATIONS_TABLE_NAME + '.camp_id', this.attributes.id);
+            if (typeof done === 'function') {
+                done(suppliers);
+            }
+            return suppliers;
+        } catch (err) {
+            throw err;
+        }
+
+    },
     isCampManager: function (user_id) {
         user_id = parseInt(user_id);
         for (var i in this.attributes.managers) {
@@ -129,18 +144,6 @@ var Camp = bookshelf.Model.extend({
     }
 });
 
-const CampMember = bookshelf.Model.extend({
-    tableName: constants.CAMP_MEMBERS_TABLE_NAME,
-    idAttribute: 'user_id,camp_id',
-    users: function () {
-        return this.hasMany(User, 'user_id')
-    },
-    camps: function () {
-        return this.belongsTo(Camp, 'camp_id')
-    }
-
-});
-
 const CampFile = bookshelf.Model.extend({
     tableName: constants.CAMP_FILES_TABLE_NAME,
     idAttribute: 'file_id',
@@ -152,7 +155,6 @@ const CampFile = bookshelf.Model.extend({
 // Create the model and expose it
 module.exports = {
     Camp: Camp,
-    CampMember: CampMember,
     CampFile: CampFile
     // __parsePrototype: __parsePrototype,
 };

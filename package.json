@@ -5,7 +5,7 @@
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
-  "version": "2.10.30",
+  "version": "3.1.2",
   "private": true,
   "scripts": {
     "postinstall": "cd public; npm install",
@@ -96,7 +96,6 @@
     "snyk": "^1.53.0",
     "sprintf-js": "1.0.3",
     "superagent": "^3.5.0",
-    "uuid": "^3.2.1",
     "webpack": "^1.14.0",
     "winston": "2.3.0",
     "winston-slack-transport": "^2.0.0",

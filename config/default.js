@@ -137,12 +137,15 @@ exports.profiles_api = {
 let aws_config = {
     defualt_region: process.env.SPARK_CAMP_FILES_REGION,
     buckets: {
-        camp_file_upload: process.env.SPARK_CAMP_FILES_BUCKET
+        camp_file_upload: process.env.SPARK_CAMP_FILES_BUCKET,
+        supplier_contract_upload: process.env.SPARK_SUPPLIER_CONTRACTS_BUCKET
     },
     presignedUrlExpireSeconds: parseInt(process.env.SPARK_CAMP_FILES_PRESIGN_URL_EXPIRE_SECONDS)
 };
 exports.aws_config = aws_config
-
+exports.volunteers_config = {
+    api_url: process.env.VOLUNTEERS_BASE_URL || 'http://localhost:3500'
+}
 /**
  * Camp files config
  */

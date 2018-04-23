@@ -26,6 +26,7 @@ $('.card-switcher').click(function(e) {
     $('.card-second').addClass('card-hide');
     $('.card-third').addClass('card-hide');
     $('.card-forth').addClass('card-hide');
+    $('.card-fifth').addClass('card-hide');
     $('.card-switcher').removeClass('Btn__default');
     $('.card-switcher').removeClass('Btn__transparent');
     if ($(this).attr('href')) { //handle change URL bt click
@@ -52,6 +53,10 @@ $('.card-switcher').click(function(e) {
         case '4':
             $('.card-forth').removeClass('card-hide');
             $('#4').addClass('Btn__default');
+            break;
+        case '5':
+            $('.card-fifth').removeClass('card-hide');
+            $('#5').addClass('Btn__default');
             break;
     }
     innerHeightChange();

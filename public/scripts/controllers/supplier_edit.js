@@ -1,5 +1,5 @@
-var angular_getCamps = function ($http, $scope, supplier_id) {
-  let isNew = $("#isNew").val();
+const angular_getCamps = function ($http, $scope, supplier_id) {
+  const isNew = $("#isNew").val();
   if (isNew === "false") {
     $http.get(`/suppliers/${supplier_id}/camps`).then((res) => {
         $scope.canDelete = true; //TODO check if the user can delete the camp
@@ -7,27 +7,65 @@ var angular_getCamps = function ($http, $scope, supplier_id) {
     });
   }
 }
+const angular_getSupplierById = ($http, $scope, supplier_id) => {
+    $http.get(`/suppliers/${supplier_id}`).then((res) => {
+        $scope.supplier = res.data.supplier;
+    });
+}
 
-suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
-    var supplier_id = document.querySelector('#meta__supplier_id').value;
-    var lang = $scope.lang;
-    if (lang === undefined) {
-        lang = 'he';
+const angular_getSupplierFile = function ($http, $scope, $q, supplier_id) {
+    const req_path = `/suppliers/${supplier_id}/contract`
+    let getFilePromise = $q.defer()
+
+    $http.get(req_path).then(function (res) {
+        getFilePromise.resolve(res.data)
+    }).catch(function (err) {
+        const jsonError = err.data.message
+        sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
+        getFilePromise.reject(err)
+    })
+
+    return getFilePromise.promise
+}
+const angular_deleteSupplierFile = function ($http, $scope, $q, supplier_id) {
+    const req_path = `/suppliers/${supplier_id}/contract/`;
+    let deleteFilePromise = $q.defer()
+    $http.delete(req_path).then(function (res) {
+        deleteFilePromise.resolve(res.data.files)
+    }).catch(function (err) {
+        const jsonError = err.data.message;
+        sweetAlert("Error!", "Could not delete file \n" + jsonError)
+        deleteFilePromise.reject(err)
+    })
+
+    return deleteFilePromise.promise
+}
+suppliers_app.controller("supllierShowController", ($scope, $http, $filter) => {
+    const supplier_id = document.querySelector('#meta__supplier_id').value;
+    angular_getCamps($http, $scope, supplier_id);
+    angular_getSupplierById($http, $scope, supplier_id)
+    $scope.changeOrderBy = (orderByValue) => {
+        $scope.orderCamps = orderByValue;
     }
+});
+suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) => {
+    const supplier_id = document.querySelector('#meta__supplier_id').value;
+    const lang = document.getElementById('meta__lang').value || 'he';
+    angular_getSupplierById($http, $scope, supplier_id)
     if (lang === "he") {
         $scope.status_options = [
-            { id: 'food', value: 'אוכל' },
-            { id: 'water', value: 'מים' },
-            { id: 'shade', value: 'צל' },
             { id: 'carriage', value: 'הובלה' },
-            { id: 'other', value: 'אחר' }]
+            { id: 'permanent', value: 'ספקים קבועים' },
+            { id: 'temporary', value: 'ספקים זמניים' },
+            { id: 'other', value: 'אחר' }
+        ]
     } else {
         $scope.status_options = [
-            { id: 'food', value: 'food' },
-            { id: 'water', value: 'water' },
-            { id: 'shade', value: 'shade' },
-            { id: 'carriage', value: 'carriage' },
-            { id: 'other', value: 'other' }]
+            { id: 'carriage', value: 'Carriage' },
+            { id: 'permanent', value: 'Permanent suppliers' },
+            { id: 'temporary', value: 'Temporary suppliers' },
+            { id: 'other', value: 'Other' }
+        ]
     }
     $http.get(`/camps_all`).then((res) => {
         $scope.allCamps = res.data.camps;
@@ -36,7 +74,6 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
         $http.delete(`/suppliers/${supplier_id}/camps/${campId}`).then((res) => {
          //TODO check if the user can delete the camp
         });
-
         $scope.getCamps();
     }
     $scope.getCamps = () => {
@@ -47,123 +84,60 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter) => {
     }
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderMembers = orderByValue;
-    }
+    };
     if (typeof supplier_id !== 'undefined') {
         $scope.current_supplier_id = supplier_id;
         $scope.getCamps();
     }
-    $scope.lang = document.getElementById('meta__lang').value;
-    // $scope.grouptype = document.getElementById('meta__grouptype').value;
+
     $scope.addCamp= () => {
-        var supplier_id = $scope.current_supplier_id;
-        const camp_id = $scope.add_camp_id;
+        const supplier_id = $scope.current_supplier_id;
+        // Convert display name to id (prevent id shown in autocomplete)
+        const add_camp_display_name = $scope.add_camp_display_name;
+        const options = [];
+        document.querySelectorAll("#campList option").forEach(option => options.push(option.value));
+        if (!options.includes(add_camp_display_name)) {
+            // Validate correct camp chosen.
+            sweetAlert("oops", "Unknown camp chosen", "warning");
+            return;
+        }
+        const camp_id = document.querySelector("#campList option[value='"+add_camp_display_name+"']").dataset.id;
         $http.put(`/suppliers/${supplier_id}/camps/${camp_id}`)
-            .then(function (res) {
+             .then(function (res) {
                 // update table with new data
                 $scope.getCamps();
-                $scope.add_camp_id = '';
+                $scope.add_camp_display_name = '';
+             }).catch((err) => {
+                if (err.data.data.message.indexOf("Duplicate entry")) {
+                    sweetAlert("!oops","You are trying to add a camp that already exists", "warning");
+                }
+                else {
+                    sweetAlert("Error!", "Add new camp error: " + err.data.data.message, "error");
+                }
+        });
+    };
+    
+    $scope.getFiles = () => {
+        angular_getSupplierFile($http, $scope, $q, supplier_id)
+        .then((file) => {
+            console.log('Got supplier files!')
+            $scope.file = file;
         }).catch((err) => {
-            if (err.data.data.message.indexOf("Duplicate entry")) {
-                sweetAlert("!oops","You are trying to add a camp that is already exist","warning");
-            }
-            else {
-                sweetAlert("Error!", "Add new camp error: " + err.data.data.message, "error");
-            }
-        });
+            console.log("getFiles error: ", err)
+        })
     }
-    $scope.updateUser = (user_name, user_id,action_type) => {
-        var camp_id = $scope.current_camp_id;
-        var user_rec = {
-            camp_id: camp_id,
-            user_name: user_name,
-            user_id: user_id,
-        }
-        angular_updateUser($http, $scope, action_type, user_rec);
+    $scope.deleteFile = () => {
+        angular_deleteSupplierFile($http, $scope, $q, supplier_id)
+        .then((files) => {
+            console.log('File deleted')
+            $scope.files = files;
+        }).catch((err) => {
+            console.log(err)
+        })
     }
-
-    var angular_updateUser = function ($http, $scope, action_type, user_rec) {
-        var camp_id = user_rec.camp_id;
-        var user_name = user_rec.user_name;
-        var user_id = user_rec.user_id;
-        var lang = $scope.lang;
-        if (lang === undefined) {
-            lang = 'he';
-        }
-        var tpl, action_tpl;
-
-        if (lang === "he") {
-            // debugger;
-            action_tpl = {
-                approve: 'לאשר את',
-                delete: 'למחוק את',
-                reject: 'לדחות את',
-                approve_mgr: 'להפוך למנהל את',
-                remove: 'להסיר את',
-                pre_sale_ticket : 'לאשר כרטיס מוקדם',
-            };
-            tpl = {
-                alert_title: "האם את/ה בטוח?",
-                alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " משתמש " + user_name + "?",
-                alert_success_1: action_type + "!",
-                alert_success_2: "משתמש " + user_name + action_type,
-                alert_success_3: " בהצלחה",
-            };
-        } else {
-            action_tpl = {
-                approve: 'Approve',
-                delete: 'Delete',
-                reject: 'Reject',
-                approve_mgr: 'Set Manager',
-                remove: 'Remove',
-                pre_sale_ticket: 'Update Pre Sale Ticket',
-            };
-            tpl = {
-                alert_title: "Are you sure?",
-                alert_text: "Are you sure you would like to " + action_tpl[action_type] + " " + user_name + "?",
-                alert_success_1: action_type + "!",
-                alert_success_2: user_name + "has been " + action_type,
-                alert_success_3: "success",
-            };
-        }
-
-        sweetAlert({
-            title: tpl.alert_title,
-            text: tpl.alert_text,
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes",
-            closeOnConfirm: false
-        }).then(() => {
-            var request_str = `/camps/${camp_id}/members/${user_id}/${action_type}`
-            $http.get(request_str).then((res) => {
-                sweetAlert(tpl.alert_success_1, tpl.alert_success_1, "success");
-                $scope.getCamps(camp_id);
-            }).catch((err) => {
-                jsonError=err.data.data.message;
-                sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError, "error");
-            })
-        });
+    if (!_.isNil(supplier_id) && Number(supplier_id)) {
+        $scope.current_supplier_id = supplier_id;
+        $scope.getFiles();
     }
 
 }); //end of controller
-
-suppliers_app.controller("homeController", ($scope, $http, $filter) => {
-    $scope.angular_getMyGroups = function ($http, $scope) {
-        $http.get(`/my_groups`).then((res) => {
-            // debugger;
-            $scope.groups = res.data.groups;
-            $scope.stat = res.data.stats;
-        });
-    }
-
-    $scope.angular_ChangeCurrentEventId = function (event_id) {
-        //set new current event id
-        $http.post('/events/change', {currentEventId: event_id}).then((res) => {
-            window.location.reload();
-        });
-    }
-
-    $scope.angular_getMyGroups($http, $scope);
-
-});

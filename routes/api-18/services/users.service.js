@@ -3,6 +3,20 @@ const helperService = require('./helper.service'),
     constants = require('../../../models/constants'),
     knex = require('../../../libs/db').knex;
 
+let _count_allocations = (users, ticketKey) => {
+    let allocationCount = 0;
+    for (const i in users) {
+        if (users.hasOwnProperty(i)) {
+            if (users[i].camps_members_addinfo_json) {
+                const addinfo_json = JSON.parse(users[i].camps_members_addinfo_json);
+                if (addinfo_json[ticketKey]) {
+                    allocationCount++
+                }
+            }
+        }
+    }
+    return allocationCount;
+}
 class UsersService {
     /**
      * formely known as Modify_User_AddInfo
@@ -17,13 +31,37 @@ class UsersService {
      * @param allocationDates
      * @returns {*}
      */
-    modifyUsersInfo(info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates) {
+    modifyUsersInfo(info, addinfo_jason_subAction,camp, users, user, isAdmin, allocationDates, isGroupSale) {
         const userData = info;
         let jsonInfo;
-        const ticketKey = isDgs ? 'dgs_ticket' : 'pre_sale_ticket';
+        let ticketKey = isGroupSale ? 'group_sale_ticket' : 'pre_sale_ticket';
         let campQuotaKey;
         //check for the sub action in the json info
-        if (addinfo_jason_subAction === "pre_sale_ticket") {
+        if (addinfo_jason_subAction === "early_arrival") {
+            ticketKey = 'early_arrival'
+            if (userData === null) {
+                jsonInfo = { [ticketKey]: true };
+            }
+            else {
+                //if the object is not null then parse it and toggle the current value
+                jsonInfo=JSON.parse(userData);
+                if (jsonInfo[ticketKey] === true) {
+                    jsonInfo[ticketKey] = false;
+                }
+                else {
+                    jsonInfo[ticketKey] = true;
+                }
+            }
+            if (jsonInfo[ticketKey]) {
+                //first count how many pre sale tickets are assinged to the camp members
+                let allocationCount = _count_allocations(users, ticketKey)
+                let campQuota = users.length/2;
+                if (allocationCount >= campQuota) {
+                    throw new Error("Exceeded Early Arrival allocation quota");
+                }
+            }
+        }
+        else if (addinfo_jason_subAction === "pre_sale_ticket") {
             const {start, end} = allocationDates;
             const now = new Date();
             const isValidAllocationDate = start < now && now < end;
@@ -51,28 +89,20 @@ class UsersService {
                     jsonInfo[ticketKey] = "true";
                 }
             }
-            //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
             if (jsonInfo[ticketKey] === "true") {
                 //first count how many pre sale tickets are assinged to the camp members
-                let preSaleTicketsCount = 0;
-                for (const i in users) {
-                    if (users.hasOwnProperty(i)) {
-                        if (users[i].camps_members_addinfo_json) {
-                            const addinfo_json = JSON.parse(users[i].camps_members_addinfo_json);
-                            if (addinfo_json[ticketKey] === "true") {
-                                preSaleTicketsCount++
-                            }
-                        }
-                    }
-                }
+                let allocationCount = _count_allocations(users, ticketKey)
+    
                 //if the pre sale ticket count equal or higher than the quota
                 //reject the reuestdgs
-                campQuotaKey = isDgs ? 'dgs_tickets_quota' : 'pre_sale_tickets_quota';
-                if (preSaleTicketsCount >= camp.attributes[campQuotaKey]) {
+                campQuotaKey = isGroupSale ? 'group_sale_tickets_quota' : 'pre_sale_tickets_quota';
+                if (allocationCount >= camp.attributes[campQuotaKey]) {
                     throw new Error("exceed pre sale tickets quota");
                 }
             }
         }
+         //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
+        
         jsonInfo = JSON.stringify(jsonInfo);
         return jsonInfo;
     }

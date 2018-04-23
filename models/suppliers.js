@@ -46,6 +46,13 @@ let Suppliers = bookshelf.Model.extend({
     }
 });
 
+let SupplierContract = bookshelf.Model.extend({
+
+    tableName: constants.SUPPLIERS_CONTRACTS_TABLE_NAME,
+    idAttribute: 'supplier_id'
+    });
+
 module.exports = {
-    Suppliers: Suppliers
+    Suppliers: Suppliers,
+    SupplierContract: SupplierContract
 };

@@ -8,9 +8,9 @@ table.table.table-striped.table-hover
         th(ng-click='changeOrderBy("member_status_i18n")')=t('camps:members.status')
         th(ng-click='changeOrderBy("ticket_count")')=t('camps:members.ticket_count')
         th(ng-click='changeOrderBy("inside_event")')=t('camps:members.inside_event')
+        th(ng-click='changeOrderBy("early_arrival")')=t('camps:members.early_arrival')
         th(ng-click='changeOrderBy("pre_sale_ticket_approved")')=t('camps:members.pre_sale_ticket_assigned')
-        th(ng-click='changeOrderBy("dgs_ticket_approved")')=t('camps:members.dgs_ticket_assigned')
-        //- th(ng-click='changeOrderBy("earlyArrival")')=t('camps:members.early_arrival')
+        th(ng-click='changeOrderBy("group_sale_ticket_approved")')=t('camps:members.group_sale_ticket_assigned')
         th()=t('camps:members.actions')
     tbody
         tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
@@ -20,48 +20,60 @@ table.table.table-striped.table-hover
             td {{member.cell_phone}}
             td {{member.member_status_i18n}}
             td {{member.ticket_count}}
-            td {{member.inside_event}}
+            td
+                span(ng-show="!member.inside_event" class='glyphicon glyphicon-remove')
+                span(ng-show="member.inside_event" class='glyphicon glyphicon-ok')
+            td
+                span(ng-show="!member.early_arrival" class='glyphicon glyphicon-remove')
+                span(ng-show="member.early_arrival" class='glyphicon glyphicon-ok')
             td
                 span(ng-show="!member.pre_sale_ticket_approved" class='glyphicon glyphicon-remove')
                 span(ng-show="member.pre_sale_ticket_approved" class='glyphicon glyphicon-ok')
             td
-                span(ng-show="!member.dgs_ticket_approved" class='glyphicon glyphicon-remove')
-                span(ng-show="member.dgs_ticket_approved" class='glyphicon glyphicon-ok')
-            //- td {{member.earlyArrival ? 'yes':'no'}}
+                span(ng-show="!member.group_sale_ticket_approved" class='glyphicon glyphicon-remove')
+                span(ng-show="member.group_sale_ticket_approved" class='glyphicon glyphicon-ok')
             td
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject") &nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "reject")', ng-if="member.can_reject")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.reject')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve") &nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve")', ng-if="member.can_approve")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-ok')
                         =t('camps:members.approve')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve_mgr")', ng-if="member.can_approve_mgr") &nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "approve_mgr")', ng-if="member.can_approve_mgr")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-king')
                         =t('camps:members.approve_as_manager')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove_mgr")', ng-if="member.can_remove_mgr") &nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove_mgr")', ng-if="member.can_remove_mgr")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-king')
                         =t('camps:members.remove_manager')
-                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove") &nbsp;
+                a.cursor-p(ng-click='updateUser(member.name, member.user_id, "remove")', ng-if="member.can_remove")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove')
                         =t('camps:members.remove')
-                a.cursor-p(ng-show='allocationPeriodisActive()' ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="!member.pre_sale_ticket_approved") &nbsp;
+                a.cursor-p(ng-show='allocationPeriodisActive()' ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)', ng-if="!member.pre_sale_ticket_approved")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-ok' )
                         =t('camps:members.pre_sale_ticket_approved')
-                a.cursor-p(ng-show='allocationPeriodisActive()' ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)' ng-if="member.pre_sale_ticket_approved") &nbsp;
+                a.cursor-p(ng-show='allocationPeriodisActive()' ng-click='updatePreSaleTicket(member.name, member.user_id ,"pre_sale_ticket",member.pre_sale_ticket_approved)' ng-if="member.pre_sale_ticket_approved")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove' )
                         =t('camps:members.pre_sale_ticket_remove')
-                a.cursor-p(ng-show='allocationPeriodisActive(true)' ng-click='updatePreSaleTicket(member.name, member.user_id ,"dgs_ticket",member.dgs_ticket_approved)', ng-if="!member.dgs_ticket_approved") &nbsp;
+                a.cursor-p(ng-show='allocationPeriodisActive(true)' ng-click='updatePreSaleTicket(member.name, member.user_id ,"group_sale_ticket",member.group_sale_ticket_approved)', ng-if="!member.group_sale_ticket_approved") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-ok' )
-                        =t('camps:members.dgs_ticket_approved')
-                a.cursor-p(ng-show='allocationPeriodisActive(true)' ng-click='updatePreSaleTicket(member.name, member.user_id ,"dgs_ticket",member.dgs_ticket_approved)' ng-if="member.dgs_ticket_approved") &nbsp;
+                        =t('camps:members.group_sale_ticket_approved')
+                a.cursor-p(ng-show='allocationPeriodisActive(true)' ng-click='updatePreSaleTicket(member.name, member.user_id ,"group_sale_ticket",member.group_sale_ticket_approved)' ng-if="member.group_sale_ticket_approved") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove' )
-                        =t('camps:members.dgs_ticket_remove')
+                        =t('camps:members.group_sale_ticket_remove')
+                a.cursor-p(ng-show='1' ng-click='updateEarlyArrival(member.name, member.user_id, "early_arrival")' ng-if="!member.early_arrival") &nbsp;
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-ok' )
+                        =t('camps:members.set_early_arrival')
+                a.cursor-p(ng-show='1' ng-click='updateEarlyArrival(member.name, member.user_id, "early_arrival")' ng-if="member.early_arrival")
+                    button.btn.btn-xs
+                        span(class='glyphicon glyphicon-remove' )
+                        =t('camps:members.remove_early_arrival')

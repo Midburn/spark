@@ -39,27 +39,30 @@ $input.keydown(function () {
 
 function doneTyping_(event) {
 
-    var val = event.target.value,
+    const val = event.target.value,
         lang = $('body').attr('lang'),
         status = $(".choose_name span.indicator span.glyphicon"),
         input = $input,
-        btn = $('#check_supplier_id');
-        var data = $.get('/suppliers/' + val);
+        btn = $('#check_supplier_id'),
+        phoneREGX = /^\d{1,9}$/;
 
-        data.done(function () {
-            if (data.status === 204) {
-                input.removeClass('error');
-                status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                btn.removeClass('disabled btn').attr('href', '/' + lang + '/suppliers/new?c=' + val);
-            } else {
-                input.addClass('error');
-                status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                btn.addClass('disabled btn').removeAttr('href');
-            }
-        });
+        if ((phoneREGX.test(val))) {
+            const data = $.get('/suppliers/' + val)
+                .done(function() {
+                    if (data.status === 204) {
+                        input.removeClass('error');
+                        status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                        btn.removeClass('disabled btn').attr('href', '/' + lang + '/suppliers/new?c=' + val);
+                    }                 
+                })
+                .fail(function(error) {
+                    jsonError = error.data.data.message;
+                    swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
+                })    
+        }
+        input.addClass('error');
+        status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
         btn.addClass('disabled btn').removeAttr('href');
-        status.removeClass('glyphicon-ok')
-
 }
 
 function getUserTemplate(data) {
@@ -124,7 +127,6 @@ $('#supplier_edit_save').click(function () {
     var supplier_id = $('#supplier_edit_supplier_id').val();
     var supplier_data = extractSupplierData();
     var lang = document.getElementById('meta__lang').value;
-    //console.log(supplier_data)
     $.ajax({
         url: '/suppliers/' + supplier_id + '/edit',
         type: 'PUT',
@@ -177,7 +179,6 @@ $('#edit_type_other').click(function () {
  */
 $('#supplier_create_save').click(function () {
     var supplier_data = extractSupplierData();
-   //$scope.modalData = supplier_data;
     // show modal & present details in modal
     $('#create_camp_request_modal').modal('show');
     _supplierAppendData();
@@ -200,25 +201,27 @@ $('#supplier_create_save').click(function () {
         })
     }
 
-    function _sendSuppliersRequest() {
-        var supplier_id = $('#meta__supplier_id').val();
+    function _sendSuppliersRequest($location) {
+        const supplier_id = $('#meta__supplier_id').val();
+        const lang = document.getElementById('meta__lang').value || 'he';
+        
         supplier_data.supplier_id = supplier_id;
         $.ajax({
             url: '/suppliers/new',
             type: 'POST',
             data: supplier_data,
             success: function (result) {
-                var supplier_id = result.supplier.supplier_id;
                 $('#create_camp_request_modal').find('.modal-body').html('<h4>Supplier created succesfully. <br><span class="Btn Btn__sm Btn__inline">you can edit it: <a href="' + [window.location.origin, $('body').attr('lang')].join('/') + '/suppliers/' + supplier_id + '/edit">here</a><span></h4>');
                 $('#create_camp_request_modal').find('#supplier_create_save_modal_request').hide();
+                $('#create_camp_request_modal').find('#create_camp_close_btn').hide();
                 // 10 sec countdown to close modal
-                var sec = 10;
+                let sec = 10;
                 setInterval(function () {
-                    $('#create_camp_request_modal').find('#create_camp_close_btn').text('Close ' + sec);
+                    $('#create_camp_request_modal').find('#link_to_supplier').removeClass('hide').text('close '+sec);
                     sec -= 1;
                 }, 1000);
                 setTimeout(function () {
-                    $('#create_camp_request_modal').modal('hide');
+                    window.location = `/${lang}/suppliers/${supplier_id}`;
                 }, sec * 1000);
             }
         });
@@ -234,21 +237,6 @@ $('#camp_type_other_checkbox').click(function () {
     }
 })
 
-// TODO - This was not used, thus breaking lint tests.
-// // Collect all checkbox values
-// function fetchAllCheckboxValues(className) {
-//     var val = [];
-//     $('.' + className + ':checked').each(function (i) {
-//         val[i] = $(this).val();
-//         if (val[i] === 'other') {
-//             val[i] += '=' + $('#' + className + '_other_text').val()
-//         }
-//     });
-//     return val.toString();
-// }
-/*
- * Component: view camp details
- */
 // Fetch & inject user data
 var user_type;
 function _fetchUserData(user_id) {

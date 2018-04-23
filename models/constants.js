@@ -173,7 +173,9 @@ module.exports = {
     CAMP_FILES_TABLE_NAME: 'camps_files',
     SUPPLIERS_TABLE_NAME: 'suppliers',
     SUPPLIERS_RELATIONS_TABLE_NAME: 'suppliers_relations',
-
+    SUPPLIERS_CONTRACTS_TABLE_NAME: 'suppliers_contracts',
+    SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME: 'suppliers_gate_entrance_info',
+    SUPPLIERS_COMMENTS_TABLE :'suppliers_comments',
     suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
 
     prototype_camps: prototype_camps,
@@ -242,7 +244,9 @@ module.exports = {
     // and are redirected to the senders desired location, e.g. can be used for phishing.
     // If we redirect to a new URL from login, we will need to add it here.
     LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
+   
+    SUPPLIER_CATEGORIES: ['permanent', 'temporary', 'carriage', 'other'],
+    SUPPLIER_STATUS_CATEGORIES: ['Inside','Outside'],
 
-    SUPPLIER_CATEGORIES: ['food', 'water', 'shade', 'carriage', 'other'],
-
+    VEHICLE_ENTRY_DIRECTION: ['arrival', 'departure'],
 };

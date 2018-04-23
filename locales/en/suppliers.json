@@ -10,7 +10,7 @@
         "edit": "Edit",
         "since": "Since",
         "info": "Info",
-        "camps_edit": "Camps edit",
+        "camps_edit": "Related Camps edit",
         "name_and_desc": "Supplier name and comments",
         "name_he": "Company name (Hebrew)",
         "name_en": "Company name (English)",
@@ -44,20 +44,48 @@
         "create_supplier_text": "Creating a supplier with the next details",
         "confirmation": "Verify details",
         "save": "Save",
-        "back": "Back"
+        "back": "Back",
+        "created": "Created at",
+        "upload_header": "Upload Files",
+        "supplier_file_url": "File Path",
+        "delete_file": "Delete file",
+        "no_files": "No files found"
 
     },
+    "nav_entries": "Suppliers entries",
     "nav_admin": "Supplier management",
     "breadcrumbs": {
         "root": "Home",
         "manage": "Manage Suppliers ",
-        "new": "מחנה חדש",
-        "stats": "נתוני מחנה",
-        "members": "חברי מחנה",
-        "docs": "מסמכים וטפסים",
-        "edit": "עריכת מחנה",
-        "camp_stat": "פרופיל מחנה",
-        "my_camp": "המחנה שלי",
-        "join_camp": "הצטרף למחנה"
+        "new": "New Supplier",
+        "docs": "Docs",
+        "edit": "Edit Supplier",
+        "supplier_details": "Supplier details"
+
+    },
+    "entries": {
+        "supplier_entrance": "Supplier Entrance",
+        "new": "Add Supplier Entry",
+        "add_entry": "Add Entry",
+        "search": "Search Supplier",
+        "desc": "Manage supplier entrance.",
+        "suppliers": "Suppliers",
+        "id": "ID",
+        "name": "Supplier Name",
+        "vehicle_plate_number": "Vehicle Plate Number",
+        "num_people_in_vehicle": "Number Of People In Vehicle",
+        "contact_number": "Contact Number",
+        "visa_duration": "Visa Duration",
+        "entrance_time": "Entrance Time",
+        "departure_time": "Departure Time",
+        "status": "Status",
+        "actions": "Actions",
+        "cancel": "Cancel",
+        "exit": "Supplier left",
+        "comments": "Comments",
+        "burner": "Burner",
+        "time": "Time",
+        "comment": "Comment",
+        "edit": "Edit supplier entry"
     }
 }

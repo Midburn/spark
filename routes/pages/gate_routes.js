@@ -1,19 +1,32 @@
-var express = require('express');
-Event = require('../../models/event').Event;
-
-var router = express.Router({
+const express = require('express');
+const router = express.Router({
     mergeParams: true
 });
-
-var knex = require('../../libs/db').knex;
-var userRole = require('../../libs/user_role');
-var Event = require('../../models/event').Event;
+const knex = require('../../libs/db').knex;
+const userRole = require('../../libs/user_role');
+const Event = require('../../models/event').Event;
 
 router.get('/', userRole.isGateManager(), function (req, res) {
     Event.forge({event_id: req.user.currentEventId}).fetch().then(event => {
         return res.render('pages/gate', {
-            gate_code: event.attributes.gate_code
+            gate_code: event.attributes.gate_code,
+            event_id: event.attributes.event_id
         });
+    });
+});
+
+// Supplier entries management
+router.get('/suppliers', userRole.isLoggedIn(), (req, res) => {
+    req.breadcrumbs([{
+        name: 'breadcrumbs.home',
+        url: '/' + req.params.lng + '/home'
+    }]);
+
+    res.render('pages/suppliers/supplier-entries', {
+        user: req.user,
+        t_prefix: 'suppliers:',
+        isAdmin: req.user.isAdmin,
+        breadcrumbs: req.breadcrumbs()
     });
 });
 

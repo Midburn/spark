@@ -3,7 +3,7 @@
         "name": "שם החברה",
         "search": "חפש ספק",
         "suppliers": "ספקים",
-        "new_supplier": "יצירת ספק חדש ",
+        "new_supplier": "הזנת ספק למערכת",
         "desc": "תפריט ניהול ספקים, ניתן לערוך את פרטי הספק, ועוד..",
         "supplier": "ספק",
         "editing": "עורך את",
@@ -26,7 +26,7 @@
         "add_camp": "הוסף מחנה לספק",
         "btn_continue": "המשך",
         "btn_save_camp": "שמור",
-        "header_desc": ".ליצירת ספק עליך להזין מידע אודות הספק",
+        "header_desc": "ליצירת ספק עליך להזין מידע אודות הספק",
         "publish": "פרסם",
         "id": "ח.פ \\ ת.ז",
         "suppliers_management": "ניהול ספקים",
@@ -44,18 +44,46 @@
         "create_supplier_text": "יצירת ספק עם הפרטים הבאים",
         "confirmation": "וידוא פרטים",
         "save": "שמור",
-        "back": "חזור"
-
+        "back": "חזור",
+        "created": "תאריך היווצרות",
+        "upload_header": "העלאת קבצים",
+        "supplier_file_url": "נתיב הקובץ",
+        "delete_file": "מחק קובץ",
+        "no_files": "לא נמצאו קבצים"
     },
     "nav_admin": "ניהול ספקים",
+    "nav_entries": "ניהול כניסות ספקים",
     "breadcrumbs": {
         "root": "דף בית",
         "manage": "נהל ספקים ",
-        "new": "מחנה חדש",
-        "stats": "נתוני מחנה",
-        "members": "חברי מחנה",
+        "new": "ספק חדש",
         "docs": "מסמכים וטפסים",
-        "edit": "עריכת מחנה"
-      
+        "edit": "עריכת ספק",
+        "supplier_details": "פרטי ספק"
+    },
+    "entries": {
+        "supplier_entrance": "הכנסת ספק לתוך העיר",
+        "search": "חפש ספק",
+        "new": "הוסף כניסת ספק",
+        "add_entry": "הוסף",
+        "desc": "תפריט ניהול כניסת ספקים.",
+        "suppliers": "ספקים",
+        "id": "ח.פ \\ ת.ז",
+        "name": "שם החברה",
+        "vehicle_plate_number": "לוחית רישוי",
+        "num_people_in_vehicle": "מס' אנשים ברכב",
+        "contact_number": "טלפון",
+        "visa_duration": "משך ויזה (בשעות)",
+        "entrance_time": "שעת כניסה",
+        "departure_time": "שעת יציאה",
+        "status": "סטאטוס",
+        "actions": "פעולות",
+        "cancel": "חזור",
+        "exit": "הוצא ספק",
+        "comments": "הערות",
+        "burner": "ברנר",
+        "time": "מתי",
+        "comment": "תגובה", 
+        "edit": "ערוך כניסת ספק"
     }
 }
