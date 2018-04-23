@@ -69,11 +69,11 @@ table.table.table-striped.table-hover
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove' )
                         =t('camps:members.group_sale_ticket_remove')
-                a.cursor-p(ng-show='1' ng-click='updateEarlyArrival(member.name, member.user_id, "early_arrival")' ng-if="!member.early_arrival") &nbsp;
+                a.cursor-p(ng-show='earlyArrivalPeriodIsActive()' ng-click='updateEarlyArrival(member.name, member.user_id, "early_arrival")' ng-if="!member.early_arrival") &nbsp;
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-ok' )
                         =t('camps:members.set_early_arrival')
-                a.cursor-p(ng-show='1' ng-click='updateEarlyArrival(member.name, member.user_id, "early_arrival")' ng-if="member.early_arrival")
+                a.cursor-p(ng-show='earlyArrivalPeriodIsActive()' ng-click='updateEarlyArrival(member.name, member.user_id, "early_arrival")' ng-if="member.early_arrival")
                     button.btn.btn-xs
                         span(class='glyphicon glyphicon-remove' )
                         =t('camps:members.remove_early_arrival')

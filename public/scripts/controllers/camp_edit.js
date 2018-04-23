@@ -239,7 +239,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
         });
     }
-        
+
     $scope.updateUser = (user_name, user_id,action_type) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
@@ -257,6 +257,15 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             end : isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end),
         };
         return allocationPeriod.start < now && now < allocationPeriod.end;
+    };
+
+    $scope.earlyArrivalPeriodIsActive = () => {
+        const now = new Date();
+        const earlyArrivalPeriod = {
+            start : new Date(controllDates.early_arrivals_start),
+            end : new Date(controllDates.early_arrivals_end),
+        };
+        return earlyArrivalPeriod.start < now && now < earlyArrivalPeriod.end;
     };
 
     $scope.updateEarlyArrival = (user_name, user_id, action_type) => {
