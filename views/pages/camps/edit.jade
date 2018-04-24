@@ -41,9 +41,8 @@ block content
                 //- TODO - test is user is camp manager of this camp
                 if(!isNew)
                     button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.members')
-                    if(isCamp)
-                        button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.upload')
-                        button.Btn.Btn__transparent.card-switcher#5=t('camps:edit.suppliers')
+                    button.Btn.Btn__transparent.card-switcher#4=t('camps:edit.upload')
+                    button.Btn.Btn__transparent.card-switcher#5=t('camps:edit.suppliers')
         .cards--wrapper.card__shad
             //- Card 1
             .card.card-first
@@ -317,7 +316,7 @@ block content
                                     td.col
                                         {{supplier.category}}
                                     td.col
-                                        span 
+                                        span
                                             a.cursor-p(ng-click='removeSupplier(supplier.supplier_id)') &nbsp;
                                                 button.btn.btn-xs
                                                     span(class='glyphicon glyphicon-trash')

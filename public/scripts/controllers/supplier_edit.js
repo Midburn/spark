@@ -67,8 +67,12 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
             { id: 'other', value: 'Other' }
         ]
     }
-    $http.get(`/camps_all`).then((res) => {
-        $scope.allCamps = res.data.camps;
+    $http.get(`/camps_all`)
+        .then((res) => {
+            $scope.allCamps = res.data.camps;
+            return $http.get(`/art_all`);
+        }).then(res => {
+            $scope.allCamps.push(...res.data.camps);
     });
     $scope.removeCamp = (campId) => {
         $http.delete(`/suppliers/${supplier_id}/camps/${campId}`).then((res) => {
@@ -116,7 +120,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
                 }
         });
     };
-    
+
     $scope.getFiles = () => {
         angular_getSupplierFile($http, $scope, $q, supplier_id)
         .then((file) => {
