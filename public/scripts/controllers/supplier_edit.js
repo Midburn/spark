@@ -124,7 +124,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
     $scope.getFiles = () => {
         angular_getSupplierFile($http, $scope, $q, supplier_id)
         .then((res) => {
-            if (!res.error){
+            if (!res.error) {
                 $scope.file = res.data;
             }
         }).catch((err) => {
