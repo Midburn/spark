@@ -26,7 +26,7 @@ block content
                 button.Btn.Btn__default.card-switcher#1=t('suppliers:edit_new.info')
                 if(!isNew)
                     button.Btn.Btn__transparent.card-switcher#2=t('suppliers:edit_new.camps_edit')
-                button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')    
+                    button.Btn.Btn__transparent.card-switcher#3=t('camps:edit.upload')    
         .cards--wrapper.card__shad
             //- Card 1 - Details
             .card.card-first
@@ -90,13 +90,14 @@ block content
                     .col-xs-12
                     include partials/members_table
             //- BEGIN Card 3: Upload Docs & Files
-            .card.card-third.card-hide
-                h4=t('suppliers:edit_new.upload_header')
-                .panel
-                    .panel-body
-                        .names.col-md-12
-                            .col-xs-12
-                                include partials/supplier_files
+            if(!isNew)
+                .card.card-third.card-hide
+                    h4=t('suppliers:edit_new.upload_header')
+                    .panel
+                        .panel-body
+                            .names.col-md-12
+                                .col-xs-12
+                                    include partials/supplier_files
             //- END Card 3: Upload Docs & Files
         //- END all cards
         .controls.row
