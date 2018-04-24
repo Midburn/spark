@@ -129,6 +129,7 @@ exports.profiles_api = {
     password: process.env.DRUPAL_PROFILE_API_PASSWORD || 'dummy',
     useCache: process.env.USE_DRUPAL_CACHE || false,
     cacheTTL: process.env.USE_DRUPAL_CACHE_TTL || 3600*24,
+    skipDrupalLogin: process.env.SKIP_DRUPAL_LOGIN || false
 };
 
 /**
