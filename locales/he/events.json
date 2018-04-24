@@ -47,7 +47,13 @@
         "send_request": "עדכן אירוע",
         "event_code": "קוד אירוע",
         "event_type": "סוג אירוע",
-        "gate_code": "קוד שער"
+        "gate_code": "קוד שער",
+        "gate_status": "סטאטוס שער",
+        "status": {
+            "early_arrival": "כניסה מוקדמת",
+            "regular": "רגיל",
+            "closed": "סגור"
+        }
     },
     "form": {
         "dates_controll":{
