@@ -8,7 +8,7 @@ block content
             .col-xs-12
                 div.block-center
                     div.input-group
-                        if isAdmin
+                        if(user.isAdmin || user.isGateManager)
                             a.Btn.Btn__green.card-switcher#4(role='button')
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'entries.supplier_entrance')
