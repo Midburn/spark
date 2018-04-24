@@ -122,14 +122,17 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
     };
 
     $scope.getFiles = () => {
-        angular_getSupplierFile($http, $scope, $q, supplier_id)
-        .then((res) => {
-            if (!res.error) {
-                $scope.file = res.data;
-            }
-        }).catch((err) => {
-            sweetAlert("Error!", "deleteFile: " + err.data.message, "error");
-        })
+        const isNew = $("#isNew").val();
+        if (isNew === "false") {
+            angular_getSupplierFile($http, $scope, $q, supplier_id)
+            .then((res) => {
+                if (!res.error) {
+                    $scope.file = res.data;
+                }
+            }).catch((err) => {
+                sweetAlert("Error!", "deleteFile: " + err.data.message, "error");
+            })
+        }
     }
     $scope.deleteFile = () => {
         $scope.file = null;
