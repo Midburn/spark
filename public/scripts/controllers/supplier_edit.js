@@ -123,21 +123,21 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
 
     $scope.getFiles = () => {
         angular_getSupplierFile($http, $scope, $q, supplier_id)
-        .then((file) => {
-            console.log('Got supplier files!')
-            $scope.file = file.data;
+        .then((res) => {
+            if (!res.error){
+                $scope.file = res.data;
+            }
         }).catch((err) => {
-            console.log("getFiles error: ", err)
+            sweetAlert("Error!", "deleteFile: " + err.data.message, "error");
         })
     }
     $scope.deleteFile = () => {
+        $scope.file = null;
         angular_deleteSupplierFile($http, $scope, $q, supplier_id)
-        .then((files) => {
-            console.log('File deleted')
-            $scope.files = files;
+        .then(() => {
             $scope.getFiles();
         }).catch((err) => {
-            console.log(err)
+            sweetAlert("Error!", "deleteFile: " + err.data.message, "error");
         })
     }
     if (!_.isNil(supplier_id) && Number(supplier_id)) {
