@@ -125,7 +125,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
         angular_getSupplierFile($http, $scope, $q, supplier_id)
         .then((file) => {
             console.log('Got supplier files!')
-            $scope.file = file;
+            $scope.file = file.data;
         }).catch((err) => {
             console.log("getFiles error: ", err)
         })
@@ -135,6 +135,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
         .then((files) => {
             console.log('File deleted')
             $scope.files = files;
+            $scope.getFiles();
         }).catch((err) => {
             console.log(err)
         })
