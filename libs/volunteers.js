@@ -1,6 +1,7 @@
 const request = require('superagent');
 const log = require('./logger.js')(module);
-const default_config = {api_url : 'http://localhost:3500'}
+const default_config = require('config').get('volunteers_config');
+const apiTokensConfig = require('config').get('api_tokens');
 const { URL } = require('url')
 
 module.exports = function(config_ = undefined) {
@@ -13,6 +14,7 @@ module.exports = function(config_ = undefined) {
             try {
                 let response = await request
                     .get(EARLY_ENTRY_URL)
+                    .set('token', apiTokensConfig.token)
                     .query({userEmail});
                 let early_arrival_time = Date.parse(response.body);
                 return (!isNaN(early_arrival_time)) && early_arrival_time < Date.now();

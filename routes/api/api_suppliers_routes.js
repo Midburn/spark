@@ -12,7 +12,7 @@ module.exports = (app, passport) => {
     * API: (GET) get all supplires
     * request => /supplires
     */
-   app.get('/suppliers', userRole.isCampManager(), async (req, res) => {
+   app.get('/suppliers', userRole.isAllowedToViewSuppliers(), async (req, res) => {
         try {
             let suppliers = await Suppliers.fetchAll()
             res.status(200).json({suppliers: suppliers.toJSON()})
@@ -25,7 +25,7 @@ module.exports = (app, passport) => {
     * API: (GET) get spesific supplire by id
     * request => /suppliers/:id
     */
-    app.get('/suppliers/:supplier_id', userRole.isCampManager(), async (req, res) => {
+    app.get('/suppliers/:supplier_id', userRole.isAllowedToViewSuppliers(), async (req, res) => {
         try {
             let supplier_id = req.params.supplier_id
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
@@ -44,7 +44,7 @@ module.exports = (app, passport) => {
     * API: (POST) create supplire
     * request => /supplires/new
     */
-    app.post('/suppliers/new', userRole.isCampManager(), async (req, res) => {
+    app.post('/suppliers/new', userRole.isAllowedToViewSuppliers(), async (req, res) => {
         try {
             let data = supplier_data_update_(req,"new")
             let supplier = await Suppliers.forge().save(data)
@@ -58,7 +58,7 @@ module.exports = (app, passport) => {
     * API: (GET) get spesific supplire by id and update fields
     * request => /suppliers/:id
     */
-   app.put('/suppliers/:supplier_id/edit', userRole.isCampManager(), async (req, res) => {
+   app.put('/suppliers/:supplier_id/edit', userRole.isAllowedToViewSuppliers(), async (req, res) => {
        try {
             let supplier_id = req.params.supplier_id;
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
@@ -99,7 +99,7 @@ module.exports = (app, passport) => {
     * API: (GET) GET all supplire related camp fo the current event
     * request => /suppliers/:supplier_id/camps
     */
-   app.get('/suppliers/:supplier_id/camps', userRole.isCampManager(), async (req, res) => {
+   app.get('/suppliers/:supplier_id/camps', userRole.isAllowedToViewSuppliers(), async (req, res) => {
         try {
             let supplier_id = req.params.supplier_id;
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
@@ -120,7 +120,7 @@ module.exports = (app, passport) => {
     * API: (GET) GET all supplire related camp for the current event
     * request => /suppliers/:camp_id/suppliers
     */
-   app.get('/suppliers/:camp_id/suppliers', userRole.isCampManager(), async (req, res) => {
+   app.get('/suppliers/:camp_id/suppliers', userRole.isAllowedToViewSuppliers(), async (req, res) => {
     try {
         let camp_id = req.params.camp_id;
         let suppliers = await knex(constants.SUPPLIERS_RELATIONS_TABLE_NAME).select()
@@ -143,12 +143,12 @@ module.exports = (app, passport) => {
     * API: (PUT) set camp for supplire in the current event
     * request => /suppliers/:supplier_id/camps
     */
-   app.put('/suppliers/:supplier_id/camps/:camp_id', userRole.isCampManager(), async (req, res) => {
+   app.put('/suppliers/:supplier_id/camps/:camp_id', userRole.isAllowedToViewSuppliers(), async (req, res) => {
     try {
             let supplier_id = req.params.supplier_id;
             let data = {
                 camp_id : req.params.camp_id,
-                event_id : req.user.currentEventId,//req.user.currentEventId
+                event_id : req.user.currentEventId,
                 courier_contact_name : req.body.courier_contact_name,
                 courier_contact_phone_number : req.body.courier_contact_phone_number,
             }
@@ -171,11 +171,11 @@ module.exports = (app, passport) => {
     * API: (DELETE) delete selected camp from  supplire
     * request => /suppliers/:supplier_id/camps/:camp_id
     */
-   app.delete('/suppliers/:supplier_id/camps/:camp_id', userRole.isCampManager(), async (req, res) => {
+   app.delete('/suppliers/:supplier_id/camps/:camp_id', userRole.isAllowedToViewSuppliers(), async (req, res) => {
         try {
             let data = {
                 camp_id: req.params.camp_id,
-                event_id: req.user.currentEventId//req.user.currentEventId,
+                event_id: req.user.currentEventId
             }
             let supplier_id = req.params.supplier_id;
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
@@ -233,11 +233,10 @@ module.exports = (app, passport) => {
             res.status(500).json({error: true,data: { message: err.message }})
         }
     });
-
-    /**
-     * API: (PUT) update supplir enterance
-     * request => /supplires/new
-     */
+    /*
+    API: (PUT) update supplir enterance
+    request => /supplires/new
+    */
     app.put('/suppliers/edit-entry', userRole.isGateManager(), async (req, res) => {
         try {
             const data = {
@@ -255,12 +254,68 @@ module.exports = (app, passport) => {
             res.status(500).json({error: true,data: { message: err.message }})
         }
     });
+    /**
+    * API: (GET) get supplire comment return record id
+    * request => /suppliers/:supplier_id/supplier_comments
+    */
+   app.get('/suppliers/:supplier_id/supplier_comments', userRole.isAllowedToViewSuppliers(), async (req, res) => {
+        try {
+            let supplier_id = req.params.supplier_id
+            let supplier_comments = await knex(constants.SUPPLIERS_COMMENTS_TABLE).select(constants.SUPPLIERS_COMMENTS_TABLE + '.*', constants.USERS_TABLE_NAME + '.first_name',constants.USERS_TABLE_NAME + '.last_name')
+            .innerJoin(constants.USERS_TABLE_NAME, constants.SUPPLIERS_COMMENTS_TABLE + '.user_id', constants.USERS_TABLE_NAME + '.user_id')
+            .where('supplier_id', supplier_id)
+            res.status(200).json({supplier_comment: supplier_comments})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
 
+    /**
+    * API: (POST) edit supplire comment return record id
+    * request => /suppliers/:supplier_id/supplier_comments
+    */
+   app.post('/suppliers/:supplier_id/supplier_comments', userRole.isAllowedToViewSuppliers(), async (req, res) => {
+    try {
+        let data = {
+            supplier_id: req.params.supplier_id,
+            user_id: req.user.attributes.user_id,
+            comment_time: new Date(),
+            supplier_comment: req.body.comment,
+        };
+
+        let record_info = await knex(constants.SUPPLIERS_COMMENTS_TABLE).insert(data)
+        res.status(200).json({record_id: record_info[0]})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
+    * API: (PUT) edit supplire comment
+    * request => /suppliers/:supplier_id/supplier_comments
+    */
+   app.put('/suppliers/:supplier_id/supplier_comments', userRole.isAllowedToViewSuppliers(), async (req, res) => {
+    try {
+        let record_id = req.body.record_id
+        let data = {
+            supplier_id: req.params.supplier_id,
+            user_id: req.user.attributes.user_id,
+            comment_time: new Date(),
+            supplier_comment: req.body.comment,
+        };
+
+        let record_info = await knex(constants.SUPPLIERS_COMMENTS_TABLE).update(data).where('record_id',record_id)
+        res.status(200).json({record_id: record_info[0]})
+
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
     /**
     * API: (POST) upload supplier's contract file and add a record of it to `suppliers_contracts` table
     * request => /suppliers/:supplier_id/contract
     */
-    app.post('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+    app.post('/suppliers/:supplier_id/contract', userRole.isAllowedToViewSuppliers(), async (req, res) => {
         const supplierId = req.params.supplier_id;
         let supplier = await Suppliers.forge({supplier_id: supplierId}).fetch();
         if (!supplier) {
@@ -285,7 +340,7 @@ module.exports = (app, passport) => {
             LOG.error(err.message);
             return res.status(500).json({
                 error: true,
-                message: 'S3 Error: could not put file in S3'
+                message: err.message
             })
         }
 
@@ -334,7 +389,7 @@ module.exports = (app, passport) => {
    * The link is signed and valid for `awsConfig.presignedUrlExpireSeconds`, default is 900 (15 minutes)
    * request => /suppliers/:supplier_id/contract
    */
-   app.get('/suppliers/:supplier_id/contract',userRole.isCampsAdmin(), async (req, res) => {
+   app.get('/suppliers/:supplier_id/contract',userRole.isAllowedToViewSuppliers(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;
@@ -344,13 +399,16 @@ module.exports = (app, passport) => {
             }
             let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
             if (!supplier_contract) {
-                res.status(404).json({error: true, message: 'No contract found for supplier'})
+                res.status(204).json({error: true, message: 'No contract found for supplier'})
             } else {
                   key = supplier_contract.attributes.file_name
                   bucket = awsConfig.buckets.supplier_contract_upload
                   res.status(200).json({
                       error: false,
-                      path: s3Client.getPresignedUrl(key, bucket)
+                      data: {
+                        path: s3Client.getPresignedUrl(key, bucket),
+                        fileName: key
+                      }
                 })
             }
         } catch (err) {
@@ -362,7 +420,7 @@ module.exports = (app, passport) => {
    * API: (DELETE) delete supplier's contract file in S3 and its record in `suppliers_contracts` table
    * request => /suppliers/:supplier_id/contract
    */
-   app.delete('/suppliers/:supplier_id/contract', userRole.isCampsAdmin(), async (req, res) => {
+   app.delete('/suppliers/:supplier_id/contract', userRole.isAllowedToViewSuppliers(), async (req, res) => {
         const s3Client = new S3();
         try {
             let supplierId = req.params.supplier_id;

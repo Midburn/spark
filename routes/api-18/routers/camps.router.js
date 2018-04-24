@@ -165,6 +165,14 @@ class CampsRouter {
         this.router.route('/:id/updatePreSaleQuota')
             .post(userRole.isAdmin(), campController.updateCampPreSaleQuota);
 
+        /**
+         * API: (POST) Update camp early-arrivals quota
+         * update camp with attribute: camp_id
+         * request => /camps/1/updatePreSaleQuota
+         */
+        this.router.route('/:id/updateEarlyArrivalQuota')
+            .post(userRole.isAdmin(), campController.updateEarlyArrivalQuota);
+
     }
 
 }

@@ -8,13 +8,14 @@ block content
             .col-xs-12
                 div.block-center
                     div.input-group
-                        if isAdmin
+                        if(user.isAdmin || user.isGateManager)
                             a.Btn.Btn__green.card-switcher#4(role='button')
                                 span.glyphicon.glyphicon-plus(aria-hidden="true")
                                 span=t(t_prefix+'entries.supplier_entrance')
-                            a.Btn.Btn__green(href=`/${language}/suppliers-admin/new`, role='button')
-                                span.glyphicon.glyphicon-plus(aria-hidden="true")
-                                span=t(t_prefix + 'edit_new.new_supplier')
+                            // TODO - if they what to keep
+                            //a.Btn.Btn__green(href=`/${language}/suppliers-admin/new`, role='button')
+                            //    span.glyphicon.glyphicon-plus(aria-hidden="true")
+                            //    span=t(t_prefix + 'edit_new.new_supplier')
 
         .cards--wrapper.card__shad
             .card.card-first.card__padding--even.col-xs-12.table-responsive
@@ -46,6 +47,8 @@ block content
                                 span(ng-hide="'departure_time' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                             th.entrance_quota(ng-click='changeOrderBy("supplier_status")', class="clickable")=t(t_prefix+'entries.status')
                                 span(ng-hide="'supplier_status' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.entrance_quota(class="clickable")=t(t_prefix+'entries.actions')
+
                     tbody
                         tr(ng-repeat="entry in entries | filter: searchCamp | orderBy: orderEntries : isReverseOrder", ng-class="{'overdue': checkOverdue(entry)}")
                             td {{ entry.supplier_id }}
@@ -58,12 +61,15 @@ block content
                             td {{ entry.departure_time | date : 'dd/MM/yy HH:mm' }}
                             td {{ entry.supplier_status }}
                             td
-                                button.btn.btn-xs(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
+                                button.btn.btn-xs.Btn__red(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
                                     span(class='glyphicon glyphicon-remove')
                                     =t(t_prefix+'entries.exit')
-                                button.btn.btn-xs(ng-click="editEntry(entry)")
+                                button.btn.btn-xs.Btn__default(ng-click="editEntry(entry)")
                                     span(class='glyphicon glyphicon-pencil')
                                     =t(t_prefix + 'entries.edit')
+                                button.btn.btn-xs.Btn__blue(ng-click="showComments(entry.supplier_id)")
+                                    span(class='glyphicon glyphicon-comment')
+                                    =t(t_prefix+'entries.comments')
             .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
                 h2=t(t_prefix+'entries.new')
                 .col-sm-6.col-xs-12
@@ -79,9 +85,33 @@ block content
                         label=t(t_prefix + 'entries.visa_duration')
                         input(id='new-supplier-entry-hours', type="number", class="form-control", name="supplier_hours", autofocus="true", ng-model="newEntry.allowed_visa_hours", required)
                 .col-sm-12.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn(role='button', ng-click="addEntry()")=t(t_prefix+'entries.add_entry')
+                    a.Btn.Btn__green.Btn__inline.btn.card-switcher#1(role='button', ng-click="addEntry()")=t(t_prefix+'entries.add_entry')
                     a.Btn.Btn__red.Btn__inline.btn.card-switcher#1(role='button')
                         span=t(t_prefix+'entries.cancel')
+            //- Comments modal
+            .modal.fade(id='comments_modal', tabindex='-1', role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header.card-header
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true')='×'
+                            h4.modal-title=t(t_prefix+ 'entries.comments')
+                        .modal-body
+                            table.table.h-50-scrollable
+                                thead.w-100
+                                    tr.w-100
+                                        th.w-20=t(t_prefix+ 'entries.burner')
+                                        th.w-31=t(t_prefix+ 'entries.time')
+                                        th.w-49=t(t_prefix+ 'entries.comment')
+                                tbody.w-100
+                                    tr.w-100(ng-repeat="commentObj in supplierComment")
+                                        td.w-20 {{ commentObj.user_id }}
+                                        td.w-31 {{ commentObj.comment_time | date:'medium' }}
+                                        td.w-49 {{ commentObj.supplier_comment }}
+                        .modal-footer
+                            input.form-control(ng-model="newComment" placeholder="Add a new comment",ng-keydown="$event.keyCode === 13 && addComment()")
+                            button.Btn.no-transition.Btn__transparent.pull-right(type='button', data-dismiss='modal')=t('suppliers:edit_new.back')
+                            button.Btn.no-transition.Btn__green(id='supplier_create_save_modal_request', type='button', ng-click="addComment()")=t('suppliers:edit_new.save')
         //- Camp create request modal
         .modal.fade(id='edit_entry_request_modal', role='dialog')
             .modal-dialog.card.card__padding--even.card__shad(role='document')

@@ -10,7 +10,7 @@
         "edit": "Edit",
         "since": "Since",
         "info": "Info",
-        "camps_edit": "Related Camps edit",
+        "camps_edit": "Assign Supplier",
         "name_and_desc": "Supplier name and comments",
         "name_he": "Company name (Hebrew)",
         "name_en": "Company name (English)",
@@ -45,9 +45,11 @@
         "confirmation": "Verify details",
         "save": "Save",
         "back": "Back",
-        "created": "Created at"
-
-
+        "created": "Created at",
+        "upload_header": "Upload Files",
+        "supplier_file_url": "File Path",
+        "delete_file": "Delete file",
+        "no_files": "No files found"
     },
     "nav_entries": "Suppliers entries",
     "nav_admin": "Supplier management",
@@ -79,6 +81,10 @@
         "actions": "Actions",
         "cancel": "Cancel",
         "exit": "Supplier left",
+        "comments": "Comments",
+        "burner": "Burner",
+        "time": "Time",
+        "comment": "Comment",
         "edit": "Edit supplier entry"
     }
 }

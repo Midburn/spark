@@ -47,7 +47,13 @@
         "send_request": "Edit Event",
         "event_code": "Event Code",
         "event_type": "Event Type",
-        "gate_code": "Gate Code"
+        "gate_code": "Gate Code",
+        "gate_status": "Gate Status",
+        "status": {
+            "early_arrival": "Early Arrival",
+            "regular": "Regular",
+            "closed": "Closed"
+        }
     },
     "form": {
         "dates_controll":{
@@ -58,9 +64,9 @@
             "start": "Start of appreciation tickets allocation",
             "end": "End of appreciation tickets allocation"
         },
-        "dgs_tickets_allocation": {
-            "start": "Start of DGS tickets allocation",
-            "end": "End of DGS tickets allocation"
+        "group_sale_tickets_allocation": {
+            "start": "Start of Group Sale tickets allocation",
+            "end": "End of Group Sale tickets allocation"
         },
         "camps_edit_disabled": "Disable camp editing",
         "art_edit_disabled": "Disable art installations editing"
