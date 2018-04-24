@@ -19,6 +19,7 @@ function upload(fileUploadService) {
                     .then(function (files) {
                         console.log('File upload success!')
                         $scope.files = files
+                        $scope.getFiles();
                     })
                     .catch(function (err) {
                         sweetAlert("!oops","could not upload file!", "warning");

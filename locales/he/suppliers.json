@@ -47,9 +47,10 @@
         "back": "חזור",
         "created": "תאריך היווצרות",
         "upload_header": "העלאת קבצים",
-        "supplier_file_url": "נתיב הקובץ",
+        "supplier_file_url": "שם הקובץ",
         "delete_file": "מחק קובץ",
-        "no_files": "לא נמצאו קבצים"
+        "no_files": "לא נמצאו קבצים",
+        "download": "הורדה"
     },
     "nav_admin": "ניהול ספקים",
     "nav_entries": "ניהול כניסות ספקים",

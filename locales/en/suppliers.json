@@ -47,9 +47,10 @@
         "back": "Back",
         "created": "Created at",
         "upload_header": "Upload Files",
-        "supplier_file_url": "File Path",
+        "supplier_file_url": "File Name",
         "delete_file": "Delete file",
-        "no_files": "No files found"
+        "no_files": "No files found",
+        "download": "Nownload"
 
     },
     "nav_entries": "Suppliers entries",
