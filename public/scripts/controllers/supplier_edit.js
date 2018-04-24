@@ -54,13 +54,13 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
     angular_getSupplierById($http, $scope, supplier_id)
     if (lang === "he") {
         $scope.status_options = [
-            { id: 'moving', value: 'הובלה' },
-            { id: 'other', value: 'אחר' }
+            { id: 'other', value: 'אחר' },
+            { id: 'moving', value: 'הובלה' }
         ]
     } else {
         $scope.status_options = [
-            { id: 'moving', value: 'Moving' },
-            { id: 'other', value: 'Other' }
+            { id: 'other', value: 'Other' },
+            { id: 'moving', value: 'Moving' }
         ]
     }
     $http.get(`/camps_all`)
