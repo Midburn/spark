@@ -10,7 +10,7 @@
         "edit": "עריכה",
         "since": "מאז",
         "info": "פרטים",
-        "camps_edit": "עריכת מחנות",
+        "camps_edit": "שיוך ספק",
         "name_and_desc": "שם ספק והערות",
         "name_he": "שם החברה (עברית)",
         "name_en": "שם החברה (אנגלית)",
@@ -47,9 +47,10 @@
         "back": "חזור",
         "created": "תאריך היווצרות",
         "upload_header": "העלאת קבצים",
-        "supplier_file_url": "נתיב הקובץ",
+        "supplier_file_url": "שם הקובץ",
         "delete_file": "מחק קובץ",
-        "no_files": "לא נמצאו קבצים"
+        "no_files": "לא נמצאו קבצים",
+        "download": "הורדה"
     },
     "nav_admin": "ניהול ספקים",
     "nav_entries": "ניהול כניסות ספקים",
@@ -83,7 +84,7 @@
         "comments": "הערות",
         "burner": "ברנר",
         "time": "מתי",
-        "comment": "תגובה", 
+        "comment": "תגובה",
         "edit": "ערוך כניסת ספק"
     }
 }
