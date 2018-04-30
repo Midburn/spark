@@ -23,17 +23,17 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
             });
     }
 
-    function getEntriesByStatus (status, on_success) {
-        const url = '/suppliers/suppliers_gate_info/' + status;
-        $http.get(url)
-            .then((res) => {
-                suplliers_all = res;
-                on_success(res);
-            })
-            .catch(err => {
-                sweetAlert('Could not get entries: ' + err.message);
-            });
-    }
+    // function getEntriesByStatus (status, on_success) {
+    //     const url = '/suppliers/suppliers_gate_info/' + status;
+    //     $http.get(url)
+    //         .then((res) => {
+    //             suplliers_all = res;
+    //             on_success(res);
+    //         })
+    //         .catch(err => {
+    //             sweetAlert('Could not get entries: ' + err.message);
+    //         });
+    // }
 
     // Initial order by last entry
     $scope.orderEntries = 'enterance_time';
