@@ -103,7 +103,7 @@ class EventsController {
         const update = {
           inside_event: false
         };
-        Ticket.where({event_id: req.user.currentEventId })
+        Ticket.where({ event_id: req.user.currentEventId })
             .fetchAll()
             .then(data => {
                 return Promise.all(data.models.map(ticket => ticket.save(update)));
