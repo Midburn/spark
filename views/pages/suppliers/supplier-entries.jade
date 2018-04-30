@@ -24,8 +24,14 @@ block content
                 //- Card 1
                 h4=t(t_prefix+'edit_new.suppliers')
                 .controls.row
-                  .col-xs-12.col-md-12
-                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'entries.search')}")
+                  .col-xs-6.col-md-6
+                        input.form-control(id='camps_list_search_camp', ng-model="searchSupplierEntry", type="text", placeholder="#{t(t_prefix+'entries.search')}")
+                  .col-xs-6.col-md-6
+                        label(for='status')=t(t_prefix+'entries.status')
+                        select.form-control(id='status', class="select-status", name='status', ng-model="entryStatus")
+                            option(value="")=t(t_prefix+'entries.all_entries')
+                            option(value="Inside")=t(t_prefix+'entries.inside')
+                            option(value="Outside")=t(t_prefix+'entries.outside')
                 table.table.table-stats.table-striped.table-hover#admin_camps
                     thead
                         tr.headers
@@ -41,25 +47,28 @@ block content
                                 span(ng-hide="'main_contact_phone_number' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                             th.hidden-xs(ng-click='changeOrderBy("allowed_visa_hours")', class="clickable")=t(t_prefix+'entries.visa_duration')
                                 span(ng-hide="'allowed_visa_hours' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                            th.entrance_quota(ng-click='changeOrderBy("supplier_status")', class="clickable")=t(t_prefix + 'entries.status')
+                            span(ng-hide="'supplier_status' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                             th.published(ng-click='changeOrderBy("enterance_time")', class="clickable")=t(t_prefix+'entries.entrance_time')
                                 span(ng-hide="'enterance_time' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                             th.midmarket(ng-click='changeOrderBy("departure_time")', class="clickable")=t(t_prefix+'entries.departure_time')
                                 span(ng-hide="'departure_time' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th.entrance_quota(ng-click='changeOrderBy("supplier_status")', class="clickable")=t(t_prefix+'entries.status')
-                                span(ng-hide="'supplier_status' !== orderEntries", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                             th.entrance_quota(class="clickable")=t(t_prefix+'entries.actions')
 
                     tbody
-                        tr(ng-repeat="entry in entries | filter: searchCamp | orderBy: orderEntries : isReverseOrder", ng-class="{'overdue': checkOverdue(entry)}")
+                        tr(ng-repeat="entry in entries | filter: searchSupplierEntry | filter: entryStatus | orderBy: orderEntries : isReverseOrder", ng-class="{'overdue': checkOverdue(entry)}")
                             td {{ entry.supplier_id }}
                             td {{ entry.main_contact_name }}
                             td {{ entry.vehicle_plate_number }}
                             td {{ entry.number_of_people_entered }}
                             td {{ entry.main_contact_phone_number }}
                             td {{ entry.allowed_visa_hours}}
+                            td(ng-if="entry.supplier_status === 'Inside'")
+                                span.badge.green=t(t_prefix + 'entries.inside')
+                            td(ng-if="entry.supplier_status === 'Outside'")
+                                span.badge.red=t(t_prefix + 'entries.outside')
                             td {{ entry.enterance_time | date : 'dd/MM/yy HH:mm' }}
                             td {{ entry.departure_time | date : 'dd/MM/yy HH:mm' }}
-                            td {{ entry.supplier_status }}
                             td
                                 button.btn.btn-xs.Btn__red(ng-click="supplierLeft(entry)", ng-hide="entry.supplier_status !== 'Inside'")
                                     span(class='glyphicon glyphicon-remove')

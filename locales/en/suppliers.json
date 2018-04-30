@@ -87,6 +87,9 @@
         "burner": "Burner",
         "time": "Time",
         "comment": "Comment",
-        "edit": "Edit supplier entry"
+        "edit": "Edit supplier entry",
+        "all_entries": "All entries",
+        "inside": "Inside",
+        "outside": "Outside"
     }
 }
