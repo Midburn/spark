@@ -2,7 +2,6 @@ function upload(fileUploadService) {
     return {
         restrict: 'A',
         link: function ($scope, element, attr) {
-            console.log("uploadFiles enter")
             let id,path;
             if (element[0].id === 'supplier_file_input') {        
                 id = $scope.current_supplier_id;
@@ -17,8 +16,9 @@ function upload(fileUploadService) {
                 fileUploadService
                     .uploadFile(file, path)
                     .then(function (files) {
-                        console.log('File upload success!')
+                        sweetAlert("כל הכבוד", "הקובץ נוסף בהצלחה", "success");
                         $scope.files = files
+                        $scope.getFiles();
                     })
                     .catch(function (err) {
                         sweetAlert("!oops","could not upload file!", "warning");

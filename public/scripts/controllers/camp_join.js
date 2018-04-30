@@ -103,14 +103,14 @@ app.controller("joinPendingController", function ($scope, $http) {
         $scope.camp = res.data.details;
     });
     $scope.approveRequest = function () {
-        $http.get('/users/' + $scope.camp.camp_id + '/join_approve').then(function (res) {
+        $http.get('/camps/users/' + $scope.camp.camp_id + '/join_approve').then(function (res) {
             window.location.reload()
         });
     }
 
     $scope.cancelRequest = function () {
         var camp_id = $scope.camp.camp_id
-        $http.get(`/users/${camp_id}/join_cancel`).then(function (res) {
+        $http.get(`/camps/users/${camp_id}/join_cancel`).then(function (res) {
             window.location.reload()
         });
     }
