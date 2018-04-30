@@ -245,7 +245,7 @@ module.exports = {
     // If we redirect to a new URL from login, we will need to add it here.
     LOGIN_REDIRECT_URL_WHITELIST: ['/', '/admin'],
    
-    SUPPLIER_CATEGORIES: ['permanent', 'temporary', 'carriage', 'other'],
+    SUPPLIER_CATEGORIES: ['moving', 'other'],
     SUPPLIER_STATUS_CATEGORIES: ['Inside','Outside'],
 
     VEHICLE_ENTRY_DIRECTION: ['arrival', 'departure'],
