@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
 
         knex.schema.alterTable(constants.SUPPLIERS_TABLE_NAME, table => {
             table.enu('supplier_category', ['moving', 'other', 'carriage']).alter();
+            // Temporarily add 'carriage' category for data migration
         }),
 
         knex('suppliers').where('supplier_category', '=', 'carriage').update({supplier_category: 'moving'}),
