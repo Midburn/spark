@@ -1,6 +1,5 @@
 var constants = require('../models/constants.js');
 
-
 exports.up = function(knex, Promise) {
     // Schema + data migration for supplier categories enum
     // Remap: "carriage" -> "moving", everything else -> "other"
