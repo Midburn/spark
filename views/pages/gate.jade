@@ -107,6 +107,10 @@ block content
                             | :&nbsp;
                             textarea( id="force_reason", rows=3, cols=50, minlength=10, maxlength=150,
                             required, placeholder="#{t('gate:force_reason_placeholder')}" )
+                        p
+                            strong=t('password')
+                            | :&nbsp;
+                            input(id="force_pwd", type="password", name="force_pwd",required)
                     .modal-footer
                         button.btn.btn-primary(type='submit', id='force_entrance_dialog_button')=t('gate:force_enter_ticket')
                         button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')
@@ -251,9 +255,10 @@ block scripts
 
             $(document).on("click", "#force_entrance_dialog_button", function () {
                 if (!$("#force_entrance_dialog_button").hasClass("disabled")) {
-                    var force_reason = $("#force_reason").val();
+                    let force_reason = $("#force_reason").val();
+                    let force_pwd = $("#force_pwd").val();
                     $('#forceDialog').modal('hide');
-                    enter(true, force_reason);
+                    enter(true, force_reason, force_pwd);
                 }
             });
 
@@ -261,13 +266,14 @@ block scripts
                 enter(false, null);
             });
 
-            function enter(force, force_reason) {
+            function enter(force, force_reason, force_pwd) {
                 let parameters = {
                     barcode: $("#modal_barcode")[0].innerHTML,
                     event_id: "#{event_id}",
                     group_id: $("#modal_group_id")[0].innerHTML.substring(2),
                     force: force,
-                    force_reason: force_reason
+                    force_reason: force_reason,
+                    force_pwd: force_pwd
                 };
                 let mode = $("#modal_mode")[0].innerHTML;
                 $.post("/api/gate/gate-" + mode, parameters)
