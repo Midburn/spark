@@ -1,5 +1,7 @@
 const logger = require('../../../libs/logger')(module),
     Event = require('../../../models/event').Event,
+    Ticket = require('../../../models/ticket').Ticket,
+    bcrypt = require('bcrypt-nodejs'),
     _ = require('lodash'),
     eventsService = require('../services').eventsService;
 
@@ -14,6 +16,7 @@ class EventsController {
         this.updateEvent = this.updateEvent.bind(this);
         this.getEvent = this.getEvent.bind(this);
         this.editingEvent = this.editingEvent.bind(this);
+        this.resetEvent = this.resetEvent.bind(this);
     }
 
     getEvent(req, res) {
@@ -91,6 +94,27 @@ class EventsController {
         req.session.passport.user.currentEventId = req.body.currentEventId;
         req.session.save();
         res.send(200);
+    }
+
+    resetEvent(req, res, next) {
+        if (!req.body.password || !bcrypt.compareSync(req.body.password, req.user.attributes.password)) {
+            return next(new Error('Wrong password!'));
+        }
+        const update = {
+          inside_event: false
+        };
+        Ticket.where({event_id: req.user.currentEventId })
+            .fetchAll()
+            .then(data => {
+                return Promise.all(data.models.map(ticket => ticket.save(update)));
+            })
+            .then(res.send(200))
+            .catch((err) => {
+                /**
+                 * Pass the error to be handled by the generic error handler
+                 */
+                return next(err);
+            });
     }
 }
 
