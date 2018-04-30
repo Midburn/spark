@@ -75,7 +75,7 @@ block content
                             td {{ supplier.comments }}
                             td {{ supplier.supplier_category }}
                             td
-                                if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
+                                if (user.isAdmin || user.isCampManager || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
                                     a.cursor-p(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}` + '/edit')
                                         button.btn.btn-xs
                                             span(class='glyphicon glyphicon-pencil')

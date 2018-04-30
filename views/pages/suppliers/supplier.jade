@@ -6,7 +6,7 @@ block content
     .camps.camp_details(ng-app="ngSuppliers" ng-controller="supllierShowController")
         .heading.card.card__shad
             .card__actions
-                if isAdmin
+                if (isAdmin || user.isCampManager)
                     .dropdown
                         a.Btn.btn-default(href='/#{language}/suppliers/#{supplier_id}/edit')=t(t_prefix+'.edit')
             .card__details
@@ -44,7 +44,7 @@ block content
                                 span #{t(t_prefix+'.position')}:
                                 span.badge.contact_person_email {{ supplier.main_contact_position }}
                     .col-xs-12.col-md-6
-                        h4=t(t_prefix+'.add_info')            
+                        h4=t(t_prefix+'.add_info')
                         ul.list-group
                             li.list-group-item
                                 span #{t(t_prefix+'.website_link')}:
@@ -69,9 +69,8 @@ block content
                             tbody
                                 tr(ng-repeat="camp in relatedCamps | filter: searchMembers | orderBy: orderCamps")
                                     td {{camp.id}}
-                                    td 
+                                    td
                                         a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}`) {{ camp.camp_name_he }}
-                                    td 
+                                    td
                                         a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}`) {{ camp.camp_name_en }}
 
-                

@@ -52,14 +52,14 @@ class UsersService {
                     jsonInfo[ticketKey] = true;
                 }
             }
-            if (jsonInfo[ticketKey]) {
-                //first count how many pre sale tickets are assinged to the camp members
-                let allocationCount = _count_allocations(users, ticketKey)
-                let campQuota = users.length/2;
-                if (allocationCount >= campQuota) {
-                    throw new Error("Exceeded Early Arrival allocation quota");
-                }
-            }
+            // if (jsonInfo[ticketKey]) {
+            //     //first count how many pre sale tickets are assinged to the camp members
+            //     let allocationCount = _count_allocations(users, ticketKey)
+            //     let campQuota = users.length/2;
+            //     if (allocationCount >= campQuota) {
+            //         throw new Error("Exceeded Early Arrival allocation quota");
+            //     }
+            // }
         }
         else if (addinfo_jason_subAction === "pre_sale_ticket") {
             const {start, end} = allocationDates;
@@ -92,7 +92,7 @@ class UsersService {
             if (jsonInfo[ticketKey] === "true") {
                 //first count how many pre sale tickets are assinged to the camp members
                 let allocationCount = _count_allocations(users, ticketKey)
-    
+
                 //if the pre sale ticket count equal or higher than the quota
                 //reject the reuestdgs
                 campQuotaKey = isGroupSale ? 'group_sale_tickets_quota' : 'pre_sale_tickets_quota';
@@ -102,7 +102,7 @@ class UsersService {
             }
         }
          //if we are going to set a pre sale ticket to true, we need to check if the quota is ok
-        
+
         jsonInfo = JSON.stringify(jsonInfo);
         return jsonInfo;
     }
