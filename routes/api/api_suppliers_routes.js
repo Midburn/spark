@@ -22,6 +22,21 @@ module.exports = (app, passport) => {
     })
 
     /**
+     * API: (GET) GET all suppliers entries in the gate
+     * request => /suppliers/all_suppliers_entries
+     */
+    app.get('/suppliers/all_suppliers_entries', userRole.isGateManager(), async (req, res) => {
+        try {
+            let info = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
+                .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
+                .andWhere(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".event_id" ,req.user.currentEventId);
+            res.status(200).json({suppliers: info})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
     * API: (GET) get spesific supplire by id
     * request => /suppliers/:id
     */
@@ -197,8 +212,8 @@ module.exports = (app, passport) => {
     });
 
      /**
-    * API: (GET) GET all supplire in the gate with the requested status
-    * request => /suppliers/:supplier_id/camps
+    * API: (GET) GET all suppliers in the gate with the requested status
+    * request => /suppliers/suppliers_gate_info/:status
     */
    app.get('/suppliers/suppliers_gate_info/:status', userRole.isGateManager(), async (req, res) => {
         try {

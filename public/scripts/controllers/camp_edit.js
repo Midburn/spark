@@ -214,14 +214,20 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         });
     };
 
+    $scope.addSupplierError = '';
+
     $scope.addSupplier = () => {
         const promise = $q.defer();
         const camp_id = $scope.current_camp_id;
         const {add_supplier_id} = $scope;
         $http.put(`/suppliers/${add_supplier_id}/camps/${camp_id}`).then(() => {
             $scope.getSuppliers();
+            $scope.addSupplierError = '';
             promise.resolve();
-        }).catch(e => promise.reject(e));
+        }).catch(e => {
+            $scope.addSupplierError = e.data.data.message;
+            promise.reject(e)
+        });
     }
 
     $scope.addMember = () => {
@@ -239,7 +245,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
         });
     }
-        
+
     $scope.updateUser = (user_name, user_id,action_type) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
