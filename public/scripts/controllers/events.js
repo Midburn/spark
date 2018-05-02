@@ -19,8 +19,32 @@ events_app.controller("eventsController", ($scope, $http, $filter) => {
             innerHeightChange()
         }, 500);
     });
+
     $scope.changeOrderBy = orderByValue => {
         $scope.orderEvents = orderByValue;
+    };
+
+    $scope.resetTickets = () => {
+        const input = document.createElement('input');
+        input.type = 'password';
+        swal({
+            title: 'האם אתה בטוח שאתה רוצה לאפס את כירטוס האירוע?',
+            text: 'אנא הזן סיסמתך על מנת לאשר פעולה זו',
+            content: input,
+        })
+        .then((done) => {
+            let _url = '/events/reset';
+            $http.post(_url, { password: input.value })
+                .success(response => {
+                    swal("איפוס הכרטיסים בוצע בהצלחה", "success");
+                    setTimeout(() => {
+                        document.location.href = '/he/events-admin';
+                    }, 1000);
+                })
+                .error((err) => {
+                    swal('איפוס נכשל', err.data.message, "warning");
+                });
+        });
     }
 });
 

@@ -31,6 +31,23 @@ router.get("/new", userRole.isAdmin(), (req, res) => {
 });
 
 // Read
+router.get("/reset", userRole.isAdmin(), (req, res) => {
+    Event.where({ event_id: req.user.currentEventId })
+        .fetch()
+        .then(json => {
+            return json.attributes;
+        })
+        .then(event => {
+            event.addinfo_json = event.addinfo_json ? JSON.parse(event.addinfo_json) : {};
+            const data = {
+                t_prefix: "events:",
+                event: event
+            };
+            res.render("pages/events/reset", data);
+        });
+});
+
+// Read
 router.get("/:id", userRole.isAdmin(), (req, res) => {
     Event.where({ event_id: req.params.id })
         .fetch()
@@ -43,7 +60,7 @@ router.get("/:id", userRole.isAdmin(), (req, res) => {
                 t_prefix: "events:",
                 event: event
             };
-            res.render("pages/events/edit", data);
+            res.render("pages/events/reset", data);
         });
 });
 
