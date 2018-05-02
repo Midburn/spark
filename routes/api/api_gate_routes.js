@@ -11,7 +11,7 @@ const UsersGroup = require('../../models/user').UsersGroup;
 const UsersGroupMembership = require('../../models/user').UsersGroupMembership;
 
 const constants = require('../../models/constants');
-// const volunteersAPI = require('../../libs/volunteers')();
+const config = require('config');
 
 const volunteersAPI = require('../../libs/volunteers')();
 const ERRORS = {
@@ -24,8 +24,13 @@ const ERRORS = {
     TICKET_NOT_IN_GROUP: 'Ticket is not assigned to this users group',
     USER_OUTSIDE_EVENT: 'Participant is outside of the event',
     EXIT_NOT_ALLOWED: 'Exit is not permitted after the event has started',
-    INVALID_VEHICLE_DIRECTION: 'Please enter only in or out as the direction'
+    INVALID_VEHICLE_DIRECTION: 'Please enter only in or out as the direction',
+    INCORRECT_FORCE_ENTRY_PASSWORD: 'Incorrect Force Entry password'
 };
+
+function _incorrect_force_entry_password(password) {
+    return password !== config.get('gate').force_entry_pwd
+}
 
 function sendError(res, httpCode, errorCode, errorObj) {
     if (errorObj) {
@@ -165,6 +170,10 @@ router.post('/gate-enter', async function (req, res) {
     }
 
     if (req.body.force === "true") {
+        let force_pwd = req.body.force_pwd;
+        if (_incorrect_force_entry_password(force_pwd)) {
+            return sendError(res, 500, "INCORRECT_FORCE_ENTRY_PASSWORD");
+        }
         log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
         ticket.attributes.forced_entrance = true;
         ticket.attributes.forced_entrance_reason = req.body.force_reason;

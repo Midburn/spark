@@ -155,3 +155,7 @@ let camp_files_config = {
     upload_end_date: ''
 }
 exports.camp_files_config = camp_files_config
+
+exports.gate = {
+    force_entry_pwd: process.env.GATE_FORCE_ENTRY_PASSWORD || 'Nju5B=Hu'
+};
