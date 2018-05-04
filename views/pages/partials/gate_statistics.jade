@@ -2,7 +2,7 @@
     .col-md-12.text-center
         h3=t('common:homepage.stats.gate')
 .row
-    .col-xs-4
+    .col-xs-3
         .circle-tile
             .circle-tile-heading.pink
                 i.fa.fa-ticket.fa-fw.fa-3x
@@ -10,7 +10,7 @@
                 .circle-tile-description.text-faded
                     h5=t('common:homepage.stats.total_tickets')
                 .circle-tile-number.text-faded {{stat.total_tickets}}
-    .col-xs-4
+    .col-xs-3
         .circle-tile
             .circle-tile-heading.purple
                 i.fa.fa-users.fa-fw.fa-3x
@@ -18,14 +18,22 @@
                 .circle-tile-description.text-faded
                     h5=t('common:homepage.stats.inside_event')
                     .circle-tile-number.text-faded {{stat.inside_event}}
-    .col-xs-4
+    .col-xs-3
+        .circle-tile
+            .circle-tile-heading.green
+                i.fa.fa-users.fa-fw.fa-3x
+            .circle-tile-content.green
+                .circle-tile-description.text-faded
+                    h5=t('common:homepage.stats.early_arrival_count')
+                    .circle-tile-number.text-faded {{earlyArrivalCount}}
+    .col-xs-3
         .circle-tile
             .circle-tile-heading.blue
                 i.fa.fa-car.fa-fw.fa-3x
             .circle-tile-content.blue
                 .circle-tile-description.text-faded
                     h5=t('common:homepage.stats.cars_inside_event')
-                    .circle-tile-number.text-faded {{stat.cars_inside_event}}
+                    .circle-tile-number.text-faded {{carCount}}
 
 .row
     .col-xs-6
