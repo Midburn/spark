@@ -43,7 +43,7 @@ userRole.isGateManager = function () {
 userRole.isAllowedToViewSuppliers = function () {
     return (req, res, next) => {
         const user = req.user;
-        if (user.isAdmin || user.isCampManager || user.isGateManager || user.isCampsAdmin) {
+        if (user.isAdmin || user.isCampManager || user.isGateManager || user.isCampsAdmin || user.isArtInstallationsAdmin) {
             next();
         } else {
             next('route'); //TODO: set redirect route

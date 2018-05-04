@@ -49,13 +49,13 @@ class MainRouter {
          * request => /camps_open
          */
         this.router.route('/camps_all')
-            .get([userRole.isCampsAdmin()],
+            .get([userRole.isAllowedToViewSuppliers()],
             (req, res) => campsService.retrieveDataFor(constants.prototype_camps.THEME_CAMP.id,req.user).then(result => res.status(result.status).json(result.data)));
         this.router.route('/prod_dep_all')
             .get(userRole.isProdDepsAdmin(),
             (req, res) => campsService.retrieveDataFor(constants.prototype_camps.PROD_DEP.id,req.user).then(result => res.status(result.status).json(result.data)));
         this.router.route('/art_all')
-            .get(userRole.isArtInstallationsAdmin(),
+            .get(userRole.isAllowedToViewSuppliers(),
             (req, res) => campsService.retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id,req.user).then(result => res.status(result.status).json(result.data)));
         /**
          * TODO - this should move under camps prefix - who uses these api's
