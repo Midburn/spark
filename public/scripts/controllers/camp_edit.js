@@ -225,7 +225,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             $scope.addSupplierError = '';
             promise.resolve();
         }).catch(e => {
-            $scope.addSupplierError = e.data.data.message;
+            sweetAlert("Oops...", e.data.data.message, "error");
             promise.reject(e)
         });
     }
