@@ -60,7 +60,7 @@ router.get("/:id", userRole.isAdmin(), (req, res) => {
                 t_prefix: "events:",
                 event: event
             };
-            res.render("pages/events/reset", data);
+            res.render("pages/events/edit", data);
         });
 });
 
