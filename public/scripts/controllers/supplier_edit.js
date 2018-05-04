@@ -108,7 +108,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
                 $scope.getCamps();
                 $scope.add_camp_display_name = '';
              }).catch((err) => {
-                if (err.data.data.message.indexOf("Duplicate entry")) {
+                if (err.data.data.message.indexOf("Duplicate entry") !== -1) {
                     sweetAlert("!oops","You are trying to add a camp that already exists", "warning");
                 }
                 else {

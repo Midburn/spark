@@ -91,5 +91,8 @@
         "all_entries": "All entries",
         "inside": "Inside",
         "outside": "Outside"
+    },
+    "errors": {
+        "supplier_contract_error": "Cannot add suppliers without contract, please upload contract first"
     }
 }
