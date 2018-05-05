@@ -127,6 +127,11 @@ block scripts
                     'data-toggle="modal" href="#myModal" data-id="" title="Enter">' +
                     '<button class="btn btn-xs"> <span class="glyphicon glyphicon-log-in"></span>#{t("gate:enter_ticket")}</button></a> ';
             }
+            else {
+                res += '<a class="exitAction " id="' + row.barcode + '" ' +
+                    'data-toggle="modal" href="#myModal" data-id="" title="Enter">' +
+                    '<button class="btn btn-xs"> <span class="glyphicon glyphicon-log-out"></span>#{t("gate:exit_ticket")}</button></a> ';
+            }
             return res;
         };
 
