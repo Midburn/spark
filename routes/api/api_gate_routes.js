@@ -185,7 +185,7 @@ router.post('/gate-enter', async function (req, res) {
         {
             let production_early_arrival = false;
             production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
-            log.debug(`get-ticket - user {holder.attributes.email} is a production volunteer`);
+            log.debug(`get-ticket - user ${holder.attributes.email} is a production volunteer`);
             if (req.body.group_id) {
                 let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
 
