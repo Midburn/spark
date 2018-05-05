@@ -13,14 +13,14 @@ module.exports = function(config_ = undefined) {
         hasEarlyEntry: async userEmail => {
             try {
                 let response = await request
-                    .get(EARLY_ENTRY_URL)
+                    .get(EARLY_ENTRY_URL, timeout=3000)
                     .set('token', apiTokensConfig.token)
                     .query({userEmail});
-                let early_arrival_time = Date.parse(response.body);
+                let early_arrival_time = Date.parse(response.body.earlyEntranceDate);
                 return (!isNaN(early_arrival_time)) && early_arrival_time < Date.now();
             }
             catch (err) {
-                log.error(`Volunteers API hasEarlyEntry for {email} failed. {err}`)
+                log.error(`Volunteers API hasEarlyEntry for ${email} failed. ${err}`)
                 return false;
             }
         },
@@ -33,7 +33,7 @@ module.exports = function(config_ = undefined) {
                 return response.ok;
             }
             catch (err) {
-                log.error(`Volunteers API setState for {email}, {state} failed. {err}`)
+                log.error(`Volunteers API setState for ${email}, ${state} failed. ${err}`)
             }
         }
 

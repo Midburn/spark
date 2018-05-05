@@ -89,5 +89,8 @@
         "all_entries": "כל הכניסות",
         "inside": "בפנים",
         "outside": "בחוץ"
+    },
+    "errors": {
+        "supplier_contract_error": "לא ניתן להוסיף ספק ללא חוזה, נא להעלות חוזה ספק"
     }
 }

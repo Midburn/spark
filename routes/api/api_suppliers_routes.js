@@ -161,6 +161,10 @@ module.exports = (app, passport) => {
    app.put('/suppliers/:supplier_id/camps/:camp_id', userRole.isAllowedToViewSuppliers(), async (req, res) => {
     try {
             let supplier_id = req.params.supplier_id;
+            if (supplier_id === "undefined") {
+                res.status(403).json({error: true,data: { message : "Please select supplier in the dropdown list" }})
+                return;
+            }
             let data = {
                 camp_id : req.params.camp_id,
                 event_id : req.user.currentEventId,
@@ -169,9 +173,15 @@ module.exports = (app, passport) => {
             }
 
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            if (!supplier) {
+                res.status(403).json({error: true,data: { message : "Unknown supplier, are you sure supplier exists?" }})
+                return;
+            }
+
             let supplierContract = await SupplierContract.forge({supplier_id: supplier_id}).fetch();
             if (!supplierContract) {
-              res.status(403).json({error: true,data: { message : "Adding suppliers without contract is forbidden" }})
+              res.status(403).json({error: true,data: { message : "Cannot add suppliers without contract, please upload contract first" }})
+              return;
             }
             let camp = await supplier.setSupplierCamp(data)
 
