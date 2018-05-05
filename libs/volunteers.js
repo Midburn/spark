@@ -16,7 +16,7 @@ module.exports = function(config_ = undefined) {
                     .get(EARLY_ENTRY_URL, timeout=3000)
                     .set('token', apiTokensConfig.token)
                     .query({userEmail});
-                let early_arrival_time = Date.parse(response.body);
+                let early_arrival_time = Date.parse(response.body.earlyEntranceDate);
                 return (!isNaN(early_arrival_time)) && early_arrival_time < Date.now();
             }
             catch (err) {
