@@ -319,11 +319,27 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
 }); //end of controller
 
 app.controller("homeController", ($scope, $http, $filter) => {
+    $scope.carCount = 0;
+    $scope.entryCount = 0;
     $scope.angular_getMyGroups = function ($http, $scope) {
         $http.get(`/my_groups`).then((res) => {
             // debugger;
             $scope.groups = res.data.groups;
             $scope.stat = res.data.stats;
+        });
+    };
+
+    $scope.getCarCount = ($http, $scope) => {
+        $http.get(`/api/gate/vehicle-counter/${currentEventId}`).then((res) => {
+            // debugger;
+            $scope.carCount = res.data.vehicleCount;
+        });
+    };
+
+    $scope.getEntryCount = ($http, $scope) => {
+        $http.get(`/api/gate/entry-counter/${currentEventId}?type=early_arrival`).then((res) => {
+            // debugger;
+            $scope.earlyArrivalCount = res.data.entryCount;
         });
     };
 
@@ -350,5 +366,7 @@ app.controller("homeController", ($scope, $http, $filter) => {
     };
 
     $scope.angular_getMyGroups($http, $scope);
+    $scope.getCarCount($http, $scope);
+    $scope.getEntryCount($http, $scope);
 
 });

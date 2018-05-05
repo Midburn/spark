@@ -25,8 +25,9 @@ const ERRORS = {
     USER_OUTSIDE_EVENT: 'Participant is outside of the event',
     EXIT_NOT_ALLOWED: 'Exit is not permitted after the event has started',
     INVALID_VEHICLE_DIRECTION: 'Please enter only in or out as the direction',
-    INCORRECT_FORCE_ENTRY_PASSWORD: 'Incorrect Force Entry password',
-    EVENT_CLOSED: "Event is currently closed"
+    EVENT_CLOSED: "Event is currently closed",
+    INVALID_ENTRY_TYPE: 'Please enter only correct entry type (regular, early_arrival)',
+    INCORRECT_FORCE_ENTRY_PASSWORD: 'Incorrect Force Entry password'
 };
 
 function _incorrect_force_entry_password(password) {
@@ -281,37 +282,36 @@ router.post('/tickets-counter', async function (req, res) {
 
 router.post(
     '/vehicle-action/:event_id/:direction',
-     async function (req, res) {
-        if (!constants.VEHICLE_ENTRY_DIRECTION.includes(req.params.direction)) {
+    async function (req, res) {
+        if (!constants.ENTRY_DIRECTION.includes(req.params.direction)) {
             return sendError(res, 500, "INVALID_VEHICLE_DIRECTION");
         }
         try {
-            const direction = req.params.direction === 'arrival' ? 1 : 2;
-            await knex('vehicle_entries').insert({timestamp: new Date(), direction: direction, event_id: req.params.event_id});
+            await knex(constants.VEHICLE_ENTRIES_TABLE_NAME).insert({timestamp: new Date(), direction: req.params.direction, event_id: req.params.event_id});
             return res.status(200).json({
                 message: "Vehicle action completed"
             });
         } catch (errorObj) {
             return sendError(res, 500, errorObj);
         }
-   }
+    }
 );
 
 router.get(
     '/vehicle-counter/:event_id',
     async function (req, res) {
         try {
-            let vehicleEntries = (await knex('vehicle_entries')
-                .where('direction', '=', 'arrival')
-                .where('event_id', '=', req.params.event_id)
-                .count()
-                )[0]['count(*)'];
+            let vehicleEntries = (await knex(constants.VEHICLE_ENTRIES_TABLE_NAME)
+                    .where('direction', '=', 'arrival')
+                    .where('event_id', '=', req.params.event_id)
+                    .count()
+            )[0]['count(*)'];
 
-            let vehicleExits = (await knex('vehicle_entries')
-                .where('direction', '=', 'departure')
-                .where('event_id', '=', req.params.event_id)
-                .count()
-                )[0]['count(*)'];
+            let vehicleExits = (await knex(constants.VEHICLE_ENTRIES_TABLE_NAME)
+                    .where('direction', '=', 'departure')
+                    .where('event_id', '=', req.params.event_id)
+                    .count()
+            )[0]['count(*)'];
             return res.status(200).json({
                 vehicleCount: vehicleEntries - vehicleExits,
             });
@@ -325,12 +325,80 @@ router.get(
     '/all-vehicle-actions/:event_id/:dateFrom/:dateTo',
     async function (req, res) {
         try {
-            let vehicleTimestamps = await knex('vehicle_entries')
+            let vehicleTimestamps = await knex(constants.VEHICLE_ENTRIES_TABLE_NAME)
                 .where('event_id', '=', req.params.event_id)
                 .where('timestamp', '>', new Date(parseInt(req.params.dateFrom)))
                 .where('timestamp', '<', new Date(parseInt(req.params.dateTo)));
             return res.status(200).json({
                 vehicleTimestamps: vehicleTimestamps
+            });
+        } catch (errorObj) {
+            return sendError(res, 500, errorObj);
+        }
+    }
+);
+
+router.post(
+    '/entry-action/:event_id/:direction',
+    async (req, res) => {
+        const direction = req.params.direction;
+        let type = req.body.type || 'regular';
+        if (!constants.ENTRY_DIRECTION.includes(direction)) {
+            return sendError(res, 500, "INVALID_DIRECTION");
+        }
+        if (!type || !constants.ENTRY_TYPE.includes(type)) {
+            return sendError(res, 500, "INVALID_ENTRY_TYPE");
+        }
+        try {
+            await knex(constants.ENTRIES_TABLE_NAME).insert({timestamp: new Date(), direction, event_id: req.params.event_id, type});
+            return res.status(200).json({
+                message: "Entry action completed"
+            });
+        } catch (errorObj) {
+            return sendError(res, 500, errorObj);
+        }
+    }
+);
+
+router.get(
+    '/entry-counter/:event_id',
+    async function (req, res) {
+        try {
+            const type = req.query.type;
+            if (type && !constants.ENTRY_TYPE.includes(type)) {
+                return sendError(res, 500, "INVALID_ENTRY_TYPE");
+            }
+            let entries = knex(constants.ENTRIES_TABLE_NAME)
+                    .where('direction', '=', 'arrival')
+                    .where('event_id', '=', req.params.event_id);
+            let exits = knex(constants.ENTRIES_TABLE_NAME)
+                .where('direction', '=', 'departure')
+                .where('event_id', '=', req.params.event_id);
+            if (type) {
+                entries = entries.where('type', '=', type);
+                exits = exits.where('type', '=', type);
+            }
+            entries = (await entries.count())[0]['count(*)'];
+            exits = (await exits.count())[0]['count(*)'];
+            return res.status(200).json({
+                entryCount: entries - exits,
+            });
+        } catch (errorObj) {
+            return sendError(res, 500, errorObj);
+        }
+    }
+);
+
+router.get(
+    '/all-entries/:event_id/:dateFrom/:dateTo',
+    async function (req, res) {
+        try {
+            const entries = await knex(constants.ENTRIES_TABLE_NAME)
+                .where('event_id', '=', req.params.event_id)
+                .where('timestamp', '>', new Date(parseInt(req.params.dateFrom)))
+                .where('timestamp', '<', new Date(parseInt(req.params.dateTo)));
+            return res.status(200).json({
+                entries
             });
         } catch (errorObj) {
             return sendError(res, 500, errorObj);
