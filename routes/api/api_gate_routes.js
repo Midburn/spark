@@ -25,6 +25,7 @@ const ERRORS = {
     USER_OUTSIDE_EVENT: 'Participant is outside of the event',
     EXIT_NOT_ALLOWED: 'Exit is not permitted after the event has started',
     INVALID_VEHICLE_DIRECTION: 'Please enter only in or out as the direction',
+    EVENT_CLOSED: "Event is currently closed",
     INVALID_ENTRY_TYPE: 'Please enter only correct entry type (regular, early_arrival)',
     INCORRECT_FORCE_ENTRY_PASSWORD: 'Incorrect Force Entry password'
 };
@@ -180,6 +181,11 @@ router.post('/gate-enter', async function (req, res) {
         ticket.attributes.forced_entrance_reason = req.body.force_reason;
     }
     else {
+
+        if (gate_status === "closed") {
+            return sendError(res, 500, "EVENT_CLOSED");
+        }
+
         let holder = ticket.relations.holder;
         if (gate_status === "early_arrival")
         // Finding the right users group and updating it.
