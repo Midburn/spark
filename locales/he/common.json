@@ -124,7 +124,8 @@
             "other_stats" : "סטטיסטיקת מחנות, מחלקות ומיצבים",
             "members_in_camps": "חברים במחנות נושא",
             "participants_in_art_installations": "משתתפים במיצבי אומנות",
-            "volunteers_in_production_departments": "מתנדבים במחלקות הפקה"
+            "volunteers_in_production_departments": "מתנדבים במחלקות הפקה",
+            "early_arrival_count": "כרגע בתוך האירוע תחת הגעה מוקדמת"
         }
 
     }

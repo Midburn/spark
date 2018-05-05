@@ -123,7 +123,8 @@
             "other_stats" : "Other Statistics",
             "members_in_camps": "Members in camps",
             "participants_in_art_installations": "Participants in art installations",
-            "volunteers_in_production_departments": "Volunteers in production departments"
+            "volunteers_in_production_departments": "Volunteers in production departments",
+            "early_arrival_count": "Currently inside under early arrival"
         }
 
     }
