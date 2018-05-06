@@ -103,11 +103,13 @@ router.post('/get-ticket/', async function (req, res) {
         if (holder.relations.groups) {
             _.each(holder.relations.groups.models, group => {
                 // if (groupsMembershipData.contains(group.attributes.group_id)) {
-                groups.push({
-                    id: group.attributes.group_id,
-                    type: group.attributes.type,
-                    name: group.attributes.name
-                });
+                if (group.attributes.event_id === req.body.event_id) {
+                    groups.push({
+                        id: group.attributes.group_id,
+                        type: group.attributes.type,
+                        name: group.attributes.name
+                    });
+                }
                 // }
             });
         }
