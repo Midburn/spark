@@ -212,7 +212,7 @@ router.post('/gate-enter', async function (req, res) {
             }
             else if (!production_early_arrival)
             {
-                //return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
             }
         }
     }
