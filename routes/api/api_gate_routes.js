@@ -127,7 +127,7 @@ router.post('/get-ticket/', async function (req, res) {
         let production_early_arrival = false;
         if (gate_status === 'early_arrival') {
             production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
-            log.debug(`get-ticket - user {holder.attributes.email} is a production volunteer`);
+            log.debug(`get-ticket - user ${holder.attributes.email} is a production volunteer`);
         }
         // Preparing result.
         let result = {
@@ -165,7 +165,7 @@ router.post('/gate-enter', async function (req, res) {
 
     // Loading ticket data from the DB.
     let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
-
+    const isEarlyArrival = gate_status === "early_arrival";
     if (!ticket) {
         return sendError(res, 500, "TICKET_NOT_FOUND");
     }
@@ -189,7 +189,7 @@ router.post('/gate-enter', async function (req, res) {
         }
 
         let holder = ticket.relations.holder;
-        if (gate_status === "early_arrival")
+        if (isEarlyArrival)
         // Finding the right users group and updating it.
         {
             let production_early_arrival = false;
@@ -228,7 +228,12 @@ router.post('/gate-enter', async function (req, res) {
         ticket.attributes.first_entrance_timestamp = new Date();
     }
     await ticket.save();
-
+    // We want to add to the counter based on entry type (we don't use await to not break ticketing due to counter errors...)
+    const entryType = isEarlyArrival ? 'early_arrival' : 'regular';
+    knex(constants.ENTRIES_TABLE_NAME).insert({timestamp: new Date(), direction: 'arrival', event_id: req.body.event_id, type: entryType})
+        .catch(err => {
+            log.warn('A ticket entry count failed', err);
+        });
     // TODO PATCH - Notifying Drupal that this ticket is now non-transferable. Remove with Drupal.
     drupalSync.passTicket(ticket.attributes.barcode);
 
@@ -240,8 +245,8 @@ router.post('/gate-enter', async function (req, res) {
 router.post('/gate-exit', async function (req, res) {
 
     try {
-        let [ticket] = await getTicketBySearchTerms(req, res);
-
+        let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
+        const isEarlyArrival = gate_status === "early_arrival";
         if (!ticket) {
             return sendError(res, 500, "TICKET_NOT_FOUND");
         }
@@ -260,7 +265,12 @@ router.post('/gate-exit', async function (req, res) {
         ticket.attributes.entrance_timestamp = null;
         ticket.attributes.last_exit_timestamp = new Date();
         await ticket.save();
-
+        // We want to add to the counter based on entry type (we don't use await to not break ticketing due to counter errors...)
+        const entryType = isEarlyArrival ? 'early_arrival' : 'regular';
+        knex(constants.ENTRIES_TABLE_NAME).insert({timestamp: new Date(), direction: 'departure', event_id: req.body.event_id, type: entryType})
+            .catch(err => {
+                log.warn('A ticket entry count failed', err);
+            });
         return res.status(200).json({
             message: "Ticket exit completed"
         });

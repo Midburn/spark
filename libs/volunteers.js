@@ -8,8 +8,8 @@ module.exports = function(config_ = undefined) {
     const config = config_ || default_config;
     let VOLUNTEERS_API_URL = config.api_url;
     const EARLY_ENTRY_URL = new URL('/api/v1/public/volunteers/getEarlyEntrance', VOLUNTEERS_API_URL);
-    return { 
-        
+    return {
+
         hasEarlyEntry: async userEmail => {
             try {
                 let response = await request
@@ -20,7 +20,7 @@ module.exports = function(config_ = undefined) {
                 return (!isNaN(early_arrival_time)) && early_arrival_time < Date.now();
             }
             catch (err) {
-                log.error(`Volunteers API hasEarlyEntry for ${email} failed. ${err}`)
+                log.error(`Volunteers API hasEarlyEntry for ${userEmail} failed. ${err}`)
                 return false;
             }
         },
