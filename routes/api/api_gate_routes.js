@@ -54,7 +54,7 @@ async function getTicketBySearchTerms(req, res) {
         gate_status = event.attributes.gate_status;
     }
     if (!req.body.event_id || !event) {
-        return sendError(res, 500, "EVENT_ID_IS_MISSING");
+        throw new Error("EVENT_ID_IS_MISSING");
     }
 
     // Setting the search terms for the ticket.
@@ -65,7 +65,7 @@ async function getTicketBySearchTerms(req, res) {
         searchTerms = {event_id: event_id, ticket_id: req.body.ticket, order_id: req.body.order};
     }
     else {
-        return sendError(res, 500, "BAD_SEARCH_PARAMETERS");
+        throw new Error("BAD_SEARCH_PARAMETERS");
     }
 
     // Loading data from the DB.
@@ -74,7 +74,7 @@ async function getTicketBySearchTerms(req, res) {
         return [ticket, gate_status];
     }
     else {
-        return sendError(res, 404, "TICKET_NOT_FOUND");
+        throw new Error("TICKET_NOT_FOUND");
     }
 }
 
@@ -157,89 +157,101 @@ router.post('/get-ticket/', async function (req, res) {
         });
     }
     catch (err) {
-        return sendError(res, 500, null, err);
+        let status = err.message === 'TICKET_NOT_FOUND' ? 404 : 500;
+        if (ERRORS[err.message]) {
+            return sendError(res, status, err.message);
+        }
+        return sendError(res, status, null, err);
     }
 });
 
 router.post('/gate-enter', async function (req, res) {
+    try {
 
-    // Loading ticket data from the DB.
-    let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
-    const isEarlyArrival = gate_status === "early_arrival";
-    if (!ticket) {
-        return sendError(res, 500, "TICKET_NOT_FOUND");
-    }
-    if (ticket.attributes.inside_event) {
-        return sendError(res, 500, "ALREADY_INSIDE");
-    }
-
-    if (req.body.force === "true") {
-        let force_pwd = req.body.force_pwd;
-        if (_incorrect_force_entry_password(force_pwd)) {
-            return sendError(res, 500, "INCORRECT_FORCE_ENTRY_PASSWORD");
+        // Loading ticket data from the DB.
+        let [ticket, gate_status] = await getTicketBySearchTerms(req, res);
+        const isEarlyArrival = gate_status === "early_arrival";
+        if (!ticket) {
+            return sendError(res, 500, "TICKET_NOT_FOUND");
         }
-        log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
-        ticket.attributes.forced_entrance = true;
-        ticket.attributes.forced_entrance_reason = req.body.force_reason;
-    }
-    else {
-
-        if (gate_status === "closed") {
-            return sendError(res, 500, "EVENT_CLOSED");
+        if (ticket.attributes.inside_event) {
+            return sendError(res, 500, "ALREADY_INSIDE");
         }
 
-        let holder = ticket.relations.holder;
-        if (isEarlyArrival)
-        // Finding the right users group and updating it.
-        {
-            let production_early_arrival = false;
-            production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
-            log.debug(`get-ticket - user ${holder.attributes.email} is a production volunteer`);
-            if (req.body.group_id) {
-                let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
-
-                if (!group) {
-                    return sendError(res, 500, "TICKET_NOT_IN_GROUP");
-                }
-
-                let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
-
-                if (!groupMembership) {
-                    return sendError(res, 500, "TICKET_NOT_IN_GROUP");
-                }
-
-                if (await group.quotaReached) {
-                    return sendError(res, 500, "QUOTA_REACHED");
-                }
+        if (req.body.force === "true") {
+            let force_pwd = req.body.force_pwd;
+            if (_incorrect_force_entry_password(force_pwd)) {
+                return sendError(res, 500, "INCORRECT_FORCE_ENTRY_PASSWORD");
             }
-            else if (!production_early_arrival)
+            log.warn('Forced ticket entrance', ticket.attributes.ticket_number);
+            ticket.attributes.forced_entrance = true;
+            ticket.attributes.forced_entrance_reason = req.body.force_reason;
+        }
+        else {
+
+            if (gate_status === "closed") {
+                return sendError(res, 500, "EVENT_CLOSED");
+            }
+
+            let holder = ticket.relations.holder;
+            if (isEarlyArrival)
+            // Finding the right users group and updating it.
             {
-                return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                let production_early_arrival = false;
+                production_early_arrival = await volunteersAPI.hasEarlyEntry(holder.attributes.email);
+                log.debug(`get-ticket - user ${holder.attributes.email} is a production volunteer`);
+                if (req.body.group_id) {
+                    let group = await UsersGroup.forge({group_id: req.body.group_id}).fetch({withRelated: ['users']});
+
+                    if (!group) {
+                        return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                    }
+
+                    let groupMembership = await UsersGroupMembership.forge({group_id: req.body.group_id, user_id: ticket.attributes.holder_id}).fetch();
+
+                    if (!groupMembership) {
+                        return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                    }
+
+                    if (await group.quotaReached) {
+                        return sendError(res, 500, "QUOTA_REACHED");
+                    }
+                }
+                else if (!production_early_arrival)
+                {
+                    return sendError(res, 500, "TICKET_NOT_IN_GROUP");
+                }
             }
         }
-    }
 
-    // Saving the entrance.
-    ticket.attributes.entrance_timestamp = new Date();
-    ticket.attributes.entrance_group_id = req.body.group_id || null;
-    ticket.attributes.last_exit_timestamp = null;
-    ticket.attributes.inside_event = true;
-    if (!ticket.attributes.first_entrance_timestamp) {
-        ticket.attributes.first_entrance_timestamp = new Date();
-    }
-    await ticket.save();
-    // We want to add to the counter based on entry type (we don't use await to not break ticketing due to counter errors...)
-    const entryType = isEarlyArrival ? 'early_arrival' : 'regular';
-    knex(constants.ENTRIES_TABLE_NAME).insert({timestamp: new Date(), direction: 'arrival', event_id: req.body.event_id, type: entryType})
-        .catch(err => {
-            log.warn('A ticket entry count failed', err);
+        // Saving the entrance.
+        ticket.attributes.entrance_timestamp = new Date();
+        ticket.attributes.entrance_group_id = req.body.group_id || null;
+        ticket.attributes.last_exit_timestamp = null;
+        ticket.attributes.inside_event = true;
+        if (!ticket.attributes.first_entrance_timestamp) {
+            ticket.attributes.first_entrance_timestamp = new Date();
+        }
+        await ticket.save();
+        // We want to add to the counter based on entry type (we don't use await to not break ticketing due to counter errors...)
+        const entryType = isEarlyArrival ? 'early_arrival' : 'regular';
+        knex(constants.ENTRIES_TABLE_NAME).insert({timestamp: new Date(), direction: 'arrival', event_id: req.body.event_id, type: entryType})
+            .catch(err => {
+                log.warn('A ticket entry count failed', err);
+            });
+        // TODO PATCH - Notifying Drupal that this ticket is now non-transferable. Remove with Drupal.
+        drupalSync.passTicket(ticket.attributes.barcode);
+
+        return res.status(200).json({
+            message: "Ticket entered successfully"
         });
-    // TODO PATCH - Notifying Drupal that this ticket is now non-transferable. Remove with Drupal.
-    drupalSync.passTicket(ticket.attributes.barcode);
-
-    return res.status(200).json({
-        message: "Ticket entered successfully"
-    });
+    } catch (err) {
+        let status = err.message === 'TICKET_NOT_FOUND' ? 500 : 404;
+        if (ERRORS[err.message]) {
+            return sendError(res, status, err.message);
+        }
+        return sendError(res, status, null, err);
+    }
 });
 
 router.post('/gate-exit', async function (req, res) {
@@ -276,6 +288,10 @@ router.post('/gate-exit', async function (req, res) {
         });
     }
     catch (err) {
+        let status = err.message === 'TICKET_NOT_FOUND' ? 404 : 500;
+        if (ERRORS[err.message]) {
+            return sendError(res, status, err.message);
+        }
         return sendError(res, 500, null, err)
     }
 })
