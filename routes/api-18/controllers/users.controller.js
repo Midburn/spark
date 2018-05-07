@@ -180,21 +180,6 @@ class UsersController {
                     stat.last_1h_exit = ticketStats[0][0]['last_1h_exit'];
                 }
 
-                // TODO: deduplicate code with api_gate_routes
-                let vehicleEntries = (await knex('vehicle_entries')
-                    .where('direction', '=', 'arrival')
-                    .where('event_id', '=', req.user.currentEventId)
-                    .count()
-                    )[0]['count(*)'];
-
-                let vehicleExits = (await knex('vehicle_entries')
-                    .where('direction', '=', 'departure')
-                    .where('event_id', '=', req.user.currentEventId)
-                    .count()
-                    )[0]['count(*)'];
-
-                stat.cars_inside_event = vehicleEntries - vehicleExits;
-
                 res.status(200).json({groups: groups, stats: stat});
             } else {
                 res.status(200).json({groups: groups});

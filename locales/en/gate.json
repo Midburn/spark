@@ -15,5 +15,6 @@
     "reason": "Reason",
     "force_reason_placeholder": "10 Characters minimum",
     "entrance_group": "Entrance group",
-    "early_arrival": "Early Arrival"
+    "early_arrival": "Early Arrival",
+    "prod_approval": "Approved by production for early arrival"
 }

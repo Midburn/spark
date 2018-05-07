@@ -57,10 +57,14 @@ block content
                         b=t('gate:ticket_type')
                         | :&nbsp;
                         span( id='modal_type')
+                    P( id="prod_approval" style="color: green")
+                        span.glyphicon.glyphicon-ok
+                        b=t('gate:prod_approval')
                     P( id="ticket_groups")
                         b=t('gate:ticket_group')
                         | :&nbsp;
                         .list-group(id="ticket_groups_list")
+
 
                 .modal-footer
                     button.Btn.Btn__green(type='button', data-dismiss='modal', id='entrance_button')=t('gate:enter_ticket')
@@ -107,6 +111,10 @@ block content
                             | :&nbsp;
                             textarea( id="force_reason", rows=3, cols=50, minlength=10, maxlength=150,
                             required, placeholder="#{t('gate:force_reason_placeholder')}" )
+                        p
+                            strong=t('password')
+                            | :&nbsp;
+                            input(id="force_pwd", type="password", name="force_pwd",required)
                     .modal-footer
                         button.btn.btn-primary(type='submit', id='force_entrance_dialog_button')=t('gate:force_enter_ticket')
                         button.btn.btn-cancel(type='button', data-dismiss='modal')=t('cancel')
@@ -122,6 +130,11 @@ block scripts
                 res += '<a class="entranceAction " id="' + row.barcode + '" ' +
                     'data-toggle="modal" href="#myModal" data-id="" title="Enter">' +
                     '<button class="btn btn-xs"> <span class="glyphicon glyphicon-log-in"></span>#{t("gate:enter_ticket")}</button></a> ';
+            }
+            else {
+                res += '<a class="exitAction " id="' + row.barcode + '" ' +
+                    'data-toggle="modal" href="#myModal" data-id="" title="Enter">' +
+                    '<button class="btn btn-xs"> <span class="glyphicon glyphicon-log-out"></span>#{t("gate:exit_ticket")}</button></a> ';
             }
             return res;
         };
@@ -154,6 +167,7 @@ block scripts
             });
 
             $(document).on("click", ".entranceAction", function () {
+                $("#prod_approval").hide();
                 clearModal();
                 $.post("/api/gate/get-ticket", {
                         barcode: this.id,
@@ -175,9 +189,11 @@ block scripts
 
                         let entranceButton = $("#entrance_button")[0];
                         entranceButton.innerHTML = "#{t('gate:enter_ticket')}";
-                        
+
                         if (data.gate_status === "early_arrival"){
-                            
+                            if (data.ticket.production_early_arrival) {
+                                $("#prod_approval").show();
+                            }
                             if ( !data.ticket.production_early_arrival && (data.ticket.groups && data.ticket.groups.length > 0)) {
                                 entranceButton.disabled = true;
                                 let groupsElement = $("#ticket_groups_list")[0];
@@ -195,6 +211,7 @@ block scripts
                                     $("#modal_group_id")[0].innerHTML = $(this)[0].id;
                                 });
                             }
+
                         }
                         else {
                             let groupsElement = $("#ticket_groups_list")[0];
@@ -210,7 +227,6 @@ block scripts
                         event_id: "#{event_id}"
                     },
                     function (data, status) {
-                        console.log(data);
                         if (data) {
                             $("#modal_full_name")[0].innerHTML = "#{t('gate:more_details')} - " + data.ticket.holder_name;
                             $("#modal_first_entrance_timestamp")[0].innerHTML = dateFormat(data.ticket.first_entrance_timestamp);
@@ -251,9 +267,10 @@ block scripts
 
             $(document).on("click", "#force_entrance_dialog_button", function () {
                 if (!$("#force_entrance_dialog_button").hasClass("disabled")) {
-                    var force_reason = $("#force_reason").val();
+                    let force_reason = $("#force_reason").val();
+                    let force_pwd = $("#force_pwd").val();
                     $('#forceDialog').modal('hide');
-                    enter(true, force_reason);
+                    enter(true, force_reason, force_pwd);
                 }
             });
 
@@ -261,13 +278,14 @@ block scripts
                 enter(false, null);
             });
 
-            function enter(force, force_reason) {
+            function enter(force, force_reason, force_pwd) {
                 let parameters = {
                     barcode: $("#modal_barcode")[0].innerHTML,
                     event_id: "#{event_id}",
                     group_id: $("#modal_group_id")[0].innerHTML.substring(2),
                     force: force,
-                    force_reason: force_reason
+                    force_reason: force_reason,
+                    force_pwd: force_pwd
                 };
                 let mode = $("#modal_mode")[0].innerHTML;
                 $.post("/api/gate/gate-" + mode, parameters)
