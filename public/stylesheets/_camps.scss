@@ -231,6 +231,13 @@ body[lang="en"] {
             left: 0;
         }
 
+        #long_content{
+            max-width: 40px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
         .card.card-hide {
             left: 3000px;
             visibility: hidden;
