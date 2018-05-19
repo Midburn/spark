@@ -265,6 +265,15 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         return allocationPeriod.start < now && now < allocationPeriod.end;
     };
 
+    $scope.earlyArrivalPeriodIsActive = () => {
+        const now = new Date();
+        const earlyArrivalPeriod = {
+            start : new Date(controllDates.early_arrivals_start),
+            end : new Date(controllDates.early_arrivals_end),
+        };
+        return earlyArrivalPeriod.start < now && now < earlyArrivalPeriod.end;
+    };
+
     $scope.updateEarlyArrival = (user_name, user_id, action_type) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
