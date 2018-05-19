@@ -32,6 +32,9 @@ class EventsRouter {
         /**
          * Init the different paths for this router.
          */
+        this.router.route('/reset')
+            .post([userRole.isAdmin()], eventsController.resetEvent);
+
         this.router.route('/new')
             .post([userRole.isAllowNewCamp()], eventsController.addEvent);
 

@@ -303,7 +303,9 @@ block content
                             datalist(id="campSupplierList")
                                 option(ng-repeat="supplier in all_suppliers | filter: add_supplier_id", data-id="{{ supplier.supplier_id }}" value="{{ supplier.supplier_id }}")
                                     {{ supplier.supplier_name_he }} | {{ supplier.supplier_name_en }}
-                            button.Btn.Btn__sm(ng-click="addSupplier()") + #{t('camps:edit.add_supplier')}
+                            button.Btn.Btn__sm(ng-click="addSupplier(); add_supplier_id=''") + #{t('camps:edit.add_supplier')}
+                        .col-xs-12
+                            p(class="text-red"){{addSupplierError}}
                         .col-xs-12
                             table.table.table-striped.table-hover
                                 tr.row(ng-repeat="supplier in camp_suppliers")

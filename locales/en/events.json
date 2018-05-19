@@ -5,6 +5,7 @@
         "title": "Events",
         "desc": "Events management dashboard"
     },
+    "reset": "Reset events tickets",
     "new_event": "New Event",
     "manage": "Manage",
     "admin": {

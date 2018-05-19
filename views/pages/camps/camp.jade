@@ -154,7 +154,7 @@ block content
                         each supplier in suppliers
                             li.list-group-item
                                 span #{supplier.supplier_name_he} / #{supplier.supplier_name_en}
-                                span.badge(class={blue:supplier.supplier_category === 'water', purple:supplier.supplier_category === 'carriage', orange:supplier.supplier_category === 'food'}) #{supplier.supplier_category}
+                                span.badge(class={blue:supplier.supplier_category === 'other', purple:supplier.supplier_category === 'moving'}) #{supplier.supplier_category}
 
             .documents.hidden
                 h4=t('camps:camps.docs')

@@ -5,7 +5,7 @@
     "this is part of the deployment proess, so it is important to update the version number",
     "version name corresponds to the github release name / tag name - https://github.com/Midburn/Spark/releases"
   ],
-  "version": "3.1.2",
+  "version": "3.2.5",
   "private": true,
   "scripts": {
     "postinstall": "cd public; npm install",
@@ -61,7 +61,7 @@
     "drupal-hash": "^1.0.3",
     "express": "~4.16.0",
     "express-breadcrumbs": "0.0.2",
-    "express-compile-sass": "3.0.4",
+    "express-compile-sass": "4.0.0",
     "express-fileupload": "^0.3.0",
     "express-mailer": "^0.3.1",
     "express-recaptcha": "^2.1.0",
@@ -72,8 +72,8 @@
     "i18next-node-fs-backend": "^1.0.0",
     "jade": "^1.11.0",
     "json2csv": "^3.7.3",
-    "jsonwebtoken": "^7.3.0",
-    "knex": "^0.13.0",
+    "jsonwebtoken": "^8.0.0",
+    "knex": "^0.14.3",
     "lodash": "^4.17.4",
     "mocker-data-generator": "^2.5.2",
     "module-id": "2.0.4",
@@ -96,7 +96,7 @@
     "snyk": "^1.53.0",
     "sprintf-js": "1.0.3",
     "superagent": "^3.5.0",
-    "webpack": "^1.14.0",
+    "webpack": "^2.2.0",
     "winston": "2.3.0",
     "winston-slack-transport": "^2.0.0",
     "xml2js-parser": "^1.1.1"

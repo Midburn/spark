@@ -22,6 +22,21 @@ module.exports = (app, passport) => {
     })
 
     /**
+     * API: (GET) GET all suppliers entries in the gate
+     * request => /suppliers/all_suppliers_entries
+     */
+    app.get('/suppliers/all_suppliers_entries', userRole.isGateManager(), async (req, res) => {
+        try {
+            let info = await knex(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME).select()
+                .innerJoin(constants.SUPPLIERS_TABLE_NAME, constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + '.supplier_id', constants.SUPPLIERS_TABLE_NAME + '.supplier_id')
+                .andWhere(constants.SUPPLIERS_GATE_ENTRANCE_INFO_TABLE_NAME + ".event_id" ,req.user.currentEventId);
+            res.status(200).json({suppliers: info})
+        } catch (err) {
+            res.status(500).json({error: true,data: { message: err.message }})
+        }
+    });
+
+    /**
     * API: (GET) get spesific supplire by id
     * request => /suppliers/:id
     */
@@ -146,6 +161,10 @@ module.exports = (app, passport) => {
    app.put('/suppliers/:supplier_id/camps/:camp_id', userRole.isAllowedToViewSuppliers(), async (req, res) => {
     try {
             let supplier_id = req.params.supplier_id;
+            if (supplier_id === "undefined") {
+                res.status(403).json({error: true,data: { message : "Please select supplier in the dropdown list" }})
+                return;
+            }
             let data = {
                 camp_id : req.params.camp_id,
                 event_id : req.user.currentEventId,
@@ -154,6 +173,16 @@ module.exports = (app, passport) => {
             }
 
             let supplier = await Suppliers.forge({supplier_id: supplier_id}).fetch()
+            if (!supplier) {
+                res.status(403).json({error: true,data: { message : "Unknown supplier, are you sure supplier exists?" }})
+                return;
+            }
+
+            let supplierContract = await SupplierContract.forge({supplier_id: supplier_id}).fetch();
+            if (!supplierContract) {
+              res.status(403).json({error: true,data: { message : "Cannot add suppliers without contract, please upload contract first" }})
+              return;
+            }
             let camp = await supplier.setSupplierCamp(data)
 
             if (camp !== 0) {
@@ -193,8 +222,8 @@ module.exports = (app, passport) => {
     });
 
      /**
-    * API: (GET) GET all supplire in the gate with the requested status
-    * request => /suppliers/:supplier_id/camps
+    * API: (GET) GET all suppliers in the gate with the requested status
+    * request => /suppliers/suppliers_gate_info/:status
     */
    app.get('/suppliers/suppliers_gate_info/:status', userRole.isGateManager(), async (req, res) => {
         try {
@@ -330,7 +359,7 @@ module.exports = (app, passport) => {
                 message: 'No file attached to request'
             })
         }
-        let fileName = req.files.file.name;
+        let fileName = supplierId + '/' + req.files.file.name;
 
         const s3Client = new S3();
         // Upload the file to S3
@@ -399,15 +428,23 @@ module.exports = (app, passport) => {
             }
             let supplier_contract = await SupplierContract.forge({supplier_id: supplierId}).fetch();
             if (!supplier_contract) {
-                res.status(204).json({error: true, message: 'No contract found for supplier'})
+                res.status(200).json({error: true,
+                                      message: 'No contract found for supplier',
+                                      data: {
+                                        path: null,
+                                        fileName: null
+                                      }
+                                    }
+               )
             } else {
-                  key = supplier_contract.attributes.file_name
+                  var key = supplier_contract.attributes.file_name;
+                  var fileName = key.split("/")[1];
                   bucket = awsConfig.buckets.supplier_contract_upload
                   res.status(200).json({
                       error: false,
                       data: {
                         path: s3Client.getPresignedUrl(key, bucket),
-                        fileName: key
+                        fileName: fileName
                       }
                 })
             }

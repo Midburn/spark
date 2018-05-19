@@ -1,0 +1,10 @@
+extends ../../includes/page
+block scripts
+    script(src="/scripts/controllers/events.js")
+block content
+    .ng-scope(ng-app="ngEvents")
+        .reset-container.container-xs-12(ng-controller="eventsController")
+            .controls.row
+                div.block-center
+                    div.input-group
+                        button.Btn.Btn__default(ng-click="resetTickets()")=t(t_prefix+'reset')

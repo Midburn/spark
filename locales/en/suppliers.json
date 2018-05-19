@@ -47,9 +47,11 @@
         "back": "Back",
         "created": "Created at",
         "upload_header": "Upload Files",
-        "supplier_file_url": "File Path",
+        "supplier_file_url": "File Name",
         "delete_file": "Delete file",
-        "no_files": "No files found"
+        "no_files": "No files found",
+        "download": "Download"
+
     },
     "nav_entries": "Suppliers entries",
     "nav_admin": "Supplier management",
@@ -85,6 +87,12 @@
         "burner": "Burner",
         "time": "Time",
         "comment": "Comment",
-        "edit": "Edit supplier entry"
+        "edit": "Edit supplier entry",
+        "all_entries": "All entries",
+        "inside": "Inside",
+        "outside": "Outside"
+    },
+    "errors": {
+        "supplier_contract_error": "Cannot add suppliers without contract, please upload contract first"
     }
 }

@@ -47,9 +47,10 @@
         "back": "חזור",
         "created": "תאריך היווצרות",
         "upload_header": "העלאת קבצים",
-        "supplier_file_url": "נתיב הקובץ",
+        "supplier_file_url": "שם הקובץ",
         "delete_file": "מחק קובץ",
-        "no_files": "לא נמצאו קבצים"
+        "no_files": "לא נמצאו קבצים",
+        "download": "הורדה"
     },
     "nav_admin": "ניהול ספקים",
     "nav_entries": "ניהול כניסות ספקים",
@@ -84,6 +85,12 @@
         "burner": "ברנר",
         "time": "מתי",
         "comment": "תגובה",
-        "edit": "ערוך כניסת ספק"
+        "edit": "ערוך כניסת ספק",
+        "all_entries": "כל הכניסות",
+        "inside": "בפנים",
+        "outside": "בחוץ"
+    },
+    "errors": {
+        "supplier_contract_error": "לא ניתן להוסיף ספק ללא חוזה, נא להעלות חוזה ספק"
     }
 }

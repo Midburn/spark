@@ -11,8 +11,8 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
             });
     }
 
-    function getEntriesByStatus (status, on_success) {
-        const url = '/suppliers/suppliers_gate_info/' + status;
+    function getAllEntries (on_success) {
+        const url = '/suppliers/all_suppliers_entries';
         $http.get(url)
             .then((res) => {
                 suplliers_all = res;
@@ -22,6 +22,18 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
                 sweetAlert('Could not get entries: ' + err.message);
             });
     }
+
+    // function getEntriesByStatus (status, on_success) {
+    //     const url = '/suppliers/suppliers_gate_info/' + status;
+    //     $http.get(url)
+    //         .then((res) => {
+    //             suplliers_all = res;
+    //             on_success(res);
+    //         })
+    //         .catch(err => {
+    //             sweetAlert('Could not get entries: ' + err.message);
+    //         });
+    // }
 
     // Initial order by last entry
     $scope.orderEntries = 'enterance_time';
@@ -108,7 +120,7 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
         const maxExitTime = entryTime.add(entry.allowed_visa_hours, 'hours');
         const now = new Date();
         // If maxExitTime is smaller then now - the supplier is overdue.
-        return maxExitTime.toDate().getTime() < now.getTime();
+        return maxExitTime.toDate().getTime() < now.getTime() && entry.supplier_status === 'Inside';
     };
 
     $scope.changeOrderBy = function (orderString) {
@@ -130,7 +142,7 @@ suppliers_app.controller("supplierEntriesController", function ($scope, $http, $
         });
     }
     function refreshCurrentEntries() {
-        getEntriesByStatus('Inside', (res) => {
+        getAllEntries((res) => {
             $scope.entries = res.data.suppliers;
             setTimeout(() => {
                 innerHeightChange()
