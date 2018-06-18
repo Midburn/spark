@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.8.0
+version: v1.12.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:ms:20170412':
@@ -165,3 +165,24 @@ patch:
   'npm:ms:20170412':
     - compression > debug > ms:
         patched: '2017-06-15T00:24:13.837Z'
+  'npm:hoek:20180212':
+    - passport-jwt > jsonwebtoken > joi > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - passport-jwt > jsonwebtoken > joi > topo > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > request > hawk > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > request > hawk > boom > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > request > hawk > sntp > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > request > hawk > cryptiles > boom > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > node-gyp > request > hawk > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > node-gyp > request > hawk > boom > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > node-gyp > request > hawk > sntp > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
+    - node-sass > node-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2018-06-18T22:22:02.864Z'
