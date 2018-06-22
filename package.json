@@ -34,7 +34,8 @@
     "prepublish": "npm run snyk-protect",
     "newDevDB": "npm run createdb; knex migrate:latest; npm run seed",
     "hot": "browser-sync start --proxy 'http://localhost:3000/' --files 'views' 'public'",
-    "//hot": "echo npm run hot - will open a hot reload browser updating on changes in view & public folders"
+    "//hot": "echo npm run hot - will open a hot reload browser updating on changes in view & public folders",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "archiver": "^2.1.1",
@@ -93,7 +94,7 @@
     "request": "^2.74.0",
     "requirejs": "^2.3.2",
     "serve-favicon": "~2.4.3",
-    "snyk": "^1.53.0",
+    "snyk": "^1.83.0",
     "sprintf-js": "1.0.3",
     "superagent": "^3.5.0",
     "webpack": "^2.2.0",
