@@ -186,3 +186,9 @@ patch:
         patched: '2018-06-21T03:00:42.060Z'
     - node-sass > node-gyp > request > hawk > cryptiles > boom > hoek:
         patched: '2018-06-21T03:00:42.060Z'
+  'npm:mime:20170907':
+    - express-mailer > nodemailer > mailcomposer > mime:
+        patched: '2018-06-25T22:22:47.149Z'
+  'npm:tunnel-agent:20170305':
+    - node-sass > request > tunnel-agent:
+        patched: '2018-06-25T22:22:47.149Z'
