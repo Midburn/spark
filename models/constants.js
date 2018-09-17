@@ -74,10 +74,10 @@ const ticketType = {
     MIDBURN2017_YOUTH_TICKET: 44,
     MIDBURN2017_LOW_INCOME_TICKET: 45,
     INTERNATIONAL_DIRECT_SALE: 46,
-    SANDBOX2018_ADULT_TICKET: 49,
-    SANDBOX2018_TICKET_A: 50,
-    SANDBOX2018_TICKET_B: 51,
-    SANDBOX2018_TICKET_C: 52,
+    SANDBOX2017_ADULT_TICKET: 49,
+    SANDBOX2017_TICKET_A: 50,
+    SANDBOX2017_TICKET_B: 51,
+    SANDBOX2017_TICKET_C: 52,
     MIDBURN2018_CHILD_TICKET: 54,
     MIDBURN2018_FIELD_TICKET: 55,
     MIDBURN2018_INTERNATIONAL_DIRECT_SALE: 56,
@@ -90,7 +90,11 @@ const ticketType = {
     MIDBURN2018_ADULT_THEME_CAMPS_TICKET: 63,
     MIDBURN2018_ADULT_ARTISTS_TICKET: 64,
     MIDBURN2018_ADULT_PRODUCTION_TICKET: 65,
-    MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: 66
+    MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET: 66,
+    SANDBOX2018_T1: 80,
+    SANDBOX2018_T2: 81,
+    SANDBOX2018_T3: 82,
+    SANDBOX2018_TEAM: 83
 };
 
 const SUPPLIERS_TABLE_NAME_FIELDS = {
@@ -144,6 +148,14 @@ const events = {
             ticketType.MIDBURN2018_ADULT_PRODUCTION_TICKET,
             ticketType.MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET
         ]
+    },
+    SANDBOX2018: {
+        bundles: [
+            ticketType.SANDBOX2018_T1,
+            ticketType.SANDBOX2018_T2,
+            ticketType.SANDBOX2018_T3,
+            ticketType.SANDBOX2018_TEAM
+        ]
     }
 };
 
@@ -152,8 +164,8 @@ module.exports = {
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
-    DEFAULT_EVENT_ID: `MIDBURN${new Date().getFullYear()}`,
-
+    //DEFAULT_EVENT_ID: `MIDBURN${new Date().getFullYear()}`,
+    DEFAULT_EVENT_ID: `SANDBOX${new Date().getFullYear()}`,
     //TODO move this to jsoninfo inside events table
     //TODO also fix event.js method to extract the data
     //currently the method first returns the constants if exists and only if not it will search the DB
