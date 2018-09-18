@@ -159,13 +159,14 @@ const events = {
     }
 };
 
+const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2017':`SANDBOX${new Date().getFullYear()}`;
 module.exports = {
 
     // -- system constant --
     // note: Future release will change the event_id
     // TODO We should not use this constant. We need to implement a mechanism that will allow the user to change the current event from the UI, therefore we can't rely on constant!
     //DEFAULT_EVENT_ID: `MIDBURN${new Date().getFullYear()}`,
-    DEFAULT_EVENT_ID: `SANDBOX${new Date().getFullYear()}`,
+    DEFAULT_EVENT_ID: default_event,
     //TODO move this to jsoninfo inside events table
     //TODO also fix event.js method to extract the data
     //currently the method first returns the constants if exists and only if not it will search the DB
