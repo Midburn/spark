@@ -12,7 +12,6 @@ const constants = require('../models/constants')
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-const STATUS_COMPLETED = 'Completed';
 
 const EVENT_ID = constants.DEFAULT_EVENT_ID
 const TICKETS_TYPE_IDS = [...constants.events[constants.DEFAULT_EVENT_ID].bundles]
@@ -75,7 +74,7 @@ async function dumpDrupalTickets(session, date, page) {
         headers: headers,
         qs: {
             changed: dateFormat(date, "yyyy-mm-dd hh:MM:ss"),
-            ticket_state_target_id: 3,
+            //ticket_state_target_id: 3,
             page: page
         }
     };
@@ -94,9 +93,12 @@ async function dumpDrupalTickets(session, date, page) {
 
         for (var ticket of tickets) {
             var status = ticket['Ticket State'];
+            if (status !== "Completed") {
+                console.log(ticket);
+            }
             var type_id = parseInt(ticket['ticket_registration_bundle']);
             //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
-            if (status === STATUS_COMPLETED && TICKETS_TYPE_IDS.includes(type_id)) {
+            if (TICKETS_TYPE_IDS.includes(type_id)) {
                 utickets.push({
                     'id'              : ticket['Docment id'],
                     'passport_id'     : ticket['passport_id'],
@@ -109,7 +111,8 @@ async function dumpDrupalTickets(session, date, page) {
                     'ticket_id'       : ticket['Ticket number'],
                     'ticket_number'   : ticket['Ticket number'],
                     'barcode'         : ticket['ticket barcode']['value'],
-                    'ticket_type'     : ticket['user_ticket_type_name']
+                    'ticket_type'     : ticket['user_ticket_type_name'],
+                    'ticket_status'   : status
                 });
             }
         }
@@ -144,7 +147,8 @@ async function updateTicket(ticket) {
         order_id,
         ticket_id,
         barcode,
-        ticket_type
+        ticket_type,
+        ticket_status
     } = ticket;
 
     log.info('Updating ticket', ticket_id, 'user ', holder_email);
@@ -194,9 +198,9 @@ async function updateTicket(ticket) {
             ticket_id: ticket_id,
             type: ticket_type,
             disabled_parking: parseInt(ticket.disabled_parking, 10) === 1,
-            ticket_number: ticket_id // In Drupal, they are the same
+            ticket_number: ticket_id, // In Drupal, they are the same
+            ticket_status: ticket_status
         });
-
         await sparkTicket.save(null, saveOptions);
         log.info('Ticket update success for ticket', ticket_id);
     }
