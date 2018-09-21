@@ -27,7 +27,8 @@ const ERRORS = {
     INVALID_VEHICLE_DIRECTION: 'Please enter only in or out as the direction',
     EVENT_CLOSED: "Event is currently closed",
     INVALID_ENTRY_TYPE: 'Please enter only correct entry type (regular, early_arrival)',
-    INCORRECT_FORCE_ENTRY_PASSWORD: 'Incorrect Force Entry password'
+    INCORRECT_FORCE_ENTRY_PASSWORD: 'Incorrect Force Entry password',
+    TICKET_INCOMPLETE: 'Ticket is either canceled or in processing'
 };
 
 function _incorrect_force_entry_password(password) {
@@ -176,6 +177,10 @@ router.post('/gate-enter', async function (req, res) {
         }
         if (ticket.attributes.inside_event) {
             return sendError(res, 500, "ALREADY_INSIDE");
+        }
+
+        if (ticket.attributes.ticket_status !== constants.TICKET_STATUSES.COMPLETED) {
+            return sendError(res, 500, "TICKET_INCOMPLETE");
         }
 
         if (req.body.force === "true") {

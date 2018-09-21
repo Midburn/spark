@@ -207,6 +207,9 @@ module.exports = {
     USER_GENDERS: get_enum(user_genders),
     USER_GENDERS_DEFAULT: get_default_enum(user_genders),
 
+    TICKET_STATUSES: {
+        COMPLETED: 'Completed'
+    },
     /**
      * User Current Status:
      *      define the position of the profile. in which event user is,
