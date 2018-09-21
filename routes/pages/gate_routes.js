@@ -5,6 +5,7 @@ const router = express.Router({
 const knex = require('../../libs/db').knex;
 const userRole = require('../../libs/user_role');
 const Event = require('../../models/event').Event;
+const constants = require('../../models/constants');
 
 router.get('/', userRole.isGateManager(), function (req, res) {
     Event.forge({event_id: req.user.currentEventId}).fetch().then(event => {
@@ -45,6 +46,9 @@ router.get('/ajax/tickets',
 
     knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
         .where('event_id', req.user.currentEventId)
+        .andWhere(function() {
+            this.where('ticket_status', 'IN', [constants.TICKET_STATUSES.COMPLETED, constants.TICKET_STATUSES.ENTERED])
+        })
         .andWhere(function () {
             this.where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))
             .orWhere('first_name', 'LIKE', '%' + req.query.search + '%')
