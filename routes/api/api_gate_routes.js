@@ -179,7 +179,8 @@ router.post('/gate-enter', async function (req, res) {
             return sendError(res, 500, "ALREADY_INSIDE");
         }
 
-        if (ticket.attributes.ticket_status !== constants.TICKET_STATUSES.COMPLETED) {
+        if (ticket.attributes.ticket_status !== constants.TICKET_STATUSES.COMPLETED &&
+            ticket.attributes.ticket_status !== constants.TICKET_STATUSES.ENTERED) {
             return sendError(res, 500, "TICKET_INCOMPLETE");
         }
 

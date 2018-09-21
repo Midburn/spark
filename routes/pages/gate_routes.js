@@ -47,7 +47,7 @@ router.get('/ajax/tickets',
     knex.select('*').from('tickets').leftJoin('users', 'tickets.holder_id', 'users.user_id')
         .where('event_id', req.user.currentEventId)
         .andWhere(function() {
-            this.where('ticket_status', constants.TICKET_STATUSES.COMPLETED)
+            this.where('ticket_status', 'IN', [constants.TICKET_STATUSES.COMPLETED, constants.TICKET_STATUSES.ENTERED])
         })
         .andWhere(function () {
             this.where('ticket_number', isNaN(parseInt(req.query.search))? req.query.search: parseInt(req.query.search))

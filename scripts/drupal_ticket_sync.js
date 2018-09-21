@@ -93,9 +93,7 @@ async function dumpDrupalTickets(session, date, page) {
 
         for (var ticket of tickets) {
             var status = ticket['Ticket State'];
-            if (status !== "Completed") {
-                console.log(ticket);
-            }
+            
             var type_id = parseInt(ticket['ticket_registration_bundle']);
             //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (TICKETS_TYPE_IDS.includes(type_id)) {

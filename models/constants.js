@@ -208,7 +208,8 @@ module.exports = {
     USER_GENDERS_DEFAULT: get_default_enum(user_genders),
 
     TICKET_STATUSES: {
-        COMPLETED: 'Completed'
+        COMPLETED: 'Completed',
+        ENTERED: 'Entered'
     },
     /**
      * User Current Status:
