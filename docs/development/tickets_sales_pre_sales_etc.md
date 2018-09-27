@@ -20,3 +20,13 @@ update camp_members
 set addinfo_json=replace(addinfo_json, '"pre_sale_ticket":', '"dgs_allocation":')
 where camp_id in (select id from camps where event_id='MIDBURN2018')
 ```
+
+## Updating ticket statuses
+
+Spark only enters into the event tickets from `tickets` table which have a `ticket_status` of `Completed` or `Entered`
+
+You might need to update statuses in DB to fix some problems with unsynced tickets:
+
+```
+update tickets set ticket_status='Completed' where ticket_status is null
+```
