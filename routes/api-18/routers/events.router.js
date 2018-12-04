@@ -40,13 +40,11 @@ class EventsRouter {
 
         this.router.route('/update')
             .put([userRole.isAllowNewCamp()], eventsController.updateEvent);
-
-        this.router.route('/:event_id').get(eventsController.getEvent);
-
-        this.router.route('/:event/edit').put(eventsController.editingEvent);
-
         //change the current event id for camps manager or admin
-        this.router.route('/change').post(eventsController.changeCampEventId);
+        this.router.route('/change').post(eventsController.changeCurrentEventId);
+        this.router.route('/current').get(eventsController.getCurrentEvent);
+        this.router.route('/:event_id').get(eventsController.getEvent);
+        this.router.route('/:event/edit').put(eventsController.editingEvent);
     }
 }
 

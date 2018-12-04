@@ -17,9 +17,10 @@ class EventsController {
         this.getEvent = this.getEvent.bind(this);
         this.editingEvent = this.editingEvent.bind(this);
         this.resetEvent = this.resetEvent.bind(this);
+        this.changeCurrentEventId = this.changeCurrentEventId.bind(this);
     }
 
-    getEvent(req, res) {
+    getEvent(req, res, next) {
         const event_id = req.params.event_id;
         Event.forge({event_id: event_id})
             .fetch()
@@ -89,11 +90,29 @@ class EventsController {
         logger.debug('EventsAPI edit ' + _.get(req, 'params.event'));
     }
 
-    changeCampEventId(req, res) {
+    async changeCurrentEventId(req, res, next) {
         //set the new event id in the session
-        req.session.passport.user.currentEventId = req.body.currentEventId;
-        req.session.save();
-        res.send(200);
+        try {
+            req.session.passport.user.currentEventId = req.body.currentEventId;
+            await req.session.save();
+            res.sendStatus(200);
+        } catch (e) {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            return next(e);
+        }
+    }
+
+    getCurrentEvent(req, res, next) {
+        try {
+            return res.status(200).json({ id: req.session.passport.user.currentEventId });
+        } catch (e) {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            return next(e);
+        }
     }
 
     resetEvent(req, res, next) {

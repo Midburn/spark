@@ -327,7 +327,7 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
 
 }); //end of controller
 
-app.controller("homeController", ($scope, $http, $filter) => {
+app.controller("homeController", ['$scope', '$http', 'eventsService', ($scope, $http, eventsService) => {
     $scope.carCount = 0;
     $scope.entryCount = 0;
     $scope.angular_getMyGroups = function ($http, $scope) {
@@ -337,20 +337,42 @@ app.controller("homeController", ($scope, $http, $filter) => {
             $scope.stat = res.data.stats;
         });
     };
-
-    $scope.getCarCount = ($http, $scope) => {
-        $http.get(`/api/gate/vehicle-counter/${currentEventId}`).then((res) => {
-            // debugger;
-            $scope.carCount = res.data.vehicleCount;
+    eventsService.getEvents()
+        .then(events => {
+            $scope.events = events;
+        })
+        .catch(e => {
+            $scope.events = [];
+            console.warn(e.message);
         });
-    };
-
-    $scope.getEntryCount = ($http, $scope) => {
-        $http.get(`/api/gate/entry-counter/${currentEventId}?type=early_arrival`).then((res) => {
-            // debugger;
-            $scope.earlyArrivalCount = res.data.entryCount;
+    eventsService.getCurrentEvent()
+        .then(currentEventId => {
+            $scope.currentEventId = currentEventId;
+            getCountersForEvent(currentEventId);
+        })
+        .catch(e => {
+            $scope.currentEventId = [];
+            console.warn(e.message);
         });
-    };
+
+    function getCountersForEvent(currentEventId) {
+        $http.get(`/api/gate/vehicle-counter/${currentEventId}`)
+            .then((res) => {
+                // debugger;
+                $scope.carCount = res.data.vehicleCount;
+            }).catch(e => {
+                $scope.carCount = 0;
+                console.warn(e.message);
+            });
+        $http.get(`/api/gate/entry-counter/${currentEventId}?type=early_arrival`)
+            .then((res) => {
+                // debugger;
+                $scope.earlyArrivalCount = res.data.entryCount;
+            }).catch(e => {
+                $scope.earlyArrivalCount = 0;
+                console.warn(e.message);
+            });
+    }
 
     $scope.angular_ChangeCurrentEventId = function (event_id) {
         //set new current event id
@@ -360,22 +382,21 @@ app.controller("homeController", ($scope, $http, $filter) => {
     };
 
     $scope.isGroupEditable = function (group) {
-        const edit_camp_disabled = currentEventRules.edit_camp_disabled;
-        const edit_art_disabled = currentEventRules.edit_art_disabled;
         if (!group.can_edit) {
             return false;
         }
-        switch (group.group_type) {
-            case 'Art Installation':
-                return !edit_art_disabled;
-            default:
-                return !edit_camp_disabled;
-        }
+        return true;
+        // const edit_camp_disabled = currentEventRules.edit_camp_disabled;
+        // const edit_art_disabled = currentEventRules.edit_art_disabled;
 
+        // switch (group.group_type) {
+        //     case 'Art Installation':
+        //         return !edit_art_disabled;
+        //     default:
+        //         return !edit_camp_disabled;
+        // }
     };
 
     $scope.angular_getMyGroups($http, $scope);
-    $scope.getCarCount($http, $scope);
-    $scope.getEntryCount($http, $scope);
 
-});
+}]);

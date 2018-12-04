@@ -54,15 +54,10 @@ module.exports = function (app, passport) {
             url: '/' + req.params.lng + '/home'
         });
         //fetch all events to set in the midburn dropdown
-        Event.fetchAll().then(async (events) => {
-            const currentEventRules = await Event.get_event_controllDates(req.user.currentEventId) || {};
-            res.render('pages/home', {
-                user: req.user,
-                events: events.toJSON(),
-                isAdmin: req.user.isAdmins,
-                currentEventRules: currentEventRules,
-                breadcrumbs: req.breadcrumbs()
-            });
+        res.render('pages/home', {
+            user: req.user,
+            isAdmin: req.user.isAdmin,
+            breadcrumbs: req.breadcrumbs()
         });
     });
 
