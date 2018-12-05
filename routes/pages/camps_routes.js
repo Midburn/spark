@@ -32,7 +32,7 @@ var __render_camp = async function (camp, req, res) {
         camp_id = camp.id;
     }
     try {
-        const dbCamp = await Camp.forge({id: camp_id, event_id: req.user.currentEventId }).fetch({});
+        const dbCamp = await Camp.forge({ id: camp_id, event_id: req.user.currentEventId }).fetch({});
         const suppliers = await dbCamp.getCampSuppliers();
         await dbCamp.getCampUsers((users) => {
             dbCamp.init_t(req.t);
@@ -66,7 +66,6 @@ var __render_camp = async function (camp, req, res) {
             }
         });
     }
-
 }
 
     // ==============
