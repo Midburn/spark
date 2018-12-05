@@ -1,3 +1,4 @@
+
 function moved inside controllers.
 suitable names were named for these functions.
 the "old" names of functions were changed to the "new" names in all functions calls.
@@ -5,3 +6,4 @@ the "old" names of functions were changed to the "new" names in all functions ca
 camps/suppliers services were injected to relevant controllers.
 camps/suppliers services were declared in layout.jade (under "spark scripts").
  still 1 issue in suppliers edit screen.
+ 
