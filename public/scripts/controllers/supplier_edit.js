@@ -1,57 +1,34 @@
-const angular_getCamps = function ($http, $scope, supplier_id) {
-  const isNew = $("#isNew").val();
-  if (isNew === "false") {
-    $http.get(`/suppliers/${supplier_id}/camps`).then((res) => {
-        $scope.canDelete = true; //TODO check if the user can delete the camp
-        $scope.relatedCamps = res.data.camps;
-    });
-  }
-}
-const angular_getSupplierById = ($http, $scope, supplier_id) => {
-    $http.get(`/suppliers/${supplier_id}`).then((res) => {
-        $scope.supplier = res.data.supplier;
-    });
-}
+// const angular_getCamps = function ($http, $scope, supplier_id) {
+//   const isNew = $("#isNew").val();
+//   if (isNew === "false") {
+//     $http.get(`/suppliers/${supplier_id}/camps`).then((res) => {
+//         $scope.canDelete = true; //TODO check if the user can delete the camp
+//         $scope.relatedCamps = res.data.camps;
+//     });
+//   }
+// }
+// const angular_getSupplierById = ($http, $scope, supplier_id) => {
+//     $http.get(`/suppliers/${supplier_id}`).then((res) => {
+//         $scope.supplier = res.data.supplier;
+//     });
+// }
 
-const angular_getSupplierFile = function ($http, $scope, $q, supplier_id) {
-    const req_path = `/suppliers/${supplier_id}/contract`
-    let getFilePromise = $q.defer()
 
-    $http.get(req_path).then(function (res) {
-        getFilePromise.resolve(res.data)
-    }).catch(function (err) {
-        const jsonError = err.data.message
-        sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
-        getFilePromise.reject(err)
-    })
 
-    return getFilePromise.promise
-}
-const angular_deleteSupplierFile = function ($http, $scope, $q, supplier_id) {
-    const req_path = `/suppliers/${supplier_id}/contract/`;
-    let deleteFilePromise = $q.defer()
-    $http.delete(req_path).then(function (res) {
-        deleteFilePromise.resolve(res.data.files)
-    }).catch(function (err) {
-        const jsonError = err.data.message;
-        sweetAlert("Error!", "Could not delete file \n" + jsonError)
-        deleteFilePromise.reject(err)
-    })
-
-    return deleteFilePromise.promise
-}
-suppliers_app.controller("supllierShowController", ($scope, $http, $filter) => {
+suppliers_app.controller("supllierShowController", ($scope, $http, $filter, suppliers, camps) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
-    angular_getCamps($http, $scope, supplier_id);
-    angular_getSupplierById($http, $scope, supplier_id)
+    camps.getAll($http, $scope, supplier_id);
+    suppliers.getSupplierById($http, $scope, supplier_id)
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderCamps = orderByValue;
     }
 });
-suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) => {
+
+
+suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q, suppliers, camps) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
     const lang = document.getElementById('meta__lang').value || 'he';
-    angular_getSupplierById($http, $scope, supplier_id)
+    suppliers.getSupplierById($http, $scope, supplier_id)
     if (lang === "he") {
         $scope.status_options = [
             { id: 'other', value: 'אחר' },
@@ -62,6 +39,33 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
             { id: 'other', value: 'Other' },
             { id: 'moving', value: 'Moving' }
         ]
+    }
+    const angular_getSupplierFile = function ($http, $scope, $q, supplier_id) {
+        const req_path = `/suppliers/${supplier_id}/contract`
+        let getFilePromise = $q.defer()
+    
+        $http.get(req_path).then(function (res) {
+            getFilePromise.resolve(res.data)
+        }).catch(function (err) {
+            const jsonError = err.data.message
+            sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
+            getFilePromise.reject(err)
+        })
+    
+        return getFilePromise.promise
+    }
+    const angular_deleteSupplierFile = function ($http, $scope, $q, supplier_id) {
+        const req_path = `/suppliers/${supplier_id}/contract/`;
+        let deleteFilePromise = $q.defer()
+        $http.delete(req_path).then(function (res) {
+            deleteFilePromise.resolve(res.data.files)
+        }).catch(function (err) {
+            const jsonError = err.data.message;
+            sweetAlert("Error!", "Could not delete file \n" + jsonError)
+            deleteFilePromise.reject(err)
+        })
+    
+        return deleteFilePromise.promise
     }
     $http.get(`/camps_all`)
         .then((res) => {
@@ -77,7 +81,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q) 
         $scope.getCamps();
     }
     $scope.getCamps = () => {
-        angular_getCamps($http, $scope, supplier_id);
+        camps.getAll($http, $scope, supplier_id);
         setTimeout(() => {
             innerHeightChange();
         }, 500)

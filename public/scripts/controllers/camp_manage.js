@@ -2,27 +2,27 @@
 var camps_all;
 var groups_prototype;
 
-__get_camps_all = function ($http, on_success) {
-    if (camps_all) {
-        on_success(camps_all);
-    } else {
-        let _url = '/camps_all';
-        if (groups_prototype === 'art_installation') {
-            _url = '/art_all';
-        } else if (groups_prototype === 'prod_dep') {
-            _url = '/prod_dep_all';
-        }
-        //console.log(_url);
-        $http.get(_url).then((res) => {
-            camps_all = res;
-            on_success(res);
-        });
-    }
-};
+// __get_camps_all = function ($http, on_success) {
+//     if (camps_all) {
+//         on_success(camps_all);
+//     } else {
+//         let _url = '/camps_all';
+//         if (groups_prototype === 'art_installation') {
+//             _url = '/art_all';
+//         } else if (groups_prototype === 'prod_dep') {
+//             _url = '/prod_dep_all';
+//         }
+//         //console.log(_url);
+//         $http.get(_url).then((res) => {
+//             camps_all = res;
+//             on_success(res);
+//         });
+//     }
+// };
 
-app.controller("manageCampsController", function ($scope, $http, $filter) {
+app.controller("manageCampsController", function ($scope, $http, $filter, camps) {
     // console.log(groups_prototype);
-    __get_camps_all($http, (res) => {
+    camps.getAll($http, (res) => {
         // console.log(groups_prototype);
         $scope.camps = res.data.camps;
         setTimeout(() => {
@@ -108,8 +108,8 @@ app.controller("manageCampsController", function ($scope, $http, $filter) {
     }
 });
 
-app.controller("membersController", ($scope, $http) => {
-    __get_camps_all($http, (res) => {
+app.controller("membersController", ($scope, $http, camps) => {
+    camps.getAll($http, (res) => {
         const data = [];
         for (const i in res.data.camps) {
             if (['open', 'closed'].indexOf(res.data.camps[i].status) > -1) {
@@ -127,12 +127,13 @@ app.controller("membersController", ($scope, $http) => {
     $scope.getMembers = (camp_id) => {
         if (typeof camp_id !== 'undefined') {
             $scope.current_camp_id = camp_id;
-            angular_getMembers($http, $scope, camp_id);
+            camps.getCampMembers($http, $scope, camp_id);
             setTimeout(() => {
                 innerHeightChange()
             }, 500);
         }
     };
+    
     $scope.updateUser = (user_name, user_id, action_type) => {
         const camp_id = $scope.current_camp_id;
         const lang = 'he';
@@ -142,7 +143,7 @@ app.controller("membersController", ($scope, $http) => {
             user_id: user_id,
             lang: lang,
         };
-        angular_updateUser($http, $scope, action_type, user_rec);
+        camps.updateUser($http, $scope, action_type, user_rec);
     };
 
     $scope.changeOrderBy = (orderByValue) => {
