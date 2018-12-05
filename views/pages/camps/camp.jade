@@ -1,11 +1,13 @@
 extends ../../includes/page
 block content
-    .camps.camp_details
+    script.
+        const group = !{JSON.stringify(camp)};
+    .camps.camp_details(ng-app="ngCamps" ng-controller="campViewController")
         .heading.card.card__shad
             .card__actions
-                if isAdmin || (isCampManager && camp_protoype !== 'art_installation' && !edit_camp_disabled) || (isCampManager && camp_protoype !== 'art_installation' && !edit_art_disabled)
+                if isAdmin || isCampManager
                     .dropdown
-                        a.Btn.Btn__default(href='/#{language}/camps/#{id}/edit')=t('camps:camps.edit')
+                        a.Btn.Btn__default(href='/#{language}/camps/#{id}/edit' ng-if="isGroupEditable()")=t('camps:camps.edit')
             .card__details
                 //- span.label.label-info #{t('camps:camps.title')} # #{id}
                 h2

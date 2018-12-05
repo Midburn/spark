@@ -63,7 +63,7 @@ class EventsController {
     addEvent(req, res, next) {
         const new_event = eventsService.createEventFromReq(req);
         Event.forge().save(new_event)
-            .then(res.send(200))
+            .then(res.sendStatus(200))
             .catch((err) => {
                 /**
                  * Pass the error to be handled by the generic error handler

@@ -327,6 +327,25 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
 
 }); //end of controller
 
+app.controller("campViewController", ['$scope', '$http', '$q', 'eventsService', ($scope, $http, $q, eventsService) => {
+    $scope.ready = false;
+    $q.all([eventsService.getCurrentEvent(), eventsService.getEvents()])
+        .then(done => {
+            $scope.ready = true;
+        })
+        .catch(e => {
+            console.warn('Error fetching events data');
+            console.warn(e.message);
+        });
+    $scope.isGroupEditable = function () {
+        // group is passed through JADE (see camp.jade file)
+        if (!group || !$scope.ready) {
+            return false;
+        }
+        return eventsService.isGroupEditingAvailable(group);
+    };
+}]);
+
 app.controller("homeController", ['$scope', '$http', 'eventsService', ($scope, $http, eventsService) => {
     $scope.carCount = 0;
     $scope.entryCount = 0;
@@ -385,16 +404,7 @@ app.controller("homeController", ['$scope', '$http', 'eventsService', ($scope, $
         if (!group.can_edit) {
             return false;
         }
-        return true;
-        // const edit_camp_disabled = currentEventRules.edit_camp_disabled;
-        // const edit_art_disabled = currentEventRules.edit_art_disabled;
-
-        // switch (group.group_type) {
-        //     case 'Art Installation':
-        //         return !edit_art_disabled;
-        //     default:
-        //         return !edit_camp_disabled;
-        // }
+        return eventsService.isGroupEditingAvailable(group);
     };
 
     $scope.angular_getMyGroups($http, $scope);
