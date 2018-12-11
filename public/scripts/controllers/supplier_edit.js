@@ -1,24 +1,14 @@
-// const angular_getCamps = function ($http, $scope, supplier_id) {
-//   const isNew = $("#isNew").val();
-//   if (isNew === "false") {
-//     $http.get(`/suppliers/${supplier_id}/camps`).then((res) => {
-//         $scope.canDelete = true; //TODO check if the user can delete the camp
-//         $scope.relatedCamps = res.data.camps;
-//     });
-//   }
-// }
-// const angular_getSupplierById = ($http, $scope, supplier_id) => {
-//     $http.get(`/suppliers/${supplier_id}`).then((res) => {
-//         $scope.supplier = res.data.supplier;
-//     });
-// }
 
-
-
-suppliers_app.controller("supllierShowController", ($scope, $http, $filter, suppliers, camps) => {
+suppliers_app.controller("supllierShowController", ($scope, $http, $filter, camps, suppliers) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
-    camps.getAll($http, $scope, supplier_id);
-    suppliers.getSupplierById($http, $scope, supplier_id)
+    camps.getAll($http,function() {}, $scope, supplier_id);
+    suppliers.getSupplierById(supplier_id, function(res){
+        if (res.stack || res.message) {
+            console.warn('getSupplierById: ' + res.message);
+            return;
+        } 
+        $scope.supplier = res.data.supplier;
+    });
     $scope.changeOrderBy = (orderByValue) => {
         $scope.orderCamps = orderByValue;
     }
@@ -28,7 +18,13 @@ suppliers_app.controller("supllierShowController", ($scope, $http, $filter, supp
 suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q, suppliers, camps) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
     const lang = document.getElementById('meta__lang').value || 'he';
-    suppliers.getSupplierById($http, $scope, supplier_id)
+    suppliers.getSupplierById(supplier_id, function(res){
+        if (res.stack || res.message) {
+            console.warn('getSupplierById: ' + res.message);
+            return;
+        } 
+        $scope.supplier = res.data.supplier;
+    });
     if (lang === "he") {
         $scope.status_options = [
             { id: 'other', value: 'אחר' },
@@ -40,6 +36,7 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q, 
             { id: 'moving', value: 'Moving' }
         ]
     }
+
     const angular_getSupplierFile = function ($http, $scope, $q, supplier_id) {
         const req_path = `/suppliers/${supplier_id}/contract`
         let getFilePromise = $q.defer()
@@ -81,7 +78,19 @@ suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q, 
         $scope.getCamps();
     }
     $scope.getCamps = () => {
-        camps.getAll($http, $scope, supplier_id);
+        const isNew = $("#isNew").val();
+        if (isNew !== "false") {
+            $scope.relatedCamps = [];
+            return;
+        }
+        suppliers.getSuppliersCamps(supplier_id, function(data) {
+            if (data.stack || data.message) {
+                console.warn('getSuppliersCamps: ' + data.message);
+                return;
+            } 
+            $scope.canDelete = true; //TODO check if the user can delete the camp
+            $scope.relatedCamps = data.camps;
+        });
         setTimeout(() => {
             innerHeightChange();
         }, 500)
