@@ -95,6 +95,7 @@ class UsersController {
                                     status: camp.member_status,
                                     member_status: camp.member_status,
                                     member_status_i18n: camp.member_status_i18n,
+                                    member_role: camp.member_role,
                                     camp_name_en: camp.camp_name_en,
                                     camp_name_he: camp.camp_name_he,
                                 }
@@ -124,6 +125,7 @@ class UsersController {
                         group_type: req.t(group_props.t_prefix + 'edit.camp'),
                         member_status: camps[i].member_status,
                         member_status_i18n: camps[i].member_status_i18n,
+                        member_role: camps[i].member_role,
                         camp_desc_i18n: camps[i].camp_name_he,
                         camp_desc_he: camps[i].camp_name_he,
                         camp_name_en: camps[i].camp_name_en,

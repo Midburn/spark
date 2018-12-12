@@ -29,8 +29,8 @@ block content
                     th(ng-click='changeOrderBy("id")') #
                     th(ng-click='changeOrderBy("name")') סוג הקבוצה
                     th(ng-click='changeOrderBy("email")') שם הקבוצה
+                    th() תפקיד
                     th(ng-click='changeOrderBy("cell_phone")') סטאטוס
-                    th() מנהל
                     th()=t('camps:members.actions')
                     //- th(ng-click='changeOrderBy("member_status_i18n")') פעולות
                     //- th(ng-click='changeOrderBy("ticket_count")')
@@ -40,9 +40,10 @@ block content
                         td {{group.user_id}}
                         td {{group.group_type}}
                         td {{group.camp_desc_i18n}}
-                        td {{group.member_status_i18n}}
-                        td {{group.is_manager}}
-                        //- td {{group.earlyArrival ? 'yes':'no'}}
+                        td(ng-if="group.member_role==='role_manager'")=t('camps:members.role_manager')
+                        td(ng-if="group.member_role==='role_member'")=t('camps:members.role_member')
+                        td(ng-if="group.member_status_i18n === 'status_approved'")=t('camps:members.status_approved')
+                        td(ng-if="group.member_status_i18n === 'status_pending'")=t('camps:members.status_pending')
                         td
                             a.cursor-p(ng-href=`/${language}/camps/{{group.group_id}}` + '/edit' ng-if="isGroupEditable(group, currentEventRules)") &nbsp;
                                 button.btn.btn-xs

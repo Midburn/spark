@@ -177,7 +177,9 @@
         "set_early_arrival": "Set Early Arrival",
         "remove_early_arrival": "Remove Early Arrival",
         "status_approved_mgr": "Approved as Manager",
-        "status_supplier": "Supplier"
+        "status_supplier": "Supplier",
+        "role_manager": "Manager",
+        "role_member": "Member"
     },
     "camps": {
         "title": "Camp",
@@ -198,6 +200,7 @@
         "published": "Published",
         "draft": "Draft",
         "status": "Status",
+        "role": "Role",
         "status_open": "Open",
         "status_closed": "Closed",
         "accept_families": "Accept Families?",

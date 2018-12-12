@@ -166,10 +166,10 @@
         "remove": "הסר משתמש",
         "choose_camp": "בחר או חפש מחנה",
         "status_pending": "ממתין לאישור מנהלת המחנה",
-        "status_approved": "חברת מחנה מאושרת",
+        "status_approved": "מאושר\\ת",
         "status_rejected": "נדחה על ידי מנהלת המחנה",
         "status_pending_mgr": "ממתין לאישור החברה המצטרפת",
-        "status_approved_mgr": "מנהלת מחנה מאושרת",
+        "status_approved_mgr": "מאושר\\ת",
         "inside_event": "בתוך האירוע",
         "pre_sale_ticket_approved": "הקצה כרטיס מכירה מוקדמת",
         "group_sale_ticket_approved": "הקצה כרטיס קבוצה",
@@ -179,7 +179,9 @@
         "group_sale_ticket_remove": "הסר כרטיס קבוצה",
         "set_early_arrival": "הקצה כניסה מוקדמת",
         "remove_early_arrival": "הסר כניסה מוקדמת",
-        "status_supplier": "מאושר כספק"
+        "status_supplier": "מאושר כספק",
+        "role_manager": "מנהל\\ת",
+        "role_member": "חבר\\ה"
     },
     "camps": {
         "title": "מחנה",
@@ -201,6 +203,7 @@
         "draft": "טיוטא",
         "accept_new_members": "פתוח/סגור למצטרפים חדשים",
         "status": "סטטוס",
+        "role": "תפקיד",
         "status_open": "פתוח",
         "status_closed": "סגור",
         "accept_families": "פתוח למשפחות",
