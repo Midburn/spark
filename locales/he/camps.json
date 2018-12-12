@@ -181,7 +181,11 @@
         "remove_early_arrival": "הסר כניסה מוקדמת",
         "status_supplier": "מאושר כספק",
         "role_manager": "מנהל\\ת",
-        "role_member": "חבר\\ה"
+        "role_member": "חבר\\ה",
+        "group_type": "סוג הקבוצה",
+        "group_name": "שם הקבוצה",
+        "member_role": "תפקיד",
+        "member_status": "סטאטוס"
     },
     "camps": {
         "title": "מחנה",

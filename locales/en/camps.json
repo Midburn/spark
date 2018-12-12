@@ -98,6 +98,7 @@
         "send_request": "Send Request",
         "close": "Close",
         "website_publication": "Website Publication",
+        "midburn_website_publication": "Publishing in Midburn Website",
         "contact_person_id": "Contact Person",
         "contact_person_name": "Contact Person Name",
         "contact_person_email": "Contact Person Email",
@@ -179,7 +180,11 @@
         "status_approved_mgr": "Approved as Manager",
         "status_supplier": "Supplier",
         "role_manager": "Manager",
-        "role_member": "Member"
+        "role_member": "Member",
+        "group_type": "Group Type",
+        "group_name": "Group Name",
+        "member_role": "Role",
+        "member_status": "Status"
     },
     "camps": {
         "title": "Camp",
@@ -222,7 +227,7 @@
         "since": "Since",
         "basic_info": "Basic Information",
         "details": "Basic Details",
-        "members": "Members update",
+        "members": "Members",
         "files": "Files & Documents",
         "name_and_desc": "Camp Name & Description",
         "name_en": "Name (English)",
@@ -259,7 +264,7 @@
         "public_activity_area_sqm": "Public area (sqm)",
         "public_activity_area_desc": "Public area description",
         "support_art": "Support art",
-        "add_info": "Art Admin Additional Information",
+        "add_info": "Additional Information",
         "location_title": "Camp Location - Here you may view your location within the city once the city map is formed",
         "location_comments": "Comments",
         "location_street": "Street",
@@ -341,7 +346,7 @@
         "edit": {
             "view": "View Art Installation",
             "name_and_desc": "Art Name & Description",
-            "add_info": "Art Admin Additional Information",
+            "add_info": "Additional Information",
             "camp": "Art Installation"
         }
     },

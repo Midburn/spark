@@ -27,10 +27,10 @@ block content
                 thead
                     tr
                     th(ng-click='changeOrderBy("id")') #
-                    th(ng-click='changeOrderBy("name")') סוג הקבוצה
-                    th(ng-click='changeOrderBy("email")') שם הקבוצה
-                    th() תפקיד
-                    th(ng-click='changeOrderBy("cell_phone")') סטאטוס
+                    th(ng-click='changeOrderBy("name")')=t('camps:members.group_type')
+                    th(ng-click='changeOrderBy("email")')=t('camps:members.group_name')
+                    th()=t('camps:members.member_role')
+                    th(ng-click='changeOrderBy("cell_phone")')=t('camps:members.member_status')
                     th()=t('camps:members.actions')
                     //- th(ng-click='changeOrderBy("member_status_i18n")') פעולות
                     //- th(ng-click='changeOrderBy("ticket_count")')
