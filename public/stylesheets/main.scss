@@ -51,6 +51,11 @@ span {
     color: $primary-color-muted;
 }
 
+textarea.form-control {
+    resize: none;
+    min-height: 80px;
+}
+
 .midburn_logo {
     background-image: url("../images/midburn_logo_120.png");
     height: 120px;
