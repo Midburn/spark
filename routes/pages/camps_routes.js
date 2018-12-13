@@ -24,22 +24,21 @@ var __camp_data_to_json = function (camp) {
     }
     return camp_data;
 }
-var __render_camp = function (camp, req, res) {
+var __render_camp = async function (camp, req, res) {
     var camp_id;
     if (['int', 'string'].indexOf(typeof camp) > -1) {
         camp_id = parseInt(camp);
     } else {
         camp_id = camp.id;
     }
-    Camp.forge({
-        id: camp_id,
-        event_id: req.user.currentEventId
-    }).fetch({}).then((camp) => {
-        camp.getCampSuppliers((suppliers) => {
-            camp.init_t(req.t);
+    try {
+        const dbCamp = await Camp.forge({ id: camp_id, event_id: req.user.currentEventId }).fetch({});
+        const suppliers = await dbCamp.getCampSuppliers();
+        await dbCamp.getCampUsers((users) => {
+            dbCamp.init_t(req.t);
             // if user is camp_member, we can show all
             // let _user = camp.isUserCampMember(req.user.id);
-            let camp_data = __camp_data_to_json(camp);
+            let camp_data = __camp_data_to_json(dbCamp);
             let data = {
                 user: req.user, //
                 userLoggedIn: req.user.hasRole('logged in'), //
@@ -49,30 +48,24 @@ var __render_camp = function (camp, req, res) {
                 breadcrumbs: req.breadcrumbs(),
                 details: camp_data,
                 isAdmin: req.user.isAdmin,
-                isUserCampMember: (camp.isUserCampMember(req.user.id) || req.user.isAdmin),
-                isUserInCamp: (camp.isUserInCamp(req.user.id) || req.user.isAdmin),
-                isCampManager: (camp.isCampManager(req.user.id) || req.user.isAdmin),
-                main_contact: camp.isUserInCamp(camp.attributes.main_contact),
-                moop_contact: camp.isUserInCamp(camp.attributes.moop_contact),
-                safety_contact: camp.isUserInCamp(camp.attributes.safety_contact),
-                camp_protoype: camp.parsePrototype(req.user).id
+                isUserCampMember: (dbCamp.isUserCampMember(req.user.id) || req.user.isAdmin),
+                isUserInCamp: (dbCamp.isUserInCamp(req.user.id) || req.user.isAdmin),
+                isCampManager: (dbCamp.isCampManager(req.user.id) || req.user.isAdmin),
+                main_contact: dbCamp.isUserInCamp(dbCamp.attributes.main_contact),
+                moop_contact: dbCamp.isUserInCamp(dbCamp.attributes.moop_contact),
+                safety_contact: dbCamp.isUserInCamp(dbCamp.attributes.safety_contact),
+                camp_protoype: dbCamp.parsePrototype(req.user).id
             };
-            Event.get_event_controllDates(req.user.currentEventId).then(controllDates => {
-                controllDates = controllDates || {};
-                data.edit_camp_disabled = controllDates.edit_camp_disabled;
-                data.edit_art_disabled = controllDates.edit_art_disabled;
-                res.render('pages/camps/camp', data);
-            })
-
-        }, req.t);
-    }).catch((e) => {
+            res.render('pages/camps/camp', data);
+        }, req);
+    } catch (e) {
         res.status(500).json({
             error: true,
             data: {
                 message: e.message
             }
         });
-    });
+    }
 }
 
     // ==============
