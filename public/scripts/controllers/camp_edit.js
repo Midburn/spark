@@ -274,6 +274,10 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
         return earlyArrivalPeriod.start < now && now < earlyArrivalPeriod.end;
     };
 
+    $scope.formatDate = (date) => {
+        return moment(date).format('MMM d, YYYY h:mm:ss A');
+    };
+
     $scope.updateEarlyArrival = (user_name, user_id, action_type) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
