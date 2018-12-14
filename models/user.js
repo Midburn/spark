@@ -152,7 +152,11 @@ const User = bookshelf.Model.extend({
                     let _status = camps[i].member_status;
                     let group_props=this.parsePrototype(camps[i].__prototype);
                     if (t) { // translate function
-                        camps[i].member_status_i18n = t('camps:members.status_' + _status);
+                        if (['approved', 'approved_mgr'].indexOf(_status) > -1) {
+                            camps[i].member_status_i18n = 'status_approved';
+                        } else {
+                            camps[i].member_status_i18n = 'status_pending';
+                        }
                     }
                     if (['open', 'closed'].indexOf(camps[i].status) > -1 && !first_camp && member_type_array.indexOf(_status) > -1) {
                         first_camp = camps[i];
@@ -164,6 +168,11 @@ const User = bookshelf.Model.extend({
                         is_manager = true;
                         camps[i].isManager = true;
                         // break;
+                    }
+                    if (is_manager) {
+                        camps[i].member_role = 'role_manager';
+                    } else {
+                        camps[i].member_role = 'role_member';
                     }
                 }
                 _this_user.attributes.camps = camps;
