@@ -3,7 +3,9 @@ const _ = require('lodash'),
     DrupalAccess = require('../../../libs/drupal_access').DrupalAccess,
     request = require('superagent'),
     logger = require('../../../libs/logger')(module),
-    helperService = require('../services').helperService;
+    helperService = require('../services').helperService,
+    passport = require('passport'),
+    passportLib = require('../../../libs/passport');
 
 class AuthController {
 
@@ -13,6 +15,7 @@ class AuthController {
          */
         this.login = this.login.bind(this);
         this.getToken = this.getToken.bind(this);
+        this.apiLogin = this.apiLogin.bind(this);
     }
 
     login(req, res, next) {
@@ -87,6 +90,32 @@ class AuthController {
         catch (err) {
             return next(err);
         }
+    }
+
+    async apiLogin(req, res, next) {
+            if (req.body.email.length === 0 || req.body.password.length === 0) {
+                return next(new Error('Request must contain email + password properties'));
+            }
+            return passport.authenticate('local-login', {
+                failureFlash: true
+            }, function (err, user, info) {
+                if (err) {
+                    return next(err);
+                }
+
+                if (!user) {
+                    return next(new Error('User not found'));
+                }
+                return req.logIn(user, function (err) {
+                    if (err) {
+                        return next(err);
+                    } else {
+                        const token = passportLib.generateJwtToken(req.body.email);
+                        res.cookie('authToken', token, {});
+                        return res.status(200).json({ token });
+                    }
+                });
+            })(req, res, next);
     }
 }
 

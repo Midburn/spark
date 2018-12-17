@@ -35,6 +35,7 @@ class MainRouter {
          * usage sample => curl --data "username=Profile_Username&password=Profile_Password&token=Secret_Token" http://localhost:3000/api/userlogin
          */
         this.router.route('/api/userlogin').post(authController.login);
+        this.router.route('/api/apilogin').post(authController.apiLogin);
         /**
          * API: (GET) return camp's contact person with:
          * name_en, name_he, email, phone
