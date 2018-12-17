@@ -1,7 +1,6 @@
 table.table.table-striped.table-hover
     thead
         tr
-        th(ng-click='changeOrderBy("id")') #
         th(ng-click='changeOrderBy("name")')=t('camps:members.name')
         th(ng-click='changeOrderBy("email")')=t('camps:members.email')
         th(ng-click='changeOrderBy("cell_phone")')=t('camps:members.phone')
@@ -14,7 +13,6 @@ table.table.table-striped.table-hover
         th()=t('camps:members.actions')
     tbody
         tr(ng-repeat="member in members | filter: searchMembers | orderBy: orderMembers")
-            td {{member.user_id}}
             td {{member.name}}
             td {{member.email}}
             td {{member.cell_phone}}
