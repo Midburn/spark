@@ -301,22 +301,17 @@ block content
                         .form-inline
                             input.form-control(list="campSupplierList", name="" ng-model='add_supplier_id', type="text", placeholder="#{t('camps:edit.choose_supplier')}")
                             datalist(id="campSupplierList")
-                                option(ng-repeat="supplier in all_suppliers | filter: add_supplier_id", data-id="{{ supplier.supplier_id }}" value="{{ supplier.supplier_id }}")
-                                    {{ supplier.supplier_name_he }} | {{ supplier.supplier_name_en }}
+                                option(ng-repeat="supplier in all_suppliers | filter: add_supplier_id", data-id="{{ supplier.supplier_id }}" value="{{ supplier.supplier_id }}") {{ supplier.supplier_name_he }} | {{ supplier.supplier_name_en }}
                             button.Btn.Btn__sm(ng-click="addSupplier(); add_supplier_id=''") + #{t('camps:edit.add_supplier')}
                         .col-xs-12
-                            p(class="text-red"){{addSupplierError}}
+                            p(class="text-red") {{addSupplierError}}
                         .col-xs-12
                             table.table.table-striped.table-hover
                                 tr.row(ng-repeat="supplier in camp_suppliers")
-                                    td.col
-                                        {{supplier.supplier_id}}
-                                    td.col
-                                        {{lang === 'he' ? supplier.supplier_name_he : supplier.supplier_name_en}}
-                                    td.col
-                                        {{supplier.main_contact_phone_number}}
-                                    td.col
-                                        {{supplier.category}}
+                                    td.col {{supplier.supplier_id}}
+                                    td.col {{lang === 'he' ? supplier.supplier_name_he : supplier.supplier_name_en}}
+                                    td.col {{supplier.main_contact_phone_number}}
+                                    td.col {{supplier.category}}
                                     td.col
                                         span
                                             a.cursor-p(ng-click='removeSupplier(supplier.supplier_id)') &nbsp;
