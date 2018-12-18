@@ -71,7 +71,7 @@ var angular_updateUser = function ($http, $scope, action_type, user_rec) {
         };
         tpl = {
             alert_title: "האם את/ה בטוח?",
-            alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " למשתמש " + user_name + "?",
+            alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " המשתמש " + user_name + "?",
             alert_success_1: action_type + "!",
             alert_success_2: "משתמש " + user_name + action_type,
             alert_success_3: " בהצלחה",
@@ -242,7 +242,33 @@ app.controller("campEditController", ($scope, $http, $filter, $q) => {
             $scope.getMembers();
             $scope.camps_members_add_member = '';
         }).catch((err) => {
+            console.log(err);
+            if (err.status === 409) {
+                // User applied to camp
+                return $scope.approveAppliedMember(new_user_email);
+            }
             sweetAlert("Error!", "Add new member error: " + err.data.data.message, "error");
+        });
+    }
+
+    $scope.approveAppliedMember = (user_email) => {
+        const member = $scope.members.find(member => member.email === user_email);
+        if (lang === undefined) {
+            lang = 'he';
+        }
+        const isHe = lang === 'he';
+        swal({
+            title: isHe ? 'הוגשה בקשה בעבר' : 'Member already applied',
+            text: isHe ? 'משתמש/ת הגיש/ה בקשת הצטרפות בעבר, האם לאשר בקשה זו?' : 'The member already applied for this camp, would you like to approve the request?',
+            type: "warning",
+            buttons: {
+                confirm: isHe ? 'אשר' : 'Approve',
+                cancel: isHe ? 'בטל' : 'Approve',
+            }
+        }).then(select => {
+            if (select) {
+                $scope.updateUser(member.name, member.user_id, "approve");
+            }
         });
     }
 

@@ -448,13 +448,16 @@ class CampsController {
                                 if (camps.length === 0 || !user.attributes.camp || group_props.multiple_groups_for_user) {
                                     campsService.updateCampStatus(req.user.currentEventId, camp_id, user.attributes.user_id, 'request_mgr', req.user, res);
                                 } else {
-                                    let message;
-                                    if (user.isUserInCamp(camp_id)) {
+                                    let message, status;
+                                    if (user.isUserInCamp(camp_id) && user.attributes.camp.member_status.includes('approved')) {
+                                        message = 'Member already in camp';
+                                    } else if (user.isUserInCamp(camp_id)) {
                                         message = 'Already applied to this camp';
+                                        status = 409
                                     } else {
                                         message = 'Already applied to different camp!';
                                     }
-                                    return next(new Error(message));
+                                    return helperService.customError(status || 500, message, res, true);
                                 }
                             }, null, camp.attributes.__prototype);
                         } else {
