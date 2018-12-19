@@ -1,24 +1,5 @@
-
 var camps_all;
 var groups_prototype;
-
-// __get_camps_all = function ($http, on_success) {
-//     if (camps_all) {
-//         on_success(camps_all);
-//     } else {
-//         let _url = '/camps_all';
-//         if (groups_prototype === 'art_installation') {
-//             _url = '/art_all';
-//         } else if (groups_prototype === 'prod_dep') {
-//             _url = '/prod_dep_all';
-//         }
-//         //console.log(_url);
-//         $http.get(_url).then((res) => {
-//             camps_all = res;
-//             on_success(res);
-//         });
-//     }
-// };
 
 app.controller("manageCampsController", function ($scope, $http, $filter, camps) {
     // console.log(groups_prototype);
@@ -133,7 +114,7 @@ app.controller("membersController", ($scope, $http, camps) => {
             }, 500);
         }
     };
-    
+
     $scope.updateUser = (user_name, user_id, action_type) => {
         const camp_id = $scope.current_camp_id;
         const lang = 'he';

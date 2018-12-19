@@ -1,4 +1,3 @@
-
 app.controller("campEditController", ($scope, $http, $filter, $q, camps) => {
     var camp_id = document.querySelector('#meta__camp_id').value;
     var lang = $scope.lang;
@@ -27,154 +26,32 @@ app.controller("campEditController", ($scope, $http, $filter, $q, camps) => {
     }
 
     const angular_deleteCampFile = function ($http, $scope, $q, camp_id, doc_id) {
-    const req_path = `/camps/${camp_id}/documents/${doc_id}/`
-    let deleteFilePromise = $q.defer()
+        const req_path = `/camps/${camp_id}/documents/${doc_id}/`
+        let deleteFilePromise = $q.defer()
 
-    $http.delete(req_path).then(function (res) {
-        deleteFilePromise.resolve(res.data.files)
-    }).catch(function (err) {
-        const jsonError = err.data.message;
-        sweetAlert("Error!", "Could not delete file \n" + jsonError)
-        deleteFilePromise.reject(err)
-    })
+        $http.delete(req_path).then(function (res) {
+            deleteFilePromise.resolve(res.data.files)
+        }).catch(function (err) {
+            const jsonError = err.data.message;
+            sweetAlert("Error!", "Could not delete file \n" + jsonError)
+            deleteFilePromise.reject(err)
+        })
+        return deleteFilePromise.promise
+    }
 
-    return deleteFilePromise.promise
-}
+    const angular_getCampFile = function ($http, $scope, $q, camp_id) {
+        const req_path = `/camps/${camp_id}/documents/`
+        let getFilePromise = $q.defer()
 
-// var angular_getMembers = function ($http, $scope, camp_id) {
-//     $http.get(`/camps/${camp_id}/members`).then((res) => {
-//             var members = res.data.members;
-//             var _members = [];
-//             var approved_members = [];
-//             var total_in_event = 0;
-//             var allocatedPreSaleTicketsCount=0;
-//             var allocatedGroupSaleTicketsCount=0;
-//             for (var i in members) {
-//                 var newMember=members[i]
-//                 //check if the user has a pre_sale ticket
-//                 //if so the set the checkbox to true
-//                 if (members[i].pre_sale_ticket) {
-//                     newMember.pre_sale_ticket_approved=members[i].pre_sale_ticket;
-//                     allocatedPreSaleTicketsCount++;
-//                 }
-//                 else {
-//                     newMember.pre_sale_ticket_approved = false;
-//                 }
-//                 if (members[i].group_sale_ticket) {
-//                     newMember.group_sale_ticket_approved=members[i].group_sale_ticket;
-//                     allocatedGroupSaleTicketsCount++;
-//                 }
-//                 else {
-//                     newMember.group_sale_ticket_approved = false;
-//                 }
-//                 if (['approved', 'pending', 'pending_mgr', 'approved_mgr', 'rejected'].indexOf(newMember.member_status) > -1) {
-//                     _members.push(newMember);
-//                 }
-//                 if (['approved', 'approved_mgr'].indexOf(newMember.member_status) > -1) {
-//                     approved_members.push(newMember);
-//                 }
-//                 total_in_event += parseInt(newMember.inside_event);
-//             }
-//             $scope.preSaleTicketsCount = preSaleTicketCount;
-//             $scope.groupSaleTicketsCount = groupSaleTicketCount;
-//             $scope.allocatedTickets = allocatedPreSaleTicketsCount + allocatedGroupSaleTicketsCount;
-//             $scope.pre_sale_tickets_quota = res.data.pre_sale_tickets_quota;
-//             $scope.group_sale_tickets_quota = res.data.group_sale_tickets_quota;
-//             $scope.members = _members;
-//             $scope.approved_members = approved_members;
-//             $scope.all_approved_members = approved_members.length;
-//             $scope.total_camp_tickets = totalTicketCount;
-//             $scope.total_in_event = total_in_event;
-//         });
-//     }
-
-// var angular_updateUser = function ($http, $scope, action_type, user_rec) {
-//     var camp_id = user_rec.camp_id;
-//     var user_name = user_rec.user_name;
-//     var user_id = user_rec.user_id;
-//     var lang = $scope.lang;
-//     if (lang === undefined) {
-//         lang = 'he';
-//     }
-//     var tpl, action_tpl;
-
-//     if (lang === "he") {
-//         // debugger;
-//         action_tpl = {
-//             approve: 'לאשר את',
-//             approveBtn: 'אשר',
-//             delete: 'למחוק את',
-//             reject: 'לדחות את',
-//             rejectBtn: 'בטל',
-//             approve_mgr: 'להפוך למנהל את',
-//             remove: 'להסיר את',
-//             pre_sale_ticket : 'לאשר כרטיס מוקדם',
-//             group_sale_ticket : 'לאשר כרטיס קבוצה',
-//             early_arrival : 'לאשר הגעה מוקדמת',
-//         };
-//         tpl = {
-//             alert_title: "האם את/ה בטוח?",
-//             alert_text: "האם את/ה בטוח שתרצה " + action_tpl[action_type] + " למשתמש " + user_name + "?",
-//             alert_success_1: action_type + "!",
-//             alert_success_2: "משתמש " + user_name + action_type,
-//             alert_success_3: " בהצלחה",
-//         };
-//     } else {
-//         action_tpl = {
-//             approve: 'Approve',
-//             approveBtn: 'Approve',
-//             delete: 'Delete',
-//             reject: 'Reject',
-//             rejectBtn: 'Reject',
-//             approve_mgr: 'Set Manager',
-//             remove: 'Remove',
-//             pre_sale_ticket: 'Update Pre Sale Ticket',
-//         };
-//         tpl = {
-//             alert_title: "Are you sure?",
-//             alert_text: "Are you sure you would like to " + action_tpl[action_type] + " " + user_name + "?",
-//             alert_success_1: action_type + "!",
-//             alert_success_2: user_name + "has been " + action_type,
-//             alert_success_3: "success",
-//         };
-//     }
-
-//     swal({
-//         title: tpl.alert_title,
-//         text: tpl.alert_text,
-//         type: "warning",
-//         buttons: {
-//             confirm: action_tpl.approveBtn,
-//             cancel: action_tpl.rejectBtn,
-//         }
-//     }).then(select => {
-//             if (select) {
-//                 const url = `/camps/${camp_id}/members/${user_id}/${action_type}`
-//                 $http.get(url).then(res => {
-//                     swal(tpl.alert_success_1, tpl.alert_success_1, "success");
-//                     $scope.getMembers(camp_id);
-//                 }).catch((err) => {
-//                     jsonError = err.data.data.message;
-//                     swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
-//                 })
-//             }
-//         });
-// }
-
-const angular_getCampFile = function ($http, $scope, $q, camp_id) {
-    const req_path = `/camps/${camp_id}/documents/`
-    let getFilePromise = $q.defer()
-
-    $http.get(req_path).then(function (res) {
-        getFilePromise.resolve(res.data.files)
-    }).catch(function (err) {
-        const jsonError = err.data.message
-        sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
-        getFilePromise.reject(err)
-    })
-
-    return getFilePromise.promise
-}
+        $http.get(req_path).then(function (res) {
+            getFilePromise.resolve(res.data.files)
+        }).catch(function (err) {
+            const jsonError = err.data.message
+            sweetAlert("Error!", "Something went wrong, please try again later \n" + jsonError)
+            getFilePromise.reject(err)
+        })
+        return getFilePromise.promise
+    }
 
     $scope.getMembers = () => {
         camps.getCampMembers($http, $scope, camp_id);
@@ -220,7 +97,7 @@ const angular_getCampFile = function ($http, $scope, $q, camp_id) {
     $scope.addSupplier = () => {
         const promise = $q.defer();
         const camp_id = $scope.current_camp_id;
-        const {add_supplier_id} = $scope;
+        const { add_supplier_id } = $scope;
         $http.put(`/suppliers/${add_supplier_id}/camps/${camp_id}`).then(() => {
             $scope.getSuppliers();
             $scope.addSupplierError = '';
@@ -247,7 +124,7 @@ const angular_getCampFile = function ($http, $scope, $q, camp_id) {
         });
     }
 
-    $scope.updateUser = (user_name, user_id,action_type) => {
+    $scope.updateUser = (user_name, user_id, action_type) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
             camp_id: camp_id,
@@ -260,8 +137,8 @@ const angular_getCampFile = function ($http, $scope, $q, camp_id) {
     $scope.allocationPeriodisActive = (isGroupSale) => {
         const now = new Date();
         const allocationPeriod = {
-            start : isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start),
-            end : isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end),
+            start: isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_start) : new Date(controllDates.appreciation_tickets_allocation_start),
+            end: isGroupSale ? new Date(controllDates.group_sale_tickets_allocation_end) : new Date(controllDates.appreciation_tickets_allocation_end),
         };
         return allocationPeriod.start < now && now < allocationPeriod.end;
     };
@@ -269,8 +146,8 @@ const angular_getCampFile = function ($http, $scope, $q, camp_id) {
     $scope.earlyArrivalPeriodIsActive = () => {
         const now = new Date();
         const earlyArrivalPeriod = {
-            start : new Date(controllDates.early_arrivals_start),
-            end : new Date(controllDates.early_arrivals_end),
+            start: new Date(controllDates.early_arrivals_start),
+            end: new Date(controllDates.early_arrivals_end),
         };
         return earlyArrivalPeriod.start < now && now < earlyArrivalPeriod.end;
     };
@@ -292,7 +169,7 @@ const angular_getCampFile = function ($http, $scope, $q, camp_id) {
 
     //when the user wants to update a pre sale ticket
     //this method is executed
-    $scope.updatePreSaleTicket = (user_name, user_id,action_type,pre_sale_ticket_approved) => {
+    $scope.updatePreSaleTicket = (user_name, user_id, action_type, pre_sale_ticket_approved) => {
         var camp_id = $scope.current_camp_id;
         var user_rec = {
             camp_id: camp_id,
@@ -305,22 +182,22 @@ const angular_getCampFile = function ($http, $scope, $q, camp_id) {
 
     $scope.getFiles = () => {
         angular_getCampFile($http, $scope, $q, camp_id)
-        .then((files) => {
-            console.log('Got camp files!')
-            $scope.files = files;
-        }).catch((err) => {
-            console.log(err)
-        })
+            .then((files) => {
+                console.log('Got camp files!')
+                $scope.files = files;
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 
     $scope.deleteFile = (doc_id) => {
         angular_deleteCampFile($http, $scope, $q, camp_id, doc_id)
-        .then((files) => {
-            console.log('File deleted')
-            $scope.files = files;
-        }).catch((err) => {
-            console.log(err)
-        })
+            .then((files) => {
+                console.log('File deleted')
+                $scope.files = files;
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 
     if (!_.isNil(camp_id) && Number(camp_id)) {
@@ -359,7 +236,7 @@ app.controller("homeController", ($scope, $http, $filter) => {
 
     $scope.angular_ChangeCurrentEventId = function (event_id) {
         //set new current event id
-        $http.post('/events/change', {currentEventId: event_id}).then((res) => {
+        $http.post('/events/change', { currentEventId: event_id }).then((res) => {
             window.location.reload();
         });
     };
