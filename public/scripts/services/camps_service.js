@@ -150,8 +150,3 @@ function campsFactory() {
     }
     return factory;
 };
-
-
-
-
-

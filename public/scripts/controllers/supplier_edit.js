@@ -2,7 +2,7 @@
 suppliers_app.controller("supllierShowController", ($scope, $http, $filter, camps, suppliers) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
     camps.getAll($http,function() {}, $scope, supplier_id);
-    suppliers.getSupplierById(supplier_id, function(res){
+    suppliers.getSupplierById(supplier_id, function(res) {
         if (res.stack || res.message) {
             console.warn('getSupplierById: ' + res.message);
             return;
@@ -14,11 +14,10 @@ suppliers_app.controller("supllierShowController", ($scope, $http, $filter, camp
     }
 });
 
-
 suppliers_app.controller("supllierEditController", ($scope, $http, $filter, $q, suppliers, camps) => {
     const supplier_id = document.querySelector('#meta__supplier_id').value;
     const lang = document.getElementById('meta__lang').value || 'he';
-    suppliers.getSupplierById(supplier_id, function(res){
+    suppliers.getSupplierById(supplier_id, function(res) {
         if (res.stack || res.message) {
             console.warn('getSupplierById: ' + res.message);
             return;

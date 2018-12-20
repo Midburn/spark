@@ -1,5 +1,3 @@
-
-
 events_app.controller("eventsController", ($scope, $http, $filter) => {
     let events_all;
 

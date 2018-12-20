@@ -1,8 +1,5 @@
-
 var suplliers_all;
 var groups_prototype;
-
-
 
 suppliers_app.controller("manageSuppliersController", function ($scope, $http, $filter) {
     // Set default value as contact name
