@@ -7,6 +7,7 @@ suppliers_app.factory('camps', campsFactory);
 function campsFactory() {
 
     var factory = {};
+    var camps_all;
     // Formerly known as get_camps_all
     factory.getAll = function ($http, on_success) {
 

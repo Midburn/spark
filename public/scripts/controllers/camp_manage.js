@@ -1,6 +1,3 @@
-var camps_all;
-var groups_prototype;
-
 app.controller("manageCampsController", function ($scope, $http, $filter, camps) {
     // console.log(groups_prototype);
     camps.getAll($http, (res) => {
