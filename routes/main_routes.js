@@ -237,7 +237,7 @@ module.exports = function (app, passport) {
     // =====================================
     app.get('/:lng/logout', function (req, res) {
         req.logout();
-        res.cookie('authToken', '', { expires: new Date(0) });
+        res.cookie('authToken', '', { expires: new Date(0), overwrite: true });
         res.redirect('/');
     });
 
