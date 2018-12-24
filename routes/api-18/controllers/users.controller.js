@@ -36,7 +36,7 @@ class UsersController {
     getUserByEmail(req, res, next) {
         User.forge({email: req.params.email}).fetch().then((user) => {
             if (user !== null) {
-                res.status(200).end()
+                res.status(200).json(user)
             } else {
                 res.status(404).end()
             }

@@ -15,6 +15,8 @@ nav.navbar.navbar-default.navbar-fixed-top
                     a( href="/#{language}/camps" )=t('camps:nav')
                 li( class="#{path[2] === 'volunteering' ? 'active' : '' }" )
                     a( href="/#{language}/volunteering" )=t('volunteering')
+                li( class="#{path[2] === 'campsapp' ? 'active' : '' }" )
+                    a( href="/#{language}/campsapp" )=t('campsapp')
                 if(user.isAdmin || user.isGateManager)
                     li.dropdown
                         a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')
