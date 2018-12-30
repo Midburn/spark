@@ -38,6 +38,7 @@ class CampsController {
         this.updateCampPreSaleQuota = this.updateCampPreSaleQuota.bind(this);
         this.updateEarlyArrivalQuota = this.updateEarlyArrivalQuota.bind(this);
         this.getPublishedCamps = this.getPublishedCamps.bind(this);
+        this.getArtInstallations = this.getArtInstallations.bind(this);
     }
 
     createCamp(req, res, next) {
@@ -293,13 +294,35 @@ class CampsController {
         let web_published = [true, false];
         Camp.query((query) => {
             query
-                .where('event_id', '=', req.user.currentEventId, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .where('event_id', '=', req.user.currentEventId)
+                .where('__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
                 .whereIn('status', allowed_status)
                 .whereIn('web_published', web_published);
         })
             .fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({camps: camp.toJSON()})
+            } else {
+                return helperService.customError(404, 'Not found', res);
+            }
+        }).catch((err) => {
+            return next(err);
+        });
+    }
+
+    getArtInstallations(req, res, next) {
+        let allowed_status = ['open', 'closed'];
+        let web_published = [true, false];
+        Camp.query((query) => {
+            query
+                .where('event_id', '=', req.user.currentEventId)
+                .where('__prototype', '=', constants.prototype_camps.ART_INSTALLATION.id)
+                .whereIn('status', allowed_status)
+                .whereIn('web_published', web_published);
+        })
+            .fetchAll().then((artInstallations) => {
+            if (artInstallations !== null) {
+                res.status(200).json({artInstallations: artInstallations.toJSON()})
             } else {
                 return helperService.customError(404, 'Not found', res);
             }
@@ -369,7 +392,6 @@ class CampsController {
     getAllCampMembers(req, res, next) {
         Camp.forge({id: req.params.id, event_id: req.user.currentEventId}).fetch().then((camp) => {
             camp.getCampUsers((members) => {
-                const isCampManager = camp.isCampManager(req.user.id, req.t);
                 if (!req.user.isAdmin) {
                     members = members.map(function (member) {
                         if (constants.CAMP_MEMBER_APPROVAL_ENUM.indexOf(member.member_status) < 0) {
@@ -407,7 +429,7 @@ class CampsController {
                     }
                 }
                 const result = camp.parsePrototype(req.user);
-                if (isCampManager || (result && result.isAdmin)) {
+                if (result) {
                     res.status(200).json({
                         members: members,
                         pre_sale_tickets_quota: camp.attributes.pre_sale_tickets_quota

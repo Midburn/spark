@@ -28,6 +28,11 @@ class CampsRouter {
          */
         this.router.route('').get(campController.getCamps);
         /**
+         * API: (GET) return camps list
+         * request => /camps
+         */
+        this.router.route('/arts').get(campController.getArtInstallations);
+        /**
          * API: (POST) create Program
          * request => /camps/program
          */

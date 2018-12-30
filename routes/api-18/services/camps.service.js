@@ -407,12 +407,12 @@ class CampsService {
         });
     }
 
-    retrieveDataFor(group_proto, user) {
+    retrieveDataFor(group_proto, user, eventId) {
         return Camp.query((query) => {
             query
                 .select('camps.*', 'users_groups.entrance_quota')
                 .leftJoin('users_groups', 'camps.id', 'users_groups.group_id')
-                .where({ 'camps.event_id': user.currentEventId , 'camps.__prototype': group_proto })
+                .where({ 'camps.event_id': eventId || user.currentEventId , 'camps.__prototype': group_proto })
         })
             .orderBy('camp_name_en', 'ASC')
             .fetchAll()
