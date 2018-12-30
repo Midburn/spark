@@ -41,3 +41,5 @@ Spark is being developed by the Midburn Tech Team, with the purpose of utilizing
 ### We're Hiring!
 If you know [the 10 principles of Midburn](http://midburn.org/en-ten-principles/) and can code Node/javascript, you're welcome to join. Join Slack, pick [an issue](https://github.com/Midburn/Spark/issues) and start coding!
 We meet every Monday at 19:30 in Iron Source TLV, come say hi.
+
+ 
