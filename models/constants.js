@@ -193,6 +193,8 @@ module.exports = {
     VEHICLE_ENTRIES_TABLE_NAME: 'vehicle_entries',
     ENTRIES_TABLE_NAME: 'entries',
 
+    MIDBURN_DOMAIN: '.midburn.org',
+
     prototype_camps: prototype_camps,
 
     VOL_DEPARTMENTS_TABLE_NAME: 'vol_departments',
