@@ -1,9 +1,11 @@
 const logger = require('../../../libs/logger')(module),
     Event = require('../../../models/event').Event,
+    constants = require('../../../models/constants'),
     Ticket = require('../../../models/ticket').Ticket,
     bcrypt = require('bcrypt-nodejs'),
     _ = require('lodash'),
     eventsService = require('../services').eventsService;
+const passportLib = require('../../../libs/passport');
 
 class EventsController {
 
@@ -89,10 +91,16 @@ class EventsController {
         logger.debug('EventsAPI edit ' + _.get(req, 'params.event'));
     }
 
-    changeCampEventId(req, res) {
+    changeSessionEventId(req, res) {
         //set the new event id in the session
-        req.session.passport.user.currentEventId = req.body.currentEventId;
+        const newEventId = req.body.currentEventId
+        const cookieOptions = process.env.NODE_ENV === 'production' ? { httpOnly: true,
+                                                                        domain: constants.MIDBURN_DOMAIN,
+                                                                        overwrite: true } : { httpOnly: true,
+                                                                                              overwrite: true }
+        req.session.passport.user.currentEventId = newEventId;
         req.session.save();
+        res.cookie('authToken', passportLib.generateJwtToken(req.body.email, newEventId), cookieOptions);
         res.send(200);
     }
 
