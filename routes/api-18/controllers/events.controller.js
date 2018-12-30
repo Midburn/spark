@@ -21,7 +21,7 @@ class EventsController {
         this.resetEvent = this.resetEvent.bind(this);
     }
 
-    getEvent(req, res) {
+    getEvent(req, res, next) {
         const event_id = req.params.event_id;
         Event.forge({event_id: event_id})
             .fetch()
