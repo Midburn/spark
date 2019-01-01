@@ -41,6 +41,7 @@ class CampsController {
         this.getPublishedCamps = this.getPublishedCamps.bind(this);
         this.getArtInstallations = this.getArtInstallations.bind(this);
         this.getCampsTickets = this.getCampsTickets.bind(this);
+        this.getCamp = this.getCamp.bind(this);
     }
 
     createCamp(req, res, next) {
@@ -54,6 +55,19 @@ class CampsController {
                     req.user,
                     res);
         }).catch((err) => {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            next(err);
+        });
+    };
+
+    getCamp(req, res, next) {
+        Camp.forge({id: req.params.id})
+            .fetch()
+            .then((camp) => {
+                res.json({camp: camp.toJSON()});
+            }).catch((err) => {
             /**
              * Pass the error to be handled by the generic error handler
              */

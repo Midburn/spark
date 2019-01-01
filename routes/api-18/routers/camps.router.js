@@ -57,6 +57,12 @@ class CampsRouter {
         this.router.route('/new')
             .post([userRole.isAllowNewCamp()], campController.createCamp);
         /**
+         * API: (get) get camp
+         * request => /camps/1/get
+         */
+        this.router.route('/:id/get')
+            .get(campController.getCamp);
+        /**
          * API: (PUT) edit camp
          * request => /camps/1/edit
          */
