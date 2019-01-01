@@ -3,20 +3,17 @@
 // Synchronizes ticket data from drupal to Spark.
 //
 ///////////////////////////////////////////////////////////
-
 var request = require('request');
 var dateFormat = require('dateformat');
 var _ = require('lodash');
 var log = require('../libs/logger')(module);
-const constants = require('../models/constants')
+const constants = require('../models/constants');
 
 var User = require('../models/user.js').User;
 var Ticket = require('../models/ticket.js').Ticket;
-
-const EVENT_ID = constants.DEFAULT_EVENT_ID
+const EVENT_ID = constants.DEFAULT_EVENT_ID;
 const TICKETS_TYPE_IDS = [...constants.events[constants.DEFAULT_EVENT_ID].bundles]
 var globalMinutesDelta = 0;
-
 function r(options) {
     return new Promise(resolve => {
         request(options, (error, response, body) => {
@@ -93,7 +90,7 @@ async function dumpDrupalTickets(session, date, page) {
 
         for (var ticket of tickets) {
             var status = ticket['Ticket State'];
-            
+
             var type_id = parseInt(ticket['ticket_registration_bundle']);
             //log.debug("type", type_id, ticket['user_ticket_type_name'][[0]], status);
             if (TICKETS_TYPE_IDS.includes(type_id)) {
@@ -285,9 +282,8 @@ function runSyncTicketsLoop(minutesDelta) {
     let fromDate = now.setMinutes(-ONE_YEAR_IN_SECONDS);
     syncTickets(fromDate, syncTicketsLoop);
 }
-
 module.exports = {
-    syncTickets: syncTickets,
-    passTicket: passTicket,
-    runSyncTicketsLoop: runSyncTicketsLoop
+    syncTickets,
+    passTicket,
+    runSyncTicketsLoop
 };

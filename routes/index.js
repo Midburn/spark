@@ -6,7 +6,7 @@ const sparkApi = require('./api-18');
 // Use locals
 app.locals.moment = require('moment');
 
-//Pages
+// //Pages
 app.use("/:lng?/admin", require("./pages/admin_routes"));
 app.use("/:lng/events-admin", require("./pages/events_routes"));
 app.use("/:lng/npo", require("./pages/npo_routes"));

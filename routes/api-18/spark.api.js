@@ -35,6 +35,7 @@ class SparkApi {
         this.router.use(constants.ROUTER_PREFIXES.EVENTS, routers.eventsRouter.router);
         this.router.use(constants.ROUTER_PREFIXES.CAMPS, routers.campsRouter.router);
         this.router.use(constants.ROUTER_PREFIXES.USERS, routers.usersRouter.router);
+        console.log('Started all routers');
     }
 }
 

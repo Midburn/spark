@@ -202,6 +202,7 @@ class CampsController {
 
     async getCampsTickets(req, res, next) {
         const camp_id = req.params.id;
+        const event_id = req.query.eventId;
         let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['members']});
         if (!camp) {
             /**
@@ -211,7 +212,7 @@ class CampsController {
         }
         let tickets = [];
         for (const member of camp.related('members').toJSON()) {
-            const memberTickets = await Ticket.forge({holder_id: member.user_id, event_id: req.user.currentEventId}).fetch();
+            const memberTickets = await Ticket.forge({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch();
             if (memberTickets) {
                 tickets.push(memberTickets.toJSON());
             }
