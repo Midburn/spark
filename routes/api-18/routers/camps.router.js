@@ -133,6 +133,13 @@ class CampsRouter {
             .get(campController.countCampMembers);
 
         /**
+         * API: (GET) return camp members tickets
+         * request => /camps/1/members/count
+         */
+        this.router.route('/:id/members/tickets')
+            .get(campController.getCampsTickets);
+
+        /**
          * API: (GET) return camp members with details
          * request => /camps/1/members
          */

@@ -11,7 +11,8 @@ const campsService = require('../services/').campsService,
     CampFile = require('../../../models/camp').CampFile,
     Camp = require('../../../models/camp').Camp,
     Event = require('../../../models/event').Event,
-    User = require('../../../models/user').User;
+    User = require('../../../models/user').User,
+    Ticket = require('../../../models/ticket').Ticket;
 
 class CampsController {
 
@@ -39,6 +40,7 @@ class CampsController {
         this.updateEarlyArrivalQuota = this.updateEarlyArrivalQuota.bind(this);
         this.getPublishedCamps = this.getPublishedCamps.bind(this);
         this.getArtInstallations = this.getArtInstallations.bind(this);
+        this.getCampsTickets = this.getCampsTickets.bind(this);
     }
 
     createCamp(req, res, next) {
@@ -196,6 +198,25 @@ class CampsController {
             error: false,
             files: campFiles
         })
+    }
+
+    async getCampsTickets(req, res, next) {
+        const camp_id = req.params.id;
+        let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['members']});
+        if (!camp) {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            return next(new Error('Camp Id does not exist'));
+        }
+        let tickets = [];
+        for (const member of camp.related('members').toJSON()) {
+            const memberTickets = await Ticket.forge({holder_id: member.user_id, event_id: req.user.currentEventId}).fetch();
+            if (memberTickets) {
+                tickets.push(memberTickets.toJSON());
+            }
+        }
+        return res.status(200).json({tickets: tickets})
     }
 
     async deleteCampFile(req, res, next) {
@@ -386,6 +407,8 @@ class CampsController {
     countCampMembers(req, res) {
         Camp.forge({id: req.params.id}).fetch({withRelated: ['members']}).then((camp) => {
             res.status(200).json({members: camp.related('members').toJSON()})
+        }).catch(e => {
+            res.send(500).send('Error counting members')
         })
     }
 
