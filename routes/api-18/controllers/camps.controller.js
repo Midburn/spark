@@ -226,9 +226,22 @@ class CampsController {
         }
         let tickets = [];
         for (const member of camp.related('members').toJSON()) {
-            const memberTickets = await Ticket.forge({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch();
-            if (memberTickets) {
-                tickets.push(memberTickets.toJSON());
+            const memberBoughtTickets = (await Ticket.forge({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
+            let memberHoldingTickets = (await Ticket.forge({buyer_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
+            if (memberBoughtTickets) {
+                let method = Array.isArray(memberBoughtTickets) ? 'concat' : 'push';
+                tickets[method](memberBoughtTickets);
+            }
+            if (memberHoldingTickets ) {
+                const isArray = Array.isArray(memberHoldingTickets);
+                let method = isArray ? 'concat' : 'push';
+                if (isArray) {
+                    memberHoldingTickets.filter(ticket => !memberBoughtTickets.find(t => t.ticket_id === ticket.ticket_id));
+                } else if (memberBoughtTickets.ticket_id === memberHoldingTickets.ticket_id) {
+                    //;
+                } else {
+                    tickets[method](memberHoldingTickets);
+                }
             }
         }
         return res.status(200).json({tickets: tickets})
@@ -428,7 +441,7 @@ class CampsController {
     }
 
     getAllCampMembers(req, res, next) {
-        Camp.forge({id: req.params.id, event_id: req.user.currentEventId}).fetch().then((camp) => {
+        Camp.forge({id: req.params.id, event_id: req.query.eventId || req.user.currentEventId}).fetch().then((camp) => {
             camp.getCampUsers((members) => {
                 if (!req.user.isAdmin) {
                     members = members.map(function (member) {
