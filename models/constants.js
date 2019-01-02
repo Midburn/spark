@@ -156,6 +156,14 @@ const events = {
             ticketType.SANDBOX2018_T3,
             ticketType.SANDBOX2018_TEAM
         ]
+    },
+    SANDBOX2019: {
+        bundles: [
+            ticketType.SANDBOX2018_T1,
+            ticketType.SANDBOX2018_T2,
+            ticketType.SANDBOX2018_T3,
+            ticketType.SANDBOX2018_TEAM
+        ]
     }
 };
 
