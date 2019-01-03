@@ -111,6 +111,7 @@ class UsersController {
     }
 
     getUsersGroups(req, res) {
+        const event_id = req.query.eventId;
         req.user.getUserCamps(async (camps) => {
             let groups = [];
             let group = {};
@@ -135,7 +136,7 @@ class UsersController {
                 }
             }
             if (req.user.isAdmin) {
-                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='" + req.user.currentEventId + "' GROUP BY __prototype;";
+                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='" + (event_id || req.user.currentEventId) + "' GROUP BY __prototype;";
                 let query1 = "SELECT " +
                     "count(*) AS total_tickets" +
                     ",SUM(inside_event) AS inside_event " +
@@ -147,7 +148,7 @@ class UsersController {
                     ",SUM( IF(entrance_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_entrance " +
                     ",SUM( IF(last_exit_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_exit " +
                     "FROM tickets  " +
-                    "WHERE tickets.event_id='" + req.user.currentEventId +
+                    "WHERE tickets.event_id='" + (event_id || req.user.currentEventId) +
                     "' GROUP BY event_id; ";
 
                 let stat = {};

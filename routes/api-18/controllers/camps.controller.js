@@ -66,7 +66,11 @@ class CampsController {
         Camp.forge({id: req.params.id})
             .fetch()
             .then((camp) => {
-                res.json({camp: camp.toJSON()});
+                if (camp) {
+                    res.json({camp: camp.toJSON()});
+                } else {
+                    res.status(404).json({ camps: {} });
+                }
             }).catch((err) => {
             /**
              * Pass the error to be handled by the generic error handler
@@ -490,7 +494,7 @@ class CampsController {
                     return next(new Error('Permission denied'));
                 }
             }, req)
-        }).catch((er) => {
+        }).catch((err) => {
             return next(err);
         });
     }
