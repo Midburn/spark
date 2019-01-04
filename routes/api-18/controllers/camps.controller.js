@@ -144,7 +144,7 @@ class CampsController {
         const action = req.params.action;
         const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'group_sale_ticket', 'early_arrival'];
         if (actions.indexOf(action) > -1) {
-            campsService.updateCampStatus(req.user.currentEventId, camp_id, user_id, action, req.user, res);
+            campsService.updateCampStatus(req.query.eventId || req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
             return helperService.customError(404, `illegal command (${action})`, res, true);
         }

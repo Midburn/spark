@@ -19,7 +19,7 @@ class UsersController {
     }
 
     getUserById(req, res, next) {
-        User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
+        User.forge({ user_id: req.params.id }).fetch({ columns: req.query.nameOnly ? 'name' : '*' }).then((user) => {
             if (user !== null) {
                 res.json({ name: user.get('name'), email: user.get('email'), cell_phone: user.get('cell_phone') })
             } else {
