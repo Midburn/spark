@@ -149,6 +149,23 @@ const events = {
             ticketType.MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET
         ]
     },
+    MIDBURN2019: {
+        bundles: [
+            ticketType.MIDBURN2018_CHILD_TICKET,
+            ticketType.MIDBURN2018_FIELD_TICKET,
+            ticketType.MIDBURN2018_INTERNATIONAL_DIRECT_SALE,
+            ticketType.MIDBURN2018_LOW_INCOME_TICKET,
+            ticketType.MIDBURN2018_SUPPORT_TICKET,
+            ticketType.MIDBURN2018_YOUTH_TICKET,
+            ticketType.MIDBURN2018_ADULT_PARTICIPATION_TICKET,
+            ticketType.MIDBURN2018_ADULT_OMG_SALE_TICKET,
+            ticketType.MIDBURN2018_ADULT_OPEN_SALE_TICKET,
+            ticketType.MIDBURN2018_ADULT_THEME_CAMPS_TICKET,
+            ticketType.MIDBURN2018_ADULT_ARTISTS_TICKET,
+            ticketType.MIDBURN2018_ADULT_PRODUCTION_TICKET,
+            ticketType.MIDBURN2018_ADULT_FRIENDS_ASSOC_TICKET
+        ]
+    },
     SANDBOX2018: {
         bundles: [
             ticketType.SANDBOX2018_T1,
@@ -167,7 +184,7 @@ const events = {
     }
 };
 
-const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2017':`SANDBOX${new Date().getFullYear()}`;
+const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2017':`MIDBURN${new Date().getFullYear()}`;
 module.exports = {
 
     // -- system constant --
