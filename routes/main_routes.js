@@ -96,7 +96,8 @@ module.exports = function (app, passport) {
                         errorMessage: req.flash('error')
                     });
                 } else {
-                    const cookieOptions = process.env.NODE_ENV === 'production' ? { httpOnly: true, domain: constants.MIDBURN_DOMAIN } : { httpOnly: true }
+                    const cookieOptions = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ?
+                        { httpOnly: true, domain: constants.MIDBURN_DOMAIN } : { httpOnly: true }
                     res.cookie('authToken', passportLib.generateJwtToken(req.body.email), cookieOptions);
                     var r = req.body['r'];
                     if (r && constants.LOGIN_REDIRECT_URL_WHITELIST.indexOf(r) > 0) {
