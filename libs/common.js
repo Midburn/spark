@@ -54,7 +54,7 @@ var functions = {
     //return if a string is an unsigend integer
     isNormalInteger: function (str) {
         var n = Math.floor(Number(str));
-        return String(n) === str && n >= 0;
+        return String(n) === String(str) && n >= 0;
     },
 }
 
