@@ -164,10 +164,13 @@ const events = {
             ticketType.SANDBOX2018_T3,
             ticketType.SANDBOX2018_TEAM
         ]
+    },
+    MIDBURN2019: {
+        bundles: []
     }
 };
 
-const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2017':`SANDBOX${new Date().getFullYear()}`;
+const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2017':`MIDBURN${new Date().getFullYear()}`;
 module.exports = {
 
     // -- system constant --
