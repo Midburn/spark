@@ -170,7 +170,7 @@ const events = {
     }
 };
 
-const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2017':`MIDBURN${new Date().getFullYear()}`;
+const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2019':`MIDBURN${new Date().getFullYear()}`;
 module.exports = {
 
     // -- system constant --
