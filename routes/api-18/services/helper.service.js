@@ -32,7 +32,8 @@ class HelperService {
     initForbiddenMiddleware() {
         return (err, req, res, next) => {
             // Handle CSRF token errors
-            const isDev = process.env.NODE_ENV === 'development';
+            const isDev = process.env.NODE_ENV === 'development' ||
+            process.env.NODE_ENV === 'staging';
             if (err.code === 'EBADCSRFTOKEN') {
                 res.status(403);
                 res.render('pages/error', {

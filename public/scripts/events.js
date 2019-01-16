@@ -1,6 +1,4 @@
-/**
- * GLOBALS
- */
+/* GLOBALS */
 $(document).ajaxStart(function () {
     $('#ajax_indicator').removeClass('done').removeClass('hide').fadeIn('fast');
 });
