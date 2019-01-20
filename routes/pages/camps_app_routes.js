@@ -9,7 +9,7 @@ router.get('/', userRole.isLoggedIn(), function (req, res) {
         options.domain = '.midburn.org';
     }
     res.cookie('authToken', passportLib.generateJwtToken(req.user.attributes.email, req.user.currentEventId), options);
-    res.redirect(process.env.CAMPS_APP_BASE_URL ?`${process.env.CAMPS_APP_BASE_URL}/${req.params.lng}/camps` : `http://localhost:3006/${req.params.lng}/camps`);
+    res.redirect(process.env.CAMPS_APP_BASE_URL ?`${process.env.CAMPS_APP_BASE_URL}/${req.params.lng}/${req.query.path}` : `http://localhost:3006/${req.params.lng}/${req.query.path}`);
 });
 
 module.exports = router;

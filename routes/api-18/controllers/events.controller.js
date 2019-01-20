@@ -93,12 +93,14 @@ class EventsController {
 
     changeSessionEventId(req, res) {
         //set the new event id in the session
-        const newEventId = req.body.currentEventId
+        const newEventId = req.body.currentEventId;
         const cookieOptions = process.env.NODE_ENV === 'production' ? { httpOnly: true,
                                                                         domain: constants.MIDBURN_DOMAIN,
                                                                         overwrite: true } : { httpOnly: true,
-                                                                                              overwrite: true }
+                                                                                              overwrite: true };
         req.session.passport.user.currentEventId = newEventId;
+        const number = parseInt(newEventId.replace('MIDBURN', '').replace('SANDBOX', ''));
+        req.session.passport.user.newNav = number >= 2019;
         req.session.save();
         res.cookie('authToken', passportLib.generateJwtToken(req.body.email, newEventId), cookieOptions);
         res.send(200);
