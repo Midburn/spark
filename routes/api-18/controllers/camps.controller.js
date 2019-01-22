@@ -236,7 +236,7 @@ class CampsController {
                 let method = Array.isArray(memberBoughtTickets) ? 'concat' : 'push';
                 tickets[method](memberBoughtTickets);
             }
-            if (memberHoldingTickets ) {
+            if (memberHoldingTickets) {
                 const isArray = Array.isArray(memberHoldingTickets);
                 let method = isArray ? 'concat' : 'push';
                 if (isArray) {
