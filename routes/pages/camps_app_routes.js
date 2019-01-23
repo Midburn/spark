@@ -4,7 +4,7 @@ const userRole = require('../../libs/user_role');
 const passportLib = require('../../libs/passport');
 
 router.get('/', userRole.isLoggedIn(), function (req, res) {
-    const options = { httpOnly: true, overwrite: true, domain: '.midburn.org'};
+    const options = {httpOnly: true, overwrite: true, domain: '.midburn.org'};
     if (process.env.NODE_ENV === 'development') {
         delete options.domain;
     }
