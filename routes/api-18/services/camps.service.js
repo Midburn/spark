@@ -407,21 +407,40 @@ class CampsService {
         });
     }
 
-    retrieveDataFor(group_proto, user) {
+    retrieveDataFor(group_proto, user, eventId) {
         return Camp.query((query) => {
             query
-                .select('camps.*', 'users_groups.entrance_quota')
                 .leftJoin('users_groups', 'camps.id', 'users_groups.group_id')
-                .where({ 'camps.event_id': user.currentEventId , 'camps.__prototype': group_proto })
+                .leftJoin('users', 'users.user_id', 'camps.main_contact')
+                .select(
+                    'camps.*',
+                    'users_groups.entrance_quota',
+                    'users.name AS users_main_name',
+                    'users.email AS users_main_email',
+                    'users.addinfo_json AS users_main_json',
+                    'users.cell_phone AS users_main_phone'
+                    )
+                .where({ 'camps.event_id': eventId || user.currentEventId , 'camps.__prototype': group_proto })
         })
             .orderBy('camp_name_en', 'ASC')
             .fetchAll()
             .then(camp => {
+                const camps = camp.map(campModel => {
+                    campModel = campModel.toJSON();
+                    const manager = {};
+                    Object.keys(campModel).forEach(key => {
+                        if (key.includes('users_main')) {
+                            manager[key.replace('users_main_', '')] = campModel[key];
+                        }
+                    });
+                    campModel.manager = manager;
+                    return campModel;
+                });
                 if (!_.isUndefined(camp)) {
                     return {
                         status: 200,
                         data: {
-                            camps: camp.toJSON()
+                            camps
                         }
                     };
                 } else {

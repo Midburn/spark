@@ -6,13 +6,14 @@ const sparkApi = require('./api-18');
 // Use locals
 app.locals.moment = require('moment');
 
-//Pages
+// //Pages
 app.use("/:lng?/admin", require("./pages/admin_routes"));
 app.use("/:lng/events-admin", require("./pages/events_routes"));
 app.use("/:lng/npo", require("./pages/npo_routes"));
 app.use("/:lng/npo-admin", require("./pages/npo_admin_routes"));
 app.use("/:lng/gate", require("./pages/gate_routes"));
 app.use("/:lng/volunteering", require("./pages/volunteering_routes"));
+app.use("/:lng/campsapp", require("./pages/camps_app_routes"));
 app.use('/:lng/', require('./pages/suppliers_routes'));
 //TODO: refactor camps routes
 app.use("/:lng/", require("./pages/camps_routes"));

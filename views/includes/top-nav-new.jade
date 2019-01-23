@@ -9,8 +9,7 @@ nav.navbar.navbar-default.navbar-fixed-top
             a.navbar-brand( href="/#{language}/home" ) Spark
         #navbar.navbar-collapse.collapse
             ul.nav.navbar-nav
-                li( class="#{path[2] === 'camps' ? 'active' : '' }" )
-                    a( href="/#{language}/camps" )=t('camps:nav')
+
                 li( class="#{path[2] === 'volunteering' ? 'active' : '' }" )
                     a( href="/#{language}/volunteering" )=t('volunteering')
                 if(user.isAdmin || user.isGateManager)
@@ -40,13 +39,13 @@ nav.navbar.navbar-default.navbar-fixed-top
                             span.caret
                         ul.dropdown-menu
                             if(user.isCampsAdmin || user.isAdmin)
-                                li( class="#{path[2] === 'camps-admin' ? 'active' : '' }" )
-                                    a( href="/#{language}/camps-admin" )=t('camps:nav_admin')
+                                li( class="#{path[2] === 'campsapp' ? 'active' : '' }" )
+                                    a( href="/#{language}/campsapp?path=camps/management" )=t('camps:nav_admin')
                             li( class="#{path[2] === 'suppliers-admin' ? 'active' : '' }" )
                                 a( href="/#{language}/suppliers-admin" )=t('suppliers:nav_admin')
                             if(user.isArtInstallationsAdmin || user.isAdmin)
                                 li( class="#{path[2] === 'art-admin' ? 'active' : '' }" )
-                                    a( href="/#{language}/art-admin" )=t('camps:art_installation.nav_admin')
+                                    a( href="/#{language}/campsapp?path=arts/management" )=t('camps:art_installation.nav_admin')
                             if(user.isCampsAdmin || user.isAdmin)
                                 li(class="#{path[2] === 'camp-files-admin' ? 'active' : '' }")
                                     a(href="/#{language}/camp-files-admin")=t('camps:files.nav_admin')

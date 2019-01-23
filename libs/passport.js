@@ -220,11 +220,16 @@ module.exports = function (passport) {
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
         //add the user id and the current event id to the session
-
         if (user.currentEventId === undefined) {
             user.currentEventId = constants.DEFAULT_EVENT_ID;
         }
-        let userData = {user_id: user.id, currentEventId: user.currentEventId}
+        const number = parseInt(user.currentEventId.replace('MIDBURN', '').replace('SANDBOX', ''));
+        const newNav = number >= 2019;
+        let userData = {
+            user_id: user.id,
+            currentEventId: user.currentEventId,
+            newNav
+        };
         done(null, userData)
     });
 
@@ -237,7 +242,8 @@ module.exports = function (passport) {
                 userData.currentEventId = constants.DEFAULT_EVENT_ID
             }
             //restore the current event id from the session
-            user.currentEventId = userData.currentEventId
+            user.currentEventId = userData.currentEventId;
+            user.newNav = userData.newNav;
             done(null, user)
             })
     });

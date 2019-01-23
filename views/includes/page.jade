@@ -1,6 +1,10 @@
 extends layout
 block wrapper
-    include top-nav
+    #{user.newNav}
+    if (user.newNav)
+        include top-nav-new
+    else
+        include top-nav
     page.main.container
         #ajax_indicator.hide
         if (breadcrumbs !== undefined)

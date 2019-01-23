@@ -25,7 +25,7 @@ const CAMP_MOCK_SCHEMA = {
             get: EVENT_MOCK_SCHEMA.PK //this populate the field with one id of a random event
         },
         __prototype: {
-            values: constants.CAMP_PROTOTYPE
+            values: constants.CAMP_PROTOTYPE.filter(p => p !== 'prod_dep')
         },
         camp_name_he: {
             function:  function () {

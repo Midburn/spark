@@ -19,7 +19,7 @@ class UsersController {
     }
 
     getUserById(req, res, next) {
-        User.forge({ user_id: req.params.id }).fetch({ columns: '*' }).then((user) => {
+        User.forge({ user_id: req.params.id }).fetch({ columns: req.query.nameOnly ? 'name' : '*' }).then((user) => {
             if (user !== null) {
                 res.json({ name: user.get('name'), email: user.get('email'), cell_phone: user.get('cell_phone') })
             } else {
@@ -36,7 +36,7 @@ class UsersController {
     getUserByEmail(req, res, next) {
         User.forge({email: req.params.email}).fetch().then((user) => {
             if (user !== null) {
-                res.status(200).end()
+                res.status(200).json(user)
             } else {
                 res.status(404).end()
             }
@@ -111,6 +111,7 @@ class UsersController {
     }
 
     getUsersGroups(req, res) {
+        const event_id = req.query.eventId;
         req.user.getUserCamps(async (camps) => {
             let groups = [];
             let group = {};
@@ -135,7 +136,7 @@ class UsersController {
                 }
             }
             if (req.user.isAdmin) {
-                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='" + req.user.currentEventId + "' GROUP BY __prototype;";
+                let query = "SELECT camps.__prototype, SUM(IF(camp_members.status IN ('approved','approved_mgr'),1,0)) AS total FROM camps LEFT JOIN camp_members ON camps.id=camp_members.camp_id WHERE camps.event_id='" + (event_id || req.user.currentEventId) + "' GROUP BY __prototype;";
                 let query1 = "SELECT " +
                     "count(*) AS total_tickets" +
                     ",SUM(inside_event) AS inside_event " +
@@ -147,7 +148,7 @@ class UsersController {
                     ",SUM( IF(entrance_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_entrance " +
                     ",SUM( IF(last_exit_timestamp>=NOW() - INTERVAL 1 HOUR,1,0)) AS last_1h_exit " +
                     "FROM tickets  " +
-                    "WHERE tickets.event_id='" + req.user.currentEventId +
+                    "WHERE tickets.event_id='" + (event_id || req.user.currentEventId) +
                     "' GROUP BY event_id; ";
 
                 let stat = {};

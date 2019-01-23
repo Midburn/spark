@@ -53,7 +53,7 @@ userRole.isAllowedToViewSuppliers = function () {
 
 userRole.isAllowedToViewUser = function () {
     return (req, res, next) => {
-        if (req.user && (req.user.isAdmin || req.params.id === req.user.id)) {
+        if (req.user && (req.user.isAdmin || req.params.id === req.user.id) || req.query.nameOnly) {
             next();
         }
         else {

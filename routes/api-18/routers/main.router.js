@@ -35,6 +35,7 @@ class MainRouter {
          * usage sample => curl --data "username=Profile_Username&password=Profile_Password&token=Secret_Token" http://localhost:3000/api/userlogin
          */
         this.router.route('/api/userlogin').post(authController.login);
+        this.router.route('/api/apilogin').post(authController.apiLogin);
         /**
          * API: (GET) return camp's contact person with:
          * name_en, name_he, email, phone
@@ -50,13 +51,13 @@ class MainRouter {
          */
         this.router.route('/camps_all')
             .get([userRole.isAllowedToViewSuppliers()],
-            (req, res) => campsService.retrieveDataFor(constants.prototype_camps.THEME_CAMP.id,req.user).then(result => res.status(result.status).json(result.data)));
+            (req, res) => campsService.retrieveDataFor(constants.prototype_camps.THEME_CAMP.id,req.user, req.query.eventId).then(result => res.status(result.status).json(result.data)));
         this.router.route('/prod_dep_all')
             .get(userRole.isProdDepsAdmin(),
-            (req, res) => campsService.retrieveDataFor(constants.prototype_camps.PROD_DEP.id,req.user).then(result => res.status(result.status).json(result.data)));
+            (req, res) => campsService.retrieveDataFor(constants.prototype_camps.PROD_DEP.id,req.user, req.query.eventId).then(result => res.status(result.status).json(result.data)));
         this.router.route('/art_all')
             .get(userRole.isAllowedToViewSuppliers(),
-            (req, res) => campsService.retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id,req.user).then(result => res.status(result.status).json(result.data)));
+            (req, res) => campsService.retrieveDataFor(constants.prototype_camps.ART_INSTALLATION.id,req.user, req.query.eventId).then(result => res.status(result.status).json(result.data)));
         /**
          * TODO - this should move under camps prefix - who uses these api's
          * API: (GET) return camps list csv format

@@ -4,16 +4,17 @@ const _ = require('lodash');
 const log = require('../../libs/logger')(module);
 const knex = require('../../libs/db').knex;
 const drupalSync = require('../../scripts/drupal_ticket_sync');
-
+//
 const Ticket = require('../../models/ticket').Ticket;
 const Event = require('../../models/event').Event;
 const UsersGroup = require('../../models/user').UsersGroup;
 const UsersGroupMembership = require('../../models/user').UsersGroupMembership;
-
+//
 const constants = require('../../models/constants');
 const config = require('config');
-
+//
 const volunteersAPI = require('../../libs/volunteers')();
+
 const ERRORS = {
     EVENT_ID_IS_MISSING: 'Missing Event ID',
     GATE_CODE_MISSING: 'gate_code is missing or incorrect',

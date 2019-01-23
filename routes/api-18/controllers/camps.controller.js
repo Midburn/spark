@@ -11,7 +11,8 @@ const campsService = require('../services/').campsService,
     CampFile = require('../../../models/camp').CampFile,
     Camp = require('../../../models/camp').Camp,
     Event = require('../../../models/event').Event,
-    User = require('../../../models/user').User;
+    User = require('../../../models/user').User,
+    Ticket = require('../../../models/ticket').Ticket;
 
 class CampsController {
 
@@ -38,6 +39,9 @@ class CampsController {
         this.updateCampPreSaleQuota = this.updateCampPreSaleQuota.bind(this);
         this.updateEarlyArrivalQuota = this.updateEarlyArrivalQuota.bind(this);
         this.getPublishedCamps = this.getPublishedCamps.bind(this);
+        this.getArtInstallations = this.getArtInstallations.bind(this);
+        this.getCampsTickets = this.getCampsTickets.bind(this);
+        this.getCamp = this.getCamp.bind(this);
     }
 
     createCamp(req, res, next) {
@@ -51,6 +55,23 @@ class CampsController {
                     req.user,
                     res);
         }).catch((err) => {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            next(err);
+        });
+    };
+
+    getCamp(req, res, next) {
+        Camp.forge({id: req.params.id})
+            .fetch()
+            .then((camp) => {
+                if (camp) {
+                    res.json({camp: camp.toJSON()});
+                } else {
+                    res.status(404).json({ camps: {} });
+                }
+            }).catch((err) => {
             /**
              * Pass the error to be handled by the generic error handler
              */
@@ -123,7 +144,7 @@ class CampsController {
         const action = req.params.action;
         const actions = ['approve', 'remove', 'revive', 'reject', 'approve_mgr', 'remove_mgr', 'pre_sale_ticket', 'group_sale_ticket', 'early_arrival'];
         if (actions.indexOf(action) > -1) {
-            campsService.updateCampStatus(req.user.currentEventId, camp_id, user_id, action, req.user, res);
+            campsService.updateCampStatus(req.query.eventId || req.user.currentEventId, camp_id, user_id, action, req.user, res);
         } else {
             return helperService.customError(404, `illegal command (${action})`, res, true);
         }
@@ -195,6 +216,39 @@ class CampsController {
             error: false,
             files: campFiles
         })
+    }
+
+    async getCampsTickets(req, res, next) {
+        const camp_id = req.params.id;
+        const event_id = req.query.eventId;
+        let camp = await Camp.forge({id: camp_id}).fetch({withRelated: ['members']});
+        if (!camp) {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            return next(new Error('Camp Id does not exist'));
+        }
+        let tickets = [];
+        for (const member of camp.related('members').toJSON()) {
+            const memberBoughtTickets = (await Ticket.forge({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
+            let memberHoldingTickets = (await Ticket.forge({buyer_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
+            if (memberBoughtTickets) {
+                let method = Array.isArray(memberBoughtTickets) ? 'concat' : 'push';
+                tickets[method](memberBoughtTickets);
+            }
+            if (memberHoldingTickets) {
+                const isArray = Array.isArray(memberHoldingTickets);
+                let method = isArray ? 'concat' : 'push';
+                if (isArray) {
+                    memberHoldingTickets.filter(ticket => !memberBoughtTickets.find(t => t.ticket_id === ticket.ticket_id));
+                } else if (memberBoughtTickets.ticket_id === memberHoldingTickets.ticket_id) {
+                    //;
+                } else {
+                    tickets[method](memberHoldingTickets);
+                }
+            }
+        }
+        return res.status(200).json({tickets: tickets})
     }
 
     async deleteCampFile(req, res, next) {
@@ -293,13 +347,35 @@ class CampsController {
         let web_published = [true, false];
         Camp.query((query) => {
             query
-                .where('event_id', '=', req.user.currentEventId, 'AND', '__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
+                .where('event_id', '=', req.user.currentEventId)
+                .where('__prototype', '=', constants.prototype_camps.THEME_CAMP.id)
                 .whereIn('status', allowed_status)
                 .whereIn('web_published', web_published);
         })
             .fetchAll().then((camp) => {
             if (camp !== null) {
                 res.status(200).json({camps: camp.toJSON()})
+            } else {
+                return helperService.customError(404, 'Not found', res);
+            }
+        }).catch((err) => {
+            return next(err);
+        });
+    }
+
+    getArtInstallations(req, res, next) {
+        let allowed_status = ['open', 'closed'];
+        let web_published = [true, false];
+        Camp.query((query) => {
+            query
+                .where('event_id', '=', req.user.currentEventId)
+                .where('__prototype', '=', constants.prototype_camps.ART_INSTALLATION.id)
+                .whereIn('status', allowed_status)
+                .whereIn('web_published', web_published);
+        })
+            .fetchAll().then((artInstallations) => {
+            if (artInstallations !== null) {
+                res.status(200).json({artInstallations: artInstallations.toJSON()})
             } else {
                 return helperService.customError(404, 'Not found', res);
             }
@@ -363,13 +439,14 @@ class CampsController {
     countCampMembers(req, res) {
         Camp.forge({id: req.params.id}).fetch({withRelated: ['members']}).then((camp) => {
             res.status(200).json({members: camp.related('members').toJSON()})
+        }).catch(e => {
+            res.send(500).send('Error counting members')
         })
     }
 
     getAllCampMembers(req, res, next) {
-        Camp.forge({id: req.params.id, event_id: req.user.currentEventId}).fetch().then((camp) => {
+        Camp.forge({id: req.params.id, event_id: req.query.eventId || req.user.currentEventId}).fetch().then((camp) => {
             camp.getCampUsers((members) => {
-                const isCampManager = camp.isCampManager(req.user.id, req.t);
                 if (!req.user.isAdmin) {
                     members = members.map(function (member) {
                         if (constants.CAMP_MEMBER_APPROVAL_ENUM.indexOf(member.member_status) < 0) {
@@ -407,7 +484,7 @@ class CampsController {
                     }
                 }
                 const result = camp.parsePrototype(req.user);
-                if (isCampManager || (result && result.isAdmin)) {
+                if (result) {
                     res.status(200).json({
                         members: members,
                         pre_sale_tickets_quota: camp.attributes.pre_sale_tickets_quota
@@ -417,7 +494,7 @@ class CampsController {
                     return next(new Error('Permission denied'));
                 }
             }, req)
-        }).catch((er) => {
+        }).catch((err) => {
             return next(err);
         });
     }

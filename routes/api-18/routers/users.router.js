@@ -41,17 +41,18 @@ class UsersRouter {
          * Init the different paths for this router.
          */
         /**
+         * API: (GET) get user by email
+         * request => /users/email/:email
+         */
+        this.router.route('/email/:email')
+            .get(usersController.getUserByEmail);
+        /**
          * API: (GET) get user by id
          * request => /users/:id
          */
         this.router.route('/:id')
             .get([userRole.isAllowedToViewUser()], usersController.getUserById);
-        /**
-         * API: (GET) get user by email
-         * request => /users/:email
-         */
-        this.router.route('/:email')
-            .get(usersController.getUserByEmail);
+
         this.router.route('/:user_id/join_details')
             .get(usersController.userJoinDetails);
 
