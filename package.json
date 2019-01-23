@@ -8,7 +8,7 @@
   "version": "3.3.0",
   "private": true,
   "scripts": {
-    "postinstall": "cd public; npm install",
+    "postinstall": "cd public && npm install",
     "start": "node server.js",
     "pretest": "npm run lint",
     "test": "npm run testcore",
@@ -32,7 +32,7 @@
     "snyk-protect": "snyk protect",
     "seed": "node ./seeds/seeder.js",
     "prepublish": "npm run snyk-protect",
-    "newDevDB": "npm run createdb; knex migrate:latest; npm run seed",
+    "newDevDB": "npm run createdb && knex migrate:latest && npm run seed",
     "hot": "browser-sync start --proxy 'http://localhost:3000/' --files 'views' 'public'",
     "//hot": "echo npm run hot - will open a hot reload browser updating on changes in view & public folders",
     "prepare": "npm run snyk-protect"
@@ -82,7 +82,7 @@
     "morgan": "~1.9.0",
     "mysql": "^2.11.1",
     "node-cache": "^4.1.1",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.11.0",
     "nodemon": "^1.14.11",
     "opbeat": "^4.16.0",
     "passport": "^0.3.2",
