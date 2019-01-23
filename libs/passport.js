@@ -199,12 +199,13 @@ var signup = function (email, password, user, done) {
     })
 };
 
-var generateJwtToken = function (email) {
+var generateJwtToken = function (email, eventId) {
     // from now on we'll identify the user by the email and the email
     // is the only personalized value that goes into our token
-    let payload = {email: email};
+    let _eventId = eventId || constants.DEFAULT_EVENT_ID
+    let payload = { email: email };
     let token = jwt.sign(payload, apiTokensConfig.token);
-    let userData = {token, currentEventId: constants.DEFAULT_EVENT_ID}
+    let userData = { token, currentEventId: _eventId }
     return userData;
 };
 

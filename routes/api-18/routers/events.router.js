@@ -46,7 +46,7 @@ class EventsRouter {
         this.router.route('/:event/edit').put(eventsController.editingEvent);
 
         //change the current event id for camps manager or admin
-        this.router.route('/change').post(eventsController.changeCampEventId);
+        this.router.route('/change').post(eventsController.changeSessionEventId);
     }
 }
 

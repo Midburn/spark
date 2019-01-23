@@ -156,10 +156,21 @@ const events = {
             ticketType.SANDBOX2018_T3,
             ticketType.SANDBOX2018_TEAM
         ]
+    },
+    SANDBOX2019: {
+        bundles: [
+            ticketType.SANDBOX2018_T1,
+            ticketType.SANDBOX2018_T2,
+            ticketType.SANDBOX2018_T3,
+            ticketType.SANDBOX2018_TEAM
+        ]
+    },
+    MIDBURN2019: {
+        bundles: []
     }
 };
 
-const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2017':`SANDBOX${new Date().getFullYear()}`;
+const default_event = process.env.NODE_ENV === 'testing' ? 'MIDBURN2019':`MIDBURN${new Date().getFullYear()}`;
 module.exports = {
 
     // -- system constant --
@@ -192,6 +203,8 @@ module.exports = {
     suppliers_table_name_fields: SUPPLIERS_TABLE_NAME_FIELDS,
     VEHICLE_ENTRIES_TABLE_NAME: 'vehicle_entries',
     ENTRIES_TABLE_NAME: 'entries',
+
+    MIDBURN_DOMAIN: '.midburn.org',
 
     prototype_camps: prototype_camps,
 
