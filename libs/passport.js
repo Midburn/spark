@@ -293,9 +293,15 @@ module.exports = function (passport) {
     jwtOptions.secretOrKey = apiTokensConfig.token;
     jwtOptions.jwtFromRequest = function(req) {
         var token = null;
+        function validateApiToken() {
+            return req.headers.SECRET === process.env.SPARK_SECRET_TOKEN;
+        }
         if (req && req.cookies)
         {
             token = req.cookies['authToken'];
+        }
+        if (validateApiToken()) {
+            token = req.headers.USER_TOKEN;
         }
         return token;
     };
