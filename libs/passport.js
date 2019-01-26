@@ -294,29 +294,38 @@ module.exports = function (passport) {
     jwtOptions.jwtFromRequest = function(req) {
         var token = null;
         function validateApiToken() {
-            return req.headers.SECRET === process.env.SPARK_SECRET_TOKEN;
+            return req.headers.secret === apiTokensConfig.token;
         }
-        if (req && req.cookies)
+        if (req && req.cookies && req.cookies['authToken'])
         {
-            token = req.cookies['authToken'];
+            token = req.cookies['authToken'].token;
         }
         if (validateApiToken()) {
-            token = req.headers.USER_TOKEN;
+            token = req.headers.user_token;
         }
         return token;
     };
 
     passport.use(new JwtStrategy(jwtOptions, function (jwt_payload, next) {
-        console.log('JWT payload received', jwt_payload);
-        var email = jwt_payload.token.email;
-
+        var email = jwt_payload.email;
+        if (!email) {
+            next(null, false);
+        }
         new User({
             email: email
         }).fetch().then(function (user) {
                 if (user) {
-                    //set the user the current event id from the session
-                    user.currentEventId = jwt_payload.currentEventId
-                    next(null, user);
+                    if (user.currentEventId === undefined) {
+                        user.currentEventId = constants.DEFAULT_EVENT_ID;
+                    }
+                    const number = parseInt(user.currentEventId.replace('MIDBURN', '').replace('SANDBOX', ''));
+                    const newNav = number >= 2019;
+                    let userData = {
+                        user_id: user.id,
+                        currentEventId: user.currentEventId,
+                        newNav
+                    };
+                    next(null, user, null);
                 } else {
                     next(null, false);
                 }
@@ -381,7 +390,9 @@ module.exports = function (passport) {
                 }
             })
         }
-    ))
+    ));
+
+    return passport;
 };
 
 module.exports.sign_up = function (email, password, user, done) {
