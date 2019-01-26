@@ -319,12 +319,7 @@ module.exports = function (passport) {
                         user.currentEventId = constants.DEFAULT_EVENT_ID;
                     }
                     const number = parseInt(user.currentEventId.replace('MIDBURN', '').replace('SANDBOX', ''));
-                    const newNav = number >= 2019;
-                    let userData = {
-                        user_id: user.id,
-                        currentEventId: user.currentEventId,
-                        newNav
-                    };
+                    user.newNav = number >= 2019;
                     next(null, user, null);
                 } else {
                     next(null, false);
