@@ -72,7 +72,7 @@ app.use(function (req, res, next) {
 });
 
 // Passport setup
-require('./libs/passport')(passport);
+const myPass = require('./libs/passport')(passport);
 
 // using session storage in DB - allows multiple server instances + cross session support between node js apps
 var sessionStore = new KnexSessionStore({
@@ -92,6 +92,15 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // compress all responses
 app.use(compression());
+
+app.use((req, res, next) => {
+    if (!req.headers.secret || !req.headers.user_token) {
+        return next();
+    }
+    return myPass.authenticate('jwt', {
+        session: false
+    })(req, res, next);
+});
 
 // i18N Setup
 var i18next = require('i18next');

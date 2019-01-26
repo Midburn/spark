@@ -293,24 +293,34 @@ module.exports = function (passport) {
     jwtOptions.secretOrKey = apiTokensConfig.token;
     jwtOptions.jwtFromRequest = function(req) {
         var token = null;
-        if (req && req.cookies)
+        function validateApiToken() {
+            return req.headers.secret === apiTokensConfig.token;
+        }
+        if (req && req.cookies && req.cookies['authToken'])
         {
-            token = req.cookies['authToken'];
+            token = req.cookies['authToken'].token;
+        }
+        if (validateApiToken()) {
+            token = req.headers.user_token;
         }
         return token;
     };
 
     passport.use(new JwtStrategy(jwtOptions, function (jwt_payload, next) {
-        console.log('JWT payload received', jwt_payload);
-        var email = jwt_payload.token.email;
-
+        var email = jwt_payload.email;
+        if (!email) {
+            next(null, false);
+        }
         new User({
             email: email
         }).fetch().then(function (user) {
                 if (user) {
-                    //set the user the current event id from the session
-                    user.currentEventId = jwt_payload.currentEventId
-                    next(null, user);
+                    if (user.currentEventId === undefined) {
+                        user.currentEventId = constants.DEFAULT_EVENT_ID;
+                    }
+                    const number = parseInt(user.currentEventId.replace('MIDBURN', '').replace('SANDBOX', ''));
+                    user.newNav = number >= 2019;
+                    next(null, user, null);
                 } else {
                     next(null, false);
                 }
@@ -375,7 +385,9 @@ module.exports = function (passport) {
                 }
             })
         }
-    ))
+    ));
+
+    return passport;
 };
 
 module.exports.sign_up = function (email, password, user, done) {
