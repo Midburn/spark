@@ -1,95 +1,96 @@
 extends ../../includes/page
 block content
-    .camps.camp_admin_index(ng-app="ngSuppliers")
-        script.
-            var groups_prototype="#{__groups_prototype}";
-        if controllDates
+    .container-fluid(class=language == 'he' ? 'rtl' : undefined)    
+        .camps.camp_admin_index(ng-app="ngSuppliers")
             script.
-                const controllDates = {
-                    appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
-                    appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
-                }
-        .container.col-md-12
-            h1=t(t_prefix+'edit_new.suppliers')
-            p.lead.text-muted=t(t_prefix+'edit_new.desc')
-        .controls.row
-            .col-xs-12
-                div.block-center
-                    div.input-group
-                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/suppliers-admin/manage`, role='button')=t(t_prefix+'edit_new.suppliers_management')
-                        if isCamp || isProd
-                            a.Btn.Btn__green.card-switcher#4(href=`/${language}/suppliers-admin/new`, role='button')
-                                span.glyphicon.glyphicon-plus(aria-hidden="true")
-                                span=t(t_prefix+'edit_new.new_supplier')
+                var groups_prototype="#{__groups_prototype}";
+            if controllDates
+                script.
+                    const controllDates = {
+                        appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
+                        appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
+                    }
+            .container.col-md-12
+                h1=t(t_prefix+'edit_new.suppliers')
+                p.lead.text-=t(t_prefix+'edit_new.desc')
+            .controls.row
+                .col-sm-12
+                    div.block-center
+                        div.input-group
+                            a.Btn.Btn__default.card-switcher#1(href=`/${language}/suppliers-admin/manage`, role='button')=t(t_prefix+'edit_new.suppliers_management')
+                            if isCamp || isProd
+                                a.Btn.Btn__green.card-switcher#4(href=`/${language}/suppliers-admin/new`, role='button')
+                                    span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                    span=t(t_prefix+'edit_new.new_supplier')
 
-        .cards--wrapper.card__shad
-            //- Card 1
-            .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageSuppliersController")
-                h4=t(t_prefix+'edit_new.suppliers')
-                .controls.row
-                  .col-xs-12.col-md-9
-                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'edit_new.search')}")
-                   .col-xs-4.col-md-3
-                        a.Btn.cursor-p(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
-                            button.btn.btn-xs
-                                span=t(t_prefix+'edit_new.dumpcampsdata')
-                table.table.table-stats.table-striped.table-hover#admin_camps
-                    thead
-                        tr.headers.cursor-pointer-children
-                            th(ng-click='changeOrderBy("supplier_id")')=t(t_prefix+'edit_new.id')
-                                span(ng-hide="'supplier_id' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(ng-click='changeOrderBy("supplier_name_he")')=t(t_prefix+'edit_new.name')
-                                span(ng-hide="'supplier_name_he' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(ng-click='changeOrderBy("main_contact_name")')=t(t_prefix+'edit_new.contact_person')
-                                span(ng-hide="'main_contact_name' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(ng-click='changeOrderBy("main_contact_position")')=t(t_prefix+'edit_new.position')
-                                span(ng-hide="'main_contact_position' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(ng-click='changeOrderBy("main_contact_phone_number")')= t(t_prefix+'edit_new.contact_number')
-                                span(ng-hide="'main_contact_phone_number' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(ng-click='changeOrderBy("updated_at")')=t(t_prefix+'edit_new.last_update')
-                                span(ng-hide="'updated_at' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(class="long_content"  ng-click='changeOrderBy("supplier_website_link")')=t(t_prefix+'edit_new.website_link')
-                                span(ng-hide="'supplier_website_link' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th( class="long_content" ng-click='changeOrderBy("supplier_midmarket_link")')=t(t_prefix+'edit_new.midmarket_link')
-                                span(ng-hide="'supplier_midmarket_link' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(class="long_content"  ng-click='changeOrderBy("comments")')=t(t_prefix+'edit_new.comments')
-                                span(ng-hide="'comments' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th(ng-click='changeOrderBy("supplier_category")')=t(t_prefix+'edit_new.category')
-                                span(ng-hide="'supplier_category' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                            th()=t(t_prefix+'edit_new.actions')
-                    tbody
-                        tr(ng-repeat="supplier in suppliers | filter: searchCamp | orderBy: orderSupppliers : isReverseOrder")
-                            td {{ supplier.supplier_id }}
-                            td
-                                a(ng-href=`/${language}/suppliers/{{ supplier.supplier_id }}`)
-                                    span {{supplier.supplier_name_en}}
-                                br
-                                a(ng-href=`/${language}/suppliers/{{ supplier.supplier_id }}`)
-                                    span {{supplier.supplier_name_he}}
-                            td {{ supplier.main_contact_name }}
-                            td {{ supplier.main_contact_position }}
-                            td {{ supplier.main_contact_phone_number }}
-                            td {{ supplier.updated_at | date: 'dd/MM/yy HH:mm'}}
-                            td {{ supplier.supplier_website_link }}
-                            td {{ supplier.supplier_midmarket_link }}
-                            td {{ supplier.comments }}
-                            td {{ supplier.supplier_category }}
-                            td
-                                if (user.isAdmin || user.isCampManager || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
-                                    a.cursor-p(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}` + '/edit')
-                                        button.btn.btn-xs
-                                            span(class='glyphicon glyphicon-pencil')
-                                            =t(t_prefix+'edit_new.edit')
+            .cards--wrapper.card__shad
+                //- Card 1
+                .card.card-first.card__padding--even.col-sm-12.table-responsive(ng-controller="manageSuppliersController")
+                    h4=t(t_prefix+'edit_new.suppliers')
+                    .controls.row
+                        .col-md-9
+                            input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix+'edit_new.search')}")
+                        .col-md-3
+                            a.cursor-p(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
+                                button.btn.btn-sm.btn-default
+                                    span=t(t_prefix+'edit_new.dumpcampsdata')
+                    table.table.table-stats.table-striped.table-hover.table-responsive.text-nowrap#admin_camps
+                        thead
+                            tr.headers.cursor-pointer-children
+                                th(ng-click='changeOrderBy("supplier_id")')=t(t_prefix+'edit_new.id')
+                                    span(ng-hide="'supplier_id' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(ng-click='changeOrderBy("supplier_name_he")')=t(t_prefix+'edit_new.name')
+                                    span(ng-hide="'supplier_name_he' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(ng-click='changeOrderBy("main_contact_name")')=t(t_prefix+'edit_new.contact_person')
+                                    span(ng-hide="'main_contact_name' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(ng-click='changeOrderBy("main_contact_position")')=t(t_prefix+'edit_new.position')
+                                    span(ng-hide="'main_contact_position' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(ng-click='changeOrderBy("main_contact_phone_number")')= t(t_prefix+'edit_new.contact_number')
+                                    span(ng-hide="'main_contact_phone_number' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(ng-click='changeOrderBy("updated_at")')=t(t_prefix+'edit_new.last_update')
+                                    span(ng-hide="'updated_at' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(class="long_content"  ng-click='changeOrderBy("supplier_website_link")')=t(t_prefix+'edit_new.website_link')
+                                    span(ng-hide="'supplier_website_link' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th( class="long_content" ng-click='changeOrderBy("supplier_midmarket_link")')=t(t_prefix+'edit_new.midmarket_link')
+                                    span(ng-hide="'supplier_midmarket_link' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(class="long_content"  ng-click='changeOrderBy("comments")')=t(t_prefix+'edit_new.comments')
+                                    span(ng-hide="'comments' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th(ng-click='changeOrderBy("supplier_category")')=t(t_prefix+'edit_new.category')
+                                    span(ng-hide="'supplier_category' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
+                                th()=t(t_prefix+'edit_new.actions')
+                        tbody
+                            tr(ng-repeat="supplier in suppliers | filter: searchCamp | orderBy: orderSupppliers : isReverseOrder")
+                                td {{ supplier.supplier_id }}
+                                td
+                                    a(ng-href=`/${language}/suppliers/{{ supplier.supplier_id }}`)
+                                        span {{supplier.supplier_name_en}}
+                                    br
+                                    a(ng-href=`/${language}/suppliers/{{ supplier.supplier_id }}`)
+                                        span {{supplier.supplier_name_he}}
+                                td {{ supplier.main_contact_name }}
+                                td {{ supplier.main_contact_position }}
+                                td {{ supplier.main_contact_phone_number }}
+                                td {{ supplier.updated_at | date: 'dd/MM/yy HH:mm'}}
+                                td {{ supplier.supplier_website_link }}
+                                td {{ supplier.supplier_midmarket_link }}
+                                td {{ supplier.comments }}
+                                td {{ supplier.supplier_category }}
+                                td
+                                    if (user.isAdmin || user.isCampManager || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
+                                        a.cursor-p(ng-href=`/${language}/suppliers/{{supplier.supplier_id}}` + '/edit')
+                                            button.btn.btn-sm.btn-primary
+                                                span(class='glyphicon glyphicon-pencil')
+                                                =t(t_prefix+'edit_new.edit')
 
-            //- Card 4
-            .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
-                h2=t(t_prefix+'edit_new.new_supplier')
-                h4=t(t_prefix+'edit_new.id_choosing_title')
-                .col-sm-8.col-xs-12
-                    .pos-r
-                        label=t(t_prefix+'edit_new.id')
-                        input(id='new-supplier-button' type="number", class="form-control", name="supplier_id", autofocus="true", required)
-                        span.indicator
-                            span.glyphicon
-                .col-sm-4.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_supplier_id", role='button')=t(t_prefix+'edit_new.btn_continue')
+                //- Card 4
+                .choose_name.card.card-forth.card__padding--even.card-hide.col-sm-12
+                    h2=t(t_prefix+'edit_new.new_supplier')
+                    h4=t(t_prefix+'edit_new.id_choosing_title')
+                    .col-sm-8.col-sm-12
+                        .pos-r
+                            label=t(t_prefix+'edit_new.id')
+                            input(id='new-supplier-button' type="number", class="form-control", name="supplier_id", autofocus="true", required)
+                            span.indicator
+                                span.glyphicon
+                    .col-sm-4.col-sm-12
+                        a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_supplier_id", role='button')=t(t_prefix+'edit_new.btn_continue')
