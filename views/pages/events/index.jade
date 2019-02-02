@@ -4,42 +4,43 @@ block scripts
 block content
     script.
         var isNew=true
-    .camps.camp_admin_index.ng-scope(ng-app="ngEvents")
-        .container-xs-12
-            h1=t(`${t_prefix}dash.title`)
-            p.lead.text-muted=t(`${t_prefix}dash.desc`)
-        .controls.row
-                div.block-center
-                    div.input-group
-                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/events-admin/manage`, role='button')=t(t_prefix+'manage')
-                        a.Btn.Btn__green.card-switcher#2(href=`/${language}/events-admin/new`, role='button')
-                                span.glyphicon.glyphicon-plus(aria-hidden="true")
-                                span=t(t_prefix+'new_event')
+    .container-fluid(class=language == 'he' ? 'rtl' : undefined)
+        .camps.camp_admin_index.ng-scope(ng-app="ngEvents")
+            .container-xs-12
+                h1=t(`${t_prefix}dash.title`)
+                p.lead.text-white=t(`${t_prefix}dash.desc`)
+            .controls.row
+                    div.block-center
+                        div.input-group
+                            a.Btn.Btn__default.card-switcher#1(href=`/${language}/events-admin/manage`, role='button')=t(t_prefix+'manage')
+                            a.Btn.Btn__green.card-switcher#2(href=`/${language}/events-admin/new`, role='button')
+                                    span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                    span=t(t_prefix+'new_event')
 
-        .cards--wrapper.card__shad
-            //- Card 1
-            .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="eventsController")
-                h4=t(t_prefix+'admin.all_events_table')
-                table.table.table-stats.table-striped.table-hover#admin_camps
-                    thead
-                        tr.headers
-                            th #
-                            th.event_name_en=t(t_prefix+'stats.name_en')
-                            th.gate_code=t(t_prefix+'stats.gate_code')
-                            th.gate_status=t(t_prefix+'stats.gate_status')
-                            th
-                    tbody
-                        tr(ng-repeat="event in events | orderBy: event_id")
-                            td {{ event.event_id }}
-                            td {{ event.name }}
-                            td {{ event.gate_code }}
-                            td {{ event.gate_status }}
-                            td
-                                a.cursor-p(ng-href=`/${language}/events-admin/{{event.event_id}}`) &nbsp;
-                                    button.btn.btn-xs
-                                        span(class='glyphicon glyphicon-pencil')
-                                        =t(`${t_prefix}stats.edit`)
+            .cards--wrapper.card__shad
+                //- Card 1
+                .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="eventsController")
+                    h4=t(t_prefix+'admin.all_events_table')
+                    table.table.table-stats.table-striped.table-hover#admin_camps
+                        thead
+                            tr.headers
+                                th #
+                                th.event_name_en=t(t_prefix+'stats.name_en')
+                                th.gate_code=t(t_prefix+'stats.gate_code')
+                                th.gate_status=t(t_prefix+'stats.gate_status')
+                                th
+                        tbody
+                            tr(ng-repeat="event in events | orderBy: event_id")
+                                td {{ event.event_id }}
+                                td {{ event.name }}
+                                td {{ event.gate_code }}
+                                td {{ event.gate_status }}
+                                td
+                                    a.cursor-p(ng-href=`/${language}/events-admin/{{event.event_id}}`) &nbsp;
+                                        button.btn.btn-xs.btn-primary
+                                            span(class='glyphicon glyphicon-pencil')
+                                            =t(`${t_prefix}stats.edit`)
 
-            //- Card 2
-            .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive
-                include partials/form
+                //- Card 2
+                .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive
+                    include partials/form

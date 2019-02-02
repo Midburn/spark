@@ -1,0 +1,16 @@
+ul.nav.navbar-nav.justify-content-end.d-flex.align-items-center(style="#{language === 'he' ? 'float:left!important' : ''}")
+            li.nav-item
+                if (language == 'he')
+                    a.nav-link( href="/en#{req.originalUrl.substr(3)}" )
+                        span.font-weight-bold עברית /
+                        span.font-weight-light ENG
+                if (language == 'en')
+                    a.nav-link( href="/he#{req.originalUrl.substr(3)}" )
+                        span.font-weight-light עברית /
+                        span.font-weight-bold ENG
+            li.nav-item
+                a.nav-link(href='/#{language}/whoami', aria-label="#{user.attributes.first_name} #{user.attributes.last_name}")
+                    span.glyphicon.glyphicon-user(aria-hidden="true")
+            li.nav-item
+                a(href="/#{language}/logout")
+                    button.text-blue(href="/#{language}/logout" class="btn btn-outline-primary waves-effect")=t('logout')

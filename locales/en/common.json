@@ -48,6 +48,7 @@
     "email_doesnt_exist_message": "No account with that email exists",
     "update_password": "Update password",
     "new_password": "New password",
+    "new": "New!",
     "bad_or_expired_token": "Password reset link is expired or broken",
     "password_reset_succeeded": "Password reset completed successfully",
     "password_changed_email_subject": "Spark security alert",
@@ -76,7 +77,12 @@
     },
     "top-nav": {
       "manage": "Manage",
-      "gate": "Gate"
+      "gate": "Gate",
+      "camps": "Camps",
+      "arts": "Art installations",
+      "allocations": "Appreciation allocation ({{year}})",
+      "allocations-camps": "Camps appreciation allocation",
+      "allocations-arts": "Art installations appreciation allocation"
     },
     "footer": {
         "scrolltop": "Back to top",

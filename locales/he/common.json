@@ -50,6 +50,7 @@
     "email_doesnt_exist_message": "לא קיים חשבון בעל כתובת מייל זו",
     "update_password": "עדכן סיסמה",
     "new_password": "סיסמה חדשה",
+    "new": "חדש!",
     "bad_or_expired_token": "הקישור לאיפוס הסיסמה פג תוקף או לא תקין",
     "password_reset_succeeded": "החלפת סיסמה בוצעה בהצלחה",
     "password_changed_email_subject": "התראת אבטחה מ- Spark",
@@ -77,7 +78,12 @@
     },
     "top-nav": {
         "manage": "ניהול",
-        "gate": "שער"
+        "gate": "שער",
+        "camps": "מחנות נושא",
+        "arts": "אמנות",
+        "allocations": "הקצאות הוקרה ({{year}})",
+        "allocations-camps": "מחנות נושא  (אדמין)",
+        "allocations-arts": "אמנות (אדמין)"
     },
     "footer": {
         "scrolltop": "חזרה למעלה",
