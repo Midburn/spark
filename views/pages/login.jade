@@ -1,7 +1,7 @@
 extends ../includes/layout
 block wrapper
-    div.container
-        .row
+    div.container(class=language == 'he' ? 'rtl' : undefined)
+        .row.d-flex.justify-content-center
             .center-block(style="max-width:320px; margin-top: 20px;")
                 .login__errors.text-left
                     if (errorMessage && errorMessage.length > 0)
