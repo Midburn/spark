@@ -2,30 +2,30 @@ nav.navbar.navbar-light.white.fixed-top.navbar-expand-md(class=language == 'he' 
     include navbar-header
     #navbar.navbar-collapse.collapse
         ul.navbar-nav.mr-auto
-            li.nav-item( class="#{path[2] === 'camps' ? 'active' : '' }" )
+            li.nav-item( class="#{path[2] === 'camps' ? '' : '' }" )
                 a.nav-link( href="/#{language}/camps" )=t('camps:nav')
-            li.nav-item( class="#{path[2] === 'volunteering' ? 'active' : '' }" )
+            li.nav-item( class="#{path[2] === 'volunteering' ? '' : '' }" )
                 a.nav-link( href="/#{language}/volunteering" )=t('volunteering')
             if(user.isAdmin || user.isGateManager)
                 li.nav-item.dropdown
                     a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')
                         span.caret
                     ul.dropdown-menu
-                        li.dropdown-item( class="#{path.slice(2).join('-') === 'gate' ? 'active' : '' }" )
+                        li.dropdown-item( class="#{path.slice(2).join('-') === 'gate' ? '' : '' }" )
                             a.nav-link( href="/#{language}/gate" )=t('gate:entries')
-                        li.dropdown-item( class="#{path.slice(2).join('-') === 'gate-suppliers' ? 'active' : '' }" )
+                        li.dropdown-item( class="#{path.slice(2).join('-') === 'gate-suppliers' ? '' : '' }" )
                             a.nav-link( href="/#{language}/gate/suppliers" )=t('suppliers:nav_entries')
 
             if(user.isCampsAdmin)
-                li.nav-item( class="#{path[2] === 'camps-admin' ? 'active' : '' }" )
+                li.nav-item( class="#{path[2] === 'camps-admin' ? '' : '' }" )
                     a.nav-link( href="/#{language}/camps-admin" )=t('camps:nav_admin')
-                li.nav-item( class="#{path[2] === 'suppliers-admin' ? 'active' : '' }" )
+                li.nav-item( class="#{path[2] === 'suppliers-admin' ? '' : '' }" )
                     a.nav-link( href="/#{language}/suppliers-admin" )=t('suppliers:nav_admin')
             if(user.isArtInstallationsAdmin)
-                li.nav-item( class="#{path[2] === 'art-admin' ? 'active' : '' }" )
+                li.nav-item( class="#{path[2] === 'art-admin' ? '' : '' }" )
                     a.nav-link( href="/#{language}/art-admin" )=t('camps:art_installation.nav_admin')
             if(user.isProdDepsAdmin)
-                li.nav-item( class="#{path[2] === 'prod-admin' ? 'active' : '' }" )
+                li.nav-item( class="#{path[2] === 'prod-admin' ? '' : '' }" )
                     a.nav-link( href="/#{language}/prod-admin" )=t('camps:prod_dep.nav_admin')
             if(user.isAllowedToViewSuppliers || user.isAdmin)
                 li.dropdown.nav-item
@@ -33,17 +33,17 @@ nav.navbar.navbar-light.white.fixed-top.navbar-expand-md(class=language == 'he' 
                         span.caret
                     ul.dropdown-menu
                         if(user.isCampsAdmin || user.isAdmin)
-                            li.dropdown-item( class="#{path[2] === 'camps-admin' ? 'active' : '' }" )
+                            li.dropdown-item( class="#{path[2] === 'camps-admin' ? '' : '' }" )
                                 a.nav-link( href="/#{language}/camps-admin" )=t('camps:nav_admin')
-                        li.dropdown-item( class="#{path[2] === 'suppliers-admin' ? 'active' : '' }" )
+                        li.dropdown-item( class="#{path[2] === 'suppliers-admin' ? '' : '' }" )
                             a.nav-link( href="/#{language}/suppliers-admin" )=t('suppliers:nav_admin')
                         if(user.isArtInstallationsAdmin || user.isAdmin)
-                            li.dropdown-item( class="#{path[2] === 'art-admin' ? 'active' : '' }" )
+                            li.dropdown-item( class="#{path[2] === 'art-admin' ? '' : '' }" )
                                 a.nav-link( href="/#{language}/art-admin" )=t('camps:art_installation.nav_admin')
                         if(user.isCampsAdmin || user.isAdmin)
-                            li.dropdown-item(class="#{path[2] === 'camp-files-admin' ? 'active' : '' }")
+                            li.dropdown-item(class="#{path[2] === 'camp-files-admin' ? '' : '' }")
                                 a.nav-link(href="/#{language}/camp-files-admin")=t('camps:files.nav_admin')
                         if(user.isAdmin)
-                            li.dropdown-item( class="#{path[2] === 'events-admin' ? 'active' : '' }" )
+                            li.dropdown-item( class="#{path[2] === 'events-admin' ? '' : '' }" )
                                 a.nav-link( href="/#{language}/events-admin" )=t('events:nav_admin')
         include nav-end
