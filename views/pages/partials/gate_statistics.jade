@@ -1,84 +1,85 @@
-.row.m-2
-    .col-md-12.text-center
-        h3=t('common:homepage.stats.gate')
-.row
-    .col-xs-3
-        .circle-tile
-            .circle-tile-heading.pink
-                i.fa.fa-ticket.fa-fw.fa-3x
-            .circle-tile-content.pink
-                .circle-tile-description.text-faded
-                    h5=t('common:homepage.stats.total_tickets')
-                .circle-tile-number.text-faded {{stat.total_tickets}}
-    .col-xs-3
-        .circle-tile
-            .circle-tile-heading.purple
-                i.fa.fa-users.fa-fw.fa-3x
-            .circle-tile-content.purple
-                .circle-tile-description.text-faded
-                    h5=t('common:homepage.stats.inside_event')
-                    .circle-tile-number.text-faded {{stat.inside_event}}
-    .col-xs-3
-        .circle-tile
-            .circle-tile-heading.green
-                i.fa.fa-users.fa-fw.fa-3x
-            .circle-tile-content.green
-                .circle-tile-description.text-faded
-                    h5=t('common:homepage.stats.early_arrival_count')
-                    .circle-tile-number.text-faded {{earlyArrivalCount}}
-    .col-xs-3
-        .circle-tile
-            .circle-tile-heading.blue
-                i.fa.fa-car.fa-fw.fa-3x
-            .circle-tile-content.blue
-                .circle-tile-description.text-faded
-                    h5=t('common:homepage.stats.cars_inside_event')
-                    .circle-tile-number.text-faded {{carCount}}
+.container 
+    .row
+        .col-md.text-center
+            h3=t('common:homepage.stats.gate')
+    .row
+        .col-sm
+            .circle-tile
+                .circle-tile-heading.pink
+                    i.fa.fa-ticket.fa-fw.fa-3x
+                .circle-tile-content.pink
+                    .circle-tile-description.text-faded
+                        h5=t('common:homepage.stats.total_tickets')
+                    .circle-tile-number.text-faded {{stat.total_tickets}}
+        .col-sm
+            .circle-tile
+                .circle-tile-heading.purple
+                    i.fa.fa-users.fa-fw.fa-3x
+                .circle-tile-content.purple
+                    .circle-tile-description.text-faded
+                        h5=t('common:homepage.stats.inside_event')
+                        .circle-tile-number.text-faded {{stat.inside_event}}
+        .col-sm
+            .circle-tile
+                .circle-tile-heading.green
+                    i.fa.fa-users.fa-fw.fa-3x
+                .circle-tile-content.green
+                    .circle-tile-description.text-faded
+                        h5=t('common:homepage.stats.early_arrival_count')
+                        .circle-tile-number.text-faded {{earlyArrivalCount}}
+        .col-sm
+            .circle-tile
+                .circle-tile-heading.blue
+                    i.fa.fa-car.fa-fw.fa-3x
+                .circle-tile-content.blue
+                    .circle-tile-description.text-faded
+                        h5=t('common:homepage.stats.cars_inside_event')
+                        .circle-tile-number.text-faded {{carCount}}
 
-.row
-    .col-xs-6
-        .circle-tile
-            .circle-tile-heading.green
-                i.fa.fa-sign-in.fa-fw.fa-3x
-            .circle-tile-content.green
-                .circle-tile-number.text-faded.p-0
-                    h4=t('common:homepage.stats.entrances')
-                .circle-tile-number.text-faded {{stat.total_entrances}}
-                .row
-                    .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
-                        .circle-tile-number.text-faded {{stat.last_24h_entrance}}
-                    .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
-                        .circle-tile-number.text-faded {{stat.last_1h_entrance}}
-    .col-xs-6
-        .circle-tile
-            .circle-tile-heading.red
-                i.fa.fa-sign-in.fa-rotate-180.fa-fw.fa-3x
-            .circle-tile-content.red
-                .circle-tile-number.text-faded.p-0
-                    h4=t('common:homepage.stats.exits')
-                .circle-tile-number.text-faded {{stat.total_exits}}
-                .row
-                    .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
-                        .circle-tile-number.text-faded {{stat.last_24h_exit}}
-                    .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
-                        .circle-tile-number.text-faded {{stat.last_1h_exit}}
-    .col-xs-6.col-xs-offset-3
-        .circle-tile
-            .circle-tile-heading.orange
-                i.fa.fa-ticket.fa-fw.fa-3x
-            .circle-tile-content.orange
-                .circle-tile-number.text-faded.p-0
-                    h4=t('common:homepage.stats.ticketing')
-                .circle-tile-number.text-faded {{stat.ticketing}}
-                .row
-                    .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
-                        .circle-tile-number.text-faded {{stat.last_24h_entrance}}
-                    .col-xs-6
-                        .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
-                        .circle-tile-number.text-faded {{stat.last_1h_entrance}}
+    .row
+        .col-sm-4
+            .circle-tile
+                .circle-tile-heading.green
+                    i.fa.fa-sign-in.fa-fw.fa-3x
+                .circle-tile-content.green
+                    .circle-tile-number.text-faded.p-0
+                        h4=t('common:homepage.stats.entrances')
+                    .circle-tile-number.text-faded {{stat.total_entrances}}
+                    .row
+                        .col-sm-6
+                            .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
+                            .circle-tile-number.text-faded {{stat.last_24h_entrance}}
+                        .col-sm-6
+                            .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
+                            .circle-tile-number.text-faded {{stat.last_1h_entrance}}
+        .col-sm-4
+            .circle-tile
+                .circle-tile-heading.red
+                    i.fa.fa-sign-in.fa-rotate-180.fa-fw.fa-3x
+                .circle-tile-content.red
+                    .circle-tile-number.text-faded.p-0
+                        h4=t('common:homepage.stats.exits')
+                    .circle-tile-number.text-faded {{stat.total_exits}}
+                    .row
+                        .col-sm-6
+                            .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
+                            .circle-tile-number.text-faded {{stat.last_24h_exit}}
+                        .col-sm-6
+                            .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
+                            .circle-tile-number.text-faded {{stat.last_1h_exit}}
+        .col-sm-4
+            .circle-tile
+                .circle-tile-heading.orange
+                    i.fa.fa-ticket.fa-fw.fa-3x
+                .circle-tile-content.orange
+                    .circle-tile-number.text-faded.p-0
+                        h4=t('common:homepage.stats.ticketing')
+                    .circle-tile-number.text-faded {{stat.ticketing}}
+                    .row
+                        .col-sm-6
+                            .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_24_hours')
+                            .circle-tile-number.text-faded {{stat.last_24h_entrance}}
+                        .col-sm-6
+                            .circle-tile-description.text-faded.h5=t('common:homepage.stats.last_1h')
+                            .circle-tile-number.text-faded {{stat.last_1h_entrance}}
 
