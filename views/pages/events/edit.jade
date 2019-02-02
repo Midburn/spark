@@ -40,7 +40,7 @@ block content
 
                 }
             }
-    div( ng-app="ngEvents")
+    div.container-fluid(ng-app="ngEvents" class=language == 'he' ? 'rtl' : '')
         .heading.card.card__shad
                 span.label.label-info # #{event.event_id}
                 h2 #{t(`${t_prefix}edit.title`)}: #{event.name}
