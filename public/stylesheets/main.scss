@@ -19,6 +19,7 @@ body {
     background-size: cover;
     font-family: 'Rubik', sans-serif;
     font-weight: 400;
+    color: $grape;
 }
 a {
     color: $primary-color;
@@ -81,6 +82,9 @@ textarea.form-control {
 
 .navbar {
     border: 0;
+    .nav-item, .nav-link, .dropdown-item {
+        color: #3f3356 !important;
+    }
 }
 
 .navbar-brand {
@@ -89,7 +93,6 @@ textarea.form-control {
     background-image: url("../images/midburn_logo.svg");
     background-repeat: no-repeat;
     background-position: -9px 5px;
-    color: black !important;
 }
 
 .navbar-nav>li>a {
