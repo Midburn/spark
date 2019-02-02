@@ -8,26 +8,41 @@ head
 
     //-     Styles      -//
     block styles
-        link(rel="stylesheet", href="/node_modules/bootstrap/dist/css/bootstrap.min.css")
-        link(rel="stylesheet", href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css")
-        if (language === 'he')
-            link(rel="stylesheet", href="/node_modules/bootstrap-rtl/dist/css/bootstrap-rtl.css")
+        //- link(rel="stylesheet", href="/node_modules/bootstrap/dist/css/bootstrap.min.css")
+        //- link(rel="stylesheet", href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css")
+        //- if (language === 'he')
+        //-     link(rel="stylesheet", href="/node_modules/bootstrap-rtl/dist/css/bootstrap-rtl.css")
+        //- <!-- Font Awesome -->
+        link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css")
+        //- <!-- Bootstrap core CSS -->
+        link(href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet")
+        //- <!-- Material Design Bootstrap -->
+        link(href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.0/css/mdb.min.css" rel="stylesheet")
         link(rel='stylesheet', href='/node_modules/font-awesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/node_modules/bootstrap-v4-rtl/dist/css/bootstrap-rtl.css')
         link(rel='stylesheet', href='/node_modules/ui-select/dist/select.min.css')
         link(rel='stylesheet', href='/node_modules/selectize.js/dist/css/selectize.default.css')
         link(rel="stylesheet", href="/stylesheets/main.scss" )
+        link(href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet")
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}')
     div#cover
     block wrapper
     //-     Scripts     -//
-    script(src='/node_modules/jquery/dist/jquery.min.js')
-    script(src="/node_modules/bootstrap/dist/js/bootstrap.min.js")
-    script(src='/node_modules/bootstrap-validator/dist/validator.min.js')
-    script(src='/node_modules/bootstrap-table/dist/bootstrap-table.min.js')
-    if (language === 'he')
-        script(src='/node_modules/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
-
+    //- script(src='/node_modules/jquery/dist/jquery.min.js')
+    //- script(src="/node_modules/bootstrap/dist/js/bootstrap.min.js")
+    //- script(src='/node_modules/bootstrap-validator/dist/validator.min.js')
+    //- script(src='/node_modules/bootstrap-table/dist/bootstrap-table.min.js')
+    //- if (language === 'he')
+    //-     script(src='/node_modules/bootstrap-table/dist/locale/bootstrap-table-he-IL.min.js')
+    //- <!-- JQuery -->
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+    //- <!-- Bootstrap tooltips -->
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js")
+    //- <!-- Bootstrap core JavaScript -->
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.min.js")
+    //- <!-- MDB core JavaScript -->
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.0/js/mdb.min.js")
     // External packages
     script(src='/node_modules/sweetalert/dist/sweetalert.min.js')
     script(src='/node_modules/lodash/lodash.js')

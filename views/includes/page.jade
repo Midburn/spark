@@ -1,6 +1,6 @@
 extends layout
 block wrapper
-    #{user.newNav}
+    div(class=language == 'he' ? 'rtl' : undefined)
     if (user.newNav)
         include top-nav-new
     else

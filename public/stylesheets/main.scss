@@ -17,6 +17,8 @@ body {
     background-position: top center;
     background-attachment: fixed;
     background-size: cover;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
 }
 a {
     color: $primary-color;
@@ -82,11 +84,11 @@ textarea.form-control {
 }
 
 .navbar-brand {
-    background-size: 50px;
-    padding-left: 30px;
+    background-size: 55px;
+    padding-left: 35px;
     background-image: url("../images/midburn_logo.svg");
     background-repeat: no-repeat;
-    background-position: -9px 12px;
+    background-position: -9px 5px;
     color: black !important;
 }
 
@@ -109,6 +111,12 @@ li.dropdown > ul > li > a > span {
 
 li.dropdown > ul > li > a > span {
     padding-right: 0.5em;
+}
+
+li.dropdown-item {
+    &:hover {
+        background-color: $light-yellow;
+    }
 }
 /*FIXING COL (HEB)*/
 @media screen and (min-width: 992px) {
@@ -165,6 +173,11 @@ li.dropdown > ul > li > a > span {
 
 .btn-xs {
     margin: 4px;
+}
+
+.btn {
+    max-height: 50px;
+    margin: 0;
 }
 
 // fix position of select dropdown arrow
@@ -331,4 +344,8 @@ div.selectize-input > div > span > span {
 }
 td {
     word-wrap: break-word;
+}
+
+.dropdown-menu {
+    width: max-content;
 }
