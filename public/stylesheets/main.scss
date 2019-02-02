@@ -8,6 +8,9 @@
 // hide this after getting theme from session storage and page load (public/scripts/camps.js)
 #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #ffffff; z-index:9999;}
 
+.hidden { 
+    display: none;
+}
 body {
     display: flex;
     flex-direction: column;
