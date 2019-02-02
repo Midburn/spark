@@ -1,148 +1,148 @@
 extends ../../includes/page
 block content
-    .camps.camp_admin_index(ng-app="ngCamps")
-        script.
-            var groups_prototype="#{__groups_prototype}";
-        if controllDates
+    .container-fluid(class=language == 'he' ? 'rtl' : undefined)
+        .camps.camp_admin_index(ng-app="ngCamps")
             script.
-                const controllDates = {
-                    appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
-                    appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
-                    group_sale_tickets_allocation_start: '#{controllDates.group_sale_tickets_allocation_start}',
-                    group_sale_tickets_allocation_end: '#{controllDates.group_sale_tickets_allocation_end}',
-                    early_arrivals_start: '#{controllDates.early_arrivals_start}',
-                    early_arrivals_end: '#{controllDates.early_arrivals_end}'
-                }
-        .container.col-md-12
-            h1=t(t_prefix+'dash.title')
-            p.lead.text-muted=t(t_prefix+'dash.desc')
-        .controls.row
-            .col-xs-12
-                div.block-center
-                    div.input-group
-                        a.Btn.Btn__default.card-switcher#1(href=`/${language}/camps-admin/manage`, role='button')=t(t_prefix+'admin_index.all_camps')
-                        a.Btn.Btn__transparent.card-switcher#2(href=`/${language}/camps-admin/members`, role='button')=t(t_prefix+'admin_index.all_members')
-                        if isCamp
-                            a.Btn.Btn__transparent.card-switcher#3(href=`/${language}/camps-admin/docs`, role='button')=t(t_prefix+'admin_index.docs')
-                        if isCamp || isProd
-                            a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
-                                span.glyphicon.glyphicon-plus(aria-hidden="true")
-                                span=t(t_prefix+'admin_index.new')
+                var groups_prototype="#{__groups_prototype}";
+            if controllDates
+                script.
+                    const controllDates = {
+                        appreciation_tickets_allocation_start : '#{controllDates.appreciation_tickets_allocation_start}',
+                        appreciation_tickets_allocation_end : '#{controllDates.appreciation_tickets_allocation_end}',
+                        group_sale_tickets_allocation_start: '#{controllDates.group_sale_tickets_allocation_start}',
+                        group_sale_tickets_allocation_end: '#{controllDates.group_sale_tickets_allocation_end}',
+                        early_arrivals_start: '#{controllDates.early_arrivals_start}',
+                        early_arrivals_end: '#{controllDates.early_arrivals_end}'
+                    }
+            .container.col-md-12
+                h1=t(t_prefix+'dash.title')
+                p.lead.text-white=t(t_prefix+'dash.desc')
+            .controls.row
+                .col-xs-12
+                    div.block-center
+                        div.input-group
+                            a.Btn.Btn__default.card-switcher#1(href=`/${language}/camps-admin/manage`, role='button')=t(t_prefix+'admin_index.all_camps')
+                            a.Btn.Btn__transparent.card-switcher#2(href=`/${language}/camps-admin/members`, role='button')=t(t_prefix+'admin_index.all_members')
+                            if isCamp
+                                a.Btn.Btn__transparent.card-switcher#3(href=`/${language}/camps-admin/docs`, role='button')=t(t_prefix+'admin_index.docs')
+                            if isCamp || isProd
+                                a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
+                                    span.glyphicon.glyphicon-plus(aria-hidden="true")
+                                    span=t(t_prefix+'admin_index.new')
 
-        .cards--wrapper.card__shad
-            //- Card 1 : Manage All Camps
-            .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageCampsController")
-                h2=t(t_prefix+'admin_index.all_camps')
-                .controls.row.m-0
-                    .col-xs-12.col-md-9.p-0
-                        input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix + 'stats.search')}")
-                    .col-xs-12.col-md-3
-                        a.Btn.cursor-p(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
-                            button.btn.btn-xs
+            .cards--wrapper.card__shad
+                //- Card 1 : Manage All Camps
+                .card.card-first.card__padding--even.col-xs-12.table-responsive(ng-controller="manageCampsController")
+                    h2=t(t_prefix+'admin_index.all_camps')
+                    .controls.row.m-0
+                        .col-xs-12.col-md-9.p-0
+                            input.form-control(id='camps_list_search_camp', ng-model="searchCamp", type="text", placeholder="#{t(t_prefix + 'stats.search')}")
+                        .col-xs-12.col-md-3
+                            a.Btn.cursor-p.btn.btn-xs.btn-default(ng-href='/camps_csv/pre_sale_tickets') &nbsp;
                                 span=t('camps:stats.dumpcampsdata')
 
 
-                     // a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
-                        span.glyphicon.glyphicon-plus(aria-hidden="true")
-                        span=t(t_prefix+'stats.dumpcampsdata')
-                table.table.table-stats.table-striped.table-hover#admin_camps
-                    thead
-                        tr.headers
-                            th(ng-click='changeOrderBy("id")') #
-                            th.camp_name_en(ng-click='changeOrderBy("name")')=t(t_prefix+'stats.name_en')
-                            th.contact_person(ng-click='changeOrderBy("contact_person")')=t(t_prefix+'stats.contact_person')
-                            th.status(ng-click='changeOrderBy("status")')=t(t_prefix+'stats.status')
-                            th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'stats.last_update')
-                            //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t(t_prefix+'stats.created_at')
-                            th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'stats.published')
-                            th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t('camps:stats.entrance_quota')
-                            th.pre_sale_tickets_quota(ng-click='changeOrderBy("pre_sale_tickets_quota")')=t('camps:stats.pre_sale_tickets_quota')
-                            th.group_sale_tickets_quota(ng-click='changeOrderBy("group_sale_tickets_quota")')=t('camps:stats.group_sale_tickets_quota')
-                            //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
-                            th()=t(t_prefix+'members.actions')
-                            //- th.admin-edit=t(t_prefix+'stats.edit')
-                            //- th.admin-remove=t(t_prefix+'stats.remove')
-                    tbody
-                        - var filteredCamps = ['theme_camp', 'prod_dep'];
-                        tr(ng-repeat="camp in camps | filter: searchCamp | filter: inArray:filteredCamps:'__prototype' | orderBy: orderCamps")
-                            td {{ camp.id }}
-                            td
-                                a(ng-href=`/${language}/camps/{{camp.id}}`)
-                                    span {{camp.camp_name_en}}
-                                br
-                                a(ng-href=`/${language}/camps/{{camp.id}}`)
-                                    span {{camp.camp_name_he}}
-                            td {{ camp.contact_person_name }}
-                            td(class="text-center")
-                                span(ng-if="camp.status == 'open'", class='glyphicon glyphicon-ok text-green', data-toggle="tooltip" data-placement="right" title="open")
-                                span(ng-if="camp.status == 'closed'", class='glyphicon glyphicon-remove text-red', data-toggle="tooltip" data-placement="right" title="closed")
-                                span(ng-if="camp.status == 'deleted'", class='glyphicon glyphicon-trash text-red', data-toggle="tooltip" data-placement="right" title="deleted")
-                                span(ng-if="camp.status == 'inactive'", class='glyphicon glyphicon-exclamation-sign text-yellow', data-toggle="tooltip" data-placement="right" title="inactive")
-                                span(ng-if="camp.status != 'open' && camp.status != 'closed' && camp.status != 'deleted' && camp.status != 'inactive' ") {{camp.status}}
-                            td {{camp.updated_at | date: "dd/MM/yyyy, HH:mm" }}
-                            td {{ camp.web_published }}
-                            td
-                                input( type="number" ng-disabled="!isInEarlyArrivalRange()" name="entrance_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.entrance_quota !== null ? camp.entrance_quota : 0" ng-model="camp.entrance_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updateEarlyArrivalQuota(camp.id,camp.entrance_quota_input)')
-                            td
-                                input( type="number" ng-disabled="!isInDateRange()" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)')
-                            td
-                                input( type="number" ng-disabled="!isInDateRange(true)" name="gds_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.group_sale_tickets_quota !== null ? camp.group_sale_tickets_quota : 0" ng-model="camp.group_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id, camp.group_sale_tickets_quota_input, true)')
-                            td
-                                //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
-                                    span(class='glyphicon glyphicon-pencil')
-                                    span(class='sr-only' aria-hidden='true') Edit Camp
-                                //- button.Btn(ng-click='removeCamp(camp.id)')
-                                    span(class='glyphicon glyphicon-trash')
-                                    span(class='sr-only' aria-hidden='true') Remove Camp
-                                    //- i(class='fa fa-facebook-official')
-                                a(ng-href='{{camp.facebook_page_url}}', target='_blank')
-                                    button.btn.btn-xs
-                                        span(class='fa fa-facebook-official')
-                                if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
-                                    a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
-                                        button.btn.btn-xs
-                                            span(class='glyphicon glyphicon-pencil')
-                                            =t('camps:stats.edit')
-                                a.cursor-p(ng-click='removeCamp(camp.id)')
-                                    button.btn.btn-xs
+                        // a.Btn.Btn__green.card-switcher#4(href=`/${language}/camps-admin/new`, role='button')
+                            span.glyphicon.glyphicon-plus(aria-hidden="true")
+                            span=t(t_prefix+'stats.dumpcampsdata')
+                    table.table.table-stats.table-striped.table-hover.table-responsive.text-nowrap#admin_camps
+                        thead
+                            tr.headers
+                                th(ng-click='changeOrderBy("id")') #
+                                th.camp_name_en(ng-click='changeOrderBy("name")')=t(t_prefix+'stats.name_en')
+                                th.contact_person(ng-click='changeOrderBy("contact_person")')=t(t_prefix+'stats.contact_person')
+                                th.status(ng-click='changeOrderBy("status")')=t(t_prefix+'stats.status')
+                                th.hidden-xs(ng-click='changeOrderBy("last_update")')=t(t_prefix+'stats.last_update')
+                                //- th.hidden-xs(ng-click='changeOrderBy("created_at")')=t(t_prefix+'stats.created_at')
+                                th.published(ng-click='changeOrderBy("published")')=t(t_prefix+'stats.published')
+                                th.entrance_quota(ng-click='changeOrderBy("entrance_quota")')=t('camps:stats.entrance_quota')
+                                th.pre_sale_tickets_quota(ng-click='changeOrderBy("pre_sale_tickets_quota")')=t('camps:stats.pre_sale_tickets_quota')
+                                th.group_sale_tickets_quota(ng-click='changeOrderBy("group_sale_tickets_quota")')=t('camps:stats.group_sale_tickets_quota')
+                                //- th.facebook_page_url=t(t_prefix+'stats.facebook_page_url')
+                                th()=t(t_prefix+'members.actions')
+                                //- th.admin-edit=t(t_prefix+'stats.edit')
+                                //- th.admin-remove=t(t_prefix+'stats.remove')
+                        tbody
+                            - var filteredCamps = ['theme_camp', 'prod_dep'];
+                            tr(ng-repeat="camp in camps | filter: searchCamp | filter: inArray:filteredCamps:'__prototype' | orderBy: orderCamps")
+                                td {{ camp.id }}
+                                td
+                                    a(ng-href=`/${language}/camps/{{camp.id}}`)
+                                        span {{camp.camp_name_en}}
+                                    br
+                                    a(ng-href=`/${language}/camps/{{camp.id}}`)
+                                        span {{camp.camp_name_he}}
+                                td {{ camp.contact_person_name }}
+                                td(class="text-center")
+                                    span(ng-if="camp.status == 'open'", class='glyphicon glyphicon-ok text-green', data-toggle="tooltip" data-placement="right" title="open")
+                                    span(ng-if="camp.status == 'closed'", class='glyphicon glyphicon-remove text-red', data-toggle="tooltip" data-placement="right" title="closed")
+                                    span(ng-if="camp.status == 'deleted'", class='glyphicon glyphicon-trash text-red', data-toggle="tooltip" data-placement="right" title="deleted")
+                                    span(ng-if="camp.status == 'inactive'", class='glyphicon glyphicon-exclamation-sign text-yellow', data-toggle="tooltip" data-placement="right" title="inactive")
+                                    span(ng-if="camp.status != 'open' && camp.status != 'closed' && camp.status != 'deleted' && camp.status != 'inactive' ") {{camp.status}}
+                                td {{camp.updated_at | date: "dd/MM/yyyy, HH:mm" }}
+                                td {{ camp.web_published }}
+                                td
+                                    input( type="number" ng-disabled="!isInEarlyArrivalRange()" name="entrance_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.entrance_quota !== null ? camp.entrance_quota : 0" ng-model="camp.entrance_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updateEarlyArrivalQuota(camp.id,camp.entrance_quota_input)')
+                                td
+                                    input( type="number" ng-disabled="!isInDateRange()" name="pre_sale_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.pre_sale_tickets_quota !== null ? camp.pre_sale_tickets_quota : 0" ng-model="camp.pre_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id,camp.pre_sale_tickets_quota_input)')
+                                td
+                                    input( type="number" ng-disabled="!isInDateRange(true)" name="gds_tickets_quota" ondblclick="this.readOnly=''" readonly="true" ng-value="camp.group_sale_tickets_quota !== null ? camp.group_sale_tickets_quota : 0" ng-model="camp.group_sale_tickets_quota_input" ng-model-options="{updateOn : 'change'}"  ng-change='updatePreSaleQuota(camp.id, camp.group_sale_tickets_quota_input, true)')
+                                td
+                                    //- a.Btn(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
+                                        span(class='glyphicon glyphicon-pencil')
+                                        span(class='sr-only' aria-hidden='true') Edit Camp
+                                    //- button.Btn(ng-click='removeCamp(camp.id)')
                                         span(class='glyphicon glyphicon-trash')
-                                        =t('camps:stats.remove')
-                            //- td
+                                        span(class='sr-only' aria-hidden='true') Remove Camp
+                                        //- i(class='fa fa-facebook-official')
+                                    a(ng-href='{{camp.facebook_page_url}}', target='_blank')
+                                        button.btn.btn-xs.btn-primary.ml-1.mr-1
+                                            span(class='fa fa-facebook-official')
+                                    if (user.isAdmin || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))
+                                        a.cursor-p(ng-href=`/${language}/camps/{{camp.id}}` + '/edit')
+                                            button.btn.btn-xs.btn-primary.ml-1.mr-1
+                                                span(class='glyphicon glyphicon-pencil')
+                                                =t('camps:stats.edit')
+                                    a.cursor-p(ng-click='removeCamp(camp.id)')
+                                        button.btn.btn-xs.btn-primary.ml-1.mr-1
+                                            span(class='glyphicon glyphicon-trash')
+                                            =t('camps:stats.remove')
+                                //- td
 
-            //- Card 2: Manage Members
-            .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
-                include partials/members_table_statistics
-                .controls.row
-                    .col-xs-12.col-md-5
-                        ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
-                            if(language === 'en')
-                                ui-select-match(placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_en}}
-                                ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
-                                    small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
-                                    span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
-                            else
-                                ui-select-match(dir='rtl', placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_he}}
-                                ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
-                                    small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
-                                    span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
-                    .col-xs-12.col-md-7
-                        input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t(t_prefix+'members.search')}")
-                include partials/members_table
+                //- Card 2: Manage Members
+                .card.card-second.card__padding--even.card-hide.col-xs-12.table-responsive(ng-controller="membersController")
+                    include partials/members_table_statistics
+                    .controls.row
+                        .col-xs-12.col-md-5
+                            ui-select(ng-model='camp', theme='selectize', title='Choose a camp', ng-change="getMembers(camp.id)")
+                                if(language === 'en')
+                                    ui-select-match(placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_en}}
+                                    ui-select-choices(group-by="'camp.camp_name_en'", repeat='camp in camps | filter: $select.search')
+                                        small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                        span(ng-bind-html='camp.camp_name_en | highlight: $select.search')
+                                else
+                                    ui-select-match(dir='rtl', placeholder="#{t(t_prefix+'members.choose_camp')}") {{$select.selected.camp_name_he}}
+                                    ui-select-choices(group-by="'camp.camp_name_he'", repeat='camp in camps | filter: $select.search')
+                                        small.label.label-info(ng-bind-html='camp.id | highlight: $select.search')
+                                        span(ng-bind-html='camp.camp_name_he | highlight: $select.search')
+                        .col-xs-12.col-md-7
+                            input.form-control(id='camps_members_search_member', ng-model="searchMembers", type="text", placeholder="#{t(t_prefix+'members.search')}")
+                    include partials/members_table
 
-            //- Card 3: Files
-            .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive
-                h4=t(t_prefix+'admin_index.docs_table')
-                // TODO: where is the docs table ?
+                //- Card 3: Files
+                .card.card-third.card__padding--even.card-hide.col-xs-12.table-responsive
+                    h4=t(t_prefix+'admin_index.docs_table')
+                    // TODO: where is the docs table ?
 
-            //- Card 4: Create New Camp
-            .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
-                h2=t(t_prefix+'new.header_title')
-                h4=t(t_prefix+'new.name_choosing_title')
-                .col-sm-8.col-xs-12.p-0
-                    .pos-r
-                        label=t(t_prefix+'new.name_en')
-                        input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
-                        span.indicator
-                            span.glyphicon
-                .col-sm-4.col-xs-12
-                    a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t('camps:btn_continue')
+                //- Card 4: Create New Camp
+                .choose_name.card.card-forth.card__padding--even.card-hide.col-xs-12
+                    h2=t(t_prefix+'new.header_title')
+                    h4=t(t_prefix+'new.name_choosing_title')
+                    .col-sm-8.col-xs-12.p-0
+                        .pos-r
+                            label=t(t_prefix+'new.name_en')
+                            input(type="text", class="form-control", name="camp_name_en", autofocus="true", required)
+                            span.indicator
+                                span.glyphicon
+                    .col-sm-4.col-xs-12
+                        a.Btn.Btn__green.Btn__inline.btn.disabled(id="check_camp_name", role='button')=t('camps:btn_continue')
