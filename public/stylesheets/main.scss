@@ -332,3 +332,9 @@ div.selectize-input > div > span > span {
 td {
     word-wrap: break-word;
 }
+
+.dropdown {
+    &.disabled {
+        pointer-events: none;
+    }
+}

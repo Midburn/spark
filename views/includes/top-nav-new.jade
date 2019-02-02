@@ -9,7 +9,13 @@ nav.navbar.navbar-default.navbar-fixed-top
             a.navbar-brand( href="/#{language}/home" ) Spark
         #navbar.navbar-collapse.collapse
             ul.nav.navbar-nav
-
+                if(user.isAdmin || user.isGateManager)
+                li.dropdown.disabled
+                    a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')
+                        span.caret
+                li.dropdown.disabled
+                    a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')
+                        span.caret
                 li( class="#{path[2] === 'volunteering' ? 'active' : '' }" )
                     a( href="/#{language}/volunteering" )=t('volunteering')
                 if(user.isAdmin || user.isGateManager)
