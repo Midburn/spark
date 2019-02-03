@@ -203,3 +203,35 @@ a[ng-click] {
     display: inline-block;
     margin: 0 10px 0 10px !important;
 }
+
+// icons
+
+@font-face {
+    font-family: 'midburn';
+    src:
+        url('../fonts/midburn.ttf?96tulp') format('truetype'),
+        url('../fonts/midburn.woff?96tulp') format('woff'),
+        url('../fonts/midburn.svg?96tulp#midburn') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'midburn' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fire:before {
+    content: "\e900";
+}
+
+

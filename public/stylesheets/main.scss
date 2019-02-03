@@ -8,7 +8,7 @@
 // hide this after getting theme from session storage and page load (public/scripts/camps.js)
 #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #ffffff; z-index:9999;}
 
-.hidden { 
+.hidden {
     display: none;
 }
 body {
@@ -24,6 +24,12 @@ body {
     font-weight: 400;
     color: $grape;
 }
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 a {
     color: $primary-color;
     &:hover {
@@ -352,6 +358,19 @@ td {
     word-wrap: break-word;
 }
 
+.dropdown {
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.3;
+    }
+}
+.badge {
+    box-shadow: unset;
+    padding: 0.4rem 0.4em;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+  }
 .dropdown-menu {
     width: max-content;
 }
