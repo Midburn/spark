@@ -368,6 +368,8 @@ td {
     box-shadow: unset;
     padding: 0.4rem 0.4em;
     font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
   }
 .dropdown-menu {
     width: max-content;
