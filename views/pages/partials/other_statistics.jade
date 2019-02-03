@@ -2,7 +2,7 @@
     .col-md-12.text-center
         h3=t('common:homepage.stats.other_stats')
 .row
-    .col-xs-4
+    .col-sm-4
         .circle-tile
             .circle-tile-heading.blue
                 i.fa.fa-users.fa-fw.fa-3x
@@ -10,7 +10,7 @@
                 .circle-tile-description.text-faded
                     h5=t('common:homepage.stats.members_in_camps')
                 .circle-tile-number.text-faded {{stat.groups.theme_camp.total}}
-    .col-xs-4
+    .col-sm-4
         .circle-tile
             .circle-tile-heading.purple
                 i.fa.fa-paint-brush.fa-fw.fa-3x
@@ -19,7 +19,7 @@
                     h5=t('common:homepage.stats.participants_in_art_installations')
                 .circle-tile-number.text-faded {{stat.groups.art_installation.total}}
 
-    .col-xs-4
+    .col-sm-4
         .circle-tile
             .circle-tile-heading.pink
                 i.fa.fa-heart.fa-fw.fa-3x

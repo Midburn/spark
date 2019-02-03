@@ -10,17 +10,20 @@ $dark-gray: #7F8C8D;
 $gray: #95A5A6;
 $light-gray: #BDC3C7;
 $dark-blue: #34495E;
-$blue: #3491f1;
+$blue: #6979f8;
 $light-blue: #61a6ef;
 $teal: #3ea4a6;
 $green: #16A085;
 $light-green: #1dd6b2;
 $yellow: #F1C40F;;
+$light-yellow: #fff8e7;
 $orange: #F39C12;
 $red:  #E74C3C;
 $light-red: #ff6b5b;
 $purple:  #8E44AD;
 $pink: #d6569d;
+$grape: #3f3356;
+
 .dark-blue {
     background-color: $dark-blue
 }
@@ -62,7 +65,8 @@ $pink: #d6569d;
     color: $green;
 }
 .text-blue {
-    color: $blue;
+    color: $blue !important;
+    border-color: $blue !important;
 }
 .text-orange {
     color: $orange;

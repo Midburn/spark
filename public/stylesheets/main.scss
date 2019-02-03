@@ -8,6 +8,9 @@
 // hide this after getting theme from session storage and page load (public/scripts/camps.js)
 #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #ffffff; z-index:9999;}
 
+.hidden { 
+    display: none;
+}
 body {
     display: flex;
     flex-direction: column;
@@ -17,6 +20,9 @@ body {
     background-position: top center;
     background-attachment: fixed;
     background-size: cover;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
+    color: $grape;
 }
 a {
     color: $primary-color;
@@ -79,15 +85,17 @@ textarea.form-control {
 
 .navbar {
     border: 0;
+    .nav-item, .nav-link, .dropdown-item {
+        color: #3f3356 !important;
+    }
 }
 
 .navbar-brand {
-    background-size: 50px;
-    padding-left: 30px;
+    background-size: 55px;
+    padding-left: 35px;
     background-image: url("../images/midburn_logo.svg");
     background-repeat: no-repeat;
-    background-position: -9px 12px;
-    color: black !important;
+    background-position: -9px 5px;
 }
 
 .navbar-nav>li>a {
@@ -109,6 +117,12 @@ li.dropdown > ul > li > a > span {
 
 li.dropdown > ul > li > a > span {
     padding-right: 0.5em;
+}
+
+li.dropdown-item {
+    &:hover {
+        background-color: $light-yellow;
+    }
 }
 /*FIXING COL (HEB)*/
 @media screen and (min-width: 992px) {
@@ -165,6 +179,11 @@ li.dropdown > ul > li > a > span {
 
 .btn-xs {
     margin: 4px;
+}
+
+.btn {
+    max-height: 50px;
+    margin: 0;
 }
 
 // fix position of select dropdown arrow
@@ -331,4 +350,8 @@ div.selectize-input > div > span > span {
 }
 td {
     word-wrap: break-word;
+}
+
+.dropdown-menu {
+    width: max-content;
 }

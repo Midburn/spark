@@ -1,7 +1,7 @@
 /**
  * GLOBALS
  */
-$(window).load(function () {
+$(window).on('load', function () {
     var isLight = sessionStorage.getItem("theme");
     $('body').toggleClass('light', isLight === 'light');
     $("#cover").fadeOut(200);
