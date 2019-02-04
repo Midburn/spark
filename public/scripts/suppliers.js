@@ -39,30 +39,30 @@ $input.keydown(function () {
 
 function doneTyping_(event) {
 
-    const val = event.target.value,
-        lang = $('body').attr('lang'),
-        status = $(".choose_name span.indicator span.glyphicon"),
-        input = $input,
-        btn = $('#check_supplier_id'),
-        phoneREGX = /^\d{1,9}$/;
+    // const val = event.target.value,
+    //     lang = $('body').attr('lang'),
+    //     status = $(".choose_name span.indicator span.glyphicon"),
+    //     input = $input,
+    //     btn = $('#check_supplier_id'),
+    //     phoneREGX = /^\d{1,9}$/;
 
-        if ((phoneREGX.test(val))) {
-            const data = $.get('/suppliers/' + val)
-                .done(function() {
-                    if (data.status === 204) {
-                        input.removeClass('error');
-                        status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                        btn.removeClass('disabled btn').attr('href', '/' + lang + '/suppliers/new?c=' + val);
-                    }                 
-                })
-                .fail(function(error) {
-                    jsonError = error.data.data.message;
-                    swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
-                })    
-        }
-        input.addClass('error');
-        status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
-        btn.addClass('disabled btn').removeAttr('href');
+    //     if ((phoneREGX.test(val))) {
+    //         const data = $.get('/suppliers/' + val)
+    //             .done(function() {
+    //                 if (data.status === 204) {
+    //                     input.removeClass('error');
+    //                     status.removeClass('glyphicon-remove').addClass('glyphicon-ok');
+    //                     btn.removeClass('disabled btn').attr('href', '/' + lang + '/suppliers/new?c=' + val);
+    //                 }                 
+    //             })
+    //             .fail(function(error) {
+    //                 jsonError = error.data.data.message;
+    //                 swal("Error!", `Something went wrong, please try again later \n ${jsonError}`, "error");
+    //             })    
+    //     }
+    //     input.addClass('error');
+    //     status.removeClass('glyphicon-ok').addClass('glyphicon-remove');
+    //     btn.addClass('disabled btn').removeAttr('href');
 }
 
 function getUserTemplate(data) {
