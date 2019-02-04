@@ -4,16 +4,13 @@ nav.navbar.navbar-light.fixed-top.navbar-expand-md.white(class=language == 'he' 
         ul.navbar-nav.mr-auto
             li.nav-item.dropdown.disabled
                     a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.camps')
-                        span.caret
             li.nav-item.dropdown.disabled
                     a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.arts')
-                        span.caret
             li.nav-item( class="#{path[2] === 'volunteering' ? '' : '' }" )
                 a.nav-link( href="/#{language}/volunteering" )=t('volunteering')
             if(user.isAdmin || user.isGateManager)
                 li.nav-item.dropdown
-                    a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')
-                        span.caret
+                    a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.gate')              
                     ul.dropdown-menu
                         li.dropdown-item( class="#{path.slice(2).join('-') === 'gate' ? '' : '' }" )
                             a.nav-link( href="/#{language}/gate" )=t('gate:entries')
@@ -34,7 +31,6 @@ nav.navbar.navbar-light.fixed-top.navbar-expand-md.white(class=language == 'he' 
             if(user.isAllowedToViewSuppliers || user.isAdmin)
                 li.nav-item.dropdown
                     a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.manage')
-                        span.caret
                     ul.dropdown-menu
                         if(user.isCampsAdmin || user.isAdmin)
                             li.dropdown-item( class="#{path[2] === 'campsapp' ? '' : '' }" )
@@ -58,7 +54,6 @@ nav.navbar.navbar-light.fixed-top.navbar-expand-md.white(class=language == 'he' 
                         span.badge.badge-warning.yellow
                             span.icon-fire
                             span=t('common:new')
-                        span.caret
                     ul.dropdown-menu
                         li.dropdown-item
                             a.nav-link( href="/#{language}/campsapp?path=camps/allocations" )=t('common:top-nav.allocations-camps')
