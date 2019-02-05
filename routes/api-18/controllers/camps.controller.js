@@ -41,6 +41,7 @@ class CampsController {
         this.getPublishedCamps = this.getPublishedCamps.bind(this);
         this.getArtInstallations = this.getArtInstallations.bind(this);
         this.getCampsTickets = this.getCampsTickets.bind(this);
+        this.getMultiCampsTickets = this.getMultiCampsTickets.bind(this);
         this.getCamp = this.getCamp.bind(this);
     }
 
@@ -248,6 +249,44 @@ class CampsController {
                 }
             }
         }
+        return res.status(200).json({tickets: tickets})
+    }
+
+    async getMultiCampsTickets(req, res, next) {
+        const camp_ids = req.body.ids;
+        console.log(camp_ids);
+        const event_id = req.query.eventId;
+        let camps = await Camp.forge()
+        .where('id', 'in', camp_ids).fetchAll({withRelated: ['members']});
+        if (!camps) {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            return next(new Error('Camp Id does not exist'));
+        }
+        let tickets = [];
+        for (const camp of camps.toJSON()) {
+            for (const member of camp.members) {
+                const memberBoughtTickets = (await Ticket.forge({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
+                let memberHoldingTickets = (await Ticket.forge({buyer_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
+                if (memberBoughtTickets) {
+                    let method = Array.isArray(memberBoughtTickets) ? 'concat' : 'push';
+                    tickets[method](memberBoughtTickets);
+                }
+                if (memberHoldingTickets) {
+                    const isArray = Array.isArray(memberHoldingTickets);
+                    let method = isArray ? 'concat' : 'push';
+                    if (isArray) {
+                        memberHoldingTickets.filter(ticket => !memberBoughtTickets.find(t => t.ticket_id === ticket.ticket_id));
+                    } else if (memberBoughtTickets.ticket_id === memberHoldingTickets.ticket_id) {
+                        //;
+                    } else {
+                        tickets[method](memberHoldingTickets);
+                    }
+                }
+            }
+        }
+        
         return res.status(200).json({tickets: tickets})
     }
 
