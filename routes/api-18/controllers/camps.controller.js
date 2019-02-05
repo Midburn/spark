@@ -254,7 +254,6 @@ class CampsController {
 
     async getMultiCampsTickets(req, res, next) {
         const camp_ids = req.body.ids;
-        console.log(camp_ids);
         const event_id = req.query.eventId;
         let camps = await Camp.forge()
         .where('id', 'in', camp_ids).fetchAll({withRelated: ['members']});
@@ -264,30 +263,29 @@ class CampsController {
              */
             return next(new Error('Camp Id does not exist'));
         }
-        let tickets = [];
-        for (const camp of camps.toJSON()) {
-            for (const member of camp.members) {
-                const memberBoughtTickets = (await Ticket.forge({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
-                let memberHoldingTickets = (await Ticket.forge({buyer_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetch());
-                if (memberBoughtTickets) {
-                    let method = Array.isArray(memberBoughtTickets) ? 'concat' : 'push';
-                    tickets[method](memberBoughtTickets);
-                }
-                if (memberHoldingTickets) {
-                    const isArray = Array.isArray(memberHoldingTickets);
-                    let method = isArray ? 'concat' : 'push';
-                    if (isArray) {
-                        memberHoldingTickets.filter(ticket => !memberBoughtTickets.find(t => t.ticket_id === ticket.ticket_id));
-                    } else if (memberBoughtTickets.ticket_id === memberHoldingTickets.ticket_id) {
-                        //;
-                    } else {
-                        tickets[method](memberHoldingTickets);
+        try {
+            let tickets = {};
+            for (const camp of camps.toJSON()) {
+                tickets[camp.id] = [];
+                for (const member of camp.members) {
+                    let memberHoldingTickets = (await Ticket.forge().where({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetchAll());
+                    if (memberHoldingTickets) {
+                        tickets[camp.id] = [...tickets[camp.id], ...memberHoldingTickets.toJSON()];
                     }
                 }
+                tickets[camp.id] = tickets[camp.id].reduce((result, ticket) => {
+                    if (result.map(t => t.holder_id).includes(ticket.holder_id)) {
+                        return result;
+                    } else {
+                        result.push(ticket);
+                        return result;
+                    }
+                }, []);
             }
+            return res.status(200).json({tickets: tickets})
+        } catch (e) {
+            return next(e);
         }
-        
-        return res.status(200).json({tickets: tickets})
     }
 
     async deleteCampFile(req, res, next) {
