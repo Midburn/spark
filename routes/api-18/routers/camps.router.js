@@ -146,6 +146,13 @@ class CampsRouter {
             .get(campController.getCampsTickets);
 
         /**
+         * API: (POST) return camp members tickets
+         * request => /camps//members/count
+         */
+        this.router.route('/members/tickets')
+        .post(campController.getMultiCampsTickets);
+
+        /**
          * API: (GET) return camp members with details
          * request => /camps/1/members
          */

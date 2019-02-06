@@ -41,6 +41,7 @@ class CampsController {
         this.getPublishedCamps = this.getPublishedCamps.bind(this);
         this.getArtInstallations = this.getArtInstallations.bind(this);
         this.getCampsTickets = this.getCampsTickets.bind(this);
+        this.getMultiCampsTickets = this.getMultiCampsTickets.bind(this);
         this.getCamp = this.getCamp.bind(this);
     }
 
@@ -249,6 +250,42 @@ class CampsController {
             }
         }
         return res.status(200).json({tickets: tickets})
+    }
+
+    async getMultiCampsTickets(req, res, next) {
+        const camp_ids = req.body.ids;
+        const event_id = req.query.eventId;
+        let camps = await Camp.forge()
+        .where('id', 'in', camp_ids).fetchAll({withRelated: ['members']});
+        if (!camps) {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            return next(new Error('Camp Id does not exist'));
+        }
+        try {
+            let tickets = {};
+            for (const camp of camps.toJSON()) {
+                tickets[camp.id] = [];
+                for (const member of camp.members) {
+                    let memberHoldingTickets = (await Ticket.forge().where({holder_id: member.user_id, event_id: event_id || req.user.currentEventId}).fetchAll());
+                    if (memberHoldingTickets) {
+                        tickets[camp.id] = [...tickets[camp.id], ...memberHoldingTickets.toJSON()];
+                    }
+                }
+                tickets[camp.id] = tickets[camp.id].reduce((result, ticket) => {
+                    if (result.map(t => t.holder_id).includes(ticket.holder_id)) {
+                        return result;
+                    } else {
+                        result.push(ticket);
+                        return result;
+                    }
+                }, []);
+            }
+            return res.status(200).json({tickets: tickets})
+        } catch (e) {
+            return next(e);
+        }
     }
 
     async deleteCampFile(req, res, next) {
