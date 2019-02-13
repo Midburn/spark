@@ -31,6 +31,13 @@ class UsersRouter {
          */
         this.router.route('')
             .get(usersController.getUsers);
+        /**
+         * API: (GET) get user by email
+         * request => /users/email/:email
+         */
+        this.router.route('/email/:email')
+            .get(userRole.isApiLoggedIn(), usersController.getUserByEmail)
+
     }
 
     initMiddlewares() {
@@ -40,12 +47,6 @@ class UsersRouter {
         /**
          * Init the different paths for this router.
          */
-        /**
-         * API: (GET) get user by email
-         * request => /users/email/:email
-         */
-        this.router.route('/email/:email')
-            .get(usersController.getUserByEmail);
         /**
          * API: (GET) get user by id
          * request => /users/:id
