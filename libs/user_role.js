@@ -1,10 +1,20 @@
 const userRole = new (require('connect-roles'))();
-
+const config = require('config');
+const apiTokensConfig = config.get('api_tokens');
 // pre-defined roles constants / shortcuts - to allow autocompletion and prevent unexpected errors
 
 userRole.LOGGED_IN = 'logged in';
 userRole.isLoggedIn = function () {
     return userRole.is(userRole.LOGGED_IN);
+};
+
+userRole.isApiLoggedIn = function () {
+  return (req, res, next) => {
+      if (req.headers.secret === apiTokensConfig.token || req.headers.token === apiTokensConfig.token) {
+          return next();
+      }
+      return userRole.is(userRole.LOGGED_IN)(req, res, next);
+  }
 };
 
 userRole.ADMIN = 'admin';
