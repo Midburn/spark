@@ -53,8 +53,6 @@ block content
                                     span(ng-hide="'supplier_website_link' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                                 th( class="long_content" ng-click='changeOrderBy("supplier_midmarket_link")')=t(t_prefix+'edit_new.midmarket_link')
                                     span(ng-hide="'supplier_midmarket_link' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
-                                th(class="long_content"  ng-click='changeOrderBy("comments")')=t(t_prefix+'edit_new.comments')
-                                    span(ng-hide="'comments' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                                 th(ng-click='changeOrderBy("supplier_category")')=t(t_prefix+'edit_new.category')
                                     span(ng-hide="'supplier_category' !== orderSupppliers", ng-class="{'glyphicon': true, 'glyphicon-chevron-up': !isReverseOrder, 'glyphicon-chevron-down': isReverseOrder}")
                                 th()=t(t_prefix+'edit_new.actions')
@@ -73,7 +71,6 @@ block content
                                 td {{ supplier.updated_at | date: 'dd/MM/yy HH:mm'}}
                                 td {{ supplier.supplier_website_link }}
                                 td {{ supplier.supplier_midmarket_link }}
-                                td {{ supplier.comments }}
                                 td {{ supplier.supplier_category }}
                                 td
                                     if (user.isAdmin || user.isCampManager || (user.isCampsAdmin && (!controllDates.edit_camps_lastDate || new Date() < controllDates.edit_camps_lastDate)))

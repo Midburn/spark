@@ -3,7 +3,7 @@
         "name": "Company name",
         "search": "Search supplier",
         "suppliers": "Suppliers",
-        "new_supplier": "Create new supplier ",
+        "new_supplier": "Add new supplier ",
         "desc": "Suppliers management menu. here you can edit suppliers details and more...",
         "supplier": "Supplier",
         "editing": "Editing",
