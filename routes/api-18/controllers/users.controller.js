@@ -11,6 +11,7 @@ class UsersController {
          * Keep `this` reference
          */
         this.getUserById = this.getUserById.bind(this);
+        this.getUsersByIds = this.getUsersByIds.bind(this);
         this.getUserByEmail = this.getUserByEmail.bind(this);
         this.getUserBasic = this.getUserBasic.bind(this);
         this.getUsers = this.getUsers.bind(this);
@@ -22,6 +23,25 @@ class UsersController {
         User.forge({ user_id: req.params.id }).fetch({ columns: req.query.nameOnly ? 'name' : '*' }).then((user) => {
             if (user !== null) {
                 res.json({ name: user.get('name'), email: user.get('email'), cell_phone: user.get('cell_phone') })
+            } else {
+                res.status(404).json({ message: 'Not found' })
+            }
+        }).catch((err) => {
+            /**
+             * Pass the error to be handled by the generic error handler
+             */
+            return next(err);
+        });
+    };
+
+    getUsersByIds(req, res, next) {
+        User.where('user_id', 'IN', req.body.ids)
+            .fetchAll().then((dbUsers) => {
+            if (dbUsers !== null) {
+                const users = dbUsers.map(user => {
+                    return ({ user_id: user.get('user_id'), name: user.get('name'), email: user.get('email'), cell_phone: user.get('cell_phone') });
+                });
+                res.json({ users })
             } else {
                 res.status(404).json({ message: 'Not found' })
             }
