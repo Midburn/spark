@@ -15,7 +15,7 @@ class UsersRouter {
          * Error middleware - catch all `next(Error)` in a single place
          * keep this as the last middleware (and after all routes)
          */
-    this.router.use(helperService.errorMiddleware (this.prefix));
+    this.router.use(helperService.errorMiddleware(this.prefix));
   }
 
   initOpenRoutes () {
