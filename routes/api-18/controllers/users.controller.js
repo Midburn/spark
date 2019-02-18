@@ -19,7 +19,7 @@ class UsersController {
   }
 
   getUserName (userDb) {
-    const user = user.toJSON ();
+    const user = userDb.toJSON ();
     let name;
     if (user.first_name && user.last_name) {
       name = `${user.first_name} ${user.last_name}`;
