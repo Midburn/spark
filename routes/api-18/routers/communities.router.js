@@ -38,7 +38,11 @@ class CommunitiesRouter {
         }
         return res.status (response.statusCode).json (body);
       };
-      request[method] (this.COMMUNITIES_URL + req.url, {headers}, cb);
+      request[method] (
+        this.COMMUNITIES_URL + req.url,
+        {headers, json: true},
+        cb
+      );
     });
   }
 }
