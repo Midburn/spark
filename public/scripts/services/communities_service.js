@@ -10,15 +10,15 @@ suppliers_app.factory ('communitiesService', [
 
 function communitiesFactory ($http, $q) {
   const factory = {};
-  console.log ('Starting communities service');
-  $http
-    .get ('/communities/api/1')
-    .then (data => {
-      console.log (data);
-    })
-    .catch (e => {
-      console.log (e);
-    });
+  // Example for proxy request to communities.
+  // $http
+  //   .get ('/communities/api/v1/groups')
+  //   .then (data => {
+  //     console.log (data);
+  //   })
+  //   .catch (e => {
+  //     console.log (e);
+  //   });
 
   return factory;
 }
