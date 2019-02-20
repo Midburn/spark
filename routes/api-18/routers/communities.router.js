@@ -1,12 +1,14 @@
 const Router = require ('express').Router,
   constants = require ('../../../models/constants'),
   helperService = require ('../services').helperService,
+  request = require ('request'),
+  config = require ('config'),
   apiTokensConfig = config.get ('api_tokens');
 class CommunitiesRouter {
   constructor () {
     this.router = Router ();
     this.prefix = constants.ROUTER_PREFIXES.COMMUNITIES;
-    this.initOpenRoutes ();
+    this.initMiddlewares ();
     this.initRoutes ();
     /**
          * Error middleware - catch all `next(Error)` in a single place
@@ -23,16 +25,20 @@ class CommunitiesRouter {
   initMiddlewares () {}
 
   initRoutes () {
-    this.router.route.use (async (req, res, next) => {
-      try {
-        const communitiesResponse = await request
-          [req.method] (this.COMMUNITIES_URL + req.url)
-          .set ('Accept', 'application/json')
-          .set ('token', apiTokensConfig.token);
-        return res.status (200).json (communitiesResponse);
-      } catch (e) {
-        next (e);
-      }
+    console.log ('Communities router running');
+    this.router.use ((req, res, next) => {
+      const method = req.method.toLowerCase ();
+      const headers = {
+        Accept: 'application/json',
+        token: apiTokensConfig.token,
+      };
+      const cb = (err, response, body) => {
+        if (err) {
+          return next (err);
+        }
+        return res.status (response.statusCode).json (body);
+      };
+      request[method] (this.COMMUNITIES_URL + req.url, {headers}, cb);
     });
   }
 }
