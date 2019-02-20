@@ -1,5 +1,6 @@
 const Router = require ('express').Router,
   constants = require ('../../../models/constants'),
+  userRole = require ('../../../libs/user_role'),
   helperService = require ('../services').helperService,
   request = require ('request'),
   config = require ('config'),
@@ -22,7 +23,9 @@ class CommunitiesRouter {
     this.router.use (helperService.errorMiddleware (this.prefix));
   }
 
-  initMiddlewares () {}
+  initMiddlewares () {
+    this.router.use (userRole.isApiLoggedIn (userRole.isLoggedIn ()));
+  }
 
   initRoutes () {
     console.log ('Communities router running');
