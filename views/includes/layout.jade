@@ -25,7 +25,7 @@ head
         link(rel="stylesheet", href="/stylesheets/main.scss" )
         link(href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet")
 
-body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}')
+body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}', ng-app="ngCamps")
     div#cover
     block wrapper
     //-     Scripts     -//
@@ -57,8 +57,10 @@ body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}')
     script(src="/scripts/ng_app.js")
     script(src="/scripts/services/camps_service.js")
     script(src="/scripts/services/suppliers_service.js")
+    script(src="/scripts/services/communities_service.js")
     script(src="/scripts/cards.js")
     script(src="/scripts/camps.js")
+    script(src="/scripts/controllers/nav-controller.js")
     script(src="/scripts/controllers/camp_manage.js")
     script(src="/scripts/controllers/camp_edit.js")
     script(src="/scripts/controllers/camp_join.js")
