@@ -1,12 +1,5 @@
 // angular_getCamps function from supplier_edit.js
-app.factory ('communitiesService', ['$http', '$q', communitiesFactory]);
-
-// angular_getCamps function from supplier_edit.js
-suppliers_app.factory ('communitiesService', [
-  '$http',
-  '$q',
-  communitiesFactory,
-]);
+nav_module.factory ('communitiesService', ['$http', '$q', communitiesFactory]);
 
 function communitiesFactory ($http, $q) {
   const factory = {};
