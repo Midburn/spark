@@ -47,16 +47,17 @@ nav.navbar.navbar-light.fixed-top.navbar-expand-md.white(id="new-nav", ng-contro
                             li.dropdown-item( class="#{path[2] === 'events-admin' ? '' : '' }" )
                                 a.nav-link( href="/#{language}/events-admin" )=t('events:nav_admin')
                                 if(user.isAllowedToViewSuppliers || user.isAdmin)
-            if(user.isCampsAdmin || user.isAdmin || user.isArtInstallationsAdmin)
-                li.nav-item.dropdown
-                    a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
-                        span=t('common:top-nav.allocations', {year: parseInt(user.currentEventId.replace('MIDBURN', '').replace('SANDBOX', ''))})
-                        span.badge.badge-warning.yellow
-                            span.icon-fire
-                            span=t('common:new')
-                    ul.dropdown-menu
-                        li.dropdown-item
-                            a.nav-link( href="/#{language}/campsapp?path=camps/allocations" )=t('common:top-nav.allocations-camps')
-                        li.dropdown-item
-                            a.nav-link( href="/#{language}/campsapp?path=arts/allocations" )=t('common:top-nav.allocations-arts')
+            li.nav-item.dropdown(ng-if="isAllocationNavVisible()")
+                a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+                    span=t('common:top-nav.allocations', {year: parseInt(user.currentEventId.replace('MIDBURN', '').replace('SANDBOX', ''))})
+                    span.badge.badge-warning.yellow
+                        span.icon-fire
+                        span=t('common:new')
+                ul.dropdown-menu
+                    li.dropdown-item(ng-init="lng='#{language}';", ng-repeat="group in communitiesService.allocationGroups")
+                        a.nav-link( href="/#{language}/campsapp?path={{group.group_type}}s/{{group.id}}/allocations" )="{{getGroupName(group, lng)}}"
+                    li.dropdown-item(ng-if="isCampsAdmin()")
+                        a.nav-link( href="/#{language}/campsapp?path=camps/allocations" )=t('common:top-nav.allocations-camps')
+                    li.dropdown-item(ng-if="isArtInstallationsAdmin()")
+                        a.nav-link( href="/#{language}/campsapp?path=arts/allocations" )=t('common:top-nav.allocations-arts')
         include nav-end

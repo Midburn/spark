@@ -34,6 +34,7 @@ class CommunitiesRouter {
       const headers = {
         Accept: 'application/json',
         token: apiTokensConfig.token,
+          Cookie: req.headers.cookie
       };
       const cb = (err, response, body) => {
         if (err) {
