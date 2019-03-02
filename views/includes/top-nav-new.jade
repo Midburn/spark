@@ -4,10 +4,17 @@ nav.navbar.navbar-light.fixed-top.navbar-expand-md.white(id="new-nav", ng-contro
     include navbar-header
     #navbar.navbar-collapse.collapse
         ul.navbar-nav.mr-auto
+            li.nav-item.dropdown
+                a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.camps')
+                ul.dropdown-menu
+                    li.dropdown-item.disabled
+                        a.nav-link.disabled(href="/#{language}/campsapp?path=camps")=t('camps:nav_all')
+                    li.dropdown-item(ng-if="communitiesService.hasCamp()")
+                        a.nav-link( href="/#{language}/campsapp?path=camps/{{communitiesService.getCampId()}}" )=t('camps:nav')
+                    li.dropdown-item(ng-if="isCampsAdmin()")
+                        a.nav-link(href="/#{language}/campsapp?path=camps/management")=t('common:top-nav.allocations-camps')
             li.nav-item.dropdown.disabled
-                    a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.camps')
-            li.nav-item.dropdown.disabled
-                    a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.arts')
+                a.nav-link.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")=t('common:top-nav.arts')
             li.nav-item( class="#{path[2] === 'volunteering' ? '' : '' }" )
                 a.nav-link( href="/#{language}/volunteering" )=t('volunteering')
             if(user.isAdmin || user.isGateManager)

@@ -26,16 +26,16 @@ nav_module.controller('navController', [
         };
 
         $scope.isCampsAdmin = () => {
-            return communitiesService.user.isAdmin || communitiesService.user.isCampsAdmin;
+            return communitiesService.user && (communitiesService.user.isAdmin || communitiesService.user.isCampsAdmin);
         };
 
         $scope.isArtInstallationsAdmin = () => {
-            return communitiesService.user.isAdmin || communitiesService.user.isArtInstallationsAdmin;
+            return communitiesService.user && (communitiesService.user.isAdmin || communitiesService.user.isArtInstallationsAdmin);
         };
 
         $scope.getGroupName = (group, lng) => {
             return communitiesService.getPropertyByLang (group, 'name', lng);
-        }
+        };
 
     },
 ]);

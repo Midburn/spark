@@ -13,6 +13,10 @@ function communitiesFactory($http, $q) {
             PRE_SALE_ALLOCATOR: 'PRE_SALE_ALLOCATOR',
             EARLY_ARRIVAL_ALLOCATOR: 'EARLY_ARRIVAL_ALLOCATOR',
     };
+    const GROUP_TYPES = {
+        CAMP: 'camp',
+        ART: 'art',
+    };
     /**
      * We should remodel Event Model in order to stop being based on string manipulations
      */
@@ -76,6 +80,46 @@ function communitiesFactory($http, $q) {
             hasRole (groupId, GROUP_STATIC_ROLES.LEADER) ||
             hasRole (groupId, GROUP_STATIC_ROLES.PRE_SALE_ALLOCATOR)
         );
+    }
+
+    factory.hasCamp = () => {
+        if (!factory.user || !factory.user.groups) {
+            return false;
+        }
+        return factory.user.groups.some (
+            g => g.event_id === factory.currentEventId && g.group_type === GROUP_TYPES.CAMP
+        );
+    };
+
+    factory.hasArt = () => {
+        if (!factory.user || !factory.user.groups) {
+            return false;
+        }
+        return factory.user.groups.some (
+            g => g.event_id === factory.currentEventId && g.group_type === GROUP_TYPES.ART
+        );
+    };
+
+    function getGroupId(type) {
+        if (!factory.user || !factory.user.groups) {
+            return;
+        }
+        for (const g of factory.user.groups) {
+            if (
+                g.event_id === factory.currentEventId &&
+                g.group_type === type
+            ) {
+                return g.id;
+            }
+        }
+    }
+
+    factory.getCampId = () => {
+        return getGroupId(GROUP_TYPES.CAMP);
+    };
+
+    factory.getArtId = () => {
+        return getGroupId(GROUP_TYPES.ART);
     };
 
     factory.getPropertyByLang = (group, propName, lng) => {
