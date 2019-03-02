@@ -27,7 +27,7 @@ head
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}')
     script.
-        const currentEventId = '#{user.currentEventId}'
+        const currentEventId = '#{user ? user.currentEventId : null}'
     div#cover
     block wrapper
     //-     Scripts     -//
