@@ -4,6 +4,7 @@ nav_module.controller('navController', [
     'eventsService',
     function ($scope, communitiesService, eventsService) {
         $scope.communitiesService = communitiesService;
+        $scope.eventsService = eventsService;
 
         /**
          * Test if allocations (appriciation) is visible.

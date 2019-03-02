@@ -3,7 +3,16 @@ nav_module.factory('communitiesService', ['$http', '$q', communitiesFactory]);
 
 function communitiesFactory($http, $q) {
     const factory = {};
-
+    const GROUP_STATIC_ROLES = {
+        LEADER: 'LEADER',
+            MOOP: 'MOOP',
+            SAFETY: 'SAFETY',
+            SOUND: 'SOUND',
+            CONTENT: 'CONTENT',
+            CONTACT: 'CONTACT',
+            PRE_SALE_ALLOCATOR: 'PRE_SALE_ALLOCATOR',
+            EARLY_ARRIVAL_ALLOCATOR: 'EARLY_ARRIVAL_ALLOCATOR',
+    };
     /**
      * We should remodel Event Model in order to stop being based on string manipulations
      */
@@ -20,7 +29,8 @@ function communitiesFactory($http, $q) {
                 const result = data.data.body;
                 factory.user = result.user;
                 factory.currentEventId = result.currentEventId;
-                factory.allocationGroups = factory.user.groups.filter(g => g.event_id === getFormerEventId()) || [];
+                factory.allocationGroups = factory.user.groups.filter(g => g.event_id === getFormerEventId() &&
+                    isAllowedToAllocateTickets(g.id)) || [];
                 console.log(factory);
             })
             .catch(e => {
@@ -28,14 +38,45 @@ function communitiesFactory($http, $q) {
             });
     }
 
-    function hasGroup(groupType) {
-        if (!factory.user || !factory.user.groups) {
+    // Does the logged user manage this specific group
+    function isGroupManager (groupId) {
+        if (
+            !factory.user.groups ||
+            !factory.user.groups.find (g => g.id === groupId)
+        ) {
             return false;
         }
-        return factory.user.groups.some(
-            g => g.event_id === factory.currentEventId && g.group_type === groupType
+        return (
+            factory.user.groups.some (
+                g => g.id === +groupId && g.main_contact === factory.user.user_id
+            )
         );
     }
+
+    function hasRole(groupId, role) {
+        if (
+            !factory.user.roles ||
+            !factory.user.roles.find (g => g.group_id === groupId)
+        ) {
+            return false;
+        }
+        return !!factory.user.roles.find (
+            r => r.role === role && r.group_id === groupId
+        );
+    }
+
+    function isAllowedToAllocateTickets(groupId) {
+        if (!factory.user) {
+            return false;
+        }
+        // Add logic for more permissions here
+        return (
+            factory.user.isAdmin ||
+            isGroupManager (groupId) ||
+            hasRole (groupId, GROUP_STATIC_ROLES.LEADER) ||
+            hasRole (groupId, GROUP_STATIC_ROLES.PRE_SALE_ALLOCATOR)
+        );
+    };
 
     factory.getPropertyByLang = (group, propName, lng) => {
         if (!group || !propName) {
