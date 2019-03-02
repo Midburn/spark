@@ -26,6 +26,8 @@ head
         link(href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet")
 
 body( style='direction:#{languageDir}', lang=language, dir='#{languageDir}')
+    script.
+        const currentEventId = '#{user.currentEventId}'
     div#cover
     block wrapper
     //-     Scripts     -//
