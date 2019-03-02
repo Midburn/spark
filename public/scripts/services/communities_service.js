@@ -35,7 +35,6 @@ function communitiesFactory($http, $q) {
                 factory.currentEventId = result.currentEventId;
                 factory.allocationGroups = factory.user.groups.filter(g => g.event_id === getFormerEventId() &&
                     isAllowedToAllocateTickets(g.id)) || [];
-                console.log(factory);
             })
             .catch(e => {
                 console.log(e);
