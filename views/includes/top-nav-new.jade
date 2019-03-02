@@ -1,3 +1,5 @@
+script.
+    const currentEventId = '#{user.currentEventId}'
 nav.navbar.navbar-light.fixed-top.navbar-expand-md.white(id="new-nav", ng-controller="navController",class=language == 'he' ? 'rtl' : undefined)
     include navbar-header
     #navbar.navbar-collapse.collapse
@@ -54,7 +56,7 @@ nav.navbar.navbar-light.fixed-top.navbar-expand-md.white(id="new-nav", ng-contro
                         span.icon-fire
                         span=t('common:new')
                 ul.dropdown-menu
-                    li.dropdown-item(ng-init="lng='#{language}';", ng-repeat="group in communitiesService.allocationGroups")
+                    li.dropdown-item(ng-init="lng='#{language}';", ng-repeat="group in getAllocationGroups()")
                         a.nav-link( href="/#{language}/campsapp?path={{group.group_type}}s/{{group.id}}/allocations" )="{{getGroupName(group, lng)}}"
                     li.dropdown-item(ng-if="isCampsAdmin()")
                         a.nav-link( href="/#{language}/campsapp?path=camps/allocations" )=t('common:top-nav.allocations-camps')

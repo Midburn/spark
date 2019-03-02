@@ -1,7 +1,8 @@
 nav_module.controller('navController', [
     '$scope',
     'communitiesService',
-    function ($scope, communitiesService) {
+    'eventsService',
+    function ($scope, communitiesService, eventsService) {
         $scope.communitiesService = communitiesService;
 
         /**
@@ -14,6 +15,13 @@ nav_module.controller('navController', [
             }
             return $scope.isCampsAdmin() ||
                 $scope.isArtInstallationsAdmin;
+        };
+
+        $scope.getAllocationGroups = () => {
+            if (!eventsService.isPresaleAvailable()) {
+                return [];
+            }
+            return communitiesService.allocationGroups;
         };
 
         $scope.isCampsAdmin = () => {

@@ -22,7 +22,7 @@ class EventsController {
     }
 
     getEvent(req, res, next) {
-        const event_id = req.params.event_id;
+        const event_id = req.params.event_id || req.user.currentEventId;
         Event.forge({event_id: event_id})
             .fetch()
             .then((event) => {
