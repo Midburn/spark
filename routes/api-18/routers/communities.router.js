@@ -20,6 +20,9 @@ class CommunitiesRouter {
     )
       ? `${process.env.COMMUNITIES_URL || 'http://communities:3006'}`
       : `http://localhost:3006`;
+    if (this.COMMUNITIES_URL.charAt (this.COMMUNITIES_URL.length - 1) === '/') {
+      this.COMMUNITIES_URL = this.COMMUNITIES_URL.slice (0, -1);
+    }
     this.router.use (helperService.errorMiddleware (this.prefix));
   }
 
@@ -34,7 +37,7 @@ class CommunitiesRouter {
       const headers = {
         Accept: 'application/json',
         token: apiTokensConfig.token,
-          Cookie: req.headers.cookie
+        Cookie: req.headers.cookie,
       };
       const cb = (err, response, body) => {
         if (err) {
@@ -42,6 +45,7 @@ class CommunitiesRouter {
         }
         return res.status (response.statusCode).json (body);
       };
+
       request[method] (
         this.COMMUNITIES_URL + req.url,
         {headers, json: true},
