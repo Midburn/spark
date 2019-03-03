@@ -31,7 +31,7 @@ function communitiesFactory ($http, $q) {
       .get ('/communities/api/v1/user')
       .then (data => {
         const result = data.data.body;
-        if (!results) {
+        if (!result) {
           return;
         }
         factory.user = result.user;
