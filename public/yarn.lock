@@ -14,9 +14,9 @@ angular-select@^0.9.12:
   version "0.9.12"
   resolved "https://registry.yarnpkg.com/angular-select/-/angular-select-0.9.12.tgz#335086c43a41d7f3389deca7bc84f3bf3ae824db"
 
-angular@1.4.6:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/angular/-/angular-1.4.6.tgz#905d2a916157826b7f6d7c832848aa98b16a1430"
+angular@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.8.0.tgz#b1ec179887869215cab6dfd0df2e42caa65b1b51"
 
 ansicolors@~0.2.1:
   version "0.2.1"
@@ -41,6 +41,10 @@ bootstrap-rtl@3.3.4:
 bootstrap-table@1.11.2:
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/bootstrap-table/-/bootstrap-table-1.11.2.tgz#5f5f8414c97d95a40e56d3d364523da432b3c0b1"
+
+bootstrap-v4-rtl@^4.1.1-1:
+  version "4.1.1-1"
+  resolved "https://registry.yarnpkg.com/bootstrap-v4-rtl/-/bootstrap-v4-rtl-4.1.1-1.tgz#453928bb8dfeebe8dd0ddabe2320baad8727438d"
 
 bootstrap-validator@0.11.9:
   version "0.11.9"

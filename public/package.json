@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "angular": "1.4.6",
+    "angular": "1.8.0",
     "angular-animate": "1.4.8",
     "angular-sanitize": "1.5.0",
     "angular-select": "^0.9.12",
