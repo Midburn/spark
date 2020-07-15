@@ -75,7 +75,7 @@
     "json2csv": "^3.7.3",
     "jsonwebtoken": "^8.0.0",
     "knex": "^0.14.3",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "mocker-data-generator": "^2.5.2",
     "module-id": "2.0.4",
     "moment": "^2.21.0",
