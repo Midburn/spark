@@ -78,7 +78,7 @@
     "lodash": "^4.17.4",
     "mocker-data-generator": "^2.5.2",
     "module-id": "2.0.4",
-    "moment": "^2.21.0",
+    "moment": "^2.29.2",
     "morgan": "~1.9.0",
     "mysql": "^2.11.1",
     "node-cache": "^4.1.1",
