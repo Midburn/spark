@@ -107,7 +107,7 @@
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
-    "browser-sync": "^2.23.6",
+    "browser-sync": "^2.27.10",
     "chai": "*",
     "cross-env": "3.2.4",
     "eslint": "^4.13.1",
