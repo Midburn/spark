@@ -72,7 +72,7 @@
     "i18next-localstorage-cache": "^1.1.1",
     "i18next-node-fs-backend": "^1.0.0",
     "jade": "^1.11.0",
-    "json2csv": "^3.7.3",
+    "json2csv": "^5.0.7",
     "jsonwebtoken": "^8.0.0",
     "knex": "^0.14.3",
     "lodash": "^4.17.4",
