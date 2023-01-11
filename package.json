@@ -57,7 +57,7 @@
     "csurf": "^1.9.0",
     "csv": "^1.1.1",
     "dateformat": "1.0.12",
-    "debug": "~2.6.7",
+    "debug": "~3.1.0",
     "dotenv": "^4.0.0",
     "drupal-hash": "^1.0.3",
     "express": "~4.16.0",
